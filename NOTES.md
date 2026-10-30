@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LOOK pass 3: glow inlays, nobori banners, alien crystals
+
+- Towers: four cyan emissive INLAYS up the column corners and a ring at 2.4 m (retro-futurist panel lines); a NOBORI banner (canvas: red cloth,
+  gold border, a white disc with a glyph, four glyph marks) hanging 5 m off the deck's +x edge, its verts swayed by `lbFlutter` in the post chain
+  (`LB.flutter`, pruned when the level rebuilds); a CRYSTAL cluster (flat-shaded emissive octahedra, stretched and tilted) at the base.
+- Run walls: a 3-crystal cluster off each end. Every cluster is SEEDED from the piece id (`lbHash`), so a piece keeps its own shape across
+  rebuilds and phones. Headless render checked (tower close + wide).
+
 ## m1891 -- LOOK pass 2: Japanese roofs, lanterns, coping; the gym in stone
 
 His: *"look pass two"* (the asks: Japanese architecture, futuristic retro, stone masonry, alien world -- and he could not see pass 1, which was

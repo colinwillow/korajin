@@ -68930,6 +68930,19 @@ function lbRole(c) { return c === 0x6b5038 || c === 0x8a6a3a || c === 0xa0763c ?
 function lbMat(c, ghost, role) { const k = c + (ghost ? 'g' : '') + (role || ''); if (_lvM[k]) return _lvM[k];
   const col = new THREE.Color(c); if (role === 'stone') col.lerp(new THREE.Color(0xffffff), .35);
   return (_lvM[k] = new THREE.MeshStandardMaterial({ side: role === 'roofd' ? THREE.DoubleSide : THREE.FrontSide, color: col, roughness: role === 'lacq' ? .35 : .85, metalness: role === 'lacq' ? .1 : 0, map: role === 'stone' ? lbStoneTex() : null, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
+function lbHash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 100000) / 100000; }
+function lbCrystalMat() { return _lvM.crystal || (_lvM.crystal = new THREE.MeshStandardMaterial({ color: 0x5ef2d0, emissive: 0x1fb5c9, emissiveIntensity: 1.1, roughness: .15, metalness: .1, flatShading: true, transparent: true, opacity: .88 })); }
+// m1892: a NOBORI banner -- red cloth, a gold border, a white disc with an alien glyph; drawn once
+function lbBannerMat() { if (_lvM.banner) return _lvM.banner; const cv = document.createElement('canvas'); cv.width = 128; cv.height = 512; const q = cv.getContext('2d');
+  q.fillStyle = '#a3201a'; q.fillRect(0, 0, 128, 512); q.strokeStyle = '#d9b44a'; q.lineWidth = 10; q.strokeRect(5, 5, 118, 502);
+  q.fillStyle = '#f2ead8'; q.beginPath(); q.arc(64, 150, 40, 0, 7); q.fill(); q.strokeStyle = '#1c2230'; q.lineWidth = 7; q.lineCap = 'round';
+  q.beginPath(); q.moveTo(64, 118); q.lineTo(64, 182); q.moveTo(42, 140); q.quadraticCurveTo(64, 125, 86, 140); q.moveTo(46, 168); q.lineTo(82, 160); q.stroke();
+  q.strokeStyle = '#f2ead8'; q.lineWidth = 6; for (let i = 0; i < 4; i++) { const y = 240 + i * 62; q.beginPath(); q.moveTo(40, y); q.lineTo(88, y + 8); q.moveTo(64, y - 10); q.lineTo(60, y + 30); q.stroke(); }
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return (_lvM.banner = new THREE.MeshStandardMaterial({ map: t, side: THREE.DoubleSide, roughness: .9 })); }
+// the banners sway (a few verts, a sine) -- once per frame from the post chain
+function lbFlutter(dt) { if (!LB.flutter || !LB.flutter.size) return; for (const m of LB.flutter) { if (!m.parent) { LB.flutter.delete(m); continue; } const U = m.userData.banner; U.t += dt;
+    const P = m.geometry.attributes.position; if (!U.y0) { U.y0 = []; for (let i = 0; i < P.count; i++) U.y0.push(P.getY(i)); } const top = Math.max(...U.y0);
+    for (let i = 0; i < P.count; i++) { const k = (top - U.y0[i]) / (top * 2 || 1); P.setZ(i, Math.sin(U.t * 1.7 + U.y0[i] * .9) * .16 * k); } P.needsUpdate = true; } }
 function lbLanternMat() { return _lvM.lantern || (_lvM.lantern = new THREE.MeshStandardMaterial({ color: 0x3a1a08, emissive: 0xffa040, emissiveIntensity: 1.6, roughness: .6 })); }
 function lbGlowMat() { return _lvM.glow || (_lvM.glow = new THREE.MeshStandardMaterial({ color: 0x0b2a30, emissive: 0x29e3ff, emissiveIntensity: 1.4, roughness: .4 })); }
 function lbArrowMat() { return _lvM.arrow || (_lvM.arrow = new THREE.MeshBasicMaterial({ map: gymArrowTex(), transparent: true, depthWrite: false, opacity: .9, polygonOffset: true, polygonOffsetFactor: -2 })); }
@@ -68943,6 +68956,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
   if (P.kind === 'tower') { const hb = q.base / 2, dh = hb + .6, H = q.h; add(K.c, -hb, hb, 0, H - .4, -hb, hb); add(0x6b5038, -dh, dh, H - .4, H, -dh, dh);
     X.push({ type: 'trim', hb, dh, H }); for (let y = 6; y < H - 2; y += 6) X.push({ type: 'band', hb, y });     // m1886: lacquer, glow and masonry bands
     if (q.roof !== 0) X.push({ type: 'roof', dh, H });     // m1891: a floating hip roof on lacquer posts (ROOF toggles it)
+    X.push({ type: 'panels', hb, H }, { type: 'banner', dh, H }, { type: 'crystals', at: [hb + .6, hb + .6], n: 5 });     // m1892: glow inlays, a nobori banner, a crystal cluster
     const ps = P.ports || {};
     for (const [side, nx, nz] of [['N', 0, -1], ['E', 1, 0], ['S', 0, 1], ['W', -1, 0]]) { const t = ps[side] || 'closed', tx = -nz, tz = nx;
       const seg = (u0, u1, n0, n1, y0, y1, c) => { const xs = [tx * u0 + nx * n0, tx * u1 + nx * n1, tx * u0 + nx * n1, tx * u1 + nx * n0], zs = [tz * u0 + nz * n0, tz * u1 + nz * n1, tz * u0 + nz * n1, tz * u1 + nz * n0]; add(c, Math.min(...xs), Math.max(...xs), y0, y1, Math.min(...zs), Math.max(...zs)); };
@@ -68952,7 +68966,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
       if (t === 'bar') { seg(-dh, -2.2, dh - .3, dh, H, H + 1.1, 0x6b5038); seg(2.2, dh, dh - .3, dh, H, H + 1.1, 0x6b5038); X.push({ type: 'bar', lx: nx * (dh - 1.1), lz: nz * (dh - 1.1), ltx: tx, ltz: tz, y: H }); }
       if (t === 'ladder') X.push({ type: 'ladder', lx: nx * (dh + .1), lz: nz * (dh + .1), ltx: tx, ltz: tz, lnx: nx, lnz: nz, h: H, mx: nx * (dh - 1.4), mz: nz * (dh - 1.4) });
       ports.push({ side, t, at: [nx * (dh + (t === 'balcony' ? 2.4 : 0)), H + .7, nz * (dh + (t === 'balcony' ? 2.4 : 0))] }); } }
-  else if (P.kind === 'wall') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2); X.push({ type: 'arrows', a: 0, cx: 0, cz: 0, len: q.len, off: q.t / 2, h: q.h }, { type: 'cap', cx: 0, cz: 0, a: 0, len: q.len, t: q.t, h: q.h }); }
+  else if (P.kind === 'wall') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2); X.push({ type: 'arrows', a: 0, cx: 0, cz: 0, len: q.len, off: q.t / 2, h: q.h }, { type: 'cap', cx: 0, cz: 0, a: 0, len: q.len, t: q.t, h: q.h }, { type: 'crystals', at: [q.len / 2 + .5, .6], n: 3 }, { type: 'crystals', at: [-q.len / 2 - .5, -.6], n: 3 }); }
   else if (P.kind === 'lwall') { const r = q.r, t = .6, n = Math.max(3, Math.round(r * Math.PI / 2 / 1.5)), da = Math.PI / 2 / n, sl = r * 2 * Math.sin(da / 2);     /* exact: padding a chord sticks a lip OUT past a convex curve, which stopped the run dead */     // the bend: n turned segments ~1.5 m long (each over the wall run's 1.2 m minimum; neighbours 15 deg apart, inside its .95 hand-off)
     for (let i = 0; i < n; i++) { const th = (i + .5) * da; OB.push({ c: K.c, cx: r * Math.cos(th), cz: r * Math.sin(th), a: th + Math.PI / 2, hx: sl / 2, hz: t / 2, y0: 0, y1: q.h }); }
     add(K.c, r - t / 2, r + t / 2, 0, q.h, -q.len, .05); add(K.c, -q.len, .05, 0, q.h, r - t / 2, r + t / 2);
@@ -68999,6 +69013,13 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     if (E.type === 'upArrows2') { const am = lbArrowMat(); for (const x of [-E.W / 2, E.W / 2]) for (let y = E.R + 1.5; y < E.h - .8; y += 3) { const w = rx(x, -E.R + .05), n2 = rx(0, 1), m = look(lbArrowGeo(), am, w[0] + ax, ay + y, w[1] + az); m.lookAt(m.position.x + n2[0], m.position.y, m.position.z + n2[1]); }
       for (const x of [-E.W / 2, E.W / 2]) { const th = .55, w = rx(x, -E.R * Math.sin(th) + .1), m = look(lbArrowGeo(), am, w[0] + ax, ay + E.R * (1 - Math.cos(th)) + .1, w[1] + az), n2 = rx(0, Math.cos(th)); m.lookAt(m.position.x + n2[0], m.position.y + Math.sin(th), m.position.z + n2[1]); } continue; }
     if (E.type === 'trim') { const tm = lbMat(0xb3322a, ghost, 'lacq'), gm = lbGlowMat(); for (const [w, d, y, hh, mm] of [[E.dh * 2 + .2, E.dh * 2 + .2, E.H - .5, .22, tm], [E.hb * 2 + .1, E.hb * 2 + .1, E.H - .75, .12, gm]]) look(new THREE.BoxGeometry(w, hh, d), mm, ax, ay + y, az); continue; }
+    if (E.type === 'panels') { const gm = lbGlowMat(); for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) { const c = rx(sx * (E.hb + .02), sz * (E.hb + .02)); look(new THREE.BoxGeometry(.09, E.H - 1.2, .09), gm, c[0] + ax, ay + (E.H - .4) / 2, c[1] + az); }
+      look(new THREE.BoxGeometry(E.hb * 2 + .06, .06, E.hb * 2 + .06), gm, ax, ay + 2.4, az); continue; }
+    if (E.type === 'banner') { const L2 = Math.min(5, E.H - 2), c = rx(E.dh - .05, 0), n2 = rx(1, 0), m = look(new THREE.PlaneGeometry(1.1, L2, 1, 6), lbBannerMat(), c[0] + ax + n2[0] * .06, ay + E.H - .45 - L2 / 2, c[1] + az + n2[1] * .06);
+      m.lookAt(m.position.x + n2[0], m.position.y, m.position.z + n2[1]); m.userData.banner = { t: lbHash(P.id) * 6.3 }; (LB.flutter || (LB.flutter = new Set())).add(m); continue; }
+    if (E.type === 'crystals') { let sd = lbHash(P.id + E.at.join()) * 1e6 | 1; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647, cm = lbCrystalMat();
+      for (let i = 0; i < E.n; i++) { const h2 = .5 + r() * 1.4, c = rx(E.at[0] + (r() - .5) * 1.1, E.at[1] + (r() - .5) * 1.1), m = look(new THREE.OctahedronGeometry(.28 + r() * .2, 0), cm, c[0] + ax, ay + h2 * .45, c[1] + az, r() * 6);
+        m.scale.set(1, h2 * 2.2, 1); m.rotation.z = (r() - .5) * .7; m.rotation.x = (r() - .5) * .5; } continue; }
     if (E.type === 'roof') {     // m1891: posts at the deck corners, a two-tier hip roof (4-sided cones turned 45 deg), upswept corner tips, a finial, lanterns
       const ph = 3.4, y0 = ay + E.H, D = E.dh, tm = lbMat(0xb3322a, ghost, 'lacq'), tile = lbMat(0x2d3440, ghost, 'plain'), lm2 = lbLanternMat();
       for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) { const c = rx(sx * (D - .25), sz * (D - .25)); look(new THREE.BoxGeometry(.28, ph, .28), tm, c[0] + ax, y0 + ph / 2, c[1] + az);
@@ -69351,6 +69372,7 @@ function frameBody() {
     vinePose();                        // m1856: along the swing rope
     pumpPose(dt);                      // m1883: the swing's pump (rope and high bar) + his hands on the rope
     loopPose();                        // m1889: his up toward the loop's centre
+    lbFlutter(dt);                     // m1892: the builder's banners sway
     mbarPose();                        // m1857: hands on the monkey bars' rungs
     poseFixApply();                    // m1877: his in-game pose tweaks, per clip (TOOLS > POSE EDIT)
     contactSnd(dt);                    // m1875: hands / knees / toes / hips meeting the floor in any move make the landing sound
