@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## NINJA GYM pass 3: the tightrope, and the towers as Japanese archer towers; the ladder climbs (m15xx)
+## NINJA GYM pass 3: the tightrope, and the towers as Japanese archer towers; the ladder climbs (m1850)
 *"Ninja gym pass 3, the tightrope. There's a ladder but you can't climb it. I said Eiffel Tower by accident -- I want them closer to the stylized
 Japanese archer war towers."*
 - **The ladder:** `ladderFront`'s rule (climb from the side AWAY from the exit mark) put the climbing side INSIDE the core, because pass 2's mark
