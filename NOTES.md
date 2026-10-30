@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LOOK pass 3: glow inlays, nobori banners, alien crystals
+## m1892 -- LOOK pass 3: glow inlays, nobori banners, alien crystals
 
 - Towers: four cyan emissive INLAYS up the column corners and a ring at 2.4 m (retro-futurist panel lines); a NOBORI banner (canvas: red cloth,
   gold border, a white disc with a glyph, four glyph marks) hanging 5 m off the deck's +x edge, its verts swayed by `lbFlutter` in the post chain
