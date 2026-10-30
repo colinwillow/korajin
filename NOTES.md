@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- his footstep_3 (one left, one right) is the step bank, as four variants each
+## m1867 -- his footstep_3 (one left, one right) is the step bank, as four variants each
 
 His: *"try these instead ... we might need to procedurally oscillate them to add variety -- it's just a left foot and a right foot."*
 - MEASURED: footstep_3_L / _R peak at **.024 / .018** of envelope (the bank sat at .33) and `SFX.evenMax` caps a boost at 1.6 -- left alone they
