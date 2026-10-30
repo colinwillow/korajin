@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LOOK pass 4: his concept art (the floating sandstone temple)
+
+His concept: warm sandstone megaliths on floating islands, gold/bronze trim, jade-teal glow (channels, braziers, light beams), a gold halo ring on
+the summit, red banners with a gold diamond and tattered ends, rope rails on posts, red carpets, vines and palms, guardian statues.
+- PALETTE: the builder's glow, crystals and the tech glyphs move from cyan to JADE (`lbGlowMat` 0x2de0b0, glyph #6ff5cf).
+- MEGALITH / TECH towers: a stepped TEMPLE base (two real collider tiers: base +2.8 m x 1.6 m, +1.4 m x 1.6 m -- ledges he can climb), GOLD trim
+  (`lbGoldMat`) where brick has red lacquer, a HALO in place of the pagoda (a pinnacle, a gold torus on four struts 5 m over the deck, a jade
+  band and a jade orb inside), four jade BRAZIERS at the deck corners (`lbBrazier`: stone pedestal, gold band, bowl, two additive jade flame
+  cones that flicker -- `userData.flick` in `lbFlutter`), and his BANNER (`lbBanner2Mat`: red, gold border, a gold double diamond, the tail
+  cut ragged with alpha) at 1.5 x 7 m. BRICK towers keep the pagoda and the glyph nobori.
+- MEGALITH walls: VINES (alpha planes, seeded) draped from the coping on both faces.
+- BRIDGES (plank / ramp / sky bridge / rope bridge): a brazier each side at both ends; PLANKS get ROPE RAILS on gold posts every ~2.5 m (tube
+  segments sagging .18 m between posts).
+- Not yet: the SKY (floating islands, teal beams, clouds below), carpets, palms, guardian statues. Headless render checked (wide + deck).
+
 ## m1894 -- STYLES: brick / MEGALITH / ANCIENT TECH, and floating fragments
 
 His: *"something other than brick -- brick is good for the Japanese towers with the red ... retro stone temple, the Zelda Divine Beast temple
