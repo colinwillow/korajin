@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## KORAJIN has its own repo (m1844)
+*"It's time to move this to its own repo... give it its own icon and web address."* `colinwillow/korajin`, Pages at
+colinwillow.github.io/korajin. Copied from `colinwillow/zap` at m1843 as ONE fresh commit (zap's history is 2.2 GB; GitHub caps a push at
+2 GB; zap keeps it all). The page sets `mel.game = korajin` (and Grumbo if no hero is picked) before anything reads them; title, home-screen
+name and manifest say Korajin. The icon is still zap's v4 until his art arrives (`npm run icons`, raise `V`). localStorage is per ORIGIN, so
+zap and korajin share settings on his phone. Every entry below this was written in zap and is still true of this code. Next: cut what
+Korajin never loads, one build at a time.
+
 ## ONLINE stage 1: two phones in one room see each other (m1843, NETPLAY.md)
 *"Co-op or even versus -- Robits had a server, a separate repository, and it worked pretty well... start with one sandbox, another player on
 another device logs in and sees the same things, and you can knock each other around."*
