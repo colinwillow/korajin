@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- his ORIGINAL footsteps, untouched; the three sets on a switch
+## m1870 -- his ORIGINAL footsteps, untouched; the three sets on a switch
 
 His: *"now that the editing is gone ... I want to hear the original footsteps without your editing -- before I was getting gaslit, but now I knew I
 was hearing something different."* He was right: the game DID change them -- m136-m142's pitch sweep (+-9%, then +-12% x `jit`), the peak
