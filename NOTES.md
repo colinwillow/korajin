@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- footsteps made from HIS LANDING sound (TOOLS > STEP SET: LANDING, the default)
+
+His: *"the noise he makes when he falls out of the air and lands sounds good -- can we make various tones of it and make footsteps out of it?"*
+- The landing is `drop` = hit_sound_gound_01 / ground_02 (env .75 / .60; **80% / 57% of the energy under 150 Hz**), played by `bumpSnd` from its
+  PEAK (`cut`) with a 4 ms attack and a percussive `dec` .22 -- the punch arrives at once, which is why it still reads on a phone.
+- `foot_LAND` (01 = left, 02 = right) through the same `cut` + `dec` path, lighter: gain .22 walk -> .5 sprint (the landing is .34-1), pitch
+  1.25 -> 1.0 rolled +-11% per step (the tones), tail .10 -> .17 s. Knobs: `STEP.land`. New storage key `mel.fset2` so it shows first.
+
 ## m1871 -- the unarmed fast run plays at the katana's cadence (slower legs, same speed)
 
 His: *"holding the katana, the fast run's feet don't go crazy fast ... unarmed his animation plays so fast it looks cheesy. Cheat: play it slower
