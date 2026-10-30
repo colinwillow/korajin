@@ -5,6 +5,12 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## His Korajin icon (m15xx)
+His own art ("This is the icon"): 1254 px, rounded corners DRAWN in with white outside them (a ~220 px radius) and a 12 px white strip at the
+bottom. iOS masks its own (tighter) corners, but white corners show anywhere that does not -- so the white is FILLED from the art just inward of
+it (each white corner pixel takes the first non-white pixel along its line to the centre, 6 px further in) and the bottom strip copies the row
+above, rather than cropping into GRUMBO. `V` 5 -> 6, `npm run icons` (all four read back clean), index.html + manifest -> `-v6`, v5 deleted.
+
 ## No game picker: Korajin opens straight to its own page (m1848)
 *"It's still showing the game picker -- KORAJIN or Zap & Clancy."* `startGate` ended on `titles()` (zap's two-poster picker, m1109); it ends on
 `korajin()` now, and the KORAJIN page's "< Titles" button is gone (nothing to go back to). The `zapClancy` / `titles` pages are still in the
