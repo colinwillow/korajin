@@ -13317,7 +13317,7 @@ function stepWrun(dt) {
   else { p.vel.x = -R.nx * .5; p.vel.z = -R.nz * .5; p.vel.y += (MOVE.g - WRUN.gUp) * dt; }     // pressed to the face
   if (vyKeep != null) { p.vel.y = vyKeep; p.vel.x = -R.nz * R.vt - R.nx * .5; p.vel.z = R.nx * R.vt - R.nz * .5; }     // m1776: the velocity run -- his own speed on the wall's plane
   p.faceH = p.heading = R.kind === 'side' ? Math.atan2(R.dx, R.dz) : R.kind === 'slide' ? Math.atan2(R.nx, R.nz) : Math.atan2(-R.nx, -R.nz);
-  if (R.velMode && R.kind !== 'slide' && R.a != null) { const cu = Math.max(0, Math.cos(R.a)), sa = Math.sin(R.a), fx = -R.nx * cu + -R.nz * sa, fz = -R.nz * cu + R.nx * sa; if (Math.hypot(fx, fz) > .1) p.faceH = p.heading = Math.atan2(fx, fz); }     // m1831: faces between the wall and the way he runs along it
+  if (R.velMode && R.kind !== 'slide' && R.a != null && R.arc !== 'side') { const cu = Math.max(0, Math.cos(R.a)),     /* m1860: the horizontal run faces ALONG the wall (his: 'his face points toward the wall') */ sa = Math.sin(R.a), fx = -R.nx * cu + -R.nz * sa, fz = -R.nz * cu + R.nx * sa; if (Math.hypot(fx, fz) > .1) p.faceH = p.heading = Math.atan2(fx, fz); }     // m1831: faces between the wall and the way he runs along it
   integrate(dt, 0, 0, 0, false);
   // still on the face? (its end, or past the top of it, lets him go)
   const d = boxNear(R.b, p.pos.x, p.pos.z, _wrN), on = d > 0 && d < p.r + .4 && _wrN.nx * R.nx + _wrN.nz * R.nz > .9 && R.b.maxy - p.pos.y > (R.arc === 'side' ? .5 : .9);
@@ -43084,11 +43084,17 @@ function forgedHero() {
   if (!fz && FORGED.index && FORGED.index.includes(forgedKey(RIG.file))) forgedFetch(forgedKey(RIG.file));     // m1074: picked after boot -- fetch his now (it calls back here)
   if (!fz || !rig.mixer) return 0; let n = 0;
   for (const c of fz) { if (rig.actions[c.name]) continue; rig.clips[c.name] = c; const a = rig.mixer.clipAction(c);
-    const loop = /^(run_std|sprint_std)$/.test(c.name); if (!loop) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; ONCE.add(c.name); } a.enabled = true; a.setEffectiveWeight(0); a.play(); rig.actions[c.name] = a; n++;
+    const loop = /^(run_std|sprint_std|wall_side|wall_up)$/.test(c.name);     /* m1860: the wall runs LOOP (they were played once and frozen) */ if (!loop) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; ONCE.add(c.name); } a.enabled = true; a.setEffectiveWeight(0); a.play(); rig.actions[c.name] = a; n++;
     if (c.name === CLIPS.carry || c.name === KATANA.guard || /^bow_(draw|recoil|aim)$/.test(c.name)) for (const [suf, f] of [[UPS, isUpperSq], [UP, isUpper]]) {     // its upper halves, as `deriveClips` makes them at load
       const h = new THREE.AnimationClip(c.name + suf, c.duration, c.tracks.filter(t => f(t.name)).map(t => t.clone())); rig.clips[h.name] = h;
       const b = rig.mixer.clipAction(h); b.setLoop(THREE.LoopOnce, 1); b.clampWhenFinished = true; b.enabled = true; b.setEffectiveWeight(0); b.play(); rig.actions[h.name] = b; } }
   if (n) { note('FORGED ' + forgedKey(RIG.file) + ' ' + n + ' (hero)'); if (rig.ready || GAIT.refK) runStd(); }
+  // m1860: a MIRROR clip that came in the bake (wall_side) was never mirrored -- `rigMirrors` ran at load, before the bake. So the side run with the
+  // wall on his RIGHT played the left-hand clip: his back to the wall, floating off it. Mirror now, on the bind pose (as `rigMirrors` must), then put it back.
+  if (n && rig.bind && rig.model && MIRROR.clips.some(k => rig.clips[k] && !rig.clips[k + MIRROR.suffix])) { const keep = {};
+    for (const k in rig.bones) { keep[k] = rig.bones[k].quaternion.clone(); const r = rig.bind.rest[k]; if (r) rig.bones[k].quaternion.fromArray(r); }
+    try { rigMirrors(rig.model); } catch (e) { console.warn('[forged] mirror', e); }
+    for (const k in keep) rig.bones[k].quaternion.copy(keep[k]); for (const k of ['wall_side', 'wall_up']) { const a = rig.actions[k + MIRROR.suffix]; if (a) { a.setLoop(THREE.LoopRepeat, Infinity); a.clampWhenFinished = false; } } }
   return n;
 }
 async function forgedLoad() {

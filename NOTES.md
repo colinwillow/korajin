@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the side wall run had the WRONG-HANDED clip (wall on his right): mirrored now, looped, faces along
+
+His: *"wall to my screen right, approaching with his right arm to the wall: instead of his feet against the wall, the OTHER side of his body -- his face
+points toward the wall, he floats a few feet from the wall in the in-air pose."*
+- MEASURED (headless, the action weights): `wall_side_m` **did not exist**. `rigMirrors` runs once at rig load, on the bind pose -- but `wall_side`
+  arrives later in the Forge bake (`forgedHero`), so its mirror was never made, and a wall on his RIGHT played the left-hand clip: back to the wall,
+  reaching away from it. `forgedHero` now mirrors any `MIRROR.clips` the bake brought, with the bones put back on `rig.bind.rest` for the call
+  (clipMirror must see the bind pose) and restored after. Console: `[melee] mirrored: wall_side_m`.
+- `forgedHero` made every baked clip LoopOnce + clamp except run_std/sprint_std -- `wall_side` and `wall_up` played once and FROZE. They loop now.
+- The ARC side run faces ALONG the wall (m1831's lean-into-the-wall facing is kept for the old VEL runs only) -- it was turned ~30 deg into the wall.
+- Render (wall on screen right): feet on the face, head out, running along it.
+
 ## m1860 -- the horizontal wall run: no catching a corner, and a higher arc
 
 His (screenshots on the chimney, build 1854, same on 1859): *"he never really did the actual wall run, he did like everything other than the wall run animation."*
