@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## The ledge: elbows out, head up, the shimmy clips, a look-away pose, and the jump-off turn fixed (m15xx)
+## The ledge: elbows out, head up, the shimmy clips, a look-away pose, and the jump-off turn fixed (m1852)
 *"Unarmed on a ledge his elbows look bowed in from the back -- maybe his head back. Left / right on the ledge should play the shimmy (Mixamo has a
 shimmy and a leap) -- swipe for the leap. Jumping off, he's still facing the wall and does an awkward 180 in the air -- pressing away should
 give a new pose, one arm on the ledge, looking away, then tap jump to jump away. And tapping jump he rotates 180 and all the way back -- a 360;
