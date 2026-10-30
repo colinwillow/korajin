@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the horizontal wall run: no catching a corner, and a higher arc
+## m1860 -- the horizontal wall run: no catching a corner, and a higher arc
 
 His (screenshots on the chimney, build 1854, same on 1859): *"he never really did the actual wall run, he did like everything other than the wall run animation."*
 - MEASURED headless (run along the C chimney wall, stick 10-30 deg into it, jump): along the long face the ARC side run already caught and ran 10 m --
