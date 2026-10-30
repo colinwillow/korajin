@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LEVEL BUILDER step 2: links between ports (rope, plank / ramp, zipline)
+## m1881 -- LEVEL BUILDER step 2: links between ports (rope, plank / ramp, zipline)
 
 His: *"click on one port and choose rope bridge port A, click the other tower, rope bridge port B, and build a bridge there."*
 - `LB.cur.links = [{ id, kind, a: [pieceId, port], b: [pieceId, port] }]`; bottom bar LINK ROPE / LINK PLANK / LINK ZIP -> tap the first port ball,
