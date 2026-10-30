@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## No game picker: Korajin opens straight to its own page (m15xx)
+## No game picker: Korajin opens straight to its own page (m1848)
 *"It's still showing the game picker -- KORAJIN or Zap & Clancy."* `startGate` ended on `titles()` (zap's two-poster picker, m1109); it ends on
 `korajin()` now, and the KORAJIN page's "< Titles" button is gone (nothing to go back to). The `zapClancy` / `titles` pages are still in the
 file, unreached -- to be cut with the rest of the inherited code.

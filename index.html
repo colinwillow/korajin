@@ -73536,7 +73536,7 @@ function startGate() {
       btn(el, 'Building Forge', 'An empty white floor: spawn the buildings, run on them, swing on them, blow them up.', () => go('forge'));
       btn(el, 'The Red Hollows', 'His home: the canyon, the river, the hut. (Being built.)', () => go('home'));
       btn(el, 'White Box', 'An empty floor to try a move on.', () => go('test'));
-      add('div', 'bld', 'BUILD ' + BUILD); };     // m15xx: no '< Titles' -- there is no picker to go back to
+      add('div', 'bld', 'BUILD ' + BUILD); };     // m1848: no '< Titles' -- there is no picker to go back to
     const zapClancy = () => { page(); el.style.backgroundImage = ''; try { localStorage.setItem('mel.game', 'zap'); } catch (e) {}
     add('h1', '', 'ZAP &amp; CLANCY'); add('div', 'sub', 'aliens, a city, and whatever happens next');
     // m785: WHO YOU PLAY, saved and read before the rig loads (`HERO`); m882 (STEER 02:28): on a 3D TURNTABLE (`heroStage`), one at a time
@@ -73559,7 +73559,7 @@ function startGate() {
       card('images/korajin/korajin_title_01.webp', 'KORAJIN', korajin);
       card('images/splash_zap_n_clancy.webp', 'ZAP &amp; CLANCY', zapClancy);
       add('div', 'bld', 'BUILD ' + BUILD); };
-    korajin();     // m15xx: KORAJIN's own repo -- straight to its page, no game picker (Zap & Clancy stay in colinwillow/zap)
+    korajin();     // m1848: KORAJIN's own repo -- straight to its page, no game picker (Zap & Clancy stay in colinwillow/zap)
     el.classList.add('on');
   });
 }
