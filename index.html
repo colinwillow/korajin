@@ -29081,7 +29081,7 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
   // a start deck and an end deck. Catch a rope in the air, PUMP with the left stick, climb with right-pad swipes, jump to let go.
   gantry: { id: 'g_swing', x0: -46, x1: -14, z: -84, h: 14, c: 0xb3322a },
   swings: [ { id: 'sw1', x: -37, len: 9 }, { id: 'sw2', x: -30, len: 9 }, { id: 'sw3', x: -23, len: 9 } ],
-  // m15xx (pass 6): THE LINK -- a ZIPLINE from Tower B's lookout (out of its north gap, 2.2 m over the deck) ~97 m down to the rope swing's
+  // m1858 (pass 6): THE LINK -- a ZIPLINE from Tower B's lookout (out of its north gap, 2.2 m over the deck) ~97 m down to the rope swing's
   // start deck, so one route runs: ground -> A's ladders -> the tightrope -> B -> the zip -> the swings -> the monkey bars -> down
   zips: [ { id: 'zip_b_swing', from: [50, 26.6, -95.6], to: [-43.5, 6.8, -84] } ],     // out of B's NORTH gap: from the south one the cable cut through Tower A's frame (render)
   // m1857 (pass 5): MONKEY BARS -- on from the rope swing's end deck, rungs every `gap` m across a drop at `h`, to a deck at the far end
@@ -29354,7 +29354,7 @@ function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R =
   if (R.rope) gymRopeMake(R.rope);
   for (const W of R.swings || []) vineMake(W);
   if (R.monkey) MBAR.list.push(R.monkey);
-  for (const z of R.zips || []) ZIPS.push(z);     // m15xx (pass 6): into the zipline system (`zipCatch`)
+  for (const z of R.zips || []) ZIPS.push(z);     // m1858 (pass 6): into the zipline system (`zipCatch`)
   boxGrid(); Z.on = { g: R.g, boxes: R.boxes }; const S = GYM.spawn; player.pos.set(S.at[0], S.at[1], S.at[2]); player.vel.set(0, 0, 0); player.faceH = player.heading = S.yaw; cam.az = S.yaw; }
 function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = shipMake(0), g = S.g; scene.add(g);
   bldTris(S.O, S.tris); for (const b of S.O.boxes) BOXES.push(b); boxGrid();

@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## NINJA GYM pass 6 (first half): the zipline that links the towers to the swings (m15xx, NINJAGYM.md)
+## NINJA GYM pass 6 (first half): the zipline that links the towers to the swings (m1858, NINJAGYM.md)
 - `GYM.zips`: a ~97 m line from Tower B's lookout (its north gap, 2.2 m over the 24.4 m deck) down to the rope swing's start deck (6.8 m), a
   red post at each end, into the existing zipline system (`ZIPS` / `zipCatch`: jump into the line, ride it on the katana). One route now runs:
   ground -> Tower A's two ladders -> the tightrope -> Tower B -> the zip -> the three swing ropes -> the monkey bars -> down off their deck.
