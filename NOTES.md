@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## NINJA GYM pass 4: the rope swing (m15xx, NINJAGYM.md)
+*"A rope swing -- you can climb up and down a rope, and actually swing and pump and move yourself around."*
+- **Where:** `GYM.gantry` / `swings` / `swingDecks` -- a red lintel-and-posts gantry 14 m up at z -84, x -46..-14, three ropes 9 m long at
+  x -37 / -30 / -23, a 5 m start deck and end deck either side. KORAJIN > The Wall Park.
+- **The rope (`VINE`, `vineCatch` / `stepVine`):** a pendulum from its top. In the air within `catchR` .75 m of the rope at his hands' height he
+  takes it, his speed carried in; his grip moves on a sphere of radius `r` (how far down he holds) under gravity (verlet, back onto the sphere,
+  `damp` .06). **LEFT STICK pumps:** a push the way he is already swinging adds `pump` 4 m/s^2 -- in time it builds, against it nothing.
+  **RIGHT PAD swipe up / down climbs** `climb` 1.2 m (`vineSwipe`, before the strike). **A tap lets go**: his rope speed plus `pop` 3 m/s up,
+  facing the way he flies. He hangs on the bar's hang clip, tilted along the rope (`vinePose`); the rope is drawn top -> hands -> its end;
+  an empty rope settles back with a little sway (`vineIdle`).
+- Headless: caught (r 5.0); pumping with the swing took the arc from 0..3.9 m to -4.8..+5.0 m (with pump 5.5 -- nearly horizontal, so 4 now);
+  released at 6.9 m/s. Render: the gantry, three ropes, him mid-swing. Next: pass 5, monkey bars. Shipped unverified.
+
 ## ONLINE stage 4: the Duel Pit -- versus with damage, knock-outs and a score (m1855, NETPLAY.md)
 *"Let's do two"* (the online arena), then the rope swing.
 - **THE DUEL PIT** (`DUELPIT` in `SC_DUELPIT`, `duelPitBuild(T)`; KORAJIN > The Duel Pit (online), `?w=forge&zone=duel`): a 26 m sand floor in

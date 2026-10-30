@@ -29076,7 +29076,12 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
   // LADDERS (ground -> mid deck through a hatch, mid -> top through a hatch); B by BRACKETS round a central pillar. The TIGHTROPE runs deck to deck.
   towers: [ { id: 'tw_a', at: [10, -100], h: 24, base: 9, top: 6.4, mid: 12, way: 'ladder' },
             { id: 'tw_b', at: [50, -100], h: 24, base: 9, top: 6.4, mid: 12, way: 'brackets', step: 3 } ],
-  rope: { id: 'rope_ab', from: 'tw_a', to: 'tw_b', sag: 1.1, sway: .9, speed: 2.6, noiseK: 1.35 } };
+  rope: { id: 'rope_ab', from: 'tw_a', to: 'tw_b', sag: 1.1, sway: .9, speed: 2.6, noiseK: 1.35 },
+  // m15xx (pass 4): THE ROPE SWING -- a red gantry (a torii's lintel on two posts) 14 m up, three ropes hanging 9 m from it, over a drop between
+  // a start deck and an end deck. Catch a rope in the air, PUMP with the left stick, climb with right-pad swipes, jump to let go.
+  gantry: { id: 'g_swing', x0: -46, x1: -14, z: -84, h: 14, c: 0xb3322a },
+  swings: [ { id: 'sw1', x: -37, len: 9 }, { id: 'sw2', x: -30, len: 9 }, { id: 'sw3', x: -23, len: 9 } ],
+  swingDecks: [ { id: 'sw_start', box: [-48, -42, 0, 5, -87, -81], c: 0x8a6a48, label: ['ROPE SWING', -45, -78, '#b3322a'] }, { id: 'sw_end', box: [-18, -12, 0, 5, -87, -81], c: 0x8a6a48 } ] };
 // SC_GYM:END
 let _gymArrowTex = null;
 function gymArrowTex() { if (_gymArrowTex) return _gymArrowTex; const cv = document.createElement('canvas'); cv.width = cv.height = 128; const q = cv.getContext('2d');
@@ -29134,7 +29139,14 @@ function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
   // the TIGHTROPE: from the middle of A's +x deck edge to the middle of B's -x deck edge, at deck height (walk off the deck onto it)
   let rope = null; if (T.rope && tops[T.rope.from] && tops[T.rope.to]) { const A = tops[T.rope.from], B2 = tops[T.rope.to], x0 = A.x + A.half, x1 = B2.x - B2.half;
     rope = Object.assign({}, T.rope, { x: (x0 + x1) / 2, z: A.z, yaw: Math.PI / 2, h: A.y, len: x1 - x0 }); }
-  return { g, boxes, ladders, rope }; }
+  const swings = [];
+  if (T.gantry) { const Gn = T.gantry, gm = mat(Gn.c), bar = (x0, x1, y0, y1, z0, z1) => { const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), gm); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = true; g.add(m); };
+    bar(Gn.x0, Gn.x0 + 1.2, 0, Gn.h + 1, Gn.z - .6, Gn.z + .6); bar(Gn.x1 - 1.2, Gn.x1, 0, Gn.h + 1, Gn.z - .6, Gn.z + .6);     // the posts (no collider: you swing past them)
+    bar(Gn.x0 - 1.5, Gn.x1 + 1.5, Gn.h, Gn.h + .7, Gn.z - .5, Gn.z + .5); bar(Gn.x0 - 2.2, Gn.x1 + 2.2, Gn.h + .9, Gn.h + 1.4, Gn.z - .7, Gn.z + .7);     // the lintel, the cap beam above it
+    for (const W of T.swings || []) swings.push({ id: W.id, top: new THREE.Vector3(W.x, Gn.h, Gn.z), len: W.len }); }
+  for (const P of T.swingDecks || []) { const [x0, x1, y0, y1, z0, z1] = P.box, m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(P.c)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; g.add(m);
+    boxes.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id: P.id }); if (P.label) wparkLabel(g, P.label[0], P.label[1], P.label[2], 0, P.label[3]); }
+  return { g, boxes, ladders, rope, swings }; }
 // m1843: ONLINE, STAGE 1 (NETPLAY.md). His Robits relay (colinwillow/robits-server, a ~250-line room relay on Render) carries it -- the server
 // knows nothing about games, so KORAJIN shares it under its own room codes (`KJ-...`). What is sent is NOT inputs or clip names: it is his
 // FINISHED POSE -- the drawn root (position + rotation) and every bone's rotation, quantised to int16 and base64'd, `hz` times a second.
@@ -29262,9 +29274,45 @@ function duelPitBuild(T) { const g = new THREE.Group(), boxes = [], mats = {}, m
 function duelSpawn() { const S = DUELPIT.spawns[(NET.slot || 0) % DUELPIT.spawns.length], p = player; p.pos.set(S[0], S[1], S[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = Math.atan2(-S[0], -S[2]); cam.az = p.faceH; p.hp = HEALTH.max; }
 function duelBuild() { const Z = DUELZ; Z.want = 2; if (Z.on) return; const R = duelPitBuild(DUELPIT); scene.add(R.g); for (const b of R.boxes) BOXES.push(b); boxGrid(); Z.on = { g: R.g, boxes: R.boxes };
   duelSpawn(); if (!NET.on && !NET.autoRoom) setTimeout(() => { const c = prompt('THE DUEL PIT -- a room code to share with the other phone (same code on both):', 'PIT'); if (c) netJoin(c); }, 600); }
+// m15xx (NINJA GYM pass 4): THE ROPE SWING (his: "a rope swing -- climb up and down a rope, actually swing and PUMP and move yourself around").
+// A rope is a pendulum from its top: in the air within `catchR` of it (between its top and its end) he takes it, his speed carried in. His
+// grip point moves on a sphere of radius `r` (how far down the rope he holds) under gravity (verlet, then put back on the sphere); the LEFT
+// STICK pumps -- a push the way he is already swinging adds `pump` m/s^2, so a well-timed thumb builds the arc and a badly timed one does
+// nothing; the RIGHT PAD's swipe up / down climbs `climb` m; a TAP lets go, flying off with the rope's speed plus `pop` up. Drawn: the rope
+// from its top to his hands and on down to its end, bending at his grip; he hangs (the bar's hang clip) tilted along it.
+const VINE = { list: [], catchR: .75, g: 1, pump: 4, damp: .06, climb: 1.2, rMin: 1.6, pop: 3, cool: .45, handY: 1.62, tilt: 1 };
+function vineMake(W) { const m1 = new THREE.Mesh(new THREE.CylinderGeometry(.045, .045, 1, 6), new THREE.MeshStandardMaterial({ color: 0xc9b07a, roughness: 1 })), m2 = m1.clone(); m1.frustumCulled = m2.frustumCulled = false; scene.add(m1, m2);
+  const V = { id: W.id, top: W.top.clone(), len: W.len, m1, m2, P: W.top.clone().add(new THREE.Vector3(0, -W.len, 0)), v: new THREE.Vector3(), idleT: Math.random() * 6 }; VINE.list.push(V); vineDraw(V, V.P); return V; }
+const _vnA = new THREE.Vector3(), _vnB = new THREE.Vector3(), _vnU = new THREE.Vector3(0, 1, 0);
+function vineSeg(m, A, B) { const L = A.distanceTo(B); m.position.copy(A).add(B).multiplyScalar(.5); m.scale.set(1, Math.max(.01, L), 1); _vnA.copy(B).sub(A).normalize(); m.quaternion.setFromUnitVectors(_vnU, _vnA); }
+function vineDraw(V, H) { const d = _vnB.copy(H).sub(V.top), r = d.length() || 1; vineSeg(V.m1, V.top, H); const E = H.clone().addScaledVector(d, (V.len - r) / r); vineSeg(V.m2, H, E); }
+function vineCatch() { const p = player; if (p.vineCool > 0 || p.grounded) return 0;
+  for (const V of VINE.list) { const hy = p.pos.y + VINE.handY, dy = V.top.y - hy; if (dy < VINE.rMin || dy > V.len) continue;
+    const f = (V.top.y - hy) / Math.max(.1, V.top.y - V.P.y), rx = V.top.x + (V.P.x - V.top.x) * f, rz = V.top.z + (V.P.z - V.top.z) * f;     // where the rope is at his hands' height
+    if (Math.hypot(p.pos.x - rx, p.pos.z - rz) > VINE.catchR) continue;
+    p.vine = { V, r: dy, H: new THREE.Vector3(p.pos.x, hy, p.pos.z), Hp: new THREE.Vector3(p.pos.x - p.vel.x / 60, hy - p.vel.y / 60, p.pos.z - p.vel.z / 60) };
+    p.melee = 0; p.roll = 0; p.slam = 0; p.aflip = null; p.jumps = 1; snd('foot', { g: .14, r: .8 }); return 1; } return 0; }
+function stepVine(dt) { const p = player, S = p.vine, V = S.V; dt = Math.min(dt, 1 / 30);
+  if (p.jump) { p.jump = 0; const v = S.H.clone().sub(S.Hp).divideScalar(dt); p.vine = null; p.vineCool = VINE.cool; p.vel.set(v.x, Math.max(v.y, 0) + VINE.pop, v.z); p.grounded = false; p.airT = 0;
+    if (Math.hypot(v.x, v.z) > .5) p.faceH = p.heading = Math.atan2(v.x, v.z); snd('swoosh', { r: 1, g: .5 }); V.P.copy(S.H); V.v.copy(v); return; }
+  const sw = stickWorld(), vel = S.H.clone().sub(S.Hp).divideScalar(dt), acc = new THREE.Vector3(0, -Math.abs(MOVE.g) * VINE.g, 0);
+  if (sw.mag > .3) { const hx = sw.x, hz = sw.z, along = vel.x * hx + vel.z * hz; if (along > -.2) acc.x += hx * VINE.pump * sw.mag, acc.z += hz * VINE.pump * sw.mag; }     // a push WITH the swing builds it
+  const nx = S.H.x + (S.H.x - S.Hp.x) * (1 - VINE.damp * dt) + acc.x * dt * dt, ny = S.H.y + (S.H.y - S.Hp.y) * (1 - VINE.damp * dt) + acc.y * dt * dt, nz = S.H.z + (S.H.z - S.Hp.z) * (1 - VINE.damp * dt) + acc.z * dt * dt;
+  S.Hp.copy(S.H); S.H.set(nx, ny, nz); const d = S.H.clone().sub(V.top), L = d.length() || 1; S.H.copy(V.top).addScaledVector(d, S.r / L);     // back onto the sphere
+  if (S.climb) { S.r = clamp(S.r - S.climb, VINE.rMin, V.len - .3); S.climb = 0; }
+  p.pos.set(S.H.x, S.H.y - VINE.handY, S.H.z); p.vel.copy(S.H).sub(S.Hp).divideScalar(dt); p.grounded = false; p.airT = 0;
+  const hv = Math.hypot(p.vel.x, p.vel.z); if (hv > .6) p.faceH = p.heading = Math.atan2(p.vel.x, p.vel.z);
+  vineDraw(V, S.H); }
+function vineIdle(dt) { for (const V of VINE.list) { if (player.vine && player.vine.V === V) continue;     // an empty rope settles back under its top, swaying a little
+  V.idleT += dt; const tgt = V.top.clone().add(new THREE.Vector3(Math.sin(V.idleT * .8) * .25, -V.len, Math.cos(V.idleT * .6) * .15)); V.P.lerp(tgt, 1 - Math.exp(-dt * 1.2)); vineDraw(V, V.top.clone().lerp(V.P, .5)); } }
+function vineSwipe(dx, dy) { const p = player; if (!p.vine) return 0; if (Math.abs(dy) > Math.abs(dx)) p.vine.climb = (dy < 0 ? 1 : -1) * VINE.climb; return 1; }
+// his body along the rope: tilted so his head points up it, toward its top
+function vinePose() { const p = player, S = p.vine; if (!S || !VINE.tilt) return; const d = _vnA.copy(S.V.top).sub(S.H).normalize(), q = new THREE.Quaternion().setFromUnitVectors(_vnU, d);
+  const pv = S.H; const r = rig.root.position.clone().sub(pv).applyQuaternion(q); rig.root.position.copy(pv).add(r); rig.root.quaternion.premultiply(q); }
 function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R = gymBuild(GYM); scene.add(R.g); for (const b of R.boxes) BOXES.push(b);
   for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; if (L.front) K.fg = { x: L.front[0], z: L.front[1] }; }     // pass 2; m1850: the climbing side stated (the mark rule had put it inside the tower: "there's a ladder but you can't climb it")
   if (R.rope) gymRopeMake(R.rope);
+  for (const W of R.swings || []) vineMake(W);
   boxGrid(); Z.on = { g: R.g, boxes: R.boxes }; const S = GYM.spawn; player.pos.set(S.at[0], S.at[1], S.at[2]); player.vel.set(0, 0, 0); player.faceH = player.heading = S.yaw; cam.az = S.yaw; }
 function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = shipMake(0), g = S.g; scene.add(g);
   bldTris(S.O, S.tris); for (const b of S.O.boxes) BOXES.push(b); boxGrid();
@@ -32227,7 +32275,7 @@ PADS.R = bindStick(padR, stick.R,
   // ...unless someone in reach has something to say: then it is TALK (m277), and the left tap still jumps
   () => { if (aim3Now()) return; /* m1345: 3D AIM owns the whole right pad -- a tap is not a jump */ if (talkTap()) return; if (player.dragon) { if (player.dragon.st === 'sit') dragTapR(); return; } if (dragTap()) return; /* m1614 */ if (pickTap()) return; if (portalTap()) return; if (wingTapR()) return; if (hurdleTap()) return; if (mantleTap()) return; if (wrunTap()) return; player.jump = 1; },     // m1064: a tall face beside / ahead -> wall run     // m1063: pushing into a half block -> hurdle it     // m1039: a ledge in reach -> climb it
   // flick: a SLAM if he is in the air and it went down, otherwise a strike in that direction
-  (dx, dy) => { if (player.dragon) { dragBreath(); return; } /* m1621: his fireball */ if (player.wing || aim3Now()) return; /* m1282: in 3D AIM a fast drag moves the cursor, it never swings */ if (ledgeFlick(dx, dy)) return; /* m1840: off the ledge, by direction */ if (tossQuick(dx, dy)) return; if (boardFlick(dx, dy, 0)) return; if (zipKick(dx, dy)) return; if (wrunSwipe(dx, dy)) return; if (runSwipe(dx, dy)) return; if (!slamGo(dx, dy)) { KATANA.dir = katanaDir(dx, dy); meleeGo(KATANA.dir === 'down' ? player.faceH : flickH(dx, dy)); } },     // m1054: DOWN is not a direction -- the strike goes where he faces (a slot kept for a grab / throw / special)     // m1014: the right pad is MELEE, by direction (m1012's down-slide is off it)
+  (dx, dy) => { if (player.dragon) { dragBreath(); return; } /* m1621: his fireball */ if (player.wing || aim3Now()) return; /* m1282: in 3D AIM a fast drag moves the cursor, it never swings */ if (ledgeFlick(dx, dy)) return; /* m1840: off the ledge, by direction */ if (vineSwipe(dx, dy)) return; /* m15xx: on the swing rope, up / down climbs */ if (tossQuick(dx, dy)) return; if (boardFlick(dx, dy, 0)) return; if (zipKick(dx, dy)) return; if (wrunSwipe(dx, dy)) return; if (runSwipe(dx, dy)) return; if (!slamGo(dx, dy)) { KATANA.dir = katanaDir(dx, dy); meleeGo(KATANA.dir === 'down' ? player.faceH : flickH(dx, dy)); } },     // m1054: DOWN is not a direction -- the strike goes where he faces (a slot kept for a grab / throw / special)     // m1014: the right pad is MELEE, by direction (m1012's down-slide is off it)
   null,
   // THE RELEASE IS THE SHOT, so this must NOT clear `p.aim` -- `stepKit` sees the pad is no
   // longer held and fires on that edge. Clearing it here would eat every shot in the game.
@@ -34303,6 +34351,9 @@ function stepPlayer(dt) {
   if (p.barCool > 0) p.barCool = Math.max(0, p.barCool - dt);     // m1034: THE HIGH BAR owns the body like the ledge
   if (!p.zip && !p.grounded && ZIPS.length && !p.rope && !p.bar && !p.knock && p.vel.y < 6) zipCatch();     // m1168
   if (p.zip) { stepZip(dt); if (p.zip) return; }
+  if (p.vineCool > 0) p.vineCool = Math.max(0, p.vineCool - dt);
+  if (p.vine) { stepVine(dt); return; }     // m15xx: on the swing rope
+  if (VINE.list.length && !p.grounded && !p.ledge && vineCatch()) { stepVine(dt); return; }
   if (p.rope) { stepRope(dt); if (p.rope) return; }     // m1129: the grappling hook owns the body while he swings
   else if (GRING.line && GRING.line.visible) GRING.line.visible = false;
   if (GRING.list.length || GRING.hl) ropeHint();
@@ -35909,6 +35960,7 @@ function rigAnim(dt) {
   }
   if (p.bar) { t[hbarClip()] = 1; setWeights(t, dt); return; }
   if (p.zip) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1168: hanging from the zipline
+  if (p.vine) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m15xx: on the swing rope
   if (p.rope) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1129: hanging on the rope
   if (p.hook) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1063: reaching for the bar
   if (p.wrun && p.wrun.kind === 'slide') { const nm = rig.actions[LEDGE.clips.hang] ? LEDGE.clips.hang : CLIPS.air; t[nm] = 1; setWeights(t, dt); return; }     // m1372: clinging to the face
@@ -68609,6 +68661,7 @@ function frameBody() {
     idleFixPose();                     // m1820: the Dwarf idle's arms and wrists corrected
     runToePose();                      // m1853: no toe flick on the run's back stride
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
+    vinePose();                        // m15xx: along the swing rope
     // **AFTER THE ROOT IS PLACED, NOT ONLY AFTER THE MIXER.** The pin is a bone's WORLD
     // position and the speed cap is measured against how far it moved, so solving before the
     // root is written measures last frame's travel -- which at a knock-down's 12 m/s is most
@@ -68618,7 +68671,8 @@ function frameBody() {
     dragRiderPose();                   // m1619: in the saddle, pitched and banked with his dragon (after every pose that writes the root)
     rig.root.updateMatrixWorld(true); springsStep(dt);     // m1058: hair / cape chains, on the FINAL root (after every pose above)
     dollStep(dt);
-    if (GROPE.list.length) gymRopeStep(dt);     // m1850: the tightrope takes his weight
+    if (GROPE.list.length) gymRopeStep(dt);
+    if (VINE.list.length) vineIdle(dt);     // m1850: the tightrope takes his weight
     try { netStep(dt); } catch (e) { NET.err = e.message; }     // m1843: ONLINE -- send his finished pose, draw the others' (after every pose pass and the springs)
     _pt = pT('rig', _pt);
   }
