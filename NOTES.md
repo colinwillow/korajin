@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- STYLES: brick / MEGALITH / ANCIENT TECH, and floating fragments
+
+His: *"something other than brick -- brick is good for the Japanese towers with the red ... retro stone temple, the Zelda Divine Beast temple
+vibe, megalithic architecture, Egyptian pyramids, mixed with cyberpunk -- rope rails, ledges, futuristic, FLOATING; ancient and futurist at the
+same time."*
+- `P.p.style` (STYLE button on a selected piece; default per kind, `K.style`): BRICK = the m1886 masonry (towers); MEGALITH = `lbMegaTex`
+  (three courses of 150-360 px slabs, deep seams, a lit chisel edge, grain; its own sandstone, the piece colour a 20% tint; 3.2 m tile) -- walls,
+  L-walls, chimneys, platforms, blocks; ANCIENT TECH = `lbTechTex` (basalt with right-angled channels, nodes and rings) + the same lines as an
+  EMISSIVE map, glowing cyan (3 m tile) -- the bowl and the loop. `lbPiece` maps the stone role to the style (`role()` / `SR`), so the cap's
+  plinth, wood and lacquer keep theirs.
+- FLOATING: every megalith / tech piece gets 3-5 hovering stone blocks above its top, each with a glow line, bobbing (`userData.bob`, run by
+  `lbFlutter`), seeded from the piece id. Headless render checked (wide, a megalith wall close, the tech bowl).
+
 ## m1893 -- the bow's DOWN-AIM finally shoots down (two bugs under m1854)
 
 His: *"aiming down with the bow and arrow with the right stick never panned out -- it looks like it tries, but the arrow never goes down."*

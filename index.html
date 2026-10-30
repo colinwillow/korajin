@@ -68899,12 +68899,12 @@ function posedFrame() { try { renderer.render(scene, camera); } catch (e) {} }
 // by `lbPiece(P)` -- a pure function of its entry: its meshes, its colliders (AABBs; turns are quarter turns, so they stay exact) and its ports.
 // SC_LEVELB:START
 const LB = { on: 0, KINDS: {
-    tower: { p: { base: 6, h: 16 }, c: 0x8a8f99, label: 'TOWER' },
+    tower: { p: { base: 6, h: 16 }, c: 0x8a8f99, label: 'TOWER', style: 'brick' },
     wall: { p: { len: 16, t: .6, h: 8 }, c: 0x4a8fd8, label: 'RUN WALL' },
     chimney: { p: { gap: 3.2, len: 6, h: 16 }, c: 0x3fae6a, label: 'CHIMNEY' },
     lwall: { p: { len: 10, r: 6, h: 8 }, c: 0x9b5de5, label: 'L-WALL' },
-    qbowl: { p: { r: 5, w: 6, h: 12 }, c: 0x00a6a6, label: 'QUARTER BOWL' },
-    loop: { p: { r: 5, w: 3, off: 3.4 }, c: 0xf2c94c, label: 'LOOP' },     /* m1889: run in at speed, stick held -- round the loop, upside down at the top */     /* m1887: floor curving up into a wall -- run up it into the wall run */     /* m1886: two legs and a curved quarter -- the run carries round the bend */     /* m1882: two facing walls -- up only by wall-jumping between them */
+    qbowl: { p: { r: 5, w: 6, h: 12 }, c: 0x00a6a6, label: 'QUARTER BOWL', style: 'tech' },
+    loop: { p: { r: 5, w: 3, off: 3.4 }, c: 0xf2c94c, label: 'LOOP', style: 'tech' },     /* m1889: run in at speed, stick held -- round the loop, upside down at the top */     /* m1887: floor curving up into a wall -- run up it into the wall run */     /* m1886: two legs and a curved quarter -- the run carries round the bend */     /* m1882: two facing walls -- up only by wall-jumping between them */
     monkey: { p: { len: 10, h: 5 }, c: 0x5a3a24, label: 'MONKEY BARS' },
     swing: { p: { h: 12, len: 9 }, c: 0xb3322a, label: 'SWING ROPE' },     /* m1884: a gantry and the gym's swing rope (VINE) */
     pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },     /* m1884: step on it, launched up at `v` m/s */
@@ -68928,8 +68928,32 @@ function lbStoneTex() { if (_lbStone) return _lbStone; const cv = document.creat
       for (let k = 0; k < 60; k++) { const g = v - 20 + rnd() * 30 | 0; q.fillStyle = 'rgba(' + g + ',' + g + ',' + g + ',.35)'; q.fillRect(x + 3 + rnd() * 118, y + 3 + rnd() * 54, 3 + rnd() * 8, 2 + rnd() * 4); }
       q.fillStyle = 'rgba(255,255,255,.18)'; q.fillRect(x + 3, y + 3, 122, 3); } }
   _lbStone = new THREE.CanvasTexture(cv); _lbStone.wrapS = _lbStone.wrapT = THREE.RepeatWrapping; _lbStone.colorSpace = THREE.SRGBColorSpace; _lbStone.anisotropy = 4; return _lbStone; }
+// m1894: MEGALITH -- huge sandstone slabs (courses of varied widths, deep seams, a lit chisel edge); its own colour, the piece's a 20% tint
+let _lbMega = null, _lbTech = null, _lbTechE = null;
+function lbMegaTex() { if (_lbMega) return _lbMega; const cv = document.createElement('canvas'); cv.width = cv.height = 512; const q = cv.getContext('2d'); let sd = 11; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  q.fillStyle = '#3b3328'; q.fillRect(0, 0, 512, 512);
+  for (let row = 0, y = 0; row < 3; row++) { const h = row === 1 ? 200 : 156; let x = -r() * 120; while (x < 512) { const w = 150 + r() * 210, v = 175 + r() * 40 | 0;
+      q.fillStyle = 'rgb(' + v + ',' + (v - 14) + ',' + (v - 38) + ')'; q.fillRect(x + 6, y + 6, w - 12, h - 12);
+      for (let k = 0; k < 140; k++) { const g = v - 30 + r() * 45 | 0; q.fillStyle = 'rgba(' + g + ',' + (g - 12) + ',' + (g - 30) + ',.28)'; q.fillRect(x + 6 + r() * (w - 20), y + 6 + r() * (h - 20), 4 + r() * 18, 2 + r() * 6); }
+      q.fillStyle = 'rgba(255,240,210,.22)'; q.fillRect(x + 6, y + 6, w - 12, 5); q.fillRect(x + 6, y + 6, 5, h - 12); q.fillStyle = 'rgba(0,0,0,.25)'; q.fillRect(x + 6, y + h - 11, w - 12, 5);
+      x += w; } y += h; }
+  _lbMega = new THREE.CanvasTexture(cv); _lbMega.wrapS = _lbMega.wrapT = THREE.RepeatWrapping; _lbMega.colorSpace = THREE.SRGBColorSpace; _lbMega.anisotropy = 4; return _lbMega; }
+// ANCIENT TECH -- dark basalt carved with right-angled channels, circles and nodes; the same lines as an EMISSIVE map, so they glow cyan
+function lbTechTex(glow) { if (glow ? _lbTechE : _lbTech) return glow ? _lbTechE : _lbTech; const cv = document.createElement('canvas'); cv.width = cv.height = 512; const q = cv.getContext('2d'); let sd = 23; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  q.fillStyle = glow ? '#000' : '#2a2d33'; q.fillRect(0, 0, 512, 512);
+  if (!glow) for (let k = 0; k < 900; k++) { const g = 34 + r() * 22 | 0; q.fillStyle = 'rgba(' + g + ',' + (g + 2) + ',' + (g + 6) + ',.5)'; q.fillRect(r() * 512, r() * 512, 2 + r() * 10, 2 + r() * 5); }
+  if (!glow) { q.strokeStyle = 'rgba(0,0,0,.45)'; q.lineWidth = 6; for (let i = 0; i <= 4; i++) { q.beginPath(); q.moveTo(0, i * 128); q.lineTo(512, i * 128); q.moveTo(i * 128, 0); q.lineTo(i * 128, 512); q.stroke(); } }
+  q.strokeStyle = glow ? '#7ff6ff' : '#1d6f7a'; q.lineWidth = glow ? 4 : 6; q.lineCap = 'square';
+  sd = 77; for (let k = 0; k < 9; k++) { let x = (r() * 8 | 0) * 64 + 32, y = (r() * 8 | 0) * 64 + 32; q.beginPath(); q.moveTo(x, y); for (let j = 0; j < 5; j++) { if (r() < .5) x += ((r() * 3 | 0) - 1) * 64; else y += ((r() * 3 | 0) - 1) * 64; q.lineTo(x, y); } q.stroke(); q.beginPath(); q.arc(x, y, 9, 0, 7); q.stroke(); }
+  for (const [cx, cy, rr] of [[128, 128, 46], [384, 384, 38]]) { q.beginPath(); q.arc(cx, cy, rr, 0, 7); q.stroke(); q.beginPath(); q.arc(cx, cy, rr * .45, 0, 7); q.stroke(); }
+  const t = new THREE.CanvasTexture(cv); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; if (glow) _lbTechE = t; else _lbTech = t; return t; }
 function lbRole(c) { return c === 0x6b5038 || c === 0x8a6a3a || c === 0xa0763c ? 'wood' : c === 0xd9a441 || c === 0x2a2f36 || c === 0x39e07a ? 'plain' : 'stone'; }
 function lbMat(c, ghost, role) { const k = c + (ghost ? 'g' : '') + (role || ''); if (_lvM[k]) return _lvM[k];
+  const dbl = role && role.endsWith('D'), r0 = dbl ? role.slice(0, -1) : role;
+  if (r0 === 'mega' || r0 === 'tech') { const col = r0 === 'mega' ? new THREE.Color(0xffffff).lerp(new THREE.Color(c), .2) : new THREE.Color(0xffffff).lerp(new THREE.Color(c), .12);
+    return (_lvM[k] = new THREE.MeshStandardMaterial({ color: col, roughness: r0 === 'mega' ? .95 : .55, metalness: r0 === 'tech' ? .15 : 0, map: r0 === 'mega' ? lbMegaTex() : lbTechTex(0), emissive: r0 === 'tech' ? 0xffffff : 0x000000, emissiveMap: r0 === 'tech' ? lbTechTex(1) : null, emissiveIntensity: r0 === 'tech' ? .9 : 0,
+      side: dbl ? THREE.DoubleSide : THREE.FrontSide, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
+  if (dbl) role = r0;
   const col = new THREE.Color(c); if (role === 'stone') col.lerp(new THREE.Color(0xffffff), .35);
   return (_lvM[k] = new THREE.MeshStandardMaterial({ side: role === 'roofd' ? THREE.DoubleSide : THREE.FrontSide, color: col, roughness: role === 'lacq' ? .35 : .85, metalness: role === 'lacq' ? .1 : 0, map: role === 'stone' ? lbStoneTex() : null, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
 function lbHash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 100000) / 100000; }
@@ -68942,7 +68966,7 @@ function lbBannerMat() { if (_lvM.banner) return _lvM.banner; const cv = documen
   q.strokeStyle = '#f2ead8'; q.lineWidth = 6; for (let i = 0; i < 4; i++) { const y = 240 + i * 62; q.beginPath(); q.moveTo(40, y); q.lineTo(88, y + 8); q.moveTo(64, y - 10); q.lineTo(60, y + 30); q.stroke(); }
   const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return (_lvM.banner = new THREE.MeshStandardMaterial({ map: t, side: THREE.DoubleSide, roughness: .9 })); }
 // the banners sway (a few verts, a sine) -- once per frame from the post chain
-function lbFlutter(dt) { if (!LB.flutter || !LB.flutter.size) return; for (const m of LB.flutter) { if (!m.parent) { LB.flutter.delete(m); continue; } const U = m.userData.banner; U.t += dt;
+function lbFlutter(dt) { if (!LB.flutter || !LB.flutter.size) return; for (const m of LB.flutter) { if (!m.parent) { LB.flutter.delete(m); continue; } if (m.userData.bob) { const B = m.userData.bob; B.t += dt; m.position.y = B.y0 + Math.sin(B.t * B.w) * B.a; continue; } const U = m.userData.banner; U.t += dt;
     const P = m.geometry.attributes.position; if (!U.y0) { U.y0 = []; for (let i = 0; i < P.count; i++) U.y0.push(P.getY(i)); } const top = Math.max(...U.y0);
     for (let i = 0; i < P.count; i++) { const k = (top - U.y0[i]) / (top * 2 || 1); P.setZ(i, Math.sin(U.t * 1.7 + U.y0[i] * .9) * .16 * k); } P.needsUpdate = true; } }
 function lbLanternMat() { return _lvM.lantern || (_lvM.lantern = new THREE.MeshStandardMaterial({ color: 0x3a1a08, emissive: 0xffa040, emissiveIntensity: 1.6, roughness: .6 })); }
@@ -68950,10 +68974,10 @@ function lbGlowMat() { return _lvM.glow || (_lvM.glow = new THREE.MeshStandardMa
 function lbArrowMat() { return _lvM.arrow || (_lvM.arrow = new THREE.MeshBasicMaterial({ map: gymArrowTex(), transparent: true, depthWrite: false, opacity: .9, polygonOffset: true, polygonOffsetFactor: -2 })); }
 function lbArrowGeo() { return _lvM.arrowG || (_lvM.arrowG = new THREE.PlaneGeometry(1.8, 1.8)); }
 // a box whose UVs are in METRES / 2 (one masonry tile = 2 m x 2 m of four courses), per face
-function lbBoxGeo(w, h, d, role) { const G = new THREE.BoxGeometry(w, h, d); if (role !== 'stone') return G; const uv = G.attributes.uv, dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
-  for (let f = 0; f < 6; f++) for (let k = 0; k < 4; k++) { const i = f * 4 + k; uv.setXY(i, uv.getX(i) * dims[f][0] / 2, uv.getY(i) * dims[f][1] / 2); } return G; }
+function lbBoxGeo(w, h, d, role) { const G = new THREE.BoxGeometry(w, h, d); if (role !== 'stone' && role !== 'mega' && role !== 'tech') return G; const T2 = role === 'mega' ? 3.2 : role === 'tech' ? 3 : 2; const uv = G.attributes.uv, dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+  for (let f = 0; f < 6; f++) for (let k = 0; k < 4; k++) { const i = f * 4 + k; uv.setXY(i, uv.getX(i) * dims[f][0] / T2, uv.getY(i) * dims[f][1] / T2); } return G; }     // m1894: one tile = `T2` m (brick 2, megalith 3.2, tech 3)
 // one piece: local boxes [x0, x1, y0, y1, z0, z1] around its own origin (y = its base), turned by `yaw` quarter turns, placed at `at`
-function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [], X = [], OB = [], TR = [];     // TR: walkable triangles in the piece's frame (x, y, z) x 3     // OB: TURNED boxes { c, cx, cz, a (its long axis angle), hx, hz, y0, y1 } in the piece's frame     // X: the EXTRAS -- things that are a system, not a box (bars, ladders, monkey bars), as data in the piece's own frame
+function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [], X = [], OB = [], TR = [], ST = q.style || K.style || 'mega', SR = { brick: 'stone', mega: 'mega', tech: 'tech' }[ST] || 'stone', role = c => { const r = lbRole(c); return r === 'stone' ? SR : r; };     // m1894: STYLE -- brick / megalith / ancient tech     // TR: walkable triangles in the piece's frame (x, y, z) x 3     // OB: TURNED boxes { c, cx, cz, a (its long axis angle), hx, hz, y0, y1 } in the piece's frame     // X: the EXTRAS -- things that are a system, not a box (bars, ladders, monkey bars), as data in the piece's own frame
   const add = (c, x0, x1, y0, y1, z0, z1) => L.push({ c, b: [x0, x1, y0, y1, z0, z1] });
   if (P.kind === 'tower') { const hb = q.base / 2, dh = hb + .6, H = q.h; add(K.c, -hb, hb, 0, H - .4, -hb, hb); add(0x6b5038, -dh, dh, H - .4, H, -dh, dh);
     X.push({ type: 'trim', hb, dh, H }); for (let y = 6; y < H - 2; y += 6) X.push({ type: 'band', hb, y });     // m1886: lacquer, glow and masonry bands
@@ -68989,13 +69013,14 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     X.push({ type: 'monkey', len: q.len, h: q.h, w, n, gp }); }
   else if (P.kind === 'platform') add(K.c, -q.w / 2, q.w / 2, -.4, 0, -q.d / 2, q.d / 2);
   else add(K.c, -q.s / 2, q.s / 2, 0, q.s, -q.s / 2, q.s / 2);
+  if (ST !== 'brick' && P.kind !== 'pad' && P.kind !== 'swing' && P.kind !== 'monkey') { let top = 0, ext = 1; for (const { b } of L) { top = Math.max(top, b[3]); ext = Math.max(ext, Math.abs(b[0]), Math.abs(b[1]), Math.abs(b[4]), Math.abs(b[5])); } for (const O of OB) top = Math.max(top, O.y1); if (P.kind === 'loop') { top = q.r * 2; ext = q.r; } X.push({ type: 'float', top, ext }); }     // m1894: hovering fragments
   const yw = ((P.yaw || 0) % 4 + 4) % 4, rx = (x, z) => yw === 0 ? [x, z] : yw === 1 ? [z, -x] : yw === 2 ? [-x, -z] : [-z, x], [ax, ay, az] = P.at;
   const g = new THREE.Group(); g.userData.pid = P.id; const boxes = [];
   for (const { c, b } of L) { const a = rx(b[0], b[4]), d = rx(b[1], b[5]), x0 = Math.min(a[0], d[0]) + ax, x1 = Math.max(a[0], d[0]) + ax, z0 = Math.min(a[1], d[1]) + az, z1 = Math.max(a[1], d[1]) + az;
-    if (c !== null) { const m = new THREE.Mesh(lbBoxGeo(x1 - x0, b[3] - b[2], z1 - z0, lbRole(c)), lbMat(c, ghost, lbRole(c))); m.position.set((x0 + x1) / 2, ay + (b[2] + b[3]) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m); }
+    if (c !== null) { const m = new THREE.Mesh(lbBoxGeo(x1 - x0, b[3] - b[2], z1 - z0, role(c)), lbMat(c, ghost, role(c))); m.position.set((x0 + x1) / 2, ay + (b[2] + b[3]) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m); }
     boxes.push({ minx: x0, maxx: x1, miny: ay + b[2], maxy: ay + b[3], minz: z0, maxz: z1, id: P.id }); }
   for (const O of OB) { const c0 = rx(O.cx, O.cz), u = rx(Math.cos(O.a), Math.sin(O.a)), cx = c0[0] + ax, cz = c0[1] + az, ex = Math.abs(u[0]) * O.hx + Math.abs(u[1]) * O.hz, ez = Math.abs(u[1]) * O.hx + Math.abs(u[0]) * O.hz;
-    const m = new THREE.Mesh(lbBoxGeo(O.hx * 2, O.y1 - O.y0, O.hz * 2, 'stone'), lbMat(O.c, ghost, 'stone')); m.position.set(cx, ay + (O.y0 + O.y1) / 2, cz); m.rotation.y = -Math.atan2(u[1], u[0]); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
+    const m = new THREE.Mesh(lbBoxGeo(O.hx * 2, O.y1 - O.y0, O.hz * 2, SR), lbMat(O.c, ghost, SR)); m.position.set(cx, ay + (O.y0 + O.y1) / 2, cz); m.rotation.y = -Math.atan2(u[1], u[0]); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
     boxes.push({ cs: u[0], sn: u[1], hx: O.hx, hz: O.hz, cx, cz, minx: cx - ex, maxx: cx + ex, miny: ay + O.y0, maxy: ay + O.y1, minz: cz - ez, maxz: cz + ez, id: P.id }); }
   for (const pt of ports) { const r = rx(pt.at[0], pt.at[2]); pt.w = [r[0] + ax, ay + pt.at[1], r[1] + az]; pt.key = pt.side; pt.deck = ay + q.h; }     // `key` is the piece's own N/E/S/W (unturned); `deck` the floor height there
   // the extras, into the world frame (turned and placed), with a light editor look; `lbSystems` makes them real in play
@@ -69011,10 +69036,15 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     if (E.type === 'bowlSkin') { const N = 24, pos = [], uv = [], idx = []; for (let i = 0; i <= N; i++) { const th = i / N * Math.PI / 2, z = -E.R * Math.sin(th) + .02 * Math.sin(th), y = E.R * (1 - Math.cos(th)) + .02 * Math.cos(th);
         for (const x of [-E.W, E.W]) { const w = rx(x, z); pos.push(w[0] + ax, ay + y, w[1] + az); uv.push(x / 2, th * E.R / 2); } if (i) { const k = i * 2; idx.push(k - 2, k, k - 1, k - 1, k, k + 1); } }
       const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); G.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); G.setIndex(idx); G.computeVertexNormals();
-      const m = new THREE.Mesh(G, lbMat(K.c, ghost, 'stone')); m.material.side = THREE.DoubleSide; m.receiveShadow = true; m.userData.pid = P.id; g.add(m); continue; }
+      const m = new THREE.Mesh(G, lbMat(K.c, ghost, SR + 'D')); m.receiveShadow = true; m.userData.pid = P.id; g.add(m); continue; }
     if (E.type === 'upArrows2') { const am = lbArrowMat(); for (const x of [-E.W / 2, E.W / 2]) for (let y = E.R + 1.5; y < E.h - .8; y += 3) { const w = rx(x, -E.R + .05), n2 = rx(0, 1), m = look(lbArrowGeo(), am, w[0] + ax, ay + y, w[1] + az); m.lookAt(m.position.x + n2[0], m.position.y, m.position.z + n2[1]); }
       for (const x of [-E.W / 2, E.W / 2]) { const th = .55, w = rx(x, -E.R * Math.sin(th) + .1), m = look(lbArrowGeo(), am, w[0] + ax, ay + E.R * (1 - Math.cos(th)) + .1, w[1] + az), n2 = rx(0, Math.cos(th)); m.lookAt(m.position.x + n2[0], m.position.y + Math.sin(th), m.position.z + n2[1]); } continue; }
     if (E.type === 'trim') { const tm = lbMat(0xb3322a, ghost, 'lacq'), gm = lbGlowMat(); for (const [w, d, y, hh, mm] of [[E.dh * 2 + .2, E.dh * 2 + .2, E.H - .5, .22, tm], [E.hb * 2 + .1, E.hb * 2 + .1, E.H - .75, .12, gm]]) look(new THREE.BoxGeometry(w, hh, d), mm, ax, ay + y, az); continue; }
+    if (E.type === 'float') { let sd = lbHash(P.id + 'f') * 1e6 | 1; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647, n = 3 + (r() * 3 | 0);
+      for (let i = 0; i < n; i++) { const s2 = .5 + r() * 1.2, c = rx((r() - .5) * E.ext * 1.6, (r() - .5) * E.ext * 1.6), m = look(lbBoxGeo(s2 * 1.4, s2, s2, SR), lbMat(K.c, ghost, SR), c[0] + ax, ay + E.top + 1.5 + r() * 3.5, c[1] + az, r() * 6);
+        m.rotation.x = (r() - .5) * .5; m.rotation.z = (r() - .5) * .5; m.userData.bob = { y0: m.position.y, t: r() * 6, a: .25 + r() * .3, w: .5 + r() * .6 }; (LB.flutter || (LB.flutter = new Set())).add(m);
+        const gl = look(new THREE.BoxGeometry(s2 * 1.42, .05, s2 * 1.02), lbGlowMat(), m.position.x, m.position.y - s2 * .3, m.position.z, m.rotation.y); gl.userData.bob = Object.assign({}, m.userData.bob, { y0: gl.position.y }); LB.flutter.add(gl); }
+      continue; }
     if (E.type === 'panels') { const gm = lbGlowMat(); for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) { const c = rx(sx * (E.hb + .02), sz * (E.hb + .02)); look(new THREE.BoxGeometry(.09, E.H - 1.2, .09), gm, c[0] + ax, ay + (E.H - .4) / 2, c[1] + az); }
       look(new THREE.BoxGeometry(E.hb * 2 + .06, .06, E.hb * 2 + .06), gm, ax, ay + 2.4, az); continue; }
     if (E.type === 'banner') { const L2 = Math.min(5, E.H - 2), c = rx(E.dh - .05, 0), n2 = rx(1, 0), m = look(new THREE.PlaneGeometry(1.1, L2, 1, 6), lbBannerMat(), c[0] + ax + n2[0] * .06, ay + E.H - .45 - L2 / 2, c[1] + az + n2[1] * .06);
@@ -69042,7 +69072,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
       const N = 72, pos = [], uv = [], idx = [], edge = [], P2 = (ph, u) => { const lx2 = E.off * ph / (Math.PI * 2) - E.off / 2 + u, y = E.R - E.R * Math.cos(ph), lz2 = E.R * Math.sin(ph); return [ax + l[0] * lx2 + d[0] * lz2, ay + y, az + l[1] * lx2 + d[1] * lz2]; };
       for (let i = 0; i <= N; i++) { const ph = i / N * Math.PI * 2; for (const u of [-E.w / 2, E.w / 2]) { pos.push(...P2(ph, u)); uv.push(u / 2, ph * E.R / 2); } if (i) { const k = i * 2; idx.push(k - 2, k - 1, k, k - 1, k + 1, k); } }
       const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); G.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); G.setIndex(idx); G.computeVertexNormals();
-      const m = new THREE.Mesh(G, lbMat(K.c, ghost, 'stone')); m.material.side = THREE.DoubleSide; m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
+      const m = new THREE.Mesh(G, lbMat(K.c, ghost, SR + 'D')); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
       for (const u of [-E.w / 2 - .1, E.w / 2 + .1]) for (let i = 0; i < N; i++) { const a = new THREE.Vector3(...P2(i / N * Math.PI * 2, u)), b = new THREE.Vector3(...P2((i + 1) / N * Math.PI * 2, u)), r2 = new THREE.Mesh(new THREE.BoxGeometry(.14, .3, a.distanceTo(b) + .02), lbMat(0xb3322a, ghost, 'lacq')); r2.position.copy(a).lerp(b, .5); r2.lookAt(b); r2.userData.pid = P.id; g.add(r2); }
       for (let i = 1; i < 8; i++) { const ph = i / 8 * Math.PI * 2, c = new THREE.Vector3(...P2(ph, 0)), ce = new THREE.Vector3(...P2(ph, 0)); ce.y = ay + E.R; const nrm = ce.sub(c).normalize(), tg = new THREE.Vector3(...P2(ph + .01, 0)).sub(c).normalize(), a2 = new THREE.Mesh(lbArrowGeo(), lbArrowMat()); a2.position.copy(c).addScaledVector(nrm, .05); a2.up.copy(tg); a2.lookAt(a2.position.clone().add(nrm)); a2.userData.pid = P.id; g.add(a2); }
       continue; }
@@ -69155,7 +69185,7 @@ function lbBotPaint() { const B = LB.bot, P = LB.sel && LB.cur.pieces.find(q => 
   if (!P) { B.innerHTML = '<div style="margin:0 2px 4px">ADD (it appears in front of the camera) -- tap a piece to edit it, tap a tower port ball to change it -- LINK two ports:</div>' + Object.entries(LB.KINDS).map(([k, K]) => btn('add', K.label, k)).join('') + '<br>' + Object.entries(LB.LINKS).map(([k, X]) => btn('link', 'LINK ' + X.label, k)).join(''); return; }
   const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p);
   B.innerHTML = '<div style="margin:0 2px 4px">' + K.label + ' ' + P.id + ' -- ' + Object.entries(q).map(([k, v]) => k + ' ' + (+v).toFixed(1)).join(', ') + '  @ y ' + P.at[1].toFixed(1) + '</div>'
-    + (P.kind === 'tower' ? btn('roof', P.p && P.p.roof === 0 ? 'ROOF: OFF' : 'ROOF: ON') : '') + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
+    + btn('style', 'STYLE: ' + ({ brick: 'BRICK', mega: 'MEGALITH', tech: 'ANCIENT TECH' })[(P.p && P.p.style) || LB.KINDS[P.kind].style || 'mega']) + (P.kind === 'tower' ? btn('roof', P.p && P.p.roof === 0 ? 'ROOF: OFF' : 'ROOF: ON') : '') + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
 function lbSelect(id) { LB.sel = id || null; if (id) LB.selLink = null; lbLive(LB.sel); const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel);
   if (LB.tc) { LB.tc.detach(); if (P) { const g = LB.live.g.children.find(c => c.userData.pid === P.id); if (g) { LB.anchor.position.set(P.at[0], P.at[1], P.at[2]); LB.anchor.updateMatrixWorld(true); LB.tc.attach(LB.anchor); LB.drag0 = P.at.slice(); } } }
   lbBotPaint(); }
@@ -69182,6 +69212,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
   else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
   else if (a === 'roof') P.p = Object.assign({}, P.p, { roof: P.p && P.p.roof === 0 ? 1 : 0 });
+  else if (a === 'style') { const cur = (P.p && P.p.style) || LB.KINDS[P.kind].style || 'mega'; P.p = Object.assign({}, P.p, { style: ({ brick: 'mega', mega: 'tech', tech: 'brick' })[cur] }); }     // m1894
   else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'lwall' || P.kind === 'qbowl' || P.kind === 'loop' ? 'r' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
