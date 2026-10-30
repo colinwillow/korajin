@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LEVEL BUILDER 3d: the QUARTER BOWL (run up a curve into the wall run)
+
+- `qbowl` (radius `r` -- SIZE, width `w`, wall `h`): profile p(th) = (-R sin th, R(1 - cos th)). th 0-50 deg: walkable TRIANGLES (TRI keeps up to
+  ~60 deg; checked: ground 2 m in reads 0.42, the curve's own value); 50-90: COLLIDER-ONLY steps behind the curve (`add(null, ...)` = no mesh --
+  drawn, their stairs showed through the curved skin); the wall above, two cheeks; a smooth curved skin mesh; chevrons up the face.
+- THE BOWL THROW (`lbBowlStep`, `BOWL`): MEASURED -- the controller glues him to walkable ground and stalls him at ~40 deg (vy 0 all the way up);
+  thrown along the tangent at a run (7.5 m/s) real physics under g 20 lifts him only 1.4 m. So on the curve past `at` (.5 rad), moving into it
+  at `min` 3.5 m/s or more, his speed goes up the tangent at `ang` 62 deg with vy BOOSTED to clear the bowl's own height + `extra` 1.6 m -- the
+  Sonic cheat. Headless: thrown at 14 m/s, the wall run caught the face at 5 m (up), ran up and took the lip at the 12 m top.
+
 ## m1886 -- LEVEL BUILDER 3c: the L-WALL (the run turns round a curve) + LOOK pass 1 (masonry, lacquer, glow, Sonic chevrons)
 
 His: *"more stylized -- Sonic, where the ramps have little arrows showing you can go up there, mixed with Japanese architecture, futuristic retro,
