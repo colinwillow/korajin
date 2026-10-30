@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LEVEL BUILDER 3b: sky bridge, rope bridge, swing rope, bounce pad
+
+- SKY BRIDGE link: a covered walkway -- floor, roof, side walls with window gaps (posts every 2.4 m), drawn in a group yawed along the link and
+  pitched to its slope; level decks -> four TURNED boxes (floor, two walls, roof); different heights -> the floor as a ramp (two triangles).
+- ROPE BRIDGE link: the deck SAGS on a parabola (`max(.6, .07 x span)` at the middle), its floor walkable triangles, a slat per segment, rope
+  rails a metre up. Any number of them (the old ROPEB is a singleton); it does not sway or bounce under him yet.
+- SWING ROPE piece: two posts and a beam, the gym's swing (`vineMake`) from the beam; SIZE = rope length. BOUNCE PAD piece: standing on its top
+  launches him straight up at `v` m/s (default 18; SIZE +/- 1) -- `lbPadStep`, before the frame's aim step; `LB.pads` filled by `lbSystems`.
+- Headless: sky bridge 4 boxes, floor/ground 16.00; rope bridge over 16.8 m -> middle ground 14.82 (16 - 1.18 sag) and he stands there grounded;
+  swing +1 in VINE.list; the pad threw him to 8.35 m (v 18 at g 20 = 8.1 + his height off the pad).
+
 ## m1883 -- the rope swing holds the rope, and BOTH swings pump (procedural, until his clips)
 
 His: *"we need better animations for the rope swing -- he just uses the ledge hang, very stationary; he needs to be holding the rope with his hand ...

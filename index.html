@@ -68883,10 +68883,12 @@ const LB = { on: 0, KINDS: {
     wall: { p: { len: 16, t: .6, h: 8 }, c: 0x4a8fd8, label: 'RUN WALL' },
     chimney: { p: { gap: 3.2, len: 6, h: 16 }, c: 0x3fae6a, label: 'CHIMNEY' },     /* m1882: two facing walls -- up only by wall-jumping between them */
     monkey: { p: { len: 10, h: 5 }, c: 0x5a3a24, label: 'MONKEY BARS' },
+    swing: { p: { h: 12, len: 9 }, c: 0xb3322a, label: 'SWING ROPE' },     /* m1884: a gantry and the gym's swing rope (VINE) */
+    pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },     /* m1884: step on it, launched up at `v` m/s */
     platform: { p: { w: 6, d: 4 }, c: 0xd9a441, label: 'PLATFORM', top: 4 },
     block: { p: { s: 2 }, c: 0xb3322a, label: 'BLOCK' } },
   PORTS: ['closed', 'open', 'balcony', 'bar', 'ladder'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e, bar: 0xe6e9ee, ladder: 0xc8743a },     // m1882: + a HIGH BAR on that edge, a LADDER down that face
-  LINKS: { rope: { label: 'ROPE', c: 0xd8c08a }, plank: { label: 'PLANK', c: 0x8a6a3a }, zip: { label: 'ZIP', c: 0x22d3ee } }, linkA: null, selLink: null, linking: 0,     // m1881: port to port
+  LINKS: { rope: { label: 'ROPE', c: 0xd8c08a }, plank: { label: 'PLANK', c: 0x8a6a3a }, zip: { label: 'ZIP', c: 0x22d3ee }, sky: { label: 'SKY BRIDGE', c: 0xb9c6d6 }, rbridge: { label: 'ROPE BRIDGE', c: 0xa0763c } },     // m1884: + sky bridge, rope bridge linkA: null, selLink: null, linking: 0,     // m1881: port to port
   cur: null, live: null, sel: null, persp: 1, cams: {}, orb: { az: .7, el: .55, r: 40, t: new THREE.Vector3() }, ptr: new Map(), pinch: 0, pmid: null, tap: null };
 // SC_LEVELB:END
 function lbKey() { let z = ''; try { z = new URLSearchParams(location.search).get('zone') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z; }
@@ -68908,6 +68910,8 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
       ports.push({ side, t, at: [nx * (dh + (t === 'balcony' ? 2.4 : 0)), H + .7, nz * (dh + (t === 'balcony' ? 2.4 : 0))] }); } }
   else if (P.kind === 'wall') add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2);
   else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); }     // the cap: a roof to stand on at the top
+  else if (P.kind === 'swing') { for (const sx of [-1, 1]) add(K.c, sx * 2.4 - .2, sx * 2.4 + .2, 0, q.h, -.2, .2); add(K.c, -2.6, 2.6, q.h, q.h + .35, -.25, .25); X.push({ type: 'swing', h: q.h + .1, len: Math.min(q.len, q.h - 1) }); }
+  else if (P.kind === 'pad') { add(0x2a2f36, -q.s / 2 - .15, q.s / 2 + .15, 0, .25, -q.s / 2 - .15, q.s / 2 + .15); add(K.c, -q.s / 2, q.s / 2, .25, .4, -q.s / 2, q.s / 2); X.push({ type: 'pad', s: q.s, top: .4, v: q.v }); }
   else if (P.kind === 'monkey') { const w = 1.1, n = Math.max(2, Math.round(q.len / .95)), gp = q.len / n; for (const sz of [-1, 1]) for (const x of [-q.len / 2 - .4, q.len / 2 + .4]) add(K.c, x - .12, x + .12, 0, q.h + .12, sz * (w / 2 + .1) - .12, sz * (w / 2 + .1) + .12);
     X.push({ type: 'monkey', len: q.len, h: q.h, w, n, gp }); }
   else if (P.kind === 'platform') add(K.c, -q.w / 2, q.w / 2, -.4, 0, -q.d / 2, q.d / 2);
@@ -68920,7 +68924,9 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
   for (const pt of ports) { const r = rx(pt.at[0], pt.at[2]); pt.w = [r[0] + ax, ay + pt.at[1], r[1] + az]; pt.key = pt.side; pt.deck = ay + q.h; }     // `key` is the piece's own N/E/S/W (unturned); `deck` the floor height there
   // the extras, into the world frame (turned and placed), with a light editor look; `lbSystems` makes them real in play
   const ex = [], lm = (c, w, h, d, x, y, z, ry) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), lbMat(c, ghost)); m.position.set(x, y, z); if (ry) m.rotation.y = ry; m.userData.pid = P.id; g.add(m); };
-  for (const E of X) { if (E.type === 'monkey') { const al = yw % 2 ? 'z' : 'x', sg = yw >= 2 ? -1 : 1, rungs = []; for (let i = 0; i <= E.n; i++) { const u = (-E.len / 2 + i * E.gp) * sg; rungs.push((al === 'x' ? ax : az) + (yw === 1 ? -u : yw === 3 ? u : u)); }
+  for (const E of X) { if (E.type === 'swing') { ex.push({ type: 'swing', id: P.id + '_rope', top: [ax, ay + E.h, az], len: E.len }); if (LB.on) lm(0xc9b07a, .09, E.len, .09, ax, ay + E.h - E.len / 2, az); continue; }
+    if (E.type === 'pad') { ex.push({ type: 'pad', x: ax, z: az, y: ay + E.top, hs: E.s / 2, v: E.v }); continue; }
+    if (E.type === 'monkey') { const al = yw % 2 ? 'z' : 'x', sg = yw >= 2 ? -1 : 1, rungs = []; for (let i = 0; i <= E.n; i++) { const u = (-E.len / 2 + i * E.gp) * sg; rungs.push((al === 'x' ? ax : az) + (yw === 1 ? -u : yw === 3 ? u : u)); }
       rungs.sort((a, b) => a - b); const M = { id: P.id + '_mb', ax: al, x: ax, z: az, h: ay + E.h, w: E.w, rungs }; ex.push({ type: 'monkey', M });
       for (const r of rungs) lm(0x9a7a50, al === 'x' ? .08 : E.w, .08, al === 'x' ? E.w : .08, al === 'x' ? r : ax, ay + E.h, al === 'x' ? az : r);
       for (const sz of [-1, 1]) lm(0x5a3a24, al === 'x' ? E.len + .8 : .12, .14, al === 'x' ? .12 : E.len + .8, al === 'x' ? ax : ax + sz * E.w / 2, ay + E.h + .04, al === 'x' ? az + sz * E.w / 2 : az); continue; }
@@ -68933,11 +68939,14 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
   return { g, boxes, ports, ex }; }
 // m1882: the extras made real (play only), each taken out again on the next rebuild
 function lbSystems(list) { const S = LB.live && LB.live.sys; if (S) { for (const B of S.bars) { B.g.removeFromParent(); for (const b of B.boxes) { const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); } const i = HBAR.list.indexOf(B); if (i >= 0) HBAR.list.splice(i, 1); }
-    for (const L of S.lads) { const i = KCLIMB.indexOf(L); if (i >= 0) KCLIMB.splice(i, 1); } for (const M of S.mbs) { const i = MBAR.list.indexOf(M); if (i >= 0) MBAR.list.splice(i, 1); if (player.mbar && player.mbar.M === M) player.mbar = null; } }
-  const out = { bars: [], lads: [], mbs: [] }; if (LB.on) return out;
+    for (const L of S.lads) { const i = KCLIMB.indexOf(L); if (i >= 0) KCLIMB.splice(i, 1); }
+    for (const V of S.vines || []) { scene.remove(V.m1, V.m2); const i = VINE.list.indexOf(V); if (i >= 0) VINE.list.splice(i, 1); if (player.vine && player.vine.V === V) player.vine = null; } for (const M of S.mbs) { const i = MBAR.list.indexOf(M); if (i >= 0) MBAR.list.splice(i, 1); if (player.mbar && player.mbar.M === M) player.mbar = null; } }
+  const out = { bars: [], lads: [], mbs: [], vines: [] }; LB.pads = []; if (LB.on) return out;
   for (const E of list) { if (E.type === 'bar') { const B = hbarMake(E.x, E.z, E.yaw, E.y, 1); HBAR.list.push(B); out.bars.push(B); }
     else if (E.type === 'ladder') { const K = kitClimbAdd(E.box, E.id, E.top); K.mark = E.mark; K.fg = { x: E.front[0], z: E.front[1] }; out.lads.push(K); }
-    else if (E.type === 'monkey') { MBAR.list.push(E.M); out.mbs.push(E.M); } }
+    else if (E.type === 'monkey') { MBAR.list.push(E.M); out.mbs.push(E.M); }
+    else if (E.type === 'swing') out.vines.push(vineMake({ id: E.id, top: new THREE.Vector3(...E.top), len: E.len }));
+    else if (E.type === 'pad') LB.pads.push(E); }
   return out; }
 // the level in the world: meshes always, colliders into BOXES (taken out again on a rebuild)
 function lbLive(ghostId) { const L = LB.cur; if (!L) return; if (LB.live) { scene.remove(LB.live.g); for (const b of LB.live.boxes) { const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); } }
@@ -68963,6 +68972,21 @@ function lbLinks(g, boxes, ports) { const L = LB.cur, made = { ropes: [], zips: 
     else if (K.kind === 'plank') { const y = (A.y + Bv.y) / 2, hx = len / 2 + .3, hz = .7, cx = (A.x + Bv.x) / 2, cz = (A.z + Bv.z) / 2, ex = Math.abs(ux) * hx + Math.abs(uz) * hz, ez = Math.abs(uz) * hx + Math.abs(ux) * hz;
       boxes.push({ cs: ux, sn: uz, hx, hz, cx, cz, minx: cx - ex, maxx: cx + ex, miny: y - .3, maxy: y, minz: cz - ez, maxz: cz + ez, id: K.id });
       const m = new THREE.Mesh(new THREE.BoxGeometry(hx * 2, .3, hz * 2), lbMat(LB.LINKS.plank.c)); m.position.set(cx, y - .15, cz); m.rotation.y = -Math.atan2(uz, ux); m.castShadow = m.receiveShadow = true; g.add(m); }
+    else if (K.kind === 'sky') {     // m1884: a covered walkway -- floor (flat box or ramp), roof, side walls with window gaps
+      const L3 = A.distanceTo(Bv), mid = A.clone().add(Bv).multiplyScalar(.5), yaw = -Math.atan2(uz, ux), pitch = Math.atan2(Bv.y - A.y, len), W = 2.6, H2 = 3;
+      const grp = new THREE.Group(); grp.position.copy(mid); grp.rotation.set(0, yaw, 0, 'YXZ'); const tilt = new THREE.Group(); tilt.rotation.z = pitch; grp.add(tilt);
+      const pc = (w, h, d, x, y, z, c) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), lbMat(c)); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; tilt.add(m); };
+      pc(L3 + .6, .3, W, 0, -.15, 0, 0x8a6a3a); pc(L3 + .6, .25, W + .3, 0, H2 + .12, 0, 0x3c4350);
+      for (const sz of [-1, 1]) { pc(L3 + .6, .9, .15, 0, .45, sz * W / 2, 0xb9c6d6); pc(L3 + .6, .5, .15, 0, H2 - .25, sz * W / 2, 0xb9c6d6); for (let u = -L3 / 2; u <= L3 / 2 + .01; u += 2.4) pc(.2, H2, .2, u, H2 / 2, sz * W / 2, 0x6b5038); }
+      g.add(grp);
+      if (Math.abs(Bv.y - A.y) > .3) { const px = -uz * W / 2, pz = ux * W / 2; tris.push(A.x + px, A.y, A.z + pz, Bv.x + px, Bv.y, Bv.z + pz, Bv.x - px, Bv.y, Bv.z - pz, A.x + px, A.y, A.z + pz, Bv.x - px, Bv.y, Bv.z - pz, A.x - px, A.y, A.z - pz); }
+      else { const y = (A.y + Bv.y) / 2, hx = len / 2 + .3, cx = (A.x + Bv.x) / 2, cz = (A.z + Bv.z) / 2, ob = (hz, y0, y1, off) => { const ox = -uz * off, oz = ux * off, ex = Math.abs(ux) * hx + Math.abs(uz) * hz, ez = Math.abs(uz) * hx + Math.abs(ux) * hz; boxes.push({ cs: ux, sn: uz, hx, hz, cx: cx + ox, cz: cz + oz, minx: cx + ox - ex, maxx: cx + ox + ex, miny: y0, maxy: y1, minz: cz + oz - ez, maxz: cz + oz + ez, id: K.id }); };
+        ob(W / 2, y - .3, y, 0); ob(.08, y, y + H2, W / 2); ob(.08, y, y + H2, -W / 2); ob(W / 2 + .15, y + H2, y + H2 + .25, 0); } }
+    else if (K.kind === 'rbridge') {     // m1884: a ROPE BRIDGE -- the deck sags on a parabola (`sag` x span), walkable triangles, slats and rope rails; not a singleton
+      const N = Math.max(6, Math.round(len / 1.2)), sag = Math.max(.6, len * .07), W = 1.6, px = -uz * W / 2, pz = ux * W / 2, P2 = i => { const u = i / N; return new THREE.Vector3(A.x + (Bv.x - A.x) * u, A.y + (Bv.y - A.y) * u - sag * 4 * u * (1 - u), A.z + (Bv.z - A.z) * u); };
+      for (let i = 0; i < N; i++) { const a0 = P2(i), a1 = P2(i + 1); tris.push(a0.x + px, a0.y, a0.z + pz, a1.x + px, a1.y, a1.z + pz, a1.x - px, a1.y, a1.z - pz, a0.x + px, a0.y, a0.z + pz, a1.x - px, a1.y, a1.z - pz, a0.x - px, a0.y, a0.z - pz);
+        const m = new THREE.Mesh(new THREE.BoxGeometry(.35, .08, W), lbMat(0xa0763c)); m.position.copy(a0).lerp(a1, .5); m.position.y -= .05; m.rotation.y = -Math.atan2(uz, ux); m.castShadow = true; g.add(m); }
+      for (const sd of [-1, 1]) for (let i = 0; i < N; i++) { const a0 = P2(i).add(new THREE.Vector3(px * sd * 1.05, 1, pz * sd * 1.05)), a1 = P2(i + 1).add(new THREE.Vector3(px * sd * 1.05, 1, pz * sd * 1.05)), m = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, a0.distanceTo(a1), 5), lbMat(0xc9b07a)); m.position.copy(a0).lerp(a1, .5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), a1.clone().sub(a0).normalize()); g.add(m); } }
     else if (K.kind === 'rope') made.ropes.push(gymRopeMake({ id: K.id, x: (A.x + Bv.x) / 2, z: (A.z + Bv.z) / 2, yaw: Math.atan2(ux, uz), h: (A.y + Bv.y) / 2, len, sag: 1.1, sway: .9, speed: 2.6, noiseK: 1.35 }));
     else if (K.kind === 'zip') { const [H, Lo] = A.y >= Bv.y ? [A, Bv] : [Bv, A], z = { A: [H.x, H.y + 2.2, H.z], B: [Lo.x, Lo.y + 1.8, Lo.z], id: K.id }; ZIPS.push(z); made.zips.push(z);
       const P0 = new THREE.Vector3(...z.A), P1 = new THREE.Vector3(...z.B), m = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, P0.distanceTo(P1), 5), lbMat(0x333333)); m.position.copy(P0).add(P1).multiplyScalar(.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), P1.clone().sub(P0).normalize()); g.add(m);
@@ -69035,7 +69059,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
     L.pieces.push({ id, kind: k, at, yaw: 0, p: {}, ports: k === 'tower' ? { N: 'closed', E: 'closed', S: 'closed', W: 'closed' } : undefined }); lbSave(); lbSelect(id); }
   else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
-  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
+  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
   else if (a === 'lift') P.at[1] = Math.max(-50, P.at[1] + +k);
@@ -69059,6 +69083,10 @@ async function lbEnter() { if (LB.on || !rig.ready) return;
   lbCam(); lbSelect(null); }
 function lbExit() { LB.on = 0; if (LB.tc) LB.tc.detach(); for (const x of [LB.el, LB.bot, LB.top]) x.style.display = 'none'; if (LB.marks) scene.remove(LB.marks);
   scene.fog = LB.fog; LB.sel = null; lbLive(null); last = performance.now(); }
+// m1884: a BOUNCE PAD -- standing (or landing) on its top launches him straight up at `v` m/s, keeping what he carried across it
+function lbPadStep() { const p = player; if (!p.grounded || p.wrun || p.ledge) return;
+  for (const E of LB.pads) { if (Math.abs(p.pos.x - E.x) > E.hs || Math.abs(p.pos.z - E.z) > E.hs || Math.abs(p.pos.y - E.y) > .25) continue;
+    p.vel.y = E.v; p.grounded = false; p.airT = 0; p.jumps = 1; snd('drop', { g: .5, r: 1.5, cut: 1, att: .003, dec: .15 }); spkBurst(p.pos.x, p.pos.y + .2, p.pos.z, 14, { col: [.4, 1, .55], spread: 3, size: .12, life: .4 }); return; } }
 function lbFrame() { try { renderer.render(scene, lbActiveCam()); } catch (e) {} }
 // a saved level comes back on its own, in the world it was built in
 function lbBoot() { if (LB.cur || !rig.ready) return; let raw = null; try { raw = localStorage.getItem(lbKey()); } catch (e) {} LB.cur = lbLoad(); if (raw && LB.cur.pieces.length) lbLive(null); }
@@ -69087,6 +69115,7 @@ function frameBody() {
 
   if (rig.ready) {
     { const p = player; if ((p.aflip || p.barFly) && (p.ledge || p.wrun || p.mantle || p.climb || p.rope || p.vine || p.mbar || p.zip || p.hook || (p.bar && p.aflip))) { p.aflip = null; p.aflipPop = 0; if (!p.bar) p.barFly = null; } }     // m1878 (his: "land on a ledge mid-flip and he's stuck in the tuck pose"): `airFlipStep` -- the only thing that ended a flip -- does not run in a hold, and rigAnim asks "mid flip?" first; any hold now ends it
+    if (LB.pads && LB.pads.length) lbPadStep();     // m1884: the builder's bounce pads
     stepAim(dt);          // one eased answer, before anything reads it
     stepKit(dt);
     kaimStep(dt);         // m1071: the charge's aim and its arc -- here, where it runs every frame (stepKit returns early in states)

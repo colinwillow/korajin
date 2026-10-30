@@ -17,7 +17,7 @@ Data-first (SCENE_COMPANION.md): a level is `{ id, world, pieces: [{ id, kind, a
       bar, monkey bars across, a tightrope, a sky bridge, a rope bridge, a back-and-forth chimney ... scaffold first, the buildings redesigned around
       the function later (swappable)."* RUN WALL (16 x 8), CHIMNEY (two facing walls, gap 3.2, capped), MONKEY BARS (posts + rungs, either axis);
       tower ports + BAR (a high bar on that edge) and LADDER (down that face, step-off onto the deck).
-- [ ] 3b. SKY BRIDGE (covered link) and a ROPE BRIDGE that is not a singleton; swing rope; bounce pad.
+- [x] 3b. (m1884) SKY BRIDGE link (covered: floor, roof, walls with window gaps; a covered ramp between decks of different heights), ROPE BRIDGE link (a sagging walkable deck, slats, rope rails -- any number of them; it does not sway yet), SWING ROPE piece (gantry + the gym's swing), BOUNCE PAD piece (SIZE sets the launch speed).
 - [ ] 3c. L-WALL with a curved corner (the run carries round).
 - [ ] 3d. QUARTER BOWL -- the wall run on a curving surface (new movement), tried in the gym first.
 - [ ] 3e. THE LOOP -- gravity along the track, the camera through it (the bowl, all the way round).
