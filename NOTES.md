@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- STYLES: brick / MEGALITH / ANCIENT TECH, and floating fragments
+## m1894 -- STYLES: brick / MEGALITH / ANCIENT TECH, and floating fragments
 
 His: *"something other than brick -- brick is good for the Japanese towers with the red ... retro stone temple, the Zelda Divine Beast temple
 vibe, megalithic architecture, Egyptian pyramids, mixed with cyberpunk -- rope rails, ledges, futuristic, FLOATING; ancient and futurist at the
