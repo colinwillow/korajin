@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LEVEL BUILDER 3e: THE LOOP (run round it, upside down at the top)
+
+His (earlier): *"a loop where you run like a skateboarding loop -- run all the way up, go around it and back down."*
+- `loop` piece (radius `r` -- SIZE, track width `w`, sideways drift `off` so the exit lane misses the entry): the track P(phi) = (off x phi/2pi -
+  off/2, R - R cos phi, R sin phi) in the piece's frame -- a stone ribbon facing the centre, red lacquer rails, chevrons along it.
+- A RIDE, not free physics (`p.loop`, dispatched first in `stepPlayer`): `loopTrig` (in the start lane, grounded, moving along it at `min` 5 m/s,
+  stick held) puts him on it; `loopStep` -- speed under gravity along the track (-g sin phi), and while held a push and a floor (`keep` 10 m/s,
+  the Sonic cheat: a 5 m loop for real wants ~22 m/s in), capped `over` 4 above his entry (MEASURED: the way down took him out at 27 m/s from 10);
+  under `fall` 3.5 m/s past the quarter he comes off; a tap jumps off along the track + `jump` toward the middle; past 2 pi he is out, running.
+  `loopPose`: his up toward the centre (the root turned about the loop's lateral axis by -phi). `loopCam`: the lens eases side-on (`camD` + R out).
+- Headless: HELD -> on at 10.1 m/s, over the 10 m top upside down, out the far lane at x +1.7, z 80, grounded; LET GO past phi 1.4 -> slowed
+  10 -> 5 and came off at 6.3 m. Render at the top: side-on, him upside down at the crown.
+
 ## m1888 -- the wall run needs the LEFT STICK held; neutral = the PERCH
 
 His: *"I like how it currently operates, it's the best it's been, but we need a way to distinguish wall run versus just jumping against the wall and

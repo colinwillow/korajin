@@ -34582,6 +34582,7 @@ function stepPlayer(dt) {
   if (p.zip) { stepZip(dt); if (p.zip) return; }
   if (p.vineCool > 0) p.vineCool = Math.max(0, p.vineCool - dt);
   if (p.mbarCool > 0) p.mbarCool = Math.max(0, p.mbarCool - dt);
+  if (p.loop) { loopStep(dt); return; }     // m1889: riding the loop
   if (p.mbar) { stepMbar(dt); return; }     // m1857: on the monkey bars
   if (MBAR.list.length && !p.grounded && !p.ledge && mbarCatch()) { stepMbar(dt); return; }
   if (p.vine) { stepVine(dt); return; }     // m1856: on the swing rope
@@ -68896,7 +68897,8 @@ const LB = { on: 0, KINDS: {
     wall: { p: { len: 16, t: .6, h: 8 }, c: 0x4a8fd8, label: 'RUN WALL' },
     chimney: { p: { gap: 3.2, len: 6, h: 16 }, c: 0x3fae6a, label: 'CHIMNEY' },
     lwall: { p: { len: 10, r: 6, h: 8 }, c: 0x9b5de5, label: 'L-WALL' },
-    qbowl: { p: { r: 5, w: 6, h: 12 }, c: 0x00a6a6, label: 'QUARTER BOWL' },     /* m1887: floor curving up into a wall -- run up it into the wall run */     /* m1886: two legs and a curved quarter -- the run carries round the bend */     /* m1882: two facing walls -- up only by wall-jumping between them */
+    qbowl: { p: { r: 5, w: 6, h: 12 }, c: 0x00a6a6, label: 'QUARTER BOWL' },
+    loop: { p: { r: 5, w: 3, off: 3.4 }, c: 0xf2c94c, label: 'LOOP' },     /* m1889: run in at speed, stick held -- round the loop, upside down at the top */     /* m1887: floor curving up into a wall -- run up it into the wall run */     /* m1886: two legs and a curved quarter -- the run carries round the bend */     /* m1882: two facing walls -- up only by wall-jumping between them */
     monkey: { p: { len: 10, h: 5 }, c: 0x5a3a24, label: 'MONKEY BARS' },
     swing: { p: { h: 12, len: 9 }, c: 0xb3322a, label: 'SWING ROPE' },     /* m1884: a gantry and the gym's swing rope (VINE) */
     pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },     /* m1884: step on it, launched up at `v` m/s */
@@ -68956,6 +68958,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
       else add(null, -W, W, 0, py(b), -R - .6, pz(a)); }     // steep (collider only, `null` = no mesh -- drawn, its steps showed through the curve): a solid step behind the curve, its face on the curve -- he is thrown up it, not stood on it
     add(K.c, -W, W, R, q.h, -R - .6, -R); add(0x00877f, -W - .4, -W, 0, q.h, -R - .6, 0); add(0x00877f, W, W + .4, 0, q.h, -R - .6, 0);     // the wall above, and two cheeks
     X.push({ type: 'bowlSkin', R, W, n }, { type: 'upArrows2', R, W, h: q.h }, { type: 'bowl', R, W }); }
+  else if (P.kind === 'loop') X.push({ type: 'loop', R: q.r, w: q.w, off: q.off });
   else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); X.push({ type: 'upArrows', cz: q.gap / 2, len: q.len, h: q.h }); }     // the cap: a roof to stand on at the top
   else if (P.kind === 'swing') { for (const sx of [-1, 1]) add(K.c, sx * 2.4 - .2, sx * 2.4 + .2, 0, q.h, -.2, .2); add(K.c, -2.6, 2.6, q.h, q.h + .35, -.25, .25); X.push({ type: 'swing', h: q.h + .1, len: Math.min(q.len, q.h - 1) }); }
   else if (P.kind === 'pad') { add(0x2a2f36, -q.s / 2 - .15, q.s / 2 + .15, 0, .25, -q.s / 2 - .15, q.s / 2 + .15); add(K.c, -q.s / 2, q.s / 2, .25, .4, -q.s / 2, q.s / 2); X.push({ type: 'pad', s: q.s, top: .4, v: q.v }); }
@@ -68992,6 +68995,15 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     if (E.type === 'band') { look(new THREE.BoxGeometry(E.hb * 2 + .12, .18, E.hb * 2 + .12), lbMat(0x2a2f36, ghost, 'plain'), ax, ay + E.y, az); continue; }
     if (E.type === 'swing') { ex.push({ type: 'swing', id: P.id + '_rope', top: [ax, ay + E.h, az], len: E.len }); if (LB.on) lm(0xc9b07a, .09, E.len, .09, ax, ay + E.h - E.len / 2, az); continue; }
     if (E.type === 'pad') { ex.push({ type: 'pad', x: ax, z: az, y: ay + E.top, hs: E.s / 2, v: E.v }); continue; }
+    if (E.type === 'loop') { const d = rx(0, 1), l = rx(1, 0), D = { type: 'loop', o: [ax, ay, az], dx: d[0], dz: d[1], lx: l[0], lz: l[1], R: E.R, w: E.w, off: E.off }; ex.push(D);
+      // the track: a ribbon along P(phi), its face toward the centre, stone, edged in red lacquer, chevrons along it
+      const N = 72, pos = [], uv = [], idx = [], edge = [], P2 = (ph, u) => { const lx2 = E.off * ph / (Math.PI * 2) - E.off / 2 + u, y = E.R - E.R * Math.cos(ph), lz2 = E.R * Math.sin(ph); return [ax + l[0] * lx2 + d[0] * lz2, ay + y, az + l[1] * lx2 + d[1] * lz2]; };
+      for (let i = 0; i <= N; i++) { const ph = i / N * Math.PI * 2; for (const u of [-E.w / 2, E.w / 2]) { pos.push(...P2(ph, u)); uv.push(u / 2, ph * E.R / 2); } if (i) { const k = i * 2; idx.push(k - 2, k - 1, k, k - 1, k + 1, k); } }
+      const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); G.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); G.setIndex(idx); G.computeVertexNormals();
+      const m = new THREE.Mesh(G, lbMat(K.c, ghost, 'stone')); m.material.side = THREE.DoubleSide; m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
+      for (const u of [-E.w / 2 - .1, E.w / 2 + .1]) for (let i = 0; i < N; i++) { const a = new THREE.Vector3(...P2(i / N * Math.PI * 2, u)), b = new THREE.Vector3(...P2((i + 1) / N * Math.PI * 2, u)), r2 = new THREE.Mesh(new THREE.BoxGeometry(.14, .3, a.distanceTo(b) + .02), lbMat(0xb3322a, ghost, 'lacq')); r2.position.copy(a).lerp(b, .5); r2.lookAt(b); r2.userData.pid = P.id; g.add(r2); }
+      for (let i = 1; i < 8; i++) { const ph = i / 8 * Math.PI * 2, c = new THREE.Vector3(...P2(ph, 0)), ce = new THREE.Vector3(...P2(ph, 0)); ce.y = ay + E.R; const nrm = ce.sub(c).normalize(), tg = new THREE.Vector3(...P2(ph + .01, 0)).sub(c).normalize(), a2 = new THREE.Mesh(lbArrowGeo(), lbArrowMat()); a2.position.copy(c).addScaledVector(nrm, .05); a2.up.copy(tg); a2.lookAt(a2.position.clone().add(nrm)); a2.userData.pid = P.id; g.add(a2); }
+      continue; }
     if (E.type === 'bowl') { const d = rx(0, -1), l = rx(1, 0); ex.push({ type: 'bowl', x: ax, y: ay, z: az, dx: d[0], dz: d[1], lx: l[0], lz: l[1], R: E.R, W: E.W }); continue; }
     if (E.type === 'monkey') { const al = yw % 2 ? 'z' : 'x', sg = yw >= 2 ? -1 : 1, rungs = []; for (let i = 0; i <= E.n; i++) { const u = (-E.len / 2 + i * E.gp) * sg; rungs.push((al === 'x' ? ax : az) + (yw === 1 ? -u : yw === 3 ? u : u)); }
       rungs.sort((a, b) => a - b); const M = { id: P.id + '_mb', ax: al, x: ax, z: az, h: ay + E.h, w: E.w, rungs }; ex.push({ type: 'monkey', M });
@@ -69014,7 +69026,7 @@ function lbSystems(list) { const S = LB.live && LB.live.sys; if (S) { for (const
     else if (E.type === 'ladder') { const K = kitClimbAdd(E.box, E.id, E.top); K.mark = E.mark; K.fg = { x: E.front[0], z: E.front[1] }; out.lads.push(K); }
     else if (E.type === 'monkey') { MBAR.list.push(E.M); out.mbs.push(E.M); }
     else if (E.type === 'swing') out.vines.push(vineMake({ id: E.id, top: new THREE.Vector3(...E.top), len: E.len }));
-    else if (E.type === 'pad' || E.type === 'bowl') LB.pads.push(E); }
+    else if (E.type === 'pad' || E.type === 'bowl' || E.type === 'loop') LB.pads.push(E); }
   return out; }
 // the level in the world: meshes always, colliders into BOXES (taken out again on a rebuild)
 function lbLive(ghostId) { const L = LB.cur; if (!L) return; if (LB.live) { scene.remove(LB.live.g); for (const b of LB.live.boxes) { const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); } }
@@ -69127,7 +69139,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
     L.pieces.push({ id, kind: k, at, yaw: 0, p: {}, ports: k === 'tower' ? { N: 'closed', E: 'closed', S: 'closed', W: 'closed' } : undefined }); lbSave(); lbSelect(id); }
   else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
-  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'lwall' || P.kind === 'qbowl' ? 'r' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
+  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'lwall' || P.kind === 'qbowl' || P.kind === 'loop' ? 'r' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
   else if (a === 'lift') P.at[1] = Math.max(-50, P.at[1] + +k);
@@ -69153,7 +69165,7 @@ function lbExit() { LB.on = 0; if (LB.tc) LB.tc.detach(); for (const x of [LB.el
   scene.fog = LB.fog; LB.sel = null; lbLive(null); last = performance.now(); }
 // m1884: a BOUNCE PAD -- standing (or landing) on its top launches him straight up at `v` m/s, keeping what he carried across it
 function lbPadStep() { const p = player; if (!p.grounded || p.wrun || p.ledge) return;
-  for (const E of LB.pads) { if (E.type === 'bowl') { lbBowlStep(E); continue; } if (Math.abs(p.pos.x - E.x) > E.hs || Math.abs(p.pos.z - E.z) > E.hs || Math.abs(p.pos.y - E.y) > .25) continue;
+  for (const E of LB.pads) { if (E.type === 'bowl') { lbBowlStep(E); continue; } if (E.type === 'loop') { loopTrig(E); continue; } if (Math.abs(p.pos.x - E.x) > E.hs || Math.abs(p.pos.z - E.z) > E.hs || Math.abs(p.pos.y - E.y) > .25) continue;
     p.vel.y = E.v; p.grounded = false; p.airT = 0; p.jumps = 1; snd('drop', { g: .5, r: 1.5, cut: 1, att: .003, dec: .15 }); spkBurst(p.pos.x, p.pos.y + .2, p.pos.z, 14, { col: [.4, 1, .55], spread: 3, size: .12, life: .4 }); return; } }
 // m1887: THE BOWL THROWS YOU. The controller keeps him glued to ground it can walk and stalls him past ~40 deg, so on the bowl's curve, moving INTO it
 // at `BOWL.min` m/s or more, past `BOWL.at` of the turn, his speed is sent along the curve's tangent at `BOWL.ang` (up toward the wall) -- the
@@ -69164,6 +69176,31 @@ function lbBowlStep(E) { const p = player, rx0 = p.pos.x - E.x, rz0 = p.pos.z - 
   const u = p.vel.x * E.dx + p.vel.z * E.dz; if (u < BOWL.min) return; const lv = p.vel.x * E.lx + p.vel.z * E.lz, a = Math.max(th, BOWL.ang);
   const need = Math.sqrt(2 * Math.abs(MOVE.g) * Math.max(0, E.R + BOWL.extra - (p.pos.y - E.y))), vy = Math.max(u * Math.sin(a), need);
   p.vel.set(E.dx * u * Math.cos(a) + E.lx * lv, vy, E.dz * u * Math.cos(a) + E.lz * lv); p.grounded = false; p.airT = 0; p.jumps = 1; snd('swoosh', { g: .4, r: 1.2 }); }
+// m1889: THE LOOP (his: "a skateboarding loop -- you run all the way up and around it and back down"). A RIDE on a track, not free physics: P(phi)
+// = (lateral off x phi / 2pi, R - R cos phi, R sin phi) in the piece's frame -- a vertical circle that drifts `off` sideways so the exit misses
+// the entry. In from its start lane, grounded, moving along it at `min` m/s with the stick held: he is ON it (`p.loop`), feet on the track, his up
+// toward the centre (`loopPose`), the gait clip at his speed. Speed: gravity along the track (-g sin phi), and while the stick is held a push and
+// a floor (`keep`, the Sonic cheat -- completing a 5 m loop for real needs ~22 m/s in). Let go and he slows; under `fall` m/s past the quarter he
+// comes off. A tap jumps off the track. The lens goes side-on (`loopCam`).
+const LOOP = { min: 5, keep: 10, push: 8, fall: 3.5, jump: 6, camD: 13, camHalf: .18, over: 4 };
+function loopP(E, ph, out) { const lx2 = E.off * ph / (Math.PI * 2) - E.off / 2, y = E.R - E.R * Math.cos(ph), lz2 = E.R * Math.sin(ph); return out.set(E.o[0] + E.lx * lx2 + E.dx * lz2, E.o[1] + y, E.o[2] + E.lz * lx2 + E.dz * lz2); }
+const _looA = new THREE.Vector3(), _looB = new THREE.Vector3(), _looQ = new THREE.Quaternion(), _looV = new THREE.Vector3();
+function loopTrig(E) { const p = player; if (!p.grounded || p.loop || p.wrun) return; const rx0 = p.pos.x - E.o[0], rz0 = p.pos.z - E.o[2], lz = rx0 * E.dx + rz0 * E.dz, lxx = rx0 * E.lx + rz0 * E.lz;
+  if (Math.abs(lxx + E.off / 2) > E.w / 2 || lz < -.7 || lz > .4 || Math.abs(p.pos.y - E.o[1]) > .5) return;
+  const u = p.vel.x * E.dx + p.vel.z * E.dz; if (u < LOOP.min || stickWorld().mag < .3) return;
+  p.loop = { E, ph: Math.max(0, lz / E.R), v: Math.max(u, LOOP.keep), v0: Math.max(u, LOOP.keep) }; p.melee = 0; p.roll = 0; snd('swoosh', { g: .5, r: 1 }); }
+function loopStep(dt) { const p = player, S = p.loop, E = S.E, held = stickWorld().mag > .3, g = Math.abs(MOVE.g);
+  const tg = () => { loopP(E, S.ph + .002, _looB); return _looB.sub(loopP(E, S.ph, _looA)).normalize(); };
+  if (p.jump) { p.jump = 0; const t = tg(), c = _looV.set(E.o[0], E.o[1] + E.R, E.o[2]); loopP(E, S.ph, _looA); const n = c.sub(_looA).setY(c.y).normalize(); p.loop = null; p.vel.copy(t).multiplyScalar(S.v).addScaledVector(n, LOOP.jump); p.grounded = false; p.airT = 0; return; }
+  S.v += (-g * Math.sin(S.ph) + (held ? LOOP.push : 0)) * dt; if (held) S.v = Math.max(S.v, LOOP.keep); S.v = Math.min(S.v, S.v0 + LOOP.over);     // MEASURED: gravity on the way down took him out at 27 m/s from a 10 m/s entry -- capped `over` above what he came in with
+  if (S.v < LOOP.fall && S.ph > Math.PI / 2 && S.ph < Math.PI * 1.5) { const t = tg(); p.loop = null; p.vel.copy(t).multiplyScalar(Math.max(0, S.v)); p.grounded = false; p.airT = 0; return; }     // too slow: off the track
+  S.ph += S.v / E.R * dt;
+  if (S.ph >= Math.PI * 2) { loopP(E, Math.PI * 2, _looA); p.loop = null; p.pos.copy(_looA); p.vel.set(E.dx * S.v, 0, E.dz * S.v); p.grounded = true; return; }     // out the far side, running
+  loopP(E, S.ph, _looA); const t = tg(); p.pos.copy(_looA); p.vel.copy(t).multiplyScalar(S.v); p.speed = S.v; p.grounded = true; p.airT = 0; p.faceH = p.heading = Math.atan2(E.dx, E.dz); }
+function loopPose() { const p = player, S = p.loop; if (!S) return; const E = S.E; _looV.set(E.lx, 0, E.lz); _looQ.setFromAxisAngle(_looV, -S.ph); rig.root.quaternion.premultiply(_looQ); loopP(E, S.ph, _looA); rig.root.position.copy(_looA); }
+function loopCam(dt) { const p = player, S = p.loop; if (!S) { LOOP.camK = Math.max(0, (LOOP.camK || 0) - dt * 2); return; } LOOP.camK = Math.min(1, (LOOP.camK || 0) + dt * 3);
+  const E = S.E, c = _looV.set(E.o[0], E.o[1] + E.R, E.o[2]), side = Math.sign((camera.position.x - c.x) * E.lx + (camera.position.z - c.z) * E.lz) || 1, D = LOOP.camD + E.R;
+  const want = _looA.set(c.x + E.lx * side * D, c.y + 1.5, c.z + E.lz * side * D), k = LOOP.camK; camera.position.lerp(want, k); const look = _looB.copy(c).lerp(p.pos, .35); camera.lookAt(look); camera.updateMatrixWorld(true); }
 function lbFrame() { try { renderer.render(scene, lbActiveCam()); } catch (e) {} }
 // a saved level comes back on its own, in the world it was built in
 function lbBoot() { if (LB.cur || !rig.ready) return; let raw = null; try { raw = localStorage.getItem(lbKey()); } catch (e) {} LB.cur = lbLoad(); if (raw && LB.cur.pieces.length) lbLive(null); }
@@ -69191,7 +69228,7 @@ function frameBody() {
   gearSync();             // m465: a quest done anywhere (GOD's included) puts its find on the wheel
 
   if (rig.ready) {
-    { const p = player; if ((p.aflip || p.barFly) && (p.ledge || p.wrun || p.mantle || p.climb || p.rope || p.vine || p.mbar || p.zip || p.hook || (p.bar && p.aflip))) { p.aflip = null; p.aflipPop = 0; if (!p.bar) p.barFly = null; } }     // m1878 (his: "land on a ledge mid-flip and he's stuck in the tuck pose"): `airFlipStep` -- the only thing that ended a flip -- does not run in a hold, and rigAnim asks "mid flip?" first; any hold now ends it
+    { const p = player; if ((p.aflip || p.barFly) && (p.loop || p.ledge || p.wrun || p.mantle || p.climb || p.rope || p.vine || p.mbar || p.zip || p.hook || (p.bar && p.aflip))) { p.aflip = null; p.aflipPop = 0; if (!p.bar) p.barFly = null; } }     // m1878 (his: "land on a ledge mid-flip and he's stuck in the tuck pose"): `airFlipStep` -- the only thing that ended a flip -- does not run in a hold, and rigAnim asks "mid flip?" first; any hold now ends it
     if (LB.pads && LB.pads.length) lbPadStep();     // m1884: the builder's bounce pads
     stepAim(dt);          // one eased answer, before anything reads it
     stepKit(dt);
@@ -69293,6 +69330,7 @@ function frameBody() {
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
     vinePose();                        // m1856: along the swing rope
     pumpPose(dt);                      // m1883: the swing's pump (rope and high bar) + his hands on the rope
+    loopPose();                        // m1889: his up toward the loop's centre
     mbarPose();                        // m1857: hands on the monkey bars' rungs
     poseFixApply();                    // m1877: his in-game pose tweaks, per clip (TOOLS > POSE EDIT)
     contactSnd(dt);                    // m1875: hands / knees / toes / hips meeting the floor in any move make the landing sound
@@ -69338,6 +69376,7 @@ function frameBody() {
   turfDressStep(dt); hothStep(dt); kswapStep(dt); flashStep(dt); e115Step(dt); radioStep(dt);            // the buildings wear their block's holder, cross-fading when it changes hands (m409)
   kitCamStep();
   stepCam(dt); flyEdge();     // m1757
+  loopCam(dt);     // m1889: side-on through the loop
   mkrStep();                    // his npc markers get their roles once their bodies exist (m293)
   talkStep(dt);                 // after the camera: the bubble is projected through it (m277)
   questStep(dt);                // after talk: a talk step reads what this frame finished (m278)
