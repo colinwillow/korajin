@@ -5763,7 +5763,10 @@ const SFX = {
     foot_ORIG: ['audio/footsteps/footstep_l.mp3', 'audio/footsteps/footstep_r.mp3', 'audio/footsteps/footstep_2_l.mp3', 'audio/footsteps/footstep_2_r.mp3'],
     foot_CUTS: [1, 2, 3, 4, 5, 6].flatMap(n => ['audio/footsteps/step_' + n + '_l.mp3', 'audio/footsteps/step_' + n + '_r.mp3']),
     foot_NEW: ['audio/footsteps/step3_1_l.mp3', 'audio/footsteps/step3_1_r.mp3'],
-    foot_LAND: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3'],     /* m1872: HIS LANDING, as footsteps (a pair: 01 left, 02 right) */
+    foot_LAND: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_b_2.mp3'],     /* m1872: HIS LANDING, as footsteps (pairs: a left, b right); m1875: + two variant pairs */
+    // m1875: BODY CONTACTS (`contactSnd`) -- his landing and three variations of each half (1: -8% pitch, lowpass 2.6k, heavier; 2: +8%, lighter;
+    // 3: -3%, treble -4 dB, softer)
+    contact: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_a_3.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_b_2.mp3', 'audio/hit_sounds/thud_b_3.mp3'],
     shot: ['audio/blaster_sound_01.mp3', 'audio/blaster_sound_02.mp3'],
     big: ['audio/plasma_canon.mp3'],
     boom: ['audio/explosion_small.mp3'],
@@ -6128,10 +6131,35 @@ function stepFeet(dt) {
   p.stepL = !p.stepL;
   footSnd(p.speed, MOVE.max, p.pos.x, p.pos.z, p.stepL);
 }
+// m1875 (his: "flicking either stick unarmed -- he jumps and hits the ground with his knee, does the front handspring and lands on his hands and knees
+// -- there's just no sound"): THE SKELETON REPORTS ITS OWN CONTACTS, so no clip has to be tagged by hand and a new one is covered for free. Each frame
+// (after the pose is final) each watched joint's height over the floor under it (`groundAt`) is compared with its last: one that comes DOWN to within
+// `near` of the floor faster than `vMin` m/s, having been more than `arm` above it, is a contact -> the landing sound (`contact` bank: his two and
+// their variations), louder and lower the harder it hit. Feet are left to the footsteps during the plain gait. A part re-arms only once lifted.
+// MEASURED on his clips (each played alone, joint height over the floor, approach speed over the last 4 frames): the joints are the WRIST and
+// the KNEE joint, so a palm flat on the floor reads ~.08 -- `near` .13 (hips .26). Contacts found: melee_01 knee+both hands (1.8-2.1 m/s),
+// melee_02 (the handspring) hands .6 + knee 2.4, melee_04 hands 4.6 / 1.5, slide_kick, slide, katana_slide knees, roll, kip_up, kip_cork,
+// landing_hard; NONE in idle / walk / run / the flips / hurricane_kick. Slowest real contact .4 m/s -> `vMin` .35.
+const CONTACT = { on: 1, vMin: .35, vFull: 4, g0: .18, g1: .7, r0: 1.12, r1: .9, jit: .14, cool: .07,
+  parts: [['mixamorig_LeftHand', .13], ['mixamorig_RightHand', .13], ['mixamorig_LeftLeg', .13], ['mixamorig_RightLeg', .13], ['mixamorig_Hips', .26]],
+  arm: .08, st: {}, last: 0 };
+const _ctV = new THREE.Vector3();
+function contactSnd(dt) { const p = player; if (!CONTACT.on || !rig.bones || dt <= 0) return;
+  if (p.wrun || p.ledge || p.bar || p.rope || p.vine || p.mbar || p.zip || p.climb || p.wing || p.board || p.swim || p.riding || p.mantle || p.hook) { CONTACT.st = {}; return; }
+  const gait = p.grounded && !(p.melee || p.aflip || p.cart || p.flip || p.roll || p.slam || p.chargeGo || p.knock || p.land), now = performance.now();
+  for (const [nm, near] of CONTACT.parts) { const b = rig.bones[nm]; if (!b) continue; b.getWorldPosition(_ctV);
+    const gy = groundAt(_ctV.x, _ctV.z, _ctV.y, .15), h = _ctV.y - (gy == null || !isFinite(gy) ? p.pos.y : gy), S = CONTACT.st[nm] || (CONTACT.st[nm] = { hs: [], ts: [], armed: 0 });
+    S.hs.push(h); S.ts.push(dt); if (S.hs.length > 5) { S.hs.shift(); S.ts.shift(); } let span = 0; for (let k = 1; k < S.ts.length; k++) span += S.ts[k];
+    const v = span > 0 ? (S.hs[0] - h) / span : 0;     // the APPROACH speed over the last 4 frames (at the touch itself it is ~0)
+    if (h > near + CONTACT.arm) S.armed = 1;
+    if (!S.armed || h > near || v < CONTACT.vMin) continue; S.armed = 0;
+    if ((/Toe/.test(nm) && gait) || now - CONTACT.last < CONTACT.cool * 1000 || now - (SFX.bumpAt || 0) < 150) continue;     // the gait's feet are the footsteps'; one sound per beat; never on top of a landing
+    CONTACT.last = now; const u = clamp((v - CONTACT.vMin) / (CONTACT.vFull - CONTACT.vMin), 0, 1);
+    snd('contact', { g: CONTACT.g0 + (CONTACT.g1 - CONTACT.g0) * u, r: (CONTACT.r0 + (CONTACT.r1 - CONTACT.r0) * u) * (1 + (Math.random() - .5) * CONTACT.jit), cut: 1, att: .003, dec: .1 + .1 * u, x: _ctV.x, z: _ctV.z }); } }
 // ONE impact, so the three connection points cannot drift into three different rules.
 function bumpSnd(v, x, z) {
   const D = BODYSND.drop;
-  if (v < D.at) return;
+  if (v < D.at) return; SFX.bumpAt = performance.now();
   const u = clamp((v - D.at) / (D.full - D.at), 0, 1);
   snd('drop', { g: D.g0 + (D.g1 - D.g0) * u, r: D.r * (1 + (Math.random() - .5) * D.jit),
                 cut: 1, att: D.att, dec: D.dec, x, z });
@@ -68826,6 +68854,7 @@ function frameBody() {
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
     vinePose();                        // m1856: along the swing rope
     mbarPose();                        // m1857: hands on the monkey bars' rungs
+    contactSnd(dt);                    // m1875: hands / knees / toes / hips meeting the floor in any move make the landing sound
     // **AFTER THE ROOT IS PLACED, NOT ONLY AFTER THE MIXER.** The pin is a bone's WORLD
     // position and the speed cap is measured against how far it moved, so solving before the
     // root is written measures last frame's travel -- which at a knock-down's 12 m/s is most

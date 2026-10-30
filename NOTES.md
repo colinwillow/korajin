@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- every move's hands / knees / hips meeting the floor make the landing sound (`contactSnd`); landing variations
+
+His: *"flicking either stick unarmed -- he jumps in the air and hits the ground with his knee, or does the front handspring and lands on his hands
+and knees -- there's just no sound ... mess with the [landing] sound a little and make a few variations -- tone, level, cadence."*
+- NOT a per-clip table: `contactSnd` (after the final pose, each frame) watches L/R hand (wrist), L/R knee (`*Leg` joint) and hips; one that comes
+  DOWN within `near` of the floor under it (`groundAt`), having been `arm` above it, at an APPROACH speed (last 4 frames) over `vMin`, plays the
+  `contact` bank -- louder, lower and longer the harder (`vFull`). Off on walls, ledges, bars, ropes, ziplines, boards; not within 150 ms of a
+  landing (`SFX.bumpAt`); `cool` between beats. Toes are left to the footsteps and the landing (they false-fired at a move's start).
+- MEASURED, each clip alone (joint over floor; approach speed): melee_01 knee 1.8 + hands 2.1 / 1.5; melee_02 (handspring) hand .6 + knee 2.4;
+  melee_04 hands 4.6 / 1.5; slide_kick, slide, katana_slide knees 1.3-2.5; roll, kip_up, kip_cork, landing_hard several each; **none** in idle,
+  walk, run, flips, hurricane_kick. A palm flat reads ~.08 (the wrist) -> `near` .13, hips .26; slowest real one .4 -> `vMin` .35.
+- In game (headless): idle / walk / run / every flick standing -> 0 contacts; running + strike (slide_kick) -> a contact ~10 frames in.
+- Variations (`thud_<a|b>_<1-3>`): 1 = -8% pitch + lowpass 2.6k (heavier), 2 = +8% (lighter), 3 = -3% + treble -4 dB (softer). `contact` = his
+  two + all six; the LANDING footsteps gained pairs 1 and 2.
+
 ## m1874 -- footsteps on the GAIT'S CLOCK, so they land with the feet at any speed
 
 His: *"slowing down my run or walk, it wasn't timing with the actual steps -- can the sound line up with the footsteps perfectly?"*
