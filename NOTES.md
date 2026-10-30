@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the unarmed fast run plays at the katana's cadence (slower legs, same speed)
+## m1871 -- the unarmed fast run plays at the katana's cadence (slower legs, same speed)
 
 His: *"holding the katana, the fast run's feet don't go crazy fast ... unarmed his animation plays so fast it looks cheesy. Cheat: play it slower
 while moving him faster -- take the lesson from the katana run and apply it to the unarmed run."*
