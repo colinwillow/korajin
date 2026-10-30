@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- every move's hands / knees / hips meeting the floor make the landing sound (`contactSnd`); landing variations
+## m1875 -- every move's hands / knees / hips meeting the floor make the landing sound (`contactSnd`); landing variations
 
 His: *"flicking either stick unarmed -- he jumps in the air and hits the ground with his knee, or does the front handspring and lands on his hands
 and knees -- there's just no sound ... mess with the [landing] sound a little and make a few variations -- tone, level, cadence."*
