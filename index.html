@@ -28938,13 +28938,14 @@ function ropePose() { const Z = ROPEB, p = player; if (!Z.on || !Z.bal) return; 
 // it would be normally"): HANDS ON THE LIP. Hanging (or coming in to the hang, or hopping), each hand is put by two-bone IK (`wrLimb`) on the lip
 // at the point nearest its shoulder, `in` m over the edge and `up` above the top, the elbow bent out and down. With a BLADE in hand only the LEFT
 // grips; the RIGHT arm hangs straight down at his side (`armDown` of its length below the shoulder, a little off the wall) with the sword in it.
-const LHANDS = { ease: .09, sideK: .38, bladePick: 'LOW', blade: { LOW: [.75, -.6, .35], HIGH: [.7, .55, .45] }, on: 1, in: .05, up: .06, armDown: .82, off: .12, straight: .93, palmK: .25, outK: .5, pullMax: .5, pitch: .45, dropMax: .6, fingers: 1, tip: .08, curl: [.55, .45, .3], thumbK: .5 };     // m1836: straight / fingers
+const LHANDS = { shim: 1, shimV: 1.1, shimRate: 1, lookYaw: 1.5, lookHL: .1, awayV: 5, upJumpK: .85, headUp: .3, ease: .09, sideK: .38, bladePick: 'LOW', blade: { LOW: [.75, -.6, .35], HIGH: [.7, .55, .45] }, on: 1, in: .05, up: .06, armDown: .82, off: .12, straight: .93, palmK: .25, outK: .5, pullMax: .5, pitch: .45, dropMax: .6, fingers: 1, tip: .08, curl: [.55, .45, .3], thumbK: .5 };     // m1836: straight / fingers
 try { const v = localStorage.getItem('mel.hangblade'); if (v === 'LOW' || v === 'HIGH') LHANDS.bladePick = v; } catch (e) {}
 const _lhS = new THREE.Vector3(), _lhT = new THREE.Vector3(), _lhP = new THREE.Vector3(), _lhE = new THREE.Vector3();
 // m1841 (his: "two points where the animation glitches to its new state ... once he gets into the hang he goes into the normal hang position and
 // then glitches and now his katana is out and his arm is down -- ease those states"): every arm, hand and finger bone the hang's IK writes is
 // EASED toward its new pose (`LHANDS.ease` s) from what it was last frame -- and on the first frame of a hang, from the CLIP's own pose -- so the
 // clip-to-IK hand-off, a weapon coming out (the one-hand pose) and the drop's end all blend instead of snapping. The swing (`p.lsw`) is not eased.
+const _lhQy = new THREE.Quaternion(), _lhY = new THREE.Vector3(0, 1, 0), _lhY2 = new THREE.Vector3();
 const LHB = ['Arm', 'ForeArm', 'Hand', 'HandThumb1', 'HandThumb2', 'HandThumb3', 'HandMiddle1', 'HandMiddle2', 'HandMiddle3', 'HandPinky1', 'HandPinky2', 'HandPinky3', 'HandIndex1', 'HandIndex2', 'HandIndex3', 'HandRing1', 'HandRing2', 'HandRing3'];
 function ledgeHandsPose() { const p = player; if (!rig.bones || !p.ledge || !LHANDS.on || p.ledgeSt === 'up' || p.ledgeSt === 'drop') { p.lhPrev = null; ledgeHandsPose0(); return; }
   const bs = []; for (const S of ['Left', 'Right']) for (const n of LHB) { const b = rig.bones['mixamorig_' + S + n]; if (b) bs.push(b); }
@@ -28953,7 +28954,7 @@ function ledgeHandsPose() { const p = player; if (!rig.bones || !p.ledge || !LHA
   const a = 1 - Math.exp(-(1 / 60) / LHANDS.ease), swing = !!p.lsw;
   for (let i = 0; i < bs.length; i++) { const b = bs[i], q = p.lhPrev[i]; if (!q) continue; if (swing && /Right/.test(b.name)) { q.copy(b.quaternion); continue; } q.slerp(b.quaternion, a); b.quaternion.copy(q); }
   rig.root.updateMatrixWorld(true); }
-function ledgeHandsPose0() { const p = player, L = p.ledge; if (!LHANDS.on || !L || !rig.bones || p.ledgeSt === 'up') return; const B = rig.bones, tx = -L.nz, tz = L.nx, oneHand = slotNow().blade;
+function ledgeHandsPose0() { const p = player, L = p.ledge; if (!LHANDS.on || !L || !rig.bones || p.ledgeSt === 'up') return; const B = rig.bones, tx = -L.nz, tz = L.nx, oneHand = slotNow().blade || (p.ledgeLook || 0) > .3;     /* m15xx: the look-away is one-handed too */
   rig.root.updateMatrixWorld(true);
   if (p.ledgeSt === 'drop') { const LH = B.mixamorig_LeftHand, RH = B.mixamorig_RightHand; if (!LH || !RH) return;     // m1837: the walk-off swings down UNDER his hands
     LH.getWorldPosition(_lhP); RH.getWorldPosition(_lhE); _lhP.add(_lhE).multiplyScalar(.5); const s0 = (_lhP.x - L.cx) * tx + (_lhP.z - L.cz) * tz;
@@ -28962,6 +28963,8 @@ function ledgeHandsPose0() { const p = player, L = p.ledge; if (!LHANDS.on || !L
     rig.root.updateMatrixWorld(true); p.lhDh = 0; p.lhDv = 0; return; }
   // m1836 (his: "the elbows are kind of buckled in"): measured, his shoulders sat .23 m under the lip, so the IK had nothing to do but fold the arms.
   // The DRAWN body drops until the hanging arm(s) reach the lip at `straight` of their length -- a hang on straight arms. (Drawn only; `p.pos` stays.)
+  const look = p.ledgeLook || 0;
+  if (look > .01) { const LHb = B.mixamorig_LeftHand; if (LHb) { LHb.getWorldPosition(_lhP); _lhQy.setFromAxisAngle(_lhY, -look * LHANDS.lookYaw); const r = rig.root.position.clone().sub(_lhP).applyQuaternion(_lhQy); rig.root.position.copy(_lhP).add(r); rig.root.quaternion.premultiply(_lhQy); rig.root.updateMatrixWorld(true); } }     // m15xx: turned out on his LEFT hand (heading down = toward his right)
   if (LHANDS.straight) { let n = 0, len = 0; const Sm = _lhS.set(0, 0, 0);
     for (const S of oneHand ? ['Left'] : ['Left', 'Right']) { const UA = B['mixamorig_' + S + 'Arm'], FA = B['mixamorig_' + S + 'ForeArm'], HA = B['mixamorig_' + S + 'Hand']; if (!UA || !FA || !HA) continue;
       UA.getWorldPosition(_lhE); Sm.add(_lhE); const e = _lhE.clone(); FA.getWorldPosition(_lhE); len += e.distanceTo(_lhE); HA.getWorldPosition(_lhP); len += _lhE.distanceTo(_lhP) * (1 + LHANDS.palmK); n++; }
@@ -28992,7 +28995,8 @@ function ledgeHandsPose0() { const p = player, L = p.ledge; if (!LHANDS.on || !L
       continue; }
     const s0 = (_lhS.x - L.cx) * tx + (_lhS.z - L.cz) * tz;
     _lhT.set(L.cx + tx * s0 - L.nx * LHANDS.in, L.y + LHANDS.up, L.cz + tz * s0 - L.nz * LHANDS.in);
-    wrLimb(UA, FA, HA, _lhT.clone(), new THREE.Vector3(L.nx * .6 + tx * sd * .5, -.4, L.nz * .6 + tz * sd * .5)); lhGrip(S, L, sd); } }
+    wrLimb(UA, FA, HA, _lhT.clone(), new THREE.Vector3(L.nx * .6 - tx * sd * .5, -.4, L.nz * .6 - tz * sd * .5)     /* m15xx: OUT to his side -- (-nz, nx) is his LEFT, so the left arm (sd -1) wants +t; it had -t: 'elbows bowed in' */); lhGrip(S, L, sd); }
+  { const Hd = B.mixamorig_Head, k = LHANDS.headUp * (1 - look); if (Hd && k) { const fx = Math.sin(p.faceH), fz = Math.cos(p.faceH); _lhY2.set(-fz, 0, fx); _lhQy.setFromAxisAngle(_lhY2, k); lhgTurnW(Hd, _lhQy.clone()); } } }     // m15xx: his head back, looking up at the lip (+ about his right = chin up)
 // m1836 (his: "his fingers are weird when he's hanging -- he only has three or four fingers, maybe the Mixamo animations are doing the wrong thing"):
 // his hand is Thumb / Middle / Pinky. After the arm IK the hand is turned to lie ON the lip, its knuckles pointing in over the top (-n, dipped `tip`),
 // then each finger joint is curled `curl[j]` rad about the knuckle line (pinky -> middle), the way that takes its tip DOWN -- found per joint by
@@ -30984,7 +30988,7 @@ function ledgeGo(L) {
   if (mphBare()) return 0;             // no hang clips without zap's pool on him (m119)
   const p = player;
   swapStop(); triggerStop();
-  p.ledge = L; p.ledgeSt = 'in'; p.ledgeT = 0; p.ledgeOff = 0; p.ledgeSide = 0; p.ledgeInDur = 0; p.lhDh = 0; p.lhDv = 0; p.lhPrev = null;     /* m1841 */
+  p.ledge = L; p.ledgeSt = 'in'; p.ledgeT = 0; p.ledgeOff = 0; p.ledgeSide = 0; p.ledgeInDur = 0; p.lhDh = 0; p.lhDv = 0; p.lhPrev = null; p.ledgeLook = 0; p.shim = 0;     /* m1841 */
   p.lx0 = p.pos.x; p.ly0 = p.pos.y; p.lz0 = p.pos.z;
   p.vel.set(0, 0, 0);
   p.melee = 0; p.roll = 0; p.slam = 0; p.flip = ''; p.block = 0; p.center = 0;
@@ -31294,9 +31298,13 @@ function stepLedge(dt) {
   // JUMPING OFF COMES FIRST, the one exit the grace period must never eat.
   if (p.jump) {
     p.jump = 0;
-    p.vel.y = MOVE.jump; p.vel.x = L.nx * LEDGE.jump; p.vel.z = L.nz * LEDGE.jump;
-    snd('swoosh', { r: 1.40, g: .36 });
-    ledgeDrop(1);
+    // m15xx (his: "I tap jump and he rotates 180 away from the ledge and then all the way back -- a 360. Only jump AWAY when you're pressing away;
+    // just tapping jump, he should jump straight up and not rotate at all"): turned away (the look-away pose) -> leap off, facing away at once,
+    // the drawn yaw easing out from where the pose already had him (no 'away' clip: its own baked turn was the second 180); otherwise straight up
+    if (p.ledgeLook > .5) { const h0 = p.faceH - p.ledgeLook * LHANDS.lookYaw, ha = Math.atan2(L.nx, L.nz); p.vel.set(L.nx * LHANDS.awayV, MOVE.jump, L.nz * LHANDS.awayV);
+      ledgeDrop(0); p.faceH = p.heading = ha; p.turnOff = wrapAngle(h0 - ha); p.turnOffHL = .1; p.camWant = ha; }
+    else { p.vel.set(0, MOVE.jump * LHANDS.upJumpK, 0); ledgeDrop(0); }
+    p.ledgeLook = 0; snd('swoosh', { r: 1.40, g: .36 });
     return;
   }
   const st = stickWorld();
@@ -31316,11 +31324,19 @@ function stepLedge(dt) {
   }
   // AND LETTING GO IS A HOLD, NOT A FRAME -- `off` harder than `into`, and the grace clock is
   // what lets a diagonal hop overshoot it for a moment without dropping him.
-  if (into < -LEDGE.off) p.ledgeOff += dt; else p.ledgeOff = 0;
-  if (p.ledgeOff >= LEDGE.grace) { ledgeDrop(0); return; }
+  // m15xx (his: "pressing away from the ledge makes him fall off -- instead a new pose: one arm holding the ledge, looking away from it, so
+  // pressing away and tapping jump jumps him away"): the stick held AWAY turns him out on his left hand (`p.ledgeLook`, eased; drawn in
+  // `ledgeHandsPose0`). Letting go of the ledge is the right pad's DOWN swipe (the slam) now.
+  p.ledgeLook = damp(p.ledgeLook || 0, into < -LEDGE.off ? 1 : 0, LHANDS.lookHL, dt);
   const tx = -L.nz, tz = L.nx;
-  const side = st.mag > .35 ? st.x * tx + st.z * tz : 0;
-  if (Math.abs(side) > .55) {
+  const side = st.mag > .35 && p.ledgeLook < .3 ? st.x * tx + st.z * tz : 0;
+  // m15xx: the stick left / right SHIMMIES (his: "two kinds of shimmy on Mixamo -- one's a leap, one's just shimmying"): the library's Braced
+  // Hang Shimmy (`ledge_shim_l` / `_r`, Forge-baked) while he slides along the lip at `shimV`, re-finding the lip under him each frame; the
+  // HOP (the leap) is the right pad's swipe left / right (`ledgeFlick`).
+  p.shim = 0;
+  if (LHANDS.shim && !L.rope && Math.abs(side) > .55 && rig.actions.ledge_shim_l && rig.actions.ledge_shim_r) { const sg = Math.sign(side), d = LHANDS.shimV * dt, nx2 = p.pos.x + tx * sg * d, nz2 = p.pos.z + tz * sg * d;
+    const L2 = ledgeFind(nx2, p.pos.y, nz2, p.r + LEDGE.reach); if (L2 && L2.nx * L.nx + L2.nz * L.nz > .95 && Math.abs(L2.y - L.y) < .05) { p.ledge = L2; p.shim = sg; const H2 = ledgeAt(L2, _lp); p.pos.x = H2.x; p.pos.y = H2.y; p.pos.z = H2.z; } return; }
+  if (Math.abs(side) > .55 && (!LHANDS.shim || L.rope)) {
     p.ledgeSide = Math.sign(side);
     p.ledgeSt = 'hop'; p.ledgeT = 0;
     p.lx0 = p.pos.x; p.ly0 = p.pos.y; p.lz0 = p.pos.z;
@@ -35892,6 +35908,7 @@ function rigAnim(dt) {
     // its own half turn and `ledge_hang_idle` does not, which the hand measurement is what says
     // (hands at local +Z rather than -Z). Two surfaces, two answers, one derivation each.
     if (p.ledgeSt === 'drop' && rig.actions.hang_drop) { const a = rig.actions.hang_drop, d = a.getClip().duration; a.timeScale = 0; a.time = d * (1 - clamp(p.ledgeT / p.ledgeDropDur, 0, 1)) * .999; t.hang_drop = 1; setWeights(t, dt, .03); return; }     // m1837: BACKWARDS, by hand
+    if (p.ledgeSt === 'hold' && p.shim && rig.actions.ledge_shim_l) { const k = p.shim > 0 ? 'ledge_shim_l' : 'ledge_shim_r'; rig.actions[k].timeScale = LHANDS.shimRate; t[k] = 1; setWeights(t, dt); return; }     // m15xx: +side = along (-nz, nx) = his LEFT
     const nm = p.ledgeSt === 'up' ? LEDGE.clips.up
              : p.ledgeSt === 'hop' ? (p.ledgeSide > 0 ? LEDGE.clips.L : LEDGE.clips.R)
              : LEDGE.clips.hang;

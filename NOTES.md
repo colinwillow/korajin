@@ -5,6 +5,25 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## The ledge: elbows out, head up, the shimmy clips, a look-away pose, and the jump-off turn fixed (m15xx)
+*"Unarmed on a ledge his elbows look bowed in from the back -- maybe his head back. Left / right on the ledge should play the shimmy (Mixamo has a
+shimmy and a leap) -- swipe for the leap. Jumping off, he's still facing the wall and does an awkward 180 in the air -- pressing away should
+give a new pose, one arm on the ledge, looking away, then tap jump to jump away. And tapping jump he rotates 180 and all the way back -- a 360;
+just tapping jump should jump straight up with no rotation."*
+- **Elbows:** the two-hand IK's pole bent each elbow toward his MIDDLE (`(-nz, nx)` is his LEFT and the left arm took `-t`); flipped, so they
+  bend OUT to his sides. **Head:** tipped back `headUp` .3 rad (chin up, looking at the lip), less as he turns away.
+- **Shimmy:** the library's Braced Hang Shimmy pair Forge-baked (35 roles, 3.73 MB) as `ledge_shim_r` (`Braced_Hang_Shimmy`: its hips sway to
+  his right, -x, first) and `ledge_shim_l` (`_1`, the mirror). Stick left / right = the clip while he slides along the lip at `shimV` 1.1 m/s,
+  re-finding the lip under him every frame (stops where it ends). The HOP (the leap) is the right pad's swipe left / right (`ledgeFlick`).
+- **Look-away (`p.ledgeLook`):** the stick held AWAY from the wall turns him out on his LEFT hand (`lookYaw` 1.5 rad, eased), the right arm
+  free -- no longer a drop. Letting go is the right pad's DOWN swipe.
+- **Jump:** turned away -> a leap off (`awayV` 5 m/s out + the jump), facing away at once with the drawn yaw easing from where the pose had him
+  (no `ledge_hang_to_jump_away` clip: its own baked turn was the second 180 of the 360). Not turned -> straight UP (`upJumpK` .85 of a jump),
+  no turn at all.
+- Headless (the 8 m face): shimmy right 0.73 m in 40 frames on `ledge_shim_r`; look 0.99 and still on the ledge; the leap left facing away
+  with 1.48 rad of turn still easing (the pose had done the rest); the plain jump went straight up, facing unchanged. Renders: hang, shimmy,
+  look-away. Shipped unverified.
+
 ## The wall run is set by the angle you hit it at, the horizontal run holds the wall, and the slide goes all the way down (m1851)
 *"It's really hard to do a horizontal wall run -- he does it for a split second... the entire wall run should be set by the angle you hit it:
 roughly perpendicular = the vertical run, roughly parallel = the horizontal run. Mid-run he transitions into the wall sit while I'm still

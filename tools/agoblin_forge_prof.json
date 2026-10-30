@@ -281,6 +281,16 @@
    "role": "hang_drop",
    "stem": "Braced_Hang_To_Crouch",
    "name": "Braced_Hang_To_Crouch"
+  },
+  {
+   "role": "ledge_shim_r",
+   "stem": "Braced_Hang_Shimmy",
+   "name": "Braced_Hang_Shimmy"
+  },
+  {
+   "role": "ledge_shim_l",
+   "stem": "Braced_Hang_Shimmy_1",
+   "name": "Braced_Hang_Shimmy_1"
   }
  ]
 }
