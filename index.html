@@ -29112,14 +29112,16 @@ function netSend(o) { if (NET.ws && NET.ws.readyState === 1) NET.ws.send(JSON.st
 function netMsg(m) {
   if (m.type === 'room_state') { NET.myId = m.yourId; NET.st = 'in ' + NET.room; return; }
   if (m.type === 'player_left') { netDrop(m.id); return; }
-  if (m.type === 'state' && m.id && m.id !== NET.myId) { NET.rxN++; const P = netPeer(m.id); if (!P) return; P.zone = m.z; P.hero = m.h;
+  if (m.type === 'event' && m.e === 'hit' && m.to === NET.myId) { netHurt(m); return; }
+  if (m.type === 'state' && m.id && m.id !== NET.myId) { NET.rxN++; const P = netPeer(m.id); if (!P) return; P.zone = m.z; P.hero = m.h; P.k = m.k;
     const raw = atob(m.B), u8 = new Uint8Array(raw.length); for (let i = 0; i < raw.length; i++) u8[i] = raw.charCodeAt(i); const q = new Int16Array(u8.buffer), Q = new Float32Array(q.length); for (let i = 0; i < q.length; i++) Q[i] = q[i] / 32767;
     P.buf.push({ t: performance.now(), P: m.P, Q, seq: m.s }); if (P.buf.length > NET.keep) P.buf.shift(); P.lastT = performance.now(); } }
 function netPeer(id) { let P = NET.peers[id]; if (P) return P; if (!rig.model) return null;
   const root = new THREE.Group(), m = skeletonClone(rig.model); root.add(m); m.traverse(o => { if (o.isMesh) o.frustumCulled = false; }); scene.add(root);
   const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64; const c = cv.getContext('2d'); c.font = 'bold 40px sans-serif'; c.textAlign = 'center'; c.fillStyle = '#5affe0'; c.strokeStyle = 'rgba(0,0,0,.7)'; c.lineWidth = 6; const nm = 'P' + (Object.keys(NET.peers).length + 2); c.strokeText(nm, 128, 46); c.fillText(nm, 128, 46);
   const tag = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), depthTest: false, transparent: true })); tag.scale.set(1.2, .3, 1); tag.position.y = RIG.height + .55; tag.renderOrder = 70; root.add(tag);
-  P = NET.peers[id] = { id, root, model: m, bones: netBones(m), buf: [], name: nm, lastT: performance.now() }; return P; }
+  const weap = []; m.traverse(o => { if (/^weapon:/.test(o.name)) weap.push(o); });     // m15xx (stage 2): every worn weapon came along in the clone; the packet's `k` picks which one shows
+  P = NET.peers[id] = { id, root, model: m, bones: netBones(m), buf: [], name: nm, lastT: performance.now(), weap, k: '' }; return P; }
 function netDrop(id) { const P = NET.peers[id]; if (!P) return; scene.remove(P.root); delete NET.peers[id]; }
 const _nq1 = new THREE.Quaternion(), _nq2 = new THREE.Quaternion();
 function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.autoRoom); NET.autoRoom = ''; }
@@ -29129,18 +29131,35 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
   if (NET.myId && now - NET.sendT >= 1000 / NET.hz) { NET.sendT = now; if (!NET.bones) NET.bones = netBones(rig.model); const B = NET.bones, q = new Int16Array(B.length * 4);
     for (let i = 0; i < B.length; i++) { const b = B[i].quaternion; q[i * 4] = Math.round(b.x * 32767); q[i * 4 + 1] = Math.round(b.y * 32767); q[i * 4 + 2] = Math.round(b.z * 32767); q[i * 4 + 3] = Math.round(b.w * 32767); }
     const u8 = new Uint8Array(q.buffer); let bin = ''; for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
-    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
+    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), k: (slotNow() || {}).key || '', P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
+  try { netHits(); } catch (e) { NET.err = 'hits ' + e.message; }
   // DRAW: each puppet at `delay` s ago, between the two snapshots that bracket it
   const rt = now - NET.delay * 1000;
   for (const id in NET.peers) { const P = NET.peers[id], bf = P.buf; if (now - P.lastT > 6000) { netDrop(id); continue; } P.root.visible = bf.length > 0 && P.zone === netZone(); if (!bf.length) continue;
     let a = bf[0], b = bf[bf.length - 1], u = 1; for (let i = 0; i < bf.length - 1; i++) if (bf[i].t <= rt && bf[i + 1].t >= rt) { a = bf[i]; b = bf[i + 1]; u = (rt - a.t) / Math.max(1, b.t - a.t); break; }
     if (rt < bf[0].t) { a = b = bf[0]; u = 0; }
+    for (const w of P.weap) w.visible = w.name === 'weapon:' + P.k;
     const A = a.P, Bp = b.P; P.root.position.set(A[0] + (Bp[0] - A[0]) * u, A[1] + (Bp[1] - A[1]) * u, A[2] + (Bp[2] - A[2]) * u);
     _nq1.set(A[3], A[4], A[5], A[6]); _nq2.set(Bp[3], Bp[4], Bp[5], Bp[6]); P.root.quaternion.slerpQuaternions(_nq1, _nq2, u);
     const n = Math.min(P.bones.length, a.Q.length / 4, b.Q.length / 4);
     for (let i = 0; i < n; i++) { const k = i * 4; _nq1.set(a.Q[k], a.Q[k + 1], a.Q[k + 2], a.Q[k + 3]).normalize(); _nq2.set(b.Q[k], b.Q[k + 1], b.Q[k + 2], b.Q[k + 3]).normalize(); P.bones[i].quaternion.slerpQuaternions(_nq1, _nq2, u); } } }
+// m15xx: STAGE 3 -- KNOCK EACH OTHER AROUND (no damage). Each phone owns its own body: MY phone tests MY strike against THEIR puppet (as it is
+// drawn here) and, on contact, sends them a HIT; THEIR phone applies it to their own body through `playerHurt` (0 damage) -- so their guard,
+// parry and knock-down all answer it, and the stream shows it back to me. Active: a swing (`p.melee` past `NETHIT.wind` s), a slam or a charge
+// dash; contact: a hand, a foot or the blade's tip inside their body (`r` round the puppet's root, feet to `tall`); one hit per `cool` s.
+const NETHIT = { r: .6, tall: 1.8, wind: .1, cool: .45, swing: { push: 5.5, up: 2.5, stun: .35, knock: .3 }, heavy: { push: 9, up: 4.5, stun: .6, knock: 1 } };
+const _nhP = new THREE.Vector3();
+function netHits() { const p = player; if (!NET.myId) return; const heavy = !!(p.slam || p.chargeGo), act = heavy || (p.melee && (p.meleeT || 0) > NETHIT.wind); if (!act) return;
+  const pts = []; if (rig.bones) for (const n of ['RightHand', 'LeftHand', 'RightFoot', 'LeftFoot']) { const b = rig.bones['mixamorig_' + n]; if (b) pts.push(b.getWorldPosition(new THREE.Vector3())); }
+  const w = WEAP.worn[(slotNow() || {}).key]; if (w && w.muzzle && w.host) pts.push(muzzleWorld().clone());
+  const now = performance.now();
+  for (const id in NET.peers) { const P = NET.peers[id]; if (!P.root.visible || now - (P.hitT || 0) < NETHIT.cool * 1000) continue; const R = P.root.position;
+    for (const q of pts) { if (q.y < R.y - .2 || q.y > R.y + NETHIT.tall || Math.hypot(q.x - R.x, q.z - R.z) > NETHIT.r) continue;
+      P.hitT = now; const h = p.faceH;     /* the blow goes the way he swings (measured: the lunge carried him PAST them, so 'from me to them' pushed them back at him) */ netSend({ type: 'event', e: 'hit', to: id, h, heavy: heavy ? 1 : 0 });
+      meleeHit(null, q.x, q.y, q.z, heavy ? 1.2 : .8); NET.hitsOut = (NET.hitsOut || 0) + 1; break; } } }
+function netHurt(m) { const K = m.heavy ? NETHIT.heavy : NETHIT.swing; NET.hitsIn = (NET.hitsIn || 0) + 1; playerHurt(0, m.h, K.push, K.up, K.stun, K.knock); }
 function netChip() { if (!NET.chip) { if (!NET.on) return; const d = NET.chip = document.createElement('div'); d.style.cssText = 'position:fixed;left:50%;top:6px;transform:translateX(-50%);font:600 12px/1.3 monospace;color:#5affe0;background:rgba(10,14,20,.7);padding:4px 9px;border-radius:6px;z-index:30;pointer-events:none'; document.body.appendChild(d); }
-  const n = Object.keys(NET.peers).length, t = NET.on ? 'ONLINE ' + NET.room + '  ' + NET.st + '  ' + (n + 1) + ' here  rx ' + NET.rx + '/s' + (NET.err ? '  ERR ' + NET.err : '') : '';
+  const n = Object.keys(NET.peers).length, t = NET.on ? 'ONLINE ' + NET.room + '  ' + NET.st + '  ' + (n + 1) + ' here  rx ' + NET.rx + '/s' + (NET.hitsOut || NET.hitsIn ? '  hits ' + (NET.hitsOut || 0) + '>' + (NET.hitsIn || 0) + '<' : '') + (NET.err ? '  ERR ' + NET.err : '') : '';
   NET.chip.style.display = t ? 'block' : 'none'; if (NET.chip.textContent !== t) NET.chip.textContent = t; }
 function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R = gymBuild(GYM); scene.add(R.g); for (const b of R.boxes) BOXES.push(b);
   for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; }     // pass 2: the towers' ladders into the climb system

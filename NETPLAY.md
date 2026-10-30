@@ -23,9 +23,10 @@ two snapshots that bracket ~130 ms ago. Whatever his phone draws, the other phon
 - [x] **1. See each other (m1843):** TOOLS > ONLINE: JOIN A ROOM (a code to share) or `?room=CODE`; the relay is his Robits server under `KJ-`
   room codes; the puppet is a clone of the hero model, posed from the stream, a P2 tag over it; hidden when the other is in a different zone.
   Chip: room, state, players, packets/s.
-- [ ] 2. **Their gear and their FX:** the weapon in their hand (slot key in the packet), blade fire / trail, sounds, slam bursts as events.
-- [ ] 3. **Knock each other around (no damage):** your strike's sweep tests their puppet; a HIT event goes to them and THEIR phone applies the
-  knock to their own body (each phone owns its own body -- no host needed for two players).
+- [~] **2. Their gear (m15xx):** the weapon in their hand (the slot key in every packet picks which of the puppet's cloned weapons shows).
+  Still to do: blade fire / trail, sounds, slam bursts as events.
+- [x] **3. Knock each other around (m15xx, no damage):** my swing / slam / charge tests THEIR puppet (hands, feet, blade tip inside a .6 m
+  body); a HIT event goes to them and THEIR phone applies it through `playerHurt` (0 damage: their guard, parry and knock-down answer it).
 - [ ] 4. **The arena:** a small duel sandbox both spawn into; versus with KO / respawn; then co-op against the arena's enemies (host-run).
 - [ ] 5. **Its own server namespace:** a `game` field in `robits-server` (or a fork) so KORAJIN rooms never meet Robits rooms in quick match /
   the room list (needs push access to that repo).

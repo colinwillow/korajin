@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## ONLINE stages 2 + 3: their weapon shows, and you can knock each other around (m15xx, NETPLAY.md)
+*(After "will I be able to... hit them and beat them up" -- not yet -- he said "great" to doing it.)*
+- **Their weapon:** every packet carries the slot key (`k`); the puppet's clone already holds every worn weapon (`weapon:<key>` groups), and
+  only the matching one shows.
+- **Knocks, no damage (`netHits` / `netHurt`, `NETHIT`):** each phone owns its own body. During MY swing (`p.melee` past `wind` .1 s), slam or
+  charge, my hands, feet and blade tip are tested against THEIR puppet as drawn here (`r` .6 m round its root, up to `tall` 1.8 m); on contact
+  I send a HIT (`to` their id, the way I face, heavy or not) and flash the contact locally; THEIR phone runs `playerHurt(0, ...)` -- push 5.5 /
+  up 2.5 / knock-down chance .3 for a swing, 9 / 4.5 / always for a slam or charge -- so their guard and parry still work. One hit per `cool`
+  .45 s per pair. The chip adds `hits out>in<`.
+- **Tested for real (headless, his relay run locally, two pages):** B saw A's katana (`weapon:katana` visible); A's three katana swings sent
+  3 HITs, B received 3 and was knocked from z -5 to +0.78. The direction first came from the positions, and A's lunge had carried him PAST B,
+  so B flew back at him: it is A's facing now.
+- Not yet: their blade fire / trail and sounds, damage / KO (the arena, stage 4). Shipped unverified.
+
 ## NINJA GYM pass 2: the twin towers (m1845, NINJAGYM.md)
 *"Two tall towers -- almost Eiffel Tower looking -- one with a ladder, really really tall, and at the top a rope to the other tower."*
 - `GYM.towers` (data, in `SC_GYM`): **A** and **B**, 30 m tall, 40 m apart at (10, -100) and (50, -100) -- behind the wall course, so the
