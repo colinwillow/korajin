@@ -29081,6 +29081,9 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
   // a start deck and an end deck. Catch a rope in the air, PUMP with the left stick, climb with right-pad swipes, jump to let go.
   gantry: { id: 'g_swing', x0: -46, x1: -14, z: -84, h: 14, c: 0xb3322a },
   swings: [ { id: 'sw1', x: -37, len: 9 }, { id: 'sw2', x: -30, len: 9 }, { id: 'sw3', x: -23, len: 9 } ],
+  // m15xx (pass 6): THE LINK -- a ZIPLINE from Tower B's lookout (out of its north gap, 2.2 m over the deck) ~97 m down to the rope swing's
+  // start deck, so one route runs: ground -> A's ladders -> the tightrope -> B -> the zip -> the swings -> the monkey bars -> down
+  zips: [ { id: 'zip_b_swing', from: [50, 26.6, -95.6], to: [-43.5, 6.8, -84] } ],     // out of B's NORTH gap: from the south one the cable cut through Tower A's frame (render)
   // m1857 (pass 5): MONKEY BARS -- on from the rope swing's end deck, rungs every `gap` m across a drop at `h`, to a deck at the far end
   monkey: { id: 'mb1', x0: -10.5, x1: 4.5, z: -84, h: 7.4, gap: .95, w: 1.1, deck: [5.5, 11.5, 0, 5, -87, -81] },
   swingDecks: [ { id: 'sw_start', box: [-48, -42, 0, 5, -87, -81], c: 0x8a6a48, label: ['ROPE SWING', -45, -78, '#b3322a'] }, { id: 'sw_end', box: [-18, -12, 0, 5, -87, -81], c: 0x8a6a48 } ] };
@@ -29156,7 +29159,11 @@ function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
     const m2 = new THREE.Mesh(mergeGeometries(G3), rm); m2.castShadow = true; m2.name = Mk.id + '_rungs'; g.add(m2);
     if (Mk.deck) { const [x0, x1, y0, y1, z0, z1] = Mk.deck, m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(0x8a6a48)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; g.add(m); boxes.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id: Mk.id + '_deck' }); }
     wparkLabel(g, 'MONKEY BARS', (Mk.x0 + Mk.x1) / 2, Mk.z + 4, 0, '#5a3a24'); monkey = { id: Mk.id, z: Mk.z, h: Mk.h, w: Mk.w, rungs }; }
-  return { g, boxes, ladders, rope, swings, monkey }; }
+  const zips = []; for (const Zp of T.zips || []) { const A = new THREE.Vector3(...Zp.from), B = new THREE.Vector3(...Zp.to);
+    const c = new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(A, B), 24, .045, 6), mat(0x8a7040)); c.name = Zp.id; g.add(c);
+    for (const P of [A, B]) { const q = new THREE.Mesh(new THREE.BoxGeometry(.35, 2.6, .35), mat(0xb3322a)); q.position.set(P.x, P.y - 1.1, P.z); q.castShadow = true; g.add(q); }     // a red post at each end
+    zips.push({ A: Zp.from.slice(), B: Zp.to.slice(), id: Zp.id }); }
+  return { g, boxes, ladders, rope, swings, monkey, zips }; }
 // m1843: ONLINE, STAGE 1 (NETPLAY.md). His Robits relay (colinwillow/robits-server, a ~250-line room relay on Render) carries it -- the server
 // knows nothing about games, so KORAJIN shares it under its own room codes (`KJ-...`). What is sent is NOT inputs or clip names: it is his
 // FINISHED POSE -- the drawn root (position + rotation) and every bone's rotation, quantised to int16 and base64'd, `hz` times a second.
@@ -29347,6 +29354,7 @@ function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R =
   if (R.rope) gymRopeMake(R.rope);
   for (const W of R.swings || []) vineMake(W);
   if (R.monkey) MBAR.list.push(R.monkey);
+  for (const z of R.zips || []) ZIPS.push(z);     // m15xx (pass 6): into the zipline system (`zipCatch`)
   boxGrid(); Z.on = { g: R.g, boxes: R.boxes }; const S = GYM.spawn; player.pos.set(S.at[0], S.at[1], S.at[2]); player.vel.set(0, 0, 0); player.faceH = player.heading = S.yaw; cam.az = S.yaw; }
 function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = shipMake(0), g = S.g; scene.add(g);
   bldTris(S.O, S.tris); for (const b of S.O.boxes) BOXES.push(b); boxGrid();

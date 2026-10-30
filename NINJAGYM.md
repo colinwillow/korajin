@@ -21,7 +21,8 @@ walls you're supposed to run on. Monkey bars too. Like 10 passes to make an incr
   with the left stick (with the swing), climb with right-pad swipes up / down, tap to let go with the rope's speed.
 - [x] **5. Monkey bars (m1857):** 16 rungs across a drop from the rope swing's end deck to another deck; grab one in the air, the left stick
   goes hand over hand rung to rung (arm IK on the rungs), a tap drops you. (Not yet: a swing to skip a rung.)
-- [ ] 6. **Linking:** routes that flow piece to piece (wall run -> rope swing -> monkey bars -> tower), with height tiers (VERTICALITY rule).
+- [~] **6. Linking (m15xx):** one route now runs ground -> A's ladders (12, 24 m) -> the tightrope -> B -> a ~97 m ZIPLINE from B's lookout
+  down to the rope swing's deck (7 m) -> the three ropes -> the monkey bars -> down. Still: the wall course into the towers.
 - [ ] 7. **Route markers:** arrows / rings for each route, a start and a finish, a timer.
 - [ ] 8. **Look:** a ninja-training-ground skin (wood, rope, paper, lanterns) instead of flat colour boxes.
 - [ ] 9. **Variants and hazards:** moving pieces, crumbling holds, wind on the rope.

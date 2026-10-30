@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## NINJA GYM pass 6 (first half): the zipline that links the towers to the swings (m15xx, NINJAGYM.md)
+- `GYM.zips`: a ~97 m line from Tower B's lookout (its north gap, 2.2 m over the 24.4 m deck) down to the rope swing's start deck (6.8 m), a
+  red post at each end, into the existing zipline system (`ZIPS` / `zipCatch`: jump into the line, ride it on the katana). One route now runs:
+  ground -> Tower A's two ladders -> the tightrope -> Tower B -> the zip -> the three swing ropes -> the monkey bars -> down off their deck.
+- Rendered: from B's SOUTH gap the cable cut straight through Tower A's frame; from the north gap it passes ~5 m in front of A (z -90.6 at
+  x 10 against A's frame to -95.5) and beside the gantry's east post.
+- Still to link: the wall course into the towers. Shipped unverified.
+
 ## NINJA GYM pass 5: monkey bars (m1857, NINJAGYM.md)
 *"We should do monkey bars, too."*
 - **Where:** `GYM.monkey` -- 16 rungs .95 m apart at 7.4 m, x -10.5..4.5, z -84, on from the rope swing's end deck, across a drop to a deck at
