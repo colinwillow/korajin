@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- HIS wall run: his own FBX animation is the side run (TOOLS > WALL SIDE: HIS CLIP / IK RUN)
+## m1866 -- HIS wall run: his own FBX animation is the side run (TOOLS > WALL SIDE: HIS CLIP / IK RUN)
 
 His: *"I need to [animate] the wall run on my own"* -- `models/characters/anims/wall_side.fbx` (Cinema 4D export on Grumbo's rig, 50 bones, 19 frames
 at 30 fps). The new folder is in `bump.mjs` DIRS.
