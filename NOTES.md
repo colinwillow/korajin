@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## NINJA GYM pass 2: the twin towers (m15xx, NINJAGYM.md)
+## NINJA GYM pass 2: the twin towers (m1845, NINJAGYM.md)
 *"Two tall towers -- almost Eiffel Tower looking -- one with a ladder, really really tall, and at the top a rope to the other tower."*
 - `GYM.towers` (data, in `SC_GYM`): **A** and **B**, 30 m tall, 40 m apart at (10, -100) and (50, -100) -- behind the wall course, so the
   route goes UP and out. Each is a tapering iron lattice (12 m base -> 5 m top, six tiers of four leaning legs, a ring and an X on every face),
