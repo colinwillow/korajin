@@ -13291,7 +13291,8 @@ function stepWrun(dt) {
     //   over `rampT` (the Titanfall shape); the wall speed eases to under `capV` instead of keeping every m/s it arrived with.
     if (R.kind !== 'slide' && R.arc === 'side') {     // m1851: the horizontal run -- the SAME speed along the wall the whole way, on one arc under `arcG`
       let vu = p.vel.y - WRUN.arcG * dt; if (R.b && p.pos.y > R.b.maxy - WRUN.arcTop && vu > 0) vu = 0;     // measured: past maxy - .9 the 'on' test let him go mid-arc (the lift-off and re-catch)
-      R.a = Math.atan2(R.vt, Math.max(vu, 0)); vyKeep = vu + MOVE.g * dt; if (vu < -WRUN.arcEndV || R.t > WRUN.arcMax) { R.kind = 'slide'; R.t0 = R.t; R.top = R.t; vyKeep = null; } else wrunVelKind(R, 0); }
+      vu = Math.max(vu, -WRUN.arcEndV);     /* m1862 (his: 'one continuous thing until you jump off or hit the ground'): no hand-over to the slide -- the run sags to a capped fall and keeps running */
+      R.a = Math.atan2(R.vt, Math.max(vu, 0)); vyKeep = vu + MOVE.g * dt; wrunVelKind(R, 0); }
     else if (R.kind !== 'slide' && R.arc === 'up') { const gk = clamp((R.t - WRUN.gripT) / WRUN.rampT, 0, 1), vu = p.vel.y - WRUN.vG * gk * dt; R.vt = 0; R.a = 0; vyKeep = vu + MOVE.g * dt;     // straight up, no steering
       if (vu < .3 && R.t > .2) { R.kind = 'slide'; R.t0 = R.t; R.top = R.t; vyKeep = null; } else wrunVelKind(R, 0); }
     else if (R.kind !== 'slide') { const gk = clamp((R.t - WRUN.gripT) / WRUN.rampT, 0, 1); let vu = p.vel.y - WRUN.vG * gk * dt, vt = R.vt * Math.exp(-WRUN.vFric * dt);
@@ -13320,7 +13321,10 @@ function stepWrun(dt) {
   if (R.velMode && R.kind !== 'slide' && R.a != null && R.arc !== 'side') { const cu = Math.max(0, Math.cos(R.a)),     /* m1860: the horizontal run faces ALONG the wall (his: 'his face points toward the wall') */ sa = Math.sin(R.a), fx = -R.nx * cu + -R.nz * sa, fz = -R.nz * cu + R.nx * sa; if (Math.hypot(fx, fz) > .1) p.faceH = p.heading = Math.atan2(fx, fz); }     // m1831: faces between the wall and the way he runs along it
   integrate(dt, 0, 0, 0, false);
   // still on the face? (its end, or past the top of it, lets him go)
-  const d = boxNear(R.b, p.pos.x, p.pos.z, _wrN), on = d > 0 && d < p.r + .4 && _wrN.nx * R.nx + _wrN.nz * R.nz > .9 && R.b.maxy - p.pos.y > (R.arc === 'side' ? .5 : .9);
+  let d = boxNear(R.b, p.pos.x, p.pos.z, _wrN), on = d > 0 && d < p.r + .4 && _wrN.nx * R.nx + _wrN.nz * R.nz > .9 && R.b.maxy - p.pos.y > (R.arc === 'side' ? .5 : .9);
+  if (!on && R.b && R.kind !== 'up') { const W = wrunFind(p.pos.x, p.pos.y, p.pos.z, p.r + .6, R.b);     // m1862: a wall built of several boxes -- hand the run to the NEXT box of the same face instead of letting go and re-catching
+    if (W && W.nx * R.nx + W.nz * R.nz > .95) { R.b = W.b; d = W.d; on = 1; }
+    else { const d2 = boxNear(R.b, p.pos.x, p.pos.z, _wrN); if (R.arc === 'side' && d2 > 0 && d2 < p.r + .4 && _wrN.nx * R.nx + _wrN.nz * R.nz > .9 && R.b.maxy - p.pos.y > .1) { d = d2; on = 1; } } }     // over the lip by a little: still on it
   if (on) { const k = p.r + WRUN.gap - d; p.pos.x += R.nx * k; p.pos.z += R.nz * k; }
   if (p.grounded && R.t > .15) { wrunEnd(0); return; }
   // the run UP ends on the lip: his hands pass the top -> the ledge's own hang (and its climb), the PoP move

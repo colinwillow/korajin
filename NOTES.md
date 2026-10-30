@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the side wall run is ONE run: no hand-over to the slide, no let-go at a seam
+
+His: *"he's running and then he lets go and then it re-grabs and starts over ... it just needs to be one continuous thing all the way through until
+you either jump off or hit the ground, and the animation should just loop."*
+- The ARC side run handed over to the SLIDE (the wall sit, facing away) at `arcMax` 2.2 s or a fall of `arcEndV` -- that read as letting go. Gone:
+  the fall is capped at `arcEndV` and he keeps RUNNING, sagging, until the ground, a jump, or the end of the wall.
+- A face made of several boxes ended the run at each seam (the 'on' test is per box) and the next box re-caught it, restarting the arc. Now a run
+  that leaves its box is HANDED to the next box of the same face (`wrunFind`, normals > .95) without a restart. Just over the lip still counts.
+- MEASURED: wall A (long), 15 deg approach -- caught at frame 13, ran 17 m along it in one piece for 2.5 s, ended on the ground. Chimney: ran to the
+  wall's end, then off it.
+
 ## m1861 -- the side wall run had the WRONG-HANDED clip (wall on his right): mirrored now, looped, faces along
 
 His: *"wall to my screen right, approaching with his right arm to the wall: instead of his feet against the wall, the OTHER side of his body -- his face
