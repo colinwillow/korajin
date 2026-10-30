@@ -18,10 +18,10 @@ Data-first (SCENE_COMPANION.md): a level is `{ id, world, pieces: [{ id, kind, a
       the function later (swappable)."* RUN WALL (16 x 8), CHIMNEY (two facing walls, gap 3.2, capped), MONKEY BARS (posts + rungs, either axis);
       tower ports + BAR (a high bar on that edge) and LADDER (down that face, step-off onto the deck).
 - [x] 3b. (m1884) SKY BRIDGE link (covered: floor, roof, walls with window gaps; a covered ramp between decks of different heights), ROPE BRIDGE link (a sagging walkable deck, slats, rope rails -- any number of them; it does not sway yet), SWING ROPE piece (gantry + the gym's swing), BOUNCE PAD piece (SIZE sets the launch speed).
-- [ ] 3c. L-WALL with a curved corner (the run carries round).
+- [x] 3c. (m1886) L-WALL: two legs + a curved quarter of ~15-deg turned segments; the wall run TURNS with the face from segment to segment (`wrunNext`, the hand-off finder) -- caught on one leg it carries round the bend and on along the other.
 - [ ] 3d. QUARTER BOWL -- the wall run on a curving surface (new movement), tried in the gym first.
 - [ ] 3e. THE LOOP -- gravity along the track, the camera through it (the bowl, all the way round).
-- [ ] 3f. A `look` per piece (scaffold now, his art later, no change to the function); breakable walls as a wall with `breakable: 1`.
+- [~] 3f. LOOK pass 1 (m1886): stone masonry (tinted per piece, tiled per metre), red lacquer + cyan glow trims, Sonic chevrons on run surfaces. Still to come: Japanese roof forms, retro-futurist detail, alien accents; then a `look` per piece (scaffold now, his art later, no change to the function); breakable walls as a wall with `breakable: 1`.
 - [ ] 4. Saved levels in `levels/` load as real places (his uploads become permanent).
 
 ## DONE WHEN

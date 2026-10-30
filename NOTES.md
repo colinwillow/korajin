@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LEVEL BUILDER 3c: the L-WALL (the run turns round a curve) + LOOK pass 1 (masonry, lacquer, glow, Sonic chevrons)
+
+His: *"more stylized -- Sonic, where the ramps have little arrows showing you can go up there, mixed with Japanese architecture, futuristic retro,
+pillar block, stone masonry ... alien world -- probably a bunch of passes on that"* and *"carry on"* (3c).
+- L-WALL (`lwall`: legs `len`, radius `r` -- SIZE, height `h`): the bend is n ~1.5 m TURNED segments (`OB` in `lbPiece`, quarter-turn safe via `rx`),
+  each over the wall run's 1.2 m minimum and 15 deg from the next. Segments are EXACT chords: padded ones stuck a lip out past the convex side.
+- The wall run now TURNS with the face: on a hand-off it takes the new box's normal and re-derives its tangent with the same sense (it kept the
+  first box's normal, so the 'on' test failed two segments round). And the hand-off has its own finder, `wrunNext` (another box of the same face:
+  in reach, tall enough, normal within ~25 deg) -- `wrunFind` calls the gap between two segments' faces a CORNER and refuses it, rightly for a catch.
+- MEASURED (open ground; the first try sat on the gym's `e_wall`, top 6 m, and he landed on it): caught on leg 1 at a run, handed b2 -> b7 with the
+  normal turning 0 -> 90 deg, onto leg 2 and along it until he came down.
+- LOOK pass 1: a greyscale stone MASONRY canvas texture tinted by each piece's colour and tiled per metre (`lbBoxGeo` scales each face's UVs by its
+  own size); towers get a red LACQUER deck trim, a cyan GLOW ring and dark bands every 6 m; Sonic CHEVRONS (the gym's arrow texture) every ~4 m
+  along both faces of run walls and L-walls and up a chimney's inner faces. Roof forms and the alien detail are later passes.
+
 ## m1885 -- DOCKET 38: the tutorial level (planned, not built)
 
 His: *"put on the docket that we really need to build a tutorial level that is really fun and interactive -- big text that says DOWN and you swipe

@@ -13163,6 +13163,14 @@ function wrunFaceLen(b, px, pz) { let ox, oz, lx, lz;     // the length of the f
   if (b.cs !== undefined) { boxLocal(b, px, pz, _blN); ox = _blN.x - clamp(_blN.x, -b.hx, b.hx); oz = _blN.z - clamp(_blN.z, -b.hz, b.hz); lx = 2 * b.hx; lz = 2 * b.hz; }
   else { ox = px - clamp(px, b.minx, b.maxx); oz = pz - clamp(pz, b.minz, b.maxz); lx = b.maxx - b.minx; lz = b.maxz - b.minz; }
   const ax = Math.abs(ox) > 1e-3, az = Math.abs(oz) > 1e-3; return ax && az ? 0 : ax ? lz : lx; }
+// m1886: the HAND-OFF finder -- the next box of the same running face: within `reach`, tall enough, its face normal within ~25 deg of the run's.
+// Not `wrunFind`: on the outside of a curve he is just past the end of one segment and just before the start of the next, which `wrunFind`
+// (rightly, for a CATCH) calls a corner and refuses.
+function wrunNext(R, px, py, pz, reach) { let best = null;
+  for (let b of boxesNear(px - reach, px + reach, pz - reach, pz + reach, _wrB)) { if (b.cw) b = cwRunBox(b.cw); if (b === R.b || b.maxy - py < .5 || b.miny > py + 1) continue;
+    const d = boxNear(b, px, pz, _wrN); if (d < 0 || d > reach) continue; const dot = _wrN.nx * R.nx + _wrN.nz * R.nz; if (dot < .9) continue;
+    const sc = d - dot; if (!best || sc < best.sc) best = { b, d, nx: _wrN.nx, nz: _wrN.nz, sc }; }
+  return best; }
 function wrunFind(px, py, pz, R, not) {
   let best = null;
   for (let b of boxesNear(px - R, px + R, pz - R, pz + R, _wrB)) { if (b.cw) b = cwRunBox(b.cw);
@@ -13420,8 +13428,8 @@ function stepWrun(dt) {
   integrate(dt, 0, 0, 0, false);
   // still on the face? (its end, or past the top of it, lets him go)
   let d = boxNear(R.b, p.pos.x, p.pos.z, _wrN), on = d > 0 && d < p.r + .4 && _wrN.nx * R.nx + _wrN.nz * R.nz > .9 && R.b.maxy - p.pos.y > (R.arc === 'side' ? .5 : .9);
-  if (!on && R.b && R.kind !== 'up') { const W = wrunFind(p.pos.x, p.pos.y, p.pos.z, p.r + .6, R.b);     // m1862: a wall built of several boxes -- hand the run to the NEXT box of the same face instead of letting go and re-catching
-    if (W && W.nx * R.nx + W.nz * R.nz > .95) { R.b = W.b; d = W.d; on = 1; }
+  if (!on && R.b && R.kind !== 'up') { const W = wrunNext(R, p.pos.x, p.pos.y, p.pos.z, p.r + .6);     // m1862: a wall built of several boxes -- hand the run to the NEXT box of the same face instead of letting go and re-catching
+    if (W) { const sg = Math.sign(R.dx * -R.nz + R.dz * R.nx) || 1; R.b = W.b; d = W.d; on = 1; R.nx = W.nx; R.nz = W.nz; R.dx = -R.nz * sg; R.dz = R.nx * sg; }     // m1886: and TURN with it -- a curved wall is a run of segments, each a little round from the last
     else { const d2 = boxNear(R.b, p.pos.x, p.pos.z, _wrN); if (R.arc === 'side' && d2 > 0 && d2 < p.r + .4 && _wrN.nx * R.nx + _wrN.nz * R.nz > .9 && R.b.maxy - p.pos.y > .1) { d = d2; on = 1; } } }     // over the lip by a little: still on it
   if (on) { const k = p.r + WRUN.gap - d; p.pos.x += R.nx * k; p.pos.z += R.nz * k; }
   if (p.grounded && R.t > .15) { wrunEnd(0); return; }
@@ -68881,7 +68889,8 @@ function posedFrame() { try { renderer.render(scene, camera); } catch (e) {} }
 const LB = { on: 0, KINDS: {
     tower: { p: { base: 6, h: 16 }, c: 0x8a8f99, label: 'TOWER' },
     wall: { p: { len: 16, t: .6, h: 8 }, c: 0x4a8fd8, label: 'RUN WALL' },
-    chimney: { p: { gap: 3.2, len: 6, h: 16 }, c: 0x3fae6a, label: 'CHIMNEY' },     /* m1882: two facing walls -- up only by wall-jumping between them */
+    chimney: { p: { gap: 3.2, len: 6, h: 16 }, c: 0x3fae6a, label: 'CHIMNEY' },
+    lwall: { p: { len: 10, r: 6, h: 8 }, c: 0x9b5de5, label: 'L-WALL' },     /* m1886: two legs and a curved quarter -- the run carries round the bend */     /* m1882: two facing walls -- up only by wall-jumping between them */
     monkey: { p: { len: 10, h: 5 }, c: 0x5a3a24, label: 'MONKEY BARS' },
     swing: { p: { h: 12, len: 9 }, c: 0xb3322a, label: 'SWING ROPE' },     /* m1884: a gantry and the gym's swing rope (VINE) */
     pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },     /* m1884: step on it, launched up at `v` m/s */
@@ -68894,11 +68903,32 @@ const LB = { on: 0, KINDS: {
 function lbKey() { let z = ''; try { z = new URLSearchParams(location.search).get('zone') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z; }
 function lbLoad() { try { const v = JSON.parse(localStorage.getItem(lbKey()) || 'null'); if (v && Array.isArray(v.pieces)) return v; } catch (e) {} return { id: 'lvl_' + Date.now().toString(36), world: lbKey().slice(10), pieces: [] }; }
 function lbSave() { try { localStorage.setItem(lbKey(), JSON.stringify(LB.cur)); } catch (e) {} }
-const _lvM = {}; function lbMat(c, ghost) { const k = c + (ghost ? 'g' : ''); return _lvM[k] || (_lvM[k] = new THREE.MeshStandardMaterial({ color: c, roughness: .85, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
+// m1886: THE LOOK (his: "stylized -- Sonic, where the ramps have little arrows that show you can go up there, mixed with Japanese architecture,
+// futuristic retro, pillar block, stone masonry ... alien world"): one stone MASONRY texture (staggered blocks, mortar, grain; greyscale, so each
+// piece keeps its colour as a tint) tiled per METRE (`lbBoxGeo` scales each face's UVs by its own size), red LACQUER and cyan GLOW trims, and
+// Sonic chevrons on every surface that runs. Pass 1 of several -- the shapes are still the scaffold.
+const _lvM = {}; let _lbStone = null;
+function lbStoneTex() { if (_lbStone) return _lbStone; const cv = document.createElement('canvas'); cv.width = cv.height = 256; const q = cv.getContext('2d');
+  q.fillStyle = '#6d6d6d'; q.fillRect(0, 0, 256, 256); let sd = 7; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  for (let r = 0; r < 4; r++) { const y = r * 64, off = r % 2 ? 64 : 0; for (let c = -1; c < 3; c++) { const x = c * 128 + off, v = 190 + rnd() * 50 | 0; q.fillStyle = 'rgb(' + v + ',' + v + ',' + (v + 4) + ')'; q.fillRect(x + 3, y + 3, 122, 58);
+      for (let k = 0; k < 60; k++) { const g = v - 20 + rnd() * 30 | 0; q.fillStyle = 'rgba(' + g + ',' + g + ',' + g + ',.35)'; q.fillRect(x + 3 + rnd() * 118, y + 3 + rnd() * 54, 3 + rnd() * 8, 2 + rnd() * 4); }
+      q.fillStyle = 'rgba(255,255,255,.18)'; q.fillRect(x + 3, y + 3, 122, 3); } }
+  _lbStone = new THREE.CanvasTexture(cv); _lbStone.wrapS = _lbStone.wrapT = THREE.RepeatWrapping; _lbStone.colorSpace = THREE.SRGBColorSpace; _lbStone.anisotropy = 4; return _lbStone; }
+function lbRole(c) { return c === 0x6b5038 || c === 0x8a6a3a || c === 0xa0763c ? 'wood' : c === 0xd9a441 || c === 0x2a2f36 || c === 0x39e07a ? 'plain' : 'stone'; }
+function lbMat(c, ghost, role) { const k = c + (ghost ? 'g' : '') + (role || ''); if (_lvM[k]) return _lvM[k];
+  const col = new THREE.Color(c); if (role === 'stone') col.lerp(new THREE.Color(0xffffff), .35);
+  return (_lvM[k] = new THREE.MeshStandardMaterial({ color: col, roughness: role === 'lacq' ? .35 : .85, metalness: role === 'lacq' ? .1 : 0, map: role === 'stone' ? lbStoneTex() : null, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
+function lbGlowMat() { return _lvM.glow || (_lvM.glow = new THREE.MeshStandardMaterial({ color: 0x0b2a30, emissive: 0x29e3ff, emissiveIntensity: 1.4, roughness: .4 })); }
+function lbArrowMat() { return _lvM.arrow || (_lvM.arrow = new THREE.MeshBasicMaterial({ map: gymArrowTex(), transparent: true, depthWrite: false, opacity: .9, polygonOffset: true, polygonOffsetFactor: -2 })); }
+function lbArrowGeo() { return _lvM.arrowG || (_lvM.arrowG = new THREE.PlaneGeometry(1.8, 1.8)); }
+// a box whose UVs are in METRES / 2 (one masonry tile = 2 m x 2 m of four courses), per face
+function lbBoxGeo(w, h, d, role) { const G = new THREE.BoxGeometry(w, h, d); if (role !== 'stone') return G; const uv = G.attributes.uv, dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+  for (let f = 0; f < 6; f++) for (let k = 0; k < 4; k++) { const i = f * 4 + k; uv.setXY(i, uv.getX(i) * dims[f][0] / 2, uv.getY(i) * dims[f][1] / 2); } return G; }
 // one piece: local boxes [x0, x1, y0, y1, z0, z1] around its own origin (y = its base), turned by `yaw` quarter turns, placed at `at`
-function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [], X = [];     // X: the EXTRAS -- things that are a system, not a box (bars, ladders, monkey bars), as data in the piece's own frame
+function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [], X = [], OB = [];     // OB: TURNED boxes { c, cx, cz, a (its long axis angle), hx, hz, y0, y1 } in the piece's frame     // X: the EXTRAS -- things that are a system, not a box (bars, ladders, monkey bars), as data in the piece's own frame
   const add = (c, x0, x1, y0, y1, z0, z1) => L.push({ c, b: [x0, x1, y0, y1, z0, z1] });
   if (P.kind === 'tower') { const hb = q.base / 2, dh = hb + .6, H = q.h; add(K.c, -hb, hb, 0, H - .4, -hb, hb); add(0x6b5038, -dh, dh, H - .4, H, -dh, dh);
+    X.push({ type: 'trim', hb, dh, H }); for (let y = 6; y < H - 2; y += 6) X.push({ type: 'band', hb, y });     // m1886: lacquer, glow and masonry bands
     const ps = P.ports || {};
     for (const [side, nx, nz] of [['N', 0, -1], ['E', 1, 0], ['S', 0, 1], ['W', -1, 0]]) { const t = ps[side] || 'closed', tx = -nz, tz = nx;
       const seg = (u0, u1, n0, n1, y0, y1, c) => { const xs = [tx * u0 + nx * n0, tx * u1 + nx * n1, tx * u0 + nx * n1, tx * u1 + nx * n0], zs = [tz * u0 + nz * n0, tz * u1 + nz * n1, tz * u0 + nz * n1, tz * u1 + nz * n0]; add(c, Math.min(...xs), Math.max(...xs), y0, y1, Math.min(...zs), Math.max(...zs)); };
@@ -68908,8 +68938,12 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
       if (t === 'bar') { seg(-dh, -2.2, dh - .3, dh, H, H + 1.1, 0x6b5038); seg(2.2, dh, dh - .3, dh, H, H + 1.1, 0x6b5038); X.push({ type: 'bar', lx: nx * (dh - 1.1), lz: nz * (dh - 1.1), ltx: tx, ltz: tz, y: H }); }
       if (t === 'ladder') X.push({ type: 'ladder', lx: nx * (dh + .1), lz: nz * (dh + .1), ltx: tx, ltz: tz, lnx: nx, lnz: nz, h: H, mx: nx * (dh - 1.4), mz: nz * (dh - 1.4) });
       ports.push({ side, t, at: [nx * (dh + (t === 'balcony' ? 2.4 : 0)), H + .7, nz * (dh + (t === 'balcony' ? 2.4 : 0))] }); } }
-  else if (P.kind === 'wall') add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2);
-  else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); }     // the cap: a roof to stand on at the top
+  else if (P.kind === 'wall') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2); X.push({ type: 'arrows', a: 0, cx: 0, cz: 0, len: q.len, off: q.t / 2, h: q.h }); }
+  else if (P.kind === 'lwall') { const r = q.r, t = .6, n = Math.max(3, Math.round(r * Math.PI / 2 / 1.5)), da = Math.PI / 2 / n, sl = r * 2 * Math.sin(da / 2);     /* exact: padding a chord sticks a lip OUT past a convex curve, which stopped the run dead */     // the bend: n turned segments ~1.5 m long (each over the wall run's 1.2 m minimum; neighbours 15 deg apart, inside its .95 hand-off)
+    for (let i = 0; i < n; i++) { const th = (i + .5) * da; OB.push({ c: K.c, cx: r * Math.cos(th), cz: r * Math.sin(th), a: th + Math.PI / 2, hx: sl / 2, hz: t / 2, y0: 0, y1: q.h }); }
+    add(K.c, r - t / 2, r + t / 2, 0, q.h, -q.len, .05); add(K.c, -q.len, .05, 0, q.h, r - t / 2, r + t / 2);
+    X.push({ type: 'arrows', a: Math.PI / 2, cx: r, cz: -q.len / 2, len: q.len, off: t / 2, h: q.h }, { type: 'arrows', a: 0, cx: -q.len / 2, cz: r, len: q.len, off: t / 2, h: q.h }); }
+  else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); X.push({ type: 'upArrows', cz: q.gap / 2, len: q.len, h: q.h }); }     // the cap: a roof to stand on at the top
   else if (P.kind === 'swing') { for (const sx of [-1, 1]) add(K.c, sx * 2.4 - .2, sx * 2.4 + .2, 0, q.h, -.2, .2); add(K.c, -2.6, 2.6, q.h, q.h + .35, -.25, .25); X.push({ type: 'swing', h: q.h + .1, len: Math.min(q.len, q.h - 1) }); }
   else if (P.kind === 'pad') { add(0x2a2f36, -q.s / 2 - .15, q.s / 2 + .15, 0, .25, -q.s / 2 - .15, q.s / 2 + .15); add(K.c, -q.s / 2, q.s / 2, .25, .4, -q.s / 2, q.s / 2); X.push({ type: 'pad', s: q.s, top: .4, v: q.v }); }
   else if (P.kind === 'monkey') { const w = 1.1, n = Math.max(2, Math.round(q.len / .95)), gp = q.len / n; for (const sz of [-1, 1]) for (const x of [-q.len / 2 - .4, q.len / 2 + .4]) add(K.c, x - .12, x + .12, 0, q.h + .12, sz * (w / 2 + .1) - .12, sz * (w / 2 + .1) + .12);
@@ -68919,12 +68953,25 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
   const yw = ((P.yaw || 0) % 4 + 4) % 4, rx = (x, z) => yw === 0 ? [x, z] : yw === 1 ? [z, -x] : yw === 2 ? [-x, -z] : [-z, x], [ax, ay, az] = P.at;
   const g = new THREE.Group(); g.userData.pid = P.id; const boxes = [];
   for (const { c, b } of L) { const a = rx(b[0], b[4]), d = rx(b[1], b[5]), x0 = Math.min(a[0], d[0]) + ax, x1 = Math.max(a[0], d[0]) + ax, z0 = Math.min(a[1], d[1]) + az, z1 = Math.max(a[1], d[1]) + az;
-    const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, b[3] - b[2], z1 - z0), lbMat(c, ghost)); m.position.set((x0 + x1) / 2, ay + (b[2] + b[3]) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
+    const m = new THREE.Mesh(lbBoxGeo(x1 - x0, b[3] - b[2], z1 - z0, lbRole(c)), lbMat(c, ghost, lbRole(c))); m.position.set((x0 + x1) / 2, ay + (b[2] + b[3]) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
     boxes.push({ minx: x0, maxx: x1, miny: ay + b[2], maxy: ay + b[3], minz: z0, maxz: z1, id: P.id }); }
+  for (const O of OB) { const c0 = rx(O.cx, O.cz), u = rx(Math.cos(O.a), Math.sin(O.a)), cx = c0[0] + ax, cz = c0[1] + az, ex = Math.abs(u[0]) * O.hx + Math.abs(u[1]) * O.hz, ez = Math.abs(u[1]) * O.hx + Math.abs(u[0]) * O.hz;
+    const m = new THREE.Mesh(lbBoxGeo(O.hx * 2, O.y1 - O.y0, O.hz * 2, 'stone'), lbMat(O.c, ghost, 'stone')); m.position.set(cx, ay + (O.y0 + O.y1) / 2, cz); m.rotation.y = -Math.atan2(u[1], u[0]); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
+    boxes.push({ cs: u[0], sn: u[1], hx: O.hx, hz: O.hz, cx, cz, minx: cx - ex, maxx: cx + ex, miny: ay + O.y0, maxy: ay + O.y1, minz: cz - ez, maxz: cz + ez, id: P.id }); }
   for (const pt of ports) { const r = rx(pt.at[0], pt.at[2]); pt.w = [r[0] + ax, ay + pt.at[1], r[1] + az]; pt.key = pt.side; pt.deck = ay + q.h; }     // `key` is the piece's own N/E/S/W (unturned); `deck` the floor height there
   // the extras, into the world frame (turned and placed), with a light editor look; `lbSystems` makes them real in play
   const ex = [], lm = (c, w, h, d, x, y, z, ry) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), lbMat(c, ghost)); m.position.set(x, y, z); if (ry) m.rotation.y = ry; m.userData.pid = P.id; g.add(m); };
-  for (const E of X) { if (E.type === 'swing') { ex.push({ type: 'swing', id: P.id + '_rope', top: [ax, ay + E.h, az], len: E.len }); if (LB.on) lm(0xc9b07a, .09, E.len, .09, ax, ay + E.h - E.len / 2, az); continue; }
+  const look = (geo, mat, x, y, z, ry) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.y = ry || 0; m.userData.pid = P.id; g.add(m); return m; };
+  for (const E of X) { if (E.type === 'arrows' || E.type === 'upArrows') {     // m1886: SONIC chevrons -- along a run wall (both faces), up a chimney's inner faces
+      const am = lbArrowMat(), n = Math.max(1, Math.floor(E.len / 4));
+      for (const sd of [-1, 1]) for (let i = 0; i < n; i++) { const u = (i + .5) * E.len / n - E.len / 2;
+        if (E.type === 'arrows') { const lx = E.cx + Math.cos(E.a) * u - Math.sin(E.a) * sd * (E.off + .03), lz = E.cz + Math.sin(E.a) * u + Math.cos(E.a) * sd * (E.off + .03), w = rx(lx, lz), nrm = rx(-Math.sin(E.a) * sd, Math.cos(E.a) * sd), tg = rx(Math.cos(E.a), Math.sin(E.a));
+          const m = look(lbArrowGeo(), am, w[0] + ax, ay + E.h * .5, w[1] + az); m.lookAt(m.position.x + nrm[0], m.position.y, m.position.z + nrm[1]); m.rotateZ(Math.sign(tg[0] * -nrm[1] + tg[1] * nrm[0]) * Math.PI / 2 || Math.PI / 2); }
+        else { const w = rx(u, E.cz * -sd + sd * -.03 * 0), lz = -sd * (E.cz - .03), w2 = rx(u, lz), nrm = rx(0, sd); for (let y = 2; y < E.h - 1; y += 4) { const m = look(lbArrowGeo(), am, w2[0] + ax, ay + y, w2[1] + az); m.lookAt(m.position.x + nrm[0], m.position.y, m.position.z + nrm[1]); } } }
+      continue; }
+    if (E.type === 'trim') { const tm = lbMat(0xb3322a, ghost, 'lacq'), gm = lbGlowMat(); for (const [w, d, y, hh, mm] of [[E.dh * 2 + .2, E.dh * 2 + .2, E.H - .5, .22, tm], [E.hb * 2 + .1, E.hb * 2 + .1, E.H - .75, .12, gm]]) look(new THREE.BoxGeometry(w, hh, d), mm, ax, ay + y, az); continue; }
+    if (E.type === 'band') { look(new THREE.BoxGeometry(E.hb * 2 + .12, .18, E.hb * 2 + .12), lbMat(0x2a2f36, ghost, 'plain'), ax, ay + E.y, az); continue; }
+    if (E.type === 'swing') { ex.push({ type: 'swing', id: P.id + '_rope', top: [ax, ay + E.h, az], len: E.len }); if (LB.on) lm(0xc9b07a, .09, E.len, .09, ax, ay + E.h - E.len / 2, az); continue; }
     if (E.type === 'pad') { ex.push({ type: 'pad', x: ax, z: az, y: ay + E.top, hs: E.s / 2, v: E.v }); continue; }
     if (E.type === 'monkey') { const al = yw % 2 ? 'z' : 'x', sg = yw >= 2 ? -1 : 1, rungs = []; for (let i = 0; i <= E.n; i++) { const u = (-E.len / 2 + i * E.gp) * sg; rungs.push((al === 'x' ? ax : az) + (yw === 1 ? -u : yw === 3 ? u : u)); }
       rungs.sort((a, b) => a - b); const M = { id: P.id + '_mb', ax: al, x: ax, z: az, h: ay + E.h, w: E.w, rungs }; ex.push({ type: 'monkey', M });
@@ -69059,7 +69106,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
     L.pieces.push({ id, kind: k, at, yaw: 0, p: {}, ports: k === 'tower' ? { N: 'closed', E: 'closed', S: 'closed', W: 'closed' } : undefined }); lbSave(); lbSelect(id); }
   else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
-  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
+  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'lwall' ? 'r' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
   else if (a === 'lift') P.at[1] = Math.max(-50, P.at[1] + +k);
