@@ -5,6 +5,22 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- WHY HIS FOOTSTEPS NEVER SOUND LIKE HIS FILES ON THE PHONE: the speaker, my processing, and the pitch sweep
+
+His: *"every time I give you footsteps the ones in game sound nothing like my original footsteps ... I just gave you the most quiet, subtle padded
+footsteps and on the phone they're just this crispy noise. Are you putting some weird thing on them, like resonance?"*
+- The chain was checked end to end: buffer -> gain -> `SFX.bus` (a plain gain) -> destination. No reverb, no EQ, no compressor.
+- MEASURED (energy by band, whole file):
+      footstep_l (his ORIGINAL)  <150 Hz 48%   150-400 44%   400-2k  6%   2-6k  1%
+      footstep_3_L (his new)            7%           21%           43%        26%
+  A PHONE SPEAKER plays almost nothing under ~300-400 Hz. So on the phone the original's 92% thud is GONE and only its top is heard (the "metallic
+  click" of m140), and footstep_3's crunch is what is left. On his computer the thud is there. That is the main gap and it is physics.
+- MINE on top: m1867 levelled footstep_3 x14-18 (loudens the crunch along with the rest), and 3 of its 4 "variants" were pitch/EQ (treble on one).
+  And `STEP.r0/r1` swept pitch +9% at a walk to -9% at a sprint, `jit` .08.
+- Now: the bank is ONLY his file, levelled + trimmed (variant 1 -- gain does not change a tone); pitch sweep +-3%, `jit` .04; and a lowpass PER
+  STEP (`snd`'s new `lp`, Q .5) at `STEP.lp` 1600 Hz rolled +-25% (that roll is the variety) -- TOOLS > FOOTSTEPS: SOFT (phone) / RAW.
+- If the thud matters on the phone speaker it has to be MOVED UP (harmonics of it in 200-600 Hz) -- not done, a taste call for him.
+
 ## m1868 -- the build number sits lower (iPhone's blurred top edge)
 
 His: *"the very top of the screen gets blurred out on iPhone glass, so I can never really tell which build we're on."*
