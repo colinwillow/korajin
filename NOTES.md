@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- on a ledge the LEFT flick is the hop (it was a melee move)
+## m1890 -- on a ledge the LEFT flick is the hop (it was a melee move)
 
 His: *"hanging on a ledge, flick left or flick right on the left stick -- he's supposed to do the Mixamo ledge move where he leaps a little; it
 triggers a melee instead."* It was never routed: the ledge hop lived only on the RIGHT-pad swipe (`ledgeFlick`, m1859's lurch), and the left
