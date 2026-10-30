@@ -29260,7 +29260,7 @@ function gymArrowTex() { if (_gymArrowTex) return _gymArrowTex; const cv = docum
 // builder: a pure function of its table -> { g, boxes }
 function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
   const mats = {}, mat = c => mats[c] || (mats[c] = new THREE.MeshStandardMaterial({ color: c, roughness: .85 }));
-  for (const P of T.pieces) { const [x0, x1, y0, y1, z0, z1] = P.box, m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(P.c)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; m.name = P.id; g.add(m);
+  for (const P of T.pieces) { const [x0, x1, y0, y1, z0, z1] = P.box, m = new THREE.Mesh(lbBoxGeo(x1 - x0, y1 - y0, z1 - z0, 'stone'), lbMat(P.c, false, 'stone'));     /* m1891: the gym in the builder's stone */ m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; m.name = P.id; g.add(m);
     const b = { minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id: P.id }; boxes.push(b); by[P.id] = b; if (P.label) wparkLabel(g, P.label[0], P.label[1], P.label[2], 0, P.label[3]); }
   const am = new THREE.MeshBasicMaterial({ map: gymArrowTex(), transparent: true, depthWrite: false, opacity: .9 }), ag = new THREE.PlaneGeometry(2.2, 2.2);
   for (const [id, side, u, y, ang] of T.arrows) { const b = by[id]; if (!b) continue; const m = new THREE.Mesh(ag, am);
@@ -68929,7 +68929,8 @@ function lbStoneTex() { if (_lbStone) return _lbStone; const cv = document.creat
 function lbRole(c) { return c === 0x6b5038 || c === 0x8a6a3a || c === 0xa0763c ? 'wood' : c === 0xd9a441 || c === 0x2a2f36 || c === 0x39e07a ? 'plain' : 'stone'; }
 function lbMat(c, ghost, role) { const k = c + (ghost ? 'g' : '') + (role || ''); if (_lvM[k]) return _lvM[k];
   const col = new THREE.Color(c); if (role === 'stone') col.lerp(new THREE.Color(0xffffff), .35);
-  return (_lvM[k] = new THREE.MeshStandardMaterial({ color: col, roughness: role === 'lacq' ? .35 : .85, metalness: role === 'lacq' ? .1 : 0, map: role === 'stone' ? lbStoneTex() : null, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
+  return (_lvM[k] = new THREE.MeshStandardMaterial({ side: role === 'roofd' ? THREE.DoubleSide : THREE.FrontSide, color: col, roughness: role === 'lacq' ? .35 : .85, metalness: role === 'lacq' ? .1 : 0, map: role === 'stone' ? lbStoneTex() : null, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
+function lbLanternMat() { return _lvM.lantern || (_lvM.lantern = new THREE.MeshStandardMaterial({ color: 0x3a1a08, emissive: 0xffa040, emissiveIntensity: 1.6, roughness: .6 })); }
 function lbGlowMat() { return _lvM.glow || (_lvM.glow = new THREE.MeshStandardMaterial({ color: 0x0b2a30, emissive: 0x29e3ff, emissiveIntensity: 1.4, roughness: .4 })); }
 function lbArrowMat() { return _lvM.arrow || (_lvM.arrow = new THREE.MeshBasicMaterial({ map: gymArrowTex(), transparent: true, depthWrite: false, opacity: .9, polygonOffset: true, polygonOffsetFactor: -2 })); }
 function lbArrowGeo() { return _lvM.arrowG || (_lvM.arrowG = new THREE.PlaneGeometry(1.8, 1.8)); }
@@ -68941,6 +68942,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
   const add = (c, x0, x1, y0, y1, z0, z1) => L.push({ c, b: [x0, x1, y0, y1, z0, z1] });
   if (P.kind === 'tower') { const hb = q.base / 2, dh = hb + .6, H = q.h; add(K.c, -hb, hb, 0, H - .4, -hb, hb); add(0x6b5038, -dh, dh, H - .4, H, -dh, dh);
     X.push({ type: 'trim', hb, dh, H }); for (let y = 6; y < H - 2; y += 6) X.push({ type: 'band', hb, y });     // m1886: lacquer, glow and masonry bands
+    if (q.roof !== 0) X.push({ type: 'roof', dh, H });     // m1891: a floating hip roof on lacquer posts (ROOF toggles it)
     const ps = P.ports || {};
     for (const [side, nx, nz] of [['N', 0, -1], ['E', 1, 0], ['S', 0, 1], ['W', -1, 0]]) { const t = ps[side] || 'closed', tx = -nz, tz = nx;
       const seg = (u0, u1, n0, n1, y0, y1, c) => { const xs = [tx * u0 + nx * n0, tx * u1 + nx * n1, tx * u0 + nx * n1, tx * u1 + nx * n0], zs = [tz * u0 + nz * n0, tz * u1 + nz * n1, tz * u0 + nz * n1, tz * u1 + nz * n0]; add(c, Math.min(...xs), Math.max(...xs), y0, y1, Math.min(...zs), Math.max(...zs)); };
@@ -68950,11 +68952,12 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
       if (t === 'bar') { seg(-dh, -2.2, dh - .3, dh, H, H + 1.1, 0x6b5038); seg(2.2, dh, dh - .3, dh, H, H + 1.1, 0x6b5038); X.push({ type: 'bar', lx: nx * (dh - 1.1), lz: nz * (dh - 1.1), ltx: tx, ltz: tz, y: H }); }
       if (t === 'ladder') X.push({ type: 'ladder', lx: nx * (dh + .1), lz: nz * (dh + .1), ltx: tx, ltz: tz, lnx: nx, lnz: nz, h: H, mx: nx * (dh - 1.4), mz: nz * (dh - 1.4) });
       ports.push({ side, t, at: [nx * (dh + (t === 'balcony' ? 2.4 : 0)), H + .7, nz * (dh + (t === 'balcony' ? 2.4 : 0))] }); } }
-  else if (P.kind === 'wall') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2); X.push({ type: 'arrows', a: 0, cx: 0, cz: 0, len: q.len, off: q.t / 2, h: q.h }); }
+  else if (P.kind === 'wall') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2); X.push({ type: 'arrows', a: 0, cx: 0, cz: 0, len: q.len, off: q.t / 2, h: q.h }, { type: 'cap', cx: 0, cz: 0, a: 0, len: q.len, t: q.t, h: q.h }); }
   else if (P.kind === 'lwall') { const r = q.r, t = .6, n = Math.max(3, Math.round(r * Math.PI / 2 / 1.5)), da = Math.PI / 2 / n, sl = r * 2 * Math.sin(da / 2);     /* exact: padding a chord sticks a lip OUT past a convex curve, which stopped the run dead */     // the bend: n turned segments ~1.5 m long (each over the wall run's 1.2 m minimum; neighbours 15 deg apart, inside its .95 hand-off)
     for (let i = 0; i < n; i++) { const th = (i + .5) * da; OB.push({ c: K.c, cx: r * Math.cos(th), cz: r * Math.sin(th), a: th + Math.PI / 2, hx: sl / 2, hz: t / 2, y0: 0, y1: q.h }); }
     add(K.c, r - t / 2, r + t / 2, 0, q.h, -q.len, .05); add(K.c, -q.len, .05, 0, q.h, r - t / 2, r + t / 2);
-    X.push({ type: 'arrows', a: Math.PI / 2, cx: r, cz: -q.len / 2, len: q.len, off: t / 2, h: q.h }, { type: 'arrows', a: 0, cx: -q.len / 2, cz: r, len: q.len, off: t / 2, h: q.h }); }
+    X.push({ type: 'arrows', a: Math.PI / 2, cx: r, cz: -q.len / 2, len: q.len, off: t / 2, h: q.h }, { type: 'arrows', a: 0, cx: -q.len / 2, cz: r, len: q.len, off: t / 2, h: q.h }, { type: 'cap', cx: r, cz: -q.len / 2, a: Math.PI / 2, len: q.len, t, h: q.h }, { type: 'cap', cx: -q.len / 2, cz: r, a: 0, len: q.len, t, h: q.h });
+    for (let i = 0; i < n; i++) { const th = (i + .5) * da; X.push({ type: 'cap', cx: r * Math.cos(th), cz: r * Math.sin(th), a: th + Math.PI / 2, len: sl, t, h: q.h }); } }
   else if (P.kind === 'qbowl') {     // m1887: the profile p(th) = (z -R sin th, y R(1 - cos th)), th 0 (floor) -> 90 (wall at z = -R); he comes from +z
     const R = q.r, W = q.w / 2, n = 12, pz = th => -R * Math.sin(th), py = th => R * (1 - Math.cos(th)), walk = 50 * Math.PI / 180;
     for (let i = 0; i < n; i++) { const a = i / n * Math.PI / 2, b = (i + 1) / n * Math.PI / 2;
@@ -68963,7 +68966,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     add(K.c, -W, W, R, q.h, -R - .6, -R); add(0x00877f, -W - .4, -W, 0, q.h, -R - .6, 0); add(0x00877f, W, W + .4, 0, q.h, -R - .6, 0);     // the wall above, and two cheeks
     X.push({ type: 'bowlSkin', R, W, n }, { type: 'upArrows2', R, W, h: q.h }, { type: 'bowl', R, W }); }
   else if (P.kind === 'loop') X.push({ type: 'loop', R: q.r, w: q.w, off: q.off });
-  else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); X.push({ type: 'upArrows', cz: q.gap / 2, len: q.len, h: q.h }); }     // the cap: a roof to stand on at the top
+  else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); X.push({ type: 'upArrows', cz: q.gap / 2, len: q.len, h: q.h }, { type: 'cap', cx: 0, cz: -q.gap / 2 - .3, a: 0, len: q.len, t: .6, h: q.h + .3 }, { type: 'cap', cx: 0, cz: q.gap / 2 + .3, a: 0, len: q.len, t: .6, h: q.h + .3 }); }     // the cap: a roof to stand on at the top
   else if (P.kind === 'swing') { for (const sx of [-1, 1]) add(K.c, sx * 2.4 - .2, sx * 2.4 + .2, 0, q.h, -.2, .2); add(K.c, -2.6, 2.6, q.h, q.h + .35, -.25, .25); X.push({ type: 'swing', h: q.h + .1, len: Math.min(q.len, q.h - 1) }); }
   else if (P.kind === 'pad') { add(0x2a2f36, -q.s / 2 - .15, q.s / 2 + .15, 0, .25, -q.s / 2 - .15, q.s / 2 + .15); add(K.c, -q.s / 2, q.s / 2, .25, .4, -q.s / 2, q.s / 2); X.push({ type: 'pad', s: q.s, top: .4, v: q.v }); }
   else if (P.kind === 'monkey') { const w = 1.1, n = Math.max(2, Math.round(q.len / .95)), gp = q.len / n; for (const sz of [-1, 1]) for (const x of [-q.len / 2 - .4, q.len / 2 + .4]) add(K.c, x - .12, x + .12, 0, q.h + .12, sz * (w / 2 + .1) - .12, sz * (w / 2 + .1) + .12);
@@ -68996,6 +68999,18 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     if (E.type === 'upArrows2') { const am = lbArrowMat(); for (const x of [-E.W / 2, E.W / 2]) for (let y = E.R + 1.5; y < E.h - .8; y += 3) { const w = rx(x, -E.R + .05), n2 = rx(0, 1), m = look(lbArrowGeo(), am, w[0] + ax, ay + y, w[1] + az); m.lookAt(m.position.x + n2[0], m.position.y, m.position.z + n2[1]); }
       for (const x of [-E.W / 2, E.W / 2]) { const th = .55, w = rx(x, -E.R * Math.sin(th) + .1), m = look(lbArrowGeo(), am, w[0] + ax, ay + E.R * (1 - Math.cos(th)) + .1, w[1] + az), n2 = rx(0, Math.cos(th)); m.lookAt(m.position.x + n2[0], m.position.y + Math.sin(th), m.position.z + n2[1]); } continue; }
     if (E.type === 'trim') { const tm = lbMat(0xb3322a, ghost, 'lacq'), gm = lbGlowMat(); for (const [w, d, y, hh, mm] of [[E.dh * 2 + .2, E.dh * 2 + .2, E.H - .5, .22, tm], [E.hb * 2 + .1, E.hb * 2 + .1, E.H - .75, .12, gm]]) look(new THREE.BoxGeometry(w, hh, d), mm, ax, ay + y, az); continue; }
+    if (E.type === 'roof') {     // m1891: posts at the deck corners, a two-tier hip roof (4-sided cones turned 45 deg), upswept corner tips, a finial, lanterns
+      const ph = 3.4, y0 = ay + E.H, D = E.dh, tm = lbMat(0xb3322a, ghost, 'lacq'), tile = lbMat(0x2d3440, ghost, 'plain'), lm2 = lbLanternMat();
+      for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) { const c = rx(sx * (D - .25), sz * (D - .25)); look(new THREE.BoxGeometry(.28, ph, .28), tm, c[0] + ax, y0 + ph / 2, c[1] + az);
+        const c2 = rx(sx * (D + 1.1), sz * (D + 1.1)), tip = look(new THREE.BoxGeometry(.25, .18, 1.6), tile, c2[0] + ax, y0 + ph + .35, c2[1] + az, Math.atan2(c2[0], c2[1])); tip.rotation.x = -.45;     // the upswept corner
+        const c3 = rx(sx * (D + .55), sz * (D + .55)); look(new THREE.BoxGeometry(.32, .45, .32), lm2, c3[0] + ax, y0 + ph - .45, c3[1] + az); }
+      for (const [r2, h0, hh] of [[(D + 1.5) * Math.SQRT2, ph, 1.1], [(D * .55 + .4) * Math.SQRT2, ph + 1.15, 1.7]]) { const cg = new THREE.ConeGeometry(r2, hh, 4, 1, true); cg.rotateY(Math.PI / 4); const m = look(cg, lbMat(0x2d3440, ghost, 'roofd'), ax, y0 + h0 + hh / 2, az); m.rotation.y = (P.yaw || 0) * Math.PI / 2; }
+      look(new THREE.BoxGeometry(D * 2 + .5, .22, D * 2 + .5), tm, ax, y0 + ph + .02, az, (P.yaw || 0) * Math.PI / 2);     // the lacquer eave beam
+      look(new THREE.CylinderGeometry(.08, .2, 1.2, 8), lbMat(0xd4af37, ghost, 'lacq'), ax, y0 + ph + 3.4, az); continue; }
+    if (E.type === 'cap') { const c = rx(E.cx, E.cz), u = rx(Math.cos(E.a), Math.sin(E.a)), ry = -Math.atan2(u[1], u[0]);     // m1891: tile coping, a cyan glow line under it, a darker plinth
+      look(new THREE.BoxGeometry(E.len + .1, .22, E.t + .4), lbMat(0x2d3440, ghost, 'plain'), c[0] + ax, ay + E.h + .11, c[1] + az, ry);
+      look(new THREE.BoxGeometry(E.len + .02, .07, E.t + .06), lbGlowMat(), c[0] + ax, ay + E.h - .12, c[1] + az, ry);
+      look(new THREE.BoxGeometry(E.len + .04, .5, E.t + .12), lbMat(0x3a3f47, ghost, 'stone'), c[0] + ax, ay + .25, c[1] + az, ry); continue; }
     if (E.type === 'band') { look(new THREE.BoxGeometry(E.hb * 2 + .12, .18, E.hb * 2 + .12), lbMat(0x2a2f36, ghost, 'plain'), ax, ay + E.y, az); continue; }
     if (E.type === 'swing') { ex.push({ type: 'swing', id: P.id + '_rope', top: [ax, ay + E.h, az], len: E.len }); if (LB.on) lm(0xc9b07a, .09, E.len, .09, ax, ay + E.h - E.len / 2, az); continue; }
     if (E.type === 'pad') { ex.push({ type: 'pad', x: ax, z: az, y: ay + E.top, hs: E.s / 2, v: E.v }); continue; }
@@ -69117,7 +69132,7 @@ function lbBotPaint() { const B = LB.bot, P = LB.sel && LB.cur.pieces.find(q => 
   if (!P) { B.innerHTML = '<div style="margin:0 2px 4px">ADD (it appears in front of the camera) -- tap a piece to edit it, tap a tower port ball to change it -- LINK two ports:</div>' + Object.entries(LB.KINDS).map(([k, K]) => btn('add', K.label, k)).join('') + '<br>' + Object.entries(LB.LINKS).map(([k, X]) => btn('link', 'LINK ' + X.label, k)).join(''); return; }
   const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p);
   B.innerHTML = '<div style="margin:0 2px 4px">' + K.label + ' ' + P.id + ' -- ' + Object.entries(q).map(([k, v]) => k + ' ' + (+v).toFixed(1)).join(', ') + '  @ y ' + P.at[1].toFixed(1) + '</div>'
-    + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
+    + (P.kind === 'tower' ? btn('roof', P.p && P.p.roof === 0 ? 'ROOF: OFF' : 'ROOF: ON') : '') + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
 function lbSelect(id) { LB.sel = id || null; if (id) LB.selLink = null; lbLive(LB.sel); const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel);
   if (LB.tc) { LB.tc.detach(); if (P) { const g = LB.live.g.children.find(c => c.userData.pid === P.id); if (g) { LB.anchor.position.set(P.at[0], P.at[1], P.at[2]); LB.anchor.updateMatrixWorld(true); LB.tc.attach(LB.anchor); LB.drag0 = P.at.slice(); } } }
   lbBotPaint(); }
@@ -69143,6 +69158,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
     L.pieces.push({ id, kind: k, at, yaw: 0, p: {}, ports: k === 'tower' ? { N: 'closed', E: 'closed', S: 'closed', W: 'closed' } : undefined }); lbSave(); lbSelect(id); }
   else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
+  else if (a === 'roof') P.p = Object.assign({}, P.p, { roof: P.p && P.p.roof === 0 ? 1 : 0 });
   else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'lwall' || P.kind === 'qbowl' || P.kind === 'loop' ? 'r' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }

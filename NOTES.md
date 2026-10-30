@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LOOK pass 2: Japanese roofs, lanterns, coping; the gym in stone
+
+His: *"look pass two"* (the asks: Japanese architecture, futuristic retro, stone masonry, alien world -- and he could not see pass 1, which was
+only on builder pieces).
+- Builder TOWER: a floating hip roof 3.4 m above the deck (stand under it; the ports stay clear) -- four red lacquer corner posts, a lacquer eave
+  beam, two tiers of 4-sided tile cones turned to the deck, upswept tile tips at the corners, a gold finial, four warm emissive lanterns
+  (`lbLanternMat`). `p.roof` 0 = off (ROOF button on a selected tower).
+- WALL / L-WALL (every segment) / CHIMNEY: a dark tile coping, a cyan emissive line under it, a darker stone plinth (the `cap` extra).
+- The GYM's pieces (`gymBuild`) are built with `lbBoxGeo` + `lbMat(..., 'stone')` -- the same tinted masonry, per-metre UVs. Its yagura towers
+  were already timber. Checked headless in zone=wall (the gym builds after the module, so the builder's `_lvM` is in scope -- no TDZ).
+
 ## m1890 -- on a ledge the LEFT flick is the hop (it was a melee move)
 
 His: *"hanging on a ledge, flick left or flick right on the left stick -- he's supposed to do the Mixamo ledge move where he leaps a little; it
