@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- DOCKET 38: the tutorial level (planned, not built)
+## m1885 -- DOCKET 38: the tutorial level (planned, not built)
 
 His: *"put on the docket that we really need to build a tutorial level that is really fun and interactive -- big text that says DOWN and you swipe
 down and it destroys the block; slash through it; jump up ... a little pop-up video of the joystick swiping up ... maybe you could make those
