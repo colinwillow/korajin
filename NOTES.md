@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- THE POSE EDITOR, in game (TOOLS > POSE EDIT)
+## m1877 -- THE POSE EDITOR, in game (TOOLS > POSE EDIT)
 
 His: *"pause, everything freezes, pick the character, choose joints -- shoulder, upper arm -- a gizmo, tweak it until his shoulder bends out a bit
 more ... then bake the offset and it sends the info into the code or back to you or to some json. Adjusting animations in game would be so clutch."*
