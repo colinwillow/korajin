@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the bow's DOWN-AIM finally shoots down (two bugs under m1854)
+## m1893 -- the bow's DOWN-AIM finally shoots down (two bugs under m1854)
 
 His: *"aiming down with the bow and arrow with the right stick never panned out -- it looks like it tries, but the arrow never goes down."*
 MEASURED (headless: draw with the thumb up, slide it down, lift):
