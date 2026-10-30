@@ -1,0 +1,311 @@
+{
+ "name": "Zap Set Basic",
+ "about": "Every clip old Zap has, tuned for his body over the m-builds: locomotion, cover, ledge, melee, weapons, rockets.",
+ "clips": [
+  {
+   "role": "backflip",
+   "donor": "models/characters/zap.glb",
+   "clip": "backflip"
+  },
+  {
+   "role": "climbing_Ladder",
+   "donor": "models/characters/zap.glb",
+   "clip": "climbing_Ladder"
+  },
+  {
+   "role": "driving",
+   "donor": "models/characters/zap.glb",
+   "clip": "driving"
+  },
+  {
+   "role": "flying_kick",
+   "donor": "models/characters/zap.glb",
+   "clip": "flying_kick"
+  },
+  {
+   "role": "front_flip",
+   "donor": "models/characters/zap.glb",
+   "clip": "front_flip"
+  },
+  {
+   "role": "hold_item",
+   "donor": "models/characters/zap.glb",
+   "clip": "hold_item"
+  },
+  {
+   "role": "hurricane_kick",
+   "donor": "models/characters/zap.glb",
+   "clip": "hurricane_kick"
+  },
+  {
+   "role": "idle_01",
+   "donor": "models/characters/zap.glb",
+   "clip": "idle_01"
+  },
+  {
+   "role": "idle_rifle",
+   "donor": "models/characters/zap.glb",
+   "clip": "idle_rifle"
+  },
+  {
+   "role": "idle_to_wall_cover_right",
+   "donor": "models/characters/zap.glb",
+   "clip": "idle_to_wall_cover_right"
+  },
+  {
+   "role": "in_air",
+   "donor": "models/characters/zap.glb",
+   "clip": "in_air"
+  },
+  {
+   "role": "landing_hard",
+   "donor": "models/characters/zap.glb",
+   "clip": "landing_hard"
+  },
+  {
+   "role": "landing_soft",
+   "donor": "models/characters/zap.glb",
+   "clip": "landing_soft"
+  },
+  {
+   "role": "lay_to_get_up",
+   "donor": "models/characters/zap.glb",
+   "clip": "lay_to_get_up"
+  },
+  {
+   "role": "laying_down",
+   "donor": "models/characters/zap.glb",
+   "clip": "laying_down"
+  },
+  {
+   "role": "ledge_hang_hop_left",
+   "donor": "models/characters/zap.glb",
+   "clip": "ledge_hang_hop_left"
+  },
+  {
+   "role": "ledge_hang_hop_right",
+   "donor": "models/characters/zap.glb",
+   "clip": "ledge_hang_hop_right"
+  },
+  {
+   "role": "ledge_hang_idle",
+   "donor": "models/characters/zap.glb",
+   "clip": "ledge_hang_idle"
+  },
+  {
+   "role": "ledge_hang_to_get_up_over_ledge",
+   "donor": "models/characters/zap.glb",
+   "clip": "ledge_hang_to_get_up_over_ledge"
+  },
+  {
+   "role": "ledge_hang_to_jump_away",
+   "donor": "models/characters/zap.glb",
+   "clip": "ledge_hang_to_jump_away"
+  },
+  {
+   "role": "melee_01",
+   "donor": "models/characters/zap.glb",
+   "clip": "melee_01"
+  },
+  {
+   "role": "melee_02",
+   "donor": "models/characters/zap.glb",
+   "clip": "melee_02"
+  },
+  {
+   "role": "melee_03",
+   "donor": "models/characters/zap.glb",
+   "clip": "melee_03"
+  },
+  {
+   "role": "melee_04",
+   "donor": "models/characters/zap.glb",
+   "clip": "melee_04"
+  },
+  {
+   "role": "melee_05",
+   "donor": "models/characters/zap.glb",
+   "clip": "melee_05"
+  },
+  {
+   "role": "melee_extra",
+   "donor": "models/characters/zap.glb",
+   "clip": "melee_extra"
+  },
+  {
+   "role": "rifle_run",
+   "donor": "models/characters/zap.glb",
+   "clip": "rifle_run"
+  },
+  {
+   "role": "rifle_run_shoot",
+   "donor": "models/characters/zap.glb",
+   "clip": "rifle_run_shoot"
+  },
+  {
+   "role": "rocket_launcher",
+   "donor": "models/characters/zap.glb",
+   "clip": "rocket_launcher"
+  },
+  {
+   "role": "rocket_launcher_fire",
+   "donor": "models/characters/zap.glb",
+   "clip": "rocket_launcher_fire"
+  },
+  {
+   "role": "roll",
+   "donor": "models/characters/zap.glb",
+   "clip": "roll"
+  },
+  {
+   "role": "run_bwd",
+   "donor": "models/characters/zap.glb",
+   "clip": "run_bwd"
+  },
+  {
+   "role": "run_fwd",
+   "donor": "models/characters/zap.glb",
+   "clip": "run_fwd"
+  },
+  {
+   "role": "run_fwd_fast",
+   "donor": "models/characters/zap.glb",
+   "clip": "run_fwd_fast"
+  },
+  {
+   "role": "Running_fast_stride",
+   "donor": "models/characters/zap.glb",
+   "clip": "Running_fast_stride"
+  },
+  {
+   "role": "shoot",
+   "donor": "models/characters/zap.glb",
+   "clip": "shoot"
+  },
+  {
+   "role": "Skateboarding_down",
+   "donor": "models/characters/zap.glb",
+   "clip": "Skateboarding_down"
+  },
+  {
+   "role": "Skateboarding_middle",
+   "donor": "models/characters/zap.glb",
+   "clip": "Skateboarding_middle"
+  },
+  {
+   "role": "Skateboarding_turbulent",
+   "donor": "models/characters/zap.glb",
+   "clip": "Skateboarding_turbulent"
+  },
+  {
+   "role": "Skateboarding_up",
+   "donor": "models/characters/zap.glb",
+   "clip": "Skateboarding_up"
+  },
+  {
+   "role": "slide_kick",
+   "donor": "models/characters/zap.glb",
+   "clip": "slide_kick"
+  },
+  {
+   "role": "strafe_left",
+   "donor": "models/characters/zap.glb",
+   "clip": "strafe_left"
+  },
+  {
+   "role": "strafe_right",
+   "donor": "models/characters/zap.glb",
+   "clip": "strafe_right"
+  },
+  {
+   "role": "take_damage_and_fall_down",
+   "donor": "models/characters/zap.glb",
+   "clip": "take_damage_and_fall_down"
+  },
+  {
+   "role": "take_damage_body",
+   "donor": "models/characters/zap.glb",
+   "clip": "take_damage_body"
+  },
+  {
+   "role": "take_damage_head",
+   "donor": "models/characters/zap.glb",
+   "clip": "take_damage_head"
+  },
+  {
+   "role": "throw_item",
+   "donor": "models/characters/zap.glb",
+   "clip": "throw_item"
+  },
+  {
+   "role": "walk_fwd",
+   "donor": "models/characters/zap.glb",
+   "clip": "walk_fwd"
+  },
+  {
+   "role": "wall_cover_left_to_stand",
+   "donor": "models/characters/zap.glb",
+   "clip": "wall_cover_left_to_stand"
+  },
+  {
+   "role": "wall_cover_move_left",
+   "donor": "models/characters/zap.glb",
+   "clip": "wall_cover_move_left"
+  },
+  {
+   "role": "wall_cover_move_left_rifle",
+   "donor": "models/characters/zap.glb",
+   "clip": "wall_cover_move_left_rifle"
+  },
+  {
+   "role": "wall_cover_move_right_rifle",
+   "donor": "models/characters/zap.glb",
+   "clip": "wall_cover_move_right_rifle"
+  },
+  {
+   "role": "weapon_block",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_block"
+  },
+  {
+   "role": "weapon_block_reaction",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_block_reaction"
+  },
+  {
+   "role": "weapon_melee_01",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_melee_01"
+  },
+  {
+   "role": "weapon_melee_02",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_melee_02"
+  },
+  {
+   "role": "weapon_melee_03",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_melee_03"
+  },
+  {
+   "role": "weapon_melee_04",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_melee_04"
+  },
+  {
+   "role": "weapon_melee_charge",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_melee_charge"
+  },
+  {
+   "role": "weapon_melee_finish",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_melee_finish"
+  },
+  {
+   "role": "weapon_swap",
+   "donor": "models/characters/zap.glb",
+   "clip": "weapon_swap"
+  }
+ ]
+}

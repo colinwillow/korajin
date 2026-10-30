@@ -1,0 +1,41 @@
+{
+  "name": "korajin",
+  "private": true,
+  "description": "Tooling for Korajin. The game itself needs none of this -- index.html opens and runs.",
+  "scripts": {
+    "bump": "node tools/bump.mjs",
+    "check:syntax": "node tools/syntax.mjs index.html",
+    "check:boot": "node tools/boot.mjs",
+    "check:sim": "node tools/sim.mjs",
+    "check": "npm run check:syntax && npm run check:boot && npm run check:worlds && node tools/forgesync.mjs",
+    "check:worlds": "MEL_WORLD=arena node tools/boot.mjs && MEL_WORLD=forge node tools/boot.mjs && MEL_WORLD=home node tools/boot.mjs",
+    "clips": "node tools/clips.mjs",
+    "gait": "node tools/gait.mjs",
+    "rig": "node tools/rig.mjs",
+    "sim": "node tools/sim.mjs",
+    "glsl": "node tools/glsl.mjs",
+    "bld": "node tools/bld.mjs",
+    "icons": "node tools/icons.mjs",
+    "sfx": "node tools/sfx.mjs",
+    "morph": "node tools/morph.mjs",
+    "hull": "node tools/hull.mjs",
+    "lanes": "node tools/lanes.mjs",
+    "ktx": "node tools/ktx.mjs",
+    "ktxpng": "node tools/ktxpng.mjs",
+    "twins": "node tools/twins.mjs",
+    "donor": "node tools/donor.mjs",
+    "places": "node tools/placecheck.mjs",
+    "play": "node tools/play.mjs",
+    "shot": "node tools/shot.mjs",
+    "worlds": "node tools/worlds.mjs",
+    "worlds:boot": "node tools/worlds.mjs --boot",
+    "forge": "node tools/forge.cjs",
+    "moves": "node tools/moves.mjs"
+  },
+  "type": "module",
+  "devDependencies": {
+    "ktx2-encoder": "^0.6.0",
+    "mpg123-decoder": "^1.0.3",
+    "sharp": "^0.35.5"
+  }
+}

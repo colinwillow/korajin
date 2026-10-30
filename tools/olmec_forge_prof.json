@@ -1,0 +1,86 @@
+{
+ "v": 1,
+ "character": "models/creatures/stone_olmec.glb",
+ "exclude": [],
+ "layers": {
+  "feet": 1,
+  "ground": 1,
+  "clear": 0,
+  "toes": 1,
+  "handAlign": 1
+ },
+ "adjust": {
+  "stance": 0,
+  "arms": 0,
+  "elbows": 0,
+  "lean": 0,
+  "toeIn": 0,
+  "knees": 0,
+  "wrists": 0
+ },
+ "hands": {
+  "amt": 0
+ },
+ "clips": [
+  {
+   "role": "idle",
+   "stem": "Mutant_Breathing_Idle",
+   "name": "Mutant_Breathing_Idle"
+  },
+  {
+   "role": "walk",
+   "stem": "Mutant_Walking",
+   "name": "Mutant_Walking"
+  },
+  {
+   "role": "run",
+   "stem": "Mutant_Run",
+   "name": "Mutant_Run"
+  },
+  {
+   "role": "roar",
+   "stem": "Mutant_Roaring",
+   "name": "Mutant_Roaring"
+  },
+  {
+   "role": "swipe",
+   "stem": "Mutant_Swiping",
+   "name": "Mutant_Swiping"
+  },
+  {
+   "role": "punch",
+   "stem": "Mutant_Punch_1",
+   "name": "Mutant_Punch_1"
+  },
+  {
+   "role": "smash",
+   "stem": "Smash",
+   "name": "Smash"
+  },
+  {
+   "role": "stomp",
+   "stem": "Stomp",
+   "name": "Stomp"
+  },
+  {
+   "role": "hit",
+   "stem": "Zombie_Reaction_Hit",
+   "name": "Zombie_Reaction_Hit"
+  },
+  {
+   "role": "die",
+   "stem": "Mutant_Dying",
+   "name": "Mutant_Dying"
+  },
+  {
+   "role": "flex",
+   "stem": "Mutant_Flexing_Muscles_1",
+   "name": "Mutant_Flexing_Muscles_1"
+  },
+  {
+   "role": "look",
+   "stem": "Mutant_Idle",
+   "name": "Mutant_Idle"
+  }
+ ]
+}

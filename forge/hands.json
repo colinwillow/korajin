@@ -1,0 +1,72 @@
+{
+ "relaxed": {
+  "Right": {
+   "stem": "Happy_Idle",
+   "t": 1.396
+  },
+  "Left": {
+   "stem": "Situp_To_Idle_1",
+   "t": 3.855
+  }
+ },
+ "fist": {
+  "Right": {
+   "stem": "Boxing_8",
+   "t": 0
+  },
+  "Left": {
+   "stem": "Jab_To_Elbow_Punch",
+   "t": 0.868
+  }
+ },
+ "grip": {
+  "Right": {
+   "stem": "Rifle_Put_Away_1",
+   "t": 1.436
+  },
+  "Left": {
+   "stem": "Rifle_Rubbing_Eyes",
+   "t": 0.747
+  }
+ },
+ "cup": {
+  "Right": {
+   "stem": "Diagonal_Wall_Run",
+   "t": 0.194
+  },
+  "Left": {
+   "stem": "Flying_Knee_Punch_Combo",
+   "t": 2.7
+  }
+ },
+ "flat": {
+  "Right": {
+   "stem": "Breakdance_Footwork_To_Idle_1",
+   "t": 1.675
+  },
+  "Left": {
+   "stem": "Death_From_Right",
+   "t": 2.281
+  }
+ },
+ "open": {
+  "Right": {
+   "stem": "Climbing_3",
+   "t": 1.062
+  },
+  "Left": {
+   "stem": "Breakdance_Footwork_To_Idle",
+   "t": 2.444
+  }
+ },
+ "point": {
+  "Right": {
+   "stem": "Pointing_1",
+   "t": 1.387
+  },
+  "Left": {
+   "stem": "Crazy_Gesture",
+   "t": 2.407
+  }
+ }
+}

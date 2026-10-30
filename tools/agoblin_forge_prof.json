@@ -1,0 +1,286 @@
+{
+ "v": 1,
+ "character": "models/characters/alien_goblin_game.glb",
+ "exclude": [],
+ "layers": {
+  "feet": 1,
+  "ground": 1,
+  "clear": 0,
+  "toes": 1,
+  "handAlign": 1
+ },
+ "adjust": {
+  "stance": 1,
+  "arms": 0,
+  "elbows": 0,
+  "lean": 0,
+  "toeIn": 0,
+  "knees": 0,
+  "wrists": 45
+ },
+ "hands": {
+  "Right": {
+   "pose": "relaxed"
+  },
+  "Left": {
+   "pose": "relaxed"
+  },
+  "amt": 0.35,
+  "noise": {
+   "amt": 3,
+   "hz": 0.5
+  }
+ },
+ "clips": [
+  {
+   "role": "flying_backwards",
+   "donor": "models/characters/colin.glb",
+   "clip": "flying_backwards"
+  },
+  {
+   "role": "flying_forwards",
+   "donor": "models/characters/colin.glb",
+   "clip": "flying_forwards"
+  },
+  {
+   "role": "fall_to_back",
+   "donor": "models/characters/colin.glb",
+   "clip": "fall_to_back"
+  },
+  {
+   "role": "fall_to_face_down",
+   "donor": "models/characters/colin.glb",
+   "clip": "fall_to_face_down"
+  },
+  {
+   "role": "get_up_from_back",
+   "donor": "models/characters/colin.glb",
+   "clip": "get_up_from_back"
+  },
+  {
+   "role": "get_up_from_face",
+   "donor": "models/characters/colin.glb",
+   "clip": "get_up_from_face"
+  },
+  {
+   "role": "kip_up",
+   "stem": "Kip_Up",
+   "name": "Kip_Up"
+  },
+  {
+   "role": "kip_cork",
+   "stem": "Corkscrew_Kip_Up",
+   "name": "Corkscrew_Kip_Up"
+  },
+  {
+   "role": "ride_seat",
+   "stem": "Driving",
+   "name": "Driving"
+  },
+  {
+   "role": "ride_on",
+   "stem": "Entering_Car",
+   "name": "Entering_Car",
+   "edit": {
+    "inPlace": 1,
+    "trim": [
+     1.6,
+     3.4
+    ],
+    "speed": 1.4
+   }
+  },
+  {
+   "role": "ride_off",
+   "stem": "Exiting_Car",
+   "name": "Exiting_Car",
+   "edit": {
+    "inPlace": 1,
+    "trim": [
+     1.3,
+     3.6
+    ],
+    "speed": 2.0
+   }
+  },
+  {
+   "role": "ride_gun",
+   "stem": "Sitting_Gun_Motion",
+   "name": "Sitting_Gun_Motion"
+  },
+  {
+   "role": "bow_draw",
+   "stem": "Standing_Draw_Arrow",
+   "name": "Standing_Draw_Arrow",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_overdraw",
+   "stem": "Standing_Aim_Overdraw",
+   "name": "Standing_Aim_Overdraw",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_recoil",
+   "stem": "Standing_Aim_Recoil",
+   "name": "Standing_Aim_Recoil",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_aim",
+   "stem": "Standing_Aim_Idle_01",
+   "name": "Standing_Aim_Idle_01",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_walk_f",
+   "stem": "Standing_Aim_Walk_Forward",
+   "name": "Standing_Aim_Walk_Forward",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_walk_b",
+   "stem": "Standing_Aim_Walk_Back",
+   "name": "Standing_Aim_Walk_Back",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_walk_l",
+   "stem": "Standing_Aim_Walk_Left",
+   "name": "Standing_Aim_Walk_Left",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_walk_r",
+   "stem": "Standing_Aim_Walk_Right",
+   "name": "Standing_Aim_Walk_Right",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "bow_shoot",
+   "stem": "Shooting_Arrow_1",
+   "name": "Shooting_Arrow_1",
+   "hands": {
+    "Left": "fist",
+    "Right": "fist"
+   }
+  },
+  {
+   "role": "stairs_up",
+   "stem": "Walking_Up_The_Stairs",
+   "name": "Walking_Up_The_Stairs",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "stairs_run",
+   "stem": "Running_Up_Stairs",
+   "name": "Running_Up_Stairs",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "stairs_down",
+   "stem": "Descending_Stairs",
+   "name": "Descending_Stairs",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "idle_relaxed",
+   "stem": "Neutral_Idle",
+   "name": "Neutral_Idle",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "idle_ready",
+   "stem": "Ready_Idle",
+   "name": "Ready_Idle",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "idle_fight",
+   "stem": "Fight_Idle",
+   "name": "Fight_Idle",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "idle_i8",
+   "stem": "Idle_8",
+   "name": "Idle_8",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "idle_i14",
+   "stem": "Idle_14",
+   "name": "Idle_14",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "idle_i13",
+   "stem": "Idle_13",
+   "name": "Idle_13",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "wall_up",
+   "stem": "Climbing_Up_Wall",
+   "name": "Climbing_Up_Wall",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "wall_side",
+   "stem": "Wall_Run_1",
+   "name": "Wall_Run_1",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "hang_drop",
+   "stem": "Braced_Hang_To_Crouch",
+   "name": "Braced_Hang_To_Crouch"
+  }
+ ]
+}

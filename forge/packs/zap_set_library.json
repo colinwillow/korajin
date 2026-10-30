@@ -1,0 +1,122 @@
+{
+ "name": "Zap Set Library",
+ "about": "The same roles from the Mixamo library, matched to old Zap's clips by their data (retarget-anims identify).",
+ "clips": [
+  {
+   "role": "backflip",
+   "stem": "Backflip"
+  },
+  {
+   "role": "climbing_Ladder",
+   "stem": "Climbing_Ladder"
+  },
+  {
+   "role": "driving",
+   "stem": "Driving"
+  },
+  {
+   "role": "flying_kick",
+   "stem": "Flying_Kick"
+  },
+  {
+   "role": "hold_item",
+   "stem": "Goalkeeper_Idle_1"
+  },
+  {
+   "role": "hurricane_kick",
+   "stem": "Hurricane_Kick_1"
+  },
+  {
+   "role": "idle_01",
+   "stem": "Orc_Idle"
+  },
+  {
+   "role": "idle_to_wall_cover_right",
+   "stem": "Stand_To_Cover_1"
+  },
+  {
+   "role": "lay_to_get_up",
+   "stem": "Getting_Up"
+  },
+  {
+   "role": "ledge_hang_hop_left",
+   "stem": "Braced_Hang_Hop_Left"
+  },
+  {
+   "role": "ledge_hang_hop_right",
+   "stem": "Braced_Hang_Hop_Right"
+  },
+  {
+   "role": "ledge_hang_idle",
+   "stem": "Hanging_Idle_3"
+  },
+  {
+   "role": "ledge_hang_to_jump_away",
+   "stem": "Jump_From_Wall"
+  },
+  {
+   "role": "rifle_run",
+   "stem": "Run_Forward"
+  },
+  {
+   "role": "roll",
+   "stem": "Sprinting_Forward_Roll"
+  },
+  {
+   "role": "run_bwd",
+   "stem": "Running_Backward"
+  },
+  {
+   "role": "run_fwd",
+   "stem": "Standard_Run"
+  },
+  {
+   "role": "run_fwd_fast",
+   "stem": "Fast_Run"
+  },
+  {
+   "role": "shoot",
+   "stem": "Gunplay_6"
+  },
+  {
+   "role": "slide_kick",
+   "stem": "Running_Slide"
+  },
+  {
+   "role": "strafe_left",
+   "stem": "Jog_Strafe_Left"
+  },
+  {
+   "role": "take_damage_head",
+   "stem": "Head_Hit_1"
+  },
+  {
+   "role": "walk_fwd",
+   "stem": "Walking_20"
+  },
+  {
+   "role": "wall_cover_left_to_stand",
+   "stem": "Cover_To_Stand_2"
+  },
+  {
+   "role": "wall_cover_move_left",
+   "stem": "Right_Cover_Sneak"
+  },
+  {
+   "role": "weapon_block",
+   "stem": "Standing_Block_Idle_1"
+  },
+  {
+   "role": "weapon_block_reaction",
+   "stem": "Standing_Block_React_Large"
+  },
+  {
+   "role": "weapon_melee_01",
+   "stem": "Sword_And_Shield_Attack"
+  },
+  {
+   "role": "in_air",
+   "stem": "Floating"
+  }
+ ]
+}

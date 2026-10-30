@@ -1,0 +1,12 @@
+{
+ "packs": [
+  {
+   "file": "zap_set_basic.json",
+   "name": "Zap Set Basic"
+  },
+  {
+   "file": "zap_set_library.json",
+   "name": "Zap Set Library"
+  }
+ ]
+}

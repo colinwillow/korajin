@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Zap Forge</title>
+<style>
+:root { --bg:#0f1216; --pan:#161b22; --ln:#2a323d; --tx:#dfe6ee; --dim:#8a96a3; --ac:#3cd6ff; --ok:#5fe08a; --bad:#ff6b6b; }
+* { box-sizing:border-box; }
+html, body { margin:0; height:100%; background:var(--bg); color:var(--tx); font:14px/1.35 system-ui, -apple-system, sans-serif; overscroll-behavior:none; touch-action:manipulation; }
+#app { display:grid; height:100%; grid-template-columns:minmax(0,1fr) 400px; grid-template-rows:44px 1fr 56px; grid-template-areas:"top top" "view side" "time side"; }
+#top { grid-area:top; display:flex; align-items:center; gap:10px; padding:0 12px; border-bottom:1px solid var(--ln); }
+#top b { color:var(--ac); letter-spacing:.12em; }
+#top .bld { color:var(--dim); font-size:12px; }
+#top .who { margin-left:auto; color:var(--dim); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#view { grid-area:view; position:relative; min-height:0; }
+#view canvas { display:block; width:100%; height:100%; touch-action:none; }
+#chip { position:absolute; left:8px; top:8px; right:8px; font:12px ui-monospace, monospace; color:var(--dim); pointer-events:none; text-shadow:0 1px 2px #000; white-space:pre-wrap; }
+#busy { position:absolute; inset:0; display:none; align-items:center; justify-content:center; background:#0008; font-size:16px; }
+#time { grid-area:time; display:flex; align-items:center; gap:8px; padding:0 10px; border-top:1px solid var(--ln); }
+#time input[type=range] { flex:1; }
+#side { grid-area:side; min-width:0; border-left:1px solid var(--ln); background:var(--pan); display:flex; flex-direction:column; min-height:0; }
+#tabs { display:flex; border-bottom:1px solid var(--ln); }
+#tabs button { flex:1; font-size:13px; background:none; border:0; color:var(--dim); padding:12px 0; font-weight:600; letter-spacing:.06em; }
+#tabs button.on { color:var(--ac); box-shadow:inset 0 -2px var(--ac); }
+.pane { display:none; overflow:auto; padding:12px; flex:1; min-height:0; }
+.pane.on { display:block; }
+h3 { margin:14px 0 6px; font-size:12px; color:var(--dim); letter-spacing:.1em; text-transform:uppercase; }
+h3:first-child { margin-top:0; }
+button, select, input { font:inherit; color:var(--tx); }
+.btn { background:#222a34; border:1px solid var(--ln); border-radius:6px; padding:9px 12px; }
+.btn.ac { border-color:var(--ac); color:var(--ac); }
+.btn:active { background:#2c3642; }
+select, input[type=text], input[type=password], input[type=search] { background:#0d1116; border:1px solid var(--ln); border-radius:6px; padding:9px; width:100%; }
+.row { display:flex; gap:8px; align-items:center; margin:6px 0; }
+.row > * { flex:1; }
+.row > .btn, .row > label.sw { flex:none; }
+.note { color:var(--dim); font-size:12px; margin:4px 0 8px; }
+.list { border:1px solid var(--ln); border-radius:6px; }
+.item { display:flex; gap:8px; align-items:center; padding:9px 10px; border-bottom:1px solid var(--ln); }
+.item:last-child { border-bottom:0; }
+.item.on { background:#1d2a33; }
+.item .nm { flex:1; min-width:0; }
+.item .nm small { display:block; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.item .btn { padding:6px 10px; }
+.item input[type=text] { padding:6px; }
+.tags { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.tag { border:1px solid var(--ln); border-radius:14px; padding:4px 10px; font-size:12px; color:var(--dim); background:none; }
+.tag.on { border-color:var(--ac); color:var(--ac); }
+label.sw { display:flex; gap:8px; align-items:center; }
+.slider { display:grid; grid-template-columns:110px 1fr 46px; gap:8px; align-items:center; margin:6px 0; }
+.slider span:last-child { text-align:right; color:var(--dim); font:12px ui-monospace, monospace; }
+.ok { color:var(--ok); } .bad { color:var(--bad); }
+@media (max-width: 820px) {
+  #app { grid-template-columns:minmax(0,1fr); grid-template-rows:44px 46vh 52px 1fr; grid-template-areas:"top" "view" "time" "side"; }
+  #side { border-left:0; border-top:1px solid var(--ln); }
+}
+</style>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+</head>
+<body>
+<div id="app">
+  <div id="top"><b>FORGE</b><span class="bld">f11</span><span class="who" id="who">no character</span></div>
+  <div id="view"><div id="chip"></div><div id="busy">working…</div></div>
+  <div id="time">
+    <button class="btn" id="prev">◀</button><button class="btn" id="play">❚❚</button><button class="btn" id="next">▶</button>
+    <input type="range" id="scrub" min="0" max="1000" value="0">
+    <span id="tlab" style="font:12px ui-monospace,monospace;color:var(--dim);min-width:84px;text-align:right">0.00 / 0.00</span>
+    <select id="speed" style="width:70px"><option>0.25</option><option>0.5</option><option selected>1</option><option>2</option></select>
+  </div>
+  <div id="side">
+    <div id="tabs"><button data-p="body" class="on">BODY</button><button data-p="lib">LIBRARY</button><button data-p="pack">PACK</button><button data-p="pose">POSE</button><button data-p="out">EXPORT</button></div>
+
+    <div class="pane on" id="p-body">
+      <h3>Character</h3>
+      <div class="row"><select id="charSel"></select></div>
+      <div class="row"><button class="btn" id="charFileBtn">Load a GLB / FBX…</button><input type="file" id="charFile" accept=".glb,.gltf,.fbx" hidden></div>
+      <div class="note" id="charNote"></div>
+      <h3>Layers</h3>
+      <div class="note">Each one can be switched off to compare. Changes re-bake the clip on screen.</div>
+      <label class="sw"><input type="checkbox" id="lFeet" checked> Feet (hip width / leg length, knees aimed)</label>
+      <div class="slider"><span>Ground contact</span><input type="range" id="lGround" min="0" max="1" step="0.05" value="1"><span id="lGroundV">1.00</span></div>
+      <div class="note">Puts his lowest skin point where the library body's lowest point is (scaled), every frame. Tail and markers never count.</div>
+      <div class="slider"><span>Toes straight</span><input type="range" id="lToes" min="0" max="1" step="0.05" value="1"><span id="lToesV">1.00</span></div>
+      <div class="slider"><span>Toes in °</span><input type="range" id="aToeIn" min="-20" max="30" step="1" value="0"><span id="aToeInV">0</span></div>
+      <div class="slider"><span>Knees out °</span><input type="range" id="aKnee" min="-20" max="30" step="1" value="0"><span id="aKneeV">0</span></div>
+      <div class="slider"><span>Wrists out °</span><input type="range" id="aWrist" min="-90" max="90" step="5" value="0"><span id="aWristV">0</span></div>
+      <div class="note">Takes out the toe-out his REST pose was modelled with (a generated mesh stands with the feet turned out), so the clip's own toe-out is not stacked on top of it.</div>
+      <div class="slider"><span>Foot clearance</span><input type="range" id="lClear" min="0" max="1" step="0.05" value="1"><span id="lClearV">1.00</span></div>
+      <div class="note">His feet never come closer sideways than his own legs and shoes allow (measured off his skin), however narrow the source walks.</div>
+      <label class="sw"><input type="checkbox" id="ghost" checked> Show the source body beside him</label>
+      <h3>His sliders (every clip)</h3>
+      <div class="slider"><span>Stance width</span><input type="range" id="aStance" min="0.6" max="1.8" step="0.02" value="1"><span id="aStanceV">1.00</span></div>
+      <div class="slider"><span>Arms out °</span><input type="range" id="aArms" min="-20" max="40" step="1" value="0"><span id="aArmsV">0</span></div>
+      <div class="slider"><span>Elbows in °</span><input type="range" id="aElb" min="-20" max="40" step="1" value="0"><span id="aElbV">0</span></div>
+      <div class="slider"><span>Lean °</span><input type="range" id="aLean" min="-20" max="30" step="1" value="0"><span id="aLeanV">0</span></div>
+      <div class="note">Stance moves both feet out from his centre line and re-solves the legs. Arms opens both upper arms (the penguin fix). Lean tips the spine. Ground contact runs after them.</div>
+      <h3>His hands (every clip)</h3>
+      <div class="row"><select id="hR"></select><select id="hL"></select></div>
+      <div class="slider"><span>Pose amount</span><input type="range" id="hAmt" min="0" max="1" step="0.05" value="1"><span id="hAmtV">1.00</span></div>
+      <div class="slider"><span>Finger noise °</span><input type="range" id="hNz" min="0" max="12" step="0.5" value="0"><span id="hNzV">0</span></div>
+      <div class="slider"><span>Noise speed</span><input type="range" id="hHz" min="0.1" max="3" step="0.1" value="0.6"><span id="hHzV">0.6</span></div>
+      <div class="note">Overrides whatever the source's fingers do with a clean hand from the library (right, left). A clip can choose its own in PACK. Noise curls each finger in and out a little, so an idle hand is never frozen.</div>
+      <h3>Never counts as his body</h3>
+      <div class="note" id="exNote"></div>
+    </div>
+
+    <div class="pane" id="p-lib">
+      <div class="row" id="srcSw"><button class="btn ac" data-s="lib">Mixamo library</button><button class="btn" data-s="don">A character's clips</button></div>
+      <div id="donPane" hidden>
+        <h3>Take clips from a character</h3>
+        <div class="row"><select id="donSel"></select></div>
+        <div class="row"><button class="btn" id="donFileBtn">Upload GLB / FBX (one or many takes)…</button><input type="file" id="donFile" accept=".glb,.gltf,.fbx" hidden></div>
+        <div class="note">An upload is kept in this browser. Every take in it becomes a clip.</div>
+        <div class="row"><button class="btn" id="donPush" hidden>Add this file to the library (every device)</button></div>
+        <div class="row"><button class="btn ac" id="donAll" hidden>Add all to his pack</button></div>
+        <div class="note" id="donNote"></div>
+        <div class="list" id="donList"></div>
+      </div>
+      <div id="libPane">
+      <h3>Library</h3>
+      <div class="note" id="libNote">not connected</div>
+      <div id="libSetup">
+        <div class="row"><input type="text" id="ghRepo" placeholder="owner/repo" value="colinwillow/retarget-anims"></div>
+        <div class="row"><input type="text" id="ghPath" placeholder="folder in the repo" value="library/clips"></div>
+        <div class="row"><input type="password" id="ghTok" placeholder="GitHub token (read-only is enough)" autocomplete="off"></div>
+        <div class="row"><button class="btn ac" id="ghGo">Connect</button><button class="btn" id="dirBtn">Use a local folder…</button></div>
+        <input type="file" id="dirIn" webkitdirectory multiple hidden>
+        <div class="note">The token is kept in this browser only. It never leaves it except to GitHub.</div>
+      </div>
+      <div id="libBrowse" hidden>
+        <div class="row"><input type="search" id="q" placeholder="search: run, rifle, ledge…"></div>
+        <div class="tags" id="tagRow"></div>
+        <div class="note" id="hits"></div>
+        <div class="list" id="libList"></div>
+        <div class="row" style="margin-top:8px"><button class="btn" id="libReset">Change library</button></div>
+      </div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-pack">
+      <h3>His pack</h3>
+      <div class="note">The name on the left is the ROLE the game asks for (walk_fwd, run_fwd…). Tap a clip to preview it.</div>
+      <div class="list" id="packList"></div>
+      <div id="edit" hidden>
+        <h3 id="editH">This clip</h3>
+        <div class="slider"><span>Start s</span><input type="range" id="eA" min="0" max="1" step="0.01" value="0"><span id="eAV">0</span></div>
+        <div class="slider"><span>End s</span><input type="range" id="eB" min="0" max="1" step="0.01" value="1"><span id="eBV">1</span></div>
+        <div class="slider"><span>Speed ×</span><input type="range" id="eS" min="0.25" max="2" step="0.05" value="1"><span id="eSV">1</span></div>
+        <div class="row"><select id="ehR"></select><select id="ehL"></select></div>
+        <div class="row"><select id="eUp"></select><select id="eUpFrom" style="flex:none;width:110px"><option value="Spine">from Spine</option><option value="Spine1" selected>from Spine1</option><option value="Spine2">from Spine2</option><option value="Neck">from Neck</option></select></div>
+        <div class="note">Torso and arms from another clip in his pack (its own trim is the piece used), legs from this one: a seated drink's sip over a standing idle.</div>
+      </div>
+      <h3>Packs</h3>
+      <div class="note">A pack is a list of roles and where each one comes from -- nothing about this body. Load one onto any character.</div>
+      <div class="row"><select id="packSel"></select></div>
+      <div class="row"><button class="btn ac" id="packLoad">Add this pack to his clips</button></div>
+      <label class="sw"><input type="checkbox" id="packRep"> Replace the roles he already has (their keys and props go)</label>
+      <div class="row"><input type="text" id="packName" placeholder="name: Zap Set Basic, Rifle Pack…"><button class="btn" id="packSave">Save his clips as a pack</button></div>
+      <div class="note" id="packNote"></div>
+      <h3>Profile</h3>
+      <div class="note">Everything about this character: his pack, his layers. Saved in this browser per character; download it to keep it in the repo.</div>
+      <div class="row"><button class="btn ac" id="profPush">Save profile to the library (for the game)</button></div>
+      <div class="note" id="profNote"></div>
+      <div class="row"><button class="btn" id="profSave">Download profile</button><button class="btn" id="profLoadBtn">Load profile…</button></div>
+      <input type="file" id="profLoad" accept=".json" hidden>
+    </div>
+
+    <div class="pane" id="p-pose">
+      <h3 id="poseH">Pose</h3>
+      <div class="note" id="poseNote">Pick a clip in his PACK first.</div>
+      <div class="row"><select id="boneSel"></select></div>
+      <div class="row"><button class="btn ac" data-sp="local" id="spL">Bone's axes</button><button class="btn" data-sp="world" id="spW">World axes</button></div>
+      <div class="note">Tap a dot on him (or pick a bone above), turn the rings. Letting go KEYS it at the playhead. One key holds for the whole clip; a second key at another time makes it change between them, eased.</div>
+      <h3>Prop in his hand</h3>
+      <div class="row"><select id="propSel"></select><select id="propHand" style="flex:none;width:90px"><option value="Right">Right</option><option value="Left">Left</option></select></div>
+      <div class="row"><button class="btn" id="propFileBtn">Upload a prop GLB…</button><input type="file" id="propFile" accept=".glb,.gltf" hidden></div>
+      <div class="row" id="gzMode"><button class="btn ac" data-m="bone">Bone</button><button class="btn" data-m="move">Move prop</button><button class="btn" data-m="turn">Turn prop</button><button class="btn" data-m="grip">Grip point</button></div>
+      <div class="row" id="gzMode2"><button class="btn" data-m="smove">Move socket</button><button class="btn" data-m="sturn">Turn socket</button><button class="btn" id="sockReset">Reset socket</button></div>
+      <div class="slider"><span>Prop size ×</span><input type="range" id="pSize" min="0.25" max="3" step="0.05" value="1"><span id="pSizeV">1.00</span></div>
+      <label class="sw"><input type="checkbox" id="gripOn"> The other hand grips it</label>
+      <div class="slider"><span>Reach</span><input type="range" id="gReach" min="0" max="1" step="0.05" value="1"><span id="gReachV">1.00</span></div>
+      <div class="note" id="sockNote"></div>
+      <div class="note">SOCKETS (<code>socket_hand_r</code> / <code>_l</code>) are where a hand holds a thing: origin in the grip, blue (+Z) along the handle out of the thumb side, green (+Y) the way the fingers point. Placed from his hand automatically; fix one once and every prop on that hand follows -- in the game too, through his bake. A prop with a <code>socket</code> node drops straight in. A Zap weapon (<code>weapon_root</code>) sits where it sat in old Zap's hand. Move / Turn / Size fit it to this body; the yellow ball is where the other hand holds it. Kept per clip.</div>
+      <div class="row"><button class="btn" id="propAll">Use this prop + grip on every clip</button></div>
+      <h3>Keys in this clip</h3>
+      <div class="list" id="keyList"></div>
+      <div class="row" style="margin-top:8px"><button class="btn" id="keyBoneClr">Clear this bone</button><button class="btn" id="keyAllClr">Clear all keys</button></div>
+    </div>
+
+    <div class="pane" id="p-out">
+      <h3>Export</h3>
+      <div class="note">Bakes every clip in the pack through the layers.</div>
+      <div class="row"><button class="btn ac" id="expClips">Clips only (.glb, small)</button></div>
+      <div class="note">His skeleton and the clips, no mesh. This is what goes into the game: I merge it onto his model.</div>
+      <div class="row"><button class="btn" id="expFull">Character + clips (.glb)</button></div>
+      <div class="note">For Blender, Cinema 4D or another engine. Larger: the mesh is written uncompressed.</div>
+      <div class="note" id="expNote"></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="./forge/app.js?v=f11"></script>
+</body>
+</html>

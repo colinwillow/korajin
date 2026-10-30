@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+package-lock.json
+tools/.probe/
+
+tools/.lanes-draco.cjs
+tools/.vishelp-draco.cjs
+shots/
+
+play_fail.txt

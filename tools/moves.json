@@ -1,0 +1,874 @@
+{
+ "build": "m1375",
+ "measured": "2026-10-27",
+ "hero": "agoblin",
+ "world": "forge",
+ "fps": 60,
+ "comfy": 0.8,
+ "speeds": {
+  "walk": 2.22,
+  "run": 7.2,
+  "sprint": 9,
+  "zoom": 17,
+  "zoom_2s_m": 31.4
+ },
+ "moves": {
+  "jump": {
+   "label": "jump (standing, left tap)",
+   "h": 2.72,
+   "d": 0,
+   "air": 1.03,
+   "comfy_h": 2.18,
+   "comfy_d": 0
+  },
+  "jump_walk": {
+   "label": "walk + jump",
+   "h": 2.72,
+   "d": 4.85,
+   "air": 1.03,
+   "v": 2.22,
+   "comfy_h": 2.18,
+   "comfy_d": 3.88
+  },
+  "jump_run": {
+   "label": "run + jump",
+   "h": 2.72,
+   "d": 7.44,
+   "air": 1.03,
+   "v": 7.2,
+   "comfy_h": 2.18,
+   "comfy_d": 5.95
+  },
+  "long_jump": {
+   "label": "sprint, let go = the LONG JUMP",
+   "h": 2.67,
+   "d": 13.73,
+   "air": 1.02,
+   "v": 9,
+   "comfy_h": 2.14,
+   "comfy_d": 10.98,
+   "how": "right pad held still while running; letting go jumps. Spends the double."
+  },
+  "dbl": {
+   "label": "double jump (standing)",
+   "h": 5.01,
+   "d": 0,
+   "air": 1.72,
+   "comfy_h": 4.01,
+   "comfy_d": 0
+  },
+  "dbl_run": {
+   "label": "run + double jump (second tap at the top)",
+   "h": 5.01,
+   "d": 12.48,
+   "air": 1.72,
+   "v": 7.2,
+   "comfy_h": 4.01,
+   "comfy_d": 9.98
+  },
+  "high_min": {
+   "label": "high jump (backflip), bare charge",
+   "h": 4.69,
+   "d": 0,
+   "air": 1.35,
+   "comfy_h": 3.75,
+   "comfy_d": 0
+  },
+  "high": {
+   "label": "high jump (backflip), full charge",
+   "h": 6.66,
+   "d": 0,
+   "air": 1.62,
+   "comfy_h": 5.33,
+   "comfy_d": 0,
+   "how": "right pad held still at rest 0.85 s. Spends the double."
+  },
+  "high_fwd": {
+   "label": "high jump + push forward in the air",
+   "h": 6.66,
+   "d": 6.67,
+   "air": 1.62,
+   "comfy_h": 5.33,
+   "comfy_d": 5.34
+  },
+  "run_k1": {
+   "label": "run jump + 1 air kick",
+   "h": 2.72,
+   "d": 11.74,
+   "air": 1.28,
+   "v": 7.2,
+   "comfy_h": 2.18,
+   "comfy_d": 9.39
+  },
+  "long_k1": {
+   "label": "long jump + 1 air kick",
+   "h": 2.67,
+   "d": 15.89,
+   "air": 1.28,
+   "v": 9,
+   "comfy_h": 2.14,
+   "comfy_d": 12.71
+  },
+  "dbl_k1": {
+   "label": "run + double jump + 1 air kick",
+   "h": 5.01,
+   "d": 17.02,
+   "air": 2,
+   "v": 7.2,
+   "comfy_h": 4.01,
+   "comfy_d": 13.62
+  },
+  "high_k1": {
+   "label": "high jump + 1 air kick",
+   "h": 6.66,
+   "d": 12.52,
+   "air": 1.92,
+   "comfy_h": 5.33,
+   "comfy_d": 10.02
+  },
+  "run_k2": {
+   "label": "run jump + 2 air kicks",
+   "h": 2.72,
+   "d": 15.54,
+   "air": 1.53,
+   "v": 7.2,
+   "comfy_h": 2.18,
+   "comfy_d": 12.43
+  },
+  "long_k2": {
+   "label": "long jump + 2 air kicks",
+   "h": 2.67,
+   "d": 18.53,
+   "air": 1.5,
+   "v": 9,
+   "comfy_h": 2.14,
+   "comfy_d": 14.82
+  },
+  "dbl_k2": {
+   "label": "run + double jump + 2 air kicks",
+   "h": 5.01,
+   "d": 21.85,
+   "air": 2.37,
+   "v": 7.2,
+   "comfy_h": 4.01,
+   "comfy_d": 17.48
+  },
+  "high_k2": {
+   "label": "high jump + 2 air kicks",
+   "h": 6.66,
+   "d": 17.46,
+   "air": 2.3,
+   "comfy_h": 5.33,
+   "comfy_d": 13.97
+  },
+  "run_k3": {
+   "label": "run jump + 3 air kicks",
+   "h": 2.72,
+   "d": 15.65,
+   "air": 1.52,
+   "v": 7.2,
+   "comfy_h": 2.18,
+   "comfy_d": 12.52
+  },
+  "long_k3": {
+   "label": "long jump + 3 air kicks",
+   "h": 2.67,
+   "d": 18.81,
+   "air": 1.5,
+   "v": 9,
+   "comfy_h": 2.14,
+   "comfy_d": 15.05
+  },
+  "dbl_k3": {
+   "label": "run + double jump + 3 air kicks",
+   "h": 5.01,
+   "d": 26.49,
+   "air": 2.7,
+   "v": 7.2,
+   "comfy_h": 4.01,
+   "comfy_d": 21.19
+  },
+  "high_k3": {
+   "label": "high jump + 3 air kicks",
+   "h": 6.66,
+   "d": 22.59,
+   "air": 2.7,
+   "comfy_h": 5.33,
+   "comfy_d": 18.07
+  },
+  "zoom_jump": {
+   "label": "zoom + jump",
+   "h": 2.72,
+   "d": 17.13,
+   "air": 1.03,
+   "v": 17,
+   "comfy_h": 2.18,
+   "comfy_d": 13.7
+  },
+  "zoom_dbl": {
+   "label": "zoom + double jump",
+   "h": 5.01,
+   "d": 27.07,
+   "air": 1.72,
+   "v": 17,
+   "comfy_h": 4.01,
+   "comfy_d": 21.66
+  },
+  "zoom_dbl_k3": {
+   "label": "zoom + double jump + 3 air kicks",
+   "h": 5.01,
+   "d": 36.81,
+   "air": 2.7,
+   "v": 17,
+   "comfy_h": 4.01,
+   "comfy_d": 29.45
+  },
+  "bar_high": {
+   "label": "HIGH BAR launch, released for height",
+   "h": 14.82,
+   "d": 0.87,
+   "air": 2.35,
+   "comfy_h": 11.86,
+   "comfy_d": 0.7,
+   "how": "full pump, let go at 1.4 rad past the bottom; h over the floor, d from the bar"
+  },
+  "bar_far": {
+   "label": "HIGH BAR launch, released for distance",
+   "h": 6.18,
+   "d": 23.92,
+   "air": 1.5,
+   "comfy_h": 4.94,
+   "comfy_d": 19.14,
+   "how": "full pump, let go at 0.2 rad past the bottom; h over the floor, d from the bar"
+  },
+  "wall_up_run": {
+   "label": "wall run UP, from a run (right tap at the face)",
+   "h": 3.31,
+   "v": 7.2,
+   "comfy_h": 2.65,
+   "how": "feet reach 2.1 m; h = the highest lip his hands reach"
+  },
+  "wall_up_sprint": {
+   "label": "wall run UP, from a sprint (no tap needed)",
+   "h": 4.51,
+   "v": 9,
+   "comfy_h": 3.61,
+   "how": "feet reach 3.3 m; h = the highest lip his hands reach"
+  },
+  "wall_up_zoom": {
+   "label": "wall run UP, from a zoom (no tap)",
+   "h": 11.58,
+   "v": 15.99,
+   "comfy_h": 9.26,
+   "how": "feet reach 10.38 m; h = the highest lip his hands reach"
+  },
+  "wall_up_runjump": {
+   "label": "wall run UP, jumping into the face at a run",
+   "h": 5.2,
+   "v": 7.2,
+   "comfy_h": 4.16,
+   "how": "feet reach 3.99 m; h = the highest lip his hands reach"
+  },
+  "wall_up_longjump": {
+   "label": "wall run UP, long-jumping into the face",
+   "h": 10.65,
+   "v": 9,
+   "comfy_h": 8.52,
+   "how": "feet reach 9.44 m; h = the highest lip his hands reach"
+  },
+  "wall_up_zoomjump": {
+   "label": "wall run UP, zoom-jumping into the face",
+   "h": 13.37,
+   "v": 16.63,
+   "comfy_h": 10.7,
+   "how": "feet reach 12.17 m; h = the highest lip his hands reach"
+  },
+  "wall_side_run": {
+   "label": "SIDE wall run, from a run (right tap beside the face)",
+   "h": 0.95,
+   "d": 6.88,
+   "v": 7.07,
+   "comfy_h": 0.76,
+   "comfy_d": 5.5,
+   "how": "d = metres along the face"
+  },
+  "wall_side_sprint": {
+   "label": "SIDE wall run, from a sprint",
+   "h": 0.95,
+   "d": 8.11,
+   "v": 8.8,
+   "comfy_h": 0.76,
+   "comfy_d": 6.49,
+   "how": "d = metres along the face"
+  },
+  "wall_kick": {
+   "label": "SIDE wall run + KICK off it (tap again)",
+   "h": 2.55,
+   "d": 7.48,
+   "air": 0.9,
+   "comfy_h": 2.04,
+   "comfy_d": 5.98,
+   "how": "kicked off 0.4 s into the run; lands 5.65 m out from the face"
+  },
+  "wall_chain": {
+   "label": "WALL SLIDE + wall jump chain (faces 4.6 m apart), per kick",
+   "h": 2.07,
+   "comfy_h": 1.66,
+   "how": "first catch at 2.82 m off a run jump, then +2.07 m every kick, no limit met in 7 kicks (top 17.32 m)"
+  },
+  "ledge_jump": {
+   "label": "highest TOP reached from the face: jump",
+   "h": 4.47,
+   "comfy_h": 3.58,
+   "how": "the highest top he gets onto (a ledge caught, or landed on), jumping from .9 m back from the face with the left tap and pushing into it in the air; bisected to 2 cm"
+  },
+  "ledge_dbl": {
+   "label": "highest TOP reached from the face: double jump",
+   "h": 5.86,
+   "comfy_h": 4.69,
+   "how": "the highest top he gets onto (a ledge caught, or landed on), jumping from .9 m back from the face with the left tap and pushing into it in the air; bisected to 2 cm"
+  },
+  "step": {
+   "label": "the STEP (walked up with no jump)",
+   "h": 0.38,
+   "comfy_h": 0.3,
+   "how": "MOVE.step 0.4; stairs are cut at .30 risers (STEER)"
+  },
+  "fall": {
+   "label": "SAFE FALL",
+   "h": 24,
+   "how": "NO fall damage at any height tried (to 24 m); the HARD landing from 4 m (impact over 11 m/s) pins him 1.15 s, a soft one 0.63 s",
+   "drops": [
+    {
+     "h": 2,
+     "from": 2,
+     "impact": 8.7,
+     "hard": false,
+     "hp_lost": 0,
+     "landing_s": 0.63,
+     "knocked": false
+    },
+    {
+     "h": 3,
+     "from": 3,
+     "impact": 10.7,
+     "hard": false,
+     "hp_lost": 0,
+     "landing_s": 1.15,
+     "knocked": false
+    },
+    {
+     "h": 4,
+     "from": 4,
+     "impact": 12.3,
+     "hard": true,
+     "hp_lost": 0,
+     "landing_s": 1.15,
+     "knocked": false
+    },
+    {
+     "h": 6,
+     "from": 6,
+     "impact": 15,
+     "hard": true,
+     "hp_lost": 0,
+     "landing_s": 1.15,
+     "knocked": false
+    },
+    {
+     "h": 8,
+     "from": 8,
+     "impact": 17.7,
+     "hard": true,
+     "hp_lost": 0,
+     "landing_s": 1.15,
+     "knocked": false
+    },
+    {
+     "h": 12,
+     "from": 12,
+     "impact": 21.7,
+     "hard": true,
+     "hp_lost": 0,
+     "landing_s": 1.15,
+     "knocked": false
+    },
+    {
+     "h": 16,
+     "from": 16,
+     "impact": 25,
+     "hard": true,
+     "hp_lost": 0,
+     "landing_s": 1.15,
+     "knocked": false
+    },
+    {
+     "h": 24,
+     "from": 24,
+     "impact": 30.7,
+     "hard": true,
+     "hp_lost": 0,
+     "landing_s": 1.15,
+     "knocked": false
+    }
+   ]
+  }
+ },
+ "raw": {
+  "speed": {
+   "walk": 2.22,
+   "run": 7.2,
+   "sprint": 9
+  },
+  "jump_stand": {
+   "h": 2.72,
+   "d": 0,
+   "air": 1.03
+  },
+  "jump_walk": {
+   "v": 2.22,
+   "h": 2.72,
+   "d": 4.85,
+   "air": 1.03
+  },
+  "jump_run": {
+   "v": 7.2,
+   "h": 2.72,
+   "d": 7.44,
+   "air": 1.03
+  },
+  "jump_sprint": {
+   "v": 9,
+   "how": "letting go of the sprint IS the long jump; it spends the double",
+   "h": 2.67,
+   "d": 13.73,
+   "air": 1.02
+  },
+  "dbl_stand": {
+   "h": 5.01,
+   "d": 0,
+   "air": 1.72
+  },
+  "dbl_run": {
+   "v": 7.2,
+   "h": 5.01,
+   "d": 12.48,
+   "air": 1.72
+  },
+  "high_jump_min": {
+   "hold": 0.35,
+   "h": 4.69,
+   "d": 0,
+   "air": 1.35
+  },
+  "high_jump": {
+   "hold": 0.85,
+   "how": "the backflip: a full charge at rest; it spends the double",
+   "h": 6.66,
+   "d": 0,
+   "air": 1.62
+  },
+  "high_jump_fwd": {
+   "how": "full charge, then the left pad pushed forward in the air",
+   "h": 6.66,
+   "d": 6.67,
+   "air": 1.62
+  },
+  "jump_run_kick1": {
+   "v": 7.2,
+   "h": 2.72,
+   "d": 11.74,
+   "air": 1.28
+  },
+  "jump_sprint_kick1": {
+   "v": 9,
+   "h": 2.67,
+   "d": 15.89,
+   "air": 1.28
+  },
+  "dbl_run_kick1": {
+   "v": 7.2,
+   "h": 5.01,
+   "d": 17.02,
+   "air": 2
+  },
+  "high_kick1": {
+   "h": 6.66,
+   "d": 12.52,
+   "air": 1.92
+  },
+  "jump_run_kick2": {
+   "v": 7.2,
+   "h": 2.72,
+   "d": 15.54,
+   "air": 1.53
+  },
+  "jump_sprint_kick2": {
+   "v": 9,
+   "h": 2.67,
+   "d": 18.53,
+   "air": 1.5
+  },
+  "dbl_run_kick2": {
+   "v": 7.2,
+   "h": 5.01,
+   "d": 21.85,
+   "air": 2.37
+  },
+  "high_kick2": {
+   "h": 6.66,
+   "d": 17.46,
+   "air": 2.3
+  },
+  "jump_run_kick3": {
+   "v": 7.2,
+   "h": 2.72,
+   "d": 15.65,
+   "air": 1.52
+  },
+  "jump_sprint_kick3": {
+   "v": 9,
+   "h": 2.67,
+   "d": 18.81,
+   "air": 1.5
+  },
+  "dbl_run_kick3": {
+   "v": 7.2,
+   "h": 5.01,
+   "d": 26.49,
+   "air": 2.7
+  },
+  "high_kick3": {
+   "h": 6.66,
+   "d": 22.59,
+   "air": 2.7
+  },
+  "zoom": {
+   "v_launch": 17,
+   "v_top": 17,
+   "d_2s": 31.4,
+   "how": "stand still, hold the left pad still 1.40 s, let go, then run"
+  },
+  "zoom_jump": {
+   "v": 17,
+   "h": 2.72,
+   "d": 17.13,
+   "air": 1.03
+  },
+  "zoom_dbl": {
+   "v": 17,
+   "h": 5.01,
+   "d": 27.07,
+   "air": 1.72
+  },
+  "zoom_dbl_kick3": {
+   "v": 17,
+   "h": 5.01,
+   "d": 36.81,
+   "air": 2.7
+  },
+  "bar": {
+   "bar_top": 2.55,
+   "high": {
+    "th": 1.4,
+    "w": 12.5,
+    "h": 14.82,
+    "d": 0.87,
+    "air": 2.35
+   },
+   "far": {
+    "th": 0.2,
+    "w": 12.5,
+    "h": 6.18,
+    "d": 23.92,
+    "air": 1.5
+   },
+   "how": "hang, the right pad held still + the left pad forward for 4 s, let go at swing angle th (rad, 0 = straight down)",
+   "sweep": [
+    [
+     -0.4,
+     0.77,
+     2.36
+    ],
+    [
+     -0.2,
+     0.78,
+     4.84
+    ],
+    [
+     0,
+     1.08,
+     10.55
+    ],
+    [
+     0.2,
+     6.18,
+     23.92
+    ],
+    [
+     0.4,
+     6.18,
+     23.92
+    ],
+    [
+     0.6,
+     9.06,
+     23.71
+    ],
+    [
+     0.8,
+     11.7,
+     20.45
+    ],
+    [
+     1,
+     13.66,
+     14.8
+    ],
+    [
+     1.2,
+     14.72,
+     7.96
+    ],
+    [
+     1.4,
+     14.82,
+     0.87
+    ],
+    [
+     1.6,
+     14.09,
+     5.6
+    ],
+    [
+     1.8,
+     12.74,
+     10.99
+    ],
+    [
+     2,
+     11.03,
+     14.84
+    ],
+    [
+     2.2,
+     9.18,
+     17.21
+    ],
+    [
+     2.4,
+     7.39,
+     17.97
+    ],
+    [
+     2.6,
+     5.79,
+     17.48
+    ],
+    [
+     2.8,
+     4.49,
+     15.93
+    ]
+   ]
+  },
+  "wall_up": {
+   "run_tap": {
+    "v": 7.2,
+    "ran": true,
+    "feet": 2.1,
+    "hands": 3.31
+   },
+   "sprint_tap": {
+    "v": 9,
+    "ran": true,
+    "feet": 3.3,
+    "hands": 4.51
+   },
+   "sprint": {
+    "v": 9,
+    "ran": true,
+    "feet": 3.3,
+    "hands": 4.51
+   },
+   "zoom": {
+    "v": 15.99,
+    "ran": true,
+    "feet": 10.38,
+    "hands": 11.58
+   },
+   "how": "feet = the highest his feet got on the face; hands = what he can catch from there (a lip at or under it is reached)"
+  },
+  "wall_up_jump": {
+   "run": {
+    "v": 7.2,
+    "ran": true,
+    "feet": 3.99,
+    "hands": 5.2
+   },
+   "sprint": {
+    "v": 9,
+    "ran": true,
+    "feet": 9.44,
+    "hands": 10.65
+   },
+   "zoom": {
+    "v": 16.63,
+    "ran": true,
+    "feet": 12.17,
+    "hands": 13.37
+   }
+  },
+  "wall_side": {
+   "run": {
+    "v": 7.07,
+    "along": 6.88,
+    "h": 0.95
+   },
+   "sprint": {
+    "v": 8.8,
+    "along": 8.11,
+    "h": 0.95
+   },
+   "run_kick": {
+    "v": 7.07,
+    "along": 3.13,
+    "h": 0.93,
+    "kick_at": 0.4,
+    "kick_y": 0.94,
+    "kick_h": 2.55,
+    "kick_d": 7.48,
+    "kick_out": 5.65,
+    "kick_air": 0.9
+   },
+   "sprint_kick": {
+    "v": 8.8,
+    "along": 3.69,
+    "h": 0.93,
+    "kick_at": 0.4,
+    "kick_y": 0.94,
+    "kick_h": 2.55,
+    "kick_d": 8.08,
+    "kick_out": 5.65,
+    "kick_air": 0.9
+   }
+  },
+  "wall_chain": {
+   "gap": 4.6,
+   "catches": [
+    2.82,
+    4.89,
+    6.97,
+    9.04,
+    11.11,
+    13.18,
+    15.25,
+    17.32
+   ],
+   "gain_per_kick": [
+    2.07,
+    2.08,
+    2.07,
+    2.07,
+    2.07,
+    2.07,
+    2.07
+   ],
+   "top": 17.32,
+   "how": "the first catch off a run-jump, then a tap the moment each slide holds (left stick at rest)"
+  },
+  "ledge": {
+   "jump": 4.47,
+   "dbl": 5.86,
+   "hands_over_feet": 1.21,
+   "how": "the highest top he gets onto (a ledge caught, or landed on), jumping from .9 m back from the face with the left tap and pushing into it in the air; bisected to 2 cm"
+  },
+  "step": {
+   "max": 0.38,
+   "MOVE_step": 0.4,
+   "walked": [
+    0.2,
+    0.3,
+    0.33,
+    0.35,
+    0.357,
+    0.36,
+    0.38
+   ]
+  },
+  "fall": [
+   {
+    "h": 2,
+    "from": 2,
+    "impact": 8.7,
+    "hard": false,
+    "hp_lost": 0,
+    "landing_s": 0.63,
+    "knocked": false
+   },
+   {
+    "h": 3,
+    "from": 3,
+    "impact": 10.7,
+    "hard": false,
+    "hp_lost": 0,
+    "landing_s": 1.15,
+    "knocked": false
+   },
+   {
+    "h": 4,
+    "from": 4,
+    "impact": 12.3,
+    "hard": true,
+    "hp_lost": 0,
+    "landing_s": 1.15,
+    "knocked": false
+   },
+   {
+    "h": 6,
+    "from": 6,
+    "impact": 15,
+    "hard": true,
+    "hp_lost": 0,
+    "landing_s": 1.15,
+    "knocked": false
+   },
+   {
+    "h": 8,
+    "from": 8,
+    "impact": 17.7,
+    "hard": true,
+    "hp_lost": 0,
+    "landing_s": 1.15,
+    "knocked": false
+   },
+   {
+    "h": 12,
+    "from": 12,
+    "impact": 21.7,
+    "hard": true,
+    "hp_lost": 0,
+    "landing_s": 1.15,
+    "knocked": false
+   },
+   {
+    "h": 16,
+    "from": 16,
+    "impact": 25,
+    "hard": true,
+    "hp_lost": 0,
+    "landing_s": 1.15,
+    "knocked": false
+   },
+   {
+    "h": 24,
+    "from": 24,
+    "impact": 30.7,
+    "hard": true,
+    "hp_lost": 0,
+    "landing_s": 1.15,
+    "knocked": false
+   }
+  ]
+ }
+}
