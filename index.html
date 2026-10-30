@@ -29120,7 +29120,7 @@ function netPeer(id) { let P = NET.peers[id]; if (P) return P; if (!rig.model) r
   const root = new THREE.Group(), m = skeletonClone(rig.model); root.add(m); m.traverse(o => { if (o.isMesh) o.frustumCulled = false; }); scene.add(root);
   const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64; const c = cv.getContext('2d'); c.font = 'bold 40px sans-serif'; c.textAlign = 'center'; c.fillStyle = '#5affe0'; c.strokeStyle = 'rgba(0,0,0,.7)'; c.lineWidth = 6; const nm = 'P' + (Object.keys(NET.peers).length + 2); c.strokeText(nm, 128, 46); c.fillText(nm, 128, 46);
   const tag = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), depthTest: false, transparent: true })); tag.scale.set(1.2, .3, 1); tag.position.y = RIG.height + .55; tag.renderOrder = 70; root.add(tag);
-  const weap = []; m.traverse(o => { if (/^weapon:/.test(o.name)) weap.push(o); });     // m15xx (stage 2): every worn weapon came along in the clone; the packet's `k` picks which one shows
+  const weap = []; m.traverse(o => { if (/^weapon:/.test(o.name)) weap.push(o); });     // m1846 (stage 2): every worn weapon came along in the clone; the packet's `k` picks which one shows
   P = NET.peers[id] = { id, root, model: m, bones: netBones(m), buf: [], name: nm, lastT: performance.now(), weap, k: '' }; return P; }
 function netDrop(id) { const P = NET.peers[id]; if (!P) return; scene.remove(P.root); delete NET.peers[id]; }
 const _nq1 = new THREE.Quaternion(), _nq2 = new THREE.Quaternion();
@@ -29143,7 +29143,7 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
     _nq1.set(A[3], A[4], A[5], A[6]); _nq2.set(Bp[3], Bp[4], Bp[5], Bp[6]); P.root.quaternion.slerpQuaternions(_nq1, _nq2, u);
     const n = Math.min(P.bones.length, a.Q.length / 4, b.Q.length / 4);
     for (let i = 0; i < n; i++) { const k = i * 4; _nq1.set(a.Q[k], a.Q[k + 1], a.Q[k + 2], a.Q[k + 3]).normalize(); _nq2.set(b.Q[k], b.Q[k + 1], b.Q[k + 2], b.Q[k + 3]).normalize(); P.bones[i].quaternion.slerpQuaternions(_nq1, _nq2, u); } } }
-// m15xx: STAGE 3 -- KNOCK EACH OTHER AROUND (no damage). Each phone owns its own body: MY phone tests MY strike against THEIR puppet (as it is
+// m1846: STAGE 3 -- KNOCK EACH OTHER AROUND (no damage). Each phone owns its own body: MY phone tests MY strike against THEIR puppet (as it is
 // drawn here) and, on contact, sends them a HIT; THEIR phone applies it to their own body through `playerHurt` (0 damage) -- so their guard,
 // parry and knock-down all answer it, and the stream shows it back to me. Active: a swing (`p.melee` past `NETHIT.wind` s), a slam or a charge
 // dash; contact: a hand, a foot or the blade's tip inside their body (`r` round the puppet's root, feet to `tall`); one hit per `cool` s.

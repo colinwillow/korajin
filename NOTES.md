@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## ONLINE stages 2 + 3: their weapon shows, and you can knock each other around (m15xx, NETPLAY.md)
+## ONLINE stages 2 + 3: their weapon shows, and you can knock each other around (m1846, NETPLAY.md)
 *(After "will I be able to... hit them and beat them up" -- not yet -- he said "great" to doing it.)*
 - **Their weapon:** every packet carries the slot key (`k`); the puppet's clone already holds every worn weapon (`weapon:<key>` groups), and
   only the matching one shows.
