@@ -22689,6 +22689,9 @@ function airPush(h) {
 const LDODGE = { on: 1, stat: 0 };
 function leftFlick(dx, dy) {
   const h = flickH(dx, dy), p = player;
+  // m1890 (his: "hanging on a ledge, flick left or right on the LEFT stick -- he's supposed to do the leaping ledge move; it triggers a melee instead"):
+  // on a ledge the left flick is the HOP along it (the right-pad swipe's lurch, without its sword swing); up / down are swallowed, never a strike
+  if (p.ledge) { if (Math.abs(dx) > Math.abs(dy) * .8) ledgeFlick(dx, 0, 1); return; }
   if ((p.block || (p.charge && slotNow().blade)) && p.grounded && cartGo(dx, dy)) return;     // m1761: the katana's charge flips like the guard (his: "a dodge while you're in parry mode")
   // m1094: *"Flick down on the left stick is the tornado kick -- it just needs to not make him turn around: do it the way he's facing, still
   // controllable, and keep flicking and it keeps spinning, like a top, until somebody hits you."* DOWN (not in guard, which flips): a spin
@@ -31370,13 +31373,13 @@ const _lp = { x: 0, y: 0, z: 0 };
 //   LEFT / RIGHT -- stay hanging: the hop along the lip that way, and with a blade a one-arm SWING that way over his head and down
 //            (`p.lsw`, drawn by `ledgeHandsPose`; `strikeSweep` on the swung arm does the hitting). Unarmed: the hop.
 const LSW = { hopD: 2.1, hopRate: 2.6, flip: 1, flipMax: 1, flipLeft: .3, dur: .32, a0: .15, a1: 2.5, open: [.25, .85], clear: 1.6, inward: 5, over: .45 };
-function ledgeFlick(dx, dy) { const p = player, L = p.ledge; if (!L || !(p.ledgeSt === 'hold' || p.ledgeSt === 'hop')) return 0;
+function ledgeFlick(dx, dy, noSwing) { const p = player, L = p.ledge; if (!L || !(p.ledgeSt === 'hold' || p.ledgeSt === 'hop')) return 0;
   if (dy > 0 && dy > Math.abs(dx) * .8) { ledgeDrop(0); p.slamUsed = 0; if (!slamGo(0, 1)) { p.vel.y = -2; } return 1; }
   if (-dy > Math.abs(dx) * .8) { const rise = Math.max(.5, L.y + LSW.clear - p.pos.y), vy = Math.sqrt(2 * MOVE.g * rise); ledgeDrop(0);
     p.vel.set(0, vy, 0); p.faceH = p.heading = Math.atan2(-L.nx, -L.nz); p.slamUsed = 0; p.lsUp = { L, t: 0 }; if (LSW.flip) airFlipGo(0, -1, 1);     /* m1842: his -- a FRONT FLIP up over the lip (a handspring), then the slam onto the top */     /* straight up the face first: inward only once over the lip (measured: inward from the start, the face stopped him) */ p.jumps = 1; snd('swoosh', { r: 1.1, g: .5 }); return 1; }
   const h = flickH(dx, dy), tx = -L.nz, tz = L.nx, side = Math.sign(Math.sin(h) * tx + Math.cos(h) * tz) || 1;     // +1 = along (-nz, nx), his LEFT facing the wall
   if (p.ledgeSt === 'hold') { p.ledgeSide = side; p.ledgeSt = 'hop'; p.ledgeT = 0; p.lx0 = p.pos.x; p.ly0 = p.pos.y; p.lz0 = p.pos.z; const nm = side > 0 ? LEDGE.clips.L : LEDGE.clips.R, cl = clipLen(nm); p.ledgeDur = cl > .05 ? cl / LSW.hopRate : LEDGE.hopDur; p.ledgeHopD = LSW.hopD; if (cl > .05) playOnce(nm, LSW.hopRate); snd('swoosh', { r: 1.2, g: .4 }); }     /* m1859: the LURCH -- `hopD` m at `hopRate` (it was the .75 m step at 1.75: 'he doesn't do the lurch') */
-  if (slotNow().blade) { p.lsw = { t: 0, side, hit: 0 }; p.swPrev = null; p.melFired = 0; snd('swoosh', { r: 1.3, g: .55 }); }
+  if (slotNow().blade && !noSwing) { p.lsw = { t: 0, side, hit: 0 }; p.swPrev = null; p.melFired = 0; snd('swoosh', { r: 1.3, g: .55 }); }
   return 1; }
 function ledgeDrop(away) {
   const p = player; p.lsw = null;
@@ -32496,6 +32499,7 @@ PADS.L = bindStick(padL, stick.L,
   // board takes it first and says so, because a dodge roll on a moving deck is nothing.
   // Flying (m266) it is her loop / barrel roll.
   (dx, dy) => { if (player.dragon) { dragTrick(dx, dy); return; } if (player.wing) { wingTrick(dx, dy); return; }
+                if (player.ledge) { leftFlick(dx, dy); return; }     // m1890: on a ledge the left flick is the hop, before the board / cover checks
                 if (boardMount(dx, dy)) return;
                 if (!boardFlick(dx, dy, 1)) leftFlick(dx, dy); },     // m1014: cover in range -> slide in; else Zap's acrobatics (TOOLS > LEFT)
   null, null, zoneL);
