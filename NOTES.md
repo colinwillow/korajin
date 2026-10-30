@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the wall run needs the LEFT STICK held; neutral = the PERCH
+
+His: *"I like how it currently operates, it's the best it's been, but we need a way to distinguish wall run versus just jumping against the wall and
+perching ... you need to be holding some direction on the left stick to be wall running; let go and he drops into the perch; not pushing any
+direction he's perched."*
+- `WRUN.holdRun` (1): at the catch (`wrunCatch`, VEL mode), a stick under `holdMag` (.3) = the PERCH -- the slide state as he hit it (facing out,
+  the hold, then the skid down; a tap kicks off it, the stick pulled away lets go, as before); held = the run exactly as m1851-m1887 have it.
+  Mid-run, the stick under `holdMag` for `letT` (.1 s, so a slip of the thumb is not a fall) drops him into the perch where he is (vy capped at 0).
+- Headless on wall A: HELD -> the side run at the catch; let go at frame 90 -> the perch at 95; NEUTRAL -> the perch at the catch, slid to the
+  ground. (Repeated attempts in one test needed the stick re-solved through the turning wall cam -- a harness artefact, not the game.)
+
 ## m1887 -- LEVEL BUILDER 3d: the QUARTER BOWL (run up a curve into the wall run)
 
 - `qbowl` (radius `r` -- SIZE, width `w`, wall `h`): profile p(th) = (-R sin th, R(1 - cos th)). th 0-50 deg: walkable TRIANGLES (TRI keeps up to
