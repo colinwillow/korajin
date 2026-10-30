@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LEVEL BUILDER step 2: links between ports (rope, plank / ramp, zipline)
+
+His: *"click on one port and choose rope bridge port A, click the other tower, rope bridge port B, and build a bridge there."*
+- `LB.cur.links = [{ id, kind, a: [pieceId, port], b: [pieceId, port] }]`; bottom bar LINK ROPE / LINK PLANK / LINK ZIP -> tap the first port ball,
+  then one on another piece; a CLOSED port is opened (a parapet cannot take a bridge). A link draws as a coloured line in the editor; tap it to
+  change its kind or delete it; deleting a piece deletes its links. Port `key` is the piece's own unturned N/E/S/W; `deck` its floor height.
+- In play (`lbLinks`, rebuilt with the level, everything it added taken out first): ROPE = `gymRopeMake` (the gym tightrope; one height, the decks'
+  mean); PLANK = 1.4 m walkway -- a TURNED box (`cs`/`sn`, so diagonal is exact) when the decks are level (within .3 m), else a RAMP: two triangles
+  through `bldTris` / `bldTrisDrop` (owner `LB.triO`); ZIP = `ZIPS` entry high port -> low (+2.2 / +1.8 m, the gym's own offsets), cable and posts drawn.
+- Headless: 3 towers (16, 16, 30 m), rope + diagonal ramp + zip + level plank: editor drew 4 lines; play -> rope +1, zip +1 (no duplicates on a
+  rebuild); the level plank's ground 16.00; the RAMP a quarter of the way up reads **19.50** (16 + .25 x 14 exactly) and he stands on it grounded.
+
 ## m1880 -- THE LEVEL BUILDER, step 1 (LEVELBUILDER.md): a 3D editor on the phone, levels that save and play
 
 His: *"more than just top down -- perspective and orthographic, swap around ... a tower with four ports, click a port and choose what it is ...

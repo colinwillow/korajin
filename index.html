@@ -68861,6 +68861,7 @@ const LB = { on: 0, KINDS: {
     platform: { p: { w: 6, d: 4 }, c: 0xd9a441, label: 'PLATFORM', top: 4 },
     block: { p: { s: 2 }, c: 0xb3322a, label: 'BLOCK' } },
   PORTS: ['closed', 'open', 'balcony'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e },
+  LINKS: { rope: { label: 'ROPE', c: 0xd8c08a }, plank: { label: 'PLANK', c: 0x8a6a3a }, zip: { label: 'ZIP', c: 0x22d3ee } }, linkA: null, selLink: null, linking: 0,     // m1881: port to port
   cur: null, live: null, sel: null, persp: 1, cams: {}, orb: { az: .7, el: .55, r: 40, t: new THREE.Vector3() }, ptr: new Map(), pinch: 0, pmid: null, tap: null };
 // SC_LEVELB:END
 function lbKey() { let z = ''; try { z = new URLSearchParams(location.search).get('zone') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z; }
@@ -68886,14 +68887,37 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
   for (const { c, b } of L) { const a = rx(b[0], b[4]), d = rx(b[1], b[5]), x0 = Math.min(a[0], d[0]) + ax, x1 = Math.max(a[0], d[0]) + ax, z0 = Math.min(a[1], d[1]) + az, z1 = Math.max(a[1], d[1]) + az;
     const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, b[3] - b[2], z1 - z0), lbMat(c, ghost)); m.position.set((x0 + x1) / 2, ay + (b[2] + b[3]) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
     boxes.push({ minx: x0, maxx: x1, miny: ay + b[2], maxy: ay + b[3], minz: z0, maxz: z1, id: P.id }); }
-  for (const pt of ports) { const r = rx(pt.at[0], pt.at[2]); pt.w = [r[0] + ax, ay + pt.at[1], r[1] + az]; pt.side = 'NESW'[('NESW'.indexOf(pt.side) + yw) % 4]; pt.key = 'NESW'['NESW'.indexOf(pt.side) - yw < 0 ? 'NESW'.indexOf(pt.side) - yw + 4 : 'NESW'.indexOf(pt.side) - yw]; }
+  for (const pt of ports) { const r = rx(pt.at[0], pt.at[2]); pt.w = [r[0] + ax, ay + pt.at[1], r[1] + az]; pt.key = pt.side; pt.deck = ay + q.h; }     // `key` is the piece's own N/E/S/W (unturned); `deck` the floor height there
   return { g, boxes, ports }; }
 // the level in the world: meshes always, colliders into BOXES (taken out again on a rebuild)
 function lbLive(ghostId) { const L = LB.cur; if (!L) return; if (LB.live) { scene.remove(LB.live.g); for (const b of LB.live.boxes) { const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); } }
   const g = new THREE.Group(), boxes = [], ports = []; g.name = 'level';
   for (const P of L.pieces) { const R = lbPiece(P, P.id === ghostId); g.add(R.g); if (!LB.on) boxes.push(...R.boxes); for (const pt of R.ports) ports.push(Object.assign(pt, { pid: P.id })); }
-  scene.add(g); for (const b of boxes) BOXES.push(b); if (!LB.on || boxes.length) boxGrid(); LB.live = { g, boxes, ports };
+  const links = lbLinks(g, boxes, ports);
+  scene.add(g); for (const b of boxes) BOXES.push(b); if (!LB.on || boxes.length) boxGrid(); LB.live = { g, boxes, ports, links };
   if (LB.on) lbPortMarks(); }
+// m1881: LINKS between ports -- in the editor a coloured line (tap it to pick it); in play the real thing: ROPE = the gym's swaying tightrope
+// (`gymRopeMake`, one height: the two decks' mean), PLANK = a 1.4 m walkway, a TURNED box when the ports are not in line (`cs`/`sn`), ZIP = a
+// zipline (`ZIPS`) from the higher port down to the lower, with its cable drawn. Each is taken out again on the next rebuild.
+function lbLinks(g, boxes, ports) { const L = LB.cur, made = { ropes: [], zips: [] };
+  if (LB.live && LB.live.links) { for (const B of LB.live.links.ropes) { scene.remove(B.g); for (const arr of [BEAM.list, GROPE.list]) { const i = arr.indexOf(B); if (i >= 0) arr.splice(i, 1); } } for (const z of LB.live.links.zips) { const i = ZIPS.indexOf(z); if (i >= 0) ZIPS.splice(i, 1); if (player.zip === z) player.zip = null; } }
+  if (!LB.on && LB.triO && LB.triO.tri && LB.triO.tri.size) bldTrisDrop(LB.triO); const tris = [];
+  for (const K of L.links || []) { const a = ports.find(pt => pt.pid === K.a[0] && pt.key === K.a[1]), b = ports.find(pt => pt.pid === K.b[0] && pt.key === K.b[1]); if (!a || !b) continue;
+    const A = new THREE.Vector3(a.w[0], a.deck, a.w[2]), Bv = new THREE.Vector3(b.w[0], b.deck, b.w[2]), dx = Bv.x - A.x, dz = Bv.z - A.z, len = Math.hypot(dx, dz) || 1, ux = dx / len, uz = dz / len;
+    if (LB.on) { const c = LB.LINKS[K.kind].c, P0 = A.clone().setY(A.y + .5), P1 = Bv.clone().setY(Bv.y + .5), m = new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, P0.distanceTo(P1), 6), new THREE.MeshBasicMaterial({ color: K.id === LB.selLink ? 0xffffff : c }));
+      m.position.copy(P0).add(P1).multiplyScalar(.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), P1.clone().sub(P0).normalize()); m.userData.link = K.id; g.add(m); continue; }
+    if (K.kind === 'plank' && Math.abs(Bv.y - A.y) > .3) {     // a RAMP deck to deck: two walkable triangles (TRI takes up to ~60 deg)
+      const px = -uz * .7, pz = ux * .7; tris.push(A.x + px, A.y, A.z + pz, Bv.x + px, Bv.y, Bv.z + pz, Bv.x - px, Bv.y, Bv.z - pz, A.x + px, A.y, A.z + pz, Bv.x - px, Bv.y, Bv.z - pz, A.x - px, A.y, A.z - pz);
+      const L3 = A.distanceTo(Bv), m = new THREE.Mesh(new THREE.BoxGeometry(1.4, .3, L3), lbMat(LB.LINKS.plank.c)); m.position.copy(A).add(Bv).multiplyScalar(.5).y -= .15; m.lookAt(Bv.x, Bv.y - .15, Bv.z); m.castShadow = m.receiveShadow = true; g.add(m); }
+    else if (K.kind === 'plank') { const y = (A.y + Bv.y) / 2, hx = len / 2 + .3, hz = .7, cx = (A.x + Bv.x) / 2, cz = (A.z + Bv.z) / 2, ex = Math.abs(ux) * hx + Math.abs(uz) * hz, ez = Math.abs(uz) * hx + Math.abs(ux) * hz;
+      boxes.push({ cs: ux, sn: uz, hx, hz, cx, cz, minx: cx - ex, maxx: cx + ex, miny: y - .3, maxy: y, minz: cz - ez, maxz: cz + ez, id: K.id });
+      const m = new THREE.Mesh(new THREE.BoxGeometry(hx * 2, .3, hz * 2), lbMat(LB.LINKS.plank.c)); m.position.set(cx, y - .15, cz); m.rotation.y = -Math.atan2(uz, ux); m.castShadow = m.receiveShadow = true; g.add(m); }
+    else if (K.kind === 'rope') made.ropes.push(gymRopeMake({ id: K.id, x: (A.x + Bv.x) / 2, z: (A.z + Bv.z) / 2, yaw: Math.atan2(ux, uz), h: (A.y + Bv.y) / 2, len, sag: 1.1, sway: .9, speed: 2.6, noiseK: 1.35 }));
+    else if (K.kind === 'zip') { const [H, Lo] = A.y >= Bv.y ? [A, Bv] : [Bv, A], z = { A: [H.x, H.y + 2.2, H.z], B: [Lo.x, Lo.y + 1.8, Lo.z], id: K.id }; ZIPS.push(z); made.zips.push(z);
+      const P0 = new THREE.Vector3(...z.A), P1 = new THREE.Vector3(...z.B), m = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, P0.distanceTo(P1), 5), lbMat(0x333333)); m.position.copy(P0).add(P1).multiplyScalar(.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), P1.clone().sub(P0).normalize()); g.add(m);
+      for (const P of [H, Lo]) { const post = new THREE.Mesh(new THREE.BoxGeometry(.25, 2.4, .25), lbMat(0x6b5038)); post.position.set(P.x, P.y + 1.2, P.z); g.add(post); } } }
+  if (!LB.on && tris.length) bldTris(LB.triO || (LB.triO = {}), tris);
+  return made; }
 function lbPortMarks() { const G = LB.marks || (LB.marks = new THREE.Group()); while (G.children.length) G.remove(G.children[0]); if (!G.parent) scene.add(G);
   const geo = LB.mGeo || (LB.mGeo = new THREE.SphereGeometry(.55, 12, 8));
   for (const pt of LB.live.ports) { const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: LB.PCOL[pt.t], depthTest: false })); m.renderOrder = 9; m.position.set(pt.w[0], pt.w[1], pt.w[2]); m.userData.port = pt; G.add(m); } }
@@ -68928,20 +68952,33 @@ function lbUiBuild() {
   el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); }
 function lbBotPaint() { const B = LB.bot, P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel), bs = 'font:700 12px system-ui;padding:8px 9px;border-radius:8px;border:1px solid #4a7aa0;background:#17304a;color:#e6f4ff;margin:2px;';
   const btn = (a, t, k) => '<button data-l="' + a + '"' + (k ? ' data-k="' + k + '"' : '') + ' style="' + bs + '">' + t + '</button>';
-  if (!P) { B.innerHTML = '<div style="margin:0 2px 4px">ADD (it appears in front of the camera) -- tap a piece to edit it, tap a tower port ball to change it</div>' + Object.entries(LB.KINDS).map(([k, K]) => btn('add', K.label, k)).join(''); return; }
+  const Ks = LB.selLink && (LB.cur.links || []).find(k => k.id === LB.selLink);
+  if (LB.linking) { B.innerHTML = '<div style="margin:0 2px 4px">' + LB.LINKS[LB.linking].label + ': tap ' + (LB.linkA ? 'the SECOND port (on another piece)' : 'the FIRST port ball') + '</div>' + btn('lcancel', 'CANCEL'); return; }
+  if (Ks) { B.innerHTML = '<div style="margin:0 2px 4px">LINK ' + Ks.id + ' -- ' + LB.LINKS[Ks.kind].label + ' from ' + Ks.a.join(' ') + ' to ' + Ks.b.join(' ') + '</div>' + Object.entries(LB.LINKS).map(([k, X]) => btn('lkind', X.label, k)).join('') + btn('ldel', 'DELETE') + btn('lok', 'OK'); return; }
+  if (!P) { B.innerHTML = '<div style="margin:0 2px 4px">ADD (it appears in front of the camera) -- tap a piece to edit it, tap a tower port ball to change it -- LINK two ports:</div>' + Object.entries(LB.KINDS).map(([k, K]) => btn('add', K.label, k)).join('') + '<br>' + Object.entries(LB.LINKS).map(([k, X]) => btn('link', 'LINK ' + X.label, k)).join(''); return; }
   const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p);
   B.innerHTML = '<div style="margin:0 2px 4px">' + K.label + ' ' + P.id + ' -- ' + Object.entries(q).map(([k, v]) => k + ' ' + (+v).toFixed(1)).join(', ') + '  @ y ' + P.at[1].toFixed(1) + '</div>'
     + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
-function lbSelect(id) { LB.sel = id || null; lbLive(LB.sel); const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel);
+function lbSelect(id) { LB.sel = id || null; if (id) LB.selLink = null; lbLive(LB.sel); const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel);
   if (LB.tc) { LB.tc.detach(); if (P) { const g = LB.live.g.children.find(c => c.userData.pid === P.id); if (g) { LB.anchor.position.set(P.at[0], P.at[1], P.at[2]); LB.anchor.updateMatrixWorld(true); LB.tc.attach(LB.anchor); LB.drag0 = P.at.slice(); } } }
   lbBotPaint(); }
 function lbTapPick(x, y) { const c = lbActiveCam(), rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(x / innerWidth * 2 - 1, -(y / innerHeight) * 2 + 1), c);
+  if (LB.marks && LB.linking) { const h = rc.intersectObjects(LB.marks.children, false)[0]; if (!h) return; const pt = h.object.userData.port;
+    if (!LB.linkA) { LB.linkA = [pt.pid, pt.key]; lbBotPaint(); return; }
+    if (LB.linkA[0] === pt.pid) return; const L = LB.cur; L.links = L.links || []; const id = 'link_' + String(L.links.length + 1).padStart(2, '0') + '_' + Date.now().toString(36).slice(-3);
+    L.links.push({ id, kind: LB.linking, a: LB.linkA, b: [pt.pid, pt.key] });
+    for (const [pid, key] of [LB.linkA, [pt.pid, pt.key]]) { const P = L.pieces.find(q => q.id === pid); if (P && P.ports && P.ports[key] === 'closed') P.ports[key] = 'open'; }     // a closed port cannot take a bridge: opened
+    LB.linkA = null; LB.linking = 0; LB.selLink = id; lbSave(); lbSelect(null); return; }
+  { const hl = rc.intersectObjects(LB.live.g.children.filter(o => o.userData.link), false)[0]; if (hl) { LB.selLink = hl.object.userData.link; LB.sel = null; if (LB.tc) LB.tc.detach(); lbLive(null); lbBotPaint(); return; } }
   if (LB.marks) { const h = rc.intersectObjects(LB.marks.children, false)[0]; if (h) { const pt = h.object.userData.port, P = LB.cur.pieces.find(q => q.id === pt.pid); if (P) { P.ports = P.ports || {}; const cur = P.ports[pt.key] || 'closed'; P.ports[pt.key] = LB.PORTS[(LB.PORTS.indexOf(cur) + 1) % LB.PORTS.length]; lbSave(); lbSelect(LB.sel); } return; } }
   const h = rc.intersectObjects(LB.live.g.children, true)[0]; lbSelect(h ? h.object.userData.pid : null); }
 function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id === LB.sel), O = LB.orb;
   if (a === 'view') { LB.persp = LB.persp ? 0 : 1; LB.top.querySelector('[data-l=view]').textContent = LB.persp ? 'PERSP' : 'ORTHO'; lbCam(); }
   else if (a === 'top') { O.el = 1.5699; lbCam(); } else if (a === 'front') { O.el = 0; O.az = 0; lbCam(); } else if (a === 'side') { O.el = 0; O.az = Math.PI / 2; lbCam(); }
   else if (a === 'home') { O.t.copy(player.pos); lbCam(); }
+  else if (a === 'link') { LB.linking = k; LB.linkA = null; LB.selLink = null; lbSelect(null); return; }
+  else if (a === 'lcancel') { LB.linking = 0; LB.linkA = null; lbBotPaint(); return; }
+  else if (a === 'lkind' || a === 'ldel' || a === 'lok') { const Ks = (L.links || []).find(x => x.id === LB.selLink); if (Ks && a === 'lkind') Ks.kind = k; if (Ks && a === 'ldel') L.links = L.links.filter(x => x !== Ks); if (a !== 'lkind') LB.selLink = null; lbSave(); lbLive(null); lbBotPaint(); return; }
   else if (a === 'add') { const K = LB.KINDS[k], n = L.pieces.filter(q => q.kind === k).length + 1, id = k + '_' + String(n).padStart(2, '0') + '_' + Date.now().toString(36).slice(-3);
     const at = [Math.round(O.t.x * 2) / 2, K.top != null ? Math.round(O.t.y + K.top) : Math.max(0, Math.round(O.t.y * 2) / 2 - (k === 'tower' ? 0 : 0)), Math.round(O.t.z * 2) / 2];
     L.pieces.push({ id, kind: k, at, yaw: 0, p: {}, ports: k === 'tower' ? { N: 'closed', E: 'closed', S: 'closed', W: 'closed' } : undefined }); lbSave(); lbSelect(id); }
@@ -68952,7 +68989,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
   else if (a === 'lift') P.at[1] = Math.max(-50, P.at[1] + +k);
   else if (a === 'dup') { const Q = JSON.parse(JSON.stringify(P)); Q.id = P.kind + '_' + String(L.pieces.length + 1).padStart(2, '0') + '_' + Date.now().toString(36).slice(-3); Q.at[0] += 4; L.pieces.push(Q); lbSave(); lbSelect(Q.id); return; }
-  else if (a === 'del') { L.pieces = L.pieces.filter(q => q !== P); lbSave(); lbSelect(null); return; }
+  else if (a === 'del') { L.pieces = L.pieces.filter(q => q !== P); if (L.links) L.links = L.links.filter(x => x.a[0] !== P.id && x.b[0] !== P.id); lbSave(); lbSelect(null); return; }
   else if (a === 'ok') { lbSave(); lbSelect(null); return; }
   else if (a === 'play' || a === 'exit') { lbSave(); lbExit(); return; } else if (a === 'file') { lbFile(); return; } else if (a === 'copy') { lbCopy(); return; }
   lbSave(); lbSelect(LB.sel); }

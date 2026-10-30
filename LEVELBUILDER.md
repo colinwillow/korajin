@@ -12,7 +12,7 @@ Data-first (SCENE_COMPANION.md): a level is `{ id, world, pieces: [{ id, kind, a
       pinch. Palette TOWER / WALL / PLATFORM / BLOCK; a new piece is selected (the ghost) with a move handle (0.5 m snap), TURN 90, SIZE +/-,
       HEIGHT +/-, COPY, DELETE, OK. A tower's four PORTS (N E S W) cycle CLOSED / OPEN / BALCONY on a tap. PLAY = colliders in, game on.
       Saved on the phone as you go (per world + zone); SAVE FILE downloads the JSON (and COPY).
-- [ ] 2. LINKS between ports: pick a port, pick another -> rope bridge / plank / zipline between them.
+- [x] 2. LINKS between ports (m1881): LINK ROPE / PLANK / ZIP, tap port A, tap port B. ROPE = the gym tightrope (sways, at the decks' mean height); PLANK = a flat walkway (a turned box when diagonal) or, between decks of different heights, a RAMP of two walkable triangles; ZIP = high port to low, cable + posts. A closed port is opened. Tap a link line to change its kind or delete it.
 - [ ] 3. The gym's other pieces (ladder, bar, rope, monkey bars, swing) as kinds; height tiers + stacking snap for the very tall builds.
 - [ ] 4. Saved levels in `levels/` load as real places (his uploads become permanent).
 
