@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- FUNCTION vs LOOK: level THEMES (block-out / Japanese / sky temple / ancient tech) that re-skin the same build
+
+His: *"build them really simple, and any time we make a new temple you can wrap the new design around the current build -- block out the
+functionality; new temples are always going to look different ... they need to be swapped pretty easily."*
+- `LBTHEMES` + `LB.cur.theme` (THEME button in the builder's top bar) -> `lbStyleOf(P)`: the piece's own STYLE if set (STYLE now cycles
+  THEME -> brick -> megalith -> tech -> block), else the theme's style for that kind. BLOCK = a flat light material, and `lbPiece` skips every
+  DRESSING extra; bridge braziers / rope rails are skipped for a block level.
+- FUNCTION made theme-independent: the stepped temple base was a megalith-only collider -- it is the tower's STEPS option now (default on, a
+  STEPS button), in every theme. Braziers are dressing for mega / tech.
+- MEASURED (headless): one level (2 towers, a plank, a wall) in BLOCK / JAPANESE / SKY -> 18 colliders each with the identical signature;
+  4 vs 58 vs 58 meshes. Renders checked.
+- The temple worker was told to build the Sky Temple the same way: a block-out (function) + a separable sky-temple skin.
+
 ## m1895 -- LOOK pass 4: his concept art (the floating sandstone temple)
 
 His concept: warm sandstone megaliths on floating islands, gold/bronze trim, jade-teal glow (channels, braziers, light beams), a gold halo ring on

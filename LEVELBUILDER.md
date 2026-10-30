@@ -7,6 +7,15 @@ towers, port A to port B, a rope bridge ... the levels are going to be extremely
 Data-first (SCENE_COMPANION.md): a level is `{ id, world, pieces: [{ id, kind, at: [x, y, z], yaw: 0-3 (quarter turns), p: {...}, ports: {N,E,S,W} }] }`;
 `lvlPiece(P)` is a pure function of one entry (its meshes and its colliders), so Scene Companion can read the same list.
 
+## FUNCTION vs LOOK (m1898, his rule)
+*"Build the block-out and the functionality; every new temple is going to look different, so they need to be swapped easily -- build a few in
+this style because I really like it, but going forward every temple will look different."*
+- A piece's FUNCTION (colliders, ledges, ports, links, the systems it adds) is the same in every theme. A level's THEME (`LB.cur.theme`, the
+  THEME button: MIXED / BLOCK-OUT / JAPANESE / SKY TEMPLE / ANCIENT TECH, table `LBTHEMES`) only DRESSES it; a piece's STYLE overrides it.
+- Dressing = the `DRESSING` extras (trim, band, roof, halo, brazier, panels, banner, crystals, float, vines, cap) + bridge braziers / rope rails
+  + the materials. BLOCK-OUT draws none of it (the chevrons stay: they ARE function). A new temple = a new theme entry + its dressing, never a
+  change to a piece's function.
+
 ## Steps
 - [x] 1. The editor (m1880): TOOLS > LEVEL BUILDER. Frozen game; PERSP / ORTHO views + TOP / FRONT / SIDE snaps; one finger orbits, two pan +
       pinch. Palette TOWER / WALL / PLATFORM / BLOCK; a new piece is selected (the ghost) with a move handle (0.5 m snap), TURN 90, SIZE +/-,

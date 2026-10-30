@@ -68899,7 +68899,7 @@ function posedFrame() { try { renderer.render(scene, camera); } catch (e) {} }
 // by `lbPiece(P)` -- a pure function of its entry: its meshes, its colliders (AABBs; turns are quarter turns, so they stay exact) and its ports.
 // SC_LEVELB:START
 const LB = { on: 0, KINDS: {
-    tower: { p: { base: 6, h: 16 }, c: 0x8a8f99, label: 'TOWER', style: 'brick' },
+    tower: { p: { base: 6, h: 16, steps: 1 }, c: 0x8a8f99, label: 'TOWER', style: 'brick' },
     wall: { p: { len: 16, t: .6, h: 8 }, c: 0x4a8fd8, label: 'RUN WALL' },
     chimney: { p: { gap: 3.2, len: 6, h: 16 }, c: 0x3fae6a, label: 'CHIMNEY' },
     lwall: { p: { len: 10, r: 6, h: 8 }, c: 0x9b5de5, label: 'L-WALL' },
@@ -68914,6 +68914,11 @@ const LB = { on: 0, KINDS: {
   LINKS: { rope: { label: 'ROPE', c: 0xd8c08a }, plank: { label: 'PLANK', c: 0x8a6a3a }, zip: { label: 'ZIP', c: 0x22d3ee }, sky: { label: 'SKY BRIDGE', c: 0xb9c6d6 }, rbridge: { label: 'ROPE BRIDGE', c: 0xa0763c } },     // m1884: + sky bridge, rope bridge linkA: null, selLink: null, linking: 0,     // m1881: port to port
   cur: null, live: null, sel: null, persp: 1, cams: {}, orb: { az: .7, el: .55, r: 40, t: new THREE.Vector3() }, ptr: new Map(), pinch: 0, pmid: null, tap: null };
 // SC_LEVELB:END
+// m1898: FUNCTION vs LOOK (his: "build the block-out and the functionality; every new temple is going to look different, so they need to be
+// swappable"). A level has a THEME (`LB.cur.theme`) -- a skin that dresses the same block-out; a piece's STYLE overrides it. The function --
+// colliders, ledges, ports, links, systems -- never depends on the theme. BLOCK = no dressing at all (only the chevrons, which ARE function).
+const LBTHEMES = { mixed: { label: 'MIXED' }, block: { label: 'BLOCK-OUT', all: 'block' }, japan: { label: 'JAPANESE', all: 'brick' }, sky: { label: 'SKY TEMPLE', all: 'mega', qbowl: 'tech', loop: 'tech' }, tech: { label: 'ANCIENT TECH', all: 'tech' } };
+function lbStyleOf(P) { const K = LB.KINDS[P.kind], T = LBTHEMES[(LB.cur && LB.cur.theme) || 'mixed'] || LBTHEMES.mixed; return (P.p && P.p.style) || T[P.kind] || T.all || K.style || 'mega'; }
 function lbKey() { let z = ''; try { z = new URLSearchParams(location.search).get('zone') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z; }
 function lbLoad() { try { const v = JSON.parse(localStorage.getItem(lbKey()) || 'null'); if (v && Array.isArray(v.pieces)) return v; } catch (e) {} return { id: 'lvl_' + Date.now().toString(36), world: lbKey().slice(10), pieces: [] }; }
 function lbSave() { try { localStorage.setItem(lbKey(), JSON.stringify(LB.cur)); } catch (e) {} }
@@ -68950,6 +68955,7 @@ function lbTechTex(glow) { if (glow ? _lbTechE : _lbTech) return glow ? _lbTechE
 function lbRole(c) { return c === 0x6b5038 || c === 0x8a6a3a || c === 0xa0763c ? 'wood' : c === 0xd9a441 || c === 0x2a2f36 || c === 0x39e07a ? 'plain' : 'stone'; }
 function lbMat(c, ghost, role) { const k = c + (ghost ? 'g' : '') + (role || ''); if (_lvM[k]) return _lvM[k];
   const dbl = role && role.endsWith('D'), r0 = dbl ? role.slice(0, -1) : role;
+  if (r0 === 'block') return (_lvM[k] = new THREE.MeshStandardMaterial({ color: new THREE.Color(0xe8eaee).lerp(new THREE.Color(c), .25), roughness: .9, side: dbl ? THREE.DoubleSide : THREE.FrontSide, transparent: !!ghost, opacity: ghost ? .55 : 1 }));     // m1898: the BLOCK-OUT -- flat, light, the piece colour a hint
   if (r0 === 'mega' || r0 === 'tech') { const col = r0 === 'mega' ? new THREE.Color(0xffffff).lerp(new THREE.Color(c), .2) : new THREE.Color(0xffffff).lerp(new THREE.Color(c), .12);
     return (_lvM[k] = new THREE.MeshStandardMaterial({ color: col, roughness: r0 === 'mega' ? .95 : .55, metalness: r0 === 'tech' ? .15 : 0, map: r0 === 'mega' ? lbMegaTex() : lbTechTex(0), emissive: r0 === 'tech' ? 0xffffff : 0x000000, emissiveMap: r0 === 'tech' ? lbTechTex(1) : null, emissiveIntensity: r0 === 'tech' ? .9 : 0,
       side: dbl ? THREE.DoubleSide : THREE.FrontSide, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
@@ -68994,13 +69000,13 @@ function lbArrowGeo() { return _lvM.arrowG || (_lvM.arrowG = new THREE.PlaneGeom
 function lbBoxGeo(w, h, d, role) { const G = new THREE.BoxGeometry(w, h, d); if (role !== 'stone' && role !== 'mega' && role !== 'tech') return G; const T2 = role === 'mega' ? 3.2 : role === 'tech' ? 3 : 2; const uv = G.attributes.uv, dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
   for (let f = 0; f < 6; f++) for (let k = 0; k < 4; k++) { const i = f * 4 + k; uv.setXY(i, uv.getX(i) * dims[f][0] / T2, uv.getY(i) * dims[f][1] / T2); } return G; }     // m1894: one tile = `T2` m (brick 2, megalith 3.2, tech 3)
 // one piece: local boxes [x0, x1, y0, y1, z0, z1] around its own origin (y = its base), turned by `yaw` quarter turns, placed at `at`
-function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [], X = [], OB = [], TR = [], ST = q.style || K.style || 'mega', SR = { brick: 'stone', mega: 'mega', tech: 'tech' }[ST] || 'stone', role = c => { const r = lbRole(c); return r === 'stone' ? SR : r; };     // m1894: STYLE -- brick / megalith / ancient tech     // TR: walkable triangles in the piece's frame (x, y, z) x 3     // OB: TURNED boxes { c, cx, cz, a (its long axis angle), hx, hz, y0, y1 } in the piece's frame     // X: the EXTRAS -- things that are a system, not a box (bars, ladders, monkey bars), as data in the piece's own frame
+function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [], X = [], OB = [], TR = [], ST = lbStyleOf(P), DRESS = ST !== 'block', SR = { brick: 'stone', mega: 'mega', tech: 'tech', block: 'block' }[ST] || 'stone', role = c => { const r = lbRole(c); return r === 'stone' ? SR : r; };     // m1894: STYLE -- brick / megalith / ancient tech     // TR: walkable triangles in the piece's frame (x, y, z) x 3     // OB: TURNED boxes { c, cx, cz, a (its long axis angle), hx, hz, y0, y1 } in the piece's frame     // X: the EXTRAS -- things that are a system, not a box (bars, ladders, monkey bars), as data in the piece's own frame
   const add = (c, x0, x1, y0, y1, z0, z1) => L.push({ c, b: [x0, x1, y0, y1, z0, z1] });
   if (P.kind === 'tower') { const hb = q.base / 2, dh = hb + .6, H = q.h; add(K.c, -hb, hb, 0, H - .4, -hb, hb); add(0x6b5038, -dh, dh, H - .4, H, -dh, dh);
     X.push({ type: 'trim', hb, dh, H }); for (let y = 6; y < H - 2; y += 6) X.push({ type: 'band', hb, y });     // m1886: lacquer, glow and masonry bands
     if (q.roof !== 0) X.push({ type: ST === 'brick' ? 'roof' : 'halo', dh, H });     // m1891: a floating hip roof on lacquer posts (ROOF toggles it); m1895: a megalith / tech tower wears the HALO instead
-    if (ST !== 'brick') { add(K.c, -hb - 1.4, hb + 1.4, 0, 1.6, -hb - 1.4, hb + 1.4); add(K.c, -hb - .7, hb + .7, 1.6, 3.2, -hb - .7, hb + .7);     // m1895: a stepped TEMPLE base (two real ledges)
-      for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) X.push({ type: 'brazier', at: [sx * (dh - .5), H, sz * (dh - .5)] }); }
+    if (q.steps) { add(K.c, -hb - 1.4, hb + 1.4, 0, 1.6, -hb - 1.4, hb + 1.4); add(K.c, -hb - .7, hb + .7, 1.6, 3.2, -hb - .7, hb + .7); }     // m1895: a stepped TEMPLE base (two real ledges); m1898: FUNCTION -- the STEPS option, in every theme
+    if (ST === 'mega' || ST === 'tech') for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) X.push({ type: 'brazier', at: [sx * (dh - .5), H, sz * (dh - .5)] });
     X.push({ type: 'panels', hb, H }, { type: 'banner', dh, H }, { type: 'crystals', at: [hb + .6, hb + .6], n: 5 });     // m1892: glow inlays, a nobori banner, a crystal cluster
     const ps = P.ports || {};
     for (const [side, nx, nz] of [['N', 0, -1], ['E', 1, 0], ['S', 0, 1], ['W', -1, 0]]) { const t = ps[side] || 'closed', tx = -nz, tz = nx;
@@ -69045,7 +69051,8 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
   // the extras, into the world frame (turned and placed), with a light editor look; `lbSystems` makes them real in play
   const ex = [], lm = (c, w, h, d, x, y, z, ry) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), lbMat(c, ghost)); m.position.set(x, y, z); if (ry) m.rotation.y = ry; m.userData.pid = P.id; g.add(m); };
   const look = (geo, mat, x, y, z, ry) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.y = ry || 0; m.userData.pid = P.id; g.add(m); return m; };
-  for (const E of X) { if (E.type === 'arrows' || E.type === 'upArrows') {     // m1886: SONIC chevrons -- along a run wall (both faces), up a chimney's inner faces
+  const DRESSING = { trim: 1, band: 1, roof: 1, halo: 1, brazier: 1, panels: 1, banner: 1, crystals: 1, float: 1, vines: 1, cap: 1 };     // m1898: the LOOK -- what a theme adds; BLOCK-OUT skips all of it
+  for (const E of X) { if (!DRESS && DRESSING[E.type]) continue; if (E.type === 'arrows' || E.type === 'upArrows') {     // m1886: SONIC chevrons -- along a run wall (both faces), up a chimney's inner faces
       const am = lbArrowMat(), n = Math.max(1, Math.floor(E.len / 4));
       for (const sd of [-1, 1]) for (let i = 0; i < n; i++) { const u = (i + .5) * E.len / n - E.len / 2;
         if (E.type === 'arrows') { const lx = E.cx + Math.cos(E.a) * u - Math.sin(E.a) * sd * (E.off + .03), lz = E.cz + Math.sin(E.a) * u + Math.cos(E.a) * sd * (E.off + .03), w = rx(lx, lz), nrm = rx(-Math.sin(E.a) * sd, Math.cos(E.a) * sd), tg = rx(Math.cos(E.a), Math.sin(E.a));
@@ -69170,7 +69177,7 @@ function lbLinks(g, boxes, ports, ptris) { const L = LB.cur, made = { ropes: [],
     else if (K.kind === 'zip') { const [H, Lo] = A.y >= Bv.y ? [A, Bv] : [Bv, A], z = { A: [H.x, H.y + 2.2, H.z], B: [Lo.x, Lo.y + 1.8, Lo.z], id: K.id }; ZIPS.push(z); made.zips.push(z);
       const P0 = new THREE.Vector3(...z.A), P1 = new THREE.Vector3(...z.B), m = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, P0.distanceTo(P1), 5), lbMat(0x333333)); m.position.copy(P0).add(P1).multiplyScalar(.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), P1.clone().sub(P0).normalize()); g.add(m);
       for (const P of [H, Lo]) { const post = new THREE.Mesh(new THREE.BoxGeometry(.25, 2.4, .25), lbMat(0x6b5038)); post.position.set(P.x, P.y + 1.2, P.z); g.add(post); } } }
-  if (!LB.on) for (const K of L.links || []) { if (K.kind === 'zip' || K.kind === 'rope') continue; const a = ports.find(pt => pt.pid === K.a[0] && pt.key === K.a[1]), b = ports.find(pt => pt.pid === K.b[0] && pt.key === K.b[1]); if (!a || !b) continue;     // m1895: his concept's bridge dressing
+  if (!LB.on && (L.theme || 'mixed') !== 'block') for (const K of L.links || []) { if (K.kind === 'zip' || K.kind === 'rope') continue; const a = ports.find(pt => pt.pid === K.a[0] && pt.key === K.a[1]), b = ports.find(pt => pt.pid === K.b[0] && pt.key === K.b[1]); if (!a || !b) continue;     // m1895: his concept's bridge dressing
     const A = new THREE.Vector3(a.w[0], a.deck, a.w[2]), Bv = new THREE.Vector3(b.w[0], b.deck, b.w[2]), dx = Bv.x - A.x, dz = Bv.z - A.z, L4 = Math.hypot(dx, dz) || 1, ux = dx / L4, uz = dz / L4, W = K.kind === 'sky' ? 1.5 : 1, px = -uz, pz = ux;
     for (const [P2, s2] of [[A, 1], [Bv, -1]]) for (const sd of [-1, 1]) lbBrazier(g, P2.x + px * sd * (W + .35) + ux * s2 * .4, P2.y, P2.z + pz * sd * (W + .35) + uz * s2 * .4, K.id, false);
     if (K.kind === 'plank') { const N = Math.max(2, Math.round(L4 / 2.5)), rope = _lvM.rope || (_lvM.rope = new THREE.MeshStandardMaterial({ color: 0xb08a55, roughness: 1 })), postM = lbGoldMat();
@@ -69192,7 +69199,7 @@ function lbUiBuild() {
   const el = LB.el = document.createElement('div'); el.style.cssText = 'position:fixed;inset:0;z-index:58;display:none;touch-action:none;'; document.body.appendChild(el);
   const bs = 'font:700 12px system-ui;padding:8px 9px;border-radius:8px;border:1px solid #4a7aa0;background:#17304a;color:#e6f4ff;';
   const top = LB.top = document.createElement('div'); top.style.cssText = 'position:fixed;left:8px;right:8px;top:calc(92px + env(safe-area-inset-top));z-index:60;display:none;gap:5px;flex-wrap:wrap;';
-  top.innerHTML = ['view|PERSP', 'top|TOP', 'front|FRONT', 'side|SIDE', 'home|HIM', 'play|PLAY', 'file|SAVE FILE', 'copy|COPY', 'exit|EXIT'].map(x => { const [a, t] = x.split('|'); return '<button data-l="' + a + '" style="' + bs + '">' + t + '</button>'; }).join(' ');
+  top.innerHTML = ['view|PERSP', 'top|TOP', 'front|FRONT', 'side|SIDE', 'home|HIM', 'theme|THEME', 'play|PLAY', 'file|SAVE FILE', 'copy|COPY', 'exit|EXIT'].map(x => { const [a, t] = x.split('|'); return '<button data-l="' + a + '" style="' + bs + '">' + t + '</button>'; }).join(' ');
   const bot = LB.bot = document.createElement('div'); bot.style.cssText = 'position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:60;display:none;background:#0c1420e6;border:1px solid #3a5a7a;border-radius:12px;padding:7px;font:600 12px system-ui;color:#cfe8ff;';
   document.body.appendChild(top); document.body.appendChild(bot);
   const click = e => { const b = e.target.closest('button'); if (!b) return; e.stopPropagation(); lbCmd(b.dataset.l, b.dataset.k); };
@@ -69218,7 +69225,7 @@ function lbBotPaint() { const B = LB.bot, P = LB.sel && LB.cur.pieces.find(q => 
   if (!P) { B.innerHTML = '<div style="margin:0 2px 4px">ADD (it appears in front of the camera) -- tap a piece to edit it, tap a tower port ball to change it -- LINK two ports:</div>' + Object.entries(LB.KINDS).map(([k, K]) => btn('add', K.label, k)).join('') + '<br>' + Object.entries(LB.LINKS).map(([k, X]) => btn('link', 'LINK ' + X.label, k)).join(''); return; }
   const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p);
   B.innerHTML = '<div style="margin:0 2px 4px">' + K.label + ' ' + P.id + ' -- ' + Object.entries(q).map(([k, v]) => k + ' ' + (+v).toFixed(1)).join(', ') + '  @ y ' + P.at[1].toFixed(1) + '</div>'
-    + btn('style', 'STYLE: ' + ({ brick: 'BRICK', mega: 'MEGALITH', tech: 'ANCIENT TECH' })[(P.p && P.p.style) || LB.KINDS[P.kind].style || 'mega']) + (P.kind === 'tower' ? btn('roof', P.p && P.p.roof === 0 ? 'ROOF: OFF' : 'ROOF: ON') : '') + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
+    + btn('style', 'STYLE: ' + ((P.p && P.p.style) ? ({ brick: 'BRICK', mega: 'MEGALITH', tech: 'ANCIENT TECH', block: 'BLOCK' })[P.p.style] : 'THEME')) + (P.kind === 'tower' ? btn('steps', (P.p && P.p.steps === 0) ? 'STEPS: OFF' : 'STEPS: ON') : '') + (P.kind === 'tower' ? btn('roof', P.p && P.p.roof === 0 ? 'ROOF: OFF' : 'ROOF: ON') : '') + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
 function lbSelect(id) { LB.sel = id || null; if (id) LB.selLink = null; lbLive(LB.sel); const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel);
   if (LB.tc) { LB.tc.detach(); if (P) { const g = LB.live.g.children.find(c => c.userData.pid === P.id); if (g) { LB.anchor.position.set(P.at[0], P.at[1], P.at[2]); LB.anchor.updateMatrixWorld(true); LB.tc.attach(LB.anchor); LB.drag0 = P.at.slice(); } } }
   lbBotPaint(); }
@@ -69233,6 +69240,7 @@ function lbTapPick(x, y) { const c = lbActiveCam(), rc = new THREE.Raycaster(); 
   if (LB.marks) { const h = rc.intersectObjects(LB.marks.children, false)[0]; if (h) { const pt = h.object.userData.port, P = LB.cur.pieces.find(q => q.id === pt.pid); if (P) { P.ports = P.ports || {}; const cur = P.ports[pt.key] || 'closed'; P.ports[pt.key] = LB.PORTS[(LB.PORTS.indexOf(cur) + 1) % LB.PORTS.length]; lbSave(); lbSelect(LB.sel); } return; } }
   const h = rc.intersectObjects(LB.live.g.children, true)[0]; lbSelect(h ? h.object.userData.pid : null); }
 function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id === LB.sel), O = LB.orb;
+  if (a === 'theme') { const ks = Object.keys(LBTHEMES), cur = L.theme || 'mixed'; L.theme = ks[(ks.indexOf(cur) + 1) % ks.length]; LB.top.querySelector('[data-l=theme]').textContent = 'THEME: ' + LBTHEMES[L.theme].label; lbSave(); lbSelect(LB.sel); return; }     // m1898
   if (a === 'view') { LB.persp = LB.persp ? 0 : 1; LB.top.querySelector('[data-l=view]').textContent = LB.persp ? 'PERSP' : 'ORTHO'; lbCam(); }
   else if (a === 'top') { O.el = 1.5699; lbCam(); } else if (a === 'front') { O.el = 0; O.az = 0; lbCam(); } else if (a === 'side') { O.el = 0; O.az = Math.PI / 2; lbCam(); }
   else if (a === 'home') { O.t.copy(player.pos); lbCam(); }
@@ -69245,7 +69253,8 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
   else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
   else if (a === 'roof') P.p = Object.assign({}, P.p, { roof: P.p && P.p.roof === 0 ? 1 : 0 });
-  else if (a === 'style') { const cur = (P.p && P.p.style) || LB.KINDS[P.kind].style || 'mega'; P.p = Object.assign({}, P.p, { style: ({ brick: 'mega', mega: 'tech', tech: 'brick' })[cur] }); }     // m1894
+  else if (a === 'style') { const cur = (P.p && P.p.style) || ''; P.p = Object.assign({}, P.p, { style: ({ '': 'brick', brick: 'mega', mega: 'tech', tech: 'block', block: '' })[cur] }); }     // m1894; m1898: '' = follow the level's THEME
+  else if (a === 'steps') P.p = Object.assign({}, P.p, { steps: P.p && P.p.steps === 0 ? 1 : 0 });
   else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'lwall' || P.kind === 'qbowl' || P.kind === 'loop' ? 'r' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
@@ -69266,7 +69275,7 @@ async function lbEnter() { if (LB.on || !rig.ready) return;
   if (!LB.tc) { const tc = LB.tc = new POSED.TC(lbActiveCam(), LB.el); tc.setMode('translate'); tc.setTranslationSnap(.5); tc.size = 1.1; scene.add(tc.getHelper ? tc.getHelper() : tc);
     tc.addEventListener('objectChange', () => { const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel); if (!P) return; const v = LB.anchor.position; P.at = [+v.x.toFixed(2), +v.y.toFixed(2), +v.z.toFixed(2)]; LB.moved = 1; });
     tc.addEventListener('dragging-changed', e => { if (!e.value && LB.moved) { LB.moved = 0; lbSave(); lbSelect(LB.sel); } }); }
-  for (const x of [LB.el, LB.bot]) x.style.display = 'block'; LB.top.style.display = 'flex';
+  for (const x of [LB.el, LB.bot]) x.style.display = 'block'; LB.top.style.display = 'flex'; LB.top.querySelector('[data-l=theme]').textContent = 'THEME: ' + (LBTHEMES[LB.cur.theme || 'mixed'] || LBTHEMES.mixed).label;
   lbCam(); lbSelect(null); }
 function lbExit() { LB.on = 0; if (LB.tc) LB.tc.detach(); for (const x of [LB.el, LB.bot, LB.top]) x.style.display = 'none'; if (LB.marks) scene.remove(LB.marks);
   scene.fog = LB.fog; LB.sel = null; lbLive(null); last = performance.now(); }
