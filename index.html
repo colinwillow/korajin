@@ -5766,6 +5766,7 @@ const SFX = {
     foot_LAND: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_b_2.mp3'],     /* m1872: HIS LANDING, as footsteps (pairs: a left, b right); m1875: + two variant pairs */
     // m1875: BODY CONTACTS (`contactSnd`) -- his landing and three variations of each half (1: -8% pitch, lowpass 2.6k, heavier; 2: +8%, lighter;
     // 3: -3%, treble -4 dB, softer)
+    clink: ['audio/metal_ping_01.mp3', 'audio/metal_clang_01.mp3', 'audio/metal_clang_02.mp3', 'audio/metal_clang_03.mp3'],     /* m1876: the weapon away / out (`swapSnd`) */
     contact: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_a_3.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_b_2.mp3', 'audio/hit_sounds/thud_b_3.mp3'],
     shot: ['audio/blaster_sound_01.mp3', 'audio/blaster_sound_02.mp3'],
     big: ['audio/plasma_canon.mp3'],
@@ -13419,7 +13420,7 @@ function wrunPose() {
   // up and down"): on the VEL run's vertical share (cos^2 of R.a), the whole drawn body pitches `upHip` rad back about his right axis (pivot at the
   // feet: head off the wall, feet onto it), slid in so the soles meet the face, and the spine turns the same angle forward so the chest is upright.
   if (R.kind === 'side' && R.arc === 'side' && WRUN.sidePose === 'IK' && rig.bones) { wrunSideIK(R); return; }     // m1864
-  if (R.kind === 'side' && R.arc === 'side' && WRUN.sidePose === 'CLIP' && rig.wsHis) return;     // m1866: HIS wall run is played as he made it -- no lean, no slide-in
+  if (R.kind === 'side' && R.arc === 'side' && WRUN.sidePose === 'CLIP' && rig.wsHis) { const k = Math.min(1, (R.t - (R.t0 || 0)) / .12) * WRUN.hisOut; rig.root.position.x += R.nx * k; rig.root.position.z += R.nz * k; return; }     // m1866: HIS wall run is played as he made it; m1877: just stood `hisOut` m out from the face (his: 'his feet kinda go into the wall -- the origin could come out a little')
   if (WRUN.upLook === 'RUN' && R.velMode && R.kind !== 'slide' && R.a != null) { const c = Math.cos(R.a), wu = (c > 0 ? c * c : 0) * Math.min(1, R.t / WRUN.upIn);
     if (wu > .01) { const fx = Math.sin(p.faceH), fz = Math.cos(p.faceH); _wrA.set(-fz, 0, fx); _wrQ.setFromAxisAngle(_wrA, WRUN.upHip * wu); rig.root.quaternion.premultiply(_wrQ);     // his right is (-fz, fx)
       const inn = (p.r + WRUN.gap - WRUN.upFootIn) * wu; rig.root.position.x -= R.nx * inn; rig.root.position.z -= R.nz * inn;
@@ -13472,7 +13473,7 @@ function wrunSideIK(R) { const p = player, Bn = rig.bones, S = WRUN.sk, H = (rig
     _wskT.x += nx * S.sole * H; _wskT.z += nz * S.sole * H;     // the sole, not the ankle, on the face
     if (k < 1) _wskT.lerp(_wskC, 1 - k);
     wrLimb(up, mid, ft, _wskT, new THREE.Vector3(fx + nx * .35, .15, fz + nz * .35), new THREE.Vector3(fx * .8 - nx * .1, .55, fz * .8 - nz * .1).normalize()); } }
-Object.assign(WRUN, { sidePose: 'CLIP',     /* m1866: his own clip is the default; TOOLS > WALL SIDE: IK RUN is m1864's */ sk: { ext: .97, tilt: 1.05, plantDecay: .15, plantSlack: .02, liftMax: .45, liftK: 1.1, stride: .9, sole: .07, lean: .08, inT: .15, rate: 1 },     /* m1864: the side run = the plain run + feet on the wall (TOOLS > WALL SIDE) */ sideCut: [8, 23, 30],     /* m1863: Wall_Run_1 is 30 frames: onto the wall, two steps, off it. MEASURED (legs' pose distance): frames 8 and 23 match (.077), one stride -- that loops */ sideInK: .35, arcUpAng: .55, arcUpMin: 7, arcKeep: 1, arcVmin: 6, arcVmax: 10, arcUp: 5.6, arcG: 4.6,     /* m1860: the arc rose 1.6 m and read as running on the ground beside the wall; now ~3.4 m */ arcEndV: 4.2, arcMax: 2.2, arcTop: 1.1, entry: 'ARC', angK: 1, entryK: 1.15, riseK: .5, steerDead: .45, upLook: 'RUN', upHip: .35, upTorso: 1, upIn: .15, upFootIn: .12, upRunK: 1, upRunTs: [.9, 2.6], upJumpA: .6, offBlend: .07, turnHalf: .09, gripT: .35, rampT: .9, capV: 8, capHalf: .12, topV: 3.5, proxy: 0, upArms: 'RUN', upArmTs: 1.5, sideClip: 1, sideLean: .65, sideTorso: .25, sideRef: 5.5, steer: 2.6, upClip: 1, upClipD: .45, upClipRef: 3.2, upClipTs: [1.8, 3.4],     /* m1831: a RUNNING cadence (his: "the pace of the climb, really slow") */ upD: .8, upFoot: -.12, upAmp: .34, upLift: .26, upToeIn: .15, upJumpV: 9.5,     /* m1827: m1826's pose REVERTED (his: "even worse, horrendous") -- the jumps stay */     /* m1826 (his: "not a chair at 90 degrees -- down at 45 or less, knees with room to run, toes brushing the wall, not flat-footed"): hips closer (upD .8 -> .5), feet lower under him (upFoot -.12 -> -.55), toes turned INTO the wall (`upToeIn`) */ upD0: .8, upRate: 2.4, upW: .14, upTorso: .32, perchD: .42, perchFoot: -.18, perchKnee: -.55, perchFwd: .12, perchDrop: .22, perchLean: .45, perchW: .2, perchHand: .05, perchHandW: .55, ik: 1 });     /* m1683: the perch faces away -- back to the wall, a foot planted on it behind, hands back on it at the hips */
+Object.assign(WRUN, { hisOut: .14,     /* m1877: measured m1866 -- a foot .11 m into the face at the deepest */ sidePose: 'CLIP',     /* m1866: his own clip is the default; TOOLS > WALL SIDE: IK RUN is m1864's */ sk: { ext: .97, tilt: 1.05, plantDecay: .15, plantSlack: .02, liftMax: .45, liftK: 1.1, stride: .9, sole: .07, lean: .08, inT: .15, rate: 1 },     /* m1864: the side run = the plain run + feet on the wall (TOOLS > WALL SIDE) */ sideCut: [8, 23, 30],     /* m1863: Wall_Run_1 is 30 frames: onto the wall, two steps, off it. MEASURED (legs' pose distance): frames 8 and 23 match (.077), one stride -- that loops */ sideInK: .35, arcUpAng: .55, arcUpMin: 7, arcKeep: 1, arcVmin: 6, arcVmax: 10, arcUp: 5.6, arcG: 4.6,     /* m1860: the arc rose 1.6 m and read as running on the ground beside the wall; now ~3.4 m */ arcEndV: 4.2, arcMax: 2.2, arcTop: 1.1, entry: 'ARC', angK: 1, entryK: 1.15, riseK: .5, steerDead: .45, upLook: 'RUN', upHip: .35, upTorso: 1, upIn: .15, upFootIn: .12, upRunK: 1, upRunTs: [.9, 2.6], upJumpA: .6, offBlend: .07, turnHalf: .09, gripT: .35, rampT: .9, capV: 8, capHalf: .12, topV: 3.5, proxy: 0, upArms: 'RUN', upArmTs: 1.5, sideClip: 1, sideLean: .65, sideTorso: .25, sideRef: 5.5, steer: 2.6, upClip: 1, upClipD: .45, upClipRef: 3.2, upClipTs: [1.8, 3.4],     /* m1831: a RUNNING cadence (his: "the pace of the climb, really slow") */ upD: .8, upFoot: -.12, upAmp: .34, upLift: .26, upToeIn: .15, upJumpV: 9.5,     /* m1827: m1826's pose REVERTED (his: "even worse, horrendous") -- the jumps stay */     /* m1826 (his: "not a chair at 90 degrees -- down at 45 or less, knees with room to run, toes brushing the wall, not flat-footed"): hips closer (upD .8 -> .5), feet lower under him (upFoot -.12 -> -.55), toes turned INTO the wall (`upToeIn`) */ upD0: .8, upRate: 2.4, upW: .14, upTorso: .32, perchD: .42, perchFoot: -.18, perchKnee: -.55, perchFwd: .12, perchDrop: .22, perchLean: .45, perchW: .2, perchHand: .05, perchHandW: .55, ik: 1 });     /* m1683: the perch faces away -- back to the wall, a foot planted on it behind, hands back on it at the hips */
 try { const v = localStorage.getItem('mel.wentry'); if (v === 'ARC' || v === 'ANGLE' || v === 'PROJECT') WRUN.entry = v; } catch (e) {}
 try { const v = localStorage.getItem('mel.wside2'); if (v === 'IK' || v === 'CLIP') WRUN.sidePose = v; } catch (e) {}     /* m1866: a new key, so his clip shows first */
 try { const v = localStorage.getItem('mel.uplook'); if (v === 'RUN' || v === 'CLIP') WRUN.upLook = v; } catch (e) {}
@@ -21653,8 +21654,8 @@ function swapTick(dt) {
   const su = p.swapT / SWAP.dur;
   // HIS HANDS ARE EMPTY WHILE THEY ARE IN THE BAG. Both are crossings rather than tests on
   // "is it past", which is `p.gotUp`'s own rule one state over.
-  if (!p.swapHid && !p.swapDone && su >= p.swapHideAt) { p.swapHid = 1; paintKit(); }
-  if (!p.swapDone && su >= p.swapAt) { p.swapDone = 1; p.swapHid = 0; applySlot(p.swapTo); }
+  if (!p.swapHid && !p.swapDone && su >= p.swapHideAt) { p.swapHid = 1; swapSnd(p.slot, 0); paintKit(); }
+  if (!p.swapDone && su >= p.swapAt) { p.swapDone = 1; p.swapHid = 0; applySlot(p.swapTo); swapSnd(p.swapTo, 1); }
   if (p.swapT >= SWAP.dur) p.swap = 0;
 }
 function swapGo(to) {
@@ -21671,9 +21672,15 @@ function swapGo(to) {
   const r = (clipLen(nm) / SWAP.dur) * (rev ? -1 : 1);
   playOnce(nm, r); playOnce(nm + UP, r);       // the clone is a separate action and needs starting
   if (rig.actions[nm + UPS]) playOnce(nm + UPS, r);     // m1020: and the square half `upKey` actually draws (it was never rewound)
-  snd('foot', { g: .12, r: 1.25 });
+  snd('swoosh', { g: SWAPSND.whoosh, r: 1.35 + Math.random() * .2 });     // m1876: the reach (it was a footstep, which is now the landing thud)
   return 1;
 }
+// m1876 (his: "a noise for when he puts away and takes out his weapons -- a subtle clink or clang for the sword"): the moment the weapon leaves his
+// hand (`out` 0, the hide crossing) and the moment it arrives (1, the show crossing). A BLADE gets the bright ping pitched up (a sheath's shing),
+// played short; anything else a small high clang. Nothing for empty hands.
+const SWAPSND = { whoosh: .1, blade: { g: .2, r: [1.25, 1.45], dur: .35 }, gear: { g: .13, r: [1.5, 1.8], dur: .22 } };
+function swapSnd(slot, out) { const W = WEAP.slots[slot]; if (!W || !(W.file || W.gen)) return; const blade = W.melee === 'katana' || W.blade, C = blade ? SWAPSND.blade : SWAPSND.gear;
+  snd('clink', { i: blade ? 0 : 1 + ((Math.random() * 3) | 0), g: C.g * (out ? 1 : .8), r: C.r[0] + Math.random() * (C.r[1] - C.r[0]) + (out ? 0 : .1), dur: C.dur, att: .002 }); }
 // AND ANYTHING THAT OWNS THE BODY CANCELS IT, taking the weapon with it: a punch thrown mid-reach
 // is the arms doing two things, and a swap you have to wait out is a swap nobody uses in a fight.
 function swapStop() {

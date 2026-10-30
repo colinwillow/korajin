@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- a sound for drawing and putting away a weapon; his wall run stood off the wall
+
+His: *"a noise for when he puts away and takes out his weapons -- a subtle clink or clang for the sword"* and *"on the wall run his feet kinda go into
+the wall -- the animation is good, the origin could come out a little."*
+- `swapSnd` at the swap's two crossings (`swapTick`): the old weapon leaving his hand, the new one arriving. A blade (the katana) plays
+  metal_ping_01 pitched 1.25-1.45 and cut at .35 s (a sheath's shing); other gear one of metal_clang_01-03 at 1.5-1.8, cut at .22 s; empty hands
+  nothing. `SWAPSND` holds the levels. The reach itself was `snd('foot')` -- the landing thud since m1872 -- and is a soft `swoosh` now.
+- His clip on the side run: the body slid `WRUN.hisOut` .14 m out along the face normal (m1866 measured a foot .11 m into it), eased in over .12 s.
+
 ## m1875 -- every move's hands / knees / hips meeting the floor make the landing sound (`contactSnd`); landing variations
 
 His: *"flicking either stick unarmed -- he jumps in the air and hits the ground with his knee, or does the front handspring and lands on his hands
