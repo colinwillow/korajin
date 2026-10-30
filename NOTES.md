@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the rope swing holds the rope, and BOTH swings pump (procedural, until his clips)
+## m1883 -- the rope swing holds the rope, and BOTH swings pump (procedural, until his clips)
 
 His: *"we need better animations for the rope swing -- he just uses the ledge hang, very stationary; he needs to be holding the rope with his hand ...
 and we need PUMPS for the rope swing and the high bar swing -- torso or legs down, so it could serve both."*
