@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- stuck in the TUCK pose after catching a ledge mid-flip
+## m1878 -- stuck in the TUCK pose after catching a ledge mid-flip
 
 His: *"jump off a tall building doing flips, land on a ledge -- sometimes he's locked in the tuck pose ... the locomotion moves as though he's
 hanging, push up and he gets up off the ledge, but the animation stays in tuck."*
