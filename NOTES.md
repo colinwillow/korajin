@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## The dweller's hand stutter, and the bow aims DOWN and looses only on a lift (m15xx)
+## The dweller's hand stutter, and the bow aims DOWN and looses only on a lift (m1854)
 - **The dweller:** *"his hands do a subtle little stutter at the end of their sequence -- maybe his walk"*. Measured in the forged
   `stone_olmec.glb`: `walk`'s last key repeats its first (the arms .008 apart, against a .016 step between frames), so the loop showed the same
   pose twice -- a one-frame hold. `loopSeam` (in `guardLoad`): a walk / run / idle whose last frame repeats its first (on 70% of its rotation
