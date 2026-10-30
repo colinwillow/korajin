@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LOOK pass 4: his concept art (the floating sandstone temple)
+## m1895 -- LOOK pass 4: his concept art (the floating sandstone temple)
 
 His concept: warm sandstone megaliths on floating islands, gold/bronze trim, jade-teal glow (channels, braziers, light beams), a gold halo ring on
 the summit, red banners with a gold diamond and tattered ends, rope rails on posts, red carpets, vines and palms, guardian statues.
