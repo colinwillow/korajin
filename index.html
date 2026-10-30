@@ -14749,8 +14749,17 @@ async function guardLoad(Z = GUARD) { if (Z.P) return Z.P;
   for (const a of c.animations) { for (const t of a.tracks) if (/Hips\.position$/.test(t.name)) { const v = t.values, n = v.length;
       if (a.name === 'walk' && n >= 6) walkV = Math.hypot(v[n - 3] - v[0], v[n - 1] - v[2]) / Math.max(.1, a.duration) * k;     // the clip's own travel: his feet do not slide
       const x0 = v[0], z0 = v[2]; for (let i = 0; i < n; i += 3) { v[i] = x0; v[i + 2] = z0; } }     // in place: the brain moves him
-    clips[a.name] = a; }
+    loopSeam(a); clips[a.name] = a; }
   return (Z.P = { proto: g.scene, scale: k, h: h * k, clips, walkV, tris: null }); }
+// m15xx (his: "the temple dweller -- his walk, I think -- his hands do a subtle little stutter at the end of their sequence"): measured, the
+// dweller's `walk` ENDS on a near-copy of its first frame (the arms' last key is .008 from the first while a frame's step is .016), so the loop
+// shows the same pose twice -- a one-frame hold at the seam. A looping clip whose last frame repeats its first is cut to loop at the frame
+// before (`clip.duration`), so the wrap lands on the first frame instead of a copy of it.
+function loopSeam(a) { if (!a || a.userData && a.userData.seamed) return; let rep = 0, tot = 0, t2 = 0;
+  for (const t of a.tracks) { if (!/quaternion$/.test(t.name)) continue; const v = t.values, n = t.times.length; if (n < 4) continue; tot++;
+    let d0 = 0, d1 = 0; for (let k = 0; k < 4; k++) { d0 += (v[k] - v[(n - 1) * 4 + k]) ** 2; d1 += (v[(n - 2) * 4 + k] - v[(n - 1) * 4 + k]) ** 2; }
+    if (Math.sqrt(d0) < .6 * Math.sqrt(d1) + 1e-4) rep++; t2 = Math.max(t2, t.times[n - 2]); }
+  if (tot && rep / tot > .7 && t2 > .1 && /walk|run|idle/.test(a.name)) { a.duration = t2; (a.userData = a.userData || {}).seamed = 1; } }
 function guardTris(Gd, M) { const P = Gd.Z.P; if (P.tris) return P.tris; const G = M.geometry, bones = M.skeleton.bones, SI = G.attributes.skinIndex, SW = G.attributes.skinWeight, n = G.attributes.position.count;
   const grp = bones.map(b => guardPiece(b.name)), vg = new Array(n);
   for (let v = 0; v < n; v++) { let bw = -1, bi = 0; for (let c = 0; c < 4; c++) { const w = SW.getComponent(v, c); if (w > bw) { bw = w; bi = SI.getComponent(v, c); } } vg[v] = grp[bi]; }
@@ -15056,7 +15065,7 @@ function archerBow(d) {
 // over whatever his legs are doing; letting go LOOSES: `bow_recoil`, and an arrow from the nock to the reticle's point -- a lob solved to land
 // there, faster and flatter the longer it was drawn (`full` s to full power). His arrows are `mine`: they hit the bowmen, the spiders (a hit takes
 // a leg on the way to the burst), chip statues, smash what `bldHit` breaks, and stick in walls and the ground.
-const BOW = { full: 1.1, drawRate: 1.5, v0: 22, v1: 72, g0: .55, g1: .05, dmg0: 1, dmg1: 3, pow0: .12, pow1: 1.2, keep: .3, limbK: .95, big: 1.35, glow: .55, trail: 3, tracerR: .05, tracerT: .06, tracerMax: 4, sq: 1, carry: { ang: .6, out: .18 }, lockT: .12, blastR: 2.6, blastDmg: 4, fullK: 1.35, noRetic: 1, fireDmg: 1, stat: { shots: 0, hits: 0, blasts: 0, fires: 0 } };     // m1729: the charge is the shot -- a tap lobs slow, a full draw flies fast and almost true; only a FULL draw knocks back
+const BOW = { downDead: .15, down0: 10 * Math.PI / 180, downMax: 40 * Math.PI / 180, full: 1.1, drawRate: 1.5, v0: 22, v1: 72, g0: .55, g1: .05, dmg0: 1, dmg1: 3, pow0: .12, pow1: 1.2, keep: .3, limbK: .95, big: 1.35, glow: .55, trail: 3, tracerR: .05, tracerT: .06, tracerMax: 4, sq: 1, carry: { ang: .6, out: .18 }, lockT: .12, blastR: 2.6, blastDmg: 4, fullK: 1.35, noRetic: 1, fireDmg: 1, stat: { shots: 0, hits: 0, blasts: 0, fires: 0 } };     // m1729: the charge is the shot -- a tap lobs slow, a full draw flies fast and almost true; only a FULL draw knocks back
 const _bwL = new THREE.Vector3(), _bwR = new THREE.Vector3(), _bwA = new THREE.Vector3(), _bwB = new THREE.Vector3(), _bwM = new THREE.Vector3(), _bwD = new THREE.Vector3();
 // m1744 (his: "the thing that's killing me -- once you've initiated a shot and you move the left stick around he keeps pulling the bow back
 // again; strafe left or right and he pulls it again; he should never pull it back again once it's back"). MEASURED: standing, the draw is the
@@ -15076,13 +15085,17 @@ function bowDraw() { const p = player; p.bowT = 0; const n = 'bow_draw', r = BOW
 // `fireDmg` more; BLAST bursts on whatever it meets -- bodies, spiders, debris, walls, the ground -- in `blastR` m.
 // the shot as it stands: from the nock, solved to the reticle's point at this draw's speed and drop -- the LOOSE and the PREVIEW (m1744) read
 // the same answer, so the arc drawn is the arc flown
+// m15xx (his: "bringing the stick back down toward centre should angle the shot down ~10 degrees, all the way down maybe 20-45 -- up on a tower
+// you want to shoot down; we have a way to shoot up and none down"): drawn, the right thumb BELOW the pad's centre tilts the open-air aim down --
+// `down0` once it passes `dead`, rising to `downMax` with the thumb at the bottom. (Only a lift looses now, so the thumb is free to go there.)
+function bowDownA() { const R = stick.R, p = player; if (!p.aim || !R.down) return 0; const y = R.y || 0; if (y < BOW.downDead) return 0; return BOW.down0 + (BOW.downMax - BOW.down0) * clamp((y - BOW.downDead) / (1 - BOW.downDead), 0, 1); }
 function bowSolve() { const p = player, B = BOW.mesh; const k = clamp((p.bowT || 0) / BOW.full, .15, 1), full = k >= .97, type = QD.arrow || 'normal';
   const o = B && B.nock.visible ? B.nock.position.clone() : p.pos.clone().setY(p.pos.y + (RIG.height || 1.4) * .8);
   const a = aimTarget(); let tx = a.p.x, ty = a.p.y, tz = a.p.z;
   // m1761 (his: "a wall in front of me -- the square terrace round the willow -- and the reticle stayed fixed on that little ledge, it never went
   // higher"): the gun's aim ray stops at the first box, so a low wall in front became the bow's TARGET and the arc solved onto it. Unlocked, the
   // bow aims at the open-air point at full range (what it does in the open); the flown arc (`bowArc`) shows where it really lands.
-  if (!a.lock && !aim3Live() && !p.backAim) { const hx = tx - o.x, hz = tz - o.z, hl = Math.hypot(hx, hz) || 1, R = WEAP.range; tx = o.x + hx / hl * R; tz = o.z + hz / hl * R; ty = o.y; }
+  if (!a.lock && !aim3Live() && !p.backAim) { const hx = tx - o.x, hz = tz - o.z, hl = Math.hypot(hx, hz) || 1, R = WEAP.range; tx = o.x + hx / hl * R; tz = o.z + hz / hl * R; ty = o.y - Math.tan(bowDownA()) * R; }     // m15xx: the thumb below centre aims DOWN
   const dx = tx - o.x, dz = tz - o.z, R = Math.hypot(dx, dz) || 1, sp = BOW.v0 + (BOW.v1 - BOW.v0) * k * k, gk = BOW.g0 + (BOW.g1 - BOW.g0) * k, T = Math.max(.04, Math.hypot(R, ty - o.y) / sp), g = MOVE.g * gk;
   return { k, full, type, o, gk, g, T, dx, dz, ty }; }
 // m1747 (his: "with any meaningful amount of speed you can't even see the arrow"): a TRACER -- a solid streak behind each of his arrows, as long as
@@ -32945,7 +32958,7 @@ function stepKit(dt) {
   if (s.aim && !noTrig) {
     // THE SAME GATE THE HAMMER USES -- see `padUp`. Two copies of this is two places for
     // the trigger and the wind-up to start disagreeing about what a push up is.
-    if (s.bow && p.aim ? (stick.R.down && Math.hypot(stick.R.x, stick.R.y) > BOW.keep) : padUp(p.aim)) {     // m1729: a drawn bow stays drawn while the thumb steers the lens -- the arc test loosed (and re-drew) it on every turn
+    if (s.bow && p.aim ? stick.R.down : padUp(p.aim)) {     /* m15xx: a drawn bow looses ONLY when the thumb LIFTS (his: 'bringing the stick back to centre initiates the shot even though I haven't released') */     // m1729: a drawn bow stays drawn while the thumb steers the lens -- the arc test loosed (and re-drew) it on every turn
       p.armT += dt;
       if (p.armT >= WEAP.armT && !p.aim) {
           // **ONE SOUND FOR ONE EVENT.** `chargeStart` already spins up the synth hum -- the

@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## The dweller's hand stutter, and the bow aims DOWN and looses only on a lift (m15xx)
+- **The dweller:** *"his hands do a subtle little stutter at the end of their sequence -- maybe his walk"*. Measured in the forged
+  `stone_olmec.glb`: `walk`'s last key repeats its first (the arms .008 apart, against a .016 step between frames), so the loop showed the same
+  pose twice -- a one-frame hold. `loopSeam` (in `guardLoad`): a walk / run / idle whose last frame repeats its first (on 70% of its rotation
+  tracks) loops at the frame before (`clip.duration`). Run and idle measured clean.
+- **The bow:** *"pulling up starts the shot; bringing the stick back toward centre fires it even though I haven't released. Bringing it down
+  should angle the shot ~10 deg, all the way down 20-45 -- up on a tower you want to shoot down -- but you need to RELEASE to shoot"*. A drawn
+  bow stays drawn while the thumb is DOWN anywhere (it loosed under `BOW.keep` .3 of the pad); the thumb below centre (past `downDead` .15) tilts
+  the open-air aim down from `down0` 10 deg to `downMax` 40 deg at the bottom (`bowDownA`, into `bowSolve`, so the arc preview shows it).
+- Shipped unverified.
+
 ## The climb-up's slide, the hang's jump back to the lip, the swap reach, the run's toe flick, the wall run's feet (m1853)
 His list (the dweller's hands and the bow's down-aim are the next build):
 - **Climb-up:** *"the animation is fine but the locomotion pushes him forward more than I want -- about half"*: the mantle sets him down
