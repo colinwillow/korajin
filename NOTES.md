@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LEVEL BUILDER 3c: the L-WALL (the run turns round a curve) + LOOK pass 1 (masonry, lacquer, glow, Sonic chevrons)
+## m1886 -- LEVEL BUILDER 3c: the L-WALL (the run turns round a curve) + LOOK pass 1 (masonry, lacquer, glow, Sonic chevrons)
 
 His: *"more stylized -- Sonic, where the ramps have little arrows showing you can go up there, mixed with Japanese architecture, futuristic retro,
 pillar block, stone masonry ... alien world -- probably a bunch of passes on that"* and *"carry on"* (3c).
