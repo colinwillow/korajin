@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## NINJA GYM pass 2: the twin towers (m15xx, NINJAGYM.md)
+*"Two tall towers -- almost Eiffel Tower looking -- one with a ladder, really really tall, and at the top a rope to the other tower."*
+- `GYM.towers` (data, in `SC_GYM`): **A** and **B**, 30 m tall, 40 m apart at (10, -100) and (50, -100) -- behind the wall course, so the
+  route goes UP and out. Each is a tapering iron lattice (12 m base -> 5 m top, six tiers of four leaning legs, a ring and an X on every face),
+  MERGED into one mesh per tower, round a solid 2 m core, with a 6 m deck on top.
+- **A climbs by LADDERS** (`kitClimbAdd`, the kit's climb system): ground -> a mid deck at 14 m on the core's +z face, then mid deck -> the top
+  on the +x face, through a hatch left in the top deck; each tops out onto its deck (`mark`). Rails and rungs drawn, merged.
+- **B climbs by BRACKETS**: blocks 1 m deep spiralling round its core every 3 m (inside the jump's 2.81 m apex + the grab band) -- jump, catch
+  the lip, pull up; or drop down them.
+- The iron itself has no collider (you pass through the lattice; the core, decks and brackets are solid). Headless: 2 ladders registered,
+  `climbFind` latches the first at its foot; renders read as two Eiffel-ish towers, ladders up A's core, brackets round B's.
+- Next: pass 3, the tightrope between the tops. Shipped unverified.
+
 ## KORAJIN has its own repo (m1844)
 *"It's time to move this to its own repo... give it its own icon and web address."* `colinwillow/korajin`, Pages at
 colinwillow.github.io/korajin. Copied from `colinwillow/zap` at m1843 as ONE fresh commit (zap's history is 2.2 GB; GitHub caps a push at

@@ -13,7 +13,8 @@ walls you're supposed to run on. Monkey bars too. Like 10 passes to make an incr
 ## Passes
 - [x] **1. The walls (m1841):** A long wall 50 m; B tall faces 8 / 14 / 22 m; C chimney 5.5 m apart, 20 m; D zigzag with gaps (8 m across,
   4 m gaps); E a wall that runs into an 18 m tower face; F corners. Chevron arrows on the faces show the line. Edge-drop blend + eased hang IK.
-- [ ] 2. **The twin towers:** two lattice towers (~30 m, Eiffel-ish, tapering), one with a long ladder (the climb system), decks at the top.
+- [x] **2. The twin towers (m15xx):** two 30 m tapering iron lattices 40 m apart (z -100), each round a 2 m core with a deck on top. A: two LADDERS
+  (ground -> a mid deck at 14 m, mid deck -> the top through a hatch). B: BRACKETS spiralling round its core every 3 m (jump, grab, pull up).
 - [ ] 3. **The tightrope:** a rope between the tower tops -- the beam system, a faster walk, and the rope sags / wobbles under him (ROPEB's verlet).
 - [ ] 4. **The rope swing:** a hanging rope: catch it, climb up / down, swing, PUMP to build the arc, let go at the top of the swing.
 - [ ] 5. **Monkey bars:** hand over hand along a row of bars (the high-bar hang), swing to skip a bar, drop.

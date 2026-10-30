@@ -29038,7 +29038,12 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
     ['b_8', '+z', 3, 3, 0], ['b_14', '+z', 3, 3, 0], ['b_14', '+z', 3, 8, 0], ['b_22', '+z', 3, 3, 0], ['b_22', '+z', 3, 9, 0], ['b_22', '+z', 3, 15, 0],
     ['c_l', '+x', 8, 4, 0], ['c_r', '-x', 8, 8, 0], ['c_l', '+x', 8, 12, 0], ['c_r', '-x', 8, 16, 0],
     ['d_1', '+x', 4, 3, -60], ['d_1', '+x', 12, 4, -60], ['d_2', '-x', 4, 3, 60], ['d_2', '-x', 12, 4, 60], ['d_3', '+x', 4, 3, -60], ['d_3', '+x', 12, 4, -60],
-    ['e_wall', '-x', 8, 3, 90], ['e_wall', '-x', 20, 3, 90], ['e_tower', '+z', 6, 3, 0], ['e_tower', '+z', 6, 9, 0], ['e_tower', '+z', 6, 14, 0] ] };
+    ['e_wall', '-x', 8, 3, 90], ['e_wall', '-x', 20, 3, 90], ['e_tower', '+z', 6, 3, 0], ['e_tower', '+z', 6, 9, 0], ['e_tower', '+z', 6, 14, 0] ],
+  // m15xx (pass 2): THE TWIN TOWERS, 40 m apart, 30 m tall -- tapering iron lattices (Eiffel-ish) round a 2 m core. A climbs by LADDERS (ground ->
+  // the mid deck at `mid`, then the mid deck -> the top through a hatch); B climbs by BRACKETS spiralling round its core every `step` m (jump,
+  // grab, pull up -- or drop down them). The tightrope between the two tops is pass 3.
+  towers: [ { id: 'tw_a', at: [10, -100], h: 30, base: 12, top: 5, mid: 14, way: 'ladder', c: 0x5a6070, deck: 0x8a6a48 },
+            { id: 'tw_b', at: [50, -100], h: 30, base: 12, top: 5, mid: 14, way: 'brackets', step: 3, c: 0x5a6070, deck: 0x8a6a48 } ] };
 // SC_GYM:END
 let _gymArrowTex = null;
 function gymArrowTex() { if (_gymArrowTex) return _gymArrowTex; const cv = document.createElement('canvas'); cv.width = cv.height = 128; const q = cv.getContext('2d');
@@ -29056,7 +29061,34 @@ function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
     const sx = tx > 0 ? b.minx : tx < 0 ? b.maxx : 0, sz = tz > 0 ? b.minz : tz < 0 ? b.maxz : 0;     // the face's start along +tangent
     m.position.set(nx ? fx + nx * .03 : sx + tx * u, y, nz ? fz + nz * .03 : sz + tz * u); m.lookAt(m.position.x + nx, y, m.position.z + nz);
     m.rotateZ(ang * Math.PI / 180); g.add(m); }     // +tangent reads to the viewer's LEFT, so +ang (CCW) points along it
-  return { g, boxes }; }
+  const ladders = [];
+  for (const T2 of T.towers || []) { const [cx, cz] = T2.at, H = T2.h, half = y => T2.base / 2 + (T2.top / 2 - T2.base / 2) * (y / H), iron = [], beam = (ax, ay, az, bx, by, bz, t) => { const A = new THREE.Vector3(ax, ay, az), B = new THREE.Vector3(bx, by, bz), L = A.distanceTo(B), q = new THREE.BoxGeometry(t, t, L), o = new THREE.Object3D(); o.position.copy(A).add(B).multiplyScalar(.5); o.lookAt(B); o.updateMatrix(); q.applyMatrix4(o.matrix); iron.push(q); };
+    const lv = []; for (let y = 0; y <= H + .01; y += H / 6) lv.push(y);
+    for (let i = 0; i < lv.length - 1; i++) { const y0 = lv[i], y1 = lv[i + 1], h0 = half(y0), h1 = half(y1);
+      for (const [sx, sz] of [[1, 1], [1, -1], [-1, -1], [-1, 1]]) beam(cx + sx * h0, y0, cz + sz * h0, cx + sx * h1, y1, cz + sz * h1, .32);     // the four legs, leaning in
+      for (const [ax, az, bx, bz] of [[1, 1, 1, -1], [1, -1, -1, -1], [-1, -1, -1, 1], [-1, 1, 1, 1]]) { beam(cx + ax * h1, y1, cz + az * h1, cx + bx * h1, y1, cz + bz * h1, .22);     // the ring at the top of the tier
+        beam(cx + ax * h0, y0, cz + az * h0, cx + bx * h1, y1, cz + bz * h1, .12); beam(cx + bx * h0, y0, cz + bz * h0, cx + ax * h1, y1, cz + az * h1, .12); } }     // and an X on each face
+    const im = new THREE.Mesh(mergeGeometries(iron.splice(0)), mat(T2.c)); im.castShadow = true; im.name = T2.id + '_iron'; g.add(im);
+    const put = (id, x0, x1, y0, y1, z0, z1, c) => { const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(c)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; m.name = id; g.add(m); const b = { minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id }; boxes.push(b); by[id] = b; return b; };
+    put(T2.id + '_core', cx - 1, cx + 1, 0, H, cz - 1, cz + 1, 0x4a4f5c);
+    const ht = half(H) + .5;
+    if (T2.way === 'ladder') {     // the TOP DECK, with a hatch over the second ladder (on the core's +x face)
+      put(T2.id + '_top1', cx - ht, cx + 1, H, H + .4, cz - ht, cz + ht, T2.deck); put(T2.id + '_top2', cx + 2.4, cx + ht, H, H + .4, cz - ht, cz + ht, T2.deck);
+      put(T2.id + '_top3', cx + 1, cx + 2.4, H, H + .4, cz - ht, cz - .8, T2.deck); put(T2.id + '_top4', cx + 1, cx + 2.4, H, H + .4, cz + .8, cz + ht, T2.deck);
+      const hm = half(T2.mid); put(T2.id + '_mid', cx + 1, cx + hm, T2.mid - .4, T2.mid, cz - hm, cz + hm, T2.deck);     // the MID DECK, on the +x side of the core
+      const L1 = { id: T2.id + '_lad1', box: { minx: cx - .5, maxx: cx + .5, miny: 0, maxy: T2.mid, minz: cz + 1, maxz: cz + 1.2 }, top: T2.mid, mark: { x: cx + 1.8, y: T2.mid, z: cz + 1.6 } };     // ground -> mid, on the core's +z face
+      const L2 = { id: T2.id + '_lad2', box: { minx: cx + 1, maxx: cx + 1.2, miny: T2.mid, maxy: H, minz: cz - .5, maxz: cz + .5 }, top: H, mark: { x: cx + 1.7, y: H + .4, z: cz + 1.4 } };     // mid -> the top hatch, on the +x face
+      ladders.push(L1, L2);
+      for (const L of [L1, L2]) { const B = L.box, wide = B.maxx - B.minx > B.maxz - B.minz, mx = (B.minx + B.maxx) / 2, mz = (B.minz + B.maxz) / 2;     // drawn: two rails and rungs every .32 m
+        for (const o of [-.4, .4]) beam(wide ? mx + o : mx, B.miny, wide ? mz : mz + o, wide ? mx + o : mx, B.maxy + .9, wide ? mz : mz + o, .08);
+        for (let r = B.miny + .3; r < B.maxy + .8; r += .32) beam(wide ? mx - .4 : mx, r, wide ? mz : mz - .4, wide ? mx + .4 : mx, r, wide ? mz : mz + .4, .06); }
+      const lm = new THREE.Mesh(mergeGeometries(iron.splice(0)), mat(0x9a7a50)); lm.name = T2.id + '_ladders'; g.add(lm); }
+    else { put(T2.id + '_top', cx - ht, cx + ht, H, H + .4, cz - ht, cz + ht, T2.deck);
+      const sides = [[0, 1], [1, 0], [0, -1], [-1, 0]]; let k = 0;     // the BRACKETS: blocks 1 m deep (a grabbable lip), round the core's four faces
+      for (let y = T2.step; y < H - 1; y += T2.step, k++) { const [sx, sz] = sides[k % 4], x0 = sx > 0 ? cx + 1 : sx < 0 ? cx - 2.4 : cx - 1.2, z0 = sz > 0 ? cz + 1 : sz < 0 ? cz - 2.4 : cz - 1.2;
+        put(T2.id + '_br' + k, x0, x0 + (sx ? 1.4 : 2.4), y - 1, y, z0, z0 + (sz ? 1.4 : 2.4), T2.deck); } }
+    wparkLabel(g, T2.way === 'ladder' ? 'TOWER A  (LADDERS)' : 'TOWER B  (BRACKETS)', cx, cz + T2.base / 2 + 3, 0, '#3a4050'); }
+  return { g, boxes, ladders }; }
 // m1843: ONLINE, STAGE 1 (NETPLAY.md). His Robits relay (colinwillow/robits-server, a ~250-line room relay on Render) carries it -- the server
 // knows nothing about games, so KORAJIN shares it under its own room codes (`KJ-...`). What is sent is NOT inputs or clip names: it is his
 // FINISHED POSE -- the drawn root (position + rotation) and every bone's rotation, quantised to int16 and base64'd, `hz` times a second.
@@ -29111,6 +29143,7 @@ function netChip() { if (!NET.chip) { if (!NET.on) return; const d = NET.chip = 
   const n = Object.keys(NET.peers).length, t = NET.on ? 'ONLINE ' + NET.room + '  ' + NET.st + '  ' + (n + 1) + ' here  rx ' + NET.rx + '/s' + (NET.err ? '  ERR ' + NET.err : '') : '';
   NET.chip.style.display = t ? 'block' : 'none'; if (NET.chip.textContent !== t) NET.chip.textContent = t; }
 function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R = gymBuild(GYM); scene.add(R.g); for (const b of R.boxes) BOXES.push(b);
+  for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; }     // pass 2: the towers' ladders into the climb system
   boxGrid(); Z.on = { g: R.g, boxes: R.boxes }; const S = GYM.spawn; player.pos.set(S.at[0], S.at[1], S.at[2]); player.vel.set(0, 0, 0); player.faceH = player.heading = S.yaw; cam.az = S.yaw; }
 function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = shipMake(0), g = S.g; scene.add(g);
   bldTris(S.O, S.tris); for (const b of S.O.boxes) BOXES.push(b); boxGrid();
