@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LEVEL BUILDER 3b: sky bridge, rope bridge, swing rope, bounce pad
+## m1884 -- LEVEL BUILDER 3b: sky bridge, rope bridge, swing rope, bounce pad
 
 - SKY BRIDGE link: a covered walkway -- floor, roof, side walls with window gaps (posts every 2.4 m), drawn in a group yawed along the link and
   pitched to its slope; level decks -> four TURNED boxes (floor, two walls, roof); different heights -> the floor as a ramp (two triangles).
