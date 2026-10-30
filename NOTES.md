@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LEVEL BUILDER 3d: the QUARTER BOWL (run up a curve into the wall run)
+## m1887 -- LEVEL BUILDER 3d: the QUARTER BOWL (run up a curve into the wall run)
 
 - `qbowl` (radius `r` -- SIZE, width `w`, wall `h`): profile p(th) = (-R sin th, R(1 - cos th)). th 0-50 deg: walkable TRIANGLES (TRI keeps up to
   ~60 deg; checked: ground 2 m in reads 0.42, the curve's own value); 50-90: COLLIDER-ONLY steps behind the curve (`add(null, ...)` = no mesh --
