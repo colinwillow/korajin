@@ -5758,7 +5758,11 @@ const SFX = {
     // m1867: HIS footstep_3 L / R (one of each) is the bank now: four VARIANTS of each foot made offline (a: as recorded; b: -5% pitch + low
     // shelf, heavier; c: +5% pitch + treble, brighter; d: -2% + lowpass 4.5k, duller), levelled (his files peak at .02 of full scale) and
     // cut 80 ms before the hit. `footSnd` rolls the pair per step and `STEP.jit` wobbles the pitch on top. m1865's cuts stay on disk.
-    foot: ['audio/footsteps/step3_1_l.mp3', 'audio/footsteps/step3_1_r.mp3'],     /* m1869: ONLY variant 1 (his file, levelled and trimmed -- gain alone does not change a tone); b/c/d's pitch and EQ were mine */
+    // m1870: THREE SETS, picked live by TOOLS > STEP SET (`STEP.set`; `snd` maps 'foot' onto the picked one) -- ORIG = his first four (the ones
+    // from before tonight), CUTS = m1865's twelve out of his long recording, NEW = his footstep_3 L / R (levelled only)
+    foot_ORIG: ['audio/footsteps/footstep_l.mp3', 'audio/footsteps/footstep_r.mp3', 'audio/footsteps/footstep_2_l.mp3', 'audio/footsteps/footstep_2_r.mp3'],
+    foot_CUTS: [1, 2, 3, 4, 5, 6].flatMap(n => ['audio/footsteps/step_' + n + '_l.mp3', 'audio/footsteps/step_' + n + '_r.mp3']),
+    foot_NEW: ['audio/footsteps/step3_1_l.mp3', 'audio/footsteps/step3_1_r.mp3'],
     shot: ['audio/blaster_sound_01.mp3', 'audio/blaster_sound_02.mp3'],
     big: ['audio/plasma_canon.mp3'],
     boom: ['audio/explosion_small.mp3'],
@@ -5959,7 +5963,7 @@ const STEP = {
   // m1869: SOFT = a gentle lowpass per step (`lp` Hz, rolled +-`lpJit`/2 per step for variety). A PHONE SPEAKER plays almost nothing under
   // ~300-400 Hz, so a padded step's thud vanishes there and only its 2-6 kHz crunch is left -- measured: his footstep_3_L is 26% energy in
   // 2-6 kHz, his original footstep_l 92% under 400 Hz. The filter takes the crunch down so the phone hears the body. RAW = the file as it is.
-  tone: 'SOFT', lp: 1600, lpJit: .5,
+  tone: 'RAW', set: 'ORIG', lp: 1600, lpJit: .5,     /* m1870: his originals, untouched, first (his ask) */
   // **AND `alt` IS 0, BECAUSE THE DISTINCTION IS IN THE ASSET NOW.** It was a shade of pitch
   // standing in for a left foot and a right foot on ONE recording; there are two recordings.
   // `jit` stays -- two LEFT steps in a row still must not be identical.
@@ -5981,7 +5985,7 @@ const STEP = {
   sizeG: 1.1,
   clip: { walk: null, run: null, sprint: null },   // { d, r } per band -- measured in buildRig
 };
-try { const v = localStorage.getItem('mel.ftone'); if (v === 'SOFT' || v === 'RAW') STEP.tone = v; } catch (e) {}
+try { const v = localStorage.getItem('mel.ftone2'); if (v === 'SOFT' || v === 'RAW') STEP.tone = v; const w = localStorage.getItem('mel.fset'); if (w === 'ORIG' || w === 'CUTS' || w === 'NEW') STEP.set = w; } catch (e) {}
 // **A STRIDE IS THE DISTANCE THE CLIP ACTUALLY COVERS, NOT THE DISTANCE IT WAS ASKED TO (m68).**
 // m64's `duration * ref` is right ONLY while the clip is really playing at `sp / ref` -- and
 // `tsLo`/`tsHi` CLAMP that, on him and on every body. Where the clamp bites the feet slow down
@@ -6023,7 +6027,7 @@ function footSnd(sp, top, x, z, left, gk, rk) {
   // reservoir pick is one pass and allocates nothing, which matters six times a second; and
   // with nothing decoded for this foot `i` stays undefined and `snd`'s own random roll takes
   // over, which is m136's fallback generalised rather than a second rule.
-  const buf = SFX.buf.foot, n = (buf && buf.length) || 0, pairs = n >> 1;
+  const buf = SFX.buf['foot_' + STEP.set], n = (buf && buf.length) || 0, pairs = n >> 1;
   let pick, seen = 0;
   if (pairs) {
     const f = left ? 0 : 1;
@@ -6040,6 +6044,7 @@ function footSnd(sp, top, x, z, left, gk, rk) {
   // the FRONT: these four put their footfall 70 to 174 ms in, so trimming to the onset leaves a
   // 94 ms spread across a bank whose whole job is to be interchangeable. `align` starts each
   // one `SFX.lead` before its own peak instead, and `att` is the 3 ms ramp that costs.
+  if (STEP.tone === 'RAW') { snd('foot', { g: (STEP.g0 + (STEP.g1 - STEP.g0) * u) * (gk == null ? 1 : gk), i: pick, whole: 1, x, z }); return; }     // m1870: RAW = his file untouched -- from its first sample, its own pitch, no wobble, no filter, no trim
   snd('foot', { g: (STEP.g0 + (STEP.g1 - STEP.g0) * u) * (gk == null ? 1 : gk),
                 r: (STEP.r0 + (STEP.r1 - STEP.r0) * u) * (left ? 1 + STEP.alt : 1 - STEP.alt)
                    * (rk == null ? 1 : rk)
@@ -6380,6 +6385,7 @@ function bankLead(key) {
   return lo;
 }
 function snd(key, o) {
+  if (key === 'foot') key = 'foot_' + STEP.set;     // m1870: the picked footstep set
   if (!SFX.on || !SFX.ctx || SFX.voices >= SFX.max) return 1;
   const list = SFX.buf[key]; if (!list || !list.length) return 1;
   const t = SFX.ctx.currentTime;
@@ -6399,7 +6405,7 @@ function snd(key, o) {
   const src = SFX.ctx.createBufferSource(); src.buffer = b;
   src.playbackRate.value = (o && o.r) || 1;
   // `e.k` is the bank-evening gain -- 1 on every bank cut at one level. See `SFX.even`.
-  const gv = ((o && o.g != null) ? o.g : 1) * dk * (e.k || 1);
+  const gv = ((o && o.g != null) ? o.g : 1) * dk * ((o && o.whole) ? 1 : (e.k || 1));     // m1870: `whole` = untouched, not even the bank evening
   const g = SFX.ctx.createGain(); g.gain.value = gv;
   if (o && o.lp) { const f = SFX.ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = o.lp; f.Q.value = .5; src.connect(f); f.connect(g); }     // m1869: a soft top (the footsteps' crunch)
   else src.connect(g);
@@ -6416,10 +6422,10 @@ function snd(key, o) {
   // `SFX.lead` BEFORE it, so every file in a bank puts its event at the same offset from the
   // trigger whatever the recording's own lead-in happens to be. See `SFX.lead`. Floored at
   // `e.a`, so a file whose peak is already early keeps its silence trim and nothing else.
-  const from = (o && o.align && e.p != null) ? Math.max(e.a, e.p - bankLead(key))
+  const from = (o && o.whole) ? 0 : (o && o.align && e.p != null) ? Math.max(e.a, e.p - bankLead(key))
              : (o && o.cut   && e.p != null) ? Math.max(e.a, e.p)
              : e.a;
-  const full = Math.max(.02, e.b - from);
+  const full = (o && o.whole) ? b.duration : Math.max(.02, e.b - from);
   src.start(0, from, full);
   // **AND `dec` IS THE OTHER HALF: A PERCUSSIVE ENVELOPE.** An impact is a transient and a
   // short tail. Held flat, a file with a long loud body reads as a TONE however hard it starts
@@ -15469,7 +15475,8 @@ function arenaUi() {
       else if (a === 'wentry') { WRUN.entry = WRUN.entry === 'ARC' ? 'ANGLE' : WRUN.entry === 'ANGLE' ? 'PROJECT' : 'ARC'; try { localStorage.setItem('mel.wentry', WRUN.entry); } catch (err) {} }     // m1839
       else if (a === 'online') { if (NET.on) netLeave(); else { const c = prompt('ONLINE room code (share it with the other phone):', (NET.room || '').replace(NET.prefix, '') || Math.random().toString(36).slice(2, 6).toUpperCase()); if (c) netJoin(c); } }     // m1843
       else if (a === 'wproxy') { WRUN.proxy = WRUN.proxy ? 0 : 1; if (!WRUN.proxy) rig.root.visible = true; }     // m1833
-      else if (a === 'ftone') { STEP.tone = STEP.tone === 'SOFT' ? 'RAW' : 'SOFT'; try { localStorage.setItem('mel.ftone', STEP.tone); } catch (err) {} }     // m1869
+      else if (a === 'fset') { STEP.set = ({ ORIG: 'CUTS', CUTS: 'NEW', NEW: 'ORIG' })[STEP.set]; try { localStorage.setItem('mel.fset', STEP.set); } catch (err) {} }     // m1870
+      else if (a === 'ftone') { STEP.tone = STEP.tone === 'SOFT' ? 'RAW' : 'SOFT'; try { localStorage.setItem('mel.ftone2', STEP.tone); } catch (err) {} }     // m1869
       else if (a === 'wside') { WRUN.sidePose = WRUN.sidePose === 'IK' ? 'CLIP' : 'IK'; try { localStorage.setItem('mel.wside2', WRUN.sidePose); } catch (err) {} }     // m1864
       else if (a === 'uplook') { WRUN.upLook = WRUN.upLook === 'RUN' ? 'CLIP' : 'RUN'; try { localStorage.setItem('mel.uplook', WRUN.upLook); } catch (err) {} }     // m1836
       else if (a === 'uparms') { WRUN.upArms = WRUN.upArms === 'RUN' ? 'CLIMB' : 'RUN'; try { localStorage.setItem('mel.uparms', WRUN.upArms); } catch (err) {} }     // m1830
@@ -15545,7 +15552,7 @@ function arenaUi() {
   // in the RED HOLLOWS (his: "I need the debug menu in there so I can transform it between the two states") the bar is the STATE switch + TOOLS
   let h = '<div class="ar-bar">' + (inHome() ? B('age', (AGE.st === 'fallen' ? 'FALLEN' : 'RESTORED') + '<small>tap: ' + (AGE.st === 'fallen' ? 'restore it all' : 'make it fall') + '</small>', '', 'ar-main' + (AGE.st === 'fallen' ? '' : ' on'))
     : B('open', ARENA.busy ? 'BEAMING...' : 'SPAWN', '', 'ar-main' + (m ? ' on' : '')) + B('clear', 'CLEAR') + B('morph', 'MORPH') + B('vend', 'VEND')) + B('tools', tools ? 'TOOLS ▴' : 'TOOLS ▾', '', ARENA.tools ? 'ar-on' : '') +
-    (tools ? '<div class="ar-tools">' + Hd('MOVE') + B('run', 'RUN ' + GAIT.runSet.toUpperCase()) + B('sprint', 'SPRINT ' + NINJA.look) + B('rhold', 'RIGHT HOLD ' + CROUCH.mode) + B('lhold', 'LEFT HOLD ' + LHOLD.pick) + B('prewarm', 'PRELOAD ' + (BOOTWARM.kinds ? 'ALL (no stutter)' : 'FAST (stutters)')) + B('runland', 'RUN LAND ' + RUNLAND.mode) + B('climbspd', 'CLIMB ' + CLIMB.speed.toFixed(1) + ' m/s') + B('airlegs', 'AIR LEGS ' + (AIRLEGS.on ? 'ON' : 'OFF')) + B('jfloat', 'JUGGLE FLOAT ' + (JUGGLE.float ? 'ON' : 'OFF')) + B('toprun', 'TOP SPEED ' + (GAIT.topRun ? 'RUN SPED UP' : 'OWN CLIP')) + B('runarm', 'RUN ARMS ' + RUNARM.out) + B('landfov', 'LAND FOV ' + CAM.landFov) + B('acam', 'ACTION CAM ' + (ACAM.on ? 'ON' : 'OFF')) + B('grip', 'GRIP ' + MOVE.gripPick) + B('lflick', 'LEFT ' + COVER.left) + B('qd', 'QUICK DRAW ' + (QD.on ? 'ON' : 'OFF')) + B('idlepick', 'IDLE ' + IDLEPICK.pick) + B('idleamp', 'IDLE ENERGY x' + IDLEPICK.energy) + B('asprint', 'SPRINT ' + (AUTOSPRINT.on ? 'AUTO (run builds it)' : 'HOLD (right stick)')) + B('kauto', 'K-AUTO ' + CHARGE3.auto) + B('ltapj', 'LEFT TAP ' + (LTAP.jump ? 'JUMP' : 'NOTHING')) + B('edgehang', 'EDGE HANG ' + (EDGEHANG.on ? 'ON' : 'OFF')) + B('edgemode', 'EDGE DROP ' + EDGEHANG.mode) + B('hangblade', 'HANG BLADE ' + LHANDS.bladePick) + B('wrays', 'WALL RAYS ' + (WRAY.on ? 'ON' : 'OFF')) + B('wentry', 'WALL ENTRY ' + (WRUN.entry === 'ARC' ? 'ARC (set by the hit)' : WRUN.entry === 'ANGLE' ? 'ANGLE (billiards)' : 'PROJECT (old)')) + B('online', NET.on ? 'ONLINE ' + NET.room + ' (tap to leave)' : 'ONLINE: JOIN A ROOM') + B('wproxy', 'WALL PROXY ' + (WRUN.proxy ? 'BALL' : 'OFF')) + B('ftone', 'FOOTSTEPS ' + (STEP.tone === 'SOFT' ? 'SOFT (phone)' : 'RAW')) + B('wside', 'WALL SIDE ' + (WRUN.sidePose === 'IK' ? 'IK RUN' : rig.wsHis ? 'HIS CLIP' : 'CLIP')) + B('uplook', 'WALL UP ' + (WRUN.upLook === 'RUN' ? 'RUN + HIP TILT' : 'CLIMB CLIP')) + B('uparms', 'WALL UP ARMS ' + WRUN.upArms) + B('wallmode', 'WALL ' + (WRUN.mode === 'VEL' ? 'VELOCITY' : 'STICK')) + B('arcline', 'BOW ARC ' + (BARC.line ? 'LINE' : 'OFF')) + B('partaim', 'PART AIM ' + (PARTAIM.on ? (PARTAIM.by === 'L' ? 'LEFT' : 'RIGHT') : 'OFF')) + B('cart', 'CARTWHEEL ' + CART.pose) + B('runswipe', 'SLIDE ' + RUNSWIPE.mode) + Hd('KATANA') + B('btrail', 'TRAIL ' + (BTRAIL.jin ? 'JIN' : 'BLUE')) + B('kswing', 'SWING ' + KATANA.style) + B('swseg', 'SWING LURCH ' + (SWSEG.on ? 'ON' : 'OFF')) + B('hslice', 'HORDE ' + (HORDE.slice ? 'SLICE' : 'PLAIN')) + B('defl', 'DEFLECT ASSIST ' + (DEFL.on ? 'ON' : 'OFF')) + B('sample', 'DNA SAMPLE ' + (SAMPLE.on ? 'ON' : 'OFF')) + B('runslash', 'RUN SLASH ' + (RUNSLASH.on ? 'ON' : 'OFF')) + B('aslam', 'AIR SLAM ' + SLAM.katPick) + B('sideflick', 'SIDE FLICK ' + TORNADO.pick) + B('gside', 'GUARD SIDE ' + GSIDE.by) + B('kcslow', 'K-CHARGE x' + KATANA.chargeSlow) + B('ktilt', 'TILT ' + KATANA.runTilt) + Hd('COVER') + B('carm', 'ARM ' + CARM.lift) + B('duck', 'DUCK ' + (DUCK.drop ? DUCK.drop : 'OFF')) + B('hurdle', 'HURDLE ' + VAULT.clip.toUpperCase()) + B('bargrip', 'BAR GRIP ' + HBAR.grip) + B('cblocks', COVER.show ? 'BLOCKS ON' : 'BLOCKS OFF') + B('tshot', 'TURRET ' + TURRET.shot) + B('ric', 'RICOCHET ' + RIC.mode) + B('getup', 'GET UP ' + KNOCK.getUp) + Hd('ARENA') + B('lvl', ARENA.duel.lvl) + B('forge', FORGED.on ? 'FORGE ON' : 'FORGE OFF') + B('notice', DRINK.notice === 'notice' ? 'CEO: OOH' : 'CEO: LOOK') + B('glow', 'LIGHT ' + ARENA.look.glow) + B('charge', 'CHARGE ' + ARENA.heavy.pick) + B('entry', 'ENTRY ' + ARENA.door.entry) + B('dsky', 'SKY ' + DOJO.skyPick) + B('dfx', 'DOJO FX ' + (DOJO.fx || 'FULL')) + B('rwsky', 'HOLLOWS SKY ' + RW.skyPick + (RW.skyKey && /restored/.test(RW.skyKey) ? ' (restored)' : ' (fallen)')) + B('wob', 'HAND-BUILT ' + (HWWOB.amp.value ? (HWWOB.amp.value * 1000).toFixed(0) + ' mm' : 'OFF (ruler)')) + B('dragon', 'DRAGON ' + (DRAGZ.on ? DRAGZ.look : DOJO.dragonPick)) + B('dwing', 'DRAGON WINGS ' + DRAGZ.wingPick) + B('tlie', 'TAIL ' + TAIL.lie) + B('rhue', 'RIVAL ' + RIVAL.pick) + Hd('MORPH') + B('mmode', ARENA.morph.mode) + B('mpose', 'BOSS ' + (ARENA.morph.boss.pose === 'T' ? 'T-POSE' : 'LIVE')) + B('mwave', 'WAVE ' + ARENA.morph.boss.wave) + B('stun', 'STUN ' + (ARENA.stun.on ? 'ON' : 'OFF') + (ARENA.stun.on ? '<small>' + (ARENA.stun.fail ? 'NO SKELETON' : ARENA.stun.srcs[ARENA.stun.files.human] ? 'skeleton ready' : 'loading skeleton') + '</small>' : ''), '', ARENA.stun.on ? 'ar-on' : '') + '</div>' : '') + '</div>';
+    (tools ? '<div class="ar-tools">' + Hd('MOVE') + B('run', 'RUN ' + GAIT.runSet.toUpperCase()) + B('sprint', 'SPRINT ' + NINJA.look) + B('rhold', 'RIGHT HOLD ' + CROUCH.mode) + B('lhold', 'LEFT HOLD ' + LHOLD.pick) + B('prewarm', 'PRELOAD ' + (BOOTWARM.kinds ? 'ALL (no stutter)' : 'FAST (stutters)')) + B('runland', 'RUN LAND ' + RUNLAND.mode) + B('climbspd', 'CLIMB ' + CLIMB.speed.toFixed(1) + ' m/s') + B('airlegs', 'AIR LEGS ' + (AIRLEGS.on ? 'ON' : 'OFF')) + B('jfloat', 'JUGGLE FLOAT ' + (JUGGLE.float ? 'ON' : 'OFF')) + B('toprun', 'TOP SPEED ' + (GAIT.topRun ? 'RUN SPED UP' : 'OWN CLIP')) + B('runarm', 'RUN ARMS ' + RUNARM.out) + B('landfov', 'LAND FOV ' + CAM.landFov) + B('acam', 'ACTION CAM ' + (ACAM.on ? 'ON' : 'OFF')) + B('grip', 'GRIP ' + MOVE.gripPick) + B('lflick', 'LEFT ' + COVER.left) + B('qd', 'QUICK DRAW ' + (QD.on ? 'ON' : 'OFF')) + B('idlepick', 'IDLE ' + IDLEPICK.pick) + B('idleamp', 'IDLE ENERGY x' + IDLEPICK.energy) + B('asprint', 'SPRINT ' + (AUTOSPRINT.on ? 'AUTO (run builds it)' : 'HOLD (right stick)')) + B('kauto', 'K-AUTO ' + CHARGE3.auto) + B('ltapj', 'LEFT TAP ' + (LTAP.jump ? 'JUMP' : 'NOTHING')) + B('edgehang', 'EDGE HANG ' + (EDGEHANG.on ? 'ON' : 'OFF')) + B('edgemode', 'EDGE DROP ' + EDGEHANG.mode) + B('hangblade', 'HANG BLADE ' + LHANDS.bladePick) + B('wrays', 'WALL RAYS ' + (WRAY.on ? 'ON' : 'OFF')) + B('wentry', 'WALL ENTRY ' + (WRUN.entry === 'ARC' ? 'ARC (set by the hit)' : WRUN.entry === 'ANGLE' ? 'ANGLE (billiards)' : 'PROJECT (old)')) + B('online', NET.on ? 'ONLINE ' + NET.room + ' (tap to leave)' : 'ONLINE: JOIN A ROOM') + B('wproxy', 'WALL PROXY ' + (WRUN.proxy ? 'BALL' : 'OFF')) + B('fset', 'STEP SET ' + ({ ORIG: 'ORIGINAL', CUTS: 'LONG CLIP CUTS', NEW: 'NEW L/R' })[STEP.set]) + B('ftone', 'FOOTSTEPS ' + (STEP.tone === 'SOFT' ? 'SOFT (phone)' : 'RAW (untouched)')) + B('wside', 'WALL SIDE ' + (WRUN.sidePose === 'IK' ? 'IK RUN' : rig.wsHis ? 'HIS CLIP' : 'CLIP')) + B('uplook', 'WALL UP ' + (WRUN.upLook === 'RUN' ? 'RUN + HIP TILT' : 'CLIMB CLIP')) + B('uparms', 'WALL UP ARMS ' + WRUN.upArms) + B('wallmode', 'WALL ' + (WRUN.mode === 'VEL' ? 'VELOCITY' : 'STICK')) + B('arcline', 'BOW ARC ' + (BARC.line ? 'LINE' : 'OFF')) + B('partaim', 'PART AIM ' + (PARTAIM.on ? (PARTAIM.by === 'L' ? 'LEFT' : 'RIGHT') : 'OFF')) + B('cart', 'CARTWHEEL ' + CART.pose) + B('runswipe', 'SLIDE ' + RUNSWIPE.mode) + Hd('KATANA') + B('btrail', 'TRAIL ' + (BTRAIL.jin ? 'JIN' : 'BLUE')) + B('kswing', 'SWING ' + KATANA.style) + B('swseg', 'SWING LURCH ' + (SWSEG.on ? 'ON' : 'OFF')) + B('hslice', 'HORDE ' + (HORDE.slice ? 'SLICE' : 'PLAIN')) + B('defl', 'DEFLECT ASSIST ' + (DEFL.on ? 'ON' : 'OFF')) + B('sample', 'DNA SAMPLE ' + (SAMPLE.on ? 'ON' : 'OFF')) + B('runslash', 'RUN SLASH ' + (RUNSLASH.on ? 'ON' : 'OFF')) + B('aslam', 'AIR SLAM ' + SLAM.katPick) + B('sideflick', 'SIDE FLICK ' + TORNADO.pick) + B('gside', 'GUARD SIDE ' + GSIDE.by) + B('kcslow', 'K-CHARGE x' + KATANA.chargeSlow) + B('ktilt', 'TILT ' + KATANA.runTilt) + Hd('COVER') + B('carm', 'ARM ' + CARM.lift) + B('duck', 'DUCK ' + (DUCK.drop ? DUCK.drop : 'OFF')) + B('hurdle', 'HURDLE ' + VAULT.clip.toUpperCase()) + B('bargrip', 'BAR GRIP ' + HBAR.grip) + B('cblocks', COVER.show ? 'BLOCKS ON' : 'BLOCKS OFF') + B('tshot', 'TURRET ' + TURRET.shot) + B('ric', 'RICOCHET ' + RIC.mode) + B('getup', 'GET UP ' + KNOCK.getUp) + Hd('ARENA') + B('lvl', ARENA.duel.lvl) + B('forge', FORGED.on ? 'FORGE ON' : 'FORGE OFF') + B('notice', DRINK.notice === 'notice' ? 'CEO: OOH' : 'CEO: LOOK') + B('glow', 'LIGHT ' + ARENA.look.glow) + B('charge', 'CHARGE ' + ARENA.heavy.pick) + B('entry', 'ENTRY ' + ARENA.door.entry) + B('dsky', 'SKY ' + DOJO.skyPick) + B('dfx', 'DOJO FX ' + (DOJO.fx || 'FULL')) + B('rwsky', 'HOLLOWS SKY ' + RW.skyPick + (RW.skyKey && /restored/.test(RW.skyKey) ? ' (restored)' : ' (fallen)')) + B('wob', 'HAND-BUILT ' + (HWWOB.amp.value ? (HWWOB.amp.value * 1000).toFixed(0) + ' mm' : 'OFF (ruler)')) + B('dragon', 'DRAGON ' + (DRAGZ.on ? DRAGZ.look : DOJO.dragonPick)) + B('dwing', 'DRAGON WINGS ' + DRAGZ.wingPick) + B('tlie', 'TAIL ' + TAIL.lie) + B('rhue', 'RIVAL ' + RIVAL.pick) + Hd('MORPH') + B('mmode', ARENA.morph.mode) + B('mpose', 'BOSS ' + (ARENA.morph.boss.pose === 'T' ? 'T-POSE' : 'LIVE')) + B('mwave', 'WAVE ' + ARENA.morph.boss.wave) + B('stun', 'STUN ' + (ARENA.stun.on ? 'ON' : 'OFF') + (ARENA.stun.on ? '<small>' + (ARENA.stun.fail ? 'NO SKELETON' : ARENA.stun.srcs[ARENA.stun.files.human] ? 'skeleton ready' : 'loading skeleton') + '</small>' : ''), '', ARENA.stun.on ? 'ar-on' : '') + '</div>' : '') + '</div>';
   if (m === 'bld') { h += '<div class="ar-menu">' + B('back', '&lsaquo; BACK', '', 'ar-back') + B('age', 'STATE: ' + (AGE.st === 'fallen' ? 'FALLEN' : 'RESTORED') + '<small>tap to switch -- rebuilds what stands</small>', '', AGE.st === 'fallen' ? '' : 'ar-on');
     for (const E of BLDG.list) h += B('bld', E.t + '<small>' + (E.on() ? 'tap to remove' : E.pass >= 3 ? E.sub : 'IN PROGRESS · pass ' + E.pass + ' of 3') + '</small>', E.key, E.on() ? 'ar-on' : '');
     h += '</div>'; }

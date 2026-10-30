@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- his ORIGINAL footsteps, untouched; the three sets on a switch
+
+His: *"now that the editing is gone ... I want to hear the original footsteps without your editing -- before I was getting gaslit, but now I knew I
+was hearing something different."* He was right: the game DID change them -- m136-m142's pitch sweep (+-9%, then +-12% x `jit`), the peak
+alignment (each file started 30-60 ms before its peak, its run-up thrown away -- `SFX.lead`), the onset gate (`e.a`, the first sample over 25% of
+peak), and the bank evening (x0.72-x1.60 per file).
+- TOOLS > STEP SET: ORIGINAL (footstep_l/_r/_2_l/_2_r) / LONG CLIP CUTS (m1865) / NEW L/R (m1867, levelled). `snd` maps 'foot' onto
+  `foot_<STEP.set>`, so every footstep caller follows the switch.
+- TOOLS > FOOTSTEPS: RAW (untouched, now the default) = `snd`'s new `whole`: from sample 0 to the end, playbackRate 1, no jitter, no filter, no
+  evening -- only the walk/sprint volume. SOFT = m1869's lowpass + aligned start + the small pitch sweep.
+- Defaults: ORIGINAL + RAW (new storage keys `mel.fset`, `mel.ftone2`). Known cost of RAW: the originals' footfalls sit 70-174 ms into their files,
+  so every other step lands a little late (m140's rhythm fault) -- that is the honest file.
+
 ## m1869 -- WHY HIS FOOTSTEPS NEVER SOUND LIKE HIS FILES ON THE PHONE: the speaker, my processing, and the pitch sweep
 
 His: *"every time I give you footsteps the ones in game sound nothing like my original footsteps ... I just gave you the most quiet, subtle padded
