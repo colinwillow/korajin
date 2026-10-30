@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- a sound for drawing and putting away a weapon; his wall run stood off the wall
+## m1876 -- a sound for drawing and putting away a weapon; his wall run stood off the wall
 
 His: *"a noise for when he puts away and takes out his weapons -- a subtle clink or clang for the sword"* and *"on the wall run his feet kinda go into
 the wall -- the animation is good, the origin could come out a little."*
