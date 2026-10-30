@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the side wall run is the PLAIN RUN with its feet IK'd onto the wall (Wall_Run_1 retired; TOOLS > WALL SIDE: IK RUN / CLIP)
+## m1864 -- the side wall run is the PLAIN RUN with its feet IK'd onto the wall (Wall_Run_1 retired; TOOLS > WALL SIDE: IK RUN / CLIP)
 
 His: *"it still looks glitchy and weird ... take a regular running animation and just adjust the feet -- a tilted stance, the torso up and down; the
 wall on your left, the left leg is the top one, slanted, and the bottom leg the most landed."*
