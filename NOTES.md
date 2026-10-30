@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- his new footsteps: 12 steps cut out of his 52 s recording
+
+His: *"if I give you a clip of some footsteps, can you extract the footsteps ... I don't really like the current footsteps."* -- `audio/footsteps/footsteps.mp3`
+(52.4 s, 44.1 kHz stereo; his upload, kept as the source).
+- Onsets: a 5 ms RMS envelope, peaks over 1.5x its 90th percentile, 180 ms apart minimum -> **86** events, a walk at a median 0.47 s.
+- Kept: CLEAN (envelope 40-150 ms before and 250-400 ms after under 7% of the step's own peak), walking loudness (.017-.06 -- the .07-.23 hits at
+  26-29 s and 33-37 s are heavier/other impacts), centroid 2.5-4.2 kHz (one surface), and CONSECUTIVE pairs .35-.65 s apart, so each pair is a
+  real left then right. 6 pairs, spread: 8.66, 12.42, 24.49, 30.87, 32.36, 42.78 s.
+- Each cut: 80 ms before the peak (`SFX.lead` aligns on the peak; its ceiling is 60), 260 ms after, 4 ms fade in, 80 ms squared fade out, levelled
+  to the old bank's envelope peak .33 (sample peak capped .95), mono 128k mp3: `step_<n>_<l|r>.mp3`. The bank is `[1..6].flatMap` -- `footSnd`
+  rolls the pair per footfall, so no code change. The old four files stay on disk, unused.
+
 ## m1864 -- the side wall run is the PLAIN RUN with its feet IK'd onto the wall (Wall_Run_1 retired; TOOLS > WALL SIDE: IK RUN / CLIP)
 
 His: *"it still looks glitchy and weird ... take a regular running animation and just adjust the feet -- a tilted stance, the torso up and down; the

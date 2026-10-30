@@ -5750,10 +5750,10 @@ const SFX = {
     // PAIR per footfall, so a left foot is always a left recording and two consecutive left
     // feet are not the same file -- which is what `STEP.jit` was standing in for while there
     // was only one of each. A third pair is two more entries and no code change.
-    foot: ['audio/footsteps/footstep_l.mp3',
-           'audio/footsteps/footstep_r.mp3',
-           'audio/footsteps/footstep_2_l.mp3',
-           'audio/footsteps/footstep_2_r.mp3'],
+    // m1865: HIS NEW RECORDING (footsteps.mp3, 52 s of walking), cut by machine into six CONSECUTIVE left/right pairs -- each pair two real
+    // successive footfalls, clean on both sides (no step within 40-150 ms before or 250-400 ms after), at walking loudness, similar tone;
+    // 80 ms of run-up kept for `SFX.lead`, levelled to the old bank's envelope peak (.33)
+    foot: [1, 2, 3, 4, 5, 6].flatMap(n => ['audio/footsteps/step_' + n + '_l.mp3', 'audio/footsteps/step_' + n + '_r.mp3']),
     shot: ['audio/blaster_sound_01.mp3', 'audio/blaster_sound_02.mp3'],
     big: ['audio/plasma_canon.mp3'],
     boom: ['audio/explosion_small.mp3'],
