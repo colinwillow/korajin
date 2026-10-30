@@ -5,6 +5,23 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- THE LEVEL BUILDER, step 1 (LEVELBUILDER.md): a 3D editor on the phone, levels that save and play
+
+His: *"more than just top down -- perspective and orthographic, swap around ... a tower with four ports, click a port and choose what it is ...
+the levels are going to be extremely vertical."*
+- `LB` (between `SC_LEVELB` markers; `LVL` / `lvl*` already belonged to the old level-layer bar, m-something -- the first try collided). TOOLS >
+  LEVEL BUILDER freezes the game (`frame()` -> `lbFrame`, its own camera; fog off while editing).
+- Views: PERSP / ORTHO toggle (one orbit state drives both; ORTHO's size is `r`, it stands >= 250 m back with a positive near -- a negative near
+  drew the mountain backdrop behind it over everything), TOP / FRONT / SIDE snaps, HIM (centre on the player). One finger orbits, two pan + pinch.
+- Pieces (`LB.KINDS`): TOWER (base 6, h 16; a deck with four PORTS N E S W -- CLOSED parapet / OPEN gap / BALCONY 3 x 2.4 with rails), WALL,
+  PLATFORM, BLOCK. A new piece appears at the orbit centre, selected and translucent (the ghost) with a move handle (0.5 m snap); TURN 90 (quarter
+  turns, so every collider stays an exact AABB), SIZE +/-, HEIGHT +/- (2 m), UP / DOWN 2 m, COPY, DELETE, OK. A tap on a tower's port ball cycles
+  its type. `lbPiece(P)` is a pure function of one entry: meshes + AABBs + ports.
+- Data: `{ id, world, pieces: [{ id, kind, at, yaw, p, ports }] }`, saved per world + zone (`mel.level.<world>.<zone>`) on every change, rebuilt
+  into the world at boot (`lbBoot`). PLAY = out of the editor with the colliders in `BOXES`. SAVE FILE downloads `<id>.json`; COPY.
+- Headless: two towers (one raised to h 20, one turned), ports set, a platform at 16 m; PLAY -> 17 boxes, all in BOXES; groundAt on tower 1's top
+  20.00; dropped from 21 m he lands at **20.00, grounded**; renders checked in persp / ortho / front / top.
+
 ## m1879 -- THE SOUND BUTTON: sound back after leaving the app (iOS home-screen app)
 
 His: *"if I navigate away and come back, the sounds are always gone and I have to restart ... maybe it's auto muted and we need a mute and unmute

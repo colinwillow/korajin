@@ -15555,6 +15555,7 @@ function arenaUi() {
       else if (a === 'wentry') { WRUN.entry = WRUN.entry === 'ARC' ? 'ANGLE' : WRUN.entry === 'ANGLE' ? 'PROJECT' : 'ARC'; try { localStorage.setItem('mel.wentry', WRUN.entry); } catch (err) {} }     // m1839
       else if (a === 'online') { if (NET.on) netLeave(); else { const c = prompt('ONLINE room code (share it with the other phone):', (NET.room || '').replace(NET.prefix, '') || Math.random().toString(36).slice(2, 6).toUpperCase()); if (c) netJoin(c); } }     // m1843
       else if (a === 'wproxy') { WRUN.proxy = WRUN.proxy ? 0 : 1; if (!WRUN.proxy) rig.root.visible = true; }     // m1833
+      else if (a === 'lvlb') { ARENA.menu = ''; lbEnter(); }     // m1880
       else if (a === 'posedit') { ARENA.menu = ''; posedEnter(); }     // m1877
       else if (a === 'fset') { STEP.set = ({ LAND: 'ORIG', ORIG: 'CUTS', CUTS: 'NEW', NEW: 'LAND' })[STEP.set]; try { localStorage.setItem('mel.fset2', STEP.set); } catch (err) {} }     // m1870
       else if (a === 'ftone') { STEP.tone = STEP.tone === 'SOFT' ? 'RAW' : 'SOFT'; try { localStorage.setItem('mel.ftone2', STEP.tone); } catch (err) {} }     // m1869
@@ -15633,7 +15634,7 @@ function arenaUi() {
   // in the RED HOLLOWS (his: "I need the debug menu in there so I can transform it between the two states") the bar is the STATE switch + TOOLS
   let h = '<div class="ar-bar">' + (inHome() ? B('age', (AGE.st === 'fallen' ? 'FALLEN' : 'RESTORED') + '<small>tap: ' + (AGE.st === 'fallen' ? 'restore it all' : 'make it fall') + '</small>', '', 'ar-main' + (AGE.st === 'fallen' ? '' : ' on'))
     : B('open', ARENA.busy ? 'BEAMING...' : 'SPAWN', '', 'ar-main' + (m ? ' on' : '')) + B('clear', 'CLEAR') + B('morph', 'MORPH') + B('vend', 'VEND')) + B('tools', tools ? 'TOOLS ▴' : 'TOOLS ▾', '', ARENA.tools ? 'ar-on' : '') +
-    (tools ? '<div class="ar-tools">' + Hd('MOVE') + B('run', 'RUN ' + GAIT.runSet.toUpperCase()) + B('sprint', 'SPRINT ' + NINJA.look) + B('rhold', 'RIGHT HOLD ' + CROUCH.mode) + B('lhold', 'LEFT HOLD ' + LHOLD.pick) + B('prewarm', 'PRELOAD ' + (BOOTWARM.kinds ? 'ALL (no stutter)' : 'FAST (stutters)')) + B('runland', 'RUN LAND ' + RUNLAND.mode) + B('climbspd', 'CLIMB ' + CLIMB.speed.toFixed(1) + ' m/s') + B('airlegs', 'AIR LEGS ' + (AIRLEGS.on ? 'ON' : 'OFF')) + B('jfloat', 'JUGGLE FLOAT ' + (JUGGLE.float ? 'ON' : 'OFF')) + B('toprun', 'TOP SPEED ' + (GAIT.topRun ? 'RUN SPED UP' : 'OWN CLIP')) + B('runarm', 'RUN ARMS ' + RUNARM.out) + B('landfov', 'LAND FOV ' + CAM.landFov) + B('acam', 'ACTION CAM ' + (ACAM.on ? 'ON' : 'OFF')) + B('grip', 'GRIP ' + MOVE.gripPick) + B('lflick', 'LEFT ' + COVER.left) + B('qd', 'QUICK DRAW ' + (QD.on ? 'ON' : 'OFF')) + B('idlepick', 'IDLE ' + IDLEPICK.pick) + B('idleamp', 'IDLE ENERGY x' + IDLEPICK.energy) + B('asprint', 'SPRINT ' + (AUTOSPRINT.on ? 'AUTO (run builds it)' : 'HOLD (right stick)')) + B('kauto', 'K-AUTO ' + CHARGE3.auto) + B('ltapj', 'LEFT TAP ' + (LTAP.jump ? 'JUMP' : 'NOTHING')) + B('edgehang', 'EDGE HANG ' + (EDGEHANG.on ? 'ON' : 'OFF')) + B('edgemode', 'EDGE DROP ' + EDGEHANG.mode) + B('hangblade', 'HANG BLADE ' + LHANDS.bladePick) + B('wrays', 'WALL RAYS ' + (WRAY.on ? 'ON' : 'OFF')) + B('wentry', 'WALL ENTRY ' + (WRUN.entry === 'ARC' ? 'ARC (set by the hit)' : WRUN.entry === 'ANGLE' ? 'ANGLE (billiards)' : 'PROJECT (old)')) + B('online', NET.on ? 'ONLINE ' + NET.room + ' (tap to leave)' : 'ONLINE: JOIN A ROOM') + B('wproxy', 'WALL PROXY ' + (WRUN.proxy ? 'BALL' : 'OFF')) + B('posedit', 'POSE EDIT' + (Object.keys(POSEFIX.offs).length ? ' (' + Object.keys(POSEFIX.offs).length + ' clips)' : '')) + B('fset', 'STEP SET ' + ({ LAND: 'LANDING', ORIG: 'ORIGINAL', CUTS: 'LONG CLIP CUTS', NEW: 'NEW L/R' })[STEP.set]) + B('ftone', 'FOOTSTEPS ' + (STEP.tone === 'SOFT' ? 'SOFT (phone)' : 'RAW (untouched)')) + B('wside', 'WALL SIDE ' + (WRUN.sidePose === 'IK' ? 'IK RUN' : rig.wsHis ? 'HIS CLIP' : 'CLIP')) + B('uplook', 'WALL UP ' + (WRUN.upLook === 'RUN' ? 'RUN + HIP TILT' : 'CLIMB CLIP')) + B('uparms', 'WALL UP ARMS ' + WRUN.upArms) + B('wallmode', 'WALL ' + (WRUN.mode === 'VEL' ? 'VELOCITY' : 'STICK')) + B('arcline', 'BOW ARC ' + (BARC.line ? 'LINE' : 'OFF')) + B('partaim', 'PART AIM ' + (PARTAIM.on ? (PARTAIM.by === 'L' ? 'LEFT' : 'RIGHT') : 'OFF')) + B('cart', 'CARTWHEEL ' + CART.pose) + B('runswipe', 'SLIDE ' + RUNSWIPE.mode) + Hd('KATANA') + B('btrail', 'TRAIL ' + (BTRAIL.jin ? 'JIN' : 'BLUE')) + B('kswing', 'SWING ' + KATANA.style) + B('swseg', 'SWING LURCH ' + (SWSEG.on ? 'ON' : 'OFF')) + B('hslice', 'HORDE ' + (HORDE.slice ? 'SLICE' : 'PLAIN')) + B('defl', 'DEFLECT ASSIST ' + (DEFL.on ? 'ON' : 'OFF')) + B('sample', 'DNA SAMPLE ' + (SAMPLE.on ? 'ON' : 'OFF')) + B('runslash', 'RUN SLASH ' + (RUNSLASH.on ? 'ON' : 'OFF')) + B('aslam', 'AIR SLAM ' + SLAM.katPick) + B('sideflick', 'SIDE FLICK ' + TORNADO.pick) + B('gside', 'GUARD SIDE ' + GSIDE.by) + B('kcslow', 'K-CHARGE x' + KATANA.chargeSlow) + B('ktilt', 'TILT ' + KATANA.runTilt) + Hd('COVER') + B('carm', 'ARM ' + CARM.lift) + B('duck', 'DUCK ' + (DUCK.drop ? DUCK.drop : 'OFF')) + B('hurdle', 'HURDLE ' + VAULT.clip.toUpperCase()) + B('bargrip', 'BAR GRIP ' + HBAR.grip) + B('cblocks', COVER.show ? 'BLOCKS ON' : 'BLOCKS OFF') + B('tshot', 'TURRET ' + TURRET.shot) + B('ric', 'RICOCHET ' + RIC.mode) + B('getup', 'GET UP ' + KNOCK.getUp) + Hd('ARENA') + B('lvl', ARENA.duel.lvl) + B('forge', FORGED.on ? 'FORGE ON' : 'FORGE OFF') + B('notice', DRINK.notice === 'notice' ? 'CEO: OOH' : 'CEO: LOOK') + B('glow', 'LIGHT ' + ARENA.look.glow) + B('charge', 'CHARGE ' + ARENA.heavy.pick) + B('entry', 'ENTRY ' + ARENA.door.entry) + B('dsky', 'SKY ' + DOJO.skyPick) + B('dfx', 'DOJO FX ' + (DOJO.fx || 'FULL')) + B('rwsky', 'HOLLOWS SKY ' + RW.skyPick + (RW.skyKey && /restored/.test(RW.skyKey) ? ' (restored)' : ' (fallen)')) + B('wob', 'HAND-BUILT ' + (HWWOB.amp.value ? (HWWOB.amp.value * 1000).toFixed(0) + ' mm' : 'OFF (ruler)')) + B('dragon', 'DRAGON ' + (DRAGZ.on ? DRAGZ.look : DOJO.dragonPick)) + B('dwing', 'DRAGON WINGS ' + DRAGZ.wingPick) + B('tlie', 'TAIL ' + TAIL.lie) + B('rhue', 'RIVAL ' + RIVAL.pick) + Hd('MORPH') + B('mmode', ARENA.morph.mode) + B('mpose', 'BOSS ' + (ARENA.morph.boss.pose === 'T' ? 'T-POSE' : 'LIVE')) + B('mwave', 'WAVE ' + ARENA.morph.boss.wave) + B('stun', 'STUN ' + (ARENA.stun.on ? 'ON' : 'OFF') + (ARENA.stun.on ? '<small>' + (ARENA.stun.fail ? 'NO SKELETON' : ARENA.stun.srcs[ARENA.stun.files.human] ? 'skeleton ready' : 'loading skeleton') + '</small>' : ''), '', ARENA.stun.on ? 'ar-on' : '') + '</div>' : '') + '</div>';
+    (tools ? '<div class="ar-tools">' + Hd('MOVE') + B('run', 'RUN ' + GAIT.runSet.toUpperCase()) + B('sprint', 'SPRINT ' + NINJA.look) + B('rhold', 'RIGHT HOLD ' + CROUCH.mode) + B('lhold', 'LEFT HOLD ' + LHOLD.pick) + B('prewarm', 'PRELOAD ' + (BOOTWARM.kinds ? 'ALL (no stutter)' : 'FAST (stutters)')) + B('runland', 'RUN LAND ' + RUNLAND.mode) + B('climbspd', 'CLIMB ' + CLIMB.speed.toFixed(1) + ' m/s') + B('airlegs', 'AIR LEGS ' + (AIRLEGS.on ? 'ON' : 'OFF')) + B('jfloat', 'JUGGLE FLOAT ' + (JUGGLE.float ? 'ON' : 'OFF')) + B('toprun', 'TOP SPEED ' + (GAIT.topRun ? 'RUN SPED UP' : 'OWN CLIP')) + B('runarm', 'RUN ARMS ' + RUNARM.out) + B('landfov', 'LAND FOV ' + CAM.landFov) + B('acam', 'ACTION CAM ' + (ACAM.on ? 'ON' : 'OFF')) + B('grip', 'GRIP ' + MOVE.gripPick) + B('lflick', 'LEFT ' + COVER.left) + B('qd', 'QUICK DRAW ' + (QD.on ? 'ON' : 'OFF')) + B('idlepick', 'IDLE ' + IDLEPICK.pick) + B('idleamp', 'IDLE ENERGY x' + IDLEPICK.energy) + B('asprint', 'SPRINT ' + (AUTOSPRINT.on ? 'AUTO (run builds it)' : 'HOLD (right stick)')) + B('kauto', 'K-AUTO ' + CHARGE3.auto) + B('ltapj', 'LEFT TAP ' + (LTAP.jump ? 'JUMP' : 'NOTHING')) + B('edgehang', 'EDGE HANG ' + (EDGEHANG.on ? 'ON' : 'OFF')) + B('edgemode', 'EDGE DROP ' + EDGEHANG.mode) + B('hangblade', 'HANG BLADE ' + LHANDS.bladePick) + B('wrays', 'WALL RAYS ' + (WRAY.on ? 'ON' : 'OFF')) + B('wentry', 'WALL ENTRY ' + (WRUN.entry === 'ARC' ? 'ARC (set by the hit)' : WRUN.entry === 'ANGLE' ? 'ANGLE (billiards)' : 'PROJECT (old)')) + B('online', NET.on ? 'ONLINE ' + NET.room + ' (tap to leave)' : 'ONLINE: JOIN A ROOM') + B('wproxy', 'WALL PROXY ' + (WRUN.proxy ? 'BALL' : 'OFF')) + B('lvlb', 'LEVEL BUILDER') + B('posedit', 'POSE EDIT' + (Object.keys(POSEFIX.offs).length ? ' (' + Object.keys(POSEFIX.offs).length + ' clips)' : '')) + B('fset', 'STEP SET ' + ({ LAND: 'LANDING', ORIG: 'ORIGINAL', CUTS: 'LONG CLIP CUTS', NEW: 'NEW L/R' })[STEP.set]) + B('ftone', 'FOOTSTEPS ' + (STEP.tone === 'SOFT' ? 'SOFT (phone)' : 'RAW (untouched)')) + B('wside', 'WALL SIDE ' + (WRUN.sidePose === 'IK' ? 'IK RUN' : rig.wsHis ? 'HIS CLIP' : 'CLIP')) + B('uplook', 'WALL UP ' + (WRUN.upLook === 'RUN' ? 'RUN + HIP TILT' : 'CLIMB CLIP')) + B('uparms', 'WALL UP ARMS ' + WRUN.upArms) + B('wallmode', 'WALL ' + (WRUN.mode === 'VEL' ? 'VELOCITY' : 'STICK')) + B('arcline', 'BOW ARC ' + (BARC.line ? 'LINE' : 'OFF')) + B('partaim', 'PART AIM ' + (PARTAIM.on ? (PARTAIM.by === 'L' ? 'LEFT' : 'RIGHT') : 'OFF')) + B('cart', 'CARTWHEEL ' + CART.pose) + B('runswipe', 'SLIDE ' + RUNSWIPE.mode) + Hd('KATANA') + B('btrail', 'TRAIL ' + (BTRAIL.jin ? 'JIN' : 'BLUE')) + B('kswing', 'SWING ' + KATANA.style) + B('swseg', 'SWING LURCH ' + (SWSEG.on ? 'ON' : 'OFF')) + B('hslice', 'HORDE ' + (HORDE.slice ? 'SLICE' : 'PLAIN')) + B('defl', 'DEFLECT ASSIST ' + (DEFL.on ? 'ON' : 'OFF')) + B('sample', 'DNA SAMPLE ' + (SAMPLE.on ? 'ON' : 'OFF')) + B('runslash', 'RUN SLASH ' + (RUNSLASH.on ? 'ON' : 'OFF')) + B('aslam', 'AIR SLAM ' + SLAM.katPick) + B('sideflick', 'SIDE FLICK ' + TORNADO.pick) + B('gside', 'GUARD SIDE ' + GSIDE.by) + B('kcslow', 'K-CHARGE x' + KATANA.chargeSlow) + B('ktilt', 'TILT ' + KATANA.runTilt) + Hd('COVER') + B('carm', 'ARM ' + CARM.lift) + B('duck', 'DUCK ' + (DUCK.drop ? DUCK.drop : 'OFF')) + B('hurdle', 'HURDLE ' + VAULT.clip.toUpperCase()) + B('bargrip', 'BAR GRIP ' + HBAR.grip) + B('cblocks', COVER.show ? 'BLOCKS ON' : 'BLOCKS OFF') + B('tshot', 'TURRET ' + TURRET.shot) + B('ric', 'RICOCHET ' + RIC.mode) + B('getup', 'GET UP ' + KNOCK.getUp) + Hd('ARENA') + B('lvl', ARENA.duel.lvl) + B('forge', FORGED.on ? 'FORGE ON' : 'FORGE OFF') + B('notice', DRINK.notice === 'notice' ? 'CEO: OOH' : 'CEO: LOOK') + B('glow', 'LIGHT ' + ARENA.look.glow) + B('charge', 'CHARGE ' + ARENA.heavy.pick) + B('entry', 'ENTRY ' + ARENA.door.entry) + B('dsky', 'SKY ' + DOJO.skyPick) + B('dfx', 'DOJO FX ' + (DOJO.fx || 'FULL')) + B('rwsky', 'HOLLOWS SKY ' + RW.skyPick + (RW.skyKey && /restored/.test(RW.skyKey) ? ' (restored)' : ' (fallen)')) + B('wob', 'HAND-BUILT ' + (HWWOB.amp.value ? (HWWOB.amp.value * 1000).toFixed(0) + ' mm' : 'OFF (ruler)')) + B('dragon', 'DRAGON ' + (DRAGZ.on ? DRAGZ.look : DOJO.dragonPick)) + B('dwing', 'DRAGON WINGS ' + DRAGZ.wingPick) + B('tlie', 'TAIL ' + TAIL.lie) + B('rhue', 'RIVAL ' + RIVAL.pick) + Hd('MORPH') + B('mmode', ARENA.morph.mode) + B('mpose', 'BOSS ' + (ARENA.morph.boss.pose === 'T' ? 'T-POSE' : 'LIVE')) + B('mwave', 'WAVE ' + ARENA.morph.boss.wave) + B('stun', 'STUN ' + (ARENA.stun.on ? 'ON' : 'OFF') + (ARENA.stun.on ? '<small>' + (ARENA.stun.fail ? 'NO SKELETON' : ARENA.stun.srcs[ARENA.stun.files.human] ? 'skeleton ready' : 'loading skeleton') + '</small>' : ''), '', ARENA.stun.on ? 'ar-on' : '') + '</div>' : '') + '</div>';
   if (m === 'bld') { h += '<div class="ar-menu">' + B('back', '&lsaquo; BACK', '', 'ar-back') + B('age', 'STATE: ' + (AGE.st === 'fallen' ? 'FALLEN' : 'RESTORED') + '<small>tap to switch -- rebuilds what stands</small>', '', AGE.st === 'fallen' ? '' : 'ar-on');
     for (const E of BLDG.list) h += B('bld', E.t + '<small>' + (E.on() ? 'tap to remove' : E.pass >= 3 ? E.sub : 'IN PROGRESS · pass ' + E.pass + ' of 3') + '</small>', E.key, E.on() ? 'ar-on' : '');
     h += '</div>'; }
@@ -68850,9 +68851,134 @@ async function posedEnter() { if (POSED.on || !rig.ready || !rig.bones) return;
 function posedExit() { POSED.on = 0; if (POSED.tc) POSED.tc.detach(); POSED.el.style.display = 'none'; POSED.ui.style.display = 'none';
   if (POSED.cam) { camera.position.copy(POSED.cam.p); camera.quaternion.copy(POSED.cam.q); camera.updateMatrixWorld(true); } last = performance.now(); }
 function posedFrame() { try { renderer.render(scene, camera); } catch (e) {} }
+// ============================================================================================
+// m1880: THE LEVEL BUILDER (LEVELBUILDER.md). TOOLS > LEVEL BUILDER. The game freezes; the level is a list of pieces (`LB.cur.pieces`), each built
+// by `lbPiece(P)` -- a pure function of its entry: its meshes, its colliders (AABBs; turns are quarter turns, so they stay exact) and its ports.
+// SC_LEVELB:START
+const LB = { on: 0, KINDS: {
+    tower: { p: { base: 6, h: 16 }, c: 0x8a8f99, label: 'TOWER' },
+    wall: { p: { len: 8, t: .6, h: 6 }, c: 0x4a8fd8, label: 'WALL' },
+    platform: { p: { w: 6, d: 4 }, c: 0xd9a441, label: 'PLATFORM', top: 4 },
+    block: { p: { s: 2 }, c: 0xb3322a, label: 'BLOCK' } },
+  PORTS: ['closed', 'open', 'balcony'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e },
+  cur: null, live: null, sel: null, persp: 1, cams: {}, orb: { az: .7, el: .55, r: 40, t: new THREE.Vector3() }, ptr: new Map(), pinch: 0, pmid: null, tap: null };
+// SC_LEVELB:END
+function lbKey() { let z = ''; try { z = new URLSearchParams(location.search).get('zone') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z; }
+function lbLoad() { try { const v = JSON.parse(localStorage.getItem(lbKey()) || 'null'); if (v && Array.isArray(v.pieces)) return v; } catch (e) {} return { id: 'lvl_' + Date.now().toString(36), world: lbKey().slice(10), pieces: [] }; }
+function lbSave() { try { localStorage.setItem(lbKey(), JSON.stringify(LB.cur)); } catch (e) {} }
+const _lvM = {}; function lbMat(c, ghost) { const k = c + (ghost ? 'g' : ''); return _lvM[k] || (_lvM[k] = new THREE.MeshStandardMaterial({ color: c, roughness: .85, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
+// one piece: local boxes [x0, x1, y0, y1, z0, z1] around its own origin (y = its base), turned by `yaw` quarter turns, placed at `at`
+function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [];
+  const add = (c, x0, x1, y0, y1, z0, z1) => L.push({ c, b: [x0, x1, y0, y1, z0, z1] });
+  if (P.kind === 'tower') { const hb = q.base / 2, dh = hb + .6, H = q.h; add(K.c, -hb, hb, 0, H - .4, -hb, hb); add(0x6b5038, -dh, dh, H - .4, H, -dh, dh);
+    const ps = P.ports || {};
+    for (const [side, nx, nz] of [['N', 0, -1], ['E', 1, 0], ['S', 0, 1], ['W', -1, 0]]) { const t = ps[side] || 'closed', tx = -nz, tz = nx;
+      const seg = (u0, u1, n0, n1, y0, y1, c) => { const xs = [tx * u0 + nx * n0, tx * u1 + nx * n1, tx * u0 + nx * n1, tx * u1 + nx * n0], zs = [tz * u0 + nz * n0, tz * u1 + nz * n1, tz * u0 + nz * n1, tz * u1 + nz * n0]; add(c, Math.min(...xs), Math.max(...xs), y0, y1, Math.min(...zs), Math.max(...zs)); };
+      if (t === 'closed') seg(-dh, dh, dh - .3, dh, H, H + 1.1, 0x6b5038);
+      if (t === 'balcony') { seg(-1.6, 1.6, dh, dh + 2.4, H - .35, H, 0xd9a441); seg(-1.6, 1.6, dh + 2.25, dh + 2.4, H, H + 1, 0x6b5038); seg(-1.6, -1.45, dh, dh + 2.4, H, H + 1, 0x6b5038); seg(1.45, 1.6, dh, dh + 2.4, H, H + 1, 0x6b5038); }
+      if (t === 'open') { seg(-dh, -1.5, dh - .3, dh, H, H + 1.1, 0x6b5038); seg(1.5, dh, dh - .3, dh, H, H + 1.1, 0x6b5038); }
+      ports.push({ side, t, at: [nx * (dh + (t === 'balcony' ? 2.4 : 0)), H + .7, nz * (dh + (t === 'balcony' ? 2.4 : 0))] }); } }
+  else if (P.kind === 'wall') add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2);
+  else if (P.kind === 'platform') add(K.c, -q.w / 2, q.w / 2, -.4, 0, -q.d / 2, q.d / 2);
+  else add(K.c, -q.s / 2, q.s / 2, 0, q.s, -q.s / 2, q.s / 2);
+  const yw = ((P.yaw || 0) % 4 + 4) % 4, rx = (x, z) => yw === 0 ? [x, z] : yw === 1 ? [z, -x] : yw === 2 ? [-x, -z] : [-z, x], [ax, ay, az] = P.at;
+  const g = new THREE.Group(); g.userData.pid = P.id; const boxes = [];
+  for (const { c, b } of L) { const a = rx(b[0], b[4]), d = rx(b[1], b[5]), x0 = Math.min(a[0], d[0]) + ax, x1 = Math.max(a[0], d[0]) + ax, z0 = Math.min(a[1], d[1]) + az, z1 = Math.max(a[1], d[1]) + az;
+    const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, b[3] - b[2], z1 - z0), lbMat(c, ghost)); m.position.set((x0 + x1) / 2, ay + (b[2] + b[3]) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
+    boxes.push({ minx: x0, maxx: x1, miny: ay + b[2], maxy: ay + b[3], minz: z0, maxz: z1, id: P.id }); }
+  for (const pt of ports) { const r = rx(pt.at[0], pt.at[2]); pt.w = [r[0] + ax, ay + pt.at[1], r[1] + az]; pt.side = 'NESW'[('NESW'.indexOf(pt.side) + yw) % 4]; pt.key = 'NESW'['NESW'.indexOf(pt.side) - yw < 0 ? 'NESW'.indexOf(pt.side) - yw + 4 : 'NESW'.indexOf(pt.side) - yw]; }
+  return { g, boxes, ports }; }
+// the level in the world: meshes always, colliders into BOXES (taken out again on a rebuild)
+function lbLive(ghostId) { const L = LB.cur; if (!L) return; if (LB.live) { scene.remove(LB.live.g); for (const b of LB.live.boxes) { const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); } }
+  const g = new THREE.Group(), boxes = [], ports = []; g.name = 'level';
+  for (const P of L.pieces) { const R = lbPiece(P, P.id === ghostId); g.add(R.g); if (!LB.on) boxes.push(...R.boxes); for (const pt of R.ports) ports.push(Object.assign(pt, { pid: P.id })); }
+  scene.add(g); for (const b of boxes) BOXES.push(b); if (!LB.on || boxes.length) boxGrid(); LB.live = { g, boxes, ports };
+  if (LB.on) lbPortMarks(); }
+function lbPortMarks() { const G = LB.marks || (LB.marks = new THREE.Group()); while (G.children.length) G.remove(G.children[0]); if (!G.parent) scene.add(G);
+  const geo = LB.mGeo || (LB.mGeo = new THREE.SphereGeometry(.55, 12, 8));
+  for (const pt of LB.live.ports) { const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: LB.PCOL[pt.t], depthTest: false })); m.renderOrder = 9; m.position.set(pt.w[0], pt.w[1], pt.w[2]); m.userData.port = pt; G.add(m); } }
+// ---- the editor ----
+function lbCam() { const O = LB.orb, t = O.t, c = LB.persp ? LB.cams.p : LB.cams.o, D = LB.persp ? O.r : Math.max(250, O.r * 3), x = t.x + D * Math.cos(O.el) * Math.sin(O.az), y = t.y + D * Math.sin(O.el), z = t.z + D * Math.cos(O.el) * Math.cos(O.az);     // ORTHO stands far back (its size is `r`, not its distance) with a positive near: a negative near drew the backdrop behind it over everything
+  c.position.set(x, y, z); c.up.set(0, 1, 0); if (Math.abs(O.el) > 1.55) c.up.set(-Math.sin(O.az), 0, -Math.cos(O.az)); c.lookAt(t);
+  if (!LB.persp) { const a = innerWidth / innerHeight, hh = O.r * .5; c.left = -hh * a; c.right = hh * a; c.top = hh; c.bottom = -hh; c.near = 1; c.far = D + 1500; }
+  else { c.aspect = innerWidth / innerHeight; c.near = .1; c.far = 4000; }
+  c.updateProjectionMatrix(); c.updateMatrixWorld(true); if (LB.tc) LB.tc.camera = c; }
+function lbActiveCam() { return LB.persp ? LB.cams.p : LB.cams.o; }
+function lbUiBuild() {
+  const el = LB.el = document.createElement('div'); el.style.cssText = 'position:fixed;inset:0;z-index:58;display:none;touch-action:none;'; document.body.appendChild(el);
+  const bs = 'font:700 12px system-ui;padding:8px 9px;border-radius:8px;border:1px solid #4a7aa0;background:#17304a;color:#e6f4ff;';
+  const top = LB.top = document.createElement('div'); top.style.cssText = 'position:fixed;left:8px;right:8px;top:calc(92px + env(safe-area-inset-top));z-index:60;display:none;gap:5px;flex-wrap:wrap;';
+  top.innerHTML = ['view|PERSP', 'top|TOP', 'front|FRONT', 'side|SIDE', 'home|HIM', 'play|PLAY', 'file|SAVE FILE', 'copy|COPY', 'exit|EXIT'].map(x => { const [a, t] = x.split('|'); return '<button data-l="' + a + '" style="' + bs + '">' + t + '</button>'; }).join(' ');
+  const bot = LB.bot = document.createElement('div'); bot.style.cssText = 'position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:60;display:none;background:#0c1420e6;border:1px solid #3a5a7a;border-radius:12px;padding:7px;font:600 12px system-ui;color:#cfe8ff;';
+  document.body.appendChild(top); document.body.appendChild(bot);
+  const click = e => { const b = e.target.closest('button'); if (!b) return; e.stopPropagation(); lbCmd(b.dataset.l, b.dataset.k); };
+  top.addEventListener('click', click); bot.addEventListener('click', click);
+  el.addEventListener('pointerdown', e => { LB.ptr.set(e.pointerId, { x: e.clientX, y: e.clientY }); LB.tap = LB.ptr.size === 1 ? { x: e.clientX, y: e.clientY, t: performance.now(), moved: 0 } : null; LB.pinch = 0; LB.pmid = null; });
+  el.addEventListener('pointermove', e => { const P = LB.ptr.get(e.pointerId); if (!P) return; const dx = e.clientX - P.x, dy = e.clientY - P.y; P.x = e.clientX; P.y = e.clientY;
+    if (LB.tap && Math.hypot(e.clientX - LB.tap.x, e.clientY - LB.tap.y) > 8) LB.tap.moved = 1;
+    if (LB.tc && (LB.tc.dragging || LB.tc.axis)) return; const O = LB.orb;
+    if (LB.ptr.size === 1) { O.az -= dx * .007; O.el = clamp(O.el + dy * .006, -1.2, 1.5699); lbCam(); }
+    else if (LB.ptr.size === 2) { const [a, b] = [...LB.ptr.values()], d = Math.hypot(a.x - b.x, a.y - b.y), mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      if (LB.pinch) O.r = clamp(O.r * LB.pinch / d, 3, 600); LB.pinch = d;
+      if (LB.pmid) { const c = lbActiveCam(), k = O.r * (LB.persp ? 1.1 : 1) / innerHeight, R = new THREE.Vector3().setFromMatrixColumn(c.matrixWorld, 0), U = new THREE.Vector3().setFromMatrixColumn(c.matrixWorld, 1);
+        O.t.addScaledVector(R, -(mx - LB.pmid.x) * k).addScaledVector(U, (my - LB.pmid.y) * k); }
+      LB.pmid = { x: mx, y: my }; lbCam(); } });
+  const up = e => { const T = LB.tap; LB.ptr.delete(e.pointerId); LB.pinch = 0; LB.pmid = null;
+    if (T && !T.moved && performance.now() - T.t < 400 && !(LB.tc && (LB.tc.dragging || LB.tc.axis))) lbTapPick(e.clientX, e.clientY); LB.tap = null; };
+  el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); }
+function lbBotPaint() { const B = LB.bot, P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel), bs = 'font:700 12px system-ui;padding:8px 9px;border-radius:8px;border:1px solid #4a7aa0;background:#17304a;color:#e6f4ff;margin:2px;';
+  const btn = (a, t, k) => '<button data-l="' + a + '"' + (k ? ' data-k="' + k + '"' : '') + ' style="' + bs + '">' + t + '</button>';
+  if (!P) { B.innerHTML = '<div style="margin:0 2px 4px">ADD (it appears in front of the camera) -- tap a piece to edit it, tap a tower port ball to change it</div>' + Object.entries(LB.KINDS).map(([k, K]) => btn('add', K.label, k)).join(''); return; }
+  const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p);
+  B.innerHTML = '<div style="margin:0 2px 4px">' + K.label + ' ' + P.id + ' -- ' + Object.entries(q).map(([k, v]) => k + ' ' + (+v).toFixed(1)).join(', ') + '  @ y ' + P.at[1].toFixed(1) + '</div>'
+    + btn('turn', 'TURN 90') + btn('size', 'SIZE +', 1) + btn('size', 'SIZE -', -1) + btn('tall', 'HEIGHT +', 1) + btn('tall', 'HEIGHT -', -1) + btn('lift', 'UP 2m', 2) + btn('lift', 'DOWN 2m', -2) + btn('dup', 'COPY') + btn('del', 'DELETE') + btn('ok', 'OK'); }
+function lbSelect(id) { LB.sel = id || null; lbLive(LB.sel); const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel);
+  if (LB.tc) { LB.tc.detach(); if (P) { const g = LB.live.g.children.find(c => c.userData.pid === P.id); if (g) { LB.anchor.position.set(P.at[0], P.at[1], P.at[2]); LB.anchor.updateMatrixWorld(true); LB.tc.attach(LB.anchor); LB.drag0 = P.at.slice(); } } }
+  lbBotPaint(); }
+function lbTapPick(x, y) { const c = lbActiveCam(), rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(x / innerWidth * 2 - 1, -(y / innerHeight) * 2 + 1), c);
+  if (LB.marks) { const h = rc.intersectObjects(LB.marks.children, false)[0]; if (h) { const pt = h.object.userData.port, P = LB.cur.pieces.find(q => q.id === pt.pid); if (P) { P.ports = P.ports || {}; const cur = P.ports[pt.key] || 'closed'; P.ports[pt.key] = LB.PORTS[(LB.PORTS.indexOf(cur) + 1) % LB.PORTS.length]; lbSave(); lbSelect(LB.sel); } return; } }
+  const h = rc.intersectObjects(LB.live.g.children, true)[0]; lbSelect(h ? h.object.userData.pid : null); }
+function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id === LB.sel), O = LB.orb;
+  if (a === 'view') { LB.persp = LB.persp ? 0 : 1; LB.top.querySelector('[data-l=view]').textContent = LB.persp ? 'PERSP' : 'ORTHO'; lbCam(); }
+  else if (a === 'top') { O.el = 1.5699; lbCam(); } else if (a === 'front') { O.el = 0; O.az = 0; lbCam(); } else if (a === 'side') { O.el = 0; O.az = Math.PI / 2; lbCam(); }
+  else if (a === 'home') { O.t.copy(player.pos); lbCam(); }
+  else if (a === 'add') { const K = LB.KINDS[k], n = L.pieces.filter(q => q.kind === k).length + 1, id = k + '_' + String(n).padStart(2, '0') + '_' + Date.now().toString(36).slice(-3);
+    const at = [Math.round(O.t.x * 2) / 2, K.top != null ? Math.round(O.t.y + K.top) : Math.max(0, Math.round(O.t.y * 2) / 2 - (k === 'tower' ? 0 : 0)), Math.round(O.t.z * 2) / 2];
+    L.pieces.push({ id, kind: k, at, yaw: 0, p: {}, ports: k === 'tower' ? { N: 'closed', E: 'closed', S: 'closed', W: 'closed' } : undefined }); lbSave(); lbSelect(id); }
+  else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
+  else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
+  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'wall' ? 'len' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' ? .5 : 1;
+    P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
+  else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
+  else if (a === 'lift') P.at[1] = Math.max(-50, P.at[1] + +k);
+  else if (a === 'dup') { const Q = JSON.parse(JSON.stringify(P)); Q.id = P.kind + '_' + String(L.pieces.length + 1).padStart(2, '0') + '_' + Date.now().toString(36).slice(-3); Q.at[0] += 4; L.pieces.push(Q); lbSave(); lbSelect(Q.id); return; }
+  else if (a === 'del') { L.pieces = L.pieces.filter(q => q !== P); lbSave(); lbSelect(null); return; }
+  else if (a === 'ok') { lbSave(); lbSelect(null); return; }
+  else if (a === 'play' || a === 'exit') { lbSave(); lbExit(); return; } else if (a === 'file') { lbFile(); return; } else if (a === 'copy') { lbCopy(); return; }
+  lbSave(); lbSelect(LB.sel); }
+function lbJson() { return JSON.stringify(LB.cur, (k, v) => typeof v === 'number' ? +v.toFixed(3) : v, 1); }
+function lbFile() { try { const b = new Blob([lbJson()], { type: 'application/json' }), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = (LB.cur.id || 'level') + '.json'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000); } catch (e) { lbCopy(); } }
+function lbCopy() { const t = lbJson(); try { navigator.clipboard.writeText(t); note('LEVEL COPIED'); } catch (e) {} }
+async function lbEnter() { if (LB.on || !rig.ready) return;
+  if (!POSED.TC) { try { POSED.TC = (await import('./vendor/TransformControls.js')).TransformControls; } catch (e) { note('BUILDER: no gizmo'); return; } }
+  if (!LB.el) { lbUiBuild(); LB.cams.p = new THREE.PerspectiveCamera(50, 1, .1, 4000); LB.cams.o = new THREE.OrthographicCamera(-1, 1, 1, -1, -2000, 4000); LB.anchor = new THREE.Object3D(); scene.add(LB.anchor); }
+  if (!LB.cur) LB.cur = lbLoad();
+  LB.on = 1; LB.fog = scene.fog; scene.fog = null; LB.orb.t.copy(player.pos); LB.orb.r = 40; LB.orb.el = .55; LB.orb.az = cam.az || .7;
+  if (!LB.tc) { const tc = LB.tc = new POSED.TC(lbActiveCam(), LB.el); tc.setMode('translate'); tc.setTranslationSnap(.5); tc.size = 1.1; scene.add(tc.getHelper ? tc.getHelper() : tc);
+    tc.addEventListener('objectChange', () => { const P = LB.sel && LB.cur.pieces.find(q => q.id === LB.sel); if (!P) return; const v = LB.anchor.position; P.at = [+v.x.toFixed(2), +v.y.toFixed(2), +v.z.toFixed(2)]; LB.moved = 1; });
+    tc.addEventListener('dragging-changed', e => { if (!e.value && LB.moved) { LB.moved = 0; lbSave(); lbSelect(LB.sel); } }); }
+  for (const x of [LB.el, LB.bot]) x.style.display = 'block'; LB.top.style.display = 'flex';
+  lbCam(); lbSelect(null); }
+function lbExit() { LB.on = 0; if (LB.tc) LB.tc.detach(); for (const x of [LB.el, LB.bot, LB.top]) x.style.display = 'none'; if (LB.marks) scene.remove(LB.marks);
+  scene.fog = LB.fog; LB.sel = null; lbLive(null); last = performance.now(); }
+function lbFrame() { try { renderer.render(scene, lbActiveCam()); } catch (e) {} }
+// a saved level comes back on its own, in the world it was built in
+function lbBoot() { if (LB.cur || !rig.ready) return; let raw = null; try { raw = localStorage.getItem(lbKey()); } catch (e) {} LB.cur = lbLoad(); if (raw && LB.cur.pieces.length) lbLive(null); }
 function frame() {
   requestAnimationFrame(frame);
-  if (POSED.on) { posedFrame(); return; }     // m1877: frozen for the pose editor
+  if (POSED.on) { posedFrame(); return; }     
+  if (LB.on) { lbFrame(); return; }     // m1880: frozen for the level builder
+  if (!LB.cur && rig.ready && (LB.bootT = (LB.bootT || 0) + 1) > 30) lbBoot();     // m1877: frozen for the pose editor
   try { frameBody(); }
   catch (e) {
     const k = String(e && e.message);
