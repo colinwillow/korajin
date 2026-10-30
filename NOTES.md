@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the side wall run is the PLAIN RUN with its feet IK'd onto the wall (Wall_Run_1 retired; TOOLS > WALL SIDE: IK RUN / CLIP)
+
+His: *"it still looks glitchy and weird ... take a regular running animation and just adjust the feet -- a tilted stance, the torso up and down; the
+wall on your left, the left leg is the top one, slanted, and the bottom leg the most landed."*
+- `wrunSideIK` (the ARC side run, `WRUN.sidePose` 'IK', default): rigAnim plays `CLIPS.run` at a rate from his speed along the wall; the body stays
+  upright (a `sk.lean` .08 rad touch, head off the wall), and each foot is two-bone IK'd (`wrLimb`) onto the FACE down a line from its own hip
+  joint tilted `sk.tilt` (1.05 rad, ~60 deg) from vertical -- so the near hip (closer to the wall) plants HIGHER on a bent leg, the far one LOWER
+  and nearly straight. The hips' distance off the face is DERIVED: the far leg planted at `ext` (.97) of its measured length.
+- The clip still drives each foot: its travel along the run = the stride (`sk.stride`), and its height above its OWN lowest point (a slow-decay
+  running max, `plantDecay`) = the step, pulled back up the tilted leg line, off the wall. A typed plant depth failed first: the run clip never
+  reaches it (a flight phase), so every foot hung .2 m off the wall.
+- MEASURED (headless, wall on his right, chimney): near hip .24 m off the face, far .44; both feet .05 m off it when planted (the sole), near foot
+  .4 m up, far .3. Tried: tilt .8 / .68 -- the near leg folded to hip height (knees up, a jump not a run).
+- Knobs live on `WRUN.sk`. `WRUN.sidePose = 'CLIP'` is the old Wall_Run_1 (with m1863's stride cut).
+
 ## m1863 -- the side wall run loops ONE STRIDE, not the whole get-on / get-off clip
 
 His (and right): *"that wall run animation shows him going from not on a wall onto a wall, running on the wall and then getting off -- so when it loops
