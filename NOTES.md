@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- THE SOUND BUTTON: sound back after leaving the app (iOS home-screen app)
+## m1879 -- THE SOUND BUTTON: sound back after leaving the app (iOS home-screen app)
 
 His: *"if I navigate away and come back, the sounds are always gone and I have to restart ... maybe it's auto muted and we need a mute and unmute
 button so you can always unmute it when you come back."*
