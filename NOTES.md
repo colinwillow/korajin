@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- WHY HIS FOOTSTEPS NEVER SOUND LIKE HIS FILES ON THE PHONE: the speaker, my processing, and the pitch sweep
+## m1869 -- WHY HIS FOOTSTEPS NEVER SOUND LIKE HIS FILES ON THE PHONE: the speaker, my processing, and the pitch sweep
 
 His: *"every time I give you footsteps the ones in game sound nothing like my original footsteps ... I just gave you the most quiet, subtle padded
 footsteps and on the phone they're just this crispy noise. Are you putting some weird thing on them, like resonance?"*
