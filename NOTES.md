@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the side wall run had the WRONG-HANDED clip (wall on his right): mirrored now, looped, faces along
+## m1861 -- the side wall run had the WRONG-HANDED clip (wall on his right): mirrored now, looped, faces along
 
 His: *"wall to my screen right, approaching with his right arm to the wall: instead of his feet against the wall, the OTHER side of his body -- his face
 points toward the wall, he floats a few feet from the wall in the in-air pose."*
