@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the horizontal wall run: no catching a corner, and a higher arc
+
+His (screenshots on the chimney, build 1854, same on 1859): *"he never really did the actual wall run, he did like everything other than the wall run animation."*
+- MEASURED headless (run along the C chimney wall, stick 10-30 deg into it, jump): along the long face the ARC side run already caught and ran 10 m --
+  but it rose only **1.6 m** (`arcUp` 4.2 / `arcG` 5.5), so it reads as running on the ground beside the wall. And a jump in at the chimney's OPEN END
+  caught the wall's **corner** (diagonal normal from `boxNear`'s corner zone) and the 'on' test (normal . R.n > .9) let go **two frames later** with a push:
+  the flail, then the fall.
+- `wrunFaceLen`: `wrunFind` now refuses a corner's zone and any face shorter than `minLen` (a 0.5 m wall's end cap). One finder, so the slide perch,
+  the swipe and the auto-run all get it.
+- `arcUp` 4.2 -> 5.6, `arcG` 5.5 -> 4.6: the run now climbs ~3.4 m (3.5 measured from a 15 deg approach, 4.8 from 30) and lasts ~2 s along the face.
+- Still possible on the phone: a hard sideways push of the LEFT stick toward the wall can read as the left FLICK (the side-flip barrel roll, m1723).
+
 ## The toe flick (for real), a shimmy that loops at speed, and the ledge LURCH (m1859)
 *"The toe flick is still there on the run. The ledge hang left / right is super super slow and doesn't loop the animation. And swiping left /
 right, he doesn't do the lurch."*

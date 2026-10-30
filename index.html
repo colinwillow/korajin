@@ -13069,12 +13069,17 @@ const _wrN = { d: 0, nx: 0, nz: 0, cx: 0, cz: 0 }, _wrB = [];
 // of one now stands for the WHOLE wall: one turned box along its length (`cwRunBox`, cached on it), and the run holds while any of it does.
 function cwRunBox(W) { if (W.rb) return W.rb; const hx = W.L / 2, hz = W.D / 2, ex = Math.abs(W.cs) * hx + Math.abs(W.sn) * hz, ez = Math.abs(W.sn) * hx + Math.abs(W.cs) * hz;
   return (W.rb = { cs: W.cs, sn: -W.sn, hx, hz, cx: W.x, cz: W.z, minx: W.x - ex, maxx: W.x + ex, minz: W.z - ez, maxz: W.z + ez, miny: 0, maxy: W.H, cwRun: W }); }
+function wrunFaceLen(b, px, pz) { let ox, oz, lx, lz;     // the length of the face nearest (px, pz); 0 in a corner's zone
+  if (b.cs !== undefined) { boxLocal(b, px, pz, _blN); ox = _blN.x - clamp(_blN.x, -b.hx, b.hx); oz = _blN.z - clamp(_blN.z, -b.hz, b.hz); lx = 2 * b.hx; lz = 2 * b.hz; }
+  else { ox = px - clamp(px, b.minx, b.maxx); oz = pz - clamp(pz, b.minz, b.maxz); lx = b.maxx - b.minx; lz = b.maxz - b.minz; }
+  const ax = Math.abs(ox) > 1e-3, az = Math.abs(oz) > 1e-3; return ax && az ? 0 : ax ? lz : lx; }
 function wrunFind(px, py, pz, R, not) {
   let best = null;
   for (let b of boxesNear(px - R, px + R, pz - R, pz + R, _wrB)) { if (b.cw) b = cwRunBox(b.cw);
     if (b === not || b.maxy - py < WRUN.minH || b.miny > py + 1) continue;
     const len = b.cs !== undefined ? 2 * Math.max(b.hx, b.hz) : Math.max(b.maxx - b.minx, b.maxz - b.minz); if (len < WRUN.minLen) continue;
     const d = boxNear(b, px, pz, _wrN); if (d < 0 || d > R || (best && d >= best.d)) continue;
+    if (wrunFaceLen(b, px, pz) < WRUN.minLen) continue;     /* m1860: a CORNER or a thin wall's END CAP is not a face to run on (his chimney: caught at its open end, lost two frames later) */
     best = { b, d, nx: _wrN.nx, nz: _wrN.nz, cx: _wrN.cx, cz: _wrN.cz };
   }
   return best;
@@ -13364,7 +13369,7 @@ function wrunPose() {
     sp.parent.getWorldQuaternion(_wrQ3).invert(); sp.quaternion.copy(_wrQ3.multiply(_wrQ)); sp.updateMatrixWorld(true); }
 }
 const _wrQ2 = new THREE.Quaternion(), _wrQ3 = new THREE.Quaternion();
-Object.assign(WRUN, { sideInK: .35, arcUpAng: .55, arcUpMin: 7, arcKeep: 1, arcVmin: 6, arcVmax: 10, arcUp: 4.2, arcG: 5.5, arcEndV: 4.2, arcMax: 2.2, arcTop: 1.1, entry: 'ARC', angK: 1, entryK: 1.15, riseK: .5, steerDead: .45, upLook: 'RUN', upHip: .35, upTorso: 1, upIn: .15, upFootIn: .12, upRunK: 1, upRunTs: [.9, 2.6], upJumpA: .6, offBlend: .07, turnHalf: .09, gripT: .35, rampT: .9, capV: 8, capHalf: .12, topV: 3.5, proxy: 0, upArms: 'RUN', upArmTs: 1.5, sideClip: 1, sideLean: .65, sideTorso: .25, sideRef: 5.5, steer: 2.6, upClip: 1, upClipD: .45, upClipRef: 3.2, upClipTs: [1.8, 3.4],     /* m1831: a RUNNING cadence (his: "the pace of the climb, really slow") */ upD: .8, upFoot: -.12, upAmp: .34, upLift: .26, upToeIn: .15, upJumpV: 9.5,     /* m1827: m1826's pose REVERTED (his: "even worse, horrendous") -- the jumps stay */     /* m1826 (his: "not a chair at 90 degrees -- down at 45 or less, knees with room to run, toes brushing the wall, not flat-footed"): hips closer (upD .8 -> .5), feet lower under him (upFoot -.12 -> -.55), toes turned INTO the wall (`upToeIn`) */ upD0: .8, upRate: 2.4, upW: .14, upTorso: .32, perchD: .42, perchFoot: -.18, perchKnee: -.55, perchFwd: .12, perchDrop: .22, perchLean: .45, perchW: .2, perchHand: .05, perchHandW: .55, ik: 1 });     /* m1683: the perch faces away -- back to the wall, a foot planted on it behind, hands back on it at the hips */
+Object.assign(WRUN, { sideInK: .35, arcUpAng: .55, arcUpMin: 7, arcKeep: 1, arcVmin: 6, arcVmax: 10, arcUp: 5.6, arcG: 4.6,     /* m1860: the arc rose 1.6 m and read as running on the ground beside the wall; now ~3.4 m */ arcEndV: 4.2, arcMax: 2.2, arcTop: 1.1, entry: 'ARC', angK: 1, entryK: 1.15, riseK: .5, steerDead: .45, upLook: 'RUN', upHip: .35, upTorso: 1, upIn: .15, upFootIn: .12, upRunK: 1, upRunTs: [.9, 2.6], upJumpA: .6, offBlend: .07, turnHalf: .09, gripT: .35, rampT: .9, capV: 8, capHalf: .12, topV: 3.5, proxy: 0, upArms: 'RUN', upArmTs: 1.5, sideClip: 1, sideLean: .65, sideTorso: .25, sideRef: 5.5, steer: 2.6, upClip: 1, upClipD: .45, upClipRef: 3.2, upClipTs: [1.8, 3.4],     /* m1831: a RUNNING cadence (his: "the pace of the climb, really slow") */ upD: .8, upFoot: -.12, upAmp: .34, upLift: .26, upToeIn: .15, upJumpV: 9.5,     /* m1827: m1826's pose REVERTED (his: "even worse, horrendous") -- the jumps stay */     /* m1826 (his: "not a chair at 90 degrees -- down at 45 or less, knees with room to run, toes brushing the wall, not flat-footed"): hips closer (upD .8 -> .5), feet lower under him (upFoot -.12 -> -.55), toes turned INTO the wall (`upToeIn`) */ upD0: .8, upRate: 2.4, upW: .14, upTorso: .32, perchD: .42, perchFoot: -.18, perchKnee: -.55, perchFwd: .12, perchDrop: .22, perchLean: .45, perchW: .2, perchHand: .05, perchHandW: .55, ik: 1 });     /* m1683: the perch faces away -- back to the wall, a foot planted on it behind, hands back on it at the hips */
 try { const v = localStorage.getItem('mel.wentry'); if (v === 'ARC' || v === 'ANGLE' || v === 'PROJECT') WRUN.entry = v; } catch (e) {}
 try { const v = localStorage.getItem('mel.uplook'); if (v === 'RUN' || v === 'CLIP') WRUN.upLook = v; } catch (e) {}
 try { const v = localStorage.getItem('mel.uparms'); if (v === 'RUN' || v === 'CLIMB') WRUN.upArms = v; } catch (e) {}
