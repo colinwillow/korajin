@@ -103,3 +103,11 @@ check, ticked with the build number like the rest. Scene Companion's side of the
 37. [ ] (his, when he is at the computer) **HAND-ANIMATED SWING PUMPS**: a rope-swing hang (hands on a rope, one above the other) and a PUMP
        cycle -- torso / legs down so one clip serves both the rope swing and the high bar. m1883 ships a procedural stand-in (`PUMP`: thighs kick
        with the swing, knees tuck on the back swing, hands IK'd onto the rope); his clips go in `HANIM` (models/characters/anims) and replace it.
+38. [ ] (his, Oct 30 2026) **THE TUTORIAL LEVEL** -- fun and interactive, built with the LEVEL BUILDER once its kit is there. One move at a time in
+       a natural progression, and every move you learn DOES something: the big block letters say the move and you break THROUGH them with it --
+       swipe down and the slam smashes the "DOWN" block, slash through the word, jump high and burst the blocks above, shoot the target with the
+       bow, wall-run past the sign, swing, zip, and so on through the whole control map (CLAUDE.md's table is the syllabus).
+       How each move is shown: a small pop-up with a VIDEO / animated overlay of the joystick doing it (stick up, a flick left, a hold) -- every
+       control is a thumb on a pad, so these can be rendered HEADLESS from the game's own pad drawing (or he makes them). An icon fallback.
+       Needs: breakable letter-blocks (the kit city's chunk walls or a simple shatter), a "move done" event per verb (the game already knows each
+       one: slam, strike direction, flick, wall run, bar, zip ...), the pop-up, and a progress gate per station. Own design doc with a DONE WHEN.

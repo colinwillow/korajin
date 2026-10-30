@@ -5,6 +5,12 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- DOCKET 38: the tutorial level (planned, not built)
+
+His: *"put on the docket that we really need to build a tutorial level that is really fun and interactive -- big text that says DOWN and you swipe
+down and it destroys the block; slash through it; jump up ... a little pop-up video of the joystick swiping up ... maybe you could make those
+headless."* Written up as DOCKET 38 (built with the level builder; the control map is the syllabus; joystick clips rendered headless).
+
 ## m1884 -- LEVEL BUILDER 3b: sky bridge, rope bridge, swing rope, bounce pad
 
 - SKY BRIDGE link: a covered walkway -- floor, roof, side walls with window gaps (posts every 2.4 m), drawn in a group yawed along the link and
