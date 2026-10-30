@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LEVEL BUILDER 3a: functional pieces -- run wall, chimney, monkey bars; tower ports BAR and LADDER
+## m1882 -- LEVEL BUILDER 3a: functional pieces -- run wall, chimney, monkey bars; tower ports BAR and LADDER
 
 His: *"I was talking about a level builder, not a gym builder ... every piece in a level will have some functionality: a wall run, a tower with a
 high bar, monkey bars across it, a tightrope, a sky bridge, a rope bridge, a back-and-forth wall -- two towers you only get up by jumping wall to
