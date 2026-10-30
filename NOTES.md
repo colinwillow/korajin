@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## ONLINE stage 4: the Duel Pit -- versus with damage, knock-outs and a score (m15xx, NETPLAY.md)
+*"Let's do two"* (the online arena), then the rope swing.
+- **THE DUEL PIT** (`DUELPIT` in `SC_DUELPIT`, `duelPitBuild(T)`; KORAJIN > The Duel Pit (online), `?w=forge&zone=duel`): a 26 m sand floor in
+  a ring of stone terraces you can stand on, a raised two-step dais in the middle, four 5 m pillars, a timber walkway between two of them (a
+  high line), a step up to it; the two spawns opposite (cyan / red rings). Entering it asks for a room code (default PIT) if not online.
+- **Versus there (`netVersus`):** a hit does damage (`NETHIT.swing.dmg` 12, heavy 25, of 100), no regen in the pit; at 0 he is KNOCKED OUT
+  (always the knock-down, `koT` 3.5 s, hits ignored), then back at his own spawn on full health; the KO goes to whoever landed it (a `ko`
+  event) -- `KO n : m` and `HP` in the chip, a K.O.! / KNOCKED OUT banner. Spawns by join order (`NET.slot`).
+- **Stage 2 bits:** a `sw` event when a swing / slam / charge starts plays their swoosh at their puppet; while their packet says they are
+  swinging, a streak of sparks follows their weapon; their HP bar under their tag (from `hp` in the packet). Their blade FIRE still isn't sent.
+- **Tested for real (headless, his relay locally, two pages in KJ-DUEL1):** both built the pit and spawned opposite (z +9.5 / -9.5); B at
+  10 HP, A's katana hit -> B 0 HP, `deaths 1`, KO countdown running; A's score `kos 1`. The KO clock first counted frames (1/60) -- slow on a
+  slow phone -- it uses the frame's dt now. Render: the pit. Shipped unverified.
+
 ## The dweller's hand stutter, and the bow aims DOWN and looses only on a lift (m1854)
 - **The dweller:** *"his hands do a subtle little stutter at the end of their sequence -- maybe his walk"*. Measured in the forged
   `stone_olmec.glb`: `walk`'s last key repeats its first (the arms .008 apart, against a .016 step between frames), so the loop showed the same

@@ -29156,10 +29156,12 @@ function netOpen() { if (!NET.on) return; let ws; try { ws = new WebSocket(NET.u
 function netLeave() { NET.on = 0; NET.st = 'off'; if (NET.ws) { const w = NET.ws; NET.ws = null; try { w.close(); } catch (e) {} } for (const id in NET.peers) netDrop(id); NET.myId = null; }
 function netSend(o) { if (NET.ws && NET.ws.readyState === 1) NET.ws.send(JSON.stringify(o)); }
 function netMsg(m) {
-  if (m.type === 'room_state') { NET.myId = m.yourId; NET.st = 'in ' + NET.room; return; }
+  if (m.type === 'room_state') { NET.myId = m.yourId; NET.st = 'in ' + NET.room; NET.slot = Math.max(0, (m.playerCount || 1) - 1); if (DUELZ.on) duelSpawn(); return; }
   if (m.type === 'player_left') { netDrop(m.id); return; }
   if (m.type === 'event' && m.e === 'hit' && m.to === NET.myId) { netHurt(m); return; }
-  if (m.type === 'state' && m.id && m.id !== NET.myId) { NET.rxN++; const P = netPeer(m.id); if (!P) return; P.zone = m.z; P.hero = m.h; P.k = m.k;
+  if (m.type === 'event' && m.e === 'ko' && m.to === NET.myId) { NET.kos = (NET.kos || 0) + 1; duelBanner('K.O.!', '#ffd84a'); snd('clang', { g: 1, r: .6 }); return; }
+  if (m.type === 'event' && m.e === 'sw' && NET.peers[m.id]) { const P = NET.peers[m.id]; snd('swoosh', { r: 1.1, g: .5, x: P.root.position.x, z: P.root.position.z }); return; }     // stage 2: their swing's sound
+  if (m.type === 'state' && m.id && m.id !== NET.myId) { NET.rxN++; const P = netPeer(m.id); if (!P) return; P.zone = m.z; P.hero = m.h; P.k = m.k; P.sw = m.sw; if (m.hp != null && m.hp !== P.hp) { P.hp = m.hp; netTag(P); }
     const raw = atob(m.B), u8 = new Uint8Array(raw.length); for (let i = 0; i < raw.length; i++) u8[i] = raw.charCodeAt(i); const q = new Int16Array(u8.buffer), Q = new Float32Array(q.length); for (let i = 0; i < q.length; i++) Q[i] = q[i] / 32767;
     P.buf.push({ t: performance.now(), P: m.P, Q, seq: m.s }); if (P.buf.length > NET.keep) P.buf.shift(); P.lastT = performance.now(); } }
 function netPeer(id) { let P = NET.peers[id]; if (P) return P; if (!rig.model) return null;
@@ -29167,17 +29169,20 @@ function netPeer(id) { let P = NET.peers[id]; if (P) return P; if (!rig.model) r
   const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64; const c = cv.getContext('2d'); c.font = 'bold 40px sans-serif'; c.textAlign = 'center'; c.fillStyle = '#5affe0'; c.strokeStyle = 'rgba(0,0,0,.7)'; c.lineWidth = 6; const nm = 'P' + (Object.keys(NET.peers).length + 2); c.strokeText(nm, 128, 46); c.fillText(nm, 128, 46);
   const tag = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), depthTest: false, transparent: true })); tag.scale.set(1.2, .3, 1); tag.position.y = RIG.height + .55; tag.renderOrder = 70; root.add(tag);
   const weap = []; m.traverse(o => { if (/^weapon:/.test(o.name)) weap.push(o); });     // m1846 (stage 2): every worn weapon came along in the clone; the packet's `k` picks which one shows
-  P = NET.peers[id] = { id, root, model: m, bones: netBones(m), buf: [], name: nm, lastT: performance.now(), weap, k: '' }; return P; }
+  P = NET.peers[id] = { id, root, model: m, bones: netBones(m), buf: [], name: nm, lastT: performance.now(), weap, k: '', tag, cv }; return P; }
+function netTag(P) { const c = P.cv.getContext('2d'); c.clearRect(0, 0, 256, 64); c.font = 'bold 34px sans-serif'; c.textAlign = 'center'; c.lineWidth = 6; c.strokeStyle = 'rgba(0,0,0,.7)'; c.fillStyle = '#5affe0'; c.strokeText(P.name, 128, 30); c.fillText(P.name, 128, 30);
+  if (netVersus() && P.hp != null) { c.fillStyle = 'rgba(0,0,0,.6)'; c.fillRect(48, 40, 160, 16); c.fillStyle = P.hp > 35 ? '#5aff7a' : '#ff5a3a'; c.fillRect(50, 42, 156 * Math.max(0, P.hp) / HEALTH.max, 12); }
+  P.tag.material.map.needsUpdate = true; }
 function netDrop(id) { const P = NET.peers[id]; if (!P) return; scene.remove(P.root); delete NET.peers[id]; }
 const _nq1 = new THREE.Quaternion(), _nq2 = new THREE.Quaternion();
 function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.autoRoom); NET.autoRoom = ''; }
-  netChip(); if (!NET.on || !rig.model) return; const now = performance.now();
+  netChip(); duelKoStep(dt); if (!NET.on || !rig.model) return; const now = performance.now();
   if (now - NET.rxT > 1000) { NET.rx = NET.rxN; NET.rxN = 0; NET.rxT = now; }
   // SEND: the drawn root (a scene child, so local = world) + every bone, int16
   if (NET.myId && now - NET.sendT >= 1000 / NET.hz) { NET.sendT = now; if (!NET.bones) NET.bones = netBones(rig.model); const B = NET.bones, q = new Int16Array(B.length * 4);
     for (let i = 0; i < B.length; i++) { const b = B[i].quaternion; q[i * 4] = Math.round(b.x * 32767); q[i * 4 + 1] = Math.round(b.y * 32767); q[i * 4 + 2] = Math.round(b.z * 32767); q[i * 4 + 3] = Math.round(b.w * 32767); }
     const u8 = new Uint8Array(q.buffer); let bin = ''; for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
-    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), k: (slotNow() || {}).key || '', P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
+    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), k: (slotNow() || {}).key || '', hp: Math.round(player.hp), sw: player.melee || player.slam || player.chargeGo ? 1 : 0, P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
   try { netHits(); } catch (e) { NET.err = 'hits ' + e.message; }
   // DRAW: each puppet at `delay` s ago, between the two snapshots that bracket it
   const rt = now - NET.delay * 1000;
@@ -29185,6 +29190,7 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
     let a = bf[0], b = bf[bf.length - 1], u = 1; for (let i = 0; i < bf.length - 1; i++) if (bf[i].t <= rt && bf[i + 1].t >= rt) { a = bf[i]; b = bf[i + 1]; u = (rt - a.t) / Math.max(1, b.t - a.t); break; }
     if (rt < bf[0].t) { a = b = bf[0]; u = 0; }
     for (const w of P.weap) w.visible = w.name === 'weapon:' + P.k;
+    if (P.sw && P.root.visible) { const W = P.weap.find(w => w.visible), q = new THREE.Vector3(); (W || P.root).getWorldPosition(q); if (!W) q.y += 1; spkBurst(q.x, q.y, q.z, 2, { col: [.75, .95, 1], spread: .6, size: .07, life: .22 }); }     // stage 2: their swing leaves a streak
     const A = a.P, Bp = b.P; P.root.position.set(A[0] + (Bp[0] - A[0]) * u, A[1] + (Bp[1] - A[1]) * u, A[2] + (Bp[2] - A[2]) * u);
     _nq1.set(A[3], A[4], A[5], A[6]); _nq2.set(Bp[3], Bp[4], Bp[5], Bp[6]); P.root.quaternion.slerpQuaternions(_nq1, _nq2, u);
     const n = Math.min(P.bones.length, a.Q.length / 4, b.Q.length / 4);
@@ -29193,9 +29199,9 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
 // drawn here) and, on contact, sends them a HIT; THEIR phone applies it to their own body through `playerHurt` (0 damage) -- so their guard,
 // parry and knock-down all answer it, and the stream shows it back to me. Active: a swing (`p.melee` past `NETHIT.wind` s), a slam or a charge
 // dash; contact: a hand, a foot or the blade's tip inside their body (`r` round the puppet's root, feet to `tall`); one hit per `cool` s.
-const NETHIT = { r: .6, tall: 1.8, wind: .1, cool: .45, swing: { push: 5.5, up: 2.5, stun: .35, knock: .3 }, heavy: { push: 9, up: 4.5, stun: .6, knock: 1 } };
+const NETHIT = { r: .6, tall: 1.8, wind: .1, cool: .45, swing: { push: 5.5, up: 2.5, stun: .35, knock: .3, dmg: 12 }, heavy: { push: 9, up: 4.5, stun: .6, knock: 1, dmg: 25 } };
 const _nhP = new THREE.Vector3();
-function netHits() { const p = player; if (!NET.myId) return; const heavy = !!(p.slam || p.chargeGo), act = heavy || (p.melee && (p.meleeT || 0) > NETHIT.wind); if (!act) return;
+function netHits() { const p = player; if (!NET.myId) return; const heavy = !!(p.slam || p.chargeGo), act = heavy || (p.melee && (p.meleeT || 0) > NETHIT.wind); if (act && !NET.wasAct) netSend({ type: 'event', e: 'sw' }); NET.wasAct = act; if (!act || p.koT > 0) return;
   const pts = []; if (rig.bones) for (const n of ['RightHand', 'LeftHand', 'RightFoot', 'LeftFoot']) { const b = rig.bones['mixamorig_' + n]; if (b) pts.push(b.getWorldPosition(new THREE.Vector3())); }
   const w = WEAP.worn[(slotNow() || {}).key]; if (w && w.muzzle && w.host) pts.push(muzzleWorld().clone());
   const now = performance.now();
@@ -29203,9 +29209,17 @@ function netHits() { const p = player; if (!NET.myId) return; const heavy = !!(p
     for (const q of pts) { if (q.y < R.y - .2 || q.y > R.y + NETHIT.tall || Math.hypot(q.x - R.x, q.z - R.z) > NETHIT.r) continue;
       P.hitT = now; const h = p.faceH;     /* the blow goes the way he swings (measured: the lunge carried him PAST them, so 'from me to them' pushed them back at him) */ netSend({ type: 'event', e: 'hit', to: id, h, heavy: heavy ? 1 : 0 });
       meleeHit(null, q.x, q.y, q.z, heavy ? 1.2 : .8); NET.hitsOut = (NET.hitsOut || 0) + 1; break; } } }
-function netHurt(m) { const K = m.heavy ? NETHIT.heavy : NETHIT.swing; NET.hitsIn = (NET.hitsIn || 0) + 1; playerHurt(0, m.h, K.push, K.up, K.stun, K.knock); }
+function netHurt(m) { const K = m.heavy ? NETHIT.heavy : NETHIT.swing, p = player; NET.hitsIn = (NET.hitsIn || 0) + 1; if (p.koT > 0) return;
+  const vs = netVersus(), dmg = vs ? K.dmg : 0; playerHurt(dmg, m.h, K.push, K.up, K.stun, vs && p.hp - dmg <= 0 ? 1 : K.knock);
+  if (vs && p.hp <= 0) { p.koT = DUELPIT.koT; p.hurtWait = 99; NET.deaths = (NET.deaths || 0) + 1; netSend({ type: 'event', e: 'ko', to: m.id }); duelBanner('KNOCKED OUT', '#ff5a3a'); } }
+// m15xx (stage 4): VERSUS in the Duel Pit -- hits do damage (`NETHIT.*.dmg`), no regen there, at 0 he is KNOCKED OUT (the knock-down, `koT` s),
+// then back on his feet at his own spawn, full health; the KO goes to the one who landed it (their score). Elsewhere online it stays no-damage.
+function netVersus() { return !!(DUELZ.on && NET.on); }
+function duelKoStep(dt) { const p = player; if (!(p.koT > 0)) return; p.koT -= dt; if (p.koT <= 0) { p.koT = 0; const S = DUELPIT.spawns[NET.slot % DUELPIT.spawns.length]; p.pos.set(S[0], S[1], S[2]); p.vel.set(0, 0, 0); p.hp = HEALTH.max; p.hurtWait = 0; p.knock = null; p.faceH = p.heading = Math.atan2(-S[0], -S[2]); duelBanner('', ''); } }
+function duelBanner(t, c) { if (!NET.ban) { const d = NET.ban = document.createElement('div'); d.style.cssText = 'position:fixed;left:50%;top:28%;transform:translateX(-50%);font:900 34px/1 sans-serif;letter-spacing:.06em;text-shadow:0 3px 0 #000,0 0 18px #000;z-index:31;pointer-events:none;white-space:nowrap'; document.body.appendChild(d); }
+  NET.ban.textContent = t; NET.ban.style.color = c; NET.ban.style.display = t ? 'block' : 'none'; clearTimeout(NET.banT); if (t) NET.banT = setTimeout(() => { if (NET.ban) NET.ban.style.display = 'none'; }, 1800); }
 function netChip() { if (!NET.chip) { if (!NET.on) return; const d = NET.chip = document.createElement('div'); d.style.cssText = 'position:fixed;left:50%;top:6px;transform:translateX(-50%);font:600 12px/1.3 monospace;color:#5affe0;background:rgba(10,14,20,.7);padding:4px 9px;border-radius:6px;z-index:30;pointer-events:none'; document.body.appendChild(d); }
-  const n = Object.keys(NET.peers).length, t = NET.on ? 'ONLINE ' + NET.room + '  ' + NET.st + '  ' + (n + 1) + ' here  rx ' + NET.rx + '/s' + (NET.hitsOut || NET.hitsIn ? '  hits ' + (NET.hitsOut || 0) + '>' + (NET.hitsIn || 0) + '<' : '') + (NET.err ? '  ERR ' + NET.err : '') : '';
+  const n = Object.keys(NET.peers).length, t = NET.on ? 'ONLINE ' + NET.room + '  ' + NET.st + '  ' + (n + 1) + ' here  rx ' + NET.rx + '/s' + (NET.hitsOut || NET.hitsIn ? '  hits ' + (NET.hitsOut || 0) + '>' + (NET.hitsIn || 0) + '<' : '') + (netVersus() ? '  KO ' + (NET.kos || 0) + ' : ' + (NET.deaths || 0) + '  HP ' + Math.round(player.hp) : '') + (NET.err ? '  ERR ' + NET.err : '') : '';
   NET.chip.style.display = t ? 'block' : 'none'; if (NET.chip.textContent !== t) NET.chip.textContent = t; }
 // m1850 (pass 3): THE TIGHTROPE is a BEAM (the balance-beam system: lean, counter-push, fall) with its own height, length, a faster walk
 // (`speed`), more wobble (`noiseK`), a SAG that follows him (`beamY`) and a slow SWAY that pushes him about mid-span. Drawn as a rope that
@@ -29224,6 +29238,30 @@ function gymRopeStep(dt) { for (const B of GROPE.list) { const p = player, on = 
     P[o1] = x; P[o1 + 1] = y + w; P[o1 + 2] = z; P[o1 + 3] = x; P[o1 + 4] = y - w; P[o1 + 5] = z;     // a vertical strip
     P[o2] = x + B.nx * w; P[o2 + 1] = y; P[o2 + 2] = z + B.nz * w; P[o2 + 3] = x - B.nx * w; P[o2 + 4] = y; P[o2 + 5] = z - B.nz * w; }     // and a flat one: reads from any side
   B.mesh.geometry.attributes.position.needsUpdate = true; } }
+// m15xx: THE DUEL PIT (NETPLAY.md stage 4) -- `?w=forge&zone=duel`, KORAJIN > The Duel Pit. A round stone pit for two online: a 26 m floor sunk
+// in a ring of terraces, a raised central dais, four pillars to fight round and climb, a high walkway between two of them (VERTICALITY), the
+// spawns opposite. Versus here: damage, KO, respawn, a score in the chip.
+// SC_DUELPIT:START
+const DUELPIT = { R: 13, koT: 3.5, spawns: [[0, 0, 9.5], [0, 0, -9.5], [9.5, 0, 0], [-9.5, 0, 0]],
+  pieces: [ { id: 'dais', box: [-3, 3, 0, .9, -3, 3], c: 0x9a8a72 }, { id: 'dais_top', box: [-1.6, 1.6, .9, 1.6, -1.6, 1.6], c: 0xb0a084 },
+    { id: 'pil_ne', box: [6.5, 8, 0, 5, 6.5, 8], c: 0x6a5e50 }, { id: 'pil_nw', box: [-8, -6.5, 0, 5, 6.5, 8], c: 0x6a5e50 },
+    { id: 'pil_se', box: [6.5, 8, 0, 5, -8, -6.5], c: 0x6a5e50 }, { id: 'pil_sw', box: [-8, -6.5, 0, 5, -8, -6.5], c: 0x6a5e50 },
+    { id: 'walk_e', box: [6.6, 7.9, 5, 5.4, -6.5, 6.5], c: 0x7a5232 }, { id: 'step_ne', box: [9, 10.5, 0, 2.2, 6, 8.5], c: 0x857660 } ] };
+// SC_DUELPIT:END
+const DUELZ = { want: 0, on: null };
+try { if (/[?&]zone=duel\b/.test(location.search)) DUELZ.want = 1; } catch (e) {}
+function duelPitBuild(T) { const g = new THREE.Group(), boxes = [], mats = {}, mat = c => mats[c] || (mats[c] = new THREE.MeshStandardMaterial({ color: c, roughness: .85 }));
+  const put = (id, x0, x1, y0, y1, z0, z1, c) => { const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(c)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; m.name = id; g.add(m); boxes.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id }); };
+  for (const P of T.pieces) put(P.id, ...P.box, P.c);
+  const fl = new THREE.Mesh(new THREE.CircleGeometry(T.R, 48).rotateX(-Math.PI / 2), mat(0xc8b898)); fl.position.y = .02; fl.receiveShadow = true; g.add(fl);
+  for (let i = 0; i < 24; i++) { const a = i / 24 * Math.PI * 2, x = Math.sin(a) * (T.R + 1.2), z = Math.cos(a) * (T.R + 1.2), w = 2 * Math.PI * (T.R + 1.2) / 24 + .05;     // the ring wall: a terrace you can stand on, round the pit
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, 1.6, 2.4), mat(i % 2 ? 0x8a7a64 : 0x7e6e58)); m.position.set(x, .8, z); m.rotation.y = a; m.castShadow = m.receiveShadow = true; g.add(m);
+    const hb = 1.25; boxes.push({ minx: x - hb, maxx: x + hb, miny: 0, maxy: 1.6, minz: z - hb, maxz: z + hb, id: 'ring' + i }); }
+  for (const [x, z] of [[0, 9.5], [0, -9.5]]) { const m = new THREE.Mesh(new THREE.RingGeometry(.7, .9, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: x || z > 0 ? 0x5affe0 : 0xff6a4a })); m.position.set(x, .04, z); g.add(m); }
+  return { g, boxes }; }
+function duelSpawn() { const S = DUELPIT.spawns[(NET.slot || 0) % DUELPIT.spawns.length], p = player; p.pos.set(S[0], S[1], S[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = Math.atan2(-S[0], -S[2]); cam.az = p.faceH; p.hp = HEALTH.max; }
+function duelBuild() { const Z = DUELZ; Z.want = 2; if (Z.on) return; const R = duelPitBuild(DUELPIT); scene.add(R.g); for (const b of R.boxes) BOXES.push(b); boxGrid(); Z.on = { g: R.g, boxes: R.boxes };
+  duelSpawn(); if (!NET.on && !NET.autoRoom) setTimeout(() => { const c = prompt('THE DUEL PIT -- a room code to share with the other phone (same code on both):', 'PIT'); if (c) netJoin(c); }, 600); }
 function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R = gymBuild(GYM); scene.add(R.g); for (const b of R.boxes) BOXES.push(b);
   for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; if (L.front) K.fg = { x: L.front[0], z: L.front[1] }; }     // pass 2; m1850: the climbing side stated (the mark rule had put it inside the tower: "there's a ladder but you can't climb it")
   if (R.rope) gymRopeMake(R.rope);
@@ -34193,7 +34231,7 @@ function boardPose(dt) {
 
 function stepPlayer(dt) {
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
-  if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (DRAGZ.on) dragStep(dt); }
+  if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (DRAGZ.on) dragStep(dt); }
   if (PLANT.list.length) plantStep(dt);     // m1424
   if (ROCK.loose.length || ROCK.broken.length) rockStep(dt);     // m1745
   if (RESTORE.list.length) restoreStep(dt);     // m1505     // m1105; m1119; m1120: each building's own life
@@ -34669,7 +34707,7 @@ function stepPlayer(dt) {
   // AND IT COMES BACK ON ITS OWN, after a pause long enough that a fight is not free. There is
   // no death yet, so what running out of health costs you is nothing -- stated, not hidden.
   if (p.hurtWait > 0) p.hurtWait = Math.max(0, p.hurtWait - dt);
-  else if (p.hp < HEALTH.max) p.hp = Math.min(HEALTH.max, p.hp + HEALTH.regen * dt);
+  else if (p.hp < HEALTH.max && !netVersus()) p.hp = Math.min(HEALTH.max, p.hp + HEALTH.regen * dt);     // m15xx: no regen in a versus duel
 
   if (s.mag > 0) {
     p.goT += dt;
@@ -73618,6 +73656,7 @@ function startGate() {
       btn(el, 'Level 1 -- The Grid', 'The first level, built in layers: the run first, then the puzzle, the enemies, the theme, the boss. Toggle each layer at the top.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&lvl=1'); });
       btn(el, 'Level 1 v2 -- The First Beacon', 'The blueprint level: the canyon to the enemy torch tower, generated from the measured moves. The run only (layer 1), a greybox.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&lvl=beacon'); });
       btn(el, 'The Wall Park', 'Every wall a run meets: a long wall across a drop, tall walls to a ledge, a chimney, run-jump-run, corners. (The wall-run sandbox.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=wall'); });
+      btn(el, 'The Duel Pit (online)', 'Two phones, one room code, a stone pit: fight -- damage, knock-outs, a score. (Same code on both phones.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=duel'); });
       btn(el, 'The Proving Ground', 'How far and how high he can really go: gap lanes from 6 to 39 m, pillars from 3 to 24 m, and a meter that reports every jump. (Measure, then design.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=prove'); });
       btn(el, 'The Rope Course', 'A rope bridge between two towers that sags and sways under you. (The rope sandbox: the tightrope, the swing rope and the ladders come next.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=rope'); });
       btn(el, 'The Snowfield', 'Deep snow under a falling sky: trudge, leave tracks, plough, dive -- the snow bounces off you. (An element sandbox.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=snow'); });
