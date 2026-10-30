@@ -29081,7 +29081,7 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
   // a start deck and an end deck. Catch a rope in the air, PUMP with the left stick, climb with right-pad swipes, jump to let go.
   gantry: { id: 'g_swing', x0: -46, x1: -14, z: -84, h: 14, c: 0xb3322a },
   swings: [ { id: 'sw1', x: -37, len: 9 }, { id: 'sw2', x: -30, len: 9 }, { id: 'sw3', x: -23, len: 9 } ],
-  // m15xx (pass 5): MONKEY BARS -- on from the rope swing's end deck, rungs every `gap` m across a drop at `h`, to a deck at the far end
+  // m1857 (pass 5): MONKEY BARS -- on from the rope swing's end deck, rungs every `gap` m across a drop at `h`, to a deck at the far end
   monkey: { id: 'mb1', x0: -10.5, x1: 4.5, z: -84, h: 7.4, gap: .95, w: 1.1, deck: [5.5, 11.5, 0, 5, -87, -81] },
   swingDecks: [ { id: 'sw_start', box: [-48, -42, 0, 5, -87, -81], c: 0x8a6a48, label: ['ROPE SWING', -45, -78, '#b3322a'] }, { id: 'sw_end', box: [-18, -12, 0, 5, -87, -81], c: 0x8a6a48 } ] };
 // SC_GYM:END
@@ -29319,7 +29319,7 @@ function vineSwipe(dx, dy) { const p = player; if (!p.vine) return 0; if (Math.a
 // his body along the rope: tilted so his head points up it, toward its top
 function vinePose() { const p = player, S = p.vine; if (!S || !VINE.tilt) return; const d = _vnA.copy(S.V.top).sub(S.H).normalize(), q = new THREE.Quaternion().setFromUnitVectors(_vnU, d);
   const pv = S.H; const r = rig.root.position.clone().sub(pv).applyQuaternion(q); rig.root.position.copy(pv).add(r); rig.root.quaternion.premultiply(q); }
-// m15xx (NINJA GYM pass 5): MONKEY BARS (his: "we should do monkey bars too"). In the air with his hands at a rung's height (`grabY`) and under
+// m1857 (NINJA GYM pass 5): MONKEY BARS (his: "we should do monkey bars too"). In the air with his hands at a rung's height (`grabY`) and under
 // one, he takes it and hangs; the LEFT STICK along the bars swings him hand over hand to the next rung (`stepT` s, a dip of `dip` m, the
 // leading hand reaching over, the other holding -- `mbarPose`'s arm IK puts each hand on its rung); a TAP drops him, carrying `drop` m/s the
 // way he faces (so off the last rung onto the deck). No clip for it in the library: the bar's hang clip plus the IK.
@@ -34387,7 +34387,7 @@ function stepPlayer(dt) {
   if (p.zip) { stepZip(dt); if (p.zip) return; }
   if (p.vineCool > 0) p.vineCool = Math.max(0, p.vineCool - dt);
   if (p.mbarCool > 0) p.mbarCool = Math.max(0, p.mbarCool - dt);
-  if (p.mbar) { stepMbar(dt); return; }     // m15xx: on the monkey bars
+  if (p.mbar) { stepMbar(dt); return; }     // m1857: on the monkey bars
   if (MBAR.list.length && !p.grounded && !p.ledge && mbarCatch()) { stepMbar(dt); return; }
   if (p.vine) { stepVine(dt); return; }     // m1856: on the swing rope
   if (VINE.list.length && !p.grounded && !p.ledge && vineCatch()) { stepVine(dt); return; }
@@ -35997,7 +35997,7 @@ function rigAnim(dt) {
   }
   if (p.bar) { t[hbarClip()] = 1; setWeights(t, dt); return; }
   if (p.zip) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1168: hanging from the zipline
-  if (p.mbar) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m15xx: on the monkey bars
+  if (p.mbar) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1857: on the monkey bars
   if (p.vine) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1856: on the swing rope
   if (p.rope) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1129: hanging on the rope
   if (p.hook) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1063: reaching for the bar
@@ -68700,7 +68700,7 @@ function frameBody() {
     runToePose();                      // m1853: no toe flick on the run's back stride
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
     vinePose();                        // m1856: along the swing rope
-    mbarPose();                        // m15xx: hands on the monkey bars' rungs
+    mbarPose();                        // m1857: hands on the monkey bars' rungs
     // **AFTER THE ROOT IS PLACED, NOT ONLY AFTER THE MIXER.** The pin is a bone's WORLD
     // position and the speed cap is measured against how far it moved, so solving before the
     // root is written measures last frame's travel -- which at a knock-down's 12 m/s is most
