@@ -29081,6 +29081,8 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
   // a start deck and an end deck. Catch a rope in the air, PUMP with the left stick, climb with right-pad swipes, jump to let go.
   gantry: { id: 'g_swing', x0: -46, x1: -14, z: -84, h: 14, c: 0xb3322a },
   swings: [ { id: 'sw1', x: -37, len: 9 }, { id: 'sw2', x: -30, len: 9 }, { id: 'sw3', x: -23, len: 9 } ],
+  // m15xx (pass 5): MONKEY BARS -- on from the rope swing's end deck, rungs every `gap` m across a drop at `h`, to a deck at the far end
+  monkey: { id: 'mb1', x0: -10.5, x1: 4.5, z: -84, h: 7.4, gap: .95, w: 1.1, deck: [5.5, 11.5, 0, 5, -87, -81] },
   swingDecks: [ { id: 'sw_start', box: [-48, -42, 0, 5, -87, -81], c: 0x8a6a48, label: ['ROPE SWING', -45, -78, '#b3322a'] }, { id: 'sw_end', box: [-18, -12, 0, 5, -87, -81], c: 0x8a6a48 } ] };
 // SC_GYM:END
 let _gymArrowTex = null;
@@ -29146,7 +29148,15 @@ function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
     for (const W of T.swings || []) swings.push({ id: W.id, top: new THREE.Vector3(W.x, Gn.h, Gn.z), len: W.len }); }
   for (const P of T.swingDecks || []) { const [x0, x1, y0, y1, z0, z1] = P.box, m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(P.c)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; g.add(m);
     boxes.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id: P.id }); if (P.label) wparkLabel(g, P.label[0], P.label[1], P.label[2], 0, P.label[3]); }
-  return { g, boxes, ladders, rope, swings }; }
+  let monkey = null; if (T.monkey) { const Mk = T.monkey, wm = mat(0x5a3a24), rm = mat(0x9a7a50), G2 = [], add2 = (x0, x1, y0, y1, z0, z1) => { const q = new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0); q.translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); G2.push(q); };
+    for (const sz of [-1, 1]) { add2(Mk.x0 - .3, Mk.x1 + .3, Mk.h - .05, Mk.h + .12, Mk.z + sz * Mk.w / 2 - .06, Mk.z + sz * Mk.w / 2 + .06);     // the side rails
+      for (const x of [Mk.x0 - .3, (Mk.x0 + Mk.x1) / 2, Mk.x1 + .3]) add2(x - .12, x + .12, 0, Mk.h + .12, Mk.z + sz * (Mk.w / 2 + .1) - .12, Mk.z + sz * (Mk.w / 2 + .1) + .12); }     // posts
+    const m1 = new THREE.Mesh(mergeGeometries(G2), wm); m1.castShadow = true; m1.name = Mk.id + '_frame'; g.add(m1);
+    const rungs = [], G3 = []; for (let x = Mk.x0; x <= Mk.x1 + .01; x += Mk.gap) { rungs.push(x); const q = new THREE.CylinderGeometry(.04, .04, Mk.w, 8); q.rotateX(Math.PI / 2); q.translate(x, Mk.h, Mk.z); G3.push(q); }
+    const m2 = new THREE.Mesh(mergeGeometries(G3), rm); m2.castShadow = true; m2.name = Mk.id + '_rungs'; g.add(m2);
+    if (Mk.deck) { const [x0, x1, y0, y1, z0, z1] = Mk.deck, m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(0x8a6a48)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; g.add(m); boxes.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id: Mk.id + '_deck' }); }
+    wparkLabel(g, 'MONKEY BARS', (Mk.x0 + Mk.x1) / 2, Mk.z + 4, 0, '#5a3a24'); monkey = { id: Mk.id, z: Mk.z, h: Mk.h, w: Mk.w, rungs }; }
+  return { g, boxes, ladders, rope, swings, monkey }; }
 // m1843: ONLINE, STAGE 1 (NETPLAY.md). His Robits relay (colinwillow/robits-server, a ~250-line room relay on Render) carries it -- the server
 // knows nothing about games, so KORAJIN shares it under its own room codes (`KJ-...`). What is sent is NOT inputs or clip names: it is his
 // FINISHED POSE -- the drawn root (position + rotation) and every bone's rotation, quantised to int16 and base64'd, `hz` times a second.
@@ -29309,10 +29319,34 @@ function vineSwipe(dx, dy) { const p = player; if (!p.vine) return 0; if (Math.a
 // his body along the rope: tilted so his head points up it, toward its top
 function vinePose() { const p = player, S = p.vine; if (!S || !VINE.tilt) return; const d = _vnA.copy(S.V.top).sub(S.H).normalize(), q = new THREE.Quaternion().setFromUnitVectors(_vnU, d);
   const pv = S.H; const r = rig.root.position.clone().sub(pv).applyQuaternion(q); rig.root.position.copy(pv).add(r); rig.root.quaternion.premultiply(q); }
+// m15xx (NINJA GYM pass 5): MONKEY BARS (his: "we should do monkey bars too"). In the air with his hands at a rung's height (`grabY`) and under
+// one, he takes it and hangs; the LEFT STICK along the bars swings him hand over hand to the next rung (`stepT` s, a dip of `dip` m, the
+// leading hand reaching over, the other holding -- `mbarPose`'s arm IK puts each hand on its rung); a TAP drops him, carrying `drop` m/s the
+// way he faces (so off the last rung onto the deck). No clip for it in the library: the bar's hang clip plus the IK.
+const MBAR = { list: [], grabY: .45, grabX: .45, stepT: .38, dip: .18, handY: 1.62, drop: 4, cool: .4, handW: .2 };
+function mbarCatch() { const p = player; if (p.mbarCool > 0 || p.grounded || p.vel.y > 2) return 0;
+  for (const M of MBAR.list) { const hy = p.pos.y + MBAR.handY; if (Math.abs(hy - M.h) > MBAR.grabY || Math.abs(p.pos.z - M.z) > M.w / 2) continue;
+    let bi = -1, bd = 1e9; M.rungs.forEach((x, i) => { const d = Math.abs(p.pos.x - x); if (d < bd) { bd = d; bi = i; } }); if (bd > MBAR.grabX) continue;
+    p.mbar = { M, i: bi, j: bi, t: 0, lead: 1, dir: Math.sign(p.vel.x) || 1 }; p.vel.set(0, 0, 0); p.melee = 0; p.roll = 0; p.aflip = null; p.jumps = 1; snd('foot', { g: .14, r: .9 }); return 1; } return 0; }
+function stepMbar(dt) { const p = player, S = p.mbar, M = S.M;
+  if (p.jump) { p.jump = 0; p.mbar = null; p.mbarCool = MBAR.cool; p.vel.set(Math.sin(p.faceH) * MBAR.drop, 1, Math.cos(p.faceH) * MBAR.drop); p.grounded = false; p.airT = 0; return; }
+  if (S.j === S.i) { const sw = stickWorld(), ax = sw.mag > .35 ? sw.x : 0;     // the bars run along x
+    if (Math.abs(ax) > .4) { const j = S.i + Math.sign(ax); if (j >= 0 && j < M.rungs.length) { S.j = j; S.t = 0; S.dir = Math.sign(ax); S.lead = -S.lead; snd('foot', { g: .08, r: 1.2 }); } else S.dir = Math.sign(ax); } }
+  let x = M.rungs[S.i], dip = 0; if (S.j !== S.i) { S.t += dt / MBAR.stepT; const u = Math.min(1, S.t), e = u * u * (3 - 2 * u); x = M.rungs[S.i] + (M.rungs[S.j] - M.rungs[S.i]) * e; dip = Math.sin(u * Math.PI) * MBAR.dip; if (u >= 1) S.i = S.j; }
+  p.pos.set(x, M.h - MBAR.handY - dip, M.z); p.vel.set(0, 0, 0); p.grounded = false; p.airT = 0; p.faceH = p.heading = Math.atan2(S.dir, 0); }
+const _mbT = new THREE.Vector3();
+function mbarPose() { const p = player, S = p.mbar; if (!S || !rig.bones) return; const M = S.M, B = rig.bones; rig.root.updateMatrixWorld(true);
+  const rx = -Math.cos(p.faceH), rz = Math.sin(p.faceH);     // his right is (-fz, fx); facing along x, that is +-z
+  const moving = S.j !== S.i, u = moving ? Math.min(1, S.t) : 1;
+  for (const [nm, sd] of [['Left', -1], ['Right', 1]]) { const UA = B['mixamorig_' + nm + 'Arm'], FA = B['mixamorig_' + nm + 'ForeArm'], HA = B['mixamorig_' + nm + 'Hand']; if (!UA || !FA || !HA) continue;
+    const isLead = (sd === S.lead), from = M.rungs[S.i], to = M.rungs[S.j];
+    let hx = from, hy = M.h; if (moving && isLead) { hx = from + (to - from) * u; hy = M.h + Math.sin(u * Math.PI) * .25; } else if (moving && !isLead) hx = from;
+    _mbT.set(hx, hy - .04, M.z + rz * sd * MBAR.handW); wrLimb(UA, FA, HA, _mbT.clone(), new THREE.Vector3(rx * sd * .5, -.6, 0)); } }
 function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R = gymBuild(GYM); scene.add(R.g); for (const b of R.boxes) BOXES.push(b);
   for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; if (L.front) K.fg = { x: L.front[0], z: L.front[1] }; }     // pass 2; m1850: the climbing side stated (the mark rule had put it inside the tower: "there's a ladder but you can't climb it")
   if (R.rope) gymRopeMake(R.rope);
   for (const W of R.swings || []) vineMake(W);
+  if (R.monkey) MBAR.list.push(R.monkey);
   boxGrid(); Z.on = { g: R.g, boxes: R.boxes }; const S = GYM.spawn; player.pos.set(S.at[0], S.at[1], S.at[2]); player.vel.set(0, 0, 0); player.faceH = player.heading = S.yaw; cam.az = S.yaw; }
 function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = shipMake(0), g = S.g; scene.add(g);
   bldTris(S.O, S.tris); for (const b of S.O.boxes) BOXES.push(b); boxGrid();
@@ -34352,6 +34386,9 @@ function stepPlayer(dt) {
   if (!p.zip && !p.grounded && ZIPS.length && !p.rope && !p.bar && !p.knock && p.vel.y < 6) zipCatch();     // m1168
   if (p.zip) { stepZip(dt); if (p.zip) return; }
   if (p.vineCool > 0) p.vineCool = Math.max(0, p.vineCool - dt);
+  if (p.mbarCool > 0) p.mbarCool = Math.max(0, p.mbarCool - dt);
+  if (p.mbar) { stepMbar(dt); return; }     // m15xx: on the monkey bars
+  if (MBAR.list.length && !p.grounded && !p.ledge && mbarCatch()) { stepMbar(dt); return; }
   if (p.vine) { stepVine(dt); return; }     // m1856: on the swing rope
   if (VINE.list.length && !p.grounded && !p.ledge && vineCatch()) { stepVine(dt); return; }
   if (p.rope) { stepRope(dt); if (p.rope) return; }     // m1129: the grappling hook owns the body while he swings
@@ -35960,6 +35997,7 @@ function rigAnim(dt) {
   }
   if (p.bar) { t[hbarClip()] = 1; setWeights(t, dt); return; }
   if (p.zip) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1168: hanging from the zipline
+  if (p.mbar) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m15xx: on the monkey bars
   if (p.vine) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1856: on the swing rope
   if (p.rope) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1129: hanging on the rope
   if (p.hook) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1063: reaching for the bar
@@ -68662,6 +68700,7 @@ function frameBody() {
     runToePose();                      // m1853: no toe flick on the run's back stride
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
     vinePose();                        // m1856: along the swing rope
+    mbarPose();                        // m15xx: hands on the monkey bars' rungs
     // **AFTER THE ROOT IS PLACED, NOT ONLY AFTER THE MIXER.** The pin is a bone's WORLD
     // position and the speed cap is measured against how far it moved, so solving before the
     // root is written measures last frame's travel -- which at a knock-down's 12 m/s is most

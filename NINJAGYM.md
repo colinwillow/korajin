@@ -19,7 +19,8 @@ walls you're supposed to run on. Monkey bars too. Like 10 passes to make an incr
   more wobble, a sag that follows him (1.1 m mid-span), a sideways sway; drawn as a rope taking the same V. The towers are YAGURA now (his).
 - [x] **4. The rope swing (m1856):** a red gantry 14 m up with three 9 m ropes over a drop between two decks; catch a rope in the air, pump
   with the left stick (with the swing), climb with right-pad swipes up / down, tap to let go with the rope's speed.
-- [ ] 5. **Monkey bars:** hand over hand along a row of bars (the high-bar hang), swing to skip a bar, drop.
+- [x] **5. Monkey bars (m15xx):** 16 rungs across a drop from the rope swing's end deck to another deck; grab one in the air, the left stick
+  goes hand over hand rung to rung (arm IK on the rungs), a tap drops you. (Not yet: a swing to skip a rung.)
 - [ ] 6. **Linking:** routes that flow piece to piece (wall run -> rope swing -> monkey bars -> tower), with height tiers (VERTICALITY rule).
 - [ ] 7. **Route markers:** arrows / rings for each route, a start and a finish, a timer.
 - [ ] 8. **Look:** a ninja-training-ground skin (wood, rope, paper, lanterns) instead of flat colour boxes.

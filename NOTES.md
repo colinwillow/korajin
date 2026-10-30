@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## NINJA GYM pass 5: monkey bars (m15xx, NINJAGYM.md)
+*"We should do monkey bars, too."*
+- **Where:** `GYM.monkey` -- 16 rungs .95 m apart at 7.4 m, x -10.5..4.5, z -84, on from the rope swing's end deck, across a drop to a deck at
+  x 5.5..11.5. Timber rails and posts merged, the rungs merged (two draws).
+- **`MBAR`:** in the air (not rising fast) with his hands within `grabY` of the rungs' height and `grabX` of a rung, he takes it and hangs
+  (the bar's hang clip). The LEFT STICK along the bars moves him to the next rung over `stepT` .38 s with a `dip`, the leading hand
+  alternating; `mbarPose` puts each hand on its rung with the arm IK (the leading one arcing over to the next). A TAP drops him with `drop`
+  4 m/s the way he faces. No Mixamo monkey-bar clip exists in his library, so it is the hang clip plus IK.
+- Headless: caught at rung 0, stick along -> rung 3 in 70 frames, dropped on a tap; renders: hanging under the rungs mid-traverse.
+- Not yet: a swinging skip of a rung. Next in the gym: pass 6, linking the pieces into routes with height tiers. Shipped unverified.
+
 ## NINJA GYM pass 4: the rope swing (m1856, NINJAGYM.md)
 *"A rope swing -- you can climb up and down a rope, and actually swing and pump and move yourself around."*
 - **Where:** `GYM.gantry` / `swings` / `swingDecks` -- a red lintel-and-posts gantry 14 m up at z -84, x -46..-14, three ropes 9 m long at
