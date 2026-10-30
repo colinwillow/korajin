@@ -29212,7 +29212,7 @@ function netHits() { const p = player; if (!NET.myId) return; const heavy = !!(p
 function netHurt(m) { const K = m.heavy ? NETHIT.heavy : NETHIT.swing, p = player; NET.hitsIn = (NET.hitsIn || 0) + 1; if (p.koT > 0) return;
   const vs = netVersus(), dmg = vs ? K.dmg : 0; playerHurt(dmg, m.h, K.push, K.up, K.stun, vs && p.hp - dmg <= 0 ? 1 : K.knock);
   if (vs && p.hp <= 0) { p.koT = DUELPIT.koT; p.hurtWait = 99; NET.deaths = (NET.deaths || 0) + 1; netSend({ type: 'event', e: 'ko', to: m.id }); duelBanner('KNOCKED OUT', '#ff5a3a'); } }
-// m15xx (stage 4): VERSUS in the Duel Pit -- hits do damage (`NETHIT.*.dmg`), no regen there, at 0 he is KNOCKED OUT (the knock-down, `koT` s),
+// m1855 (stage 4): VERSUS in the Duel Pit -- hits do damage (`NETHIT.*.dmg`), no regen there, at 0 he is KNOCKED OUT (the knock-down, `koT` s),
 // then back on his feet at his own spawn, full health; the KO goes to the one who landed it (their score). Elsewhere online it stays no-damage.
 function netVersus() { return !!(DUELZ.on && NET.on); }
 function duelKoStep(dt) { const p = player; if (!(p.koT > 0)) return; p.koT -= dt; if (p.koT <= 0) { p.koT = 0; const S = DUELPIT.spawns[NET.slot % DUELPIT.spawns.length]; p.pos.set(S[0], S[1], S[2]); p.vel.set(0, 0, 0); p.hp = HEALTH.max; p.hurtWait = 0; p.knock = null; p.faceH = p.heading = Math.atan2(-S[0], -S[2]); duelBanner('', ''); } }
@@ -29238,7 +29238,7 @@ function gymRopeStep(dt) { for (const B of GROPE.list) { const p = player, on = 
     P[o1] = x; P[o1 + 1] = y + w; P[o1 + 2] = z; P[o1 + 3] = x; P[o1 + 4] = y - w; P[o1 + 5] = z;     // a vertical strip
     P[o2] = x + B.nx * w; P[o2 + 1] = y; P[o2 + 2] = z + B.nz * w; P[o2 + 3] = x - B.nx * w; P[o2 + 4] = y; P[o2 + 5] = z - B.nz * w; }     // and a flat one: reads from any side
   B.mesh.geometry.attributes.position.needsUpdate = true; } }
-// m15xx: THE DUEL PIT (NETPLAY.md stage 4) -- `?w=forge&zone=duel`, KORAJIN > The Duel Pit. A round stone pit for two online: a 26 m floor sunk
+// m1855: THE DUEL PIT (NETPLAY.md stage 4) -- `?w=forge&zone=duel`, KORAJIN > The Duel Pit. A round stone pit for two online: a 26 m floor sunk
 // in a ring of terraces, a raised central dais, four pillars to fight round and climb, a high walkway between two of them (VERTICALITY), the
 // spawns opposite. Versus here: damage, KO, respawn, a score in the chip.
 // SC_DUELPIT:START
@@ -34707,7 +34707,7 @@ function stepPlayer(dt) {
   // AND IT COMES BACK ON ITS OWN, after a pause long enough that a fight is not free. There is
   // no death yet, so what running out of health costs you is nothing -- stated, not hidden.
   if (p.hurtWait > 0) p.hurtWait = Math.max(0, p.hurtWait - dt);
-  else if (p.hp < HEALTH.max && !netVersus()) p.hp = Math.min(HEALTH.max, p.hp + HEALTH.regen * dt);     // m15xx: no regen in a versus duel
+  else if (p.hp < HEALTH.max && !netVersus()) p.hp = Math.min(HEALTH.max, p.hp + HEALTH.regen * dt);     // m1855: no regen in a versus duel
 
   if (s.mag > 0) {
     p.goT += dt;

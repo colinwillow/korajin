@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## ONLINE stage 4: the Duel Pit -- versus with damage, knock-outs and a score (m15xx, NETPLAY.md)
+## ONLINE stage 4: the Duel Pit -- versus with damage, knock-outs and a score (m1855, NETPLAY.md)
 *"Let's do two"* (the online arena), then the rope swing.
 - **THE DUEL PIT** (`DUELPIT` in `SC_DUELPIT`, `duelPitBuild(T)`; KORAJIN > The Duel Pit (online), `?w=forge&zone=duel`): a 26 m sand floor in
   a ring of stone terraces you can stand on, a raised two-step dais in the middle, four 5 m pillars, a timber walkway between two of them (a

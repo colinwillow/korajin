@@ -27,7 +27,7 @@ two snapshots that bracket ~130 ms ago. Whatever his phone draws, the other phon
   Still to do: blade fire / trail, sounds, slam bursts as events.
 - [x] **3. Knock each other around (m1846, no damage):** my swing / slam / charge tests THEIR puppet (hands, feet, blade tip inside a .6 m
   body); a HIT event goes to them and THEIR phone applies it through `playerHurt` (0 damage: their guard, parry and knock-down answer it).
-- [~] **4. The Duel Pit (m15xx):** KORAJIN > The Duel Pit (online) / `?w=forge&zone=duel`: a round stone pit, opposite spawns, versus with
+- [~] **4. The Duel Pit (m1855):** KORAJIN > The Duel Pit (online) / `?w=forge&zone=duel`: a round stone pit, opposite spawns, versus with
   damage, KO, respawn and a score; their swing's sound and streak; an HP bar on their tag. Still: co-op against the arena's enemies (host-run).
 - [ ] 5. **Its own server namespace:** a `game` field in `robits-server` (or a fork) so KORAJIN rooms never meet Robits rooms in quick match /
   the room list (needs push access to that repo).
