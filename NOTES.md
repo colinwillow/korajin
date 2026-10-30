@@ -5,6 +5,23 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- THE POSE EDITOR, in game (TOOLS > POSE EDIT)
+
+His: *"pause, everything freezes, pick the character, choose joints -- shoulder, upper arm -- a gizmo, tweak it until his shoulder bends out a bit
+more ... then bake the offset and it sends the info into the code or back to you or to some json. Adjusting animations in game would be so clutch."*
+- `posedEnter`: `frame()` stops stepping (`POSED.on`) and only draws; a full-screen layer takes the touches -- one finger orbits round his hips,
+  two pinch, a TAP picks the nearest of 20 joints on screen (or JOINTS, a grid); three's `TransformControls` (vendored, imported on first use)
+  in rotate / local on the picked bone.
+- What is stored: an OFFSET per CLIP per JOINT (`POSEFIX.offs`, between `SC_POSEFIX` markers), a local rotation multiplied onto the bone after the
+  mixer by `poseFixApply` (in the post-pose chain, before `contactSnd`), slerped by that clip's weight -- so his export is untouched and the tweak
+  follows the clip wherever it plays. The clip is the heaviest one playing at the freeze; < > picks another that was playing. RESET JOINT, CLEAR
+  CLIP; every change is saved on the phone at once (`mel.posefix`, merged over the table at boot); BAKE shows the JSON + COPY -> he pastes it to
+  me and it goes into `POSEFIX.offs` for good.
+- Headless: entered (key katana_idle), tap-picked LeftForeArm from its projected position, turned .5 rad -> stored [0.2474, 0, 0, 0.96891],
+  saved; out and running, the forearm is **.500 rad** off the clip's pose with the fix vs without.
+- Not yet: translating (only rotation), a timeline (the offset is constant over the clip -- a per-frame key would be the next step), mirrored clips
+  share nothing (wall_side vs wall_side_m are edited separately).
+
 ## m1876 -- a sound for drawing and putting away a weapon; his wall run stood off the wall
 
 His: *"a noise for when he puts away and takes out his weapons -- a subtle clink or clang for the sword"* and *"on the wall run his feet kinda go into
