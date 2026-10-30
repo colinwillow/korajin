@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- stuck in the TUCK pose after catching a ledge mid-flip
+
+His: *"jump off a tall building doing flips, land on a ledge -- sometimes he's locked in the tuck pose ... the locomotion moves as though he's
+hanging, push up and he gets up off the ledge, but the animation stays in tuck."*
+- `p.aflip` (the left stick's air flip) was ended ONLY by `airFlipStep` (on grounded / bar / ledge / wing) -- which runs inside the airborne step a
+  hold never reaches -- and rigAnim asks `p.aflip && !p.grounded` BEFORE the ledge's branch. So a flip caught on a ledge stayed set and its tuck
+  owned the pose, through the hang and the climb.
+- `ledgeGo` clears the flip (`aflip`, `aflipPop`, `barFly`, `flip`); and each frame any HOLD (ledge, wall run, mantle, climb, rope, swing, monkey
+  bars, zipline, hook, or the bar for `aflip`) clears a leftover one.
+- Headless: flip started in the air by wall A, `ledgeGo` -> aflip false, ledge_hang_idle 1.00; a flip forced ON while hanging -> cleared in a frame.
+
 ## m1877 -- THE POSE EDITOR, in game (TOOLS > POSE EDIT)
 
 His: *"pause, everything freezes, pick the character, choose joints -- shoulder, upper arm -- a gizmo, tweak it until his shoulder bends out a bit

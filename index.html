@@ -31250,6 +31250,7 @@ function ledgeGo(L) {
   if (mphBare()) return 0;             // no hang clips without zap's pool on him (m119)
   const p = player;
   swapStop(); triggerStop();
+  p.aflip = null; p.aflipPop = 0; p.barFly = null; p.flip = '';     // m1878: a flip CAUGHT on a ledge ends here (it stayed set and its tuck owned the pose)
   p.ledge = L; p.ledgeSt = 'in'; p.ledgeT = 0; p.ledgeOff = 0; p.ledgeSide = 0; p.ledgeInDur = 0; p.lhDh = 0; p.lhDv = 0; p.lhPrev = null; p.ledgeLook = 0; p.shim = 0;     /* m1841 */
   p.lx0 = p.pos.x; p.ly0 = p.pos.y; p.lz0 = p.pos.z;
   p.vel.set(0, 0, 0);
@@ -68843,6 +68844,7 @@ function frameBody() {
   gearSync();             // m465: a quest done anywhere (GOD's included) puts its find on the wheel
 
   if (rig.ready) {
+    { const p = player; if ((p.aflip || p.barFly) && (p.ledge || p.wrun || p.mantle || p.climb || p.rope || p.vine || p.mbar || p.zip || p.hook || (p.bar && p.aflip))) { p.aflip = null; p.aflipPop = 0; if (!p.bar) p.barFly = null; } }     // m1878 (his: "land on a ledge mid-flip and he's stuck in the tuck pose"): `airFlipStep` -- the only thing that ended a flip -- does not run in a hold, and rigAnim asks "mid flip?" first; any hold now ends it
     stepAim(dt);          // one eased answer, before anything reads it
     stepKit(dt);
     kaimStep(dt);         // m1071: the charge's aim and its arc -- here, where it runs every frame (stepKit returns early in states)
