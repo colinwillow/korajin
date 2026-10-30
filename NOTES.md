@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the bow's DOWN-AIM finally shoots down (two bugs under m1854)
+
+His: *"aiming down with the bow and arrow with the right stick never panned out -- it looks like it tries, but the arrow never goes down."*
+MEASURED (headless: draw with the thumb up, slide it down, lift):
+- At 30% / 60% down the solve already aimed 15 / 26 deg down -- but at the BOTTOM of the pad the drawn bow was CANCELLED: the thumb held down
+  is the GUARD (`p.block`), which `triggerStop`s every non-blade aim. A drawn bow now counts as `busy` for the guard: down is the bow's.
+- And the RELEASE shot level every time: `bowLoose` -> `bowSolve` -> `bowDownA` runs on the frame the thumb has LIFTED (`R.down` false -> 0).
+  `bowDownA` now remembers the last angle the thumb held (`p.bowDownLast`, cleared on the loose).
+- After: thumb at .95 -> 38 deg (`down0` 10 .. `downMax` 40 past `downDead` .15), the arrow left at (0, -44.1, -56.6) m/s -- 38 deg down.
+  A locked target still wins (the aim goes to it), as before.
+
 ## m1892 -- LOOK pass 3: glow inlays, nobori banners, alien crystals
 
 - Towers: four cyan emissive INLAYS up the column corners and a ring at 2.4 m (retro-futurist panel lines); a NOBORI banner (canvas: red cloth,

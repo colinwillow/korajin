@@ -15239,7 +15239,9 @@ function bowDraw() { const p = player; p.bowT = 0; const n = 'bow_draw', r = BOW
 // m1854 (his: "bringing the stick back down toward centre should angle the shot down ~10 degrees, all the way down maybe 20-45 -- up on a tower
 // you want to shoot down; we have a way to shoot up and none down"): drawn, the right thumb BELOW the pad's centre tilts the open-air aim down --
 // `down0` once it passes `dead`, rising to `downMax` with the thumb at the bottom. (Only a lift looses now, so the thumb is free to go there.)
-function bowDownA() { const R = stick.R, p = player; if (!p.aim || !R.down) return 0; const y = R.y || 0; if (y < BOW.downDead) return 0; return BOW.down0 + (BOW.downMax - BOW.down0) * clamp((y - BOW.downDead) / (1 - BOW.downDead), 0, 1); }
+function bowDownA() { const R = stick.R, p = player; if (!p.aim) return 0;
+  if (!R.down) return p.bowDownLast || 0;     // m1893: THE RELEASE is read after the thumb has lifted -- it shot level every time; the angle is the last one the thumb held
+  const y = R.y || 0; return (p.bowDownLast = y < BOW.downDead ? 0 : BOW.down0 + (BOW.downMax - BOW.down0) * clamp((y - BOW.downDead) / (1 - BOW.downDead), 0, 1)); }
 function bowSolve() { const p = player, B = BOW.mesh; const k = clamp((p.bowT || 0) / BOW.full, .15, 1), full = k >= .97, type = QD.arrow || 'normal';
   const o = B && B.nock.visible ? B.nock.position.clone() : p.pos.clone().setY(p.pos.y + (RIG.height || 1.4) * .8);
   const a = aimTarget(); let tx = a.p.x, ty = a.p.y, tz = a.p.z;
@@ -15257,7 +15259,7 @@ function bowLoose() { const p = player; const { k, full, type, o, gk, g, T, dx, 
   m.scale.setScalar(BOW.big); { const tr = new THREE.Mesh(arrowTracerGeo(), new THREE.MeshBasicMaterial({ color: new THREE.Color(hc[0], hc[1], hc[2]).lerp(new THREE.Color(1, 1, 1), .45), transparent: true, opacity: .85, depthWrite: false, toneMapped: false })); tr.renderOrder = 61; tr.scale.set(BOW.tracerR / BOW.big, BOW.tracerR / BOW.big, .01); m.add(tr); m.userData.tracer = tr; } { const gl = glowSprite(new THREE.Color(hc[0], hc[1], hc[2]).lerp(new THREE.Color(1, 1, 1), .35), BOW.glow); gl.position.z = .46; m.add(gl); m.userData.glow = gl; }     // m1744: HIS arrows glow and are bigger -- they vanished against the rock
   ARROWS.push({ m, v: new THREE.Vector3(dx / T, (ty - o.y) / T + .5 * g * T, dz / T), t: 0, stuck: 0, from: null, mine: 1, pl: 1, gk, type, full, col: hc,
     dmg: BOW.dmg0 + (BOW.dmg1 - BOW.dmg0) * k + (type === 'fire' ? BOW.fireDmg : 0), pow: full ? BOW.pow1 : BOW.pow0 });
-  const n = 'bow_recoil'; if (rig.actions[n + UPS]) { playOnce(n + UPS, 1.4); playOnce(n + UP, 1.4); } p.fireT = 1; p.bowT = 0; BOW.stat.shots++;
+  const n = 'bow_recoil'; if (rig.actions[n + UPS]) { playOnce(n + UPS, 1.4); playOnce(n + UP, 1.4); } p.fireT = 1; p.bowT = 0; p.bowDownLast = 0; BOW.stat.shots++;
   snd('swoosh', { g: .55 + k * .35, r: 1.9 - k * .5 }); snd('clang', { g: .12 + (full ? .2 : 0), r: full ? 1.6 : 2.4 }); if (full) camShake(.05); }
 // a BLAST arrow's burst, wherever it ends
 // m1782 (his: "a full charge with the exploding arrows should explode the archers -- those are powerful arrows"): a FULL draw's blast is `fullK`
@@ -33130,7 +33132,7 @@ function stepKit(dt) {
     // the wind-up are not in the list because they are the same thumb pushed the other way and
     // cannot both be true -- but they are cleared here anyway, or a thumb sweeping from the top
     // of the pad to the bottom would arrive still armed.
-    const busy = p.melee || p.roll || p.chargeGo || !p.grounded || (p.charge && slotNow().blade);     // m1071: a held katana charge owns the thumb
+    const busy = p.melee || p.roll || p.chargeGo || !p.grounded || (p.charge && slotNow().blade) || (p.aim && slotNow().bow);     // m1071: a held katana charge owns the thumb; m1893: so does a DRAWN BOW (his: 'aiming down with the bow never panned out') -- the thumb pulled down is the bow's down-aim, and the guard it used to raise cancelled the draw
     if ((arming || keeping) && !busy) {
       p.blockT += dt;
       if (p.blockT >= WEAP.blockT) {
