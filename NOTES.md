@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the build number sits lower (iPhone's blurred top edge)
+## m1868 -- the build number sits lower (iPhone's blurred top edge)
 
 His: *"the very top of the screen gets blurred out on iPhone glass, so I can never really tell which build we're on."*
 - `#build` top 12 -> `--btop` 46 px (+ the safe area); the splash's number 10 -> 44. `hudGutter` stacks the keys under it off 46 (a literal --
