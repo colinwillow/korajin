@@ -5,6 +5,24 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## The wall run is set by the angle you hit it at, the horizontal run holds the wall, and the slide goes all the way down (m15xx)
+*"It's really hard to do a horizontal wall run -- he does it for a split second... the entire wall run should be set by the angle you hit it:
+roughly perpendicular = the vertical run, roughly parallel = the horizontal run. Mid-run he transitions into the wall sit while I'm still
+trying to run across; he lifts away from the wall mid run and re-catches; going down he's in the in-air falling pose. And sliding down after a
+vertical run, he lets go at some point -- he should slide all the way down unless you jump off."*
+- **Why, from the code:** the VEL run bled its along-speed by friction (`vFric`) and became the SIT the moment its speed fell under `keepMin`;
+  the "still on the face" test let go once his feet were within .9 m of the wall's top -- on the 6 m walls the arc went there, `wrunEnd(1)`
+  pushed him off, and the next frame re-caught him (the lift-off / re-catch / falling pose); the slide ended after `slideT` and on ANY push
+  of the stick (including toward the wall).
+- **WALL ENTRY: ARC (default, TOOLS > WALL ENTRY cycles ARC / ANGLE / PROJECT):** the hit decides the whole run. Off head-on by less than
+  `arcUpAng` (.55 rad, ~31 deg): straight UP at max(`arcUpMin` 7, his speed) plus half his rise. Otherwise HORIZONTAL: the same speed along the
+  wall the whole way (his speed, held to `arcVmin` 6 .. `arcVmax` 10), up at `arcUp` 4.2 under a light `arcG` 5.5 (a symmetric arc), kept
+  `arcTop` 1.1 m under the top; into the slide when it is falling past `arcEndV` or after `arcMax` 2.2 s. No steering mid-run.
+- **The slide** now lasts until the ground; only the stick pulled AWAY from the wall (screen terms) lets go.
+- Headless, the 50 m long wall: a 20 deg hit -> `side`, held the wall from the catch to the slide (~2 s, ~9 m along, y 1.3 -> 2.1 -> 1.6),
+  then slid to the ground; a 70 deg hit -> `up`, ran up and caught the lip. WALL RAYS previews ARC too.
+- Ledge items (look-away pose, the jump-off turn, shimmy clips, the elbows) are the next build. Shipped unverified.
+
 ## NINJA GYM pass 3: the tightrope, and the towers as Japanese archer towers; the ladder climbs (m1850)
 *"Ninja gym pass 3, the tightrope. There's a ladder but you can't climb it. I said Eiffel Tower by accident -- I want them closer to the stylized
 Japanese archer war towers."*
