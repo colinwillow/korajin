@@ -5,6 +5,22 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## The climb-up's slide, the hang's jump back to the lip, the swap reach, the run's toe flick, the wall run's feet (m15xx)
+His list (the dweller's hands and the bow's down-aim are the next build):
+- **Climb-up:** *"the animation is fine but the locomotion pushes him forward more than I want -- about half"*: the mantle sets him down
+  `LEDGE.inset x upInK` (.5) in from the edge instead of the whole inset.
+- **Hang + jump:** *"tap jump, straight up -- and if you don't move, he falls right back down and grabs the ledge again"*: the plain jump
+  remembers its lip (`p.ledgeRe`); falling back to the hang height within .6 m of where he left, he takes it again (`ledgeGo`, straight
+  to 'hold').
+- **The swap reach:** *"since we edited the idle, taking out the sword / bow doesn't look like he's reaching over his shoulder"*: the Dwarf
+  idle's arm fix (`idleFixPose`, m1820-21) kept straightening the arms THROUGH the swap clip; it now fades out (`player.ifK`, .05 s) while a
+  swap runs and back after.
+- **Run toe flick:** `runToePose` (`TOEFIX`): running on the ground, the toe joints ease toward where they sit in his idle (re-read
+  whenever he stands still) -- `k` .85 at a full run (from 1.5 m/s, full by 3.5).
+- **Horizontal wall run, feet through the wall:** the side run slid his body in toward the face by `p.r + gap - footIn`; now `sideInK`
+  (.35) of it.
+- Shipped unverified (none of these were rendered).
+
 ## The ledge: elbows out, head up, the shimmy clips, a look-away pose, and the jump-off turn fixed (m1852)
 *"Unarmed on a ledge his elbows look bowed in from the back -- maybe his head back. Left / right on the ledge should play the shimmy (Mixamo has a
 shimmy and a leap) -- swipe for the leap. Jumping off, he's still facing the wall and does an awkward 180 in the air -- pressing away should
