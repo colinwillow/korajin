@@ -13156,7 +13156,7 @@ function wrunCatch() { const p = player; if (p.grounded || p.vel.y < -WRUN.slide
   // (0 = straight up, 90 = straight along) x `angK`, at `entryK` x his horizontal speed, plus `riseK` of what he was rising. 'PROJECT' = m1776's
   // (along x alongK, up = rise + into x upK -- which turned a 45 deg hit into ~26 deg off vertical, before the stick steered it the rest of the way).
   if (WRUN.mode === 'VEL') { let vyR, vt; const inc = Math.atan2(Math.abs(al), Math.max(0, into));
-    let arc = '';     // m15xx: ARC (default) -- the angle you hit it at sets the WHOLE run: head-on-ish = straight up, else a horizontal run on a fixed arc
+    let arc = '';     // m1851: ARC (default) -- the angle you hit it at sets the WHOLE run: head-on-ish = straight up, else a horizontal run on a fixed arc
     if (WRUN.entry === 'ARC') { if (inc < WRUN.arcUpAng) { arc = 'up'; vt = 0; vyR = Math.min(WRUN.upMax, Math.max(WRUN.arcUpMin, hs * WRUN.entryK) + Math.max(0, p.vel.y) * WRUN.riseK); }
       else { arc = 'side'; vt = clamp(hs * WRUN.arcKeep, WRUN.arcVmin, WRUN.arcVmax) * (al >= 0 ? 1 : -1); vyR = WRUN.arcUp; } }
     else if (WRUN.entry === 'ANGLE') { const a = clamp(inc * WRUN.angK, 0, Math.PI / 2), sp = hs * WRUN.entryK; vyR = Math.min(WRUN.upMax, Math.cos(a) * sp + Math.max(0, p.vel.y) * WRUN.riseK); vt = Math.sin(a) * sp * (al >= 0 ? 1 : -1); }
@@ -13283,7 +13283,7 @@ function stepWrun(dt) {
     //   the STICK on the wall is read in SCREEN terms -- thumb up = up the wall, thumb left / right = along it the way the screen shows (the wall cam
     //   turns the lens along the wall, so the world reading made "up" mean "across" -- the bug); GRIP: no gravity for `gripT` s, then it ramps in
     //   over `rampT` (the Titanfall shape); the wall speed eases to under `capV` instead of keeping every m/s it arrived with.
-    if (R.kind !== 'slide' && R.arc === 'side') {     // m15xx: the horizontal run -- the SAME speed along the wall the whole way, on one arc under `arcG`
+    if (R.kind !== 'slide' && R.arc === 'side') {     // m1851: the horizontal run -- the SAME speed along the wall the whole way, on one arc under `arcG`
       let vu = p.vel.y - WRUN.arcG * dt; if (R.b && p.pos.y > R.b.maxy - WRUN.arcTop && vu > 0) vu = 0;     // measured: past maxy - .9 the 'on' test let him go mid-arc (the lift-off and re-catch)
       R.a = Math.atan2(R.vt, Math.max(vu, 0)); vyKeep = vu + MOVE.g * dt; if (vu < -WRUN.arcEndV || R.t > WRUN.arcMax) { R.kind = 'slide'; R.t0 = R.t; R.top = R.t; vyKeep = null; } else wrunVelKind(R, 0); }
     else if (R.kind !== 'slide' && R.arc === 'up') { const gk = clamp((R.t - WRUN.gripT) / WRUN.rampT, 0, 1), vu = p.vel.y - WRUN.vG * gk * dt; R.vt = 0; R.a = 0; vyKeep = vu + MOVE.g * dt;     // straight up, no steering
@@ -13320,7 +13320,7 @@ function stepWrun(dt) {
   // the run UP ends on the lip: his hands pass the top -> the ledge's own hang (and its climb), the PoP move
   if (R.kind === 'up' && LEDGE.on && rig.actions[LEDGE.clips.hang]) { const L = ledgeFind(p.pos.x, p.pos.y, p.pos.z, p.r + LEDGE.reach); if (L && L.b === R.b) { wrunEnd(0); p.vel.set(0, 0, 0); ledgeGo(L); return; } }
   if (!on) { if (R.b && p.pos.y > R.b.maxy - 1.2 && p.vel.y > WRUN.topV) p.vel.y = WRUN.topV; wrunEnd(1); return; }     // m1833: off the TOP it is a hop, not a launch
-  if (R.kind === 'slide') { if ((!R.velMode && R.t - (R.top || 0) > WRUN.slideT) || (!WRUN.stick && wrunStick(R).tin < -.6)) wrunEnd(.6); return; }     // m15xx: the slide goes ALL the way down (his); only the stick pulled AWAY from the wall lets go
+  if (R.kind === 'slide') { if ((!R.velMode && R.t - (R.top || 0) > WRUN.slideT) || (!WRUN.stick && wrunStick(R).tin < -.6)) wrunEnd(.6); return; }     // m1851: the slide goes ALL the way down (his); only the stick pulled AWAY from the wall lets go
   if ((WRUN.stick && R.head !== undefined) || R.velMode) return;     // m1767: runs fall back to the slide (above), they do not let go     /* m1372: a slide lasts `slideT`; a push on the stick lets go */
   if (R.kind === 'side' ? R.t > WRUN.T : (R.t > WRUN.upT * Math.max(1, (R.vy0 || WRUN.upV) / WRUN.upV) || p.vel.y < -1)) wrunEnd(R.kind === 'side' ? 1.5 : 1);
 }

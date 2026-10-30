@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## The wall run is set by the angle you hit it at, the horizontal run holds the wall, and the slide goes all the way down (m15xx)
+## The wall run is set by the angle you hit it at, the horizontal run holds the wall, and the slide goes all the way down (m1851)
 *"It's really hard to do a horizontal wall run -- he does it for a split second... the entire wall run should be set by the angle you hit it:
 roughly perpendicular = the vertical run, roughly parallel = the horizontal run. Mid-run he transitions into the wall sit while I'm still
 trying to run across; he lifts away from the wall mid run and re-catches; going down he's in the in-air falling pose. And sliding down after a
