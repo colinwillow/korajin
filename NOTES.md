@@ -5,6 +5,11 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## No game picker: Korajin opens straight to its own page (m15xx)
+*"It's still showing the game picker -- KORAJIN or Zap & Clancy."* `startGate` ended on `titles()` (zap's two-poster picker, m1109); it ends on
+`korajin()` now, and the KORAJIN page's "< Titles" button is gone (nothing to go back to). The `zapClancy` / `titles` pages are still in the
+file, unreached -- to be cut with the rest of the inherited code.
+
 ## Korajin's own home-screen icon (m1847)
 *"When I add to home screen on iOS it's showing the Zap and Clancy icon."* The repo copy brought zap's v4 icon set and the page still named it.
 `icons/src.png` is now a square crop of his own title poster (`images/korajin/korajin_title_01.png`, x 130-780, y 482-1132: Grumbo's head and
