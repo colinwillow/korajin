@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the side wall run loops ONE STRIDE, not the whole get-on / get-off clip
+## m1863 -- the side wall run loops ONE STRIDE, not the whole get-on / get-off clip
 
 His (and right): *"that wall run animation shows him going from not on a wall onto a wall, running on the wall and then getting off -- so when it loops
 it shows him getting on, getting off ... find the middle of that animation and loop that one part."*
