@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- HIS wall run: his own FBX animation is the side run (TOOLS > WALL SIDE: HIS CLIP / IK RUN)
+
+His: *"I need to [animate] the wall run on my own"* -- `models/characters/anims/wall_side.fbx` (Cinema 4D export on Grumbo's rig, 50 bones, 19 frames
+at 30 fps). The new folder is in `bump.mjs` DIRS.
+- `tools/fbx2glb.py` (headless Blender) -> `models/characters/anims/wall_side.glb`. MEASURED: bone offsets identical to alien_goblin_game.glb
+  (Hips 48.24, LeftUpLeg 7.28 -- the same rig), so its local rotations apply 1:1; in place (Hips translation constant, the `root` bone sways a few
+  cm / degrees -- his); loops (first vs last frame mean 1-|dot| 2.8e-3 over 50 bones).
+- `HANIM` (data: file + clip name) / `heroAnims()`: for the hero `alien_goblin_game`, each file REPLACES the clip of that name (the Forge's
+  `wall_side` and its mirror are uncached), scale tracks dropped, LoopRepeat, then `heroMirrorLate` (m1860's late mirror, factored out) makes
+  `wall_side_m` for a wall on his right. A future clip of his = one entry in `HANIM.list`.
+- Played WHOLE on the ARC side run: rigAnim plays `wall_side`/`_m` alone (rate by speed / `sideRef`), and `wrunPose` adds nothing (no lean,
+  no slide-in) when `rig.wsHis`. Default `WRUN.sidePose` 'CLIP' (a new storage key, `mel.wside2`, so it shows first); IK RUN is m1864's.
+- Headless (chimney, wall on his right): plays wall_side_m at 1.0; feet on the face, a foot up to .11 m INTO it at the deepest -- may want him
+  stood a little further out.
+
 ## m1865 -- his new footsteps: 12 steps cut out of his 52 s recording
 
 His: *"if I give you a clip of some footsteps, can you extract the footsteps ... I don't really like the current footsteps."* -- `audio/footsteps/footsteps.mp3`
