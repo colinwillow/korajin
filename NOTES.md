@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the side wall run loops ONE STRIDE, not the whole get-on / get-off clip
+
+His (and right): *"that wall run animation shows him going from not on a wall onto a wall, running on the wall and then getting off -- so when it loops
+it shows him getting on, getting off ... find the middle of that animation and loop that one part."*
+- MEASURED (`wsclip.cjs`, pose distance over the leg bones of the baked `wall_side`, 30 frames at 30 fps): frames **8 and 23** match (.077 -- the
+  best pair; 9-23 .067 legs-only), one full stride in the middle. `WRUN.sideCut` [8, 23, 30]; `clipCutLoop` cuts it in `forgedHero` BEFORE its
+  action and its mirror are made, so `wall_side_m` is the same stride.
+- The hips TRAVEL 11 cm across those frames (x 19.1 -> 8.4, y 64.6 -> 70.2 cm): `clipCutLoop` spreads that drift over the cut so the wrap does not pop.
+- Headless: wall_side and wall_side_m both 0.500 s, LoopRepeat.
+
 ## m1862 -- the side wall run is ONE run: no hand-over to the slide, no let-go at a seam
 
 His: *"he's running and then he lets go and then it re-grabs and starts over ... it just needs to be one continuous thing all the way through until
