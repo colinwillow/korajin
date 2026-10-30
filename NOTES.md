@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the side wall run is ONE run: no hand-over to the slide, no let-go at a seam
+## m1862 -- the side wall run is ONE run: no hand-over to the slide, no let-go at a seam
 
 His: *"he's running and then he lets go and then it re-grabs and starts over ... it just needs to be one continuous thing all the way through until
 you either jump off or hit the ground, and the animation should just loop."*
