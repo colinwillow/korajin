@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## The toe flick (for real), a shimmy that loops at speed, and the ledge LURCH (m15xx)
+## The toe flick (for real), a shimmy that loops at speed, and the ledge LURCH (m1859)
 *"The toe flick is still there on the run. The ledge hang left / right is super super slow and doesn't loop the animation. And swiping left /
 right, he doesn't do the lurch."*
 - **Toes:** measured, the run clips swing the toe joint 40-70 deg at up to 2,400 deg/s (`ninja_run` 72 / 2370, `run_fast` 57 / 1912); m1853
