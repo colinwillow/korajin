@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## The climb-up's slide, the hang's jump back to the lip, the swap reach, the run's toe flick, the wall run's feet (m15xx)
+## The climb-up's slide, the hang's jump back to the lip, the swap reach, the run's toe flick, the wall run's feet (m1853)
 His list (the dweller's hands and the bow's down-aim are the next build):
 - **Climb-up:** *"the animation is fine but the locomotion pushes him forward more than I want -- about half"*: the mantle sets him down
   `LEDGE.inset x upInK` (.5) in from the edge instead of the whole inset.
