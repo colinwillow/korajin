@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## The toe flick (for real), a shimmy that loops at speed, and the ledge LURCH (m15xx)
+*"The toe flick is still there on the run. The ledge hang left / right is super super slow and doesn't loop the animation. And swiping left /
+right, he doesn't do the lurch."*
+- **Toes:** measured, the run clips swing the toe joint 40-70 deg at up to 2,400 deg/s (`ninja_run` 72 / 2370, `run_fast` 57 / 1912); m1853
+  held it .85 of the way to his idle toe, which left a quick ~10 deg snap. `TOEFIX.k` 1 now (locked to the idle's toe while running, from
+  .8 m/s, fully by 2).
+- **Shimmy:** `shimV` 1.1 -> 2.3 m/s, the clip at x2, and its action set to LOOP explicitly (it came off the bake as a one-shot, so it played
+  once and held). Headless: 2.30 m in one second, `loop` 2201 (LoopRepeat).
+- **The lurch:** the swipe's hop moved `LEDGE.hop` (~.75 m) at the clip's 1.75 rate -- a shuffle. It is its own now: `LSW.hopD` 2.1 m at
+  `hopRate` 2.6, with a swoosh. Headless: 2.10 m, back to `hold` at the end.
+- Shipped unverified.
+
 ## NINJA GYM pass 6 (first half): the zipline that links the towers to the swings (m1858, NINJAGYM.md)
 - `GYM.zips`: a ~97 m line from Tower B's lookout (its north gap, 2.2 m over the 24.4 m deck) down to the rope swing's start deck (6.8 m), a
   red post at each end, into the existing zipline system (`ZIPS` / `zipCatch`: jump into the line, ride it on the katana). One route now runs:
