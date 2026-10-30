@@ -15,7 +15,8 @@ walls you're supposed to run on. Monkey bars too. Like 10 passes to make an incr
   4 m gaps); E a wall that runs into an 18 m tower face; F corners. Chevron arrows on the faces show the line. Edge-drop blend + eased hang IK.
 - [x] **2. The twin towers (m1845):** two 30 m tapering iron lattices 40 m apart (z -100), each round a 2 m core with a deck on top. A: two LADDERS
   (ground -> a mid deck at 14 m, mid deck -> the top through a hatch). B: BRACKETS spiralling round its core every 3 m (jump, grab, pull up).
-- [ ] 3. **The tightrope:** a rope between the tower tops -- the beam system, a faster walk, and the rope sags / wobbles under him (ROPEB's verlet).
+- [x] **3. The tightrope (m15xx):** a 32 m rope between the tower tops at 24.4 m -- the balance-beam system per beam: faster walk (2.6 m/s),
+  more wobble, a sag that follows him (1.1 m mid-span), a sideways sway; drawn as a rope taking the same V. The towers are YAGURA now (his).
 - [ ] 4. **The rope swing:** a hanging rope: catch it, climb up / down, swing, PUMP to build the arc, let go at the top of the swing.
 - [ ] 5. **Monkey bars:** hand over hand along a row of bars (the high-bar hang), swing to skip a bar, drop.
 - [ ] 6. **Linking:** routes that flow piece to piece (wall run -> rope swing -> monkey bars -> tower), with height tiers (VERTICALITY rule).

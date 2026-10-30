@@ -5,6 +5,22 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## NINJA GYM pass 3: the tightrope, and the towers as Japanese archer towers; the ladder climbs (m15xx)
+*"Ninja gym pass 3, the tightrope. There's a ladder but you can't climb it. I said Eiffel Tower by accident -- I want them closer to the stylized
+Japanese archer war towers."*
+- **The ladder:** `ladderFront`'s rule (climb from the side AWAY from the exit mark) put the climbing side INSIDE the core, because pass 2's mark
+  sat outside. Each gym ladder now states its side (`front`, set as `fg`). Headless: at A's foot, stick into it -> `climb true`.
+- **YAGURA (`GYM.towers`, 24 m):** four timber posts leaning in (9 m base -> 6.4 m top), tie beams at five heights, a brace per face per bay,
+  a mid deck at 12 m and a top deck, both with HATCHES where the ladders come up (A); a lookout on top -- corner posts, a railing, plastered
+  half-walls open in the middle of each side (where the rope leaves), a two-tier flared tiled hip roof and a red finial. Merged per colour (a
+  handful of draws a tower). B keeps the brackets, round a central timber pillar.
+- **THE TIGHTROPE (`GYM.rope`, `gymRopeMake`):** a BEAM in the balance-beam system, now per beam (`B.h`, `B.len`, `B.speed`, `B.noiseK`;
+  `beamY` / `beamLoad`): 32 m from A's deck edge to B's at 24.4 m, walked at 2.6 m/s (the beam is 1.6), 1.35x the wobble, a SAG under his feet
+  (1.1 m at mid-span, less toward the ends) and a slow SWAY (`sway` .9) that pushes him about mid-span. Drawn (`gymRopeStep`) as a rope that
+  takes the same V under him, a shallow hang when empty. Fall off and it is 24 m down. Headless: stepped on from A's deck (`on beam true`),
+  walked out 1 m in 30 frames, dipping (y 24.4 -> 24.19).
+- Next: the wall run's entry by angle / no mid-run sit, the ledge (look-away pose, jump-off turn, shimmy clips). Shipped unverified.
+
 ## His Korajin icon (m1849)
 His own art ("This is the icon"): 1254 px, rounded corners DRAWN in with white outside them (a ~220 px radius) and a 12 px white strip at the
 bottom. iOS masks its own (tighter) corners, but white corners show anywhere that does not -- so the white is FILLED from the art just inward of

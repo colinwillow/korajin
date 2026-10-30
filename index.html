@@ -12903,11 +12903,15 @@ function beamToes() {
     BEAM.clips[k] = nm + '~'; }
   if (made.length) rigClips(made);
 }
+// m15xx: a beam's surface where he stands. An ordinary beam is flat at `BEAM.h`; a ROPE (`B.sag`) sags under him: a load at u pulls it into a
+// V with its deepest point under his feet, `sag` m at the middle, less toward the anchors (`beamLoad`, 1 mid-span, 0 at an end).
+function beamLoad(B, u) { const L = B.len || BEAM.len, t = 2 * u / L; return Math.max(0, 1 - t * t); }
+function beamY(B, u) { return (B.h != null ? B.h : BEAM.h) - (B.sag || 0) * beamLoad(B, u); }
 function beamFind() {
   const p = player; if (p.beamCool > 0 || p.vel.y > .5) return null;
   for (const B of BEAM.list) { const dx = p.pos.x - B.x, dz = p.pos.z - B.z, u = dx * B.ax + dz * B.az, w = dx * B.nx + dz * B.nz;
-    if (Math.abs(u) > BEAM.len / 2 - .05 || Math.abs(w) > BEAM.enterW) continue;
-    if (p.pos.y < BEAM.h - .12 || p.pos.y > BEAM.h + .6) continue;
+    if (Math.abs(u) > (B.len || BEAM.len) / 2 - .05 || Math.abs(w) > BEAM.enterW) continue;
+    if (p.pos.y < beamY(B, u) - .12 || p.pos.y > beamY(B, u) + .6) continue;     // m15xx: per beam (the tightrope is a long, high, sagging one)
     return { B, u }; }
   return null;
 }
@@ -12919,20 +12923,21 @@ function stepBeam(dt) {
   const p = player, S = p.beam, B = S.B; S.t += dt;
   if (p.jump) { p.beam = null; p.beamCool = .35; return 0; }     // the ordinary step takes the jump this frame
   const sw = stickWorld(), along = (sw.x * B.ax + sw.z * B.az) * sw.mag, side = (sw.x * B.nx + sw.z * B.nz) * sw.mag;
-  S.v += (along * BEAM.speed - S.v) * Math.min(1, 8 * dt); S.u += S.v * dt;
+  const SP = B.speed || BEAM.speed, LL = B.len || BEAM.len; S.v += (along * SP - S.v) * Math.min(1, 8 * dt); S.u += S.v * dt;
   if (Math.abs(S.v) > .08) S.face = Math.sign(S.v);
   // the balance: unstable, knocked about, corrected by the push across
-  const knock = (Math.sin(S.t * 2.3) + Math.sin(S.t * 3.7 + 1.3) * .6) * BEAM.noise * (.35 + Math.abs(S.v) / BEAM.speed);
+  const knock = (Math.sin(S.t * 2.3) + Math.sin(S.t * 3.7 + 1.3) * .6) * BEAM.noise * (B.noiseK || 1) * (.35 + Math.abs(S.v) / SP) + (B.sway ? Math.sin(S.t * (B.swayW || 1.7)) * B.sway * beamLoad(B, S.u) : 0);
   // the correction is the COUNTER-push: leaning toward +n, push toward -n (side < 0) and the lean comes back
   S.lw += (BEAM.grow * S.lean + knock * .4 + BEAM.ctl * side - BEAM.damp * S.lw) * dt; S.lean += S.lw * dt;
   const ax = B.ax, az = B.az;
-  if (Math.abs(S.u) > BEAM.len / 2) {     // off the end, onto the platform
-    S.u = Math.sign(S.u) * (BEAM.len / 2 + .25); p.pos.set(B.x + ax * S.u, BEAM.h, B.z + az * S.u); p.beam = null; p.beamCool = .5; p.vel.set(ax * S.v, 0, az * S.v); return 1; }
+  if (Math.abs(S.u) > LL / 2) {     // off the end, onto the platform
+    S.u = Math.sign(S.u) * (LL / 2 + .25); p.pos.set(B.x + ax * S.u, B.h != null ? B.h : BEAM.h, B.z + az * S.u); p.beam = null; p.beamCool = .5; p.vel.set(ax * S.v, 0, az * S.v); return 1; }
   if (Math.abs(S.lean) > BEAM.fall) {     // over: off that side
     const sd = Math.sign(S.lean); p.beam = null; p.beamCool = .8; p.grounded = false; p.airT = 0;
     p.pos.x += B.nx * sd * .25; p.pos.z += B.nz * sd * .25; p.vel.set(B.nx * sd * 2.2 + ax * S.v, 1.2, B.nz * sd * 2.2 + az * S.v);
     if (rig.actions.beam_slip) playOnce('beam_slip', 1.4); snd('swoosh', { r: .8, g: .4 }); return 1; }
-  p.pos.set(B.x + ax * S.u + B.nx * S.lean * .04, BEAM.h, B.z + az * S.u + B.nz * S.lean * .04);
+  const sw2 = B.sway ? Math.sin(S.t * (B.swayW || 1.7) + .6) * B.sway * .25 * beamLoad(B, S.u) : 0; S.sw = sw2;     // the rope swings him a little sideways
+  p.pos.set(B.x + ax * S.u + B.nx * (S.lean * .04 + sw2), beamY(B, S.u), B.z + az * S.u + B.nz * (S.lean * .04 + sw2));
   p.vel.set(ax * S.v, 0, az * S.v); p.grounded = true; p.airT = 0;
   p.faceH = p.heading = Math.atan2(ax * S.face, az * S.face); p.speed = Math.abs(S.v);
   return 1;
@@ -12962,7 +12967,7 @@ function beamPose() {
   // soles is measured once on his ordinary idle (`beamToeH`), and the root is moved by the difference.
   { const bn = rig.bones, TL = bn.mixamorig_LeftToeBase || bn.mixamorig_LeftFoot, TR = bn.mixamorig_RightToeBase || bn.mixamorig_RightFoot;
     if (TL && TR) { const th = beamToeH(); rig.root.updateMatrixWorld(true); const lo = Math.min(TL.getWorldPosition(_bmL).y, TR.getWorldPosition(_bmT).y);
-      rig.root.position.y += (BEAM.h + th) - lo; } }
+      rig.root.position.y += (p.pos.y + th) - lo; } }     /* m15xx: onto the beam's surface where he is (a sagging rope is lower in the middle) */
   const Bn = rig.bones || {}, RA = Bn.mixamorig_RightArm, RF = Bn.mixamorig_RightForeArm, LA = Bn.mixamorig_LeftArm, LF = Bn.mixamorig_LeftForeArm;
   if (RA && RF && LA && LF) { rig.root.updateMatrixWorld(true);
     RA.getWorldPosition(_caR); LA.getWorldPosition(_bmL); _caR.sub(_bmL); _caR.y = 0; if (_caR.lengthSq() > 1e-8) { _caR.normalize();
@@ -29039,11 +29044,12 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
     ['c_l', '+x', 8, 4, 0], ['c_r', '-x', 8, 8, 0], ['c_l', '+x', 8, 12, 0], ['c_r', '-x', 8, 16, 0],
     ['d_1', '+x', 4, 3, -60], ['d_1', '+x', 12, 4, -60], ['d_2', '-x', 4, 3, 60], ['d_2', '-x', 12, 4, 60], ['d_3', '+x', 4, 3, -60], ['d_3', '+x', 12, 4, -60],
     ['e_wall', '-x', 8, 3, 90], ['e_wall', '-x', 20, 3, 90], ['e_tower', '+z', 6, 3, 0], ['e_tower', '+z', 6, 9, 0], ['e_tower', '+z', 6, 14, 0] ],
-  // m1845 (pass 2): THE TWIN TOWERS, 40 m apart, 30 m tall -- tapering iron lattices (Eiffel-ish) round a 2 m core. A climbs by LADDERS (ground ->
-  // the mid deck at `mid`, then the mid deck -> the top through a hatch); B climbs by BRACKETS spiralling round its core every `step` m (jump,
-  // grab, pull up -- or drop down them). The tightrope between the two tops is pass 3.
-  towers: [ { id: 'tw_a', at: [10, -100], h: 30, base: 12, top: 5, mid: 14, way: 'ladder', c: 0x5a6070, deck: 0x8a6a48 },
-            { id: 'tw_b', at: [50, -100], h: 30, base: 12, top: 5, mid: 14, way: 'brackets', step: 3, c: 0x5a6070, deck: 0x8a6a48 } ] };
+  // m1845 (pass 2), m15xx (pass 3: his "not literally Eiffel -- stylized Japanese archer war towers"): two YAGURA, 40 m apart -- four timber posts
+  // leaning in, tie beams and braces, a mid deck, a top deck with railings under a plastered lookout and a flared tiled roof. A climbs by two
+  // LADDERS (ground -> mid deck through a hatch, mid -> top through a hatch); B by BRACKETS round a central pillar. The TIGHTROPE runs deck to deck.
+  towers: [ { id: 'tw_a', at: [10, -100], h: 24, base: 9, top: 6.4, mid: 12, way: 'ladder' },
+            { id: 'tw_b', at: [50, -100], h: 24, base: 9, top: 6.4, mid: 12, way: 'brackets', step: 3 } ],
+  rope: { id: 'rope_ab', from: 'tw_a', to: 'tw_b', sag: 1.1, sway: .9, speed: 2.6, noiseK: 1.35 } };
 // SC_GYM:END
 let _gymArrowTex = null;
 function gymArrowTex() { if (_gymArrowTex) return _gymArrowTex; const cv = document.createElement('canvas'); cv.width = cv.height = 128; const q = cv.getContext('2d');
@@ -29061,34 +29067,47 @@ function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
     const sx = tx > 0 ? b.minx : tx < 0 ? b.maxx : 0, sz = tz > 0 ? b.minz : tz < 0 ? b.maxz : 0;     // the face's start along +tangent
     m.position.set(nx ? fx + nx * .03 : sx + tx * u, y, nz ? fz + nz * .03 : sz + tz * u); m.lookAt(m.position.x + nx, y, m.position.z + nz);
     m.rotateZ(ang * Math.PI / 180); g.add(m); }     // +tangent reads to the viewer's LEFT, so +ang (CCW) points along it
-  const ladders = [];
-  for (const T2 of T.towers || []) { const [cx, cz] = T2.at, H = T2.h, half = y => T2.base / 2 + (T2.top / 2 - T2.base / 2) * (y / H), iron = [], beam = (ax, ay, az, bx, by, bz, t) => { const A = new THREE.Vector3(ax, ay, az), B = new THREE.Vector3(bx, by, bz), L = A.distanceTo(B), q = new THREE.BoxGeometry(t, t, L), o = new THREE.Object3D(); o.position.copy(A).add(B).multiplyScalar(.5); o.lookAt(B); o.updateMatrix(); q.applyMatrix4(o.matrix); iron.push(q); };
-    const lv = []; for (let y = 0; y <= H + .01; y += H / 6) lv.push(y);
-    for (let i = 0; i < lv.length - 1; i++) { const y0 = lv[i], y1 = lv[i + 1], h0 = half(y0), h1 = half(y1);
-      for (const [sx, sz] of [[1, 1], [1, -1], [-1, -1], [-1, 1]]) beam(cx + sx * h0, y0, cz + sz * h0, cx + sx * h1, y1, cz + sz * h1, .32);     // the four legs, leaning in
-      for (const [ax, az, bx, bz] of [[1, 1, 1, -1], [1, -1, -1, -1], [-1, -1, -1, 1], [-1, 1, 1, 1]]) { beam(cx + ax * h1, y1, cz + az * h1, cx + bx * h1, y1, cz + bz * h1, .22);     // the ring at the top of the tier
-        beam(cx + ax * h0, y0, cz + az * h0, cx + bx * h1, y1, cz + bz * h1, .12); beam(cx + bx * h0, y0, cz + bz * h0, cx + ax * h1, y1, cz + az * h1, .12); } }     // and an X on each face
-    const im = new THREE.Mesh(mergeGeometries(iron.splice(0)), mat(T2.c)); im.castShadow = true; im.name = T2.id + '_iron'; g.add(im);
-    const put = (id, x0, x1, y0, y1, z0, z1, c) => { const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat(c)); m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; m.name = id; g.add(m); const b = { minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id }; boxes.push(b); by[id] = b; return b; };
-    put(T2.id + '_core', cx - 1, cx + 1, 0, H, cz - 1, cz + 1, 0x4a4f5c);
-    const ht = half(H) + .5;
-    if (T2.way === 'ladder') {     // the TOP DECK, with a hatch over the second ladder (on the core's +x face)
-      put(T2.id + '_top1', cx - ht, cx + 1, H, H + .4, cz - ht, cz + ht, T2.deck); put(T2.id + '_top2', cx + 2.4, cx + ht, H, H + .4, cz - ht, cz + ht, T2.deck);
-      put(T2.id + '_top3', cx + 1, cx + 2.4, H, H + .4, cz - ht, cz - .8, T2.deck); put(T2.id + '_top4', cx + 1, cx + 2.4, H, H + .4, cz + .8, cz + ht, T2.deck);
-      const hm = half(T2.mid); put(T2.id + '_mid', cx + 1, cx + hm, T2.mid - .4, T2.mid, cz - hm, cz + hm, T2.deck);     // the MID DECK, on the +x side of the core
-      const L1 = { id: T2.id + '_lad1', box: { minx: cx - .5, maxx: cx + .5, miny: 0, maxy: T2.mid, minz: cz + 1, maxz: cz + 1.2 }, top: T2.mid, mark: { x: cx + 1.8, y: T2.mid, z: cz + 1.6 } };     // ground -> mid, on the core's +z face
-      const L2 = { id: T2.id + '_lad2', box: { minx: cx + 1, maxx: cx + 1.2, miny: T2.mid, maxy: H, minz: cz - .5, maxz: cz + .5 }, top: H, mark: { x: cx + 1.7, y: H + .4, z: cz + 1.4 } };     // mid -> the top hatch, on the +x face
+  const ladders = [], tops = {};
+  const wood = 0x5a3a24, woodL = 0x7a5232, plaster = 0xf0e8d6, tile = 0x3c4350, red = 0xb3322a;
+  for (const T2 of T.towers || []) { const [cx, cz] = T2.at, H = T2.h, half = y => T2.base / 2 + (T2.top / 2 - T2.base / 2) * (y / H), G = {}, geo = c => G[c] || (G[c] = []);
+    const beam = (c, ax, ay, az, bx, by, bz, t) => { const A = new THREE.Vector3(ax, ay, az), B = new THREE.Vector3(bx, by, bz), L = A.distanceTo(B), q = new THREE.BoxGeometry(t, t, L), o = new THREE.Object3D(); o.position.copy(A).add(B).multiplyScalar(.5); o.lookAt(B); o.updateMatrix(); q.applyMatrix4(o.matrix); geo(c).push(q); };
+    const slab = (c, x0, x1, y0, y1, z0, z1) => { const q = new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0); q.translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); geo(c).push(q); };
+    const solid = (id, x0, x1, y0, y1, z0, z1, c) => { slab(c, x0, x1, y0, y1, z0, z1); const b = { minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1, id }; boxes.push(b); by[id] = b; return b; };
+    const C4 = [[1, 1], [1, -1], [-1, -1], [-1, 1]];
+    for (const [sx, sz] of C4) beam(wood, cx + sx * half(0), 0, cz + sz * half(0), cx + sx * half(H), H, cz + sz * half(H), .55);     // the four posts, leaning in
+    for (const y of [3, 7.5, H * .5, 16.5, 20.5]) { const h = half(y); for (let k = 0; k < 4; k++) { const [ax, az] = C4[k], [bx, bz] = C4[(k + 1) % 4]; beam(woodL, cx + ax * h, y, cz + az * h, cx + bx * h, y, cz + bz * h, .3); } }     // tie beams
+    for (const [y0, y1] of [[3, 7.5], [7.5, H * .5], [16.5, 20.5]]) for (let k = 0; k < 4; k++) { const [ax, az] = C4[k], [bx, bz] = C4[(k + 1) % 4], h0 = half(y0), h1 = half(y1); beam(woodL, cx + ax * h0, y0, cz + az * h0, cx + bx * h1, y1, cz + bz * h1, .18); }     // one brace per face per bay
+    const ht = half(H) + .7, hm = half(T2.mid) + .3;
+    // the decks (solid), with HATCHES where the ladders come up
+    if (T2.way === 'ladder') {
+      solid(T2.id + '_mid1', cx - hm, cx + hm, T2.mid - .35, T2.mid, cz - hm, cz + .4, woodL); solid(T2.id + '_mid2', cx - hm, cx + hm, T2.mid - .35, T2.mid, cz + 1.9, cz + hm, woodL);
+      solid(T2.id + '_mid3', cx - hm, cx - .75, T2.mid - .35, T2.mid, cz + .4, cz + 1.9, woodL); solid(T2.id + '_mid4', cx + .75, cx + hm, T2.mid - .35, T2.mid, cz + .4, cz + 1.9, woodL);
+      solid(T2.id + '_top1', cx - ht, cx + ht, H, H + .4, cz - ht, cz - 1.9, woodL); solid(T2.id + '_top2', cx - ht, cx + ht, H, H + .4, cz - .4, cz + ht, woodL);
+      solid(T2.id + '_top3', cx - ht, cx - .75, H, H + .4, cz - 1.9, cz - .4, woodL); solid(T2.id + '_top4', cx + .75, cx + ht, H, H + .4, cz - 1.9, cz - .4, woodL);
+      const L1 = { id: T2.id + '_lad1', box: { minx: cx - .5, maxx: cx + .5, miny: 0, maxy: T2.mid, minz: cz + 1.0, maxz: cz + 1.2 }, top: T2.mid, mark: { x: cx, y: T2.mid, z: cz - .2 }, front: [0, 1] };     // up through the mid hatch, step off toward -z
+      const L2 = { id: T2.id + '_lad2', box: { minx: cx - .5, maxx: cx + .5, miny: T2.mid, maxy: H, minz: cz - 1.2, maxz: cz - 1.0 }, top: H + .4, mark: { x: cx, y: H + .4, z: cz - 2.5 }, front: [0, 1] };     // mid -> top through the top hatch
       ladders.push(L1, L2);
-      for (const L of [L1, L2]) { const B = L.box, wide = B.maxx - B.minx > B.maxz - B.minz, mx = (B.minx + B.maxx) / 2, mz = (B.minz + B.maxz) / 2;     // drawn: two rails and rungs every .32 m
-        for (const o of [-.4, .4]) beam(wide ? mx + o : mx, B.miny, wide ? mz : mz + o, wide ? mx + o : mx, B.maxy + .9, wide ? mz : mz + o, .08);
-        for (let r = B.miny + .3; r < B.maxy + .8; r += .32) beam(wide ? mx - .4 : mx, r, wide ? mz : mz - .4, wide ? mx + .4 : mx, r, wide ? mz : mz + .4, .06); }
-      const lm = new THREE.Mesh(mergeGeometries(iron.splice(0)), mat(0x9a7a50)); lm.name = T2.id + '_ladders'; g.add(lm); }
-    else { put(T2.id + '_top', cx - ht, cx + ht, H, H + .4, cz - ht, cz + ht, T2.deck);
-      const sides = [[0, 1], [1, 0], [0, -1], [-1, 0]]; let k = 0;     // the BRACKETS: blocks 1 m deep (a grabbable lip), round the core's four faces
-      for (let y = T2.step; y < H - 1; y += T2.step, k++) { const [sx, sz] = sides[k % 4], x0 = sx > 0 ? cx + 1 : sx < 0 ? cx - 2.4 : cx - 1.2, z0 = sz > 0 ? cz + 1 : sz < 0 ? cz - 2.4 : cz - 1.2;
-        put(T2.id + '_br' + k, x0, x0 + (sx ? 1.4 : 2.4), y - 1, y, z0, z0 + (sz ? 1.4 : 2.4), T2.deck); } }
-    wparkLabel(g, T2.way === 'ladder' ? 'TOWER A  (LADDERS)' : 'TOWER B  (BRACKETS)', cx, cz + T2.base / 2 + 3, 0, '#3a4050'); }
-  return { g, boxes, ladders }; }
+      for (const L of [L1, L2]) { const B = L.box, mz = (B.minz + B.maxz) / 2; for (const o of [-.42, .42]) beam(wood, cx + o, B.miny, mz, cx + o, B.maxy + 1, mz, .1);
+        for (let r = B.miny + .3; r < B.maxy + .9; r += .32) beam(woodL, cx - .42, r, mz, cx + .42, r, mz, .07); } }
+    else { solid(T2.id + '_pillar', cx - .8, cx + .8, 0, H, cz - .8, cz + .8, wood); solid(T2.id + '_top', cx - ht, cx + ht, H, H + .4, cz - ht, cz + ht, woodL);
+      const sides = [[0, 1], [1, 0], [0, -1], [-1, 0]]; let k = 0;     // BRACKETS: timber ledges 1 m deep round the pillar, a grabbable lip every `step` m
+      for (let y = T2.step; y < H - 1; y += T2.step, k++) { const [sx, sz] = sides[k % 4], x0 = sx > 0 ? cx + .8 : sx < 0 ? cx - 2.2 : cx - 1.2, z0 = sz > 0 ? cz + .8 : sz < 0 ? cz - 2.2 : cz - 1.2;
+        solid(T2.id + '_br' + k, x0, x0 + (sx ? 1.4 : 2.4), y - 1, y, z0, z0 + (sz ? 1.4 : 2.4), woodL); } }
+    // the lookout on the top deck: corner posts, a railing, plastered half-walls between them, a flared two-tier tiled roof
+    const y0 = H + .4, R = ht - .15;
+    for (const [sx, sz] of C4) beam(wood, cx + sx * R, y0, cz + sz * R, cx + sx * R, y0 + 3.4, cz + sz * R, .32);
+    for (let k = 0; k < 4; k++) { const [ax, az] = C4[k], [bx, bz] = C4[(k + 1) % 4]; beam(wood, cx + ax * R, y0 + 1.05, cz + az * R, cx + bx * R, y0 + 1.05, cz + bz * R, .14); beam(wood, cx + ax * R, y0 + 3.3, cz + az * R, cx + bx * R, y0 + 3.3, cz + bz * R, .22); }
+    for (let k = 0; k < 4; k++) { const [ax, az] = C4[k], [bx, bz] = C4[(k + 1) % 4], mx = (ax + bx) / 2, mz2 = (az + bz) / 2, len = 2 * R - .4;     // half-walls, open in the middle of each side (where the rope leaves)
+      for (const f of [-1, 1]) { const ox = (bx - ax) / 2 * f * .55, oz = (bz - az) / 2 * f * .55; const px = cx + mx * R + ox * R, pz = cz + mz2 * R + oz * R; if (Math.abs(mx) > .5) slab(plaster, px - .08, px + .08, y0, y0 + 1.0, pz - len * .2, pz + len * .2); else slab(plaster, px - len * .2, px + len * .2, y0, y0 + 1.0, pz - .08, pz + .08); } }
+    for (const [rr, h0, hh, c] of [[R + 2.0, y0 + 3.4, .9, tile], [R + .9, y0 + 4.3, 1.6, tile]]) { const q = new THREE.ConeGeometry(rr * Math.SQRT2, hh, 4, 1, true); q.rotateY(Math.PI / 4); q.translate(cx, h0 + hh / 2, cz); geo(c).push(q); }     // the eaves, then the roof
+    { const q = new THREE.BoxGeometry(.5, .6, .5); q.translate(cx, y0 + 6.2, cz); geo(red).push(q); }     // the finial
+    for (const c in G) { const m = new THREE.Mesh(mergeGeometries(G[c].map(q => q.index ? q.toNonIndexed() : q)), mat(+c)); m.castShadow = m.receiveShadow = true; m.name = T2.id + '_' + c; if (+c === tile) m.material.side = THREE.DoubleSide; g.add(m); }
+    tops[T2.id] = { x: cx, z: cz, y: y0, half: ht };
+    wparkLabel(g, T2.way === 'ladder' ? 'TOWER A  (LADDERS)' : 'TOWER B  (BRACKETS)', cx, cz + T2.base / 2 + 3, 0, '#5a3a24'); }
+  // the TIGHTROPE: from the middle of A's +x deck edge to the middle of B's -x deck edge, at deck height (walk off the deck onto it)
+  let rope = null; if (T.rope && tops[T.rope.from] && tops[T.rope.to]) { const A = tops[T.rope.from], B2 = tops[T.rope.to], x0 = A.x + A.half, x1 = B2.x - B2.half;
+    rope = Object.assign({}, T.rope, { x: (x0 + x1) / 2, z: A.z, yaw: Math.PI / 2, h: A.y, len: x1 - x0 }); }
+  return { g, boxes, ladders, rope }; }
 // m1843: ONLINE, STAGE 1 (NETPLAY.md). His Robits relay (colinwillow/robits-server, a ~250-line room relay on Render) carries it -- the server
 // knows nothing about games, so KORAJIN shares it under its own room codes (`KJ-...`). What is sent is NOT inputs or clip names: it is his
 // FINISHED POSE -- the drawn root (position + rotation) and every bone's rotation, quantised to int16 and base64'd, `hz` times a second.
@@ -29161,8 +29180,26 @@ function netHurt(m) { const K = m.heavy ? NETHIT.heavy : NETHIT.swing; NET.hitsI
 function netChip() { if (!NET.chip) { if (!NET.on) return; const d = NET.chip = document.createElement('div'); d.style.cssText = 'position:fixed;left:50%;top:6px;transform:translateX(-50%);font:600 12px/1.3 monospace;color:#5affe0;background:rgba(10,14,20,.7);padding:4px 9px;border-radius:6px;z-index:30;pointer-events:none'; document.body.appendChild(d); }
   const n = Object.keys(NET.peers).length, t = NET.on ? 'ONLINE ' + NET.room + '  ' + NET.st + '  ' + (n + 1) + ' here  rx ' + NET.rx + '/s' + (NET.hitsOut || NET.hitsIn ? '  hits ' + (NET.hitsOut || 0) + '>' + (NET.hitsIn || 0) + '<' : '') + (NET.err ? '  ERR ' + NET.err : '') : '';
   NET.chip.style.display = t ? 'block' : 'none'; if (NET.chip.textContent !== t) NET.chip.textContent = t; }
+// m15xx (pass 3): THE TIGHTROPE is a BEAM (the balance-beam system: lean, counter-push, fall) with its own height, length, a faster walk
+// (`speed`), more wobble (`noiseK`), a SAG that follows him (`beamY`) and a slow SWAY that pushes him about mid-span. Drawn as a rope that
+// takes the same shape: a V under his feet when he is on it, a shallow hang when he is not, swinging sideways with him.
+const GROPE = { n: 40, slack: .35, list: [] };
+function gymRopeMake(S) { const ax = Math.sin(S.yaw), az = Math.cos(S.yaw); const B = Object.assign({ g: new THREE.Group(), ax, az, nx: az, nz: -ax, boxes: [] }, S);
+  const n = GROPE.n, pos = new Float32Array((n + 1) * 2 * 3 * 2), idx = []; for (let i = 0; i < n; i++) for (const o of [0, 2 * (n + 1)]) { const a = o + i * 2, b = a + 2; idx.push(a, a + 1, b, a + 1, b + 1, b); }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setIndex(idx);
+  const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xd8c08a, side: THREE.DoubleSide })); m.frustumCulled = false; B.g.add(m); B.mesh = m; scene.add(B.g);
+  BEAM.list.push(B); GROPE.list.push(B); gymRopeStep(0); return B; }
+function gymRopeStep(dt) { for (const B of GROPE.list) { const p = player, on = p.beam && p.beam.B === B, S = on ? p.beam : null, L = B.len, n = GROPE.n, P = B.mesh.geometry.attributes.position.array;
+  const uP = S ? S.u : 0, d = S ? B.sag * beamLoad(B, uP) : 0, sw = S ? (S.sw || 0) : 0, w = .045;
+  for (let i = 0; i <= n; i++) { const u = -L / 2 + L * i / n, t = 2 * u / L, hang = GROPE.slack * (1 - t * t);
+    const v = S ? (u < uP ? (u + L / 2) / Math.max(.01, uP + L / 2) : (L / 2 - u) / Math.max(.01, L / 2 - uP)) : 0, y = B.h - .02 - hang * (S ? .3 : 1) - d * v, lat = sw * v;
+    const x = B.x + B.ax * u + B.nx * lat, z = B.z + B.az * u + B.nz * lat, o1 = i * 6, o2 = (n + 1) * 6 + i * 6;
+    P[o1] = x; P[o1 + 1] = y + w; P[o1 + 2] = z; P[o1 + 3] = x; P[o1 + 4] = y - w; P[o1 + 5] = z;     // a vertical strip
+    P[o2] = x + B.nx * w; P[o2 + 1] = y; P[o2 + 2] = z + B.nz * w; P[o2 + 3] = x - B.nx * w; P[o2 + 4] = y; P[o2 + 5] = z - B.nz * w; }     // and a flat one: reads from any side
+  B.mesh.geometry.attributes.position.needsUpdate = true; } }
 function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R = gymBuild(GYM); scene.add(R.g); for (const b of R.boxes) BOXES.push(b);
-  for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; }     // pass 2: the towers' ladders into the climb system
+  for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; if (L.front) K.fg = { x: L.front[0], z: L.front[1] }; }     // pass 2; m15xx: the climbing side stated (the mark rule had put it inside the tower: "there's a ladder but you can't climb it")
+  if (R.rope) gymRopeMake(R.rope);
   boxGrid(); Z.on = { g: R.g, boxes: R.boxes }; const S = GYM.spawn; player.pos.set(S.at[0], S.at[1], S.at[2]); player.vel.set(0, 0, 0); player.faceH = player.heading = S.yaw; cam.az = S.yaw; }
 function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = shipMake(0), g = S.g; scene.add(g);
   bldTris(S.O, S.tris); for (const b of S.O.boxes) BOXES.push(b); boxGrid();
@@ -35832,7 +35869,7 @@ function rigAnim(dt) {
   // below the air branch `in_air` would take the hang, the mantle and the hop together.
   if (p.beam) {     // m1037: walking the beam / teetering / wobbling when the lean is big
     const C = BEAM.clips, wk = rig.actions[C.walk] ? C.walk : CLIPS.walk, id = rig.actions[C.idle] ? C.idle : CLIPS.idle, wb = rig.actions[C.wobble] ? C.wobble : id;
-    const k = clamp(Math.abs(p.beam.v) / BEAM.speed * 1.4, 0, 1), wob = smooth(.45, .85, Math.abs(p.beam.lean)) * (1 - k);
+    const k = clamp(Math.abs(p.beam.v) / (p.beam.B.speed || BEAM.speed) * 1.4, 0, 1), wob = smooth(.45, .85, Math.abs(p.beam.lean)) * (1 - k);
     t[wk] = (t[wk] || 0) + k; t[id] = (t[id] || 0) + (1 - k) * (1 - wob); t[wb] = (t[wb] || 0) + (1 - k) * wob;
     setScale(wk, clamp(Math.abs(p.beam.v) / BEAM.walkRef, .4, 1.8)); setWeights(t, dt); return; }
   if (p.cart && CART.pose === 'GUARD' && rig.actions[p.cart.gc]) { t[p.cart.gc] = 1; setWeights(t, dt); return; }     // m1061
@@ -68491,6 +68528,7 @@ function frameBody() {
     dragRiderPose();                   // m1619: in the saddle, pitched and banked with his dragon (after every pose that writes the root)
     rig.root.updateMatrixWorld(true); springsStep(dt);     // m1058: hair / cape chains, on the FINAL root (after every pose above)
     dollStep(dt);
+    if (GROPE.list.length) gymRopeStep(dt);     // m15xx: the tightrope takes his weight
     try { netStep(dt); } catch (e) { NET.err = e.message; }     // m1843: ONLINE -- send his finished pose, draw the others' (after every pose pass and the springs)
     _pt = pT('rig', _pt);
   }
