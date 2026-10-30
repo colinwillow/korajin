@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- footsteps on the GAIT'S CLOCK, so they land with the feet at any speed
+## m1874 -- footsteps on the GAIT'S CLOCK, so they land with the feet at any speed
 
 His: *"slowing down my run or walk, it wasn't timing with the actual steps -- can the sound line up with the footsteps perfectly?"*
 - It was DISTANCE: `p.stepD` against `strideNow(speed)`, a measured stride -- right on average, but its phase is whatever it was, and every change
