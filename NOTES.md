@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LOOK pass 2: Japanese roofs, lanterns, coping; the gym in stone
+## m1891 -- LOOK pass 2: Japanese roofs, lanterns, coping; the gym in stone
 
 His: *"look pass two"* (the asks: Japanese architecture, futuristic retro, stone masonry, alien world -- and he could not see pass 1, which was
 only on builder pieces).
