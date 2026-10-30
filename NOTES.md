@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the unarmed fast run plays at the katana's cadence (slower legs, same speed)
+
+His: *"holding the katana, the fast run's feet don't go crazy fast ... unarmed his animation plays so fast it looks cheesy. Cheat: play it slower
+while moving him faster -- take the lesson from the katana run and apply it to the unarmed run."*
+- Why they differed: the fast run (`p.ninja`, look RUN) with the katana out plays `katana_run` under `GAIT.tsHi` 1.6; unarmed it plays `run_fast`
+  under `NINJA.tsHi` **3.4**. And the ordinary top band (`topRun`, the run clip sped up) was allowed `topHi` **3.0**.
+- `NINJA.runTsHi` 1.7 (run_fast's own cap; `NINJA.tsHi` 3.4 stays for the NINJA look's short stride), `GAIT.topHi` 3.0 -> 1.8. Speeds unchanged:
+  past the cap the feet slide a little, which is the trade he asked for. The footstep cadence follows (`strideOf` uses the same caps).
+
 ## m1870 -- his ORIGINAL footsteps, untouched; the three sets on a switch
 
 His: *"now that the editing is gone ... I want to hear the original footsteps without your editing -- before I was getting gaslit, but now I knew I

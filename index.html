@@ -1646,7 +1646,7 @@ const GAIT = {
   // mixer, the lowest foot never slides less than his whole speed (117-240%), against 19-40% for
   // `run_fwd_fast`. No number here can fix that; lifting the swing foot in the export does.
   runSet: 'stride',     // m193: back to the stride, now that it leaps (see `leap`)
-  topRun: 1, topHi: 3.0,     // m1092: the top speed is the run's own clip sped up (see `runSetUse`); TOOLS > TOP SPEED
+  topRun: 1, topHi: 1.8,     /* m1871: 3.0 -> 1.8 -- the top band's sped-up run cadence, nearer the katana's 1.6 (his) */     // m1092: the top speed is the run's own clip sped up (see `runSetUse`); TOOLS > TOP SPEED
   // **THE LEAP (m193, `leap`).** *"I want the stride slower and more airtime -- like a sprinter:
   // legs fast, but in the air longer. Slow the clip down, but he travels farther per leap."* An
   // in-place clip's airtime is tied to its playback rate, so the stride is played at TWO rates:
@@ -33585,7 +33585,7 @@ function stairsRef(nm) { if (STAIRS.ref[nm] != null) return STAIRS.ref[nm]; cons
   const r = arenaRef(hd, nm); return (STAIRS.ref[nm] = r > .2 ? r : nm === 'stairs_run' ? 3.5 : 1.3); }
 const AUTOSPRINT = { on: 1, d: 4.6, minV: 3, turn: 1.4, dbl: 1 };     // m1809: d = 15 ft of running before the sprint
 try { if (localStorage.getItem('mel.autosprint') === '0') AUTOSPRINT.on = 0; } catch (e) {}
-const NINJA = { on: 1, look: 'RUN', looks: ['RUN', 'NINJA'], runClip: 'run_fast', runSpeed: 9, runFov: .5, runLines: .35, clip: 'ninja_run', jump: 'ninja_jump', speed: 11, minMag: .35, win: .4, jumpUp: 10.5, jumpFwd: 13.5, fov: 9, lines: .55, tsLo: .7, tsHi: 3.4 };     // tsHi: her stride is short (2.1 m/s on the goblin) -- anime legs, not sliding feet
+const NINJA = { on: 1, look: 'RUN', looks: ['RUN', 'NINJA'], runClip: 'run_fast', runSpeed: 9, runFov: .5, runLines: .35, clip: 'ninja_run', jump: 'ninja_jump', speed: 11, minMag: .35, win: .4, jumpUp: 10.5, jumpFwd: 13.5, fov: 9, lines: .55, tsLo: .7, tsHi: 3.4, runTsHi: 1.7 };     /* m1871 (his: "with the katana the fast run's feet don't go crazy fast -- play the animation slower while moving him faster, it looks better; apply it to the unarmed run"): the unarmed fast run (`run_fast`) was allowed tsHi 3.4 against the katana run's GAIT.tsHi 1.6 -- `runTsHi` 1.7 */     // tsHi: her stride is short (2.1 m/s on the goblin) -- anime legs, not sliding feet
 // m1085: THE ZOOM (PARKOUR.md piece 1). *"Like Sonic: unarmed, press and hold up on the right stick, he starts running in place, and it hits
 // a point the same way the katana charge does -- it reaches capacity and clicks -- then you let go and he ninja-runs forward... a velocity
 // thing, so you can run up curved walls, really tall half-pipe ramps, loops."* UNARMED, STANDING, the left stick idle: the right pad held UP
@@ -36371,7 +36371,7 @@ function rigAnim(dt) {
   { const st = stairsWant(sp); if (st) { add(L(st), rest, 0); setScale(L(st), clamp(sp / (stairsRef(st) * (rig.gaitK || 1)), STAIRS.tsLo, STAIRS.tsHi)); setWeights(t, dt); return; } }     // m1813: on stairs and slopes
   if (p.ninja && NINJA.look === 'RUN' && !katStance() && rig.actions[NINJA.runClip]) {
     const R = GAIT.runSets.fastrun, ref = R && R.runRef > .2 ? R.runRef : GAIT.sprintRef;
-    add(L(NINJA.runClip), rest, 0); setScale(L(NINJA.runClip), clamp(sp / (Math.max(.5, ref) * (rig.gaitK || 1)), NINJA.tsLo, NINJA.tsHi));
+    add(L(NINJA.runClip), rest, 0); setScale(L(NINJA.runClip), clamp(sp / (Math.max(.5, ref) * (rig.gaitK || 1)), NINJA.tsLo, NINJA.runTsHi));     // m1871: its own cap (the katana's lesson)
     setWeights(t, dt); return;
   }
   if (p.ninja && NINJA.look === 'NINJA' && rig.actions[NINJA.clip]) {
