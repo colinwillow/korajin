@@ -13299,8 +13299,16 @@ function wrunJump0() {
   else { wrunEnd(0); p.vel.set(R.nx * WRUN.offV, WRUN.offUp, R.nz * WRUN.offV); p.aflipPop = 1; airFlipGo(0, 1, 1); }     // off the wall backwards: a back flip
   p.jumps = 1; p.grounded = false; snd('swoosh', { r: 1.1, g: .55 }); return 1;
 }
+// m1873 (his: "the same footstep sounds when he's running on walls"): two footfalls per cycle of whatever run clip is carrying the wall run (his
+// wall_side, the plain run under the IK, or the run-up's legs) -- a step each time that clip's phase crosses 0 and .5 -- through `footSnd`, so the
+// picked STEP SET (the landing set) plays on the wall exactly as on the floor
+function wrunStepSnd(R) { if (!STEP.on || !R || R.kind === 'slide' || !rig.actions) return;
+  let a = null, w = 0; for (const k of ['wall_side', 'wall_side_m', CLIPS.run, 'wall_up__wl', 'wall_up']) { const x = rig.actions[k]; if (x && x.getEffectiveWeight() > w) { w = x.getEffectiveWeight(); a = x; } }
+  if (!a || w < .3) return; const ph = (a.time / Math.max(.01, a.getClip().duration)) * 2 % 1, prev = R.stepPh;
+  R.stepPh = ph; if (prev == null || ph >= prev) return;     // wrapped: a foot is down
+  const p = player, sp = Math.hypot(R.vt || R.v || 0, Math.max(0, p.vel.y)); R.stepL = !R.stepL; footSnd(Math.max(sp, STEP.at + .5), MOVE.max, p.pos.x, p.pos.z, R.stepL); }
 function stepWrun(dt) {
-  const p = player, R = p.wrun; R.t += dt;
+  const p = player, R = p.wrun; R.t += dt; wrunStepSnd(R);
   let vyKeep = null; if (R.velMode) { if (p.jump && R.t > .05) { p.jump = 0; wrunJump(); return; }
     // m1831 (his diagram: "the angle you hit the wall at is step one -- straight up, straight across, or between; then, running, your left thumb
     // goes from straight up over to straight right and that line BENDS -- diagonal, then all the way across. Velocity, the initial angle, and the

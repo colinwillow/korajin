@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- footsteps on the wall run
+
+His: *"that sounds better [the landing set]. Have him do the same sounds when he's running on walls."*
+- `wrunStepSnd`, called each frame of `stepWrun` (not the slide): the heaviest of wall_side / wall_side_m / CLIPS.run / wall_up__wl / wall_up
+  carries the run; a footfall each time its phase crosses 0 and .5 (two per cycle), alternating feet, through `footSnd` -- so the picked STEP SET
+  plays on the wall as on the floor. Headless (wall A, his clip): a step every 16 frames (~.27 s) from catch to ground.
+
 ## m1872 -- footsteps made from HIS LANDING sound (TOOLS > STEP SET: LANDING, the default)
 
 His: *"the noise he makes when he falls out of the air and lands sounds good -- can we make various tones of it and make footsteps out of it?"*
