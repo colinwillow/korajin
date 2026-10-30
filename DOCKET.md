@@ -100,3 +100,6 @@ check, ticked with the build number like the rest. Scene Companion's side of the
        it rides the waves, pitching and rolling up and down them (it doesn't catch air), a real sea dynamic. Needs: a wave field (summed
        Gerstner waves, sampled for height + slope on the CPU so the hull can float on the same water it draws), buoyancy at a few hull
        points, throttle / rudder on the sticks, spray and wake. Own design doc with a DONE WHEN when it starts.
+37. [ ] (his, when he is at the computer) **HAND-ANIMATED SWING PUMPS**: a rope-swing hang (hands on a rope, one above the other) and a PUMP
+       cycle -- torso / legs down so one clip serves both the rope swing and the high bar. m1883 ships a procedural stand-in (`PUMP`: thighs kick
+       with the swing, knees tuck on the back swing, hands IK'd onto the rope); his clips go in `HANIM` (models/characters/anims) and replace it.

@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- the rope swing holds the rope, and BOTH swings pump (procedural, until his clips)
+
+His: *"we need better animations for the rope swing -- he just uses the ledge hang, very stationary; he needs to be holding the rope with his hand ...
+and we need PUMPS for the rope swing and the high bar swing -- torso or legs down, so it could serve both."*
+- `pumpPose` (after the mixer, one for both): the thighs swing about his right axis (read off the DRAWN hips -- the bar turns him round the bar)
+  toward where the swing is going, `kick` rad per m/s of swing speed to `max`; the knees tuck on the back swing (`tuck`), the spine arches the
+  other way (`arch`), eased over `half` s. Speed: the rope's signed speed along its axis; the bar's `w x R x barK`.
+- The rope: both HANDS on it (two-bone IK onto the rope line above the grip, one `hgap` above the other, elbows out); and he faces ALONG the swing
+  (`S.ax`, eased toward the swing's own line) -- he turned to face his motion every half swing, which read as spinning on the spot.
+- Headless (the gym's rope, pumping): the grip hand 0.02 m from the rope point every sampled frame; the pump angle grew with the swing (0.17 ->
+  0.49 rad at 1.5 -> 3.2 m/s). DOCKET 37: his hand-animated hang and pump replace it later.
+
 ## m1882 -- LEVEL BUILDER 3a: functional pieces -- run wall, chimney, monkey bars; tower ports BAR and LADDER
 
 His: *"I was talking about a level builder, not a gym builder ... every piece in a level will have some functionality: a wall run, a tower with a

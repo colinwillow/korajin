@@ -29456,7 +29456,7 @@ function vineCatch() { const p = player; if (p.vineCool > 0 || p.grounded) retur
   for (const V of VINE.list) { const hy = p.pos.y + VINE.handY, dy = V.top.y - hy; if (dy < VINE.rMin || dy > V.len) continue;
     const f = (V.top.y - hy) / Math.max(.1, V.top.y - V.P.y), rx = V.top.x + (V.P.x - V.top.x) * f, rz = V.top.z + (V.P.z - V.top.z) * f;     // where the rope is at his hands' height
     if (Math.hypot(p.pos.x - rx, p.pos.z - rz) > VINE.catchR) continue;
-    p.vine = { V, r: dy, H: new THREE.Vector3(p.pos.x, hy, p.pos.z), Hp: new THREE.Vector3(p.pos.x - p.vel.x / 60, hy - p.vel.y / 60, p.pos.z - p.vel.z / 60) };
+    p.vine = { V, r: dy, H: new THREE.Vector3(p.pos.x, hy, p.pos.z), Hp: new THREE.Vector3(p.pos.x - p.vel.x / 60, hy - p.vel.y / 60, p.pos.z - p.vel.z / 60), ax: new THREE.Vector3(Math.sin(p.faceH), 0, Math.cos(p.faceH)) };     // m1883: `ax`, the swing's axis -- he faces along it
     p.melee = 0; p.roll = 0; p.slam = 0; p.aflip = null; p.jumps = 1; snd('foot', { g: .14, r: .8 }); return 1; } return 0; }
 function stepVine(dt) { const p = player, S = p.vine, V = S.V; dt = Math.min(dt, 1 / 30);
   if (p.jump) { p.jump = 0; const v = S.H.clone().sub(S.Hp).divideScalar(dt); p.vine = null; p.vineCool = VINE.cool; p.vel.set(v.x, Math.max(v.y, 0) + VINE.pop, v.z); p.grounded = false; p.airT = 0;
@@ -29467,8 +29467,29 @@ function stepVine(dt) { const p = player, S = p.vine, V = S.V; dt = Math.min(dt,
   S.Hp.copy(S.H); S.H.set(nx, ny, nz); const d = S.H.clone().sub(V.top), L = d.length() || 1; S.H.copy(V.top).addScaledVector(d, S.r / L);     // back onto the sphere
   if (S.climb) { S.r = clamp(S.r - S.climb, VINE.rMin, V.len - .3); S.climb = 0; }
   p.pos.set(S.H.x, S.H.y - VINE.handY, S.H.z); p.vel.copy(S.H).sub(S.Hp).divideScalar(dt); p.grounded = false; p.airT = 0;
-  const hv = Math.hypot(p.vel.x, p.vel.z); if (hv > .6) p.faceH = p.heading = Math.atan2(p.vel.x, p.vel.z);
+  const hv = Math.hypot(p.vel.x, p.vel.z); if (hv > .6) { let dx = p.vel.x / hv, dz = p.vel.z / hv; if (dx * S.ax.x + dz * S.ax.z < 0) { dx = -dx; dz = -dz; } S.ax.x += (dx - S.ax.x) * Math.min(1, dt * 1.5); S.ax.z += (dz - S.ax.z) * Math.min(1, dt * 1.5); const L = Math.hypot(S.ax.x, S.ax.z) || 1; S.ax.x /= L; S.ax.z /= L; }
+  p.faceH = p.heading = Math.atan2(S.ax.x, S.ax.z);     // m1883: he faces ALONG the swing and swings forward and back on it (he turned to face his motion every half swing)
+  S.v = p.vel.x * S.ax.x + p.vel.z * S.ax.z;     // signed speed along the swing: the pump reads it
   vineDraw(V, S.H); }
+// m1883 (his: "the rope swing needs better animation -- he's very stationary, he needs to be holding the rope with his hands ... and we need PUMPS for
+// both the rope swing and the high bar swing, probably torso or legs down, so one works for both"): ONE PUMP for both, after the mixer -- the thighs
+// swung about his right axis toward where the swing is going (`kick` rad per m/s of swing speed, to `max`), the knees tucking on the BACK swing
+// (`tuck`), the spine arching the other way (`arch`), all eased (`half` s). The rope adds his HANDS on it: two-bone IK onto the rope line above his
+// head, one hand `hgap` above the other, elbows out. Hand-animated clips can replace it later (DOCKET).
+const PUMP = { on: 1, kick: .16, max: .95, tuck: .7, arch: .35, half: .08, barK: .55, hgap: .22, k: 0, kn: 0 };
+const _ppQ = new THREE.Quaternion(), _ppQ2 = new THREE.Quaternion(), _ppA = new THREE.Vector3(), _ppT = new THREE.Vector3();
+function ppTurn(B, ax, ang) { if (!B || !ang) return; B.getWorldQuaternion(_ppQ); _ppQ2.setFromAxisAngle(ax, ang).multiply(_ppQ); B.parent.getWorldQuaternion(_ppQ).invert(); B.quaternion.copy(_ppQ.multiply(_ppQ2)); B.updateMatrixWorld(true); }
+function pumpPose(dt) { const p = player, Bn = rig.bones; if (!PUMP.on || !Bn || !(p.vine || p.bar)) { PUMP.k = PUMP.kn = 0; return; }
+  const v = p.vine ? (p.vine.v || 0) : p.bar.w * (p.bar.R || 1) * PUMP.barK, want = clamp(v * PUMP.kick, -PUMP.max, PUMP.max), knee = Math.max(0, -want) * PUMP.tuck + .15;
+  const e = 1 - Math.exp(-dt * .693 / PUMP.half); PUMP.k += (want - PUMP.k) * e; PUMP.kn += (knee - PUMP.kn) * e;
+  rig.root.updateMatrixWorld(true); const hip = Bn.mixamorig_Hips; if (!hip) return;
+  // his right axis, from the drawn hips (the bar turns him about the bar, so the world frame is not enough)
+  hip.getWorldQuaternion(_ppQ); _ppA.set(-1, 0, 0).applyQuaternion(_ppQ).normalize();     // +X is his LEFT, so -X is his right
+  for (const sd of ['Left', 'Right']) { ppTurn(Bn['mixamorig_' + sd + 'UpLeg'], _ppA, PUMP.k); ppTurn(Bn['mixamorig_' + sd + 'Leg'], _ppA, -PUMP.kn); }
+  ppTurn(Bn.mixamorig_Spine1 || Bn.mixamorig_Spine, _ppA, -PUMP.k * PUMP.arch);
+  if (p.vine) { const S = p.vine, up = _ppT.copy(S.V.top).sub(S.H).normalize(), fx = Math.sin(p.faceH), fz = Math.cos(p.faceH), rx = -fz, rz = fx;     // his right (-fz, fx)
+    for (const [sd, k, o] of [['Right', 1, 0], ['Left', -1, PUMP.hgap]]) { const UA = Bn['mixamorig_' + sd + 'Arm'], FA = Bn['mixamorig_' + sd + 'ForeArm'], HA = Bn['mixamorig_' + sd + 'Hand']; if (!UA || !FA || !HA) continue;
+      const T = S.H.clone().addScaledVector(up, o + .02); wrLimb(UA, FA, HA, T, new THREE.Vector3(rx * k * .7 - fx * .3, -.2, rz * k * .7 - fz * .3)); } } }
 function vineIdle(dt) { for (const V of VINE.list) { if (player.vine && player.vine.V === V) continue;     // an empty rope settles back under its top, swaying a little
   V.idleT += dt; const tgt = V.top.clone().add(new THREE.Vector3(Math.sin(V.idleT * .8) * .25, -V.len, Math.cos(V.idleT * .6) * .15)); V.P.lerp(tgt, 1 - Math.exp(-dt * 1.2)); vineDraw(V, V.top.clone().lerp(V.P, .5)); } }
 function vineSwipe(dx, dy) { const p = player; if (!p.vine) return 0; if (Math.abs(dy) > Math.abs(dx)) p.vine.climb = (dy < 0 ? 1 : -1) * VINE.climb; return 1; }
@@ -69165,6 +69186,7 @@ function frameBody() {
     runToePose();                      // m1853: no toe flick on the run's back stride
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
     vinePose();                        // m1856: along the swing rope
+    pumpPose(dt);                      // m1883: the swing's pump (rope and high bar) + his hands on the rope
     mbarPose();                        // m1857: hands on the monkey bars' rungs
     poseFixApply();                    // m1877: his in-game pose tweaks, per clip (TOOLS > POSE EDIT)
     contactSnd(dt);                    // m1875: hands / knees / toes / hips meeting the floor in any move make the landing sound
