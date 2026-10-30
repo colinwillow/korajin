@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- LEVEL BUILDER 3a: functional pieces -- run wall, chimney, monkey bars; tower ports BAR and LADDER
+
+His: *"I was talking about a level builder, not a gym builder ... every piece in a level will have some functionality: a wall run, a tower with a
+high bar, monkey bars across it, a tightrope, a sky bridge, a rope bridge, a back-and-forth wall -- two towers you only get up by jumping wall to
+wall ... scaffold first, then redesign the buildings around the functionality."* The kit plan is in LEVELBUILDER.md (3a-3f, bowl and loop last).
+- New kinds: RUN WALL (the wall, now 16 x 8), CHIMNEY (two facing walls `gap` apart -- SIZE moves the gap -- with a cap to stand on), MONKEY BARS
+  (posts, side rails, rungs every ~.95 m). Tower ports gain BAR (`hbarMake` on that deck edge, a 4.4 m gap in the parapet) and LADDER (`kitClimbAdd`
+  down that face, `fg` out of it, the step-off `mark` on the deck).
+- `lbPiece` returns `ex`: things that are a SYSTEM rather than a box, as data; `lbSystems` makes them real in play (HBAR.list / KCLIMB / MBAR.list)
+  and takes the last set out first. The editor draws a light stand-in.
+- MBAR ran along x only (`M.rungs` were x's, `M.z` the line): `mbAl` / `mbAc` read along / across, `M.ax` 'z' for a turned run; catch, step,
+  facing and the hands' IK all go through them (the gym's set is unchanged: no `ax`).
+- Headless: tower (N bar, E ladder, S balcony), chimney, two monkey runs (one turned): play -> bars +1, ladders +1, monkey +2; the chimney's cap
+  16.30; on the TURNED run: caught, 3.57 m along z under the stick, x held exactly, still on.
+
 ## m1881 -- LEVEL BUILDER step 2: links between ports (rope, plank / ramp, zipline)
 
 His: *"click on one port and choose rope bridge port A, click the other tower, rope bridge port B, and build a bridge there."*

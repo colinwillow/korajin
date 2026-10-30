@@ -29480,16 +29480,18 @@ function vinePose() { const p = player, S = p.vine; if (!S || !VINE.tilt) return
 // leading hand reaching over, the other holding -- `mbarPose`'s arm IK puts each hand on its rung); a TAP drops him, carrying `drop` m/s the
 // way he faces (so off the last rung onto the deck). No clip for it in the library: the bar's hang clip plus the IK.
 const MBAR = { list: [], grabY: .45, grabX: .45, stepT: .38, dip: .18, handY: 1.62, drop: 4, cool: .4, handW: .2 };
+// m1882: a run of bars along x (the gym's) or along z (`M.ax` 'z', a builder piece turned a quarter): `mbAl` reads the along coordinate, `mbAc` the across
+const mbAl = (M, x, z) => M.ax === 'z' ? z : x, mbAc = (M, x, z) => M.ax === 'z' ? x - M.x : z - M.z;
 function mbarCatch() { const p = player; if (p.mbarCool > 0 || p.grounded || p.vel.y > 2) return 0;
-  for (const M of MBAR.list) { const hy = p.pos.y + MBAR.handY; if (Math.abs(hy - M.h) > MBAR.grabY || Math.abs(p.pos.z - M.z) > M.w / 2) continue;
-    let bi = -1, bd = 1e9; M.rungs.forEach((x, i) => { const d = Math.abs(p.pos.x - x); if (d < bd) { bd = d; bi = i; } }); if (bd > MBAR.grabX) continue;
-    p.mbar = { M, i: bi, j: bi, t: 0, lead: 1, dir: Math.sign(p.vel.x) || 1 }; p.vel.set(0, 0, 0); p.melee = 0; p.roll = 0; p.aflip = null; p.jumps = 1; snd('foot', { g: .14, r: .9 }); return 1; } return 0; }
+  for (const M of MBAR.list) { const hy = p.pos.y + MBAR.handY; if (Math.abs(hy - M.h) > MBAR.grabY || Math.abs(mbAc(M, p.pos.x, p.pos.z)) > M.w / 2) continue;
+    const al = mbAl(M, p.pos.x, p.pos.z); let bi = -1, bd = 1e9; M.rungs.forEach((x, i) => { const d = Math.abs(al - x); if (d < bd) { bd = d; bi = i; } }); if (bd > MBAR.grabX) continue;
+    p.mbar = { M, i: bi, j: bi, t: 0, lead: 1, dir: Math.sign(mbAl(M, p.vel.x, p.vel.z)) || 1 }; p.vel.set(0, 0, 0); p.melee = 0; p.roll = 0; p.aflip = null; p.jumps = 1; snd('foot', { g: .14, r: .9 }); return 1; } return 0; }
 function stepMbar(dt) { const p = player, S = p.mbar, M = S.M;
   if (p.jump) { p.jump = 0; p.mbar = null; p.mbarCool = MBAR.cool; p.vel.set(Math.sin(p.faceH) * MBAR.drop, 1, Math.cos(p.faceH) * MBAR.drop); p.grounded = false; p.airT = 0; return; }
-  if (S.j === S.i) { const sw = stickWorld(), ax = sw.mag > .35 ? sw.x : 0;     // the bars run along x
+  if (S.j === S.i) { const sw = stickWorld(), ax = sw.mag > .35 ? mbAl(M, sw.x, sw.z) : 0;     // the stick along the bars
     if (Math.abs(ax) > .4) { const j = S.i + Math.sign(ax); if (j >= 0 && j < M.rungs.length) { S.j = j; S.t = 0; S.dir = Math.sign(ax); S.lead = -S.lead; snd('foot', { g: .08, r: 1.2 }); } else S.dir = Math.sign(ax); } }
   let x = M.rungs[S.i], dip = 0; if (S.j !== S.i) { S.t += dt / MBAR.stepT; const u = Math.min(1, S.t), e = u * u * (3 - 2 * u); x = M.rungs[S.i] + (M.rungs[S.j] - M.rungs[S.i]) * e; dip = Math.sin(u * Math.PI) * MBAR.dip; if (u >= 1) S.i = S.j; }
-  p.pos.set(x, M.h - MBAR.handY - dip, M.z); p.vel.set(0, 0, 0); p.grounded = false; p.airT = 0; p.faceH = p.heading = Math.atan2(S.dir, 0); }
+  if (M.ax === 'z') p.pos.set(M.x, M.h - MBAR.handY - dip, x); else p.pos.set(x, M.h - MBAR.handY - dip, M.z); p.vel.set(0, 0, 0); p.grounded = false; p.airT = 0; p.faceH = p.heading = M.ax === 'z' ? Math.atan2(0, S.dir) : Math.atan2(S.dir, 0); }
 const _mbT = new THREE.Vector3();
 function mbarPose() { const p = player, S = p.mbar; if (!S || !rig.bones) return; const M = S.M, B = rig.bones; rig.root.updateMatrixWorld(true);
   const rx = -Math.cos(p.faceH), rz = Math.sin(p.faceH);     // his right is (-fz, fx); facing along x, that is +-z
@@ -29497,7 +29499,7 @@ function mbarPose() { const p = player, S = p.mbar; if (!S || !rig.bones) return
   for (const [nm, sd] of [['Left', -1], ['Right', 1]]) { const UA = B['mixamorig_' + nm + 'Arm'], FA = B['mixamorig_' + nm + 'ForeArm'], HA = B['mixamorig_' + nm + 'Hand']; if (!UA || !FA || !HA) continue;
     const isLead = (sd === S.lead), from = M.rungs[S.i], to = M.rungs[S.j];
     let hx = from, hy = M.h; if (moving && isLead) { hx = from + (to - from) * u; hy = M.h + Math.sin(u * Math.PI) * .25; } else if (moving && !isLead) hx = from;
-    _mbT.set(hx, hy - .04, M.z + rz * sd * MBAR.handW); wrLimb(UA, FA, HA, _mbT.clone(), new THREE.Vector3(rx * sd * .5, -.6, 0)); } }
+    if (M.ax === 'z') _mbT.set(M.x + rx * sd * MBAR.handW, hy - .04, hx); else _mbT.set(hx, hy - .04, M.z + rz * sd * MBAR.handW); wrLimb(UA, FA, HA, _mbT.clone(), new THREE.Vector3(rx * sd * .5, -.6, rz * sd * .5)); } }
 function wparkBuild() { const Z = WPARK; Z.want = 2; if (Z.on) return; const R = gymBuild(GYM); scene.add(R.g); for (const b of R.boxes) BOXES.push(b);
   for (const L of R.ladders || []) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; if (L.front) K.fg = { x: L.front[0], z: L.front[1] }; }     // pass 2; m1850: the climbing side stated (the mark rule had put it inside the tower: "there's a ladder but you can't climb it")
   if (R.rope) gymRopeMake(R.rope);
@@ -68857,10 +68859,12 @@ function posedFrame() { try { renderer.render(scene, camera); } catch (e) {} }
 // SC_LEVELB:START
 const LB = { on: 0, KINDS: {
     tower: { p: { base: 6, h: 16 }, c: 0x8a8f99, label: 'TOWER' },
-    wall: { p: { len: 8, t: .6, h: 6 }, c: 0x4a8fd8, label: 'WALL' },
+    wall: { p: { len: 16, t: .6, h: 8 }, c: 0x4a8fd8, label: 'RUN WALL' },
+    chimney: { p: { gap: 3.2, len: 6, h: 16 }, c: 0x3fae6a, label: 'CHIMNEY' },     /* m1882: two facing walls -- up only by wall-jumping between them */
+    monkey: { p: { len: 10, h: 5 }, c: 0x5a3a24, label: 'MONKEY BARS' },
     platform: { p: { w: 6, d: 4 }, c: 0xd9a441, label: 'PLATFORM', top: 4 },
     block: { p: { s: 2 }, c: 0xb3322a, label: 'BLOCK' } },
-  PORTS: ['closed', 'open', 'balcony'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e },
+  PORTS: ['closed', 'open', 'balcony', 'bar', 'ladder'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e, bar: 0xe6e9ee, ladder: 0xc8743a },     // m1882: + a HIGH BAR on that edge, a LADDER down that face
   LINKS: { rope: { label: 'ROPE', c: 0xd8c08a }, plank: { label: 'PLANK', c: 0x8a6a3a }, zip: { label: 'ZIP', c: 0x22d3ee } }, linkA: null, selLink: null, linking: 0,     // m1881: port to port
   cur: null, live: null, sel: null, persp: 1, cams: {}, orb: { az: .7, el: .55, r: 40, t: new THREE.Vector3() }, ptr: new Map(), pinch: 0, pmid: null, tap: null };
 // SC_LEVELB:END
@@ -68869,7 +68873,7 @@ function lbLoad() { try { const v = JSON.parse(localStorage.getItem(lbKey()) || 
 function lbSave() { try { localStorage.setItem(lbKey(), JSON.stringify(LB.cur)); } catch (e) {} }
 const _lvM = {}; function lbMat(c, ghost) { const k = c + (ghost ? 'g' : ''); return _lvM[k] || (_lvM[k] = new THREE.MeshStandardMaterial({ color: c, roughness: .85, transparent: !!ghost, opacity: ghost ? .55 : 1 })); }
 // one piece: local boxes [x0, x1, y0, y1, z0, z1] around its own origin (y = its base), turned by `yaw` quarter turns, placed at `at`
-function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [];
+function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p || {}), L = [], ports = [], X = [];     // X: the EXTRAS -- things that are a system, not a box (bars, ladders, monkey bars), as data in the piece's own frame
   const add = (c, x0, x1, y0, y1, z0, z1) => L.push({ c, b: [x0, x1, y0, y1, z0, z1] });
   if (P.kind === 'tower') { const hb = q.base / 2, dh = hb + .6, H = q.h; add(K.c, -hb, hb, 0, H - .4, -hb, hb); add(0x6b5038, -dh, dh, H - .4, H, -dh, dh);
     const ps = P.ports || {};
@@ -68877,9 +68881,14 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
       const seg = (u0, u1, n0, n1, y0, y1, c) => { const xs = [tx * u0 + nx * n0, tx * u1 + nx * n1, tx * u0 + nx * n1, tx * u1 + nx * n0], zs = [tz * u0 + nz * n0, tz * u1 + nz * n1, tz * u0 + nz * n1, tz * u1 + nz * n0]; add(c, Math.min(...xs), Math.max(...xs), y0, y1, Math.min(...zs), Math.max(...zs)); };
       if (t === 'closed') seg(-dh, dh, dh - .3, dh, H, H + 1.1, 0x6b5038);
       if (t === 'balcony') { seg(-1.6, 1.6, dh, dh + 2.4, H - .35, H, 0xd9a441); seg(-1.6, 1.6, dh + 2.25, dh + 2.4, H, H + 1, 0x6b5038); seg(-1.6, -1.45, dh, dh + 2.4, H, H + 1, 0x6b5038); seg(1.45, 1.6, dh, dh + 2.4, H, H + 1, 0x6b5038); }
-      if (t === 'open') { seg(-dh, -1.5, dh - .3, dh, H, H + 1.1, 0x6b5038); seg(1.5, dh, dh - .3, dh, H, H + 1.1, 0x6b5038); }
+      if (t === 'open' || t === 'ladder') { seg(-dh, -1.5, dh - .3, dh, H, H + 1.1, 0x6b5038); seg(1.5, dh, dh - .3, dh, H, H + 1.1, 0x6b5038); }
+      if (t === 'bar') { seg(-dh, -2.2, dh - .3, dh, H, H + 1.1, 0x6b5038); seg(2.2, dh, dh - .3, dh, H, H + 1.1, 0x6b5038); X.push({ type: 'bar', lx: nx * (dh - 1.1), lz: nz * (dh - 1.1), ltx: tx, ltz: tz, y: H }); }
+      if (t === 'ladder') X.push({ type: 'ladder', lx: nx * (dh + .1), lz: nz * (dh + .1), ltx: tx, ltz: tz, lnx: nx, lnz: nz, h: H, mx: nx * (dh - 1.4), mz: nz * (dh - 1.4) });
       ports.push({ side, t, at: [nx * (dh + (t === 'balcony' ? 2.4 : 0)), H + .7, nz * (dh + (t === 'balcony' ? 2.4 : 0))] }); } }
   else if (P.kind === 'wall') add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.t / 2, q.t / 2);
+  else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); }     // the cap: a roof to stand on at the top
+  else if (P.kind === 'monkey') { const w = 1.1, n = Math.max(2, Math.round(q.len / .95)), gp = q.len / n; for (const sz of [-1, 1]) for (const x of [-q.len / 2 - .4, q.len / 2 + .4]) add(K.c, x - .12, x + .12, 0, q.h + .12, sz * (w / 2 + .1) - .12, sz * (w / 2 + .1) + .12);
+    X.push({ type: 'monkey', len: q.len, h: q.h, w, n, gp }); }
   else if (P.kind === 'platform') add(K.c, -q.w / 2, q.w / 2, -.4, 0, -q.d / 2, q.d / 2);
   else add(K.c, -q.s / 2, q.s / 2, 0, q.s, -q.s / 2, q.s / 2);
   const yw = ((P.yaw || 0) % 4 + 4) % 4, rx = (x, z) => yw === 0 ? [x, z] : yw === 1 ? [z, -x] : yw === 2 ? [-x, -z] : [-z, x], [ax, ay, az] = P.at;
@@ -68888,13 +68897,34 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, b[3] - b[2], z1 - z0), lbMat(c, ghost)); m.position.set((x0 + x1) / 2, ay + (b[2] + b[3]) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = !ghost; m.userData.pid = P.id; g.add(m);
     boxes.push({ minx: x0, maxx: x1, miny: ay + b[2], maxy: ay + b[3], minz: z0, maxz: z1, id: P.id }); }
   for (const pt of ports) { const r = rx(pt.at[0], pt.at[2]); pt.w = [r[0] + ax, ay + pt.at[1], r[1] + az]; pt.key = pt.side; pt.deck = ay + q.h; }     // `key` is the piece's own N/E/S/W (unturned); `deck` the floor height there
-  return { g, boxes, ports }; }
+  // the extras, into the world frame (turned and placed), with a light editor look; `lbSystems` makes them real in play
+  const ex = [], lm = (c, w, h, d, x, y, z, ry) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), lbMat(c, ghost)); m.position.set(x, y, z); if (ry) m.rotation.y = ry; m.userData.pid = P.id; g.add(m); };
+  for (const E of X) { if (E.type === 'monkey') { const al = yw % 2 ? 'z' : 'x', sg = yw >= 2 ? -1 : 1, rungs = []; for (let i = 0; i <= E.n; i++) { const u = (-E.len / 2 + i * E.gp) * sg; rungs.push((al === 'x' ? ax : az) + (yw === 1 ? -u : yw === 3 ? u : u)); }
+      rungs.sort((a, b) => a - b); const M = { id: P.id + '_mb', ax: al, x: ax, z: az, h: ay + E.h, w: E.w, rungs }; ex.push({ type: 'monkey', M });
+      for (const r of rungs) lm(0x9a7a50, al === 'x' ? .08 : E.w, .08, al === 'x' ? E.w : .08, al === 'x' ? r : ax, ay + E.h, al === 'x' ? az : r);
+      for (const sz of [-1, 1]) lm(0x5a3a24, al === 'x' ? E.len + .8 : .12, .14, al === 'x' ? .12 : E.len + .8, al === 'x' ? ax : ax + sz * E.w / 2, ay + E.h + .04, al === 'x' ? az + sz * E.w / 2 : az); continue; }
+    const c = rx(E.lx, E.lz), t2 = rx(E.ltx, E.ltz), wx = c[0] + ax, wz = c[1] + az;
+    if (E.type === 'bar') { ex.push({ type: 'bar', x: wx, z: wz, yaw: Math.atan2(-t2[1], t2[0]), y: ay + E.y }); if (LB.on) lm(0xe6e9ee, Math.abs(t2[0]) * 2.4 + .08, .08, Math.abs(t2[1]) * 2.4 + .08, wx, ay + E.y + (HBAR.h || 2.4), wz); }
+    if (E.type === 'ladder') { const n2 = rx(E.lnx, E.lnz), m2 = rx(E.mx, E.mz), hw = .5, x0 = wx - Math.abs(t2[0]) * hw - Math.abs(n2[0]) * .1, x1 = wx + Math.abs(t2[0]) * hw + Math.abs(n2[0]) * .1, z0 = wz - Math.abs(t2[1]) * hw - Math.abs(n2[1]) * .1, z1 = wz + Math.abs(t2[1]) * hw + Math.abs(n2[1]) * .1;
+      ex.push({ type: 'ladder', id: P.id + '_lad_' + E.lnx + '_' + E.lnz, box: { minx: x0, maxx: x1, miny: ay, maxy: ay + E.h, minz: z0, maxz: z1 }, top: ay + E.h + .4, mark: { x: m2[0] + ax, y: ay + E.h, z: m2[1] + az }, front: [n2[0], n2[1]] });
+      for (const o of [-.42, .42]) lm(0x7a5232, .1, E.h + 1, .1, wx + t2[0] * o, ay + (E.h + 1) / 2, wz + t2[1] * o);
+      for (let y = .4; y < E.h; y += .35) lm(0x9a7a50, Math.abs(t2[0]) * .84 + .05, .05, Math.abs(t2[1]) * .84 + .05, wx, ay + y, wz); } }
+  return { g, boxes, ports, ex }; }
+// m1882: the extras made real (play only), each taken out again on the next rebuild
+function lbSystems(list) { const S = LB.live && LB.live.sys; if (S) { for (const B of S.bars) { B.g.removeFromParent(); for (const b of B.boxes) { const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); } const i = HBAR.list.indexOf(B); if (i >= 0) HBAR.list.splice(i, 1); }
+    for (const L of S.lads) { const i = KCLIMB.indexOf(L); if (i >= 0) KCLIMB.splice(i, 1); } for (const M of S.mbs) { const i = MBAR.list.indexOf(M); if (i >= 0) MBAR.list.splice(i, 1); if (player.mbar && player.mbar.M === M) player.mbar = null; } }
+  const out = { bars: [], lads: [], mbs: [] }; if (LB.on) return out;
+  for (const E of list) { if (E.type === 'bar') { const B = hbarMake(E.x, E.z, E.yaw, E.y, 1); HBAR.list.push(B); out.bars.push(B); }
+    else if (E.type === 'ladder') { const K = kitClimbAdd(E.box, E.id, E.top); K.mark = E.mark; K.fg = { x: E.front[0], z: E.front[1] }; out.lads.push(K); }
+    else if (E.type === 'monkey') { MBAR.list.push(E.M); out.mbs.push(E.M); } }
+  return out; }
 // the level in the world: meshes always, colliders into BOXES (taken out again on a rebuild)
 function lbLive(ghostId) { const L = LB.cur; if (!L) return; if (LB.live) { scene.remove(LB.live.g); for (const b of LB.live.boxes) { const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); } }
-  const g = new THREE.Group(), boxes = [], ports = []; g.name = 'level';
-  for (const P of L.pieces) { const R = lbPiece(P, P.id === ghostId); g.add(R.g); if (!LB.on) boxes.push(...R.boxes); for (const pt of R.ports) ports.push(Object.assign(pt, { pid: P.id })); }
+  const g = new THREE.Group(), boxes = [], ports = [], ex = []; g.name = 'level';
+  for (const P of L.pieces) { const R = lbPiece(P, P.id === ghostId); g.add(R.g); if (!LB.on) boxes.push(...R.boxes); for (const pt of R.ports) ports.push(Object.assign(pt, { pid: P.id })); ex.push(...R.ex); }
+  const sys = lbSystems(ex);
   const links = lbLinks(g, boxes, ports);
-  scene.add(g); for (const b of boxes) BOXES.push(b); if (!LB.on || boxes.length) boxGrid(); LB.live = { g, boxes, ports, links };
+  scene.add(g); for (const b of boxes) BOXES.push(b); if (!LB.on || boxes.length) boxGrid(); LB.live = { g, boxes, ports, links, sys };
   if (LB.on) lbPortMarks(); }
 // m1881: LINKS between ports -- in the editor a coloured line (tap it to pick it); in play the real thing: ROPE = the gym's swaying tightrope
 // (`gymRopeMake`, one height: the two decks' mean), PLANK = a 1.4 m walkway, a TURNED box when the ports are not in line (`cs`/`sn`), ZIP = a
@@ -68984,7 +69014,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
     L.pieces.push({ id, kind: k, at, yaw: 0, p: {}, ports: k === 'tower' ? { N: 'closed', E: 'closed', S: 'closed', W: 'closed' } : undefined }); lbSave(); lbSelect(id); }
   else if (!P) { if (a === 'play') lbExit(); else if (a === 'exit') lbExit(); else if (a === 'file') lbFile(); else if (a === 'copy') lbCopy(); return; }
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
-  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'wall' ? 'len' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' ? .5 : 1;
+  else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
   else if (a === 'tall') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p); if (q.h != null) P.p = Object.assign({}, P.p, { h: clamp(q.h + 2 * +k, 1, 400) }); else if (P.kind === 'block') P.p = Object.assign({}, P.p, { s: clamp(q.s + .5 * +k, .5, 20) }); else P.at[1] += 2 * +k; }
   else if (a === 'lift') P.at[1] = Math.max(-50, P.at[1] + +k);

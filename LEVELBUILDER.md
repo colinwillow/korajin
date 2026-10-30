@@ -13,7 +13,15 @@ Data-first (SCENE_COMPANION.md): a level is `{ id, world, pieces: [{ id, kind, a
       HEIGHT +/-, COPY, DELETE, OK. A tower's four PORTS (N E S W) cycle CLOSED / OPEN / BALCONY on a tap. PLAY = colliders in, game on.
       Saved on the phone as you go (per world + zone); SAVE FILE downloads the JSON (and COPY).
 - [x] 2. LINKS between ports (m1881): LINK ROPE / PLANK / ZIP, tap port A, tap port B. ROPE = the gym tightrope (sways, at the decks' mean height); PLANK = a flat walkway (a turned box when diagonal) or, between decks of different heights, a RAMP of two walkable triangles; ZIP = high port to low, cable + posts. A closed port is opened. Tap a link line to change its kind or delete it.
-- [ ] 3. The gym's other pieces (ladder, bar, rope, monkey bars, swing) as kinds; height tiers + stacking snap for the very tall builds.
+- [x] 3a. FUNCTIONAL PIECES (m1882) -- his correction: *"a LEVEL builder, not a gym builder: every piece has a function -- a wall run, a tower with a high
+      bar, monkey bars across, a tightrope, a sky bridge, a rope bridge, a back-and-forth chimney ... scaffold first, the buildings redesigned around
+      the function later (swappable)."* RUN WALL (16 x 8), CHIMNEY (two facing walls, gap 3.2, capped), MONKEY BARS (posts + rungs, either axis);
+      tower ports + BAR (a high bar on that edge) and LADDER (down that face, step-off onto the deck).
+- [ ] 3b. SKY BRIDGE (covered link) and a ROPE BRIDGE that is not a singleton; swing rope; bounce pad.
+- [ ] 3c. L-WALL with a curved corner (the run carries round).
+- [ ] 3d. QUARTER BOWL -- the wall run on a curving surface (new movement), tried in the gym first.
+- [ ] 3e. THE LOOP -- gravity along the track, the camera through it (the bowl, all the way round).
+- [ ] 3f. A `look` per piece (scaffold now, his art later, no change to the function); breakable walls as a wall with `breakable: 1`.
 - [ ] 4. Saved levels in `levels/` load as real places (his uploads become permanent).
 
 ## DONE WHEN
