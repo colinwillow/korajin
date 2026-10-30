@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- FUNCTION vs LOOK: level THEMES (block-out / Japanese / sky temple / ancient tech) that re-skin the same build
+## m1898 -- FUNCTION vs LOOK: level THEMES (block-out / Japanese / sky temple / ancient tech) that re-skin the same build
 
 His: *"build them really simple, and any time we make a new temple you can wrap the new design around the current build -- block out the
 functionality; new temples are always going to look different ... they need to be swapped pretty easily."*
