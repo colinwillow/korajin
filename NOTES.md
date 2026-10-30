@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## NINJA GYM pass 4: the rope swing (m15xx, NINJAGYM.md)
+## NINJA GYM pass 4: the rope swing (m1856, NINJAGYM.md)
 *"A rope swing -- you can climb up and down a rope, and actually swing and pump and move yourself around."*
 - **Where:** `GYM.gantry` / `swings` / `swingDecks` -- a red lintel-and-posts gantry 14 m up at z -84, x -46..-14, three ropes 9 m long at
   x -37 / -30 / -23, a 5 m start deck and end deck either side. KORAJIN > The Wall Park.

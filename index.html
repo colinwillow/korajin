@@ -29077,7 +29077,7 @@ const GYM = { spawn: { id: 'spawn_gym', at: [0, 0, 10], yaw: Math.PI },
   towers: [ { id: 'tw_a', at: [10, -100], h: 24, base: 9, top: 6.4, mid: 12, way: 'ladder' },
             { id: 'tw_b', at: [50, -100], h: 24, base: 9, top: 6.4, mid: 12, way: 'brackets', step: 3 } ],
   rope: { id: 'rope_ab', from: 'tw_a', to: 'tw_b', sag: 1.1, sway: .9, speed: 2.6, noiseK: 1.35 },
-  // m15xx (pass 4): THE ROPE SWING -- a red gantry (a torii's lintel on two posts) 14 m up, three ropes hanging 9 m from it, over a drop between
+  // m1856 (pass 4): THE ROPE SWING -- a red gantry (a torii's lintel on two posts) 14 m up, three ropes hanging 9 m from it, over a drop between
   // a start deck and an end deck. Catch a rope in the air, PUMP with the left stick, climb with right-pad swipes, jump to let go.
   gantry: { id: 'g_swing', x0: -46, x1: -14, z: -84, h: 14, c: 0xb3322a },
   swings: [ { id: 'sw1', x: -37, len: 9 }, { id: 'sw2', x: -30, len: 9 }, { id: 'sw3', x: -23, len: 9 } ],
@@ -29274,7 +29274,7 @@ function duelPitBuild(T) { const g = new THREE.Group(), boxes = [], mats = {}, m
 function duelSpawn() { const S = DUELPIT.spawns[(NET.slot || 0) % DUELPIT.spawns.length], p = player; p.pos.set(S[0], S[1], S[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = Math.atan2(-S[0], -S[2]); cam.az = p.faceH; p.hp = HEALTH.max; }
 function duelBuild() { const Z = DUELZ; Z.want = 2; if (Z.on) return; const R = duelPitBuild(DUELPIT); scene.add(R.g); for (const b of R.boxes) BOXES.push(b); boxGrid(); Z.on = { g: R.g, boxes: R.boxes };
   duelSpawn(); if (!NET.on && !NET.autoRoom) setTimeout(() => { const c = prompt('THE DUEL PIT -- a room code to share with the other phone (same code on both):', 'PIT'); if (c) netJoin(c); }, 600); }
-// m15xx (NINJA GYM pass 4): THE ROPE SWING (his: "a rope swing -- climb up and down a rope, actually swing and PUMP and move yourself around").
+// m1856 (NINJA GYM pass 4): THE ROPE SWING (his: "a rope swing -- climb up and down a rope, actually swing and PUMP and move yourself around").
 // A rope is a pendulum from its top: in the air within `catchR` of it (between its top and its end) he takes it, his speed carried in. His
 // grip point moves on a sphere of radius `r` (how far down the rope he holds) under gravity (verlet, then put back on the sphere); the LEFT
 // STICK pumps -- a push the way he is already swinging adds `pump` m/s^2, so a well-timed thumb builds the arc and a badly timed one does
@@ -32275,7 +32275,7 @@ PADS.R = bindStick(padR, stick.R,
   // ...unless someone in reach has something to say: then it is TALK (m277), and the left tap still jumps
   () => { if (aim3Now()) return; /* m1345: 3D AIM owns the whole right pad -- a tap is not a jump */ if (talkTap()) return; if (player.dragon) { if (player.dragon.st === 'sit') dragTapR(); return; } if (dragTap()) return; /* m1614 */ if (pickTap()) return; if (portalTap()) return; if (wingTapR()) return; if (hurdleTap()) return; if (mantleTap()) return; if (wrunTap()) return; player.jump = 1; },     // m1064: a tall face beside / ahead -> wall run     // m1063: pushing into a half block -> hurdle it     // m1039: a ledge in reach -> climb it
   // flick: a SLAM if he is in the air and it went down, otherwise a strike in that direction
-  (dx, dy) => { if (player.dragon) { dragBreath(); return; } /* m1621: his fireball */ if (player.wing || aim3Now()) return; /* m1282: in 3D AIM a fast drag moves the cursor, it never swings */ if (ledgeFlick(dx, dy)) return; /* m1840: off the ledge, by direction */ if (vineSwipe(dx, dy)) return; /* m15xx: on the swing rope, up / down climbs */ if (tossQuick(dx, dy)) return; if (boardFlick(dx, dy, 0)) return; if (zipKick(dx, dy)) return; if (wrunSwipe(dx, dy)) return; if (runSwipe(dx, dy)) return; if (!slamGo(dx, dy)) { KATANA.dir = katanaDir(dx, dy); meleeGo(KATANA.dir === 'down' ? player.faceH : flickH(dx, dy)); } },     // m1054: DOWN is not a direction -- the strike goes where he faces (a slot kept for a grab / throw / special)     // m1014: the right pad is MELEE, by direction (m1012's down-slide is off it)
+  (dx, dy) => { if (player.dragon) { dragBreath(); return; } /* m1621: his fireball */ if (player.wing || aim3Now()) return; /* m1282: in 3D AIM a fast drag moves the cursor, it never swings */ if (ledgeFlick(dx, dy)) return; /* m1840: off the ledge, by direction */ if (vineSwipe(dx, dy)) return; /* m1856: on the swing rope, up / down climbs */ if (tossQuick(dx, dy)) return; if (boardFlick(dx, dy, 0)) return; if (zipKick(dx, dy)) return; if (wrunSwipe(dx, dy)) return; if (runSwipe(dx, dy)) return; if (!slamGo(dx, dy)) { KATANA.dir = katanaDir(dx, dy); meleeGo(KATANA.dir === 'down' ? player.faceH : flickH(dx, dy)); } },     // m1054: DOWN is not a direction -- the strike goes where he faces (a slot kept for a grab / throw / special)     // m1014: the right pad is MELEE, by direction (m1012's down-slide is off it)
   null,
   // THE RELEASE IS THE SHOT, so this must NOT clear `p.aim` -- `stepKit` sees the pad is no
   // longer held and fires on that edge. Clearing it here would eat every shot in the game.
@@ -34352,7 +34352,7 @@ function stepPlayer(dt) {
   if (!p.zip && !p.grounded && ZIPS.length && !p.rope && !p.bar && !p.knock && p.vel.y < 6) zipCatch();     // m1168
   if (p.zip) { stepZip(dt); if (p.zip) return; }
   if (p.vineCool > 0) p.vineCool = Math.max(0, p.vineCool - dt);
-  if (p.vine) { stepVine(dt); return; }     // m15xx: on the swing rope
+  if (p.vine) { stepVine(dt); return; }     // m1856: on the swing rope
   if (VINE.list.length && !p.grounded && !p.ledge && vineCatch()) { stepVine(dt); return; }
   if (p.rope) { stepRope(dt); if (p.rope) return; }     // m1129: the grappling hook owns the body while he swings
   else if (GRING.line && GRING.line.visible) GRING.line.visible = false;
@@ -35960,7 +35960,7 @@ function rigAnim(dt) {
   }
   if (p.bar) { t[hbarClip()] = 1; setWeights(t, dt); return; }
   if (p.zip) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1168: hanging from the zipline
-  if (p.vine) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m15xx: on the swing rope
+  if (p.vine) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1856: on the swing rope
   if (p.rope) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1129: hanging on the rope
   if (p.hook) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1063: reaching for the bar
   if (p.wrun && p.wrun.kind === 'slide') { const nm = rig.actions[LEDGE.clips.hang] ? LEDGE.clips.hang : CLIPS.air; t[nm] = 1; setWeights(t, dt); return; }     // m1372: clinging to the face
@@ -68661,7 +68661,7 @@ function frameBody() {
     idleFixPose();                     // m1820: the Dwarf idle's arms and wrists corrected
     runToePose();                      // m1853: no toe flick on the run's back stride
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
-    vinePose();                        // m15xx: along the swing rope
+    vinePose();                        // m1856: along the swing rope
     // **AFTER THE ROOT IS PLACED, NOT ONLY AFTER THE MIXER.** The pin is a bone's WORLD
     // position and the speed cap is measured against how far it moved, so solving before the
     // root is written measures last frame's travel -- which at a knock-down's 12 m/s is most

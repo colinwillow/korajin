@@ -17,7 +17,7 @@ walls you're supposed to run on. Monkey bars too. Like 10 passes to make an incr
   (ground -> a mid deck at 14 m, mid deck -> the top through a hatch). B: BRACKETS spiralling round its core every 3 m (jump, grab, pull up).
 - [x] **3. The tightrope (m1850):** a 32 m rope between the tower tops at 24.4 m -- the balance-beam system per beam: faster walk (2.6 m/s),
   more wobble, a sag that follows him (1.1 m mid-span), a sideways sway; drawn as a rope taking the same V. The towers are YAGURA now (his).
-- [x] **4. The rope swing (m15xx):** a red gantry 14 m up with three 9 m ropes over a drop between two decks; catch a rope in the air, pump
+- [x] **4. The rope swing (m1856):** a red gantry 14 m up with three 9 m ropes over a drop between two decks; catch a rope in the air, pump
   with the left stick (with the swing), climb with right-pad swipes up / down, tap to let go with the rope's speed.
 - [ ] 5. **Monkey bars:** hand over hand along a row of bars (the high-bar hang), swing to skip a bar, drop.
 - [ ] 6. **Linking:** routes that flow piece to piece (wall run -> rope swing -> monkey bars -> tower), with height tiers (VERTICALITY rule).
