@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- THE LEVEL BUILDER, step 1 (LEVELBUILDER.md): a 3D editor on the phone, levels that save and play
+## m1880 -- THE LEVEL BUILDER, step 1 (LEVELBUILDER.md): a 3D editor on the phone, levels that save and play
 
 His: *"more than just top down -- perspective and orthographic, swap around ... a tower with four ports, click a port and choose what it is ...
 the levels are going to be extremely vertical."*
