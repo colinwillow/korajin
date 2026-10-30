@@ -5964,6 +5964,7 @@ const STEP = {
   // m1869: SOFT = a gentle lowpass per step (`lp` Hz, rolled +-`lpJit`/2 per step for variety). A PHONE SPEAKER plays almost nothing under
   // ~300-400 Hz, so a padded step's thud vanishes there and only its 2-6 kHz crunch is left -- measured: his footstep_3_L is 26% energy in
   // 2-6 kHz, his original footstep_l 92% under 400 Hz. The filter takes the crunch down so the phone hears the body. RAW = the file as it is.
+  sync: 1, ph0: .03,     /* m1874: steps on the gait's own clock; ph0 = how far past 'foot furthest forward' the contact sounds */
   land: { g0: .22, g1: .5, r0: 1.25, r1: 1.0, jit: .22, dec0: .1, dec1: .17 },
   tone: 'RAW', set: 'LAND', lp: 1600, lpJit: .5,     /* m1870: his originals, untouched, first (his ask) */
   // **AND `alt` IS 0, BECAUSE THE DISTINCTION IS IN THE ASSET NOW.** It was a shade of pitch
@@ -6111,6 +6112,15 @@ function stepFeet(dt) {
   // riding is not walking, and the PUSH has its own scrape fired off its own cycle.
   if (!STEP.on || p.roll || p.melee || p.chargeGo || p.knock || p.land || p.board) return;
   if (!p.grounded || p.speed < STEP.at) return;
+  // m1874 (his: "slowing down my run or walk, it wasn't timing with the actual steps -- can the sound line up with the footsteps perfectly?"):
+  // the step is fired off the GAIT'S OWN CLOCK when it is running (`gaitSync`'s shared phase `p.gph`, on which every locomotion clip is placed by
+  // its MEASURED left-foot-forward phase -- so phase 0 is the left heel coming down and .5 the right), not off distance / a measured stride, which
+  // drifts whenever the speed changes. `STEP.ph0` nudges the contact later (fraction of a cycle). Distance stays the fallback for paths that do
+  // not run the shared clock (stairs, the fast run, the ninja run).
+  if (STEP.sync && p.gphAt && performance.now() - p.gphAt < 120) { const q = (((p.gph || 0) - STEP.ph0) % 1 + 1) % 1, half = q < .5 ? 0 : 1;
+    if (p.stepHalf !== undefined && half !== p.stepHalf) { p.stepL = half === 0; footSnd(p.speed, MOVE.max, p.pos.x, p.pos.z, p.stepL); }
+    p.stepHalf = half; p.stepD = 0; return; }
+  p.stepHalf = undefined;
   p.stepD += p.speed * dt;
   const L = strideNow(p.speed);
   if (p.stepD < L) return;
@@ -36496,7 +36506,7 @@ function gaitSync(dt, sp, L, rows, t) {
     const a = leapAir(Lp, u);
     if (a >= 0) player.leapY = Lp.lift * Math.sin(Math.PI * a) * ws * smooth(GAIT.runAt, GAIT.sprintAt, sp);
   }
-  player.gph = ((player.gph || 0) + f * dt) % 1;
+  player.gph = ((player.gph || 0) + f * dt) % 1; player.gphAt = performance.now();     // m1874: the footsteps read this clock
   for (const [nm, w] of rows) {
     if (!(w > 0) || !rig.actions[nm]) continue;
     const k = L(nm);

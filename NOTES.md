@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- footsteps on the GAIT'S CLOCK, so they land with the feet at any speed
+
+His: *"slowing down my run or walk, it wasn't timing with the actual steps -- can the sound line up with the footsteps perfectly?"*
+- It was DISTANCE: `p.stepD` against `strideNow(speed)`, a measured stride -- right on average, but its phase is whatever it was, and every change
+  of speed slides it against the feet.
+- Now (`STEP.sync`): `gaitSync` already drives every locomotion clip off one shared phase `p.gph`, each clip placed by its MEASURED left-foot-
+  forward phase -- so phase 0 is the left heel down and .5 the right. A step fires when `p.gph - STEP.ph0` crosses 0 (left) or .5 (right). The
+  distance count stays as the fallback where the clock is not running (`p.gphAt` older than 120 ms: stairs, the fast run, the ninja run).
+- MEASURED headless (walk .5 -> full run/sprint -> slow, 600 frames): **33 / 33** steps fire with THAT foot the lower one, at toe height .04-.07 m
+  (the other .07-.35). `STEP.ph0` .03 moves the sound later if it reads early.
+
 ## m1873 -- footsteps on the wall run
 
 His: *"that sounds better [the landing set]. Have him do the same sounds when he's running on walls."*
