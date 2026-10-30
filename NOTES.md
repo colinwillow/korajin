@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- LEVEL BUILDER 3e: THE LOOP (run round it, upside down at the top)
+## m1889 -- LEVEL BUILDER 3e: THE LOOP (run round it, upside down at the top)
 
 His (earlier): *"a loop where you run like a skateboarding loop -- run all the way up, go around it and back down."*
 - `loop` piece (radius `r` -- SIZE, track width `w`, sideways drift `off` so the exit lane misses the entry): the track P(phi) = (off x phi/2pi -
