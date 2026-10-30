@@ -6213,8 +6213,13 @@ for (const t of ['visibilitychange', 'pageshow', 'focus']) addEventListener(t, (
 // what re-activates iOS's audio SESSION after an interruption -- WebAudio alone does not), then the context is rebuilt in the same gesture.
 // `pointerdown` only nudges a resume. The chip says `AU<state><rebuilds>` so "never woke" and "woke silent" can be told apart.
 const SFXQ = { el: null };
-function sfxSession() { try { if (!SFXQ.el) { const a = SFXQ.el = document.createElement('audio'); a.setAttribute('playsinline', ''); a.muted = false; a.volume = .01; a.loop = false;
-  a.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='; }
+// m1879: a REAL quarter second of silence (8 kHz, 8-bit, 2000 samples at the midpoint) -- the old data URI had a ZERO-length data chunk, which iOS
+// may not count as media playing at all
+function sfxSilentWav() { const n = 2000, b = new Uint8Array(44 + n), dv = new DataView(b.buffer), w = (o, t) => { for (let i = 0; i < 4; i++) b[o + i] = t.charCodeAt(i); };
+  w(0, 'RIFF'); dv.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true); dv.setUint32(24, 8000, true); dv.setUint32(28, 8000, true); dv.setUint16(32, 1, true); dv.setUint16(34, 8, true); w(36, 'data'); dv.setUint32(40, n, true); b.fill(128, 44);
+  let str = ''; for (let i = 0; i < b.length; i++) str += String.fromCharCode(b[i]); return 'data:audio/wav;base64,' + btoa(str); }
+function sfxSession() { try { if (!SFXQ.el) { const a = SFXQ.el = document.createElement('audio'); a.setAttribute('playsinline', ''); a.muted = false; a.loop = false;
+  a.src = sfxSilentWav(); }
   SFXQ.el.currentTime = 0; const q = SFXQ.el.play(); if (q && q.catch) q.catch(() => {}); } catch (e) {} }
 function sfxWake(ev) {
   const real = !ev || ev.type !== 'pointerdown';
@@ -6227,7 +6232,7 @@ function sfxWake(ev) {
   // THIS IS WHAT MAKES A PHONE WITH THE RING SWITCH ON AUDIBLE AT ALL.
   try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
   SFX.bus = SFX.ctx.createGain();
-  SFX.bus.gain.value = SFX.vol;
+  SFX.bus.gain.value = SFX.mute ? 0 : SFX.vol;     // m1879: the mute survives a rebuild
   SFX.bus.connect(SFX.ctx.destination);
   for (const k in SFX.raw) { SFX.buf[k] = []; SFX.edge[k] = []; SFX.raw[k].forEach((ab, i) => sfxDecode(k, i)); }
   sfxUnlock();
@@ -6246,6 +6251,29 @@ function sfxRebuild() { const c = SFX.ctx; if (c) { try { c.close(); } catch (e)
 addEventListener('pointerdown', sfxWake, { capture: true, once: false });
 addEventListener('touchend', sfxWake, { capture: true, once: false });     // m1097: iOS only lets a context resume inside some gestures
 addEventListener('click', sfxWake, { capture: true, once: false }); addEventListener('keydown', sfxWake, { capture: true, once: false });     // m1699
+// m1879 (his: "navigate away from the game and back -- an iOS add-to-home-screen app -- and the sounds are ALWAYS gone ... maybe a mute and unmute
+// button so you can always unmute it when you come back"): THE SOUND BUTTON, top right. After the app has been away (`sfxWasHidden`), or whenever
+// the context is not 'running', it is a bright TAP FOR SOUND: its own click (the surest user gesture iOS has) plays a real quarter second of silence
+// through an <audio> element, throws the context away, builds it again from the raw files and plays a clink so he hears it is back. Otherwise it is
+// a small mute toggle (`SFX.mute`, the bus gain). iOS can report 'running' while silent, so coming back ALWAYS shows it until it is tapped.
+const SNDBTN = { el: null, need: 0, back: 0 };
+try { SFX.mute = localStorage.getItem('mel.mute') === '1' ? 1 : 0; } catch (e) { SFX.mute = 0; }
+function sndBtnPaint() { const B = SNDBTN.el; if (!B) return; const st = SFX.ctx ? SFX.ctx.state : 'none', need = SNDBTN.back || !SFX.ctx || st !== 'running';
+  B.dataset.need = need ? '1' : '';     // what the button SAYS is what a tap does (the global wake listeners run first and can make the context before the click)
+  if (need) { B.textContent = '\u{1F507} TAP FOR SOUND'; B.style.cssText = SNDBTN.css + 'background:#ffcc33;color:#201400;font-size:14px;padding:9px 14px;box-shadow:0 0 0 3px #ffcc3366;'; B.title = st; }
+  else { B.textContent = SFX.mute ? '\u{1F508}' : '\u{1F50A}'; B.style.cssText = SNDBTN.css + 'background:#0c1420b0;color:#cfe8ff;font-size:18px;padding:6px 10px;'; B.title = st; } }
+function sndBtnBuild() { if (SNDBTN.el || !document.body) return; const B = SNDBTN.el = document.createElement('button');
+  SNDBTN.css = 'position:fixed;z-index:30;top:calc(46px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));border:1px solid #4a7aa0;border-radius:18px;font-family:system-ui,sans-serif;font-weight:800;pointer-events:auto;';
+  B.addEventListener('click', e => { e.stopPropagation();
+    if (B.dataset.need) { SNDBTN.back = 0; SFX.mute = 0; try { localStorage.setItem('mel.mute', '0'); } catch (err) {} sfxWasHidden = 0; sfxSession(); if (SFX.ctx) sfxRebuild(); else sfxWake(); try { SFX.ctx && SFX.ctx.resume(); } catch (err) {}
+      setTimeout(() => { snd('clink', { i: 0, g: .18, r: 1.5, dur: .3 }); sndBtnPaint(); }, 350); }
+    else { SFX.mute = SFX.mute ? 0 : 1; try { localStorage.setItem('mel.mute', SFX.mute ? '1' : '0'); } catch (err) {} if (SFX.bus) SFX.bus.gain.value = SFX.mute ? 0 : SFX.vol; }
+    sndBtnPaint(); });
+  for (const t of ['pointerdown', 'touchstart']) B.addEventListener(t, e => e.stopPropagation(), { passive: true });     // never a stick
+  document.body.appendChild(B); sndBtnPaint(); }
+addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') SNDBTN.back = 1; sndBtnPaint(); });
+addEventListener('pagehide', () => { SNDBTN.back = 1; });
+setInterval(() => { sndBtnBuild(); sndBtnPaint(); }, 700);
 // EDGE:START -- lifted verbatim by `npm run sfx`. A tool with its own copy of the rule is this
 // repo's oldest mistake; the text between these markers may reach nothing but its arguments and
 // the `SFX` global.

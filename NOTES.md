@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- THE SOUND BUTTON: sound back after leaving the app (iOS home-screen app)
+
+His: *"if I navigate away and come back, the sounds are always gone and I have to restart ... maybe it's auto muted and we need a mute and unmute
+button so you can always unmute it when you come back."*
+- m1097 / m1699 / m1760 rebuilt the context on the first real gesture after the page was hidden; on his home-screen app it still comes back
+  silent (iOS can report 'running' while playing nothing, so nothing can be trusted to notice).
+- `SNDBTN`, top right (46 px down, clear of the blurred top): after the app has been away (`visibilitychange` hidden / `pagehide`), or while the
+  context is not 'running', a yellow **TAP FOR SOUND**; its own click -- the surest gesture iOS has -- plays a REAL quarter second of silence
+  through an `<audio>` element (`sfxSilentWav`; the old data URI's data chunk was EMPTY), throws the context away, builds it from the raw files,
+  unmutes, and plays a clink. Otherwise it is a small speaker: a MUTE toggle (`SFX.mute` -> the bus gain, kept over a rebuild, `mel.mute`).
+- What a tap does is what the button SAYS (`dataset.need`): the global wake listeners run first and can create the context before the click, which
+  had the first tap recover AND mute.
+- Headless: TAP FOR SOUND -> tap -> running, speaker; tap -> muted; faked away-and-back -> TAP FOR SOUND -> tap -> running, unmuted.
+
 ## m1878 -- stuck in the TUCK pose after catching a ledge mid-flip
 
 His: *"jump off a tall building doing flips, land on a ledge -- sometimes he's locked in the tuck pose ... the locomotion moves as though he's
