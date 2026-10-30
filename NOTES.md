@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- the wall run needs the LEFT STICK held; neutral = the PERCH
+## m1888 -- the wall run needs the LEFT STICK held; neutral = the PERCH
 
 His: *"I like how it currently operates, it's the best it's been, but we need a way to distinguish wall run versus just jumping against the wall and
 perching ... you need to be holding some direction on the left stick to be wall running; let go and he drops into the perch; not pushing any
