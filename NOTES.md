@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15xx -- his new footsteps: 12 steps cut out of his 52 s recording
+## m1865 -- his new footsteps: 12 steps cut out of his 52 s recording
 
 His: *"if I give you a clip of some footsteps, can you extract the footsteps ... I don't really like the current footsteps."* -- `audio/footsteps/footsteps.mp3`
 (52.4 s, 44.1 kHz stereo; his upload, kept as the source).
