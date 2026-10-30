@@ -5753,7 +5753,10 @@ const SFX = {
     // m1865: HIS NEW RECORDING (footsteps.mp3, 52 s of walking), cut by machine into six CONSECUTIVE left/right pairs -- each pair two real
     // successive footfalls, clean on both sides (no step within 40-150 ms before or 250-400 ms after), at walking loudness, similar tone;
     // 80 ms of run-up kept for `SFX.lead`, levelled to the old bank's envelope peak (.33)
-    foot: [1, 2, 3, 4, 5, 6].flatMap(n => ['audio/footsteps/step_' + n + '_l.mp3', 'audio/footsteps/step_' + n + '_r.mp3']),
+    // m1867: HIS footstep_3 L / R (one of each) is the bank now: four VARIANTS of each foot made offline (a: as recorded; b: -5% pitch + low
+    // shelf, heavier; c: +5% pitch + treble, brighter; d: -2% + lowpass 4.5k, duller), levelled (his files peak at .02 of full scale) and
+    // cut 80 ms before the hit. `footSnd` rolls the pair per step and `STEP.jit` wobbles the pitch on top. m1865's cuts stay on disk.
+    foot: [1, 2, 3, 4].flatMap(n => ['audio/footsteps/step3_' + n + '_l.mp3', 'audio/footsteps/step3_' + n + '_r.mp3']),
     shot: ['audio/blaster_sound_01.mp3', 'audio/blaster_sound_02.mp3'],
     big: ['audio/plasma_canon.mp3'],
     boom: ['audio/explosion_small.mp3'],
@@ -5954,7 +5957,7 @@ const STEP = {
   // **AND `alt` IS 0, BECAUSE THE DISTINCTION IS IN THE ASSET NOW.** It was a shade of pitch
   // standing in for a left foot and a right foot on ONE recording; there are two recordings.
   // `jit` stays -- two LEFT steps in a row still must not be identical.
-  alt: 0, jit: .05,
+  alt: 0, jit: .08,     /* m1867: .05 -> .08, more variety from one left and one right */
   // **HIS OWN, THEIRS, AND A MASTER SWITCH (m68).** *"The footsteps are insane... either way we
   // need to fix it or just get rid of it altogether."* `mel.STEP.on = 0` is the one word, and
   // `npc = 0` keeps his and drops the other thirteen.

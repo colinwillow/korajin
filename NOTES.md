@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15xx -- his footstep_3 (one left, one right) is the step bank, as four variants each
+
+His: *"try these instead ... we might need to procedurally oscillate them to add variety -- it's just a left foot and a right foot."*
+- MEASURED: footstep_3_L / _R peak at **.024 / .018** of envelope (the bank sat at .33) and `SFX.evenMax` caps a boost at 1.6 -- left alone they
+  would have played ~10x quieter. Levelled in the FILE instead (gain x13.5-18.6; the L side's spiky transient caps it at env .17-.25, which
+  `SFX.even` evens at runtime).
+- Variety offline, `step3_<1-4>_<l|r>.mp3`: a as recorded; b -5% pitch + low shelf (heavier); c +5% + treble (brighter); d -2% + lowpass 4.5 kHz
+  (duller). Each cut 80 ms before its hit (`SFX.lead` aligns on the peak). `footSnd` rolls the pair per footfall; `STEP.jit` .05 -> .08.
+
 ## m1866 -- HIS wall run: his own FBX animation is the side run (TOOLS > WALL SIDE: HIS CLIP / IK RUN)
 
 His: *"I need to [animate] the wall run on my own"* -- `models/characters/anims/wall_side.fbx` (Cinema 4D export on Grumbo's rig, 50 bones, 19 frames
