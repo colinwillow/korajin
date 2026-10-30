@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## Korajin's own home-screen icon (m15xx)
+## Korajin's own home-screen icon (m1847)
 *"When I add to home screen on iOS it's showing the Zap and Clancy icon."* The repo copy brought zap's v4 icon set and the page still named it.
 `icons/src.png` is now a square crop of his own title poster (`images/korajin/korajin_title_01.png`, x 130-780, y 482-1132: Grumbo's head and
 crossed arms, under the title text), `V` 4 -> 5, `npm run icons` (four sizes, all read back clean, no margin to crop), index.html and the
