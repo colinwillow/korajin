@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1981 -- THE JINRA REFINERY, pass 5: the interior, and the deck you could not climb onto
+
+- THE DOME IS A ROOM: the shell's triangles in a doorway (|x| < 1.15, under 2.45 m, front half) are dropped (`cut`), an inner BackSide shell
+  (`stoneIn`, darker, a warm emissive so it reads lamplit without a light), and the solid fill of column boxes is now a RING of .6 m cells
+  round the wall with the door gap open. A porch: jambs, lintel lamp, pent roof, plank cheeks. The front counter is two stalls.
+- INSIDE (his sheet's interior shop, processing station, storage): six curved shelf bays round the back (three tiers, 18 vessels), the VAT
+  in the middle (copper, iron rim, a live-Jinra surface) fed by a copper pipe from the crown whose Jinra pours into it (a `gjSwirl` column),
+  a valve; canisters and a globe tank down the sides; the shop counter inside the door with three vessels; a teal rug; three hanging lamps.
+- THE DECK COULD NOT BE CLIMBED FROM THE FRONT (since pass 1, found by walking it headless): it was ONE collider box and the island is turned
+  (yaw -1.95), so the box's world-aligned bounds spilled metres past the deck and walled off the steps; the steps were turned boxes too.
+  And the island's `quad`s were never put in the walk store at all -- the island bobs and only its boxes ride the bob -- so everything he
+  stands on there is a box. Now the deck is 1 m cells and each step .4 m cells. Measured: from the grass in front, up the steps, across
+  the deck, through the door, to the vat (the vat itself blocks a straight line, as it should).
+
 ## m1979 -- THE JINRA REFINERY, pass 4: the hero exterior (`gjSwirl`)
 
 His: *"need to do a few more passes on the floating Jinra shop/refinery."* Rendered against his sheet first: the globe was a flat cyan ball,
