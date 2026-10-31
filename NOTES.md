@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15BW -- the bow shoots DOWN (and the lens looks down with it); Wall Park tower A's ladders reach their lips; the railing opens for the rope
+## m1929 -- the bow shoots DOWN (and the lens looks down with it); Wall Park tower A's ladders reach their lips; the railing opens for the rope
 His words (Oct 31): *"we still need the downward bow shot -- it's hard to; I don't know if the reticle is actually going down. Also the camera needs
 to tilt up so I can see what I'm shooting down at"* / *"the top of the second ladder -- a gap between the top of the ladder and the ledge"* /
 *"a tight rope and a railing with no section cut out, so you walk through a bar"*.

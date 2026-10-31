@@ -15241,7 +15241,7 @@ function bowDraw() { const p = player; p.bowT = 0; const n = 'bow_draw', r = BOW
 // `down0` once it passes `dead`, rising to `downMax` with the thumb at the bottom. (Only a lift looses now, so the thumb is free to go there.)
 function bowDownA() { const R = stick.R, p = player; if (!p.aim) return 0;
   if (!R.down) return p.bowDownLast || 0;     // m1893: THE RELEASE is read after the thumb has lifted -- it shot level every time; the angle is the last one the thumb held
-  // m15BW (his: "we still need the downward bow shot -- it's hard to; I don't know if the reticle is actually going down"): the old map only began
+  // m1929 (his: "we still need the downward bow shot -- it's hard to; I don't know if the reticle is actually going down"): the old map only began
   // tilting once the thumb was past the CENTRE, a long way down from where the draw leaves it (pushed up). Now it is continuous from the draw's own
   // rest: `downTop` (thumb still up) = level, the centre = `down0`, the bottom = `downMax` -- so easing the thumb back toward you tilts it at once
   const y = R.y || 0, v = y <= BOW.downTop ? 0 : y <= 0 ? BOW.down0 * (y - BOW.downTop) / -BOW.downTop : BOW.down0 + (BOW.downMax - BOW.down0) * clamp(y, 0, 1);
@@ -29297,7 +29297,7 @@ function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
       solid(T2.id + '_top3', cx - ht, cx - .75, H, H + .4, cz - 1.9, cz - .4, woodL); solid(T2.id + '_top4', cx + .75, cx + ht, H, H + .4, cz - 1.9, cz - .4, woodL);
       const L1 = { id: T2.id + '_lad1', box: { minx: cx - .5, maxx: cx + .5, miny: 0, maxy: T2.mid, minz: cz + .4, maxz: cz + .6 }, top: T2.mid, mark: { x: cx, y: T2.mid, z: cz - .2 }, front: [0, 1] };     // up through the mid hatch, step off toward -z
       const L2 = { id: T2.id + '_lad2', box: { minx: cx - .5, maxx: cx + .5, miny: T2.mid, maxy: H, minz: cz - 1.9, maxz: cz - 1.7 }, top: H + .4, mark: { x: cx, y: H + .4, z: cz - 2.5 }, front: [0, 1] };     // mid -> top through the top hatch
-      // m15BW (his: "the top of the second ladder -- there's a gap between the top of the ladder and the ledge you land on, so you can't get up"):
+      // m1929 (his: "the top of the second ladder -- there's a gap between the top of the ladder and the ledge you land on, so you can't get up"):
       // each ladder stood mid-hatch, .6-.8 m short of the lip it tops out over; both now stand against that lip (the hatch's -z edge)
       ladders.push(L1, L2);
       for (const L of [L1, L2]) { const B = L.box, mz = (B.minz + B.maxz) / 2; for (const o of [-.42, .42]) beam(wood, cx + o, B.miny, mz, cx + o, B.maxy + 1, mz, .1);
@@ -29309,7 +29309,7 @@ function gymBuild(T) { const g = new THREE.Group(), boxes = [], by = {};
     // the lookout on the top deck: corner posts, a railing, plastered half-walls between them, a flared two-tier tiled roof
     const y0 = H + .4, R = ht - .15;
     for (const [sx, sz] of C4) beam(wood, cx + sx * R, y0, cz + sz * R, cx + sx * R, y0 + 3.4, cz + sz * R, .32);
-    for (let k = 0; k < 4; k++) { const [ax, az] = C4[k], [bx, bz] = C4[(k + 1) % 4]; for (const [f0, f1] of [[-1, -.2], [.2, 1]]) beam(wood, cx + ((ax + bx) / 2 + (bx - ax) / 2 * f0) * R, y0 + 1.05, cz + ((az + bz) / 2 + (bz - az) / 2 * f0) * R, cx + ((ax + bx) / 2 + (bx - ax) / 2 * f1) * R, y0 + 1.05, cz + ((az + bz) / 2 + (bz - az) / 2 * f1) * R, .14);     /* m15BW (his: "a railing with no section cut out, so you walk through a bar"): the rail stops at the half-walls' opening, where the rope leaves */ beam(wood, cx + ax * R, y0 + 3.3, cz + az * R, cx + bx * R, y0 + 3.3, cz + bz * R, .22); }
+    for (let k = 0; k < 4; k++) { const [ax, az] = C4[k], [bx, bz] = C4[(k + 1) % 4]; for (const [f0, f1] of [[-1, -.2], [.2, 1]]) beam(wood, cx + ((ax + bx) / 2 + (bx - ax) / 2 * f0) * R, y0 + 1.05, cz + ((az + bz) / 2 + (bz - az) / 2 * f0) * R, cx + ((ax + bx) / 2 + (bx - ax) / 2 * f1) * R, y0 + 1.05, cz + ((az + bz) / 2 + (bz - az) / 2 * f1) * R, .14);     /* m1929 (his: "a railing with no section cut out, so you walk through a bar"): the rail stops at the half-walls' opening, where the rope leaves */ beam(wood, cx + ax * R, y0 + 3.3, cz + az * R, cx + bx * R, y0 + 3.3, cz + bz * R, .22); }
     for (let k = 0; k < 4; k++) { const [ax, az] = C4[k], [bx, bz] = C4[(k + 1) % 4], mx = (ax + bx) / 2, mz2 = (az + bz) / 2, len = 2 * R - .4;     // half-walls, open in the middle of each side (where the rope leaves)
       for (const f of [-1, 1]) { const ox = (bx - ax) / 2 * f * .55, oz = (bz - az) / 2 * f * .55; const px = cx + mx * R + ox * R, pz = cz + mz2 * R + oz * R; if (Math.abs(mx) > .5) slab(plaster, px - .08, px + .08, y0, y0 + 1.0, pz - len * .2, pz + len * .2); else slab(plaster, px - len * .2, px + len * .2, y0, y0 + 1.0, pz - .08, pz + .08); } }
     for (const [rr, h0, hh, c] of [[R + 2.0, y0 + 3.4, .9, tile], [R + .9, y0 + 4.3, 1.6, tile]]) { const q = new THREE.ConeGeometry(rr * Math.SQRT2, hh, 4, 1, true); q.rotateY(Math.PI / 4); q.translate(cx, h0 + hh / 2, cz); geo(c).push(q); }     // the eaves, then the roof
@@ -57641,7 +57641,7 @@ function stepCam(dt) {
   // ground (`CAMY.hl`), tighter in the air (`air`) so a jump still reads, and snaps on a teleport (more than `snap` m)
   { const yT = p.pos.y + (p.stepOff || 0); if (!CAMY.on || cam.yS == null || Math.abs(yT - cam.yS) > CAMY.snap) cam.yS = yT; else cam.yS = damp(cam.yS, yT, p.grounded ? CAMY.hl : CAMY.air, dt); }
   cam.tgt.set(p.pos.x - Math.cos(cam.az) * AIM3.cam.side * a3, cam.yS + CAM.look * bodyK() + UPLOOK.lift * (cam.up || 0) + AIM3.cam.lift * a3 + (p.dragon ? DRAGZ.camLift : 0), p.pos.z + Math.sin(cam.az) * AIM3.cam.side * a3);
-  // m15BW (his: "the camera needs to tilt up so I can see what I'm shooting down at"): a drawn bow aimed down raises the lens over him (`BOW.camEl`
+  // m1929 (his: "the camera needs to tilt up so I can see what I'm shooting down at"): a drawn bow aimed down raises the lens over him (`BOW.camEl`
   // rad at full tilt) and drops the look point (`camDrop` m), eased, so the landing ring below the tower stays in the frame
   { const bk = p.aim && slotNow().bow ? bowDownA() / BOW.downMax : 0; cam.bowK = damp(cam.bowK || 0, bk, .12, dt); cam.tgt.y -= BOW.camDrop * cam.bowK; }
   const elB = cam.el + BOW.camEl * (cam.bowK || 0), ce = Math.cos(elB);
