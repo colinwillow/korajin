@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1985 -- THE JINRA REFINERY, pass 8: the deck
+
+- The deck to his views: 18.4 x 16 m (was 16 x 13), so the mound (now 7.0 x 4.6 x 5.7, centre z -1.0) sits on it with a walkway all round.
+  A two-course edge beam with iron plates and four bolts every 2.3 m and joist ends below; heavy corner posts banded in iron; sandstone
+  rock footings under the edge; bollards (iron pyramid caps) every 2.3 m with a low rail, open at the front stair and the new +x stair;
+  two tall banner poles (front +x, back -x: iron bands, a crossbar with an iron end, the banner both sides, rippled); lanterns at the other
+  two corners. The chimney stack is shorter and chunkier.
+- Colliders: the deck's 1 m cells now CLIP to its edge (a 15.6 m deck's last row of cells covered the top step: he could not climb on);
+  bollards and poles are posts, the rails are picture only (a turned rail's world-aligned box would wall the deck).
+- Walked headless: up the front, through the room, out the back door, round the back, up the -x side (the mound's shoulder plus a lamp post
+  had blocked it: the mound is narrower and the lamps moved to the corners without poles).
+
 ## m1986 -- THE JACKAL GUARDIAN, a spawnable kind (Oct 31 2026)
 *"Well do this guy next as a guardian of the temple."* His four views -> Tripo (quads, P2 model) -> `hero.sh jackal --rot -90 --profile samurai`:
 ARP rig renamed 22/22 to mixamorig, Forge baked the samurai's 121 clips, hips 0% off. `models/characters/jackal_game.glb` (4.6 MB).
