@@ -5,6 +5,27 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1900 -- THE SKY TEMPLE step 2: the temple mass (TEMPLE.md)
+
+All in the TEMPLE block; the data is `TEMPLE.mass` (stable ids, local to the island's top, front = +Z), built by `templeMassMake(T, rim)` into
+geometry per material + colliders, merged by `templeMake` -- **23 draw calls for the whole frame headless, 54k triangles.**
+- THE MASS: a podium (42 x 34 m, 6 m, on a .9 m plinth), core tier 1 (26 x 20, 10 m, battered 1 m), tier 2 (18 x 14, 8 m), the central TOWER
+  (9 x 8, 18 m, top at 42 local / 102 world, a jade channel up its front following the batter), a 3.5 m balcony over the door, two stepped
+  PYLONS (10 x 12 m, three tiers of 12/12/10 m, set back 1 m each -- real ledges), gold bands round the tops. Battered blocks collide on the
+  mean footprint (`bat / 2` in).
+- THE GRAND STAIR: 20 steps of .3 x .5 (under his .357 step), 11 m wide, sloped stone cheeks with a gold coping (stepped colliders under them),
+  a red CARPET (`templeCarpetMat`: gold borders, a gold double diamond every 3 m) over every tread and riser and on along the plaza and the
+  landing to the door. Two SIDE STAIRS up the podium's flanks (the four-view sheet's diagonal stairs), carpeted, to landings with braziers.
+- THE DOOR: a portal standing 2.6 m proud (jambs, a lintel with a gold band), the door sealed inside it in ANCIENT TECH stone with a jade ring,
+  a gold ring round it, a jade seam. All solid.
+- BRAZIERS: eight, `lbBrazier`'s shape at x1.4 but MERGED -- the bodies into the stone and gold meshes, every flame in ONE additive mesh that
+  flickers in its vertex shader (`templeFlameMat`; `lbBrazier` itself costs 5 draws each).
+- ROPE RAILS: gold posts every ~2.5 m with sagging rope on every podium edge, the side landings, the balcony, the tier tops, the side stairs,
+  and round the island's rim (open at 78-102 and 258-282 deg for step 4's bridges). Level runs have a thin 1.1 m collider (turned boxes on the
+  rim) -- you jump them to leave.
+- The stone uses the megalith texture at ~6 m slabs (UVs x.55) in a warm tint. Not yet: the halo and banners (step 3); no route up the core yet
+  (step 6). Shipped unverified on the phone; headless front / side / back renders checked against the four-view sheet.
+
 ## m1899 -- THE SKY TEMPLE step 1: the zone, the floating island, the cloud sea, the sky, the far islands (TEMPLE.md)
 
 KORAJIN > The Sky Temple (`?w=forge&zone=temple`). All of it is one block, `// TEMPLE:START` .. `// TEMPLE:END` (after `duelBuild`), table
