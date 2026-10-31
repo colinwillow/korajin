@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1989 -- THE JINRA REFINERY, pass 10: the cloth and the dressing
+
+- `sail(Pa, Pb, Pc, Pd, sag)`: a bilinear cloth patch between four points, its middle let down by `sag`, in the teal awning material (its
+  tattered hem and marks). Three: front +x banner pole -> the collar; back -x pole -> the collar; a new front-left post -> the collar.
+- `chain(A, B, sag, n)`: jade beads (`beadM`, one new draw) on a catenary-ish sag with a little mint lamp every fourth: pole tops to the
+  collar, along both awnings' fronts, pipe feet to the awning posts. Bead strings hang off the collar's rim (10) and the pipes (5).
+- A big glowing globe jar, a canister and a tall vessel at the front-left corner (solid), and vessel clusters round the deck's sides and back.
+Draws 24.
+
 ## m1988 -- THE JINRA REFINERY, pass 9: the shopfronts
 
 - Doors (front, +x, -x, back): two plank leaves (iron bands) swung open against the mound, set on the skin's normal; a half-disc FANLIGHT in a
