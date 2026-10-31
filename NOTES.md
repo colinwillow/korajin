@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1955 -- THE SKY TEMPLE: ERODED STONE -- rounded, chipped edges on every megalith
+
+His (m1952 screenshot on a stone ledge): *"Is there any way to do an erosion shader on these hard straight lines? Temples have slightly eroded,
+slightly round, slightly organic shapes -- these are perfectly computer-generated edges. They look really unnatural."* A shader cannot move a
+silhouette, so it is GEOMETRY: `templeEro(w, h, d)` replaces `lbBoxGeo(..., 'mega')` for every temple stone box (the masses, the dressing's
+stone boxes, the skirt, the crown, the medallion; the far islands' spires and the tech-style blocks keep plain boxes). Each box is subdivided
+(three bevel rows per edge, interior rows every 3 m up to 7), every vertex pulled onto a radius round the inner box (a rounded box: `r` =
+6% of the smallest side, .25-1.3 m, never over 22% of it), then CHIPPED by two octaves of value noise -- up to 55% of `r` deep on the edges, 10%
+on the faces -- and only ever INWARD, so no face stands proud of its collider and nothing hovers. Small stones (< 1.2 m) get a plain chamfer.
+UVs keep the 'mega' tiling (3.2 m a tile, courses horizontal), so the generated maps sit where they did. Batter is now a proportional taper
+(an eroded box has more than eight corners). Colliders unchanged. Cost: ~190k -> ~335k triangles in the wide view, draw calls unchanged (65).
+`TERODE` holds every number; `TERODE.on = 0` is the A/B (wants a reload). Still sharp: the dark glyph pilasters, the gold and the red bands.
+Shipped unverified.
+
 ## m1954 -- THE SKY TEMPLE: the entrance is the main session's HERO DROP
 
 His: *"No, you should use the one that the other context window just made."* m1952's temple-only slam intro (`templeIntro` /
