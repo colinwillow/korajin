@@ -10598,7 +10598,7 @@ const WILLOW = { at: [-24, -22], ter: 11, terH: .6, tiers: [[10.5, .3, 0], [7.5,
 // `fogFar`, dims the sun, swells the flakes, and drives the SPINDRIFT: `drift` low points streaming along the wind a hand's height over the pack.
 const SNOWSTORM = { weather: (() => { try { const m = /[?&]storm=(auto|clear|blizzard)/i.exec(location.search); if (m) return m[1].toUpperCase(); return localStorage.getItem('mel.storm') || 'AUTO'; } catch (e) { return 'AUTO'; } })(),
   calm: [70, 110], stormT: [40, 65], rampHL: 7, stormWind: 4.5, fogNear: 6, fogFar: 60, sunDim: .45, drift: 1600, driftBox: 44, driftH: .55, driftV: 2.4 };
-// m15PD: THE FROZEN POND (BUILDINGS.md snow pass 2): a lobed sheet of his painted ice (`snow_ice`) swept clear of snow, a bank round it, and on it
+// m1997: THE FROZEN POND (BUILDINGS.md snow pass 2): a lobed sheet of his painted ice (`snow_ice`) swept clear of snow, a bank round it, and on it
 // he SLIDES -- his velocity only creeps toward what he asks for (`grip` /s), so he skates on, drifts through turns and takes a while to stop; a hard
 // turn throws up ice shavings.
 const POND = { at: [27, 30], r: 11, grip: 1.1, bank: .22, tex: 11 };
@@ -10634,7 +10634,7 @@ function snowStage(g) {
     for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) { const x = (i / N - .5) * Z.size, z = (.5 - j / N) * Z.size, u = x * ax + z * az, v = -x * az + z * ax;
       const r = Math.max(0, isl3Fbm(u * .018, 2.3, v * .05, 4) + .05), spawnK = Math.min(1, Math.max(0, (Math.hypot(x, z - 8) - 6) / 10)), edge = Math.min(1, Math.max(0, (Z.size / 2 - Math.max(Math.abs(x), Math.abs(z))) / 12));
       const sw = Math.min(1, Math.max(0, (Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) - WILLOW.tiers[0][0] - .2) / 1.6));     // m1764: the willow's shrine is SWEPT -- no snow on its tiers, a soft bank round it
-      const pdx = x - POND.at[0], pdz = z - POND.at[1], pd = Math.hypot(pdx, pdz) - pondR(Math.atan2(pdz, pdx)), pk = pd < 0 ? 0 : Math.min(1, pd / .8), pb = pd > 0 ? POND.bank * Math.exp(-pd / 2.2) : 0;     // m15PD: the pond is swept, a bank round it
+      const pdx = x - POND.at[0], pdz = z - POND.at[1], pd = Math.hypot(pdx, pdz) - pondR(Math.atan2(pdz, pdx)), pk = pd < 0 ? 0 : Math.min(1, pd / .8), pb = pd > 0 ? POND.bank * Math.exp(-pd / 2.2) : 0;     // m1997: the pond is swept, a bank round it
       const b = ((Z.base + Z.drift * Math.min(1, r * 1.8) * spawnK * edge) * sw * pk + pb * pk); Z.B[j * N + i] = Z.D[j * N + i] = Math.round(Math.min(1, b) * 255); } } Z.T = new THREE.DataTexture(Z.D, N, N, THREE.RedFormat, THREE.UnsignedByteType);
   Z.T.magFilter = Z.T.minFilter = THREE.LinearFilter; Z.T.wrapS = Z.T.wrapT = THREE.ClampToEdgeWrapping; Z.T.needsUpdate = true;
   scene.background = new THREE.Color(0xc9d6e6); if (scene.fog) { scene.fog.color.setHex(0xc9d6e6); scene.fog.near = 40; scene.fog.far = 340; }     // cold, pale
@@ -10655,7 +10655,7 @@ function snowStage(g) {
       .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n { vec2 c = floor(vSW.xz * 38.0); float h = snH(c + floor(cameraPosition.xz * 3.0) * .37); totalEmissiveRadiance += vec3(.9, .95, 1.0) * step(.9965, h) * 1.6 * smoothstep(30.0, 4.0, length(cameraPosition - vSW)); }'); };
   const snow = new THREE.Mesh(geo, m); snow.receiveShadow = true; snow.frustumCulled = false; g.add(snow); Z.mesh = snow;
   const far = new THREE.Mesh(new THREE.RingGeometry(Z.size * .7, 900, 64, 1).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xf4f7fc, roughness: .9 })); far.position.y = Z.depth * Z.base - .02; g.add(far);     // an even white plain to the peaks
-  { const sh = new THREE.Shape(); for (let k = 0; k <= 64; k++) { const a = k / 64 * Math.PI * 2, r = pondR(a); k ? sh.lineTo(Math.cos(a) * r, -Math.sin(a) * r) : sh.moveTo(Math.cos(a) * r, -Math.sin(a) * r); }     /* -sin: rotateX(-90) sends shape y to -z */     // m15PD: the ice
+  { const sh = new THREE.Shape(); for (let k = 0; k <= 64; k++) { const a = k / 64 * Math.PI * 2, r = pondR(a); k ? sh.lineTo(Math.cos(a) * r, -Math.sin(a) * r) : sh.moveTo(Math.cos(a) * r, -Math.sin(a) * r); }     /* -sin: rotateX(-90) sends shape y to -z */     // m1997: the ice
     const t = texGet('snow_ice').clone(); t.needsUpdate = true; t.repeat.set(1 / POND.tex, 1 / POND.tex);
     const ice = new THREE.Mesh(new THREE.ShapeGeometry(sh, 12).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: t, color: 0xdff4ff, roughness: .1, metalness: .15, emissive: 0x0c3a48, emissiveIntensity: .35 }));
     ice.position.set(POND.at[0], .025, POND.at[1]); ice.receiveShadow = true; g.add(ice); Z.ice = ice; }
@@ -10869,7 +10869,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     if (p.grounded && !Z.wasG && (Z.lastVy || 0) < -6) { snowStamp(p.pos.x, p.pos.z, 1.1, .02); snowPuff(p.pos.x, under * Z.depth, p.pos.z, 40, 3.5, 3.5); }     // a landing digs a crater
   }
   Z.wasG = p.grounded; Z.lastVy = p.vel.y;
-  if (p.grounded && p.pos.y < .4 && pondIn(p.pos.x, p.pos.z) && !p.dragon && !p.wing) {     // m15PD: on the ice he slides
+  if (p.grounded && p.pos.y < .4 && pondIn(p.pos.x, p.pos.z) && !p.dragon && !p.wing) {     // m1997: on the ice he slides
     if (!Z.iceV) Z.iceV = new THREE.Vector2(p.vel.x, p.vel.z); const V = Z.iceV, k = 1 - Math.exp(-POND.grip * dt), wx = p.vel.x, wz = p.vel.z;
     V.x += (wx - V.x) * k; V.y += (wz - V.y) * k; p.pos.x += (V.x - wx) * dt; p.pos.z += (V.y - wz) * dt; p.vel.x = V.x; p.vel.z = V.y;
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }

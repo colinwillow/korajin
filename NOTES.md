@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15PD -- THE FROZEN POND (Oct 31 2026)
+## m1997 -- THE FROZEN POND (Oct 31 2026)
 Snow pass 2's pond, at (27, 30): a lobed sheet (r ~11 m) of a NEW painted ice tile (`textures/snow_ice.webp`: turquoise, white fractures, trapped
 bubbles; glossy, a teal glow from under), the pack swept off it with a low bank round the edge (`POND.bank`), pines / rocks / bamboo kept off. On it he
 SLIDES (`POND.grip` 1.1 /s: his velocity only creeps toward what the stick asks, applied from the previous frame's actual velocity, so it works with
