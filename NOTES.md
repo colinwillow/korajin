@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1914 -- THE SKY TEMPLE 7e: jackal-headed guardians, gold studs, waterfalls off the far islands (his second concepts)
+
+- THE GUARDIANS are jackal-headed now (`statue`): head, a long snout, a nose, two tall ears, jade eyes, a gold collar and a striped head-cloth
+  falling behind, the body in ANCIENT TECH stone (dark, jade circuit lines -- the door's material, so no new draw) with gold bands, a jade
+  chest plate, jade shoulder bands, a gold kilt flap. Still scenery; STATUES.md's stone twin of a real enemy is a later swap.
+- GOLD STUDS: a row of rivets every 1.6 m under the gold band of every gold-trimmed block taller than 2.5 m (in the gold mesh).
+- WATERFALLS: five far islands (`p.fall` = width) pour a sheet off the edge that faces the temple, bowing out as it falls 110-160 m into the
+  clouds; one merged mesh with a scrolling-streak shader (+1 draw). The far islands' spires stay as they were -- small temples on them are
+  not built yet.
+- Budget: 42 draws on the widest frame, 100k triangles. Headless renders checked. Step 7's list from his second concepts is done; what is left
+  is his look on the phone.
+
 ## m1913 -- THE SKY TEMPLE 7d: the halo's jade dish and red chains, the porthole over the door, the back's gear disc and slits (his second concepts)
 
 - THE HALO holds a jade DISH (a shallow jade bowl filling the ring, a jade stem down to the orb) and is tied to the pylons' tops by four RED

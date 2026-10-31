@@ -42,7 +42,7 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
   - [x] 7c. (m1912) SATELLITES at two levels: inverted-spire towers with a jade core and a small top with a palm; an UPPER bridge off each pylon; the
         rope rails go RED.
   - [x] 7d. (m1913) The halo's jade DISH and red chains down to the pylons; the jade porthole disc over the door; the BACK's gear disc and jade slit windows.
-  - [ ] 7e. Jackal-headed jade-armoured guardians; gold studs in the stone; far islands as small temples with WATERFALLS.
+  - [x] 7e. (m1914) Jackal-headed jade-armoured guardians; gold studs in the stone; far islands as small temples with WATERFALLS.
 
 ## DONE WHEN
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)
