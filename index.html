@@ -22195,7 +22195,7 @@ try { let v = localStorage.getItem('mel.sideflick'); if (v === 'TORNADO') v = 'S
 const bodyAir = d => d.root.position.y > groundAt(d.root.position.x, d.root.position.z, d.root.position.y, .5) + .35;
 function jugMark(d) { if (JUGGLE.on) d.jugT = performance.now() / 1000 + JUGGLE.hang; }
 let SLAMRINGS = [];
-// m15SW2 (his photo: "the slam's outward ring -- make it a shockwave or a particle wave, way more interesting; it's a flat plane, boring, low poly, low
+// m1963 (his photo: "the slam's outward ring -- make it a shockwave or a particle wave, way more interesting; it's a flat plane, boring, low poly, low
 // resolution"): the ring was a 48-sided flat disc of one colour, scaled and faded. Now three layers, one draw each, sharing geometry: (1) the GROUND
 // RING, a shader on a 128-segment ring -- a hot white-to-orange LEADING EDGE, a glow trailing inward, broken by noise so it is a front and not a hoop,
 // additive; (2) the SHOCK WALL, an open cylinder at the edge that rises `wallH` and sinks as it races out, fading up its height -- the 3D read; (3) DUST

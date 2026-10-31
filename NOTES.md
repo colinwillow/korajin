@@ -37,7 +37,7 @@ realistic, imperfection maps, eroded gold? Also, what are these giant blue circl
 - THE RINGS were the CHECKPOINT markers (a jade ring on the floor at every `cp`). The drawn ring is gone; the checkpoint itself is unchanged (it
   still saves where he respawns and still toasts CHECKPOINT / THE HALO).
 Same draw calls. Shipped unverified.
-## m15SW2 -- the slam's shockwave: a front with a wall and dust, not a flat disc
+## m1963 -- the slam's shockwave: a front with a wall and dust, not a flat disc
 His photo (Oct 31): *"the air swipe-down slam's outward ring -- make it a shockwave or a particle wave, way more interesting; it's a flat plane wave and
 looks boring as s---, low poly, low resolution."*
 - `slamRing` was a 48-sided flat disc of one colour, scaled and faded. Now three layers sharing geometry (`slamFxGeo`): a GROUND RING shader on a
