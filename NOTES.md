@@ -5,6 +5,23 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1923 -- THE SKY TEMPLE: the floating colliders fixed, and AMBUSHES with the game's enemies (his, from the phone at m1922)
+
+His: *"there's some areas where the collider just makes me float"* (two shots: standing on air over the guardian statue's head, and hanging
+in the air beside its staff) and *"you can place guards around -- the statues, the temple dweller, the rock guys, the archers, the samurai,
+the turrets -- triggered when you walk into certain areas; I'll make a more strategic plan eventually, just to play around with for now."*
+- THE STATUE: its collider was ONE 2.4 x 7 (x k = 6 x 17.5 m) box round a figure 2.1 wide and 6.6 tall to the crown -- a metre of air over its
+  head and two beside it. Now three boxes: the plinth, the body (shoulder-wide, .55 deep), the head.
+- BATTERED BLOCKS (the same fault, everywhere at x2.5): one box at the MEAN footprint stood bat/2 -- 1.25 m on tier 1 -- out past the block's
+  own top edge, so its rim was air you could stand on. Now a stack of slices (`ceil(bat / .25)`, up to 24), each at its own top's footprint,
+  never more than .25 m off the slope; every slice but the top carries `_sc`, so `ledgeFind` does not see a lip every 2.5 m.
+- AMBUSHES (`TEMPLE.ambush`, stable ids): walk into a zone and the game's own spawner fires once -- samurai round you on the plaza (8) and on
+  tier 1 (6), the statues and their chalice on the plaza's right, the archers' ring at the top of the stair, the temple dwellers before the
+  door, the stone guardian on the podium's back. A toast says AMBUSH.
+- `hordeAdd` / `archerAdd` stand their bodies on `groundAt(x, z, 0)` -- the forge floor, 180 m below the temple -- so `templeAmbush` lifts the
+  new ones onto the surface under them. Checked headless: the plaza zone fired, 8 samurai at y 180.0 round him on the paving.
+- Placement is a first sketch for play; the strategy is his to plan.
+
 ## m1922 -- THE SKY TEMPLE 8a: the defences -- watchtowers, turrets, seals, a floating chain, the great door that sinks (his direction)
 
 His (TEMPLE.md "Where it is going"): the outside heavily guarded and automated -- turrets, towers, floating pieces to reach -- and you strike

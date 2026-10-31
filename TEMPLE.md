@@ -51,9 +51,9 @@ UNDERGROUND temple -- the inside ten times larger. This could just be the part t
 the outside heavily guarded, very automated -- turrets that shoot at you, towers, enemies, floating pieces you've got to figure out how to get
 to. Let's keep doing passes."* For now it stays floating (*"that's fine"*); the under-temple is its OWN sandbox (its own doc and DONE WHEN)
 once he starts it -- the doors here only open onto it.
-- [ ] 8a. THE DEFENCES: four watchtowers (40-75 m) with posted turrets and ledge columns, a floating stepping-stone chain to a seal island,
+- [x] 8a. (m1922) THE DEFENCES: four watchtowers (40-75 m) with posted turrets and ledge columns, a floating stepping-stone chain to a seal island,
       SEALS on three towers and the island -- strike them all and the great door sinks.
-- [ ] 8b. GUARDS in the towers (needs an enemy he has signed off -- the WHOLE-PIECE RULE: do not post an unfinished enemy here).
+- [~] 8b. GUARDS: trigger-zone AMBUSHES with the game's existing enemies, "just to play around with" (his go-ahead, m1922); the strategic plan is his, later.
 - [ ] 8c. More floating pieces round the outside, each with a reason to reach it; a better tell for which seals are left.
 - [ ] 8d. On the ground: the temple as the tip of the iceberg (a ground variant of the island), the doors opening onto the way down.
 
