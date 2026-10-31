@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15WB -- WINGS takes the FORMS ring segment (the floating button retired)
+## m1970 -- WINGS takes the FORMS ring segment (the floating button retired)
 His words (Oct 31, photo): *"the old FORMS button is still there -- remove it and put the wings in its place, but make it match the style where it's a
 section of a ring button."*
 - `formStep`'s one-segment ring over the left pad (`#formRow`, `FORMROW`) is WINGS now: always shown, gold (`--rc` #ffcc33), FILLED while the wing-pack
