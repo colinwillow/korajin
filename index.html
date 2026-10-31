@@ -7687,6 +7687,14 @@ const ARENA = {
       // m1002: his door leap -- `katana_runjump`, its hips MEASURED: off the floor at .25 of the clip, down at .47; `arc` the metres of lift
       // the clip does not carry itself (its hop is in place), `end` where he is back to fighting
       over: { swingAt: .45, walkRef: 1.2, runRef: 3.0, stunHits: 2, mirror: 1, strafe: 'katana_strafe_l', strafeR: 'katana_strafe_r', backClip: 'katana_walk_b', leap: { clip: 'katana_runjump', w0: .25, w1: .47, arc: 3.2, end: .62 } } },
+    // m15JK: THE JACKAL GUARDIAN (his concept, four views -> Tripo quads -> `hero.sh` on the samurai's Forge profile: the same clip names, 121 clips). A temple
+    // guardian: the samurai's duel brain and clips on his body, bigger and tougher, a jade beam. He is carved stone with jade lights -- his statue form is a
+    // `statueStone` pass away (STATUES.md); waking on the chalice is the temple's to wire.
+    JACKAL: { t: 'Jackal Guardian', sub: 'a stone guardian of the temple', file: 'models/characters/jackal_game.glb', h: 2.6, hp: 18, hitDmg: 16, beam: [.3, 1, .7], katana: 1, glow: 0,
+      clips: { idle: 'katana_idle', look: null, walk: 'katana_walk', run: 'katana_run', block: 'katana_guard', blockHit: 'katana_block', taunt: ['katana_draw'],
+        hits: ['take_damage_body', 'take_damage_head', 'katana_hit'], big: ['take_damage_head'], downF: 'take_damage_and_fall_down', downB: 'take_damage_and_fall_down',
+        upF: 'lay_to_get_up', upB: 'lay_to_get_up', roll: 'roll', swings: ['katana_slash_2', 'katana_horiz', 'katana_backhand', 'katana_down', 'katana_spin', 'katana_360h'] },
+      over: { swingAt: .45, walkRef: 1.2, runRef: 3.0, stunHits: 3, strafe: 'katana_strafe_l', strafeR: 'katana_strafe_r', backClip: 'katana_walk_b' } },
     // m1103: THE ARCHER -- the samurai's body, his own bake (`forged`: Colin's knock six + Mixamo's longbow pack), red, a bow
     ARCHER: { t: 'Archer', sub: 'red samurai with a bow', file: 'models/characters/samurai_game.glb', forged: 'samurai_archer', h: 1.8, hp: 3, hitDmg: 9, beam: [1, .35, .3], archer: 1,
       clips: { idle: 'bow_idle', look: null, walk: 'bow_walk_f', run: 'katana_run', block: 'bow_aim', blockHit: 'take_damage_body', taunt: ['bow_equip'],
