@@ -35186,8 +35186,8 @@ const _roll = new THREE.Vector3();
 // nothing -- falling is the physics' job -- and a teleport (ladder top, respawn) is bigger than a step
 // and ignored. The board rides the same offset, so a skater pops up the kerb with the deck under him.
 // A real step-up clip is the honest fix; this is what makes the snap stop reading as one until then.
-const STEPUP = { on: 1, hl: .07, min: .03, n: 0, ramp: 1, hl2: .12, vHl: .2 };     // m15ST: `ramp` 1 = the predictive stair filter (`stepRamp`); 0 = the old per-step ease
-const CAMY = { on: 1, hl: .05, air: .05, snap: 3 };     // m15ST: hl .2 -> .05 -- the drawn height is smooth now (`stepRamp`), and a slow ease trailed below him     // m1928: the camera's own height ease (see `cam.tgt`)
+const STEPUP = { on: 1, hl: .07, min: .03, n: 0, ramp: 1, hl2: .12, vHl: .2 };     // m1944: `ramp` 1 = the predictive stair filter (`stepRamp`); 0 = the old per-step ease
+const CAMY = { on: 1, hl: .05, air: .05, snap: 3 };     // m1944: hl .2 -> .05 -- the drawn height is smooth now (`stepRamp`), and a slow ease trailed below him     // m1928: the camera's own height ease (see `cam.tgt`)
 function stepEase(dt) {
   const p = player, y = p.pos.y;
   const dy = p.stepLastY === undefined ? 0 : y - p.stepLastY;
@@ -35199,7 +35199,7 @@ function stepEase(dt) {
   if (STEPUP.ramp) { stepRamp(dt, dy); return; }
   if (p.stepOff) { p.stepOff = damp(p.stepOff, 0, STEPUP.hl, dt); if (p.stepOff > -.002) p.stepOff = 0; }
 }
-// m15ST (his: "running upstairs -- the camera zooms up on his butt, and he still stutters up the steps"): each step was a snap eased back in .07 s
+// m1944 (his: "running upstairs -- the camera zooms up on his butt, and he still stutters up the steps"): each step was a snap eased back in .07 s
 // (a stutter per tread), and m1928's slow camera ease trailed below him all the way up the flight (low, behind, pulled in). Now the DRAWN height is
 // a predictive filter of his real one: `rampY` eases toward it (`hl2`) and `rampV` -- his vertical speed, smoothed over `vHl` -- is added back as a
 // lead, so a flight becomes the straight ramp through its treads (no lag in a steady climb, no stair-steps). The camera rides the drawn height.

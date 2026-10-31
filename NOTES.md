@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15ST -- stairs: the drawn height rides a ramp through the treads; the camera follows it tightly
+## m1944 -- stairs: the drawn height rides a ramp through the treads; the camera follows it tightly
 His words (Oct 31): *"the new running upstairs is interesting -- the camera zooms up on his butt, and he still stutters up the steps; at least he's
 not going through the ground now, but it's still not great."*
 - The body: each step was a snap eased back in .07 s -- a stutter per tread. `stepRamp` (`STEPUP.ramp` 1) makes the DRAWN height a predictive filter
