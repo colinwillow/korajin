@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15CR -- the katana charge keeps the run: charge pose on top, run legs below
+His words (Oct 31): *"already running with the katana out, I hold up on the right stick -- he goes into the guard because he's charging, so he's
+walking really slow and yet you're still going at the speed of the run. A hybrid: maintain the run -- the upper torso does the guard charge, the legs
+the run."*
+- Two causes, both measured headless: (1) every committed state capped his speed at `GAIT.aimRunRef` (2.3 m/s) -- a katana CHARGE no longer does
+  (`CHRUN.keep`; a gun's aim and the guard still walk), so he holds 7.2; (2) the charge's legs were always the katana WALK cycles. Moving FORWARD past
+  `CHRUN.at` 3.2 m/s (blended over `band` 1.2) they are a RUN now: the first legs half the body has of `katana_run`, the current run, `run_fwd`,
+  `run_fwd_fast` -- measured, the forged `run_std` has no legs half and `run_fwd__legs` does -- rated by `arenaRef` like the walks. Sideways or slow,
+  the katana walks as before.
+- Headless: charging (right pad held up) while running at 7.2 m/s -> weights `katana_guard__up` 1 + `run_fwd__legs` 1 (it was `katana_walk__legs`);
+  rendered: a running stride with the blade held back.
+
 ## m1967 -- LOOK.md piece 1: TOOLS > LOOK SOFT (banded light, coloured shade, rim)
 His go (Oct 31): *"go ahead, build it"* -- the soft stylized look from his reference screenshots, on a switch, judged on the Red Hollows / Arena / Temple.
 - ONE patch (`lookPatch`) on every lit material (standard / physical / lambert / phong), chained after any existing `onBeforeCompile`, injected before

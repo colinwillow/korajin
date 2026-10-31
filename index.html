@@ -21921,6 +21921,7 @@ function bladeTrail(dt) {
     P.setXYZ(i * 2, h[0].x, h[0].y, h[0].z); P.setXYZ(i * 2 + 1, h[1].x, h[1].y, h[1].z); A.setX(i * 2, f * f * T.k * .35); A.setX(i * 2 + 1, f * f * T.k); }
   P.needsUpdate = true; A.needsUpdate = true;
 }
+const CHRUN = { keep: 1, at: 3.2, band: 1.2 };     // m15CR: the katana charge keeps a RUN's legs past `at` m/s (see the committed branch)
 function katStance() { return KATANA.stance && slotNow().melee === 'katana' && !!rig.actions[KATANA.idle] && !!rig.actions[KATANA.walk] && !!rig.actions[KATANA.run]; }
 function gripSet(k) { const g = MOVE.grips[k]; if (!g) return; MOVE.gripPick = k; MOVE.grip = g[0]; MOVE.faceK = g[1]; }
 try { const v = localStorage.getItem('mel.grip'); if (v) gripSet(v); } catch (e) {}
@@ -36031,7 +36032,7 @@ function stepPlayer(dt) {
   // every step round to point down the barrel.
   const aiming = committed() || p.block || p.center || !!p.lock || p.tossFace != null;     // m952: winding up a throw aims like the trigger
   let wantSp = MOVE.max * s.mag;
-  if (aiming) wantSp = Math.min(wantSp, GAIT.aimRunRef);
+  if (aiming && !(CHRUN.keep && p.charge && !p.block && slotNow().melee === 'katana')) wantSp = Math.min(wantSp, GAIT.aimRunRef);     // m15CR: a katana CHARGE keeps his run (his: "maintain the run"); a gun's aim and the guard still walk
   if (p.land && !p.knock && !(p.zoomV > 0)) wantSp *= .35;     // m1085: a zoom keeps its speed through a landing
   // **A BLOW TAKES THE CONTROLS AWAY FOR A MOMENT, WHICH IS WHAT MAKES IT A BLOW.** Without it
   // a mace landing is a small push you steer straight out of, and getting hit reads as nothing.
@@ -37510,6 +37511,13 @@ function rigAnim(dt) {
       const R = KATANA.legRef || (KATANA.legRef = {}); for (const k in G) if (R[k] == null) R[k] = arenaRef(hd, G[k]) || GAIT.strafeRef;
       const rel = wrapAngle(Math.atan2(p.vel.x, p.vel.z) - p.faceH), c = Math.cos(rel), sn = Math.sin(rel);
       const fwd = Math.abs(c), lat = Math.abs(sn), tot = fwd + lat || 1;
+      // m15CR (his: "already running with the katana out, I hold up on the right stick to charge -- he goes into the guard and walks really slow while I'm
+      // still going at run speed. A hybrid: keep the run, the upper torso does the charge and the legs keep the run"): charging and moving FORWARD past
+      // `CHRUN.at` m/s, the legs are a RUN (`katana_run`'s legs half if the body has one, else the plain run's), measured for rate like the walks; the
+      // top half is still the charge pose. Below it, or sideways, the katana walks as before. Blended across `CHRUN.band` so it does not pop.
+      const rk = kat && p.charge && !p.block && c > .3 ? clamp((sp - CHRUN.at) / CHRUN.band, 0, 1) : 0;
+      const rn = rk > 0 ? (['katana_run', CLIPS.run, 'run_fwd', 'run_fwd_fast'].map(n => n + LEGS).find(n => rig.actions[n]) || null) : null;     // measured: the forged run has no legs half; run_fwd does
+      if (rn) { if (R[rn] == null) R[rn] = arenaRef(hd, rn.replace(LEGS, '')) || GAIT.runRef; add(rn, rest * rk, R[rn]); rest *= 1 - rk; }
       add(legKey(c >= 0 ? G.fwd : G.back, false), rest * fwd / tot, c >= 0 ? R.fwd : R.back);
       add(legKey(sn >= 0 ? G.left : G.right, false), rest * lat / tot, sn >= 0 ? R.left : R.right);     // +X is his left: a positive sine is LEFT
       setWeights(t, dt); return;
