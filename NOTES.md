@@ -5,6 +5,24 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1984 -- THE JINRA REFINERY, pass 7: the silhouette, to his four views
+
+His: *"do like 5 more passes making the inside and outside look like the images; we will need to texture all the materials too."* His
+FRONT/BACK/LEFT/RIGHT sheet is cut into `images/korajin/ref/jinra_view_*.jpg`. Plan: 7 the silhouette, 8 the deck, 9 the shopfronts, 10
+the cloth and dressing, 11 textures. This pass:
+- THE MOUND (`mPt`, `mBump`): a unit hemisphere pushed to an ellipsoid 6.6 x 4.4 x 5.4 (low and wide, was 5.4 x 5.2), two shoulder bulges
+  and a back bulge, fbm lumps, its crown clamped flat at `MTop` under the globe's collar. `mAt(bearing, height)` finds a point on the skin
+  and its normal (iterated), so frames, shelves and canisters sit on the real surface.
+- OPENINGS (`MOP`): front door, two front shop windows, a door and a round window on +x, a door on -x, a door at the back -- the shell's
+  triangles inside each are dropped (outer and the inner BackSide shell), framed with jambs/lintels/sills on the skin's normal; the
+  colliders are a ring of .6 m cells round the wall with the DOORS left open (windows stay wall).
+- THE GLOBE SUNK in the crown: a deep copper collar with a rolled lip and an iron ring of rivets, four straps over the glass, a copper lid,
+  a stepped ringed CHIMNEY STACK (smoke moved to its top). Three thick TEAL PIPES (new `pipeM`) with copper joint rings arch off the globe to
+  copper feet on the deck (solid).
+- Interior refitted: shelf bays only where the wall is wall, the vat under the globe, the pour from the crown, canisters at the sides.
+- Walked headless: up the front steps, through the room, out the BACK door -- which leads off the old deck's back edge (the mound overhangs
+  it): pass 8's deck fixes that. Draws 22.
+
 ## m1983 -- THE JINRA REFINERY, pass 6: the ground and the underside
 
 - The cap is SAND (`sandM`, painted) -- it was a flat green disc; the floating stones keep their green tops (the old `grass` material is
