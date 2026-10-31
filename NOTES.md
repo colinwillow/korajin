@@ -17,7 +17,7 @@ just tint them... we need to start texturing the level a little better."* Three 
   temple_weave.webp   neutral grey canvas weave, seamless -- the "general cloth to tint": multiplied lightly over the banners (6 x 24 tiles); it is
                       the map to put under any new cloth
 Same draw calls. Re-roll any: `python3 tools/temple_textures.py carpet|weave|banner`. Shipped unverified.
-## m15WL -- the LEFT whirlwind swings the sword (the original clip backwards, not its mirror)
+## m1960 -- the LEFT whirlwind swings the sword (the original clip backwards, not its mirror)
 His words (Oct 31): *"charge the katana, hold RIGHT on the left stick and release: the proper whirlwind. Hold LEFT and he tries the same but his sword
 isn't really out -- it doesn't have the same outward reach. Maybe because you mirrored the animation and he's reaching out with his left hand, which
 doesn't have a sword in it."*

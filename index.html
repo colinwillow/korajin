@@ -22149,7 +22149,7 @@ function tornGo() { const p = player; TORN.stat.charges++; p.torn = { n: TORN.sp
 const WHIRL = { leftRev: 1, on: 1, idle: .3, spins: [2, 3], R: 3, Rk: 1, dmg: 3, power: 1.1, dur: .21,     /* m1347: *"at least double the speed"* -- .42 -> .21 s a spin */ from: .078, to: .3125, last: .36, turn: 276, go: 8, bleed: 1.1, stat: { whirls: 0, hits: 0 } };
 function whirlGo(k, mir) { const p = player; WHIRL.stat.whirls++; const g = WHIRL.go * (.7 + .3 * k); p.torn = { n: Math.round(lerp(WHIRL.spins[0], WHIRL.spins[1], k)), whirl: 1, k, i: 0, mir: !!(mir && (WHIRL.leftRev || rig.actions[TORNADO.sword + '_m'])), vx: Math.sin(p.faceH) * g, vz: Math.cos(p.faceH) * g }; p.ltHold = 0; p.jump = 0; whirlSpin(); }
 function whirlSpin() {
-  // m15WL (his: "hold right and release: the right whirlwind; hold LEFT and he tries the same but his sword isn't really out -- maybe because you mirrored
+  // m1960 (his: "hold right and release: the right whirlwind; hold LEFT and he tries the same but his sword isn't really out -- maybe because you mirrored
   // the animation and he's reaching out with his left hand, which doesn't have a sword"): exactly that -- `katana_360h_m` swaps his arms, so the sweep
   // reached out with the EMPTY hand. `WHIRL.leftRev` 1: the leftward whirl is the ORIGINAL clip played BACKWARDS -- the same spin turning the other way,
   // the katana still in the hand that reaches. 0 = the mirror (m1723).
