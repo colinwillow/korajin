@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15WF -- wing suit: the cape rides over the pack, a flip finishes into the wings, the up/down flick is a TUCK (Oct 31 2026)
+## m1993 -- wing suit: the cape rides over the pack, a flip finishes into the wings, the up/down flick is a TUCK (Oct 31 2026)
 *"Make the cape not poke through."* The pack is two body spheres for the cape springs while it is drawn (`WING.capeR` .2 of the pack scale, at the box's
 top and bottom). *"When I flip and then pull out the wing suit he pops to the pose, not finishing the flip."* `wingStart` keeps the air flip's axis and
 angle (`p.wFlip`) and runs it on to its whole turn at its own rate (min 7 rad/s) on top of the flight pose, and the body slerps in from the frame before

@@ -13673,7 +13673,7 @@ function springsStep(dt) {
   if (!SPRINGS.on || !SPRINGS.segs.length || !(dt > 0)) return;
   const d = Math.min(dt, 1 / 30), f = d * 60;
   const cols = SPRINGS.cols.map(c => { const p = c.A.getWorldPosition(new THREE.Vector3()); if (c.B) p.lerp(c.B.getWorldPosition(_chSC), c.t); return { p, r: c.r }; });
-  if (WG.g && WG.g.visible && WING.capeR) for (const y of [.1, -.08]) cols.push({ p: _wkPk.set(0, y, -.08).applyMatrix4(WG.g.matrixWorld).clone(), r: WING.capeR * WG.g.scale.x });     // m15WF (his: "make the cape not poke through"): the pack is a body sphere pair for the cape
+  if (WG.g && WG.g.visible && WING.capeR) for (const y of [.1, -.08]) cols.push({ p: _wkPk.set(0, y, -.08).applyMatrix4(WG.g.matrixWorld).clone(), r: WING.capeR * WG.g.scale.x });     // m1993 (his: "make the cape not poke through"): the pack is a body sphere pair for the cape
   const hc = SPRINGS.head ? SPRINGS.head.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0, SPRINGS.headR * .4, 0)) : null;
   for (const s of SPRINGS.segs) {
     const P = SPRINGS[s.kind], b = s.b; b.parent.getWorldQuaternion(_chSQ); _chSQ.multiply(s.rest);
@@ -36391,7 +36391,7 @@ function bladeFlipTurn(u) {
 const WING = { hipsHold: 1, clip: (() => { try { const v = localStorage.getItem('mel.flypose'); return v === 'fly_c' || v === '' ? v : 'fly_a'; } catch (e) { return 'fly_a'; } })(), pack: (() => { try { return localStorage.getItem('mel.wings') === '1'; } catch (e) { return false; } })(), on: 1, dblT: .32, boostV: 9, boostHL: .9, boostCool: .6,
   out: 0, open: 0, openT: .45, v0: 14, cruise: 20, vmin: 9, vmax: 36, thrust: .9, gk: 1,
   pop: 8,               // the hop off the ground before the wings take her
-  trick: 1, loopT: 1.5, rollT: .8, tuckT: .75, tuckFold: .12, capeR: .2, finT: .35,     // m15WF: up/down flick = TUCK (wings in, a flip, wings out); a flip finishes into the wings; the cape rides over the pack
+  trick: 1, loopT: 1.5, rollT: .8, tuckT: .75, tuckFold: .12, capeR: .2, finT: .35,     // m1993: up/down flick = TUCK (wings in, a flip, wings out); a flip finishes into the wings; the cape rides over the pack
   turn: 1.7, pitchRate: 1.5, climb: 55 * Math.PI / 180, dive: 70 * Math.PI / 180, levelHL: .7,
   pull: 0,              // 0: push UP to climb (his call in her game); 1: the airplane way
   lie: 80 * Math.PI / 180, bank: .7, bankHL: .15, camFollow: 3.0, camIdle: .6, settle: 7,
@@ -36434,7 +36434,7 @@ function wingStart() {
   if (p.rail) railOff(false);
   if (p.grounded) { p.vel.y = Math.max(p.vel.y, WING.pop); p.pos.y += .05; }
   p.trick = ''; p.trickName = ''; p.barrel = 0; p.barrelA = 0; p.bRoll = p.bYaw = p.bRollA = p.bYawA = 0;
-  if (rig.root) p.wingIn = { q: rig.root.quaternion.clone(), t: 0 };     // m15WF (his: "flip then pull out the wing suit, he pops to the pose, not finishing the flip"): the body eases in from where it was
+  if (rig.root) p.wingIn = { q: rig.root.quaternion.clone(), t: 0 };     // m1993 (his: "flip then pull out the wing suit, he pops to the pose, not finishing the flip"): the body eases in from where it was
   if (p.aflip) { const F = p.aflip, k = F.w >= 0 ? Math.ceil(F.th / (Math.PI * 2) - .02) : Math.floor(F.th / (Math.PI * 2) + .02); p.wFlip = { axis: F.axis.clone(), th: F.th, tgt: k * Math.PI * 2, w: Math.max(Math.abs(F.w), 7) }; } else p.wFlip = null;     // ...and the flip runs on to its whole turn
   p.aflip = null; p.flip = ''; p.flipT = 0; p.melee = null; p.slam = 0;     // m1985 (his: "the double tap flips him as well as getting the suit out -- he locks in upside down"): opening the wings ends any flip
   const v = p.vel.length(), hs = Math.hypot(p.vel.x, p.vel.z), face0 = p.faceH;
@@ -36467,7 +36467,7 @@ function wingEnd() {
 function wingTrick(dx, dy) {
   const p = player;
   if (!p.wing || !WING.trick || p.wTrick) return false;
-  if (Math.abs(dy) >= Math.abs(dx)) p.wTrick = { k: 'tuck', s: dy < 0 ? 1 : -1, t: 0, dur: WING.tuckT, b: 0 };     // m15WF (his: "instead he temporarily pulls in the wings, does the flip, and the wings come out again"): no loop of the flight path
+  if (Math.abs(dy) >= Math.abs(dx)) p.wTrick = { k: 'tuck', s: dy < 0 ? 1 : -1, t: 0, dur: WING.tuckT, b: 0 };     // m1993 (his: "instead he temporarily pulls in the wings, does the flip, and the wings come out again"): no loop of the flight path
   else p.wTrick = { k: 'roll', s: dx > 0 ? 1 : -1, t: 0, dur: WING.rollT, b: 0 };
   snd('swoosh', { r: .95, g: .4 });
   return true;
@@ -36585,10 +36585,10 @@ function wingPose(dt) {
     const u = Math.min(1, S.t / WING.spinT), k = 1 - u * u * (3 - 2 * u);
     if (u >= 1) p.wingSpin = null; else _wkB.multiply(_wkq.setFromAxisAngle(_wkY, S.a * k));
   }
-  if (p.wing && p.wFlip) { const F = p.wFlip, d = F.tgt - F.th; F.th += Math.sign(d) * Math.min(Math.abs(d), F.w * dt); _wkB.premultiply(_wkq.setFromAxisAngle(F.axis, F.th)); if (Math.abs(F.tgt - F.th) < 1e-3) p.wFlip = null; }     // m15WF
+  if (p.wing && p.wFlip) { const F = p.wFlip, d = F.tgt - F.th; F.th += Math.sign(d) * Math.min(Math.abs(d), F.w * dt); _wkB.premultiply(_wkq.setFromAxisAngle(F.axis, F.th)); if (Math.abs(F.tgt - F.th) < 1e-3) p.wFlip = null; }     // m1993
   rig.wingQ = (rig.wingQ || new THREE.Quaternion()).copy(_wkB);
   R.quaternion.copy(_wkB).multiply(_wkM.setFromAxisAngle(_wkY, rig.faceOff + RIG.spin));
-  if (p.wing && p.wingIn) { const I = p.wingIn; I.t += dt; const u = Math.min(1, I.t / WING.finT); R.quaternion.slerpQuaternions(I.q, _wkq3.copy(R.quaternion), u * u * (3 - 2 * u)); if (u >= 1) p.wingIn = null; }     // m15WF
+  if (p.wing && p.wingIn) { const I = p.wingIn; I.t += dt; const u = Math.min(1, I.t / WING.finT); R.quaternion.slerpQuaternions(I.q, _wkq3.copy(R.quaternion), u * u * (3 - 2 * u)); if (u >= 1) p.wingIn = null; }     // m1993
   // about her HIPS: the root is slid by the difference, so the hips hold their place
   const hy = (rig.hipY || RIG.height * .44) * bodyK();
   _wkP.set(0, hy, 0).applyQuaternion(_wkB);
