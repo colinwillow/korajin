@@ -408,6 +408,7 @@ Mint is ONLY Jinra. The bottles, canisters, globe and crystals are the shared **
     with a mint-lit doorway and a counter of vessels; the GLASS GLOBE of glowing Jinra on its crown in a copper cage, copper PIPES, a
     stack on top and a CHIMNEY breathing mint; teal Jinra AWNINGS and the BANNER; mint lanterns; the vessels along the front; and the
     way up: 14 FLOATING STONES spiralling from the lookout's deck (96 m) up to the island, each about a 2 m jump
+  - [x] **pass 4 (m1979):** the HERO EXTERIOR -- the globe's Jinra alive (curling, rising wisps, `gjSwirl`) in a heavy copper frame with a capped, valved crown; the dome dressed (timber ribs, a copper pipe band on iron brackets, five glowing portholes, iron straps); the deck made heavy (fascia, capped corner posts); mint bulb strings under the awnings
 - **DONE WHEN:**
   - [ ] the exterior reads as the sheet's hero (dome, globe, pipes, deck, awnings, banners) from the lookout and from the valley
   - [ ] the interior: shelves of bottles, the PROCESSING STATION (the dripping vat fed by pipes), the LARGE STORAGE gallery

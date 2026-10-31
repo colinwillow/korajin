@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1979 -- THE JINRA REFINERY, pass 4: the hero exterior (`gjSwirl`)
+
+His: *"need to do a few more passes on the floating Jinra shop/refinery."* Rendered against his sheet first: the globe was a flat cyan ball,
+the dome a bare hemisphere, the deck thin. This pass (exterior only; the interior and the island's ground are the next two):
+- `gjSwirl(A, centre)`: a MeshStandardMaterial whose emissive is patched (onBeforeCompile, its own frame's position as a varying) into a
+  dim mint body with bright wisps curling round and rising; `A.jT` is its clock, advanced in `gjinraStep`. The restore rig's chunk patch
+  chains AFTER it (rsChunkRig keeps the old onBeforeCompile), so it still lifts with the island. Two balls (2.5 and 1.5) for depth.
+- The globe's frame: four more meridian rings, a seat collar with an iron band, a crown cap studded with rivets, a valve wheel on a stub.
+- The dome: three timber ribs arching side to side (none over the door), a copper pipe band round the shoulder on iron brackets, five
+  mint portholes in copper frames set on the ellipsoid's own normal, iron straps round the foot.
+- The deck: a fascia round its edge, heavy corner posts with iron caps; three bulb strings sagging under the awnings.
+Unlooked-at on a phone; renders headless (front, left, back, the globe close).
+
 ## m1978 -- THE BASIN: the canyon carries on downstream and opens into a valley (`HBASIN`)
 
 His: *"extend the canyon down the stream a little, open it up at the end into a basin, and then we'll start building some stuff."*
