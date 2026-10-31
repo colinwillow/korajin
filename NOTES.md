@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1949 -- THE SKY TEMPLE: generated MEGALITH textures (four maps)
+
+His (m1948 screenshot, standing by a plain block): *"We need to generate some textures for these giant megalithic stone pillar pyramid temple
+textures... it would look really good if it was an actual temple rock texture."* Four 1024 maps from the image API (`gpt-image-2` through the
+proxy -- `gpt-image-1` is listed and then refused), each made SEAMLESS here (edges blended with a half-offset copy, which wraps by construction),
+written to `textures/temple_*.webp` (~300 KB each on the wire, ~5.6 MB resident each with mips):
+  temple_wall    fitted pinkish sandstone ashlar, carved key-pattern blocks, cracks, lichen   -> every temple block (`stone`)
+  temple_paving  worn sandstone floor slabs, mossy joints                                    -> the island top (`cap`)
+  temple_rock    eroded strata cliff, roots and moss                                         -> the underside and spikes (`side`)
+  temple_glyph   black basalt with jade glyph circuits and gold seams, the jade EMISSIVE      -> the ancient-tech accents (`tech`)
+They go through the SAME `templeRockMat` shader (three noise-blended copies, erosion, moss, gold rivets) via its new `tex` argument; the
+generated maps take `TROCK.desatTex` .5 rather than the canvas map's .62 (they already have colour). The wall map packs twice the courses of
+the old canvas one, so the temple's stone UV repeat halved (`ku` .55 -> .28). Re-roll or add one: `python3 tools/temple_textures.py wall`.
+Same draw calls (63 wide). Shipped unverified.
+
 ## m1948 -- THE SKY TEMPLE: the checkerboard on the chimney-fin tops (z-fighting)
 
 His (m1941 screenshot, standing on a teal fin): *"a weird normal problem where the gold box is supposed to be -- the rim is at the same level as
