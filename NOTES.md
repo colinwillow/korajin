@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1935 -- THE SKY TEMPLE look loop, pass 3: gold rivets over all the stone
+
+His concepts stud every block with small gold rivets (the underside too). `templeRockMat`'s shader now adds them in WORLD space: a 1.6 m grid
+in each face's own plane (picked from the world normal, `vTN`), a rivet in half the cells (`TROCK.rivetP`), jittered, a dark socket round a
+bright gold bead (`rivetR` .16 m). No geometry, no draws -- every temple stone, the island, the spikes and the far islands at once.
+Next: L3's panels (gold-framed plates, jade window slits), then L4 the satellites.
+
 ## m1934 -- THE SKY TEMPLE look loop, pass 2: the side pylons are the concepts' smooth WEDGES
 
 In all five of his views the two side pylons are single massive battered wedges (wide at the foot, a narrow flat top, the banners high on
