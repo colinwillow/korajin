@@ -35186,8 +35186,8 @@ const _roll = new THREE.Vector3();
 // nothing -- falling is the physics' job -- and a teleport (ladder top, respawn) is bigger than a step
 // and ignored. The board rides the same offset, so a skater pops up the kerb with the deck under him.
 // A real step-up clip is the honest fix; this is what makes the snap stop reading as one until then.
-const STEPUP = { on: 1, hl: .07, min: .03, n: 0 };
-const CAMY = { on: 1, hl: .2, air: .05, snap: 3 };     // m1928: the camera's own height ease (see `cam.tgt`)
+const STEPUP = { on: 1, hl: .07, min: .03, n: 0, ramp: 1, hl2: .12, vHl: .2 };     // m15ST: `ramp` 1 = the predictive stair filter (`stepRamp`); 0 = the old per-step ease
+const CAMY = { on: 1, hl: .05, air: .05, snap: 3 };     // m15ST: hl .2 -> .05 -- the drawn height is smooth now (`stepRamp`), and a slow ease trailed below him     // m1928: the camera's own height ease (see `cam.tgt`)
 function stepEase(dt) {
   const p = player, y = p.pos.y;
   const dy = p.stepLastY === undefined ? 0 : y - p.stepLastY;
@@ -35196,8 +35196,18 @@ function stepEase(dt) {
     p.stepOff = Math.max(-MOVE.step * 1.5, (p.stepOff || 0) - dy);
     STEPUP.n = (STEPUP.n || 0) + 1;
   }
+  if (STEPUP.ramp) { stepRamp(dt, dy); return; }
   if (p.stepOff) { p.stepOff = damp(p.stepOff, 0, STEPUP.hl, dt); if (p.stepOff > -.002) p.stepOff = 0; }
 }
+// m15ST (his: "running upstairs -- the camera zooms up on his butt, and he still stutters up the steps"): each step was a snap eased back in .07 s
+// (a stutter per tread), and m1928's slow camera ease trailed below him all the way up the flight (low, behind, pulled in). Now the DRAWN height is
+// a predictive filter of his real one: `rampY` eases toward it (`hl2`) and `rampV` -- his vertical speed, smoothed over `vHl` -- is added back as a
+// lead, so a flight becomes the straight ramp through its treads (no lag in a steady climb, no stair-steps). The camera rides the drawn height.
+// Off the ground, or on a jump bigger than a step, it lets go at once (physics owns the air).
+function stepRamp(dt, dy) { const p = player, y = p.pos.y, S = STEPUP;
+  if (!p.grounded || p.rampY == null || Math.abs(dy) > MOVE.step * 1.6) { p.rampY = y + (p.stepOff || 0); p.rampV = 0; p.stepOff = damp(p.stepOff || 0, 0, .04, dt); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; if (!p.grounded) p.rampY = y + p.stepOff; return; }
+  p.rampV = damp(p.rampV || 0, dt > 0 ? dy / dt : 0, S.vHl, dt); p.rampY = damp(p.rampY, y, S.hl2, dt);
+  p.stepOff = clamp(p.rampY + p.rampV * S.hl2 - y, -MOVE.step * 1.2, MOVE.step * .6); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; }
 function boardPose(dt) {
   // **ZEROED FIRST, ABOVE EVERY EARLY RETURN.** `_roll` is read by the root block later in the
   // same frame, so a frame that leaves this function early must leave a zero behind rather than

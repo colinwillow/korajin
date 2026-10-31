@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15ST -- stairs: the drawn height rides a ramp through the treads; the camera follows it tightly
+His words (Oct 31): *"the new running upstairs is interesting -- the camera zooms up on his butt, and he still stutters up the steps; at least he's
+not going through the ground now, but it's still not great."*
+- The body: each step was a snap eased back in .07 s -- a stutter per tread. `stepRamp` (`STEPUP.ramp` 1) makes the DRAWN height a predictive filter
+  of the real one: eased toward it (`hl2` .12) plus his smoothed vertical speed (`vHl` .2) as a lead, so a steady climb draws as the straight line
+  through the treads, with no lag. In the air, or on a jump bigger than a step, it lets go at once. `ramp` 0 = the old per-step ease.
+- The camera: m1928's .2 s height ease trailed below him all the way up a flight (low, behind, pulled in by the steps). It rides the drawn height
+  now with a .05 s ease (`CAMY.hl`).
+- Still not built: the feet themselves placed on the treads (foot IK), and a stair gait -- the m1813 clips stay off per his m1820 call.
+
 ## m1942 -- THE SKY TEMPLE look loop, pass 10: OVERGROWTH (TEMPLE.md L10)
 
 Against `temple_03_back.png` and `temple_01.png`: his temple is overgrown, vines spill over every ledge; ours had vines only on the dozen
