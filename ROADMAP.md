@@ -96,5 +96,10 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 - [ ] remove the PLAIN-skipped builders and their data (farm, islands, gorge, waterfront, ferry, factory, underneath,
       Pearl, ship, camp, carts, site...) and the quest/chapter/save system; then the toon/kit/alien/plaza/weirdport
       world branches; then their notes.
+- [x] the WEIRDPORT / toon / kit WORLD BRANCHES (his go, Oct 31: *"I don't need them... weirdport will keep it"*): m15WP -- `tkit` out of
+      `WORLD.list`, the default world is `forge`, the four load branches gone, `inWP`/`inTC`/`inKit`/`inTK`/`kitWorld` are `false` stubs.
+- [ ] next: the builders those branches called (`buildTCity`, `buildKit`, `buildKCityCol`, the crowd placer, the worker, the truck...)
+      once each is grepped for other callers (the FORGE spawns buildings -- check before cutting `buildKit`); then the stubs' callers;
+      then the city models (`models/toon_city*`, `streets`, `vehicles`...); then characters only the city used.
 - [x] the ALIEN WORLD and GLOWTIDE loaders (`buildAlienWorld`, `buildPlaza`, `awOptimize` and kin, `AW`, `PL`, their GOD places and
       switch, their load branches): m1910, 412 lines. `inAW` / `inPL` / `alienLike` stay as `() => false` stubs until their callers go.

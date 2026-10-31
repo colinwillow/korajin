@@ -8,7 +8,7 @@
     "check:boot": "node tools/boot.mjs",
     "check:sim": "node tools/sim.mjs",
     "check": "npm run check:syntax && npm run check:boot && npm run check:worlds && node tools/forgesync.mjs",
-    "check:worlds": "MEL_WORLD=arena node tools/boot.mjs && MEL_WORLD=forge node tools/boot.mjs && MEL_WORLD=home node tools/boot.mjs",
+    "check:worlds": "MEL_WORLD=arena node tools/boot.mjs && MEL_WORLD=test node tools/boot.mjs && MEL_WORLD=home node tools/boot.mjs",
     "clips": "node tools/clips.mjs",
     "gait": "node tools/gait.mjs",
     "rig": "node tools/rig.mjs",
