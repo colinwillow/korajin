@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15LK -- LOOK.md piece 1: TOOLS > LOOK SOFT (banded light, coloured shade, rim)
+## m1967 -- LOOK.md piece 1: TOOLS > LOOK SOFT (banded light, coloured shade, rim)
 His go (Oct 31): *"go ahead, build it"* -- the soft stylized look from his reference screenshots, on a switch, judged on the Red Hollows / Arena / Temple.
 - ONE patch (`lookPatch`) on every lit material (standard / physical / lambert / phong), chained after any existing `onBeforeCompile`, injected before
   `opaque_fragment`: soft-edged light BANDS (`uLkBands` 4, mixed `uLkBandK` .3), the SHADE RECOLOURED toward a cool purple at the same brightness

@@ -15633,7 +15633,7 @@ function arenaUi() {
       else if (a === 'cart') { CART.pose = CART.poses[(CART.poses.indexOf(CART.pose) + 1) % CART.poses.length]; try { localStorage.setItem('mel.cart2', CART.pose); } catch (err) {} }
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
-      else if (a === 'look') { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (err) {} }     // m15LK
+      else if (a === 'look') { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (err) {} }     // m1967
       else if (a === 'stairs') { STAIRS.on = STAIRS.on ? 0 : 1; try { localStorage.setItem('mel.stairs', STAIRS.on ? 'clips' : 'lean'); } catch (err) {} }     // m1956
       else if (a === 'hdrop') { HDROP.want = 1; }     // m1953
       else if (a === 'audmode') { SFXM.simple = !SFXM.simple; try { localStorage.setItem('mel.audiomode', SFXM.simple ? 'simple' : 'heavy'); } catch (err) {} try { SFX.ctx && SFX.ctx.close(); } catch (err) {} SFX.ctx = null; SFX.ready = 0; sfxWake(); }     // m1943
@@ -35553,7 +35553,7 @@ function hdropStep(dt, s) { const p = player, D = p.hdrop; D.t += dt;
   p.vel.set(0, 0, 0); p.grounded = true; p.speed = 0; const L = clipLen(HDROP.land) - (D.t0 || 0);
   if (D.t >= L || (D.t > L * HDROP.ctl && s && s.mag > .3)) p.hdrop = null;
   return 1; }
-// m15LK: THE SOFT LOOK (LOOK.md piece 1; his: "a mix between a toon, flatter look and a stylized accent with a stylized shadow and fall-off -- very
+// m1967: THE SOFT LOOK (LOOK.md piece 1; his: "a mix between a toon, flatter look and a stylized accent with a stylized shadow and fall-off -- very
 // satisfying to the eye"). ONE patch on every lit material (standard / physical / lambert / phong), injected just before the final colour is written:
 // soft-edged light BANDS (`bands`, mixed in by `band`), shadows TINTED toward `tint` instead of going grey, and a RIM light on the edges turned away from
 // the eye. Every patched material reads the same uniforms (`LOOKU`), so TOOLS > LOOK flips CURRENT <-> SOFT with no recompile, and the patch adds no
@@ -35577,7 +35577,7 @@ function lookPatch(m) { if (!m || m.userData.lookP || m.userData.noLook || !(m.i
 function lookSweep() { scene.traverse(o => { const ms = o.material; if (!ms) return; if (Array.isArray(ms)) ms.forEach(lookPatch); else lookPatch(ms); }); }
 function lookStep(dt) { LOOKU.uLkLook.value = damp(LOOKU.uLkLook.value, LOOK.soft ? 1 : 0, .15, dt); if (!LOOK.soft) return; if ((LOOK.t -= dt) <= 0) { LOOK.t = LOOK.every; lookSweep(); } }
 function stepPlayer(dt) {
-  lookStep(dt);     // m15LK
+  lookStep(dt);     // m1967
   if (HDROP.want && rig.actions && rig.actions[HDROP.land]) { HDROP.want = 0; heroDrop(player.pos.x, player.pos.y, player.pos.z, player.faceH); }     // m1953
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
   if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (DRAGZ.on) dragStep(dt); }
