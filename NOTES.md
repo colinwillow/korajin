@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15LK -- LOOK.md piece 1: TOOLS > LOOK SOFT (banded light, coloured shade, rim)
+His go (Oct 31): *"go ahead, build it"* -- the soft stylized look from his reference screenshots, on a switch, judged on the Red Hollows / Arena / Temple.
+- ONE patch (`lookPatch`) on every lit material (standard / physical / lambert / phong), chained after any existing `onBeforeCompile`, injected before
+  `opaque_fragment`: soft-edged light BANDS (`uLkBands` 4, mixed `uLkBandK` .3), the SHADE RECOLOURED toward a cool purple at the same brightness
+  (`uLkTint`, `uLkTintK` .85), and a RIM on edges turned from the eye (`uLkRimK` .7) -- faded out on upward faces. All patched materials read the same
+  uniforms (`LOOKU`), so the switch is a blend (`uLkLook`) with no recompile; materials are patched as they appear (a sweep every 1.5 s while SOFT).
+- Caught on the way (all rendered on the duel pit, side by side): the uniform names clashed with the existing rim patch (`uRimP` redefinition -- every
+  patched program failed to link) -> all `uLk*`; the rim lit the FLOOR seen edge-on and washed it; ADDING purple light filled the shadows in -> it
+  recolours at the same luminance now. Measured: his ground shadow keeps its contrast (218 vs 233 in both modes); draw calls 34 -> 34 (duel), 55 -> 54
+  (white box). The Arena / Red Hollows / Temple are too heavy to render headless here: his phone judges those.
+- Next (LOOK.md): the shader bevel, then rounded shapes, then weather.
+
 ## m1966 -- THE SKY CASTLE'S TOWNSFOLK: six Toad Wanderers on the lawns (pass 20)
 
 His (yes to "townsfolk who aren't fighters, walking the lawns"). `gcFolk` (beside `gcGuards`, stepped from `gcastleStep`), numbers in `GCFOLK`:

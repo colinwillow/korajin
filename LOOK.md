@@ -25,7 +25,7 @@ His references: a small round planet, a blue axolotl-ish character, soft blob fo
 - Try it on ONE place first (the Wall Park), then the temple.
 
 ## DONE WHEN
-- [ ] SOFT LIGHT on a switch, rendered side by side with CURRENT
+- [x] SOFT LIGHT on a switch, rendered side by side with CURRENT (m15LK)
 - [ ] SHADER BEVEL on the level boxes
 - [ ] ROUNDED boxes on the Wall Park's blockout
 - [ ] RAIN with ripples and puddles, and MIST, on a weather switch
