@@ -35,7 +35,14 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
 - [x] 5. (m1905) DETAIL: guardian statues flanking the door, palms in stone planters, vines, jade channels glowing down the walls, ledges to hang on.
 - [x] 6. (m1907, shipped unverified -- the bar release onto the tower is the part to tune) THE ROUTE: a parkour route from the landing to the halo using the game's moves -- wall runs up the pylons, ledges, a high bar, a
       zipline back down; tuned so it is fun on the phone.
-- [ ] 7. His pass: whatever he asks after playing it.
+- [ ] 7. His pass: whatever he asks after playing it. His second set of concepts (`temple_02_front` .. `temple_05`, docs/concepts/README.md):
+  - [x] 7a. (m1908) THE UNDERSIDE: a cluster of downward stone SPIKES under a ragged slab (not one rounded cone), a jade-core hanging PYLON (gold rings,
+        jade cylinder, spiked gold tip) from the middle and smaller ones under the corners.
+  - [ ] 7b. HANGING LANTERNS: gold-capped cages with jade glass and a spiked tip, on chains -- under the island, the bridges, the satellites. One draw.
+  - [ ] 7c. SATELLITES at two levels: inverted-spire towers with a jade core and a small top with a palm; an UPPER bridge off each pylon; the
+        rope rails go RED.
+  - [ ] 7d. The halo's jade DISH and red chains down to the pylons; the jade porthole disc over the door; the BACK's gear disc and jade slit windows.
+  - [ ] 7e. Jackal-headed jade-armoured guardians; gold studs in the stone; far islands as small temples with WATERFALLS.
 
 ## DONE WHEN
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)

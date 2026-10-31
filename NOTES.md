@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1908 -- THE SKY TEMPLE 7a: the underside is a cluster of stone spikes, with jade-core hanging pylons (his second concepts)
+
+His four new views (`docs/concepts/temple_02_front` .. `temple_05`, described in docs/concepts/README.md). Step 7 is split into 7a-7e in TEMPLE.md
+from what they show that the build does not.
+- The island's rock is a 9 m SLAB now (`TEMPLE.isle.depth` 48 -> 9, the same ragged outline, the same walkable top). Under it, `TEMPLE.under`:
+  inverted 4- and 5-sided stone SPIKES on a jittered 8.5 m grid inside 93% of the outline, 12-44 m long (longest in the middle), wobbled per
+  ring, the strata UVs and the dark-underside vertex colour -- merged INTO the island's rock mesh (no extra draw).
+- Six hanging PYLONS (`under.drops`, stable ids `temple_drop_*`): a gold collar, a jade core in three gold rings, a gold drum, a jade band and a
+  spiked gold tip; the big one (x1.35) under the front edge below the stair, as in the front view, smaller ones under the four corners and the
+  back. Spikes are kept clear round each. In the gold / glow meshes (no extra draw).
+- Budget: 39 draws on the widest frame, 70k triangles. Headless front renders checked against `temple_02_front`. Next: 7b, the lanterns.
+
 ## m1907 -- THE SKY TEMPLE step 6: the route from the landing to the halo, and the zipline down (TEMPLE.md)
 
 `TEMPLE.route` (stable ids `temple_route_*`), built by `templeMassMake` and registered by `templeBuild` into the systems that already exist:

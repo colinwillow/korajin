@@ -29484,7 +29484,11 @@ function duelBuild() { const Z = DUELZ; Z.want = 2; if (Z.on) return; const R = 
 // the forge has an invisible floor at 0 under everything, so falling past `top - fallY` puts him back on the island before he gets there.
 // SC_TEMPLE:START
 const TEMPLE = { top: 60, fallY: 24, seed: 31,
-  isle: { id: 'temple_isle', rx: 34, rz: 42, depth: 48, sides: 40, paving: 0xe6d6b4, rock: 0xe8c49a },
+  isle: { id: 'temple_isle', rx: 34, rz: 42, depth: 9, sides: 40, paving: 0xe6d6b4, rock: 0xe8c49a },     // 7a: the rock is a SLAB now; the spikes hang under it
+  // 7a, THE UNDERSIDE (his second concepts): stone SPIKES packed under the slab (seeded; longest in the middle), and jade-core hanging PYLONS
+  under: { seed: 41, step: 8.5, top: -5, len: [12, 44], r: [4.2, 7.2], fill: .93,
+    drops: [ { id: 'temple_drop_main', at: [0, -7, 27], s: 1.35 }, { id: 'temple_drop_fl', at: [-21, -6, 22], s: .5 }, { id: 'temple_drop_fr', at: [21, -6, 22], s: .5 },
+      { id: 'temple_drop_bl', at: [-20, -6, -26], s: .55 }, { id: 'temple_drop_br', at: [20, -6, -26], s: .55 }, { id: 'temple_drop_back', at: [0, -7, -33], s: .8 } ] },
   sky: { zen: [.10, .30, .80], mid: [.40, .62, .95], hor: [1.0, .80, .60], sun: [-.55, .36, .75], fog: 0xf0d8bc, fogNear: 160, fogFar: 950 },
   clouds: { y: 30, heaps: { n: 40, seed: 9, r0: 30, r1: 700, s0: 12, s1: 44 }, layers: [{ dy: 0, cover: .95, k: .010, sp: 1.2 }, { dy: 7, cover: .55, k: .016, sp: 2.0 }, { dy: 15, cover: .32, k: .022, sp: 2.8 }] },
   spawn: { id: 'temple_spawn', kind: 'spawn', at: [0, 0, 30], yaw: Math.PI },
@@ -29652,6 +29656,14 @@ function templeMake(T) { const g = new THREE.Group(), I = T.isle, Y = T.top, U =
   const sky = new THREE.Mesh(new THREE.SphereGeometry(1300, 32, 16), templeSkyMat(T)); sky.renderOrder = -2; sky.frustumCulled = false; sky.onBeforeRender = (rn, sc, cm) => { sky.position.copy(cm.position); sky.updateMatrixWorld(); }; g.add(sky);
   // the island: paving on top, ragged sandstone under it
   const M = templeRock(0, Y, 0, I.rx, I.rz, I.depth, I.sides, T.seed), MS = templeMassMake(T, M.rim);
+  { const Un = T.under; let s3 = Un.seed * 733 + 9; const q = () => (s3 = (s3 * 16807) % 2147483647) / 2147483647, S = [M.side];     // the SPIKES: square-ish inverted pyramids, jittered, longest at the middle
+    for (let gx = -I.rx; gx <= I.rx; gx += Un.step) for (let gz = -I.rz; gz <= I.rz; gz += Un.step) { const x = gx + (q() - .5) * Un.step * .7, z = gz + (q() - .5) * Un.step * .7, e = Math.hypot(x / I.rx, z / I.rz);
+      if (e > Un.fill || Un.drops.some(D => Math.hypot(x - D.at[0], z - D.at[2]) < 7 * D.s + 4)) continue; const c = 1 - e,     /* clear round each hanging pylon */ len = Un.len[0] + (Un.len[1] - Un.len[0]) * (c * .75 + q() * .35), r = Un.r[0] + (Un.r[1] - Un.r[0]) * q(), n = q() < .5 ? 4 : 5;
+      const G = new THREE.ConeGeometry(r, len, n, 4).toNonIndexed(); G.rotateX(Math.PI); G.rotateY(q() * 6); const P = G.attributes.position, uv = G.attributes.uv, C = [];
+      for (let i = 0; i < P.count; i++) { const y = P.getY(i), k = (len / 2 - y) / len; if (k > .02 && k < .98) { P.setX(i, P.getX(i) * (1 + Math.sin(y * 1.7 + x) * .12)); P.setZ(i, P.getZ(i) * (1 + Math.cos(y * 1.3 + z) * .12)); }
+        uv.setXY(i, uv.getX(i) * r * 6.3 / 9, uv.getY(i) * len / 4); const t = Math.min(1, (len / 2 - y + 9) / (Un.len[1] + 9)); C.push(1 - t * .42, .92 - t * .46, .8 - t * .46); }
+      G.translate(x, Y + Un.top - len / 2, z); G.setAttribute('color', new THREE.Float32BufferAttribute(C, 3)); G.computeVertexNormals(); S.push(G); }
+    M.side = mergeGeometries(S, false); }
   const side = new THREE.Mesh(M.side, templeRockMat(I.rock)), cap = new THREE.Mesh(M.cap, lbMat(I.paving, 0, 'mega')); M.cap.deleteAttribute('color'); side.name = I.id; cap.name = I.id + '_top';
   side.castShadow = side.receiveShadow = cap.receiveShadow = true; g.add(side, cap);
   // the far islands, their spires and the drifting rocks: ONE merged rock geometry, ONE merged spire geometry
@@ -29792,6 +29804,12 @@ function templeMassMake(T, rim) { const Y = T.top, out = { frond: [], vine: [], 
       const open = a => E.gaps.some(([g0, g1]) => { const d = (a * 180 / Math.PI + 360) % 360; return d > g0 && d < g1; });
       let run = []; for (let i = 0; i <= N; i++) { const v = rim[i % N], L = Math.hypot(v[0], v[2]), a = Math.atan2(v[0], v[2]); if (open(a)) { if (run.length > 1) pts.push(run); run = []; continue; } run.push([v[0] * (L - E.inset) / L, 0, v[2] * (L - E.inset) / L]); }
       if (run.length > 1) pts.push(run); pts.forEach((r, j) => { rail(r, E.id + '_' + j, 0); for (let i = 0; i < r.length - 1; i++) tbox(r[i][0], r[i][2], r[i + 1][0], r[i + 1][2], 0, 1.1, .12, E.id + '_' + j + '_' + i); }); continue; } }
+  for (const D of T.under.drops) { const [x, y, z] = D.at, k = D.s, at = v => Y + y + v * k;     // a hanging PYLON: gold collar, jade core in gold rings, gold drum, a spiked gold tip
+    out.gold.push(geo(new THREE.CylinderGeometry(4.2 * k, 3.4 * k, 2 * k, 10), x, at(-1), z)); out.gold.push(geo(new THREE.CylinderGeometry(2.9 * k, 2.9 * k, 1.2 * k, 10), x, at(-2.6), z));
+    out.glow.push(geo(new THREE.CylinderGeometry(1.9 * k, 1.9 * k, 15 * k, 12), x, at(-10.7), z));
+    for (const v of [-5.5, -9.5, -13.5]) out.gold.push(geo(new THREE.CylinderGeometry(2.45 * k, 2.45 * k, .7 * k, 12), x, at(v), z));
+    out.gold.push(geo(new THREE.CylinderGeometry(2.9 * k, 2.5 * k, 2.6 * k, 10), x, at(-19.4), z)); out.gold.push(geo(new THREE.CylinderGeometry(1.7 * k, 1.7 * k, 1.4 * k, 10), x, at(-21.4), z));
+    out.glow.push(geo(new THREE.CylinderGeometry(1.2 * k, 1.2 * k, 1.6 * k, 10), x, at(-22.8), z)); out.gold.push(geo(new THREE.ConeGeometry(1.6 * k, 7 * k, 8).rotateX(Math.PI), x, at(-27.1), z)); }
   out.ladders = []; out.bars = []; out.zips = [];
   for (const E of T.route) { const B = E.box;
     if (E.kind === 'ledge') { const [x0, x1, y0, y1, z0, z1] = B; box('stone', x0, x1, y0, y1 - .14, z0, z1); box('glow', x0 - .03, x1 + .03, y1 - .14, y1, z0 - .03, z1 + .03, 'plain'); coll(x0, x1, y0, y1, z0, z1, E.id); continue; }
