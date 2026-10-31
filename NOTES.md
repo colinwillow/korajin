@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1931 -- THE SKY TEMPLE: the slope slices collide at their middle (his: "a bunch of spots where he just goes through the wall")
+
+His screenshot was again **M1922** -- the build BEFORE the collider fix (m1923 replaced each battered block's one mean-footprint box, which
+let him walk 1.25 m into the slope's foot, with a stack of slices). His phone had not taken m1923-m1930.
+- One more tightening: each slice now sits at its MIDDLE's footprint, not its top's -- at most .125 m into the slope at a slice's foot and
+  .125 m over air at its top (was .25 / 0).
+- If walls still let him in AFTER the build number reads this one, the next suspects are the camera (inside a wall, not him) and a fast
+  zoom crossing a thin box in one frame; a screenshot with the new number tells which.
+
 ## m1930 -- THE SKY TEMPLE: GIANT STONE three-headed dogs on the watchtowers instead of the turrets (his, from the phone)
 
 His (screenshot at m1922, on the old ladder): *"these giant pillars or towers -- you could have massive statues that come to life that you
