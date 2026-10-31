@@ -34,6 +34,17 @@ the cloth and dressing, 11 textures. This pass:
 - A storage yard behind the dome: crates (framed, banded, one stacked), four iron-banded barrels, sacks -- crates and barrels solid.
 - Process note: a label rename (`m1980` -> `m1981`) at pass 5 also rewrote another worker's kite labels and BUILD itself; fixed in the
   "Label m1982" commit. Rename only my own marker strings, never a bare build number.
+## m15WF -- the wings fly level, never lock upside down; the hangings calm
+His words (Oct 31): *"he flies crooked, at a tilt; the new tassels go absolutely crazy -- I need damping; the double tap flips him as well as getting the suit
+out, he usually locks in upside down -- that might lead to the tilt."*
+- **UPSIDE DOWN:** an air flip still running when the wings opened kept turning the root on top of the flight (`airFlipPose` ran after `wingPose`). Opening
+  the wings ends any flip (`wingStart`), and `airFlipPose` skips while `p.wing`.
+- **THE TILT, measured:** the SKYDIVE clip rolls his hips AND spine (Spine2's side axis -0.57 against world up), stacked on the flight's own lie. In flight the
+  hips and the three spine bones are held at their BIND turn (`rig.hipsQ0` / `spineQ0`, read lazily from the skeleton's `pose()` -- the builder this hero
+  loads through never captured them, which is why the first try did nothing), and the pack takes the flight's frame (it rides the spine on foot / in flips).
+  Measured after: wing span tilt 0.00 for the whole flight (was -0.40..-0.48), belly down -0.73..-0.95, opened mid-flip.
+- **THE HANGINGS:** at 20 m/s the pin jumped further a frame than a link is long and the chains whipped. Each chain now rides `carry` .85 of the pin's own
+  motion (only the rest trails), drag 2.2 -> 5, 6 solver passes (was 3), flutter halved (`WTR`).
 
 ## m1982 -- THE JINRA REFINERY, pass 5: the interior, and the deck you could not climb onto
 

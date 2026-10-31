@@ -13127,7 +13127,7 @@ const _afQ2 = new THREE.Quaternion(), _afV2 = new THREE.Vector3();
 function airFlipPose() {
   // m1066: NOT while anything else owns the body. *"I land on the high bar mid-flip and attach in a weird pose, rotating from well above me"*
   // (M1061): a flip left running on the bar re-placed his root about HIS middle (`p.pos`, not the bar) every frame, on top of the hang.
-  const p = player, F = p.aflip; if (!F || p.grounded || p.bar || p.ledge || p.mantle || p.vault || p.climb || p.wrun || p.hook) return;
+  const p = player, F = p.aflip; if (!F || p.grounded || p.bar || p.ledge || p.mantle || p.vault || p.climb || p.wrun || p.hook || p.wing) return;     // m15WF: and not in flight -- a flip left running locked the wings upside down
   const H = hbarH(); _afQ2.setFromAxisAngle(F.axis, F.th); rig.root.quaternion.premultiply(_afQ2);
   _afV2.set(0, -H * .5, 0).applyQuaternion(_afQ2); rig.root.position.set(p.pos.x + _afV2.x, p.pos.y + H * .5 + _afV2.y, p.pos.z + _afV2.z);
 }
@@ -36373,7 +36373,7 @@ function bladeFlipTurn(u) {
 // **THE WINGS ARE HER GAME'S PROCEDURAL STAND-INS** -- a pack, two arms of three panels that unfold
 // one after another, a jet at each tip -- riding her body's frame at Spine2, with airflow sparks
 // streaming off the tips. His model drops in the day there is one.
-const WING = { clip: (() => { try { const v = localStorage.getItem('mel.flypose'); return v === 'fly_c' || v === '' ? v : 'fly_a'; } catch (e) { return 'fly_a'; } })(), pack: (() => { try { return localStorage.getItem('mel.wings') === '1'; } catch (e) { return false; } })(), on: 1, dblT: .32, boostV: 9, boostHL: .9, boostCool: .6,
+const WING = { hipsHold: 1, clip: (() => { try { const v = localStorage.getItem('mel.flypose'); return v === 'fly_c' || v === '' ? v : 'fly_a'; } catch (e) { return 'fly_a'; } })(), pack: (() => { try { return localStorage.getItem('mel.wings') === '1'; } catch (e) { return false; } })(), on: 1, dblT: .32, boostV: 9, boostHL: .9, boostCool: .6,
   out: 0, open: 0, openT: .45, v0: 14, cruise: 20, vmin: 9, vmax: 36, thrust: .9, gk: 1,
   pop: 8,               // the hop off the ground before the wings take her
   trick: 1, loopT: 1.5, rollT: .8,
@@ -36419,6 +36419,7 @@ function wingStart() {
   if (p.rail) railOff(false);
   if (p.grounded) { p.vel.y = Math.max(p.vel.y, WING.pop); p.pos.y += .05; }
   p.trick = ''; p.trickName = ''; p.barrel = 0; p.barrelA = 0; p.bRoll = p.bYaw = p.bRollA = p.bYawA = 0;
+  p.aflip = null; p.flip = ''; p.flipT = 0; p.melee = null; p.slam = 0;     // m15WF (his: "the double tap flips him as well as getting the suit out -- he locks in upside down"): opening the wings ends any flip
   const v = p.vel.length(), hs = Math.hypot(p.vel.x, p.vel.z), face0 = p.faceH;
   if (hs > 1) p.heading = Math.atan2(p.vel.x, p.vel.z);
   // OPENED FACING AWAY FROM HER LINE SHE TWISTS ROUND TO IT (her r156), rather than teleporting
@@ -36608,7 +36609,7 @@ function wingWashiTex() { if (_wWashi) return _wWashi; const cv = document.creat
 // strings off each panel, a long ribbon off each lantern, two whiskers off the roof dragon, a kite tail of shrinking beads off the box. They hang under
 // gravity at rest and stream back behind him in flight (they simply lag the pinned end), with a little flutter. All beads are ONE instanced mesh, each
 // ribbon a camera-facing strip; `WTR` holds the feel.
-const WTR = { on: 1, g: 9.8, drag: 2.2, iters: 3, flut: 1.4, maxB: 140 };
+const WTR = { on: 1, g: 9.8, drag: 5, iters: 6, flut: .7, carry: .85, maxB: 140 };     // m15WF: drag 2.2 -> 5, iters 3 -> 6, flutter halved, `carry` (his: "the tassels go absolutely crazy")
 let _wtrI = null; const _wtM = new THREE.Matrix4(), _wtC = new THREE.Color(), _wtV = new THREE.Vector3(), _wtA = new THREE.Vector3(), _wtB = new THREE.Vector3(), _wtS = new THREE.Vector3();
 function wingHangHide() { if (_wtrI) _wtrI.visible = false; if (WG.hang) for (const H of WG.hang) if (H.rib) H.rib.visible = false; }
 function wingHangStep(dt, sc) { if (!WTR.on || !WG.hang || !WG.g.visible) { wingHangHide(); return; }
@@ -36616,6 +36617,7 @@ function wingHangStep(dt, sc) { if (!WTR.on || !WG.hang || !WG.g.visible) { wing
   WG.g.updateMatrixWorld(true); const t = performance.now() / 1000, h = Math.min(dt, 1 / 30); let bi = 0;
   for (const H of WG.hang) { const n = H.n, L = H.seg * sc; H.mk.getWorldPosition(_wtA);
     if (!H.p || _wtA.distanceTo(H.p[0]) > 3) { H.p = []; H.q = []; for (let k = 0; k < n; k++) { H.p.push(_wtA.clone().setY(_wtA.y - k * L)); H.q.push(H.p[k].clone()); } }
+    _wtB.subVectors(_wtA, H.p[0]); if (H.p[0].lengthSq() > 0) for (let k = 1; k < n; k++) { H.p[k].addScaledVector(_wtB, WTR.carry); H.q[k].addScaledVector(_wtB, WTR.carry); }     // m15WF: the chain rides with him; only the rest trails (at 20 m/s the pin jumped further a frame than a link is long -- they whipped)
     H.p[0].copy(_wtA); H.q[0].copy(_wtA); const kd = Math.exp(-WTR.drag * h);
     for (let k = 1; k < n; k++) { const P = H.p[k], Q = H.q[k]; _wtV.subVectors(P, Q).multiplyScalar(kd); Q.copy(P);
       P.add(_wtV); P.y -= WTR.g * h * h; P.x += Math.sin(t * 7 + k * .9 + H.n) * WTR.flut * h * h * k; P.z += Math.cos(t * 6 + k * 1.3) * WTR.flut * h * h * k; }
@@ -36717,7 +36719,7 @@ function wingFrame(dt) {
   // standing frame (`inv(spine) * yaw(faceH)`), and from then on the pack is the joint's world turn times that. Before the first calm frame: the old rule.
   WG.spine.updateWorldMatrix(true, false); const sq = WG.spine.getWorldQuaternion(_wkq2);
   if (WG.corrModel !== rig.model && p.grounded && !p.wing && (p.speed || 0) < .3 && !p.melee && !p.roll && !p.flip && !p.aflip && !p.knock) { WG.corr = sq.clone().invert().multiply(_wkq3.setFromAxisAngle(_wkY, p.faceH)); WG.corrModel = rig.model; }
-  if (WG.corr && WG.corrModel === rig.model) g.quaternion.copy(sq).multiply(WG.corr);
+  if (WG.corr && WG.corrModel === rig.model && !(p.wing && WING.hipsHold && rig.hipsQ0)) g.quaternion.copy(sq).multiply(WG.corr);     // m15WF: in flight the spine is held at rest, so the pack takes the flight's own frame (level); on foot / in flips it rides the spine
   else if (p.wing || p.wingRes) g.quaternion.copy(rig.wingQ || _wkq.identity());
   else g.quaternion.setFromAxisAngle(_wkY, p.faceH);
   const sc = RIG.height * bodyK() / 1.7;
@@ -37254,7 +37256,7 @@ function rigAnim(dt) {
   // **AND WITH ZAP'S POOL ON HIM IT IS THE ORDINARY PATH (m119).** `morphAnim` is the three
   // clips a kind carries of its own; once `mphBorrow` has put zap's 50-odd on the skin, every
   // name below resolves and there is nothing left for a second animation path to do.
-  if (p.wing && WING.clip && rig.actions[WING.clip]) { setWeights({ [WING.clip]: 1 }, dt, .12); return; }     // m1977: his own flight pose (it fell through to the wiggly in-air fall)
+  if (p.wing && WING.clip && rig.actions[WING.clip]) { setWeights({ [WING.clip]: 1 }, dt, .12); WING.holdHips = 1; return; }     // m1977: his own flight pose (it fell through to the wiggly in-air fall)
   if (p.hdrop) { const nm = p.hdrop.st === 'fall' ? HDROP.fall : HDROP.land; if (rig.actions[nm]) { setWeights({ [nm]: 1 }, dt, .04); return; } }     // m1953
   if (p.dragon && (!p.mphK || rig.borrowed || rig.actions.driving)) { dragAnim(dt, t); return; }     // m1614: climbing on, seated, climbing off (m1624: ahead of a worn form, when the skin has the seat)
   if (p.mphK && !rig.borrowed) { morphAnim(dt); return; }
@@ -43019,7 +43021,7 @@ function mphWear(skin) {
   if (rig.model) rig.root.remove(rig.model);
   rig.model = s.model; rig.root.add(s.model);
   rig.mixer = s.mixer; rig.actions = s.actions; rig.clips = s.clips; rig.cw = s.cw;
-  rig.bones = s.bones; rig.faceOff = s.faceOff; rig.mounts = s.mounts || {};
+  rig.bones = s.bones; rig.faceOff = s.faceOff; rig.mounts = s.mounts || {}; { const hb = s.bones && s.bones.mixamorig_Hips; rig.hipsQ0 = hb ? hb.quaternion.clone() : null; rig.spineQ0 = {}; for (const n of ['mixamorig_Spine', 'mixamorig_Spine1', 'mixamorig_Spine2']) if (s.bones && s.bones[n]) rig.spineQ0[n] = s.bones[n].quaternion.clone(); }     // m15WF: the hips' rest turn (the flight holds it)
   // WHAT THE GAIT AND THE VERB GATES READ (m119). `rig.base` carries neither, so putting his
   // own body back is `0` and `1` without a case for it.
   // READ THROUGH THE SWITCH rather than off the cached count, so `mel.MORPH.borrow = 0` is a
@@ -59688,6 +59690,9 @@ function frameBody() {
     // to the MAN AND THE DECK alike**, or the board stays behind while he goes round it.
     rig.root.rotation.z = player.board ? player.barrelA : 0;
     rig.root.position.add(_roll);      // written by `boardPose`, earlier in this same frame
+    if (player.wing && WING.holdHips && WING.hipsHold && rig.bones && rig.bones.mixamorig_Hips && !rig.hipsQ0) { let sk = null; rig.model.traverse(o => { if (!sk && o.isSkinnedMesh) sk = o.skeleton; }); if (sk) { sk.pose(); rig.hipsQ0 = rig.bones.mixamorig_Hips.quaternion.clone(); rig.spineQ0 = {}; for (const n of ['mixamorig_Spine', 'mixamorig_Spine1', 'mixamorig_Spine2']) if (rig.bones[n]) rig.spineQ0[n] = rig.bones[n].quaternion.clone(); } }     // m15WF: the rest turn, from the skeleton's own bind pose (measured: the builder this hero loads through never captured one)
+    if (player.wing && WING.holdHips && WING.hipsHold && rig.hipsQ0 && rig.bones && rig.bones.mixamorig_Hips) { rig.bones.mixamorig_Hips.quaternion.copy(rig.hipsQ0); for (const n in (rig.spineQ0 || {})) if (rig.bones[n]) rig.bones[n].quaternion.copy(rig.spineQ0[n]); }     /* measured: the hips alone left the wing span rolled ~25 deg -- the skydive clip twists the spine too */     // m15WF (his: "he flies crooked, at a tilt"): the flight clip's own hip turn stacked on the flight's lie; the flight alone owns the body's angle now
+    WING.holdHips = 0;
     wingPose(dt);                      // her wing suit lays her forward about her hips (m266)
     swimPose(dt);                      // a swimmer lies along his stroke, about his hips (m594)
     bladeTilt(dt);                     // her body square to the face she skates (m269)
