@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15I2 -- the ICE BEAM, pass 2: the charge, frozen solid, frost on the snow (Oct 31 2026)
+## m2007 -- the ICE BEAM, pass 2: the charge, frozen solid, frost on the snow (Oct 31 2026)
 His "keep going". `iceCharge`: before the beam, an orb of frost swells in his jaws (the mouth flare growing to 2.5 m, flickering) and motes are drawn
 in from all round him. `iceFreeze`: three ticks inside one beam and you are ENCASED -- a lumpy translucent ice block snaps round you (in .12 s), your
 pose holds (the mixer paused), you are stunned `frzT` 1.5 s, then it SHATTERS: a ring of nine spikes, fifty chunks of powder, a crack and a shake.

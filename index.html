@@ -9857,7 +9857,7 @@ function beastHurt(d, dirH, power) {
 // Where it hits: ICE SPIKES erupt (pooled, `spikes`), the snow is blasted out and dug, frost mist rises. Inside `r` of the beam you are frozen-hurt
 // every `tick` s (a roll goes through). Your first trip north of z -30 wakes him by the cliffs. `ICEB.on = 0` gives him his fireballs back.
 const ICEB = { frzHits: 3, frzT: 1.5, frost: 60, frostLife: 9, frz: null, on: 1, T: 1.9, hopH: 2.4, hopUp: .4, clipK: .35, chase: 7.5, len: 34, r: .9, tick: .28, dmgK: .3, spikes: 70, spikeLife: 4.5, mesh: null, seen: -9, sp: [], stat: { beams: 0 } };
-// m15I2: pass 2 -- the CHARGE (an orb of frost swelling in his jaws, motes drawn in from all round), FROZEN SOLID (three ticks in one beam and you are
+// m2007: pass 2 -- the CHARGE (an orb of frost swelling in his jaws, motes drawn in from all round), FROZEN SOLID (three ticks in one beam and you are
 // encased in a block of ice for `frzT` s, the pose held, then it SHATTERS into spikes and powder), and the beam FREEZES the snow it sweeps (flat frost
 // discs, `frost` pooled, fading over `frostLife` s)
 function iceMouth(d) { const o = beastHead(d); o.x += Math.sin(d.h) * d.K.h * .3; o.z += Math.cos(d.h) * d.K.h * .3; o.y -= .1; return o; }
@@ -10028,7 +10028,7 @@ function beastStep(d, dt, t) {
     return true; }
   if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m2006: in the snow, his ICE BEAM
     const B = ICEB; d.lift = B.hopH * smooth(0, B.hopUp, d.t); P.y = d.lift;
-    if (!d.hitDone) iceCharge(d, u / C.fireAt, dt);     // m15I2: frost gathers in his jaws first
+    if (!d.hitDone) iceCharge(d, u / C.fireAt, dt);     // m2007: frost gathers in his jaws first
     if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; d.beam = { t: 0, aim: player.pos.clone(), hurt: 0, spk: 0, hits: 0, fr: 0 }; setSkinScale(d, d.cur, B.clipK); snd('zap', { g: .9, r: .45, x: P.x, z: P.z }); camShake(.15); }
     if (d.beam) { iceBeamStep(d, dt); if (d.beam.t >= B.T) { d.beam = null; d.fireT = C.fireCool; setSkinScale(d, d.cur, 1); beastGo(d, 'cRecover'); } }
     else if (u >= .95 && d.hitDone) beastGo(d, 'cRecover');
@@ -11125,7 +11125,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
   else Z.iceV = null;
   patchStep(dt);     // m2005
   iceSpikeStep(dt);     // m2006
-  iceFreezeStep(dt); iceFrostStep(dt);     // m15I2
+  iceFreezeStep(dt); iceFrostStep(dt);     // m2007
   if (!Z.dragonWoke && p.pos.z < -30 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON) { Z.dragonWoke = 1; try { arenaSpawn('DRAGON'); tipShow('Something stirs by the cliffs...', 3); } catch (e) {} }     // m2006: the blue dragon lives up here
   if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;
