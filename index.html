@@ -59605,7 +59605,7 @@ function frame() {
       if (window.__crash) window.__crash('FRAME ' + BUILD + '\n' + ((e && e.stack) || k)); }
   }
 }
-// m15WS: the bind pose's LOCAL turn of each bone, READ from the skeleton's inverses -- never `skeleton.pose()` (m1985 called it: it rewrote every
+// m1991: the bind pose's LOCAL turn of each bone, READ from the skeleton's inverses -- never `skeleton.pose()` (m1985 called it: it rewrote every
 // bone's position from world matrices, and the hero vanished and stayed gone after the wings went away). A bone's bind world is inverse(boneInverse);
 // for the root bone the parent's bind world is the armature's, taken relative to the mesh (bindMatrix = the mesh's world at bind).
 function bindLocalQ(sk, model) {
