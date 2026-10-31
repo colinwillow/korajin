@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1936 -- THE SKY TEMPLE look loop, pass 4: the satellites close in, at two levels
+
+In every one of his views the four hanging lantern-spires sit CLOSE beside the temple -- the upper pair level with the pylons on short beams,
+the lower pair just off the island's edge. Ours stood 60-80 m out on long rope bridges.
+- UPPER satellites: 16 design units nearer and 6 lower -- level with the balconies (60 m), 15 m off them on a stone BEAM (`plank` with
+  `stone: 1`: a deep stone deck with a gold edge, red rope rails) instead of a climbing plank.
+- LOWER satellites: 16 nearer -- just past the rim (the east plank and the west sky bridge now 26 and 31 m long).
+- Everything on them moved with them (one table transform over the ids): decks, hanging bodies, jade pendants, kiosks, palms, braziers, rails,
+  banners, the lanterns under the decks, and the lanterns under the bridges respaced along the shorter spans. The zips from the back towers
+  still land on the balconies.
+- Next: L5 the underside (block-built spikes, the gold medallion under the stair), L6 the far islands as hazy temples with waterfalls.
+
 ## m1935 -- THE SKY TEMPLE look loop, pass 3: gold rivets over all the stone
 
 His concepts stud every block with small gold rivets (the underside too). `templeRockMat`'s shader now adds them in WORLD space: a 1.6 m grid
