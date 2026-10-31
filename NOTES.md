@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15KT -- THE SNOW KIT: a grotto, a rock bridge, the standing stones, a crystal spire, snowy plants (Oct 31 2026)
+## m2004 -- THE SNOW KIT: a grotto, a rock bridge, the standing stones, a crystal spire, snowy plants (Oct 31 2026)
 *"Keep going with the snow zone -- caves, ice crystals, snowy plants, alien structures; temples later."* `SNOWKIT` (four places with ids + a scatter, 6 draws):
 the GROTTO at (60, -14), a rock half-dome open to the west with an inside face, a ring of wall colliders, a dark swept floor, ice stalactites, glowing
 crystals and an alien shrine stone with a glowing ring; the BRIDGE at (-46, 22), a rock deck 6 m up between two pillars, four boulder steps (1.4 / 2.8 /

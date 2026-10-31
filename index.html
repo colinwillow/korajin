@@ -10662,7 +10662,7 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
     const ms = new THREE.Mesh(geo, m); ms.castShadow = shadow; ms.receiveShadow = true; g.add(ms); return ms; };
   put(rock, mat.rock, true); put(cap, mat.cap, true); put(ice, mat.ice, true); put(dark, mat.dark, false);
   SNOWZ.cliff = { C }; }     /* no boxGrid() here: the stage builds before BGRID exists (its own build re-grids) */
-// m15KT: THE SNOW KIT (his: "keep going with the snow zone -- caves, ice crystals, snowy plants, alien structures; temples later"). Four PLACES and a
+// m2004: THE SNOW KIT (his: "keep going with the snow zone -- caves, ice crystals, snowy plants, alien structures; temples later"). Four PLACES and a
 // scatter, each from its own table, merged per material (rock / snow / ice / glow / plant / dark = 6 draws for all of it):
 //   GROTTO      a rock half-dome cave open to the west, deep enough to walk into: ice stalactites, glowing crystals, an alien shrine stone at the back
 //   BRIDGE      a natural rock bridge 6 m up between two pillars, climbed by four boulder steps (1.4 / 2.8 / 4.2 / 5.4), icicles under its span
@@ -10820,7 +10820,7 @@ function snowStage(g) {
   }
   try { willowBuild(g); } catch (e) { console.error('[melee] willow', e); note('WILLOW THREW ' + e.message); }     // m1740
   try { snowCliffs(g); } catch (e) { console.error('[melee] cliffs', e); note('CLIFFS THREW ' + e.message); }     // m2000
-  try { snowKit(g); } catch (e) { console.error('[melee] snowkit', e); note('SNOWKIT THREW ' + e.message); }     // m15KT
+  try { snowKit(g); } catch (e) { console.error('[melee] snowkit', e); note('SNOWKIT THREW ' + e.message); }     // m2004
   Z.on = { g }; Z.t = 0; Z.acc = 0; Z.breath = 1; }
 // m1740 (his: "a cool alien weeping willow -- a big one, with vines you can actually brush through, like actual chains, so there's a dynamic
 // to it; a big magical Japanese garden with a willow; put it in the snow level for now"): THE JIN WILLOW, pass 1, in the Snowfield.
@@ -11011,7 +11011,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     V.x += (wx - V.x) * k; V.y += (wz - V.y) * k; p.pos.x += (V.x - wx) * dt; p.pos.z += (V.y - wz) * dt; p.vel.x = V.x; p.vel.z = V.y;
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
-  if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m15KT
+  if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;
     for (let i = 0; i < PN.T.length; i++) { const P = PN.T[i], d = Math.hypot(p.pos.x - P.x, p.pos.z - P.z);
       if (P.cap > .99 && fast && d < 1.9 * P.s && p.pos.y < 3) { P.cap = 0; P.t = 0; for (let k = 0; k < 3; k++) snowPuff(P.x, (2.4 + k * 1.15) * P.s, P.z, 30, 1.2, 2.2); snd('thud', { g: .35, r: .6, x: P.x, z: P.z }); }
