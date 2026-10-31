@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15ST -- snow footsteps, the ice beam's sound, a brush-ink START button (Oct 31 2026)
+- *"Can you source a snow footsteps sound? The current footsteps sound ridiculous in the snow."* No sample library is reachable from here, so it is
+  SYNTHESISED: `snowCrunchBufs` builds eight crunch buffers in code (a dense spray of 140-220 tiny noise grains front-loaded into ~.2 s, band-limited
+  220 Hz..~3 kHz -- packed snow's squeak and crunch), registered as footstep set `foot_SNOW` and switched on while the Snowfield is up. A real
+  recording drops straight in as that set later.
+- *"The electric sound lingers too long -- it should only happen during the blast."* The beam no longer uses the long `zap` file: `synthHiss` is filtered
+  noise sweeping 1.3 -> 3.4 kHz plus a trembling high tone, shaped to EXACTLY the beam's 1.9 s and gone when it ends; freeze / shatter get `synthCrack`
+  (a .16 s icy snap).
+- *"The start button -- the rounded pill and the text don't match the title's aesthetic."* No pill, no neon: a torn RED BRUSH STROKE (an inline SVG
+  ink swipe roughened by turbulence) behind cream hand-lettered words (Permanent Marker) with a dark ink offset, tilted 2.5 deg like a stamp, pulsing
+  gently. Rendered on the title art: it reads as part of the poster.
+
 ## m2007 -- the ICE BEAM, pass 2: the charge, frozen solid, frost on the snow (Oct 31 2026)
 His "keep going". `iceCharge`: before the beam, an orb of frost swells in his jaws (the mouth flare growing to 2.5 m, flickering) and motes are drawn
 in from all round him. `iceFreeze`: three ticks inside one beam and you are ENCASED -- a lumpy translucent ice block snaps round you (in .12 s), your
