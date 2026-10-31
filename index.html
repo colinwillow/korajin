@@ -36586,7 +36586,7 @@ function wingFrame(dt) {
   if (!WG.spine) { g.visible = false; return; }
   g.visible = true;
   // her body's frame: the flight's own while flying, the drawn yaw otherwise
-  // m15WP (his: "jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance from my body -- it
+  // m1972 (his: "jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance from my body -- it
   // should always be mounted to whatever spine joint it's on"): it took the spine's POSITION but its turn from his heading / the flight's frame, so a flip
   // rolled his back out from under it. It turns WITH the spine joint now: `WG.corr` (the spine's own axes -> the pack's body frame) is taken once on a calm
   // standing frame (`inv(spine) * yaw(faceH)`), and from then on the pack is the joint's world turn times that. Before the first calm frame: the old rule.
@@ -57429,7 +57429,7 @@ function godMenuOpen(on) {
   if (inHome()) btn('RED HOLLOWS: ' + (AGE.st === 'fallen' ? 'FALLEN' : 'RESTORED') + ' (tap: watch it turn ' + (AGE.st === 'fallen' ? 'RESTORED' : 'FALLEN') + ')', () => hwAgeLive());
   if (inHome() && GCASTLE.plaza) btn('GO: SKY CASTLE (' + (AGE.st === 'fallen' ? 'crashed on the plateau: FALLEN' : 'in the sky: RESTORED') + ')', () => { const [x, y, z] = GCASTLE.plaza; player.pos.set(x, y + 1 + GCASTLE.colY, z); player.vel.set(0, 0, 0); godMenuOpen(0); });
   if (inHome() && GCASTLE.liftAt) btn('GO: SKY CASTLE LIFT (its foot, on the plateau)', () => { const [x, y, z] = GCASTLE.liftAt; player.pos.set(x + 3, y + 1, z); player.vel.set(0, 0, 0); godMenuOpen(0); });
-  btn('LOOK: ' + (LOOK.soft ? 'SOFT (tap for CURRENT)' : 'CURRENT (tap for SOFT)'), () => { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (e) {} godMenuOpen(0); godMenuOpen(1); });     // m15WP: the soft look, here beside the old render switches
+  btn('LOOK: ' + (LOOK.soft ? 'SOFT (tap for CURRENT)' : 'CURRENT (tap for SOFT)'), () => { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (e) {} godMenuOpen(0); godMenuOpen(1); });     // m1972: the soft look, here beside the old render switches
   { const al = /alien_pano/.test(SKY.img); btn('SKY: ' + (al ? 'THE ALIEN PANO' : 'THE GAME HDRI') + ' (tap for ' + (al ? 'the game HDRI' : 'the alien pano') + ', reloads)', () => { try { localStorage.setItem('mel.skypick', al ? 'game' : 'alien'); } catch (e) {} location.replace(location.pathname); }); }   // m435
   btn('ALL KIT ' + (GEAR.all ? 'ON' : 'OFF') + ' (campaign: everything, not just what he has found)', () => { GEAR.all = GEAR.all ? 0 : 1; try { localStorage.setItem('mel.allkit', GEAR.all ? '1' : '0'); } catch (e) {} GEAR.pack = gearHas('pack'); gearSync(1); godMenuOpen(1); });   // m465
   btn('TALK FONT ' + TALK.font.toUpperCase() + ' (comic / hand / plain)', () => { const F = TALK.fonts; TALK.font = F[(F.indexOf(TALK.font) + 1) % F.length]; try { localStorage.setItem('mel.talkfont', TALK.font); } catch (e) {} if (talk.cur) talkShow(); godMenuOpen(1); });   // m471
@@ -59595,7 +59595,7 @@ function frameBody() {
     if (DRAGZ.ui && !(player.dragon && player.dragon.st === 'sit')) dragAimUi();     // m1703: the FIRE button goes when he leaves the saddle
     bowStep(dt);                       // m1719: the bow in his hands, after every pose
     dragRiderPose();                   // m1619: in the saddle, pitched and banked with his dragon (after every pose that writes the root)
-    rig.root.updateMatrixWorld(true); wingFrame(dt);     // m15WP: the wing-pack AFTER every pose that turns the root (the air flips, the bar, the dragon...) -- it was placed before them, so a flip turned him out from under it
+    rig.root.updateMatrixWorld(true); wingFrame(dt);     // m1972: the wing-pack AFTER every pose that turns the root (the air flips, the bar, the dragon...) -- it was placed before them, so a flip turned him out from under it
     rig.root.updateMatrixWorld(true); springsStep(dt);     // m1058: hair / cape chains, on the FINAL root (after every pose above)
     dollStep(dt);
     if (GROPE.list.length) gymRopeStep(dt);

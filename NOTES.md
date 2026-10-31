@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15WP -- the wing-pack rides the spine through flips; LOOK at the top of TOOLS and in GOD
+## m1972 -- the wing-pack rides the spine through flips; LOOK at the top of TOOLS and in GOD
 His words (Oct 31): *"jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance away -- it
 should always be mounted to whatever spine joint it's on"* / *"I still don't see how to check the new rendering style -- not in the old Weirdport debug
 menu, not in ours."*
