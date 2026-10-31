@@ -16092,7 +16092,8 @@ function groundAt(x, z, y, step) {
   // `UNDER.box` only, so no caller above ground sees a change.
   if (UNDER.box && best > y + step && x > UNDER.box[0] && x < UNDER.box[1] && z > UNDER.box[2] && z < UNDER.box[3] && y < UNDER.box[4]) best = -1e9;
   if (TRI.on) { const t = triGround(x, z, y, step); if (t > best) best = t; }
-  if (ROPEB.on) { const r = ropeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }     // m1800: the rope bridge's deck
+  if (ROPEB.on) { const r = ropeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }
+  if (LB.rbs && LB.rbs.length) { const r = lbRopeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }     // m1903: the builder's live rope bridges     // m1800: the rope bridge's deck
   for (const b of boxesNear(x, x, z, z, _bnG)) {
     if (x < b.minx || x > b.maxx || z < b.minz || z > b.maxz) continue;
     // AND A TURNED BOX'S ROOF IS THE ROOF OF THE CAR, not of the square round it -- `boxNear`
@@ -69443,7 +69444,7 @@ function lbLive(ghostId) { const L = LB.cur; if (!L) return; if (LB.live) { scen
 // m1881: LINKS between ports -- in the editor a coloured line (tap it to pick it); in play the real thing: ROPE = the gym's swaying tightrope
 // (`gymRopeMake`, one height: the two decks' mean), PLANK = a 1.4 m walkway, a TURNED box when the ports are not in line (`cs`/`sn`), ZIP = a
 // zipline (`ZIPS`) from the higher port down to the lower, with its cable drawn. Each is taken out again on the next rebuild.
-function lbLinks(g, boxes, ports, ptris) { const L = LB.cur, made = { ropes: [], zips: [] };
+function lbLinks(g, boxes, ports, ptris) { const L = LB.cur, made = { ropes: [], zips: [] }; LB.rbs = [];
   if (LB.live && LB.live.links) { for (const B of LB.live.links.ropes) { scene.remove(B.g); for (const arr of [BEAM.list, GROPE.list]) { const i = arr.indexOf(B); if (i >= 0) arr.splice(i, 1); } } for (const z of LB.live.links.zips) { const i = ZIPS.indexOf(z); if (i >= 0) ZIPS.splice(i, 1); if (player.zip === z) player.zip = null; } }
   if (!LB.on && LB.triO && LB.triO.tri && LB.triO.tri.size) bldTrisDrop(LB.triO); const tris = (ptris || []).slice();     // the pieces' walkable triangles (the bowl) ride with the links'
   for (const K of L.links || []) { const a = ports.find(pt => pt.pid === K.a[0] && pt.key === K.a[1]), b = ports.find(pt => pt.pid === K.b[0] && pt.key === K.b[1]); if (!a || !b) continue;
@@ -69466,11 +69467,11 @@ function lbLinks(g, boxes, ports, ptris) { const L = LB.cur, made = { ropes: [],
       if (Math.abs(Bv.y - A.y) > .3) { const px = -uz * W / 2, pz = ux * W / 2; tris.push(A.x + px, A.y, A.z + pz, Bv.x + px, Bv.y, Bv.z + pz, Bv.x - px, Bv.y, Bv.z - pz, A.x + px, A.y, A.z + pz, Bv.x - px, Bv.y, Bv.z - pz, A.x - px, A.y, A.z - pz); }
       else { const y = (A.y + Bv.y) / 2, hx = len / 2 + .3, cx = (A.x + Bv.x) / 2, cz = (A.z + Bv.z) / 2, ob = (hz, y0, y1, off) => { const ox = -uz * off, oz = ux * off, ex = Math.abs(ux) * hx + Math.abs(uz) * hz, ez = Math.abs(uz) * hx + Math.abs(ux) * hz; boxes.push({ cs: ux, sn: uz, hx, hz, cx: cx + ox, cz: cz + oz, minx: cx + ox - ex, maxx: cx + ox + ex, miny: y0, maxy: y1, minz: cz + oz - ez, maxz: cz + oz + ez, id: K.id }); };
         ob(W / 2, y - .3, y, 0); ob(.08, y, y + H2, W / 2); ob(.08, y, y + H2, -W / 2); ob(W / 2 + .15, y + H2, y + H2 + .25, 0); } }
-    else if (K.kind === 'rbridge') {     // m1884: a ROPE BRIDGE -- the deck sags on a parabola (`sag` x span), walkable triangles, slats and rope rails; not a singleton
-      const N = Math.max(6, Math.round(len / 1.2)), sag = Math.max(.6, len * .07), W = 1.6, px = -uz * W / 2, pz = ux * W / 2, P2 = i => { const u = i / N; return new THREE.Vector3(A.x + (Bv.x - A.x) * u, A.y + (Bv.y - A.y) * u - sag * 4 * u * (1 - u), A.z + (Bv.z - A.z) * u); };
-      for (let i = 0; i < N; i++) { const a0 = P2(i), a1 = P2(i + 1); tris.push(a0.x + px, a0.y, a0.z + pz, a1.x + px, a1.y, a1.z + pz, a1.x - px, a1.y, a1.z - pz, a0.x + px, a0.y, a0.z + pz, a1.x - px, a1.y, a1.z - pz, a0.x - px, a0.y, a0.z - pz);
-        const m = new THREE.Mesh(new THREE.BoxGeometry(.35, .08, W), lbMat(0xa0763c)); m.position.copy(a0).lerp(a1, .5); m.position.y -= .05; m.rotation.y = -Math.atan2(uz, ux); m.castShadow = true; g.add(m); }
-      for (const sd of [-1, 1]) for (let i = 0; i < N; i++) { const a0 = P2(i).add(new THREE.Vector3(px * sd * 1.05, 1, pz * sd * 1.05)), a1 = P2(i + 1).add(new THREE.Vector3(px * sd * 1.05, 1, pz * sd * 1.05)), m = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, a0.distanceTo(a1), 5), lbMat(0xc9b07a)); m.position.copy(a0).lerp(a1, .5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), a1.clone().sub(a0).normalize()); g.add(m); } }
+    else if (K.kind === 'rbridge') {     // m1884: a ROPE BRIDGE; m1903: LIVE -- its deck is a function (`lbRopeY`), read by groundAt, so it dips under him and sways (`lbRopeStep`)
+      const N = Math.max(6, Math.round(len / 1.2)), sag = Math.max(.6, len * .07), W = 1.6, B = { A: A.clone(), B: Bv.clone(), len, ux, uz, px: -uz, pz: ux, N, sag, W, dip: 0, dipV: 0, sw: 0, swV: 0, pu: .5, on: 0, slats: [], rails: [[], []] };
+      for (let i = 0; i < N; i++) { const m = new THREE.Mesh(new THREE.BoxGeometry(.35, .08, W), lbMat(0xa0763c)); m.rotation.y = -Math.atan2(uz, ux); m.castShadow = true; g.add(m); B.slats.push(m); }
+      for (const sd of [0, 1]) for (let i = 0; i < N; i++) { const m = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, 1, 5), lbMat(0xc9b07a)); g.add(m); B.rails[sd].push(m); }
+      if (!LB.on) (LB.rbs || (LB.rbs = [])).push(B); lbRopeDraw(B); }
     else if (K.kind === 'rope') made.ropes.push(gymRopeMake({ id: K.id, x: (A.x + Bv.x) / 2, z: (A.z + Bv.z) / 2, yaw: Math.atan2(ux, uz), h: (A.y + Bv.y) / 2, len, sag: 1.1, sway: .9, speed: 2.6, noiseK: 1.35 }));
     else if (K.kind === 'zip') { const [H, Lo] = A.y >= Bv.y ? [A, Bv] : [Bv, A], z = { A: [H.x, H.y + 2.2, H.z], B: [Lo.x, Lo.y + 1.8, Lo.z], id: K.id }; ZIPS.push(z); made.zips.push(z);
       const P0 = new THREE.Vector3(...z.A), P1 = new THREE.Vector3(...z.B), m = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, P0.distanceTo(P1), 5), lbMat(0x333333)); m.position.copy(P0).add(P1).multiplyScalar(.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), P1.clone().sub(P0).normalize()); g.add(m);
@@ -69615,6 +69616,24 @@ function loopPose() { const p = player, S = p.loop; if (!S) return; const E = S.
 function loopCam(dt) { const p = player, S = p.loop; if (!S) { LOOP.camK = Math.max(0, (LOOP.camK || 0) - dt * 2); return; } LOOP.camK = Math.min(1, (LOOP.camK || 0) + dt * 3);
   const E = S.E, c = _looV.set(E.o[0], E.o[1] + E.R, E.o[2]), side = Math.sign((camera.position.x - c.x) * E.lx + (camera.position.z - c.z) * E.lz) || 1, D = LOOP.camD + E.R;
   const want = _looA.set(c.x + E.lx * side * D, c.y + 1.5, c.z + E.lz * side * D), k = LOOP.camK; camera.position.lerp(want, k); const look = _looB.copy(c).lerp(p.pos, .35); camera.lookAt(look); camera.updateMatrixWorld(true); }
+// m1903 (DOCKET: the builder's rope bridges were rigid): the deck height along a bridge = the straight line - the hang (`sag` 4u(1-u)) - the DIP
+// under him (a tent peaking at his `pu`), and it swings sideways by `sw` 4u(1-u). Both are springs: the dip toward his load, kicked by a
+// landing; the sway kicked by his sideways speed and steps. `lbRopeDeck` is what groundAt reads.
+const RBR = { load: .05, dipMax: .9, k: 38, damp: 5.5, landK: .28, swK: 14, swDamp: 2.2, swKick: .18 };
+function lbRopeY(B, u) { const t = u < B.pu ? u / Math.max(.05, B.pu) : (1 - u) / Math.max(.05, 1 - B.pu); return B.A.y + (B.B.y - B.A.y) * u - B.sag * 4 * u * (1 - u) - B.dip * t; }
+function lbRopeLocal(B, x, z) { const dx = x - B.A.x, dz = z - B.A.z, u = (dx * B.ux + dz * B.uz) / B.len, lat = dx * B.px + dz * B.pz - B.sw * 4 * u * (1 - u); return [u, lat]; }
+function lbRopeDeck(x, z) { let best = null; for (const B of LB.rbs) { const [u, lat] = lbRopeLocal(B, x, z); if (u < 0 || u > 1 || Math.abs(lat) > B.W / 2 + .12) continue; const y = lbRopeY(B, u); if (best === null || y > best) best = y; } return best; }
+function lbRopeStep(dt) { const p = player; for (const B of LB.rbs) { const [u, lat] = lbRopeLocal(B, p.pos.x, p.pos.z), onIt = u > 0 && u < 1 && Math.abs(lat) < B.W / 2 + .12 && Math.abs(p.pos.y - lbRopeY(B, u)) < .35;
+    if (onIt) { if (!B.on && p.vel.y < -2) B.dipV += -p.vel.y * RBR.landK; B.pu = clamp(u, .05, .95); B.swV += (p.vel.x * B.px + p.vel.z * B.pz) * RBR.swKick * dt * 10; }
+    B.on = onIt; const want = onIt ? Math.min(RBR.dipMax, RBR.load * B.len) * Math.sin(Math.PI * B.pu) : 0;
+    B.dipV += ((want - B.dip) * RBR.k - B.dipV * RBR.damp) * dt; B.dip += B.dipV * dt; B.swV += (-B.sw * RBR.swK - B.swV * RBR.swDamp) * dt; B.sw += B.swV * dt;
+    if (Math.abs(B.dipV) + Math.abs(B.swV) + Math.abs(B.dip) + Math.abs(B.sw) > 1e-4) lbRopeDraw(B); } }
+function lbRopeDraw(B) { const N = B.N, P = i => { const u = i / N, s2 = B.sw * 4 * u * (1 - u); return new THREE.Vector3(B.A.x + (B.B.x - B.A.x) * u + B.px * s2, lbRopeY(B, u), B.A.z + (B.B.z - B.A.z) * u + B.pz * s2); };
+  const pts = []; for (let i = 0; i <= N; i++) pts.push(P(i));
+  for (let i = 0; i < N; i++) { const m = B.slats[i]; m.position.copy(pts[i]).lerp(pts[i + 1], .5); m.position.y -= .05; }
+  for (const sd of [0, 1]) { const o = (sd ? 1 : -1) * B.W / 2 * 1.05; for (let i = 0; i < N; i++) { const a = pts[i].clone().add(new THREE.Vector3(B.px * o, 1, B.pz * o)), b = pts[i + 1].clone().add(new THREE.Vector3(B.px * o, 1, B.pz * o)), m = B.rails[sd][i];
+      m.position.copy(a).lerp(b, .5); m.scale.set(1, a.distanceTo(b), 1); m.quaternion.setFromUnitVectors(_rbUp, b.sub(a).normalize()); } } }
+const _rbUp = new THREE.Vector3(0, 1, 0);
 function lbFrame() { try { renderer.render(scene, lbActiveCam()); } catch (e) {} }
 // a saved level comes back on its own, in the world it was built in
 function lbBoot() { if (LB.cur || !rig.ready) return;
@@ -69647,6 +69666,7 @@ function frameBody() {
   if (rig.ready) {
     { const p = player; if ((p.aflip || p.barFly) && (p.loop || p.ledge || p.wrun || p.mantle || p.climb || p.rope || p.vine || p.mbar || p.zip || p.hook || (p.bar && p.aflip))) { p.aflip = null; p.aflipPop = 0; if (!p.bar) p.barFly = null; } }     // m1878 (his: "land on a ledge mid-flip and he's stuck in the tuck pose"): `airFlipStep` -- the only thing that ended a flip -- does not run in a hold, and rigAnim asks "mid flip?" first; any hold now ends it
     if (LB.pads && LB.pads.length) lbPadStep();     // m1884: the builder's bounce pads
+    if (LB.rbs && LB.rbs.length) lbRopeStep(dt);     // m1903: the builder's rope bridges dip and sway
     stepAim(dt);          // one eased answer, before anything reads it
     stepKit(dt);
     kaimStep(dt);         // m1071: the charge's aim and its arc -- here, where it runs every frame (stepKit returns early in states)

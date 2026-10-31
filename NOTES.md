@@ -19,6 +19,15 @@ under it, a banner hanging under each side of the platform, rope rails round it,
   the up-normal is now taken with the run's sign. And the drifting rocks keep out of the front sector (one sat squarely in front of the temple
   in the spawn's view).
 - Budget: **32 draw calls for the widest frame, 60k triangles.** Headless wide / east / west renders checked. Next: step 5, the detail.
+## m15xx -- the builder's ROPE BRIDGES dip and sway under him
+
+- A rope bridge's deck is now a FUNCTION, not fixed triangles: `lbRopeY(B, u)` = the straight line - the hang (sag 4u(1-u)) - a DIP shaped like a
+  tent peaking where he stands (`pu`); it swings sideways by `sw` 4u(1-u). `groundAt` reads `lbRopeDeck`, so his feet ride the live shape.
+- `lbRopeStep` (each frame): on it -> the dip springs toward his load (`RBR.load` x span x sin(pi pu), capped `dipMax`), a landing kicks it
+  (`landK` x his fall speed); his sideways speed kicks the sway; both damped springs. `lbRopeDraw` moves the slats and both rope rails.
+- MEASURED headless (16.8 m span, sag 1.18): dropped on the middle at 4 m/s -> the dip overshot to 1.34 and settled ~1.1 (before softening
+  `load` .07 -> .05, `dipMax` 1.1 -> .9), him grounded on it the whole way; running along it the sway built to .3 m and the dip followed him.
+  The rope rails do not collide -- a hard sideways run steps off the edge (left open on purpose; walls are one line if he wants them).
 
 ## m1901 -- THE SKY TEMPLE step 3: the summit halo, the jade orb and beam, the pylons' banners (TEMPLE.md)
 
