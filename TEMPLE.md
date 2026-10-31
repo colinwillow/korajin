@@ -58,7 +58,16 @@ once he starts it -- the doors here only open onto it.
 - [ ] 8c. More floating pieces round the outside, each with a reason to reach it; a better tell for which seals are left.
 - [ ] 8d. On the ground: the temple as the tip of the iceberg (a ground variant of the island), the doors opening onto the way down.
 
-## DONE WHEN
+## THE LOOK LOOP (his, m1931: "run the loop detail pass -- I want it to look EXACTLY like this; 5, 10, 15, 20 passes, so be it")
+Every pass: render the sheet's views (front / back / left / right / the temple_01 hero) headless, set them beside his concepts, fix the BIGGEST
+difference, ship, repeat. The order, biggest first (re-ranked every pass):
+- [x] L1. PALETTE: pale pink-beige stone, a clear blue sky, white clouds, a blue distance haze; the underside the same pale stone.
+- [ ] L2. MASSING: the temple fills the island (the stair down to its front edge); the two side PYLONS are smooth massive battered wedges, not steps.
+- [ ] L3. RIVETS + PANELS: gold rivets over all the stone, gold-framed panels, jade window slits on the faces.
+- [ ] L4. The SATELLITES close in, on short beams at two levels, each a hanging lantern spire.
+- [ ] L5. The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
+- [ ] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.
+
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)
 - [ ] the route from the stair to the halo is climbable end to end with the game's moves, and the zipline brings you back
 - [ ] under ~60 draw calls on his phone, no hitch on load

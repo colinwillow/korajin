@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1932 -- THE SKY TEMPLE look loop, pass 1: the palette (his: "run the loop detail pass -- I want it to look exactly like this")
+
+THE LOOK LOOP (TEMPLE.md): render the concept sheet's views (front / back / left / right / temple_01's hero), set them beside his five
+concepts, fix the biggest difference, ship, repeat -- the order re-ranked every pass. Pass 1 is the biggest: the COLOUR.
+- His concepts are pale pink-beige stone under a clear blue sky with white cumulus and a blue haze; ours was orange-brown under a peach sky.
+- `TROCK.desat` .62: the stone shader pulls the megalith texture's brown toward a grey-pink luminance before the erosion; every stone tint
+  moved to pink-beige (temple `0xf6e2d0`, rock `0xeed6c4`, paving `0xf0e2d4`, the far spires onto the same material).
+- The rock's vertex shade falls off half as far (the concepts' underside is pale masonry, not a dark root).
+- The sky: a deeper blue zenith, a pale blue-white horizon, the fog BLUE (`0xd6e2f2`); the cloud sea and heaps white with a cool shadow; the
+  sun a whiter warm, the hemisphere a sky blue over a pink-beige bounce.
+- Next (L2): the massing -- the temple fills the island, the side pylons become the concepts' smooth battered wedges.
+
 ## m1931 -- THE SKY TEMPLE: the slope slices collide at their middle (his: "a bunch of spots where he just goes through the wall")
 
 His screenshot was again **M1922** -- the build BEFORE the collider fix (m1923 replaced each battered block's one mean-footprint box, which
