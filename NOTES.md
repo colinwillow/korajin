@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1948 -- THE SKY TEMPLE: the checkerboard on the chimney-fin tops (z-fighting)
+
+His (m1941 screenshot, standing on a teal fin): *"a weird normal problem where the gold box is supposed to be -- the rim is at the same level as
+the top of this thing, so there's a crazy checkerboard pattern."* Not normals: Z-FIGHTING. The route's `fin` (the chimney walls) drew its gold
+cap as a box from `y1 - .5` to `y1` -- its top face exactly level with the fin's own top, two coplanar surfaces under his feet. The cap is now a
+band that stops .06 m under the top (`y1 - .06`), still .08 proud of the sides, so it reads as a rim and nothing shares the walking plane. The
+jackal statues' gold plinth slab had the same fault (top at 1.2 x k, level with the plinth's top) and now stops under it. Colliders unchanged.
+Shipped unverified.
+
 ## m1946 -- THE SKY TEMPLE: real BLUE FIRE in the braziers
 
 His (m1941 screenshot of a landing brazier): *"These kinds of fire things need actual blue fire looking stuff."* The flames were two solid
