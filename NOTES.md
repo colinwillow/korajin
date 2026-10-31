@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1903 -- THE SKY TEMPLE step 4: the bridges to two satellite pillars (TEMPLE.md)
+
+Out through the rim rails' gaps (78-102 and 258-282 deg), each to a PILLAR (a 6 x 6 column with a 9 x 9 gold-banded capital, a flared root
+under it, a banner hanging under each side of the platform, rope rails round it, braziers at both ends of the bridge) -- one UP, one DOWN:
+- EAST, the PLANK bridge (`temple_bridgeE`, kind `plank`): 26.6 m, climbing 4 m (8.6 deg) to the platform at +4. Slats every .55 m on two
+  stringers (a wood mesh), rope rails on gold posts both sides WITH colliders (sloped rails now get one box per span), the deck two walkable
+  triangles into `bldTris`.
+- WEST, the SKY BRIDGE (`temple_bridgeW`, kind `skybridge`): 29 m, dropping 6 m (12 deg) to a platform BELOW the island's edge (-6). A stone
+  floor slab, parapets with a gold coping, a pillar each side every bay, a roof slab with a gold band, jade strips along the floor; parapet and
+  roof colliders per bay, the windows open between them.
+- Fixed while looking: the sky bridge's offsets used the slope's normal unsigned, so a bridge running toward -X put its roof under the deck;
+  the up-normal is now taken with the run's sign. And the drifting rocks keep out of the front sector (one sat squarely in front of the temple
+  in the spawn's view).
+- Budget: **32 draw calls for the widest frame, 60k triangles.** Headless wide / east / west renders checked. Next: step 5, the detail.
+
 ## m1901 -- THE SKY TEMPLE step 3: the summit halo, the jade orb and beam, the pylons' banners (TEMPLE.md)
 
 - THE SUMMIT (`TEMPLE.halo` + `temple_pinnacle` in `TEMPLE.mass`): a battered pinnacle on the tower (top at 45.5 local), a gold collar and a
