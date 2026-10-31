@@ -38,7 +38,7 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
 - [ ] 7. His pass: whatever he asks after playing it. His second set of concepts (`temple_02_front` .. `temple_05`, docs/concepts/README.md):
   - [x] 7a. (m1909) THE UNDERSIDE: a cluster of downward stone SPIKES under a ragged slab (not one rounded cone), a jade-core hanging PYLON (gold rings,
         jade cylinder, spiked gold tip) from the middle and smaller ones under the corners.
-  - [ ] 7b. HANGING LANTERNS: gold-capped cages with jade glass and a spiked tip, on chains -- under the island, the bridges, the satellites. One draw.
+  - [x] 7b. (m1911) HANGING LANTERNS: gold-capped cages with jade glass and a spiked tip, on chains -- under the island, the bridges, the satellites. One draw.
   - [ ] 7c. SATELLITES at two levels: inverted-spire towers with a jade core and a small top with a palm; an UPPER bridge off each pylon; the
         rope rails go RED.
   - [ ] 7d. The halo's jade DISH and red chains down to the pylons; the jade porthole disc over the door; the BACK's gear disc and jade slit windows.

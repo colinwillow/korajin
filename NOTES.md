@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1911 -- THE SKY TEMPLE 7b: hanging lanterns (his second concepts)
+
+`TEMPLE.lanterns`: a gold finial and cap, a jade glass cage in gold rings and four gold bars, a gold foot with a spiked tip, on a chain -- the
+silhouette his new views are full of. 16 seeded round the rim, 3 m out past the spikes on gold brackets, chains 3-15 m, x1.3-2; and 14 placed
+(stable ids `temple_lan_*`) under both bridges and the corners of both pillars' capitals. Static, merged into the gold and jade meshes: **no
+extra draw** (39 on the widest frame, 77k triangles). Headless renders checked. Next: 7c, the satellites at two levels and red rope rails.
+
 ## m1909 -- THE SKY TEMPLE 7a: the underside is a cluster of stone spikes, with jade-core hanging pylons (his second concepts)
 
 His four new views (`docs/concepts/temple_02_front` .. `temple_05`, described in docs/concepts/README.md). Step 7 is split into 7a-7e in TEMPLE.md
