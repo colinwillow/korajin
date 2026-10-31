@@ -69163,7 +69163,8 @@ const LB = { on: 0, KINDS: {
     loop: { p: { r: 5, w: 3, off: 3.4 }, c: 0xf2c94c, label: 'LOOP', style: 'tech' },     /* m1889: run in at speed, stick held -- round the loop, upside down at the top */     /* m1887: floor curving up into a wall -- run up it into the wall run */     /* m1886: two legs and a curved quarter -- the run carries round the bend */     /* m1882: two facing walls -- up only by wall-jumping between them */
     monkey: { p: { len: 10, h: 5 }, c: 0x5a3a24, label: 'MONKEY BARS' },
     swing: { p: { h: 12, len: 9 }, c: 0xb3322a, label: 'SWING ROPE' },     /* m1884: a gantry and the gym's swing rope (VINE) */
-    pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },     /* m1884: step on it, launched up at `v` m/s */
+    pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },
+    spawn: { p: {}, c: 0x2de0b0, label: 'SPAWN' },     /* m1899: where the player starts when the level is opened as a place */     /* m1884: step on it, launched up at `v` m/s */
     platform: { p: { w: 6, d: 4 }, c: 0xd9a441, label: 'PLATFORM', top: 4 },
     block: { p: { s: 2 }, c: 0xb3322a, label: 'BLOCK' } },
   PORTS: ['closed', 'open', 'balcony', 'bar', 'ladder'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e, bar: 0xe6e9ee, ladder: 0xc8743a },     // m1882: + a HIGH BAR on that edge, a LADDER down that face
@@ -69175,7 +69176,13 @@ const LB = { on: 0, KINDS: {
 // colliders, ledges, ports, links, systems -- never depends on the theme. BLOCK = no dressing at all (only the chevrons, which ARE function).
 const LBTHEMES = { mixed: { label: 'MIXED' }, block: { label: 'BLOCK-OUT', all: 'block' }, japan: { label: 'JAPANESE', all: 'brick' }, sky: { label: 'SKY TEMPLE', all: 'mega', qbowl: 'tech', loop: 'tech' }, tech: { label: 'ANCIENT TECH', all: 'tech' } };
 function lbStyleOf(P) { const K = LB.KINDS[P.kind], T = LBTHEMES[(LB.cur && LB.cur.theme) || 'mixed'] || LBTHEMES.mixed; return (P.p && P.p.style) || T[P.kind] || T.all || K.style || 'mega'; }
-function lbKey() { let z = ''; try { z = new URLSearchParams(location.search).get('zone') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z; }
+function lbKey() { let z = '', lid = ''; try { const u = new URLSearchParams(location.search); z = u.get('zone') || ''; lid = u.get('lid') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z + (lid ? '.' + lid : ''); }
+// m1899: LEVELS AS PLACES -- levels/index.json lists the baked levels (each levels/<id>.json); the KORAJIN menu gets a button per entry, opening
+// `?w=forge&zone=level&lid=<id>`. The FILE is the source; edits made in the builder there save on the phone and are used while their `rev` is
+// at least the file's (a newer bake from here wins). The player starts on the level's SPAWN piece.
+let LBIDX = null; (function lbIndex() { try { fetch(A('levels/index.json')).then(r => r.ok ? r.json() : null).then(j => { if (j && Array.isArray(j.levels)) LBIDX = j.levels; }).catch(() => {}); } catch (e) {} })();
+function lbLevelId() { try { const u = new URLSearchParams(location.search); return u.get('zone') === 'level' ? (u.get('lid') || '') : ''; } catch (e) { return ''; } }
+function lbSpawnAt(L) { const S = (L.pieces || []).find(q => q.kind === 'spawn'), p = player; if (!S) return; p.pos.set(S.at[0], S.at[1] + .1, S.at[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = ((S.yaw || 0) % 4) * Math.PI / 2; if (typeof cam !== 'undefined') cam.az = p.faceH; }
 function lbLoad() { try { const v = JSON.parse(localStorage.getItem(lbKey()) || 'null'); if (v && Array.isArray(v.pieces)) return v; } catch (e) {} return { id: 'lvl_' + Date.now().toString(36), world: lbKey().slice(10), pieces: [] }; }
 function lbSave() { try { localStorage.setItem(lbKey(), JSON.stringify(LB.cur)); } catch (e) {} }
 // m1886: THE LOOK (his: "stylized -- Sonic, where the ramps have little arrows that show you can go up there, mixed with Japanese architecture,
@@ -69287,6 +69294,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     add(K.c, -W, W, R, q.h, -R - .6, -R); add(0x00877f, -W - .4, -W, 0, q.h, -R - .6, 0); add(0x00877f, W, W + .4, 0, q.h, -R - .6, 0);     // the wall above, and two cheeks
     X.push({ type: 'bowlSkin', R, W, n }, { type: 'upArrows2', R, W, h: q.h }, { type: 'bowl', R, W }); }
   else if (P.kind === 'loop') X.push({ type: 'loop', R: q.r, w: q.w, off: q.off });
+  else if (P.kind === 'spawn') X.push({ type: 'spawnMark' });
   else if (P.kind === 'chimney') { add(K.c, -q.len / 2, q.len / 2, 0, q.h, -q.gap / 2 - .6, -q.gap / 2); add(K.c, -q.len / 2, q.len / 2, 0, q.h, q.gap / 2, q.gap / 2 + .6); add(0x2f9e5a, -q.len / 2, q.len / 2, q.h, q.h + .3, -q.gap / 2 - .6, q.gap / 2 + .6); X.push({ type: 'upArrows', cz: q.gap / 2, len: q.len, h: q.h }, { type: 'cap', cx: 0, cz: -q.gap / 2 - .3, a: 0, len: q.len, t: .6, h: q.h + .3 }, { type: 'cap', cx: 0, cz: q.gap / 2 + .3, a: 0, len: q.len, t: .6, h: q.h + .3 }); }     // the cap: a roof to stand on at the top
   else if (P.kind === 'swing') { for (const sx of [-1, 1]) add(K.c, sx * 2.4 - .2, sx * 2.4 + .2, 0, q.h, -.2, .2); add(K.c, -2.6, 2.6, q.h, q.h + .35, -.25, .25); X.push({ type: 'swing', h: q.h + .1, len: Math.min(q.len, q.h - 1) }); }
   else if (P.kind === 'pad') { add(0x2a2f36, -q.s / 2 - .15, q.s / 2 + .15, 0, .25, -q.s / 2 - .15, q.s / 2 + .15); add(K.c, -q.s / 2, q.s / 2, .25, .4, -q.s / 2, q.s / 2); X.push({ type: 'pad', s: q.s, top: .4, v: q.v }); }
@@ -69322,6 +69330,7 @@ function lbPiece(P, ghost) { const K = LB.KINDS[P.kind], q = Object.assign({}, K
     if (E.type === 'upArrows2') { const am = lbArrowMat(); for (const x of [-E.W / 2, E.W / 2]) for (let y = E.R + 1.5; y < E.h - .8; y += 3) { const w = rx(x, -E.R + .05), n2 = rx(0, 1), m = look(lbArrowGeo(), am, w[0] + ax, ay + y, w[1] + az); m.lookAt(m.position.x + n2[0], m.position.y, m.position.z + n2[1]); }
       for (const x of [-E.W / 2, E.W / 2]) { const th = .55, w = rx(x, -E.R * Math.sin(th) + .1), m = look(lbArrowGeo(), am, w[0] + ax, ay + E.R * (1 - Math.cos(th)) + .1, w[1] + az), n2 = rx(0, Math.cos(th)); m.lookAt(m.position.x + n2[0], m.position.y + Math.sin(th), m.position.z + n2[1]); } continue; }
     if (E.type === 'trim') { const tm = ST === 'brick' ? lbMat(0xb3322a, ghost, 'lacq') : lbGoldMat(), gm = lbGlowMat(); for (const [w, d, y, hh, mm] of [[E.dh * 2 + .2, E.dh * 2 + .2, E.H - .5, .22, tm], [E.hb * 2 + .1, E.hb * 2 + .1, E.H - .75, .12, gm]]) look(new THREE.BoxGeometry(w, hh, d), mm, ax, ay + y, az); continue; }
+    if (E.type === 'spawnMark') { const m = look(new THREE.CylinderGeometry(.9, .9, .06, 24), lbGlowMat(), ax, ay + .03, az); if (LB.on) { const a2 = look(new THREE.ConeGeometry(.35, .9, 4), lbGlowMat(), ax + rx(0, 1)[0] * 1.2, ay + .5, az + rx(0, 1)[1] * 1.2); a2.rotation.x = Math.PI / 2; a2.rotation.y = -((P.yaw || 0) * Math.PI / 2); } continue; }
     if (E.type === 'halo') {     // m1895: his concept's summit -- a gold ring hovering over the deck on a pinnacle, a jade band inside it
       const y0 = ay + E.H, gm = lbGoldMat(); look(new THREE.CylinderGeometry(.35, .6, 3.2, 8), lbMat(K.c, ghost, SR), ax, y0 + 1.6, az); look(new THREE.CylinderGeometry(.18, .35, 1.4, 8), gm, ax, y0 + 3.9, az);
       const t1 = look(new THREE.TorusGeometry(E.dh * .9, .22, 8, 40), gm, ax, y0 + 5.2, az); t1.rotation.x = Math.PI / 2; const t2 = look(new THREE.TorusGeometry(E.dh * .9 - .32, .08, 6, 40), lbGlowMat(), ax, y0 + 5.2, az); t2.rotation.x = Math.PI / 2;
@@ -69575,7 +69584,10 @@ function loopCam(dt) { const p = player, S = p.loop; if (!S) { LOOP.camK = Math.
   const want = _looA.set(c.x + E.lx * side * D, c.y + 1.5, c.z + E.lz * side * D), k = LOOP.camK; camera.position.lerp(want, k); const look = _looB.copy(c).lerp(p.pos, .35); camera.lookAt(look); camera.updateMatrixWorld(true); }
 function lbFrame() { try { renderer.render(scene, lbActiveCam()); } catch (e) {} }
 // a saved level comes back on its own, in the world it was built in
-function lbBoot() { if (LB.cur || !rig.ready) return; let raw = null; try { raw = localStorage.getItem(lbKey()); } catch (e) {} LB.cur = lbLoad(); if (raw && LB.cur.pieces.length) lbLive(null); }
+function lbBoot() { if (LB.cur || !rig.ready) return;
+  const lid = lbLevelId(); if (lid) { LB.cur = { id: lid, pieces: [], links: [], loading: 1 }; fetch(A('levels/' + lid + '.json')).then(r => r.ok ? r.json() : null).then(F => { if (!F) { note('NO LEVEL ' + lid); return; }
+      let loc = null; try { loc = JSON.parse(localStorage.getItem(lbKey()) || 'null'); } catch (e) {} LB.cur = loc && Array.isArray(loc.pieces) && (loc.rev || 0) >= (F.rev || 0) ? loc : F; if (!LB.cur.links) LB.cur.links = [];
+      lbLive(null); lbSpawnAt(LB.cur); note('LEVEL ' + lid + ' (' + LB.cur.pieces.length + ' pieces' + (LB.cur === loc ? ', your edits' : '') + ')'); }).catch(e => note('LEVEL LOAD ' + e)); return; } let raw = null; try { raw = localStorage.getItem(lbKey()); } catch (e) {} LB.cur = lbLoad(); if (raw && LB.cur.pieces.length) lbLive(null); }
 function frame() {
   requestAnimationFrame(frame);
   if (POSED.on) { posedFrame(); return; }     
@@ -74757,6 +74769,7 @@ function startGate() {
       btn(el, 'Level 1 v2 -- The First Beacon', 'The blueprint level: the canyon to the enemy torch tower, generated from the measured moves. The run only (layer 1), a greybox.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&lvl=beacon'); });
       btn(el, 'The Wall Park', 'Every wall a run meets: a long wall across a drop, tall walls to a ledge, a chimney, run-jump-run, corners. (The wall-run sandbox.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=wall'); });
       btn(el, 'The Duel Pit (online)', 'Two phones, one room code, a stone pit: fight -- damage, knock-outs, a score. (Same code on both phones.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=duel'); });
+      for (const LV of LBIDX || []) btn(el, 'Level: ' + LV.name, LV.desc || 'A level built with the LEVEL BUILDER.', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=level&lid=' + encodeURIComponent(LV.id)); });     // m1899: the baked levels
       btn(el, 'The Sky Temple', 'A sandstone temple on a floating island above the clouds -- climb it. (Being built, step by step.)', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=temple'); });
       btn(el, 'The Proving Ground', 'How far and how high he can really go: gap lanes from 6 to 39 m, pillars from 3 to 24 m, and a meter that reports every jump. (Measure, then design.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=prove'); });
       btn(el, 'The Rope Course', 'A rope bridge between two towers that sags and sways under you. (The rope sandbox: the tightrope, the swing rope and the ladders come next.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=rope'); });

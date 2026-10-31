@@ -36,6 +36,16 @@ geometry per material + colliders, merged by `templeMake` -- **23 draw calls for
   rim) -- you jump them to leave.
 - The stone uses the megalith texture at ~6 m slabs (UVs x.55) in a warm tint. Not yet: the halo and banners (step 3); no route up the core yet
   (step 6). Shipped unverified on the phone; headless front / side / back renders checked against the four-view sheet.
+## m15xx -- LEVELS AS PLACES (LEVELBUILDER step 4)
+
+- `levels/` (in bump's DIRS): `index.json` = `{ levels: [{ id, name, desc }] }`, each level `levels/<id>.json` (the builder's own format + `rev`).
+  `LBIDX` is fetched at load; the KORAJIN menu gets a "Level: <name>" button per entry (beside The Sky Temple) -> `?w=forge&zone=level&lid=<id>`.
+- `lbBoot` in a level zone fetches the file; a copy edited in the builder there (`lbKey` now carries the `lid`) is used while its `rev` is >= the
+  file's -- so his edits survive a reload and a newer bake from here wins. `lbSpawnAt`: the new SPAWN piece kind (a jade disc, an arrow in the
+  editor) places him and faces him.
+- Sample: `sample_two_towers` (sky theme: two towers with a bar / ladders / balconies, a rope-railed plank, an L-wall, a quarter bowl, a loop, a
+  pad). Headless at `zone=level&lid=sample_two_towers`: 7 pieces, 46 colliders, him on the spawn at (163, 0, 110); render checked.
+- Adding his level: his SAVE FILE -> `levels/<id>.json` (+ `rev`, + a SPAWN piece) and one line in index.json.
 
 ## m1899 -- THE SKY TEMPLE step 1: the zone, the floating island, the cloud sea, the sky, the far islands (TEMPLE.md)
 

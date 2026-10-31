@@ -1,0 +1,11 @@
+{ "id": "sample_two_towers", "rev": 1, "theme": "sky", "pieces": [
+  { "id": "spawn_01", "kind": "spawn", "at": [163, 0, 110], "yaw": 2, "p": {} },
+  { "id": "tower_01", "kind": "tower", "at": [150, 0, 80], "yaw": 0, "p": {}, "ports": { "N": "bar", "E": "open", "S": "ladder", "W": "balcony" } },
+  { "id": "tower_02", "kind": "tower", "at": [176, 0, 80], "yaw": 0, "p": { "h": 22 }, "ports": { "N": "closed", "E": "balcony", "S": "ladder", "W": "open" } },
+  { "id": "lwall_01", "kind": "lwall", "at": [140, 0, 100], "yaw": 0, "p": {} },
+  { "id": "qbowl_01", "kind": "qbowl", "at": [186, 0, 104], "yaw": 0, "p": {} },
+  { "id": "loop_01", "kind": "loop", "at": [163, 0, 130], "yaw": 2, "p": {} },
+  { "id": "pad_01", "kind": "pad", "at": [163, 0, 96], "yaw": 0, "p": {} }
+], "links": [
+  { "id": "link_01", "kind": "plank", "a": ["tower_01", "E"], "b": ["tower_02", "W"] }
+] }
