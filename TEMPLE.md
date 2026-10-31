@@ -11,6 +11,11 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
 **Where:** KORAJIN > The Sky Temple, `?w=forge&zone=temple` (a forge zone like the Wall Park / Duel Pit: `TEMPLEZ.want` from the URL, built by
 `templeBuild()` from the frame's zone line next to `wparkBuild()` / `duelBuild()`, a menu button beside "The Duel Pit (online)").
 
+**READ `TEMPLE_KIT.md` FIRST (Oct 31):** the move numbers every gap / ledge / wall is sized from, the pieces (each a real system), the
+Temple 1 top-down BLUEPRINT template (beats first, then the blockout, then the look), the guardians that already have stone forms, and the
+C4D / level-builder workflow. His verdict on this temple: *"looks cool but dynamically is crap -- it doesn't use any of the concepts we've been
+working on."*
+
 ## Rules for whoever builds it (read CLAUDE.md first -- every rule there applies)
 - **Its own block.** All temple code lives in ONE contiguous block in index.html between `// TEMPLE:START` and `// TEMPLE:END`, data in
   `SC_TEMPLE:START/END` (SCENE_COMPANION.md: a placement list with stable ids, the builder a pure function of its table). The only lines
