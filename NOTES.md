@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15SN -- the Snowfield gets PAINTED maps (Oct 31 2026)
+*"Make some painted texture maps for that level -- the snow, the trees, the rocks -- and anything to make the snow more realistic, more passes."* Four
+hand-painted tiles made by the image API (`textures/snow_snow|needles|bark|rock.webp`, 1024, made seamless by a half-offset blend; 33-262 KB):
+- the PACK: the painted wind-ripple snow at two scales (7 m, and 29 m turned 37 deg so it never visibly repeats) over the depth tint; a BUMP from the
+  painted luminance (`SNOWZ.bump` 7) so the ripples catch the sun; a cold FRESNEL sheen at grazing angles (the far field glows blue-white)
+- the PINES: bark, snowy needles and snow caps, `snowTriMat` -- TRIPLANAR in world space, so instanced meshes need no UVs
+- the ROCKS (`rock_snow`): the painted granite over their vertex colour, the white caps left white
+`?paint=0` turns all of it off (the old flat look) for an A/B. Rendered headless: 89 draws, 418k tris in the stand view.
+Next snow passes still open in BUILDINGS.md (spindrift, a blizzard that comes and goes, footprints, the frozen pond, the cliffs and the dragon's lair).
+
 ## m1994 -- THE LEAP MOUNT (Oct 31 2026)
 *"With the dragon he sort of floats up into the rider seat, and lands facing backwards, then is just in the right spot. When you press the button you
 should jump pretty high in the air and land on the saddle -- cinematic."* The old mount lerped him to the seat on `ride_on` (Entering_Car: the clip

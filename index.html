@@ -10593,9 +10593,28 @@ function swatchClear() { if (SWATCH.on) { bldClear(SWATCH.on); SWATCH.on = null;
 //    pushed out of it and BOUNCES off (and drifts off again); his footsteps and landings KICK UP puffs that arc and fall.
 // (the Jin willow's numbers live here, above the Snowfield that reads them while it builds -- see `willowBuild`, m1740)
 const WILLOW = { at: [-24, -22], ter: 11, terH: .6, tiers: [[10.5, .3, 0], [7.5, .6, .3]], strips: 14, k: 1.3, boughs: 13, strands: 300, seg: 12, iters: 3, w: .15, dampK: .9, wind: 1.3, push: .55, brush: .35, simR: 55, list: null, stat: { brushes: 0 } };
-const SNOWZ = { want: 0, on: null, size: 160, res: 640, depth: 1.1, base: .5, drift: .42, pines: 46,     /* m1632: depth 1.1 m with a base fill of .5 (= the old .55 m) so DRIFTS can rise over it */ refill: .012, foot: .17, plough: .32, rim: .2, rimAdd: .14, drag: 2.6,
+const SNOWZ = { paint: (() => { try { return !/[?&]paint=0\b/.test(location.search); } catch (e) { return true; } })() ? 1 : 0, bump: 7, want: 0, on: null, size: 160, res: 640, depth: 1.1, base: .5, drift: .42, pines: 46,     /* m1632: depth 1.1 m with a base fill of .5 (= the old .55 m) so DRIFTS can rise over it */ refill: .012, foot: .17, plough: .32, rim: .2, rimAdd: .14, drag: 2.6,
   flakes: 5000, box: 34, puffs: 600, fall: [.55, 1.2], flutter: .5, wind: [1.2, 0, .4], gust: 1.6 };
 try { if (/[?&]zone=snow\b/.test(location.search)) SNOWZ.want = 1; } catch (e) {}
+// m15SN (his: "make some painted texture maps for that level -- the snow, the trees, the rocks -- and make the snow more realistic, more passes"):
+// four hand-painted tiles (`textures/snow_*.webp`, made seamless by a half-offset blend). TRIPLANAR in world space, so they need no UVs and suit
+// instanced pines and rocks alike; `vc` multiplies the plant's own vertex colours (a rock keeps its white cap: the map fades out on up-faces
+// whose colour is already snow-white).
+function snowTriMat(name, scale, col, rough, vc) { const m = new THREE.MeshStandardMaterial({ color: col, roughness: rough, vertexColors: !!vc }), t = texGet(name);
+  m.customProgramCacheKey = () => 'snowtri' + (vc ? 'v' : '');
+  m.onBeforeCompile = sh => { sh.uniforms.uTT = { value: t }; sh.uniforms.uTS = { value: 1 / scale };
+    sh.vertexShader = 'varying vec3 vTW; varying vec3 vTN;\n' + sh.vertexShader.replace('#include <worldpos_vertex>', `#include <worldpos_vertex>
+      { mat4 mm = modelMatrix;
+      #ifdef USE_INSTANCING
+      mm = mm * instanceMatrix;
+      #endif
+      vTW = (mm * vec4(transformed, 1.0)).xyz; vTN = normalize(mat3(mm) * objectNormal); }`);
+    sh.fragmentShader = 'uniform sampler2D uTT; uniform float uTS; varying vec3 vTW; varying vec3 vTN;\n' + sh.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
+      { vec3 w = pow(abs(normalize(vTN)), vec3(4.0)); w /= (w.x + w.y + w.z); vec3 q = vTW * uTS;
+        vec3 tc = texture2D(uTT, q.zy).rgb * w.x + texture2D(uTT, q.xz).rgb * w.y + texture2D(uTT, q.xy).rgb * w.z;
+        float capK = ${vc ? 'smoothstep(.85, .92, min(vColor.r, min(vColor.g, vColor.b)))' : '0.0'};
+        diffuseColor.rgb *= mix(tc * ${vc ? '2.1' : '1.0'}, vec3(1.0), capK); }`); };
+  return m; }
 function snowStage(g) {
   const Z = SNOWZ, N = Z.res; Z.D = new Uint8Array(N * N); Z.B = new Uint8Array(N * N);
   // m1632: WIND-SHAPED DRIFTS AND BANKS -- the pack's resting depth is a field, not a sheet: long ridges stretched ALONG the wind (2.6x), banks
@@ -10608,7 +10627,7 @@ function snowStage(g) {
   Z.T.magFilter = Z.T.minFilter = THREE.LinearFilter; Z.T.wrapS = Z.T.wrapT = THREE.ClampToEdgeWrapping; Z.T.needsUpdate = true;
   scene.background = new THREE.Color(0xc9d6e6); if (scene.fog) { scene.fog.color.setHex(0xc9d6e6); scene.fog.near = 40; scene.fog.far = 340; }     // cold, pale
   hemi.color.setHex(0xdfe9ff); hemi.groundColor.setHex(0xb8c4d8); sun.color.setHex(0xfff0dc);
-  const geo = new THREE.PlaneGeometry(Z.size, Z.size, 400, 400).rotateX(-Math.PI / 2), U = { uD: { value: Z.T }, uDepth: { value: Z.depth }, uTexel: { value: 1 / N }, uSize: { value: Z.size } };
+  const geo = new THREE.PlaneGeometry(Z.size, Z.size, 400, 400).rotateX(-Math.PI / 2), U = { uD: { value: Z.T }, uDepth: { value: Z.depth }, uTexel: { value: 1 / N }, uSize: { value: Z.size }, uSnT: { value: texGet('snow_snow') }, uPaint: { value: Z.paint }, uBump: { value: Z.bump } };     // m15SN: his painted snow
   const m = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .82, metalness: 0 });
   m.customProgramCacheKey = () => 'snowpack'; m.onBeforeCompile = sh => { Object.assign(sh.uniforms, U);
     sh.vertexShader = 'uniform sampler2D uD; uniform float uDepth; uniform float uTexel; uniform float uSize; varying float vSd; varying vec3 vSW;\n' + sh.vertexShader
@@ -10618,8 +10637,9 @@ function snowStage(g) {
         vec3 objectTangent = vec3(1.0, 0.0, 0.0);
         #endif`)
       .replace('#include <begin_vertex>', 'float sd = texture2D(uD, uv).r; vSd = sd; vec3 transformed = vec3(position.x, sd * uDepth, position.z); vSW = (modelMatrix * vec4(transformed, 1.0)).xyz;');
-    sh.fragmentShader = 'varying float vSd; varying vec3 vSW;\nfloat snH(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\n' + sh.fragmentShader
-      .replace('#include <color_fragment>', '#include <color_fragment>\n diffuseColor.rgb *= mix(vec3(.48, .62, .92), vec3(1.0), smoothstep(.12, .9, vSd));')
+    sh.fragmentShader = 'uniform sampler2D uSnT; uniform float uPaint; uniform float uBump; varying float vSd; varying vec3 vSW;\nfloat snH(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\n' + sh.fragmentShader
+      .replace('#include <color_fragment>', '#include <color_fragment>\n diffuseColor.rgb *= mix(vec3(.48, .62, .92), vec3(1.0), smoothstep(.12, .9, vSd));\n { vec2 q1 = vSW.xz / 7.0, q2 = mat2(.8, -.6, .6, .8) * vSW.xz / 29.0; vec3 pc = mix(texture2D(uSnT, q1).rgb, texture2D(uSnT, q2).rgb, .45); diffuseColor.rgb *= mix(vec3(1.0), pc * 1.06, uPaint); }')
+      .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\n { vec2 q = vSW.xz / 7.0; float e = 3.0 / 1024.0; float l0 = dot(texture2D(uSnT, q).rgb, vec3(.333)), lx = dot(texture2D(uSnT, q + vec2(e, 0.0)).rgb, vec3(.333)), lz = dot(texture2D(uSnT, q + vec2(0.0, e)).rgb, vec3(.333)); normal = normalize(normal + (viewMatrix * vec4(-(lx - l0) * uBump, 0.0, -(lz - l0) * uBump, 0.0)).xyz * uPaint); }\n { vec3 vv = normalize(vViewPosition); float fr = pow(1.0 - clamp(dot(normal, -vv), 0.0, 1.0), 4.0); totalEmissiveRadiance += vec3(.55, .66, .9) * fr * .22 * uPaint; }')
       .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n { vec2 c = floor(vSW.xz * 38.0); float h = snH(c + floor(cameraPosition.xz * 3.0) * .37); totalEmissiveRadiance += vec3(.9, .95, 1.0) * step(.9965, h) * 1.6 * smoothstep(30.0, 4.0, length(cameraPosition - vSW)); }'); };
   const snow = new THREE.Mesh(geo, m); snow.receiveShadow = true; snow.frustumCulled = false; g.add(snow); Z.mesh = snow;
   const far = new THREE.Mesh(new THREE.RingGeometry(Z.size * .7, 900, 64, 1).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xf4f7fc, roughness: .9 })); far.position.y = Z.depth * Z.base - .02; g.add(far);     // an even white plain to the peaks
@@ -10640,8 +10660,9 @@ function snowStage(g) {
   { const R = plantRnd(301), T = [], mk = (n, geo, mat) => { const m = new THREE.InstancedMesh(geo, mat, n); m.castShadow = true; m.receiveShadow = true; m.frustumCulled = false; g.add(m); return m; };
     for (let c = 0; c < 7; c++) { const a = R() * 6.283, d = 22 + R() * 50, cx = Math.cos(a) * d, cz = Math.sin(a) * d; for (let k = 0; k < Z.pines / 7; k++) { const x = cx + (R() - .5) * 14, z = cz + (R() - .5) * 14; if (Math.hypot(x, z - 8) < 12 || Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) < WILLOW.ter + 6) continue; T.push({ x, z, s: .8 + R() * .7, yaw: R() * 6.28, cap: 1, t: 0 }); } }
     const tg = [], cg = []; for (let k = 0; k < 3; k++) { const r = 1.5 - k * .38, y = 1.7 + k * 1.15; tg.push(new THREE.ConeGeometry(r, 1.7, 8).translate(0, y, 0)); cg.push(new THREE.ConeGeometry(r * .82, .95, 8).translate(0, y + .48, 0)); }
-    const tr = mk(T.length, new THREE.CylinderGeometry(.13, .22, 2, 6).translate(0, 1, 0), new THREE.MeshStandardMaterial({ color: 0x3e2a1e, roughness: .95 })),
-      nd = mk(T.length, mergeGeometries(tg), new THREE.MeshStandardMaterial({ color: 0x1f3f36, roughness: .9 })), cp = mk(T.length, mergeGeometries(cg), new THREE.MeshStandardMaterial({ color: 0xf6f9ff, roughness: .85 }));
+    const pt = Z.paint ? (n, sc, c, r) => snowTriMat(n, sc, c, r) : (n, sc, c, r) => new THREE.MeshStandardMaterial({ color: c, roughness: r });     // m15SN: his painted maps, laid on in world space
+    const tr = mk(T.length, new THREE.CylinderGeometry(.13, .22, 2, 6).translate(0, 1, 0), Z.paint ? snowTriMat('snow_bark', .9, 0xb08070, .95) : pt(0, 0, 0x3e2a1e, .95)),
+      nd = mk(T.length, mergeGeometries(tg), Z.paint ? snowTriMat('snow_needles', 1.3, 0xc8d8d0, .9) : pt(0, 0, 0x1f3f36, .9)), cp = mk(T.length, mergeGeometries(cg), Z.paint ? snowTriMat('snow_snow', 2.2, 0xffffff, .85) : pt(0, 0, 0xf6f9ff, .85));
     const M = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(); T.forEach((P, i) => { M.compose(new THREE.Vector3(P.x, 0, P.z), q.setFromEuler(e.set(0, P.yaw, 0)), new THREE.Vector3(P.s, P.s, P.s)); tr.setMatrixAt(i, M); nd.setMatrixAt(i, M); cp.setMatrixAt(i, M);
       BOXES.push({ minx: P.x - .3 * P.s, maxx: P.x + .3 * P.s, miny: 0, maxy: 2 * P.s, minz: P.z - .3 * P.s, maxz: P.z + .3 * P.s }); });
     Z.pine = { T, cp, M, q, e }; }
@@ -10655,7 +10676,9 @@ function snowStage(g) {
       for (let c = 0; c < 9; c++) { const a = c * .7 + R() * 2, d = 14 + R() * 55, cx = Math.cos(a) * d, cz = Math.sin(a) * d, n = 2 + Math.floor(R() * 4);
         for (let k = 0; k < n; k++) { const x = cx + (R() - .5) * 7, z = cz + (R() - .5) * 7; if (ok(x, z)) { const sc = .6 + R() * .9; plantPlant(rec, 'rock_snow', x, snowAt(x, z) * Z.depth + .3 * sc, z, sc, R() * 6.28); } } }     // set ON the snow pack (it is up to a metre deep), not buried in it
       for (let k = 0; k < 8; k++) { const a = R() * 6.28, d = WILLOW.ter + 2 + R() * 6, x = W[0] + Math.cos(a) * d, z = W[1] + Math.sin(a) * d; if (Math.abs(x - W[0]) < 3 && z > W[1]) continue; plantPlant(rec, 'rock_temple', x, snowAt(x, z) * Z.depth - .25, z, .7 + R() * .6, R() * 6.28); } }
-    Z.bamboo = plantFlush(g, rec); }
+    Z.bamboo = plantFlush(g, rec);
+    if (Z.paint) for (const m of Z.bamboo) if (m.userData.kind === 'rock_snow') m.material = snowTriMat('snow_rock', 1.6, 0xffffff, .9, 1);     // m15SN: the boulders wear the painted granite over their snow caps
+  }
   try { willowBuild(g); } catch (e) { console.error('[melee] willow', e); note('WILLOW THREW ' + e.message); }     // m1740
   Z.on = { g }; Z.t = 0; Z.acc = 0; Z.breath = 1; }
 // m1740 (his: "a cool alien weeping willow -- a big one, with vines you can actually brush through, like actual chains, so there's a dynamic
