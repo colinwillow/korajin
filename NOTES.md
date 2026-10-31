@@ -129,6 +129,33 @@ His: *"make duplicates of the texture so we can offset it by a noise pattern, to
   the island's rock, the paving (now on this material too) and the far islands. Every number is in `TROCK`.
 - The first pass was too faint to see (12-40 m noise on 40 m walls); it was proved live with an exaggerated test render, then tightened.
 - No draw or triangle change. Next, the same ask: the floating cones become irregular landmasses, then colour strips and crests.
+## m15LD -- ladders (stick up is up, touch to grab, off the rungs), the camera on stairs, air recovery after a blast; and the dead city functions cut
+His screenshots and words (Oct 31): *"when I spin the camera round so I can see his belly, up on the left stick becomes down... it should always be
+up on a ladder"* / *"the ladder is going through the middle of him"* / *"touch the ladder and you're on it, press up to go up... at the bottom
+keep pressing down or jump and you're off"* / *"the camera stutters [on stairs] instead of an eased transition"* / *"a rocket sends you flying
+and locks you until you hit the ground... I could've flick flick flicked, jumped my way... like Super Smash Bros -- the more damage the farther,
+but you can still get back onto the land"*.
+- **LADDER STICK** (`CLIMB.screen` 1): the climb read the thumb against the ladder in the WORLD, so with the lens in front of him up pointed away
+  from the rungs and read as "let go". It reads the thumb's SCREEN up now (`stickWorld().up`, new): up climbs, down climbs down, whatever the
+  camera. Headless on the temple's west ladder, lens behind AND lens at his belly: 60 frames of up climbed 1.40 m both ways, 30 of down -0.70.
+  Off: the jump (now pushed `jumpOut` 3 m/s away, `jumpCool` .6) or down past the foot.
+- **TOUCH TO GRAB** (`CLIMB.touch` 1): walking or falling into a ladder from its front latches it with no push -- unless the thumb is pulling
+  down or he is still rising off a jump.
+- **OFF THE RUNGS**: measured -- the temple draws its rungs .12 toward him (`rungOff`, now carried on its ladders) and the clip's hands reach
+  only .21 in front of his root (`climbCurve` now measures `fz`), so "root .30 off the centre" was .18 off the rungs, inside his belly. The root
+  sits `rungOff` + max(`out`, `clear` .32, reach) off now.
+- **CAMERA ON STAIRS** (`CAMY`): the look point rode `stepOff`, a .07 s ease, so a flight was a sawtooth. Its height eases on its own now
+  (.2 s on the ground, .05 in the air, a snap past 3 m). The body still dips at each step: the stair walk itself (foot IK onto the treads, the
+  m1813 clips were turned off at m1820 for looking wrong) is the next build on stairs.
+- **AIR RECOVERY** (`RECOVER`, `knockRecover`): a launch is a TUMBLE of `t0` .3 + `perDmg` x the blow (to .8 s), then a jump tap or a left flick
+  ends the knock-down in the air: the jump is the double-jump flip, the flick an air flip, and the ledge catch, wall run and bars work again.
+  And a launch is up to `pct` 80% bigger as his hp runs out. Headless: blow of 20 -> lock .42 s; a jump at once is ignored; after it, knock 0,
+  vy 9.42, the tucked flip playing.
+- **CUT** (ROADMAP CUT, his go at m1918): 230 top-level functions the city and story branches left with no caller, 10,824 lines -- found by
+  counting every identifier once (comments stripped, the `mel` export not counted as a use), deleted to convergence, Korajin-ish strays kept
+  (the arrows, `vaultLift`, `aim3*`, the bikes, the swing). Headless 150 frames each with no throw: default (forge), arena, white box, temple,
+  ship, duel, rope, proving ground, wall park, Level 1, Level 1 v2, a saved level, snow, dragon. The Red Hollows' headless frames time out
+  -- the same on the pre-cut file (checked side by side), so not this.
 
 ## m1918 -- clean-out: the Weirdport city is no longer a world (and no longer loads behind the menu)
 His go: *"No, I don't need them... weirdport will keep it... now you got it, you can cut it."* The city lives on in
