@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m1985 -- THE JINRA REFINERY, pass 8: the deck
+## m1987 -- THE JINRA REFINERY, pass 8: the deck
 
 - The deck to his views: 18.4 x 16 m (was 16 x 13), so the mound (now 7.0 x 4.6 x 5.7, centre z -1.0) sits on it with a walkway all round.
   A two-course edge beam with iron plates and four bolts every 2.3 m and joist ends below; heavy corner posts banded in iron; sandstone
