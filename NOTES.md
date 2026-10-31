@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1921 -- THE SKY TEMPLE: colour strips, tech courses, corner pilasters and crests on every big block (his)
+
+His, looking at the renders: *"I love the variety where you can see black and green and red -- break up more of the temple with strips of
+those colours and accents, pillar crests, ledges, just so we get more detail."*
+- `TEMPLE_SKY.block` (dressing only; the block-out is untouched): every big sandstone block (taller than 6 x k, wider than 5 x k, not already
+  tech) gets an ANCIENT-TECH course (basalt with jade glyphs, .75 x k tall, standing .12 x k proud of the batter) at 34-46% of its height (per
+  block, from its id), a JADE line over it and a GOLD line under it, tech PILASTERS up all four corners leaning with the batter, and gold
+  CRESTS on its top corners (a cube and a four-sided finial). Every gold-crowned block gets a RED lacquer frieze under its crown (`red` bucket,
+  `lbMat(0xa3201a, 'lacq')`, +1 draw).
+- The gold crown bands and studs now grow with the temple (`p.k`): they had stayed human-sized on a x2.5 build.
+- No new colliders: the strips stand .12-.15 x k proud -- trim, not ledges. Hangable ledges stay where the route and the pylon cornices are.
+- 44 draws on the widest frame. Headless front / back / close renders checked.
+
 ## m1920 -- THE SKY TEMPLE: the floating cones are LANDMASSES now (his)
 
 His: *"anything that's like an upside-down floating cone needs to become more organic or irregular, more like an actual landmass than a
