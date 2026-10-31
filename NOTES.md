@@ -21,7 +21,7 @@ ladders `kitClimbAdd` (+ `mark`, `fg`), the high bar `hbarMake` into `HBAR.list`
 - DONE WHEN, honestly: the route is BUILT, not proven -- no harness here plays a ledge hang or a bar release. **Shipped unverified**; the
   spacings are from the measured catch band and jump apex, and the bar's release onto c1 is the part most likely to want tuning on the phone.
 - Budget: **36 draw calls for the widest frame (the high bar adds 5 of its own), 65k triangles.** Next: step 7, his pass.
-## m15NB -- online: the other player's blade trail and blade fire
+## m1908 -- online: the other player's blade trail and blade fire
 His list item 4: *"blade fire and trail visible on the other player, then co-op."*
 - The packet carries `f` (1 while `bladeFire()` is lit). The receiver keeps `P.fire`; `P.sw` (swinging) was already there.
 - `netBlade(P, dt)`: reads base/tip off the PUPPET's visible weapon (its own `heroSword()` / `BTRAIL` local points, so it is

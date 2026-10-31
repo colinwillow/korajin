@@ -23,8 +23,8 @@ two snapshots that bracket ~130 ms ago. Whatever his phone draws, the other phon
 - [x] **1. See each other (m1843):** TOOLS > ONLINE: JOIN A ROOM (a code to share) or `?room=CODE`; the relay is his Robits server under `KJ-`
   room codes; the puppet is a clone of the hero model, posed from the stream, a P2 tag over it; hidden when the other is in a different zone.
   Chip: room, state, players, packets/s.
-- [~] **2. Their gear (m1846, m15NB):** the weapon in their hand (the slot key in every packet picks which of the puppet's cloned weapons shows);
-  m15NB: their BLADE TRAIL (a ribbon off their own weapon's base/tip while they swing) and their BLADE FIRE (`f` in the packet, the same
+- [~] **2. Their gear (m1846, m1908):** the weapon in their hand (the slot key in every packet picks which of the puppet's cloned weapons shows);
+  m1908: their BLADE TRAIL (a ribbon off their own weapon's base/tip while they swing) and their BLADE FIRE (`f` in the packet, the same
   `bflPut` flames). Still to do: slam bursts as events. Co-op is stage 4's open line.
 - [x] **3. Knock each other around (m1846, no damage):** my swing / slam / charge tests THEIR puppet (hands, feet, blade tip inside a .6 m
   body); a HIT event goes to them and THEIR phone applies it through `playerHurt` (0 damage: their guard, parry and knock-down answer it).

@@ -29379,7 +29379,7 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
   if (NET.myId && now - NET.sendT >= 1000 / NET.hz) { NET.sendT = now; if (!NET.bones) NET.bones = netBones(rig.model); const B = NET.bones, q = new Int16Array(B.length * 4);
     for (let i = 0; i < B.length; i++) { const b = B[i].quaternion; q[i * 4] = Math.round(b.x * 32767); q[i * 4 + 1] = Math.round(b.y * 32767); q[i * 4 + 2] = Math.round(b.z * 32767); q[i * 4 + 3] = Math.round(b.w * 32767); }
     const u8 = new Uint8Array(q.buffer); let bin = ''; for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
-    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), k: (slotNow() || {}).key || '', hp: Math.round(player.hp), sw: player.melee || player.slam || player.chargeGo ? 1 : 0, f: bladeFire() ? 1 : 0,     /* m1907: their blade's fire */ P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
+    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), k: (slotNow() || {}).key || '', hp: Math.round(player.hp), sw: player.melee || player.slam || player.chargeGo ? 1 : 0, f: bladeFire() ? 1 : 0,     /* m1908: their blade's fire */ P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
   try { netHits(); } catch (e) { NET.err = 'hits ' + e.message; }
   // DRAW: each puppet at `delay` s ago, between the two snapshots that bracket it
   const rt = now - NET.delay * 1000;
@@ -29387,7 +29387,7 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
     let a = bf[0], b = bf[bf.length - 1], u = 1; for (let i = 0; i < bf.length - 1; i++) if (bf[i].t <= rt && bf[i + 1].t >= rt) { a = bf[i]; b = bf[i + 1]; u = (rt - a.t) / Math.max(1, b.t - a.t); break; }
     if (rt < bf[0].t) { a = b = bf[0]; u = 0; }
     for (const w of P.weap) w.visible = w.name === 'weapon:' + P.k;
-    if (P.root.visible) netBlade(P, dt); else if (P.trail) P.trail.m.visible = false;     // m1907 (NETPLAY stage 2): their blade's TRAIL and FIRE, as mine
+    if (P.root.visible) netBlade(P, dt); else if (P.trail) P.trail.m.visible = false;     // m1908 (NETPLAY stage 2): their blade's TRAIL and FIRE, as mine
     const A = a.P, Bp = b.P; P.root.position.set(A[0] + (Bp[0] - A[0]) * u, A[1] + (Bp[1] - A[1]) * u, A[2] + (Bp[2] - A[2]) * u);
     _nq1.set(A[3], A[4], A[5], A[6]); _nq2.set(Bp[3], Bp[4], Bp[5], Bp[6]); P.root.quaternion.slerpQuaternions(_nq1, _nq2, u);
     const n = Math.min(P.bones.length, a.Q.length / 4, b.Q.length / 4);
@@ -29398,7 +29398,7 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
 // dash; contact: a hand, a foot or the blade's tip inside their body (`r` round the puppet's root, feet to `tall`); one hit per `cool` s.
 const NETHIT = { r: .6, tall: 1.8, wind: .1, cool: .45, swing: { push: 5.5, up: 2.5, stun: .35, knock: .3, dmg: 12 }, heavy: { push: 9, up: 4.5, stun: .6, knock: 1, dmg: 25 } };
 const _nhP = new THREE.Vector3();
-// m1907 (NETPLAY stage 2 -- his "can I see them swing"): THEIR BLADE as mine looks. A TRAIL: while their swing flag is up (and `hold` s after), the
+// m1908 (NETPLAY stage 2 -- his "can I see them swing"): THEIR BLADE as mine looks. A TRAIL: while their swing flag is up (and `hold` s after), the
 // puppet's own blade (its weapon group, the hero sword's base / tip in its local Y -- the same model, the same numbers) is sampled each frame; the
 // last `n` samples make a ribbon, older ones drawn narrower toward the tip and fainter, in the local trail's blue. FIRE: their `f` flag lights
 // the same flame particles along it (`bflPut`) at the local rate.
