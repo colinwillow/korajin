@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1938 -- THE SKY TEMPLE look loop, pass 6: the far islands are little temples
+
+His concepts' distant islands are small temple complexes in a blue haze, waterfalls pouring off them; ours were rock cones with three plain
+spires. Every far island now carries a miniature of the temple (into the merged spire mesh -- no draws): a two-step podium, two battered pylon
+wedges, a tall central keep with a pyramid spire, its own ring of edge spires and its waterfall and beam as before. The blue fog from pass 1
+hazes them. The drifting rocks go from 12 to 7 and further out (they crowded the side views).
+Next: panels (gold-framed dark recesses with jade slits between the pilasters), and the island's spare plaza.
+
 ## m1937 -- THE SKY TEMPLE look loop, pass 5: the island's built edge and the front MEDALLION
 
 - `TEMPLE_SKY.$rim` (sky skin only): two GOLD cornices round the island's rim -- one at the paving's edge, one a course lower -- so the top reads

@@ -71,7 +71,7 @@ difference, ship, repeat. The order, biggest first (re-ranked every pass):
 - [~] L3. RIVETS (done) + PANELS: gold rivets over all the stone, gold-framed panels, jade window slits on the faces.
 - [x] L4. The SATELLITES close in, on short beams at two levels, each a hanging lantern spire.
 - [~] L5. (medallion + rim cornice done) The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
-- [ ] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.
+- [x] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.
 
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)
 - [ ] the route from the stair to the halo is climbable end to end with the game's moves, and the zipline brings you back
