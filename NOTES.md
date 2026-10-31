@@ -5,6 +5,27 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1973 -- LIVE ROPE BRIDGES: the Rope Course's bridge, out in the Red Hollows (`RSPAN`, `rspAdd`)
+
+His: *"we built rope bridges with proper rope, dynamics and railings in another sandbox; some rope bridges in the Red Hollows don't have the
+dynamic -- swap them for real rope bridges."* The sandbox (ROPEB, m1800-m1818) was ONE bridge, along x, at a fixed spot. Now:
+- `rspAdd(A, B, o)` makes a span between two world points (ends at any heights, any direction). Each span keeps its four verlet ropes in
+  its OWN frame (x along 0..L, z across, y world) in a turned group, so ROPEB's code runs on it UNCHANGED: `rspSwap`/`rspBack` lend the
+  span's numbers and state (x0, z, L, H, N, w, stat, bal, lean, dtPose, iters, load) to ROPEB, `rspRun` turns the player (pos, vel) into the
+  span's frame around `ropeStep` and back, `rspDeck` answers `groundAt`, `rspPose` leans him about the span's axis (`ropePose(ax, az)`).
+  Only spans within `RSPAN.near` (60 m past half their length) are stepped. `noHang` keeps the sandbox's rope catch/hang/swing-up out.
+- The canyon's two bridges (42-44 m) are spans pinned at the m1971 posts, ends level with the ledge-path tops (the old deck's sag had put
+  the landings a METRE under the path: a step he could not take -- fixed). Their static planks, line ropes, walk tris and the three
+  banners hung from each are gone.
+- The sky castle's nine islet-ring bridges and two lawn bridges are spans; an islet end rides its islet's bob (`bob`, the pinned nodes
+  follow `hwBobY`); live only while the castle is up (`gcastleStep` sets `I.live`). Their static planks/rails/walk tris are gone.
+- TUNING, measured headless (walk.mjs: stepPlayer + homeStep across a canyon span and a ring span): a 70-node rope at 14 passes hung
+  4.3 m at rest and 4.8 under him. Fixes: passes scale with nodes (`iters` N/2.5); the hang is ~1.6 m at any length (`sk`); the rope is
+  cut to the CHORD, not the plan length (an end 15 m up was strung bar-taut); and one calibration at build (settle 300, shorten by the
+  arc length gained, settle 300) -- stacking rounds before it settles overshot to 0.7 m. Now: the canyon deck dips ~1.6 m under him
+  mid-span and he walks end to end onto the landing; the 34 m ring span (15 m climb) walks end to end on the deck.
+- Draws: two per span (planks, ropes; instanced) = 26, less the static buckets they replace (~4). Unlooked-at on a phone.
+
 ## m1972 -- the wing-pack rides the spine through flips; LOOK at the top of TOOLS and in GOD
 His words (Oct 31): *"jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance away -- it
 should always be mounted to whatever spine joint it's on"* / *"I still don't see how to check the new rendering style -- not in the old Weirdport debug
