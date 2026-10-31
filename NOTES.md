@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15PS -- PUSHABLE SNOW ON EVERY PLATFORM, and fists and feet throw snow (Oct 31 2026)
+## m2005 -- PUSHABLE SNOW ON EVERY PLATFORM, and fists and feet throw snow (Oct 31 2026)
 *"The snow-covered stuff doesn't react -- it doesn't push snow around the way the ground does; and the melees that don't have the sword should push snow
 around too."* `SNOWPATCH`: every snow-topped platform (the 7 cliff blocks, both ice shelves, the bridge deck, the boulder steps, the spire mound -- 16)
 carries its own small pack, a height grid (.3 m cells, up to .34 m, falling to nothing at the rounded edge, the old pillow cap now a thin skin under it),
