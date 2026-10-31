@@ -5,6 +5,22 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1905 -- THE SKY TEMPLE step 5: the detail -- guardians, palms, vines, jade channels, cornices to hang from (TEMPLE.md)
+
+- GUARDIAN STATUES (`temple_statue_l/r`, kind `statue`): block-carved figures 7.4 m to the headdress on gold-banded pedestals either side of
+  the portal -- legs, kilt with a gold belt, torso, shoulders, arms with gold cuffs, head with jade eyes, a gold headdress and crest, a gold
+  staff with a jade knob (left/right hands mirrored). Merged into the stone / gold / glow meshes (no extra draws), one collider each. The door
+  braziers moved forward to z -1.4 to stand in front of them. (A real statue rig -- STATUES.md's stone twin -- is a later swap; this is scenery.)
+- PALMS (kind `palm`, 8): a stone planter with a gold band (collider), a 7-segment trunk leaning per entry, nine arched drooping fronds (one
+  flat-shaded green mesh for every palm: +1 draw). On the plaza by the stair, the podium's front corners, tier 1's top, the east pillar, the back.
+- VINES (`TEMPLE.vines`, seeded): `lbVineMat` strips draped from the podium's four faces, the pylons' first tops, tier 2's front, both pillars'
+  capitals, and 22 hanging over the island's rim. One mesh (+1 draw).
+- JADE CHANNELS: `chan` is now a list of x offsets -- down the tower, both sides of the portal on tier 1, every pylon tier's front (each
+  following its batter, with a gold foot), and a jade line round the podium's front and back faces at 4.4 m.
+- CORNICES TO HANG ON: a .4 m stone ledge with a gold edge across each pylon's front at 12, 24 and 36 m (local) -- the mid-points of the
+  pylon tiers -- for step 6's route.
+- Budget: **32 draw calls for the widest frame, 66k triangles.** Headless front / door / plaza renders checked. Next: step 6, the route.
+
 ## m1903 -- THE SKY TEMPLE step 4: the bridges to two satellite pillars (TEMPLE.md)
 
 Out through the rim rails' gaps (78-102 and 258-282 deg), each to a PILLAR (a 6 x 6 column with a 9 x 9 gold-banded capital, a flared root

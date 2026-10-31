@@ -32,7 +32,7 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
       the landing with braziers, the door (jade-ringed, sealed), rope rails along every edge. All of it climbable / walkable.
 - [x] 3. (m1901) THE SUMMIT: the gold HALO ring with the jade core and a beam up into the sky; the pylons' banners (his diamond banner, swaying).
 - [x] 4. (m1903) THE BRIDGES: side bridges off to two satellite pillars (one plank with rope rails, one sky bridge), braziers at the ends.
-- [ ] 5. DETAIL: guardian statues flanking the door, palms in stone planters, vines, jade channels glowing down the walls, ledges to hang on.
+- [x] 5. (m1905) DETAIL: guardian statues flanking the door, palms in stone planters, vines, jade channels glowing down the walls, ledges to hang on.
 - [ ] 6. THE ROUTE: a parkour route from the landing to the halo using the game's moves -- wall runs up the pylons, ledges, a high bar, a
       zipline back down; tuned so it is fun on the phone.
 - [ ] 7. His pass: whatever he asks after playing it.
