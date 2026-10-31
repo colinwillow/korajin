@@ -69164,7 +69164,7 @@ const LB = { on: 0, KINDS: {
     monkey: { p: { len: 10, h: 5 }, c: 0x5a3a24, label: 'MONKEY BARS' },
     swing: { p: { h: 12, len: 9 }, c: 0xb3322a, label: 'SWING ROPE' },     /* m1884: a gantry and the gym's swing rope (VINE) */
     pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },
-    spawn: { p: {}, c: 0x2de0b0, label: 'SPAWN' },     /* m1899: where the player starts when the level is opened as a place */     /* m1884: step on it, launched up at `v` m/s */
+    spawn: { p: {}, c: 0x2de0b0, label: 'SPAWN' },     /* m1902: where the player starts when the level is opened as a place */     /* m1884: step on it, launched up at `v` m/s */
     platform: { p: { w: 6, d: 4 }, c: 0xd9a441, label: 'PLATFORM', top: 4 },
     block: { p: { s: 2 }, c: 0xb3322a, label: 'BLOCK' } },
   PORTS: ['closed', 'open', 'balcony', 'bar', 'ladder'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e, bar: 0xe6e9ee, ladder: 0xc8743a },     // m1882: + a HIGH BAR on that edge, a LADDER down that face
@@ -69177,7 +69177,7 @@ const LB = { on: 0, KINDS: {
 const LBTHEMES = { mixed: { label: 'MIXED' }, block: { label: 'BLOCK-OUT', all: 'block' }, japan: { label: 'JAPANESE', all: 'brick' }, sky: { label: 'SKY TEMPLE', all: 'mega', qbowl: 'tech', loop: 'tech' }, tech: { label: 'ANCIENT TECH', all: 'tech' } };
 function lbStyleOf(P) { const K = LB.KINDS[P.kind], T = LBTHEMES[(LB.cur && LB.cur.theme) || 'mixed'] || LBTHEMES.mixed; return (P.p && P.p.style) || T[P.kind] || T.all || K.style || 'mega'; }
 function lbKey() { let z = '', lid = ''; try { const u = new URLSearchParams(location.search); z = u.get('zone') || ''; lid = u.get('lid') || ''; } catch (e) {} return 'mel.level.' + (WORLD.now || '') + '.' + z + (lid ? '.' + lid : ''); }
-// m1899: LEVELS AS PLACES -- levels/index.json lists the baked levels (each levels/<id>.json); the KORAJIN menu gets a button per entry, opening
+// m1902: LEVELS AS PLACES -- levels/index.json lists the baked levels (each levels/<id>.json); the KORAJIN menu gets a button per entry, opening
 // `?w=forge&zone=level&lid=<id>`. The FILE is the source; edits made in the builder there save on the phone and are used while their `rev` is
 // at least the file's (a newer bake from here wins). The player starts on the level's SPAWN piece.
 let LBIDX = null; (function lbIndex() { try { fetch(A('levels/index.json')).then(r => r.ok ? r.json() : null).then(j => { if (j && Array.isArray(j.levels)) LBIDX = j.levels; }).catch(() => {}); } catch (e) {} })();
@@ -74769,7 +74769,7 @@ function startGate() {
       btn(el, 'Level 1 v2 -- The First Beacon', 'The blueprint level: the canyon to the enemy torch tower, generated from the measured moves. The run only (layer 1), a greybox.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&lvl=beacon'); });
       btn(el, 'The Wall Park', 'Every wall a run meets: a long wall across a drop, tall walls to a ledge, a chimney, run-jump-run, corners. (The wall-run sandbox.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=wall'); });
       btn(el, 'The Duel Pit (online)', 'Two phones, one room code, a stone pit: fight -- damage, knock-outs, a score. (Same code on both phones.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=duel'); });
-      for (const LV of LBIDX || []) btn(el, 'Level: ' + LV.name, LV.desc || 'A level built with the LEVEL BUILDER.', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=level&lid=' + encodeURIComponent(LV.id)); });     // m1899: the baked levels
+      for (const LV of LBIDX || []) btn(el, 'Level: ' + LV.name, LV.desc || 'A level built with the LEVEL BUILDER.', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=level&lid=' + encodeURIComponent(LV.id)); });     // m1902: the baked levels
       btn(el, 'The Sky Temple', 'A sandstone temple on a floating island above the clouds -- climb it. (Being built, step by step.)', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=temple'); });
       btn(el, 'The Proving Ground', 'How far and how high he can really go: gap lanes from 6 to 39 m, pillars from 3 to 24 m, and a meter that reports every jump. (Measure, then design.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=prove'); });
       btn(el, 'The Rope Course', 'A rope bridge between two towers that sags and sways under you. (The rope sandbox: the tightrope, the swing rope and the ladders come next.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=rope'); });

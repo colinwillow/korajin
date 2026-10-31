@@ -36,7 +36,7 @@ geometry per material + colliders, merged by `templeMake` -- **23 draw calls for
   rim) -- you jump them to leave.
 - The stone uses the megalith texture at ~6 m slabs (UVs x.55) in a warm tint. Not yet: the halo and banners (step 3); no route up the core yet
   (step 6). Shipped unverified on the phone; headless front / side / back renders checked against the four-view sheet.
-## m1899 -- LEVELS AS PLACES (LEVELBUILDER step 4)
+## m1902 -- LEVELS AS PLACES (LEVELBUILDER step 4)
 
 - `levels/` (in bump's DIRS): `index.json` = `{ levels: [{ id, name, desc }] }`, each level `levels/<id>.json` (the builder's own format + `rev`).
   `LBIDX` is fetched at load; the KORAJIN menu gets a "Level: <name>" button per entry (beside The Sky Temple) -> `?w=forge&zone=level&lid=<id>`.
