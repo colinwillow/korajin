@@ -16,7 +16,7 @@ from what they show that the build does not.
   spiked gold tip; the big one (x1.35) under the front edge below the stair, as in the front view, smaller ones under the four corners and the
   back. Spikes are kept clear round each. In the gold / glow meshes (no extra draw).
 - Budget: 39 draws on the widest frame, 70k triangles. Headless front renders checked against `temple_02_front`. Next: 7b, the lanterns.
-## m15CU -- clean-out: the alien world and Glowtide loaders are gone
+## m1910 -- clean-out: the alien world and Glowtide loaders are gone
 His list item 5: *"clean-out of leftover Zap / Weirdport code."* One system per pass (ROADMAP CUT), so this pass takes the largest
 fully dead one: the alien world (m432) and Glowtide (m438). Their models were never copied into this repo and neither key is in
 `WORLD.list`, so nothing could reach them.

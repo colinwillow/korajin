@@ -65482,7 +65482,7 @@ function buildCrash() {
 }
 // m474: his wreck at (x, y, z), its +X turned onto the travel direction (dx, dz); the colliders out of his collision file
 // (each `col_bld_*` one exact turned box, `kitObb`); returns his empties' world positions by name
-const CRASH_COLS = { tag: 'ALIEN', cols: 1, cell: .8, maxCells: 4096, tol: .35, full: .92, fill: .5 };     // m15CU: was AW.cols (the alien world's, cut)
+const CRASH_COLS = { tag: 'ALIEN', cols: 1, cell: .8, maxCells: 4096, tol: .35, full: .92, fill: .5 };     // m1910: was AW.cols (the alien world's, cut)
 function crashModel(g, cg, x, y, z, dx, dz) {
   const yaw = Math.atan2(-dz, dx), root = g.scene;
   root.position.set(x, y, z); root.rotation.set(0, yaw, 0); root.updateMatrixWorld(true);
@@ -70409,7 +70409,7 @@ addEventListener('resize', resize);
 addEventListener('orientationchange', () => setTimeout(resize, 120));
 resize();
 
-const inAW = () => false, inPL = () => false, alienLike = () => false;     // m15CU: the alien world and Glowtide were never copied into this repo (no models, not in WORLD.list); their loaders are cut
+const inAW = () => false, inPL = () => false, alienLike = () => false;     // m1910: the alien world and Glowtide were never copied into this repo (no models, not in WORLD.list); their loaders are cut
 // m1110: THE REFUGE -- Grumbo's home, KORAJIN's third place (`?w=home`, KORAJIN > The Refuge). *"Build a nice cozy beautiful scene... his
 // refuge... Japanese mountainside or grassland or an island, water, sun god rays, a weird alien Japanese island tree, the fisherman-hat
 // docks and boats -- cyberpunk but retro samurai and future alien floating flying stuff."* First pass: a grass plateau (`HOME.ground`) that
