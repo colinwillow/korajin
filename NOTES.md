@@ -5,6 +5,26 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1962 -- THE SKY TEMPLE: everything left untextured, textured (palms, planks, rope, red frieze, jade, the halo's gold)
+
+His: *"The palm tree in the background, we could texture the bark and the leaves -- just go through the entire level and anything that's not
+textured, make a texture for it."* Inventoried every mesh in the temple group and its material (map / no map): the bare ones were the palm
+trunks and fronds, the wood (plank bridges, rungs, monkey bars), the rope (28k tris of flat red), the red frieze, the guardians' jade and the
+halo's gold. Six generated maps in `textures/`, all seamless but the frond:
+  temple_bark     palm ring scars       -> a new `bark` bucket (the trunks; +1 draw), triplanar 1.6 m
+  temple_planks   weathered boards       -> `temple_wood` (bridges, rungs, bars), triplanar 2.4 m
+  temple_rope     twisted crimson hemp   -> `temple_rope`, triplanar .45 m
+  temple_lacquer  chipped red lacquer with faded gold key lines -> the red frieze, triplanar 3 m
+  temple_jade     carved jade, gold seams -> the guardians, triplanar 1.4 m (tint and emissive lifted: untinted it read dark)
+  temple_frond    one palm frond with ALPHA (`gpt-image-1.5` -- gpt-image-2 refuses transparent backgrounds) -> the fronds now carry UVs
+                  (u across, the stem at .5; v base to tip), are 2.5x wider for the leaflets, alphaTest .45, double-sided
+  prompt: "A single tropical PALM FROND seen flat from directly above, isolated: a central stem running straight vertically from the bottom
+  edge to the top edge, with many long narrow green leaflets combing out symmetrically to both sides, slightly drooping, lush green with
+  yellow-green highlights, filling the frame. No shadow, game texture." (background: transparent)
+`templeTriMat(key, tex, o)` is the one triplanar builder (the gold's projection without its roughness), `TTEX` its numbers. The halo's gold is
+`templeGoldMat` now. Left untextured ON PURPOSE: the glows, the flames, the seal crystals, sky, clouds and the cumulus heaps (light and air).
+Shipped unverified.
+
 ## m1961 -- THE SKY TEMPLE: real GOLD (worn, engraved, triplanar) and no more checkpoint rings
 
 His (m1956 screenshot, standing on a gold top): *"a giant gold plane... it just looks like a solid plane. Can we texture this gold to look more

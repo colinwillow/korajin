@@ -13,6 +13,12 @@ PROMPTS = {
   'rock': "Eroded natural sandstone cliff face of a floating sky island: layered strata, vertical weathering streaks, rough fractured faces, small cracks and pits, a few roots and moss tufts. Warm pinkish-tan palette.",
   'carpet': "An ornate ancient temple CARPET RUNNER seen from above, running vertically: deep crimson red woven wool, a gold-yellow woven border band down BOTH the left and right edges, and a row of stacked gold diamond/lozenge motifs down the centre. Visible wool weave and slight wear, faded in places. Must tile seamlessly top to bottom.",
   'weave': "Plain neutral light grey woven fabric close-up: coarse canvas / burlap-like weave with visible over-under threads, subtle fibres, slight unevenness. Neutral, almost no colour, mid-to-light grey, for tinting.",
+  'gold': "Ancient worn GOLD / gilded bronze metal surface from a temple: softly hammered and polished gold with faint engraved ornamental linework, fine scratches, rubbed bright highlights on raised areas, darker brown-green tarnish and grime settled in the engraved grooves and dents, slight patina blotches. Warm rich gold, not orange.",
+  'bark': "Palm tree trunk BARK: overlapping rough fibrous ring scars stacked horizontally, warm grey-brown with tan fibres, coarse and weathered.",
+  'planks': "Weathered old wooden boards running horizontally: sun-bleached warm brown timber with deep grain, cracks, worn edges and dark gaps between planks, a few iron nail heads.",
+  'rope': "Thick twisted RED rope fibres close-up, the twist running diagonally, braided strands of faded crimson hemp with frayed fibres, filling the square.",
+  'lacquer': "Old weathered RED LACQUER / painted plaster temple frieze: deep crimson paint, worn and chipped in places showing pale stone beneath, faint crackle, subtle faded gold painted key-pattern border lines.",
+  'jade': "Carved green JADE stone with verdigris bronze inlay: polished jade-green stone with darker veins and cloudy translucent mottling, thin worn gold seams, slight wear. Rich teal-green.",
   'glyph': "Dark ancient-technology basalt wall panel: near-black blue-grey stone blocks inlaid with thin glowing jade-green carved geometric glyph circuits and spirals, gold metal seams between blocks. Mysterious alien temple.",
 }
 BANNER = ("Flat front orthographic view of a hanging ancient temple BANNER that fills the ENTIRE image edge to edge (no background visible, no pole, no rope): "
@@ -28,6 +34,7 @@ def seamless(im, band=110):
   dy = np.minimum(np.arange(H), H - 1 - np.arange(H))[:, None]; dx = np.minimum(np.arange(W), W - 1 - np.arange(W))[None, :]
   m = 1 - np.clip(np.minimum(dx, dy) / band, 0, 1); m = (m * m * (3 - 2 * m))[..., None]
   return Image.fromarray((a * (1 - m) + b * m).clip(0, 255).astype(np.uint8))
+# the FROND is not tiled and needs ALPHA: gpt-image-2 refuses `background: transparent`, gpt-image-1.5 takes it. Its prompt is in NOTES (m1962).
 # the carpet tiles top to bottom only (pass it through seamless anyway: the side seam is never seen); the banner is a single picture, 1024x1536,
 # written at 512x1536 un-tiled -- `templeBannerMat` cuts it with the kit banner's tattered hem:  python3 tools/temple_textures.py banner
 for n in (sys.argv[1:] or PROMPTS):
