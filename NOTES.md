@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15FX -- the slam ring expands in every world; ?look=soft; the WINGS button (Rollergirl's wing-pack on anyone)
+His words (Oct 31): *"the new slam shockwave just makes a new ring on the ground and it stays there, doesn't move, doesn't expand"* / *"how do I see the
+render technique in the Red Hollows?"* / *"instead of GOD's fly mode, borrow the flight wings from Rollergirl -- a little button above the right stick
+to mount them; mounted, a double jump brings you into flying and double tapping again dismounts -- so I can look at parts of maps I can't get to yet."*
+- **THE RING:** `slamRingStep` was called from `arenaStep`, which returns at once outside the arena / forge (and after anything ahead of it threw), so
+  everywhere else the ring was placed and never stepped: a static disc. It runs every frame from `stepPlayer` now, in its own try (a throw clears the
+  rings and says `SLAMRING THREW` in the chip).
+- **THE LOOK:** `?look=soft` (or `?look=current`) sets it in any world and is remembered; TOOLS only exists in the arena / forge zones, but the pick
+  carries over.
+- **THE WINGS:** `WING.pack` (remembered; the WINGS button above the right pad, lit while mounted) makes `wingOk` true on any body -- her flight was
+  gated on the skates / glider / pilot forms. The right pad's DOUBLE TAP (`wingTapR`, already wired: the first tap is the jump) opens the wings, the next
+  folds them; mounted, the folded pack rides on his back. Headless: mounted, tap-tap -> flying (6.9 m up, 11.2 m/s after 1.5 s), tap-tap -> folded;
+  rendered: Grumbo in flight, the wings out.
+
 ## m1968 -- the katana charge keeps the run: charge pose on top, run legs below
 His words (Oct 31): *"already running with the katana out, I hold up on the right stick -- he goes into the guard because he's charging, so he's
 walking really slow and yet you're still going at the speed of the run. A hybrid: maintain the run -- the upper torso does the guard charge, the legs

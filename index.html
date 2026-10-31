@@ -6274,6 +6274,16 @@ function sndBtnPaint() { const B = SNDBTN.el; if (!B) return; const st = SFX.ctx
   B.dataset.need = need ? '1' : '';     // what the button SAYS is what a tap does (the global wake listeners run first and can make the context before the click)
   if (need) { B.textContent = '\u{1F507} TAP FOR SOUND'; B.style.cssText = SNDBTN.css + 'background:#ffcc33;color:#201400;font-size:14px;padding:9px 14px;box-shadow:0 0 0 3px #ffcc3366;'; B.title = st; }
   else { B.textContent = SFX.mute ? '\u{1F508}' : '\u{1F50A}'; B.style.cssText = SNDBTN.css + 'background:#0c1420b0;color:#cfe8ff;font-size:18px;padding:6px 10px;'; B.title = st; } }
+// m15FX: the WINGS button, above the right stick -- mount / unmount the wing-pack (`WING.pack`); lit while mounted
+const WINGBTN = { el: null };
+function wingBtnPaint() { const B = WINGBTN.el; if (!B) return; B.textContent = WING.pack ? (player.wing ? 'WINGS: FLYING' : 'WINGS ON') : 'WINGS';
+  B.style.background = WING.pack ? '#ffcc33' : '#0c1420b0'; B.style.color = WING.pack ? '#201400' : '#cfe8ff'; }
+function wingBtnBuild() { if (WINGBTN.el || !document.body) return; const B = WINGBTN.el = document.createElement('button');
+  B.style.cssText = 'position:fixed;z-index:30;right:calc(14px + env(safe-area-inset-right));bottom:calc(300px + env(safe-area-inset-bottom));border:1px solid #4a7aa0;border-radius:16px;font-family:system-ui,sans-serif;font-weight:800;font-size:13px;padding:7px 12px;pointer-events:auto;';
+  B.addEventListener('click', e => { e.stopPropagation(); WING.pack = !WING.pack; if (!WING.pack && player.wing) wingEnd(); try { localStorage.setItem('mel.wings', WING.pack ? '1' : '0'); } catch (err) {} snd('swoosh', { r: WING.pack ? .8 : 1.2, g: .3 }); wingBtnPaint(); });
+  for (const t of ['pointerdown', 'touchstart']) B.addEventListener(t, e => e.stopPropagation(), { passive: true });
+  document.body.appendChild(B); wingBtnPaint(); }
+setInterval(() => { wingBtnBuild(); wingBtnPaint(); }, 700);
 function sndBtnBuild() { if (SNDBTN.el || !document.body) return; const B = SNDBTN.el = document.createElement('button');
   SNDBTN.css = 'position:fixed;z-index:30;top:calc(46px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));border:1px solid #4a7aa0;border-radius:18px;font-family:system-ui,sans-serif;font-weight:800;pointer-events:auto;';
   B.addEventListener('click', e => { e.stopPropagation();
@@ -12822,7 +12832,6 @@ function arenaStep(dt) {
   if (COVER.pending) { COVER.pending = 0; coverShow(COVER.show); }     // m1008
   if (TURRET.list.length || TURRET.shots.length) turretStep(dt);     // m1011
   courseStep(dt);     // m1078: the testing ground's boot pad and course
-  slamRingStep(dt);     // m1088: the slam's shockwave rings
   steelStep(dt);     // m1067
   coverStep(dt);     // m1014
   for (const d of ARENA.live) tailSway(d, dt);     // m989: a KO'd body too -- lying on his back is when the tail matters most
@@ -35559,7 +35568,7 @@ function hdropStep(dt, s) { const p = player, D = p.hdrop; D.t += dt;
 // soft-edged light BANDS (`bands`, mixed in by `band`), shadows TINTED toward `tint` instead of going grey, and a RIM light on the edges turned away from
 // the eye. Every patched material reads the same uniforms (`LOOKU`), so TOOLS > LOOK flips CURRENT <-> SOFT with no recompile, and the patch adds no
 // draws. Materials are patched as they appear (a sweep every `every` s while SOFT is on). `m.userData.noLook` opts one out.
-const LOOK = { soft: (() => { try { return localStorage.getItem('mel.look') === 'soft'; } catch (e) { return false; } })(), every: 1.5, t: 0, n: 0 };
+const LOOK = { soft: (() => { try { const q = /[?&]look=(soft|current)\b/.exec(location.search); if (q) { localStorage.setItem('mel.look', q[1]); return q[1] === 'soft'; } return localStorage.getItem('mel.look') === 'soft'; } catch (e) { return false; } })(),     /* m15FX: ?look=soft / ?look=current, remembered -- any world, TOOLS or not */ every: 1.5, t: 0, n: 0 };
 const LOOKU = { uLkLook: { value: 0 }, uLkBands: { value: 4 }, uLkBandK: { value: .3 }, uLkEdge: { value: .16 }, uLkTint: { value: new THREE.Color(.36, .26, .7) }, uLkTintK: { value: .85 },
   uLkRimK: { value: .7 }, uLkRimP: { value: 2.6 }, uLkRimC: { value: new THREE.Color(1, .9, .78) } };
 const LOOKFS = `
@@ -35579,6 +35588,7 @@ function lookSweep() { scene.traverse(o => { const ms = o.material; if (!ms) ret
 function lookStep(dt) { LOOKU.uLkLook.value = damp(LOOKU.uLkLook.value, LOOK.soft ? 1 : 0, .15, dt); if (!LOOK.soft) return; if ((LOOK.t -= dt) <= 0) { LOOK.t = LOOK.every; lookSweep(); } }
 function stepPlayer(dt) {
   lookStep(dt);     // m1967
+  try { slamRingStep(dt); } catch (e) { for (const S of SLAMRINGS) { S.m.removeFromParent(); if (S.w) S.w.removeFromParent(); } SLAMRINGS = []; note('SLAMRING THREW ' + e.message); }     // m15FX: every world, every frame (it lived in arenaStep: frozen rings everywhere else)
   if (HDROP.want && rig.actions && rig.actions[HDROP.land]) { HDROP.want = 0; heroDrop(player.pos.x, player.pos.y, player.pos.z, player.faceH); }     // m1953
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
   if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (DRAGZ.on) dragStep(dt); }
@@ -36301,7 +36311,7 @@ function bladeFlipTurn(u) {
 // **THE WINGS ARE HER GAME'S PROCEDURAL STAND-INS** -- a pack, two arms of three panels that unfold
 // one after another, a jet at each tip -- riding her body's frame at Spine2, with airflow sparks
 // streaming off the tips. His model drops in the day there is one.
-const WING = { on: 1, dblT: .32, boostV: 9, boostHL: .9, boostCool: .6,
+const WING = { pack: (() => { try { return localStorage.getItem('mel.wings') === '1'; } catch (e) { return false; } })(), on: 1, dblT: .32, boostV: 9, boostHL: .9, boostCool: .6,
   out: 0, open: 0, openT: .45, v0: 14, cruise: 20, vmin: 9, vmax: 36, thrust: .9, gk: 1,
   pop: 8,               // the hop off the ground before the wings take her
   trick: 1, loopT: 1.5, rollT: .8,
@@ -36319,7 +36329,11 @@ const gliderOn = () => { const K = player.mphK, R = rosterOf('glider');
 // m848 (F5-7c): THE PILOT'S FORM -- Dutch, sampled once he is believed (`dutch:believed`), flies the same flight with the jets lit and
 // real lift: `WING.pilot` scales cruise and thrust up and gravity's pull on a climb down, so he can go UP and stay up, not only glide.
 const pilotOn = () => player.mphRole === 'navypilot' && !!player.mphK && !player.mphSt;
-const wingOk = () => !!WING.on && (bladeOn() || gliderOn() || pilotOn());
+// m15FX (his: "instead of GOD's fly mode, borrow the flight wings from Rollergirl -- a little button above the right stick to mount the wings; mounted,
+// a double jump brings you into flying, double tapping again dismounts; so I can fly around and look at the parts of maps I can't get to yet"): WINGS
+// (`WING.pack`, remembered) puts her wing-pack on ANY body; then the right pad's DOUBLE TAP (`wingTapR`: the first tap is the jump) opens the wings and
+// the next double tap folds them. Flight is hers unchanged: the left stick steers and pitches, a left double tap boosts, left flicks loop / roll.
+const wingOk = () => !!WING.on && (bladeOn() || gliderOn() || pilotOn() || !!WING.pack);
 const _wkq = new THREE.Quaternion(), _wkq2 = new THREE.Quaternion(), _wkq3 = new THREE.Quaternion(),
       _wkY = new THREE.Vector3(0, 1, 0), _wkX = new THREE.Vector3(1, 0, 0), _wkB = new THREE.Quaternion();
 
@@ -36560,7 +36574,7 @@ const WING_COL = [.45, .9, 1];
 function wingFrame(dt) {
   const p = player, W = WING;
   W.open = clamp(W.open + (p.wing ? 1 : -1) * dt / W.openT, 0, 1);
-  if (W.open <= .001) { if (WG.g) WG.g.visible = false; return; }
+  if (W.open <= .001 && !(W.pack && !p.wing && !bladeOn())) { if (WG.g) WG.g.visible = false; return; }     // m15FX: mounted, the folded pack rides on his back
   if (!WG.g) wingBuild();
   const g = WG.g;
   if (!rig.model) { g.visible = false; return; }
