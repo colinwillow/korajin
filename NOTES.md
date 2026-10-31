@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1959 -- THE SKY TEMPLE: generated CLOTH -- the carpet runner, the banners, a weave
+
+His (m1956 screenshot on the stair carpet, flat red and yellow): *"Can we make some textures for the cloth... a few general cloth textures and
+just tint them... we need to start texturing the level a little better."* Three generated maps (`gpt-image-2`), in `textures/`:
+  temple_carpet.webp  a crimson wool RUNNER, gold woven borders both sides, gold lozenges down the middle (seamless top to bottom) -- every temple
+                      carpet; one tile = the carpet's own WIDTH now (it was 3 m of a canvas strip), on the stair treads and risers and the flat runs
+  temple_banner.webp  a whole banner: crimson weave, embroidered gold border, the diamond-in-diamond, the two bars -- `templeBannerMat` (temple only;
+                      the kit's `lbBanner2Mat` is untouched for other levels) lays it above the hem and cuts it with the kit banner's own TATTERED
+                      silhouette (`destination-in`), so alphaTest and the flutter still work; it loads async over the canvas design, never a blank
+  temple_weave.webp   neutral grey canvas weave, seamless -- the "general cloth to tint": multiplied lightly over the banners (6 x 24 tiles); it is
+                      the map to put under any new cloth
+Same draw calls. Re-roll any: `python3 tools/temple_textures.py carpet|weave|banner`. Shipped unverified.
+
 ## m1957 -- THE SKY TEMPLE: colliders that floated him, MEASURED and fixed
 
 His (m1956 screenshot): *"still a bunch of places where colliders are not true to the geometry, so I get floating behaviours."* Measured, not
