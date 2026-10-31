@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15IG -- a deflected arrow catches the blade's fire
+His idea (Oct 31): *"with the flame katana or the blue flame katana, when you ricochet-deflect an arrow back at them it should light the arrow on fire
+-- blue flame, they explode with blue flame; red flame, they catch on fire."*
+- `arrowIgnite(A)`, called by BOTH deflect paths (the aimed send-back in `deflectThreat`, and the guard's glance): with BLADE FIRE lit the arrow
+  takes it. RED (`BFIRE.on` 1) -> a FIRE arrow (+`BOW.fireDmg`): the blade's own flame (`bflPut`) trails it, and the man it hits BURNS
+  (`burnStart`, the orange fire). JIN (2) -> a BLAST arrow: it bursts where it lands -- on a body or the ground -- with `arrowBlast` plus a ring of
+  turquoise flame (`_arJin`). A puff of the blade's flame where it catches. `IGNITE.n` counts them.
+- Headless (a fabricated arrow, the real `deflectThreat`): red -> type fire, sent back at 29 m/s, stuck where it landed; jin -> type blast, gone in
+  1 blast. Not seen on the phone yet: the colours and the size of the burst.
+
 ## m1949 -- THE SKY TEMPLE: generated MEGALITH textures (four maps)
 
 His (m1948 screenshot, standing by a plain block): *"We need to generate some textures for these giant megalithic stone pillar pyramid temple

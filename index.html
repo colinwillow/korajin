@@ -15135,7 +15135,7 @@ function arrowBlock(A, cx, cy, cz) {
   else A.v.set(-A.v.x * SHOTBLOCK.rest, Math.abs(A.v.y) + 2, -A.v.z * SHOTBLOCK.rest);
   A.v.applyAxisAngle(_ricY, (Math.random() * 2 - 1) * .6); A.v.y += 2 + Math.random() * 3;
   if (A.v.length() < sp * .4) A.v.setLength(sp * .4);
-  A.mine = 1; A.ric = 14 + Math.random() * 10; A.t = 0; ARCH.stat.blocked++;
+  A.mine = 1; A.ric = 14 + Math.random() * 10; A.t = 0; ARCH.stat.blocked++; arrowIgnite(A);
   { const q = B ? B.at(P) : P; steelFlash(q.x, q.y, q.z, 1); spkBurst(q.x, q.y, q.z, 16, { col: [1, .95, .7], spread: 4, size: .12, life: .35 }); }
   snd('clang', { g: .8, r: 1.4, x: P.x, z: P.z }); camShake(.06); return true;
 }
@@ -15150,7 +15150,9 @@ function arrowStep(dt) {
     A.v.y -= MOVE.g * (A.ric ? 1 : A.gk != null ? A.gk : .55) * dt; A.m.position.addScaledVector(A.v, dt); A.t += dt;
     const P = A.m.position; { const tr = A.m.userData.tracer; if (tr) tr.scale.z = Math.min(BOW.tracerMax, A.v.length() * BOW.tracerT * Math.min(1, A.t / BOW.tracerT)) / BOW.big; }
     if (A.ric) { A.m.rotateX(A.ric * dt); A.m.rotateY(A.ric * .37 * dt); } else A.m.lookAt(P.x + A.v.x, P.y + A.v.y, P.z + A.v.z);     // a glanced arrow TUMBLES
-    if (A.type === 'fire') { gfire(P.x, P.y, P.z, .45); if (Math.random() < .5) gfire(ox, oy, oz, .35); } else if (A.pl) { const c = A.col || [.6, .9, 1]; for (let q = 0; q < BOW.trail; q++) { const u = q / BOW.trail; spk(ox + (P.x - ox) * u, oy + (P.y - oy) * u, oz + (P.z - oz) * u, 0, 0, 0, .1, .45, [.4 + c[0] * .6, .4 + c[1] * .6, .4 + c[2] * .6]); } }     // m1744: a bright streak
+    _arJin = A.ign === 'jin';
+    if (A.ign) { for (let q = 0; q < IGNITE.trail; q++) { const u = Math.random(); bflPut(ox + (P.x - ox) * u, oy + (P.y - oy) * u, oz + (P.z - oz) * u, A.v.x * .05, .4 + Math.random() * .5, A.v.z * .05, 1.2, Math.random() < .15); } }
+    else if (A.type === 'fire') { gfire(P.x, P.y, P.z, .45); if (Math.random() < .5) gfire(ox, oy, oz, .35); } else if (A.pl) { const c = A.col || [.6, .9, 1]; for (let q = 0; q < BOW.trail; q++) { const u = q / BOW.trail; spk(ox + (P.x - ox) * u, oy + (P.y - oy) * u, oz + (P.z - oz) * u, 0, 0, 0, .1, .45, [.4 + c[0] * .6, .4 + c[1] * .6, .4 + c[2] * .6]); } }     // m1744: a bright streak
     else if (Math.random() < .6) spk(ox, oy, oz, 0, 0, 0, .05, .25, [1, .45, .35]);
     // the player: the closest point of this frame's segment to his middle
     const sx = P.x - ox, sy = P.y - oy, sz = P.z - oz, L2 = sx * sx + sy * sy + sz * sz || 1;
@@ -15186,7 +15188,7 @@ function arrowStep(dt) {
     const wall = boxRay(ox, oy, oz, P.x, P.y, P.z, _tuR);
     if (P.y <= gy || wall || A.t > 5) {
       if (wall) P.set(_tuR.x, _tuR.y, _tuR.z); else if (P.y <= gy) P.y = gy + .02;
-      if (A.pl && A.type === 'blast') { arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); A.m.removeFromParent(); ARROWS.splice(i, 1); continue; }
+      if ((A.pl || A.ign) && A.type === 'blast') { arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); A.m.removeFromParent(); ARROWS.splice(i, 1); continue; }
       if (A.pl && A.type === 'fire') for (let k = 0; k < 12; k++) gfire(P.x + (Math.random() - .5) * .3, P.y, P.z + (Math.random() - .5) * .3, .6);
       A.stuck = 1; A.t = 0; ARCH.stat.stuck++; if (A.m.userData.glow) A.m.userData.glow.visible = false; if (A.m.userData.tracer) A.m.userData.tracer.visible = false; if (A.ric) { A.ric = 0; A.m.lookAt(P.x + A.v.x, P.y + A.v.y, P.z + A.v.z); } A.m.userData.head.material.emissive.setHex(0);
       spkBurst(P.x, P.y, P.z, 6, { col: [.8, .7, .55], spread: 2, size: .07, life: .3 }); snd('thud', { g: .35, r: 1.6, x: P.x, z: P.z }); }
@@ -15281,6 +15283,7 @@ function bowLoose() { const p = player; const { k, full, type, o, gk, g, T, dx, 
 // m1782 (his: "a full charge with the exploding arrows should explode the archers -- those are powerful arrows"): a FULL draw's blast is `fullK`
 // wider and harder, and every archer (or horde body) inside it is blown apart (`limbBoom`)
 function arrowBlast(P, dirH, full) { BOW.stat.blasts++; const R = BOW.blastR * (full ? BOW.fullK : 1);
+  if (_arJin) { for (let k = 0; k < 90; k++) { const a2 = Math.random() * 6.283, r2 = Math.random() * R * .8; bflPut(P.x + Math.cos(a2) * r2 * .3, P.y + Math.random() * .4, P.z + Math.sin(a2) * r2 * .3, Math.cos(a2) * r2 * 2.2, 1 + Math.random() * 3, Math.sin(a2) * r2 * 2.2, 2.2, Math.random() < .25); } spkBurst(P.x, P.y, P.z, 30, { col: [.4, 1, .95], spread: 7, size: .2, life: .6 }); }     // m15IG: the Jin arrow bursts in turquoise flame
   if (full) for (const d of DUMMIES.slice()) { if (d.st === 'gone' || d.boomed || !d.root.visible || !(d.archer || d.K.archer || d.horde)) continue; const Q = d.root.position;
     if (Math.hypot(Q.x - P.x, Q.z - P.z) < R + (d.K.r || .4) && Math.abs(Q.y + (d.K.h || 1.8) * .5 - P.y) < R + 1) { dummyBlow(d, Math.atan2(Q.x - P.x, Q.z - P.z), 2, 99); limbBoom(d, Math.atan2(Q.x - P.x, Q.z - P.z)); } }
   for (let i = 0; i < 3; i++) spkBurst(P.x, P.y, P.z, 18, { col: i ? [1, .55, .15] : [1, 1, .85], spread: 6, size: .22, life: .55 });
@@ -32805,6 +32808,15 @@ function chargeIntercept(T) { const p = player, g = MOVE.g, ga = T.A ? MOVE.g * 
     { const A = KATANA.air, nm = rig.actions[A.clip] ? A.clip : null; if (nm) { const len = clipLen(nm); p.slamClip = nm; playOnce(nm, Math.max(.3, (A.strike - A.upFrom) * len / t)); rig.actions[nm].time = A.upFrom * len; } }
     p.inter = { T, t: 0, until: t + .25 }; snd('swoosh', { r: .8, g: .8 }); DEFL.stat.inter = (DEFL.stat.inter || 0) + 1; return 1; }
   return 0; }
+// m15IG (his: "with the flame katana or the blue flame katana, when you deflect an arrow back at them it should light the arrow on fire and send it back --
+// blue flame, they explode with blue flame; red flame, they catch on fire"): a deflected arrow takes the blade's fire. RED (`BFIRE.on` 1): a FIRE arrow
+// -- the blade's own flame trails it, and what it hits BURNS (`burnStart`). JIN (2): a BLAST arrow that bursts in turquoise flame where it lands.
+// Both deflect paths call it (the aimed send-back and the guard's glance).
+function arrowIgnite(A) { if (!A || !bladeFire()) return; const jin = BFIRE.on === 2; A.ign = jin ? 'jin' : 'red'; A.type = jin ? 'blast' : 'fire'; A.dmg = (A.dmg || 3) + (jin ? 0 : BOW.fireDmg);
+  const c = A.col = jin ? [.3, 1, .95] : [1, .45, .1]; if (A.m.userData.head) A.m.userData.head.material.emissive.setRGB(c[0], c[1], c[2]); IGNITE.n++;
+  const P = A.m.position; for (let k = 0; k < 18; k++) bflPut(P.x, P.y, P.z, (Math.random() - .5) * 2, Math.random() * 2, (Math.random() - .5) * 2, 1.3, Math.random() < .3); }
+const IGNITE = { n: 0, trail: 3 };
+let _arJin = 0;     // the arrow being stepped is a Jin one: `arrowBlast` adds the turquoise fire
 function deflectThreat(T, perfect) {
   const p = player, P = T.p;
   if (T.S) { const S = T.S, tg = S.src && !S.src.dead ? S.src : TURRET.list.find(q => !q.dead);
@@ -32813,7 +32825,7 @@ function deflectThreat(T, perfect) {
   else { const A = T.A, d = A.from && DUMMIES.includes(A.from) && A.from.st !== 'gone' ? A.from : null;
     const tx = d ? d.root.position.x : P.x - A.v.x, tz = d ? d.root.position.z : P.z - A.v.z, ty = d ? d.root.position.y + (d.K.h || 1.8) * .55 : P.y;
     const sp = Math.hypot(A.v.x, A.v.y, A.v.z) * (perfect ? DEFL.back : 1.25), dx = tx - P.x, dz = tz - P.z, R = Math.hypot(dx, dz) || 1, Tt = R / sp, g = MOVE.g * .55;
-    A.v.set(dx / Tt, (ty - P.y) / Tt + .5 * g * Tt, dz / Tt); A.mine = 1; A.t = 0; A.m.userData.head.material.emissive.setRGB(.4, .8, 1); }
+    A.v.set(dx / Tt, (ty - P.y) / Tt + .5 * g * Tt, dz / Tt); A.mine = 1; A.t = 0; A.m.userData.head.material.emissive.setRGB(.4, .8, 1); arrowIgnite(A); }
   steelFlash(P.x, P.y, P.z, perfect ? 1.6 : 1); spkBurst(P.x, P.y, P.z, perfect ? 26 : 14, { col: [1, 1, .8], spread: perfect ? 5 : 3, size: .14, life: .4 });
   snd('clang', { g: perfect ? 1.2 : .9, r: perfect ? 1.1 : 1.3, x: P.x, z: P.z }); camShake(perfect ? .25 : .08);
   if (inArena()) ARENA.stop = Math.max(ARENA.stop, perfect ? .14 : .05);
