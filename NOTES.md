@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1988 -- THE JINRA REFINERY, pass 9: the shopfronts
+
+- Doors (front, +x, -x, back): two plank leaves (iron bands) swung open against the mound, set on the skin's normal; a half-disc FANLIGHT in a
+  copper arch over each lintel; a lantern on an iron bracket beside each. The -x door's lights are WARM (amber, `warmM`) as in his right view.
+- The two front shop windows: three shelves inside the opening with nine glowing vessels, plank shutters open each side, a plank pent over.
+- The back door: a porch -- four posts (the outer two solid) and a peaked teal canopy with a ridge pole; two round windows (`MOP` entries,
+  copper ring, mint glow, rivets) either side.
+- Every opening's jambs and lintel are deeper and wider (1.1 m through), hiding the saw-tooth left where the shell's triangles were dropped.
+
 ## m1987 -- THE JINRA REFINERY, pass 8: the deck
 
 - The deck to his views: 18.4 x 16 m (was 16 x 13), so the mound (now 7.0 x 4.6 x 5.7, centre z -1.0) sits on it with a walkway all round.
