@@ -37,6 +37,15 @@ realistic, imperfection maps, eroded gold? Also, what are these giant blue circl
 - THE RINGS were the CHECKPOINT markers (a jade ring on the floor at every `cp`). The drawn ring is gone; the checkpoint itself is unchanged (it
   still saves where he respawns and still toasts CHECKPOINT / THE HALO).
 Same draw calls. Shipped unverified.
+## m15SW2 -- the slam's shockwave: a front with a wall and dust, not a flat disc
+His photo (Oct 31): *"the air swipe-down slam's outward ring -- make it a shockwave or a particle wave, way more interesting; it's a flat plane wave and
+looks boring as s---, low poly, low resolution."*
+- `slamRing` was a 48-sided flat disc of one colour, scaled and faded. Now three layers sharing geometry (`slamFxGeo`): a GROUND RING shader on a
+  128-segment ring (a hot LEADING EDGE, a short glow inward, broken by two octaves of noise that crawl round it), a SHOCK WALL (an open 128-segment
+  cylinder at the edge that rises to `wallH` 1.5 m and sinks as it races out, fading up its height, noise streaks), and DUST puffs thrown up along the
+  front every `dustEvery` .06 s. Eased out (fast then slow) over `SLAMFX.T` .5 s to `SLAM.r` x1.2. `SLAMFX.on` 0 is the old disc.
+- Rendered on the duel pit's sand stone at three moments; the first pass (additive) washed out on pale stone, so it is NORMAL blending with an orange
+  -> gold palette. The other slam callers (the big hits at 9860 / 12131 / 12211) get the same ring.
 
 ## m1959 -- THE SKY TEMPLE: generated CLOTH -- the carpet runner, the banners, a weave
 

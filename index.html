@@ -22195,12 +22195,35 @@ try { let v = localStorage.getItem('mel.sideflick'); if (v === 'TORNADO') v = 'S
 const bodyAir = d => d.root.position.y > groundAt(d.root.position.x, d.root.position.z, d.root.position.y, .5) + .35;
 function jugMark(d) { if (JUGGLE.on) d.jugT = performance.now() / 1000 + JUGGLE.hang; }
 let SLAMRINGS = [];
-function slamRing(x, y, z) {     // the slam's shockwave: a flat ring racing out to `SLAM.r` and fading
-  const m = new THREE.Mesh(new THREE.RingGeometry(.86, 1, 48), new THREE.MeshBasicMaterial({ color: 0xffe2a8, transparent: true, opacity: .9, toneMapped: false, depthWrite: false }));
-  m.rotation.x = -Math.PI / 2; m.position.set(x, y + .06, z); scene.add(m); SLAMRINGS.push({ m, t: 0 });
-}
+// m15SW2 (his photo: "the slam's outward ring -- make it a shockwave or a particle wave, way more interesting; it's a flat plane, boring, low poly, low
+// resolution"): the ring was a 48-sided flat disc of one colour, scaled and faded. Now three layers, one draw each, sharing geometry: (1) the GROUND
+// RING, a shader on a 128-segment ring -- a hot white-to-orange LEADING EDGE, a glow trailing inward, broken by noise so it is a front and not a hoop,
+// additive; (2) the SHOCK WALL, an open cylinder at the edge that rises `wallH` and sinks as it races out, fading up its height -- the 3D read; (3) DUST
+// thrown up along the front as it travels (`dust` puffs every `dustEvery` s). `SLAMFX` holds the numbers; `SLAMFX.on` 0 is the old disc.
+const SLAMFX = { on: 1, T: .5, wallH: 1.5, dust: 10, dustEvery: .06, col: [1, .5, .12], hot: [1, .92, .55] };
+let _slG = null;
+function slamFxGeo() { if (_slG) return _slG; const ring = new THREE.RingGeometry(.0, 1, 128, 6), wall = new THREE.CylinderGeometry(1, 1, 1, 128, 1, true).translate(0, .5, 0);
+  const vs = 'varying vec2 vU; varying vec3 vP; void main() { vU = uv; vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }';
+  const noise = 'float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); } float n2(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + vec2(1, 1)), f.x), f.y); }';
+  const ringFS = 'uniform float uT, uA; uniform vec3 uC, uH; varying vec3 vP; ' + noise + ' void main() { float r = length(vP.xy); float a = atan(vP.y, vP.x); float edge = smoothstep(.80, .985, r) * (1.0 - smoothstep(.985, 1.0, r)); float glow = smoothstep(.55, .98, r) * .3 * (1.0 - smoothstep(.98, 1.0, r)); float nz = n2(vec2(a * 9.0, uT * 6.0)) * .6 + n2(vec2(a * 23.0, r * 8.0 - uT * 9.0)) * .4; float k = (edge * (.55 + .7 * nz) + glow * nz) * uA; if (k < .01) discard; vec3 c = mix(uC, uH, edge * nz); gl_FragColor = vec4(c, min(1.0, k * 1.3)); }';
+  const wallFS = 'uniform float uT, uA; uniform vec3 uC, uH; varying vec2 vU; ' + noise + ' void main() { float y = vU.y; float nz = n2(vec2(vU.x * 60.0, y * 3.0 - uT * 7.0)); float k = pow(1.0 - y, 1.6) * (.35 + .9 * nz) * uA; if (k < .01) discard; vec3 c = mix(uC, uH, (1.0 - y) * nz); gl_FragColor = vec4(c, min(1.0, k * 1.1)); }';
+  return (_slG = { ring, wall, vs, ringFS, wallFS }); }
+function slamFxMat(fs) { const G = slamFxGeo(); return new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uA: { value: 1 }, uC: { value: new THREE.Color(...SLAMFX.col) }, uH: { value: new THREE.Color(...SLAMFX.hot) } },
+  vertexShader: G.vs, fragmentShader: fs, transparent: true, depthWrite: false, blending: THREE.NormalBlending, side: THREE.DoubleSide, toneMapped: false }); }     // normal, not additive: additive washed out on his pale temple stone (rendered)
+function slamRing(x, y, z) {     // the slam's shockwave
+  if (!SLAMFX.on) { const m = new THREE.Mesh(new THREE.RingGeometry(.86, 1, 48), new THREE.MeshBasicMaterial({ color: 0xffe2a8, transparent: true, opacity: .9, toneMapped: false, depthWrite: false }));
+    m.rotation.x = -Math.PI / 2; m.position.set(x, y + .06, z); scene.add(m); SLAMRINGS.push({ m, t: 0, old: 1 }); return; }
+  const G = slamFxGeo(), ring = new THREE.Mesh(G.ring, slamFxMat(G.ringFS)), wall = new THREE.Mesh(G.wall, slamFxMat(G.wallFS));
+  ring.rotation.x = -Math.PI / 2; ring.position.set(x, y + .05, z); wall.position.set(x, y, z); ring.renderOrder = wall.renderOrder = 51; ring.frustumCulled = wall.frustumCulled = false;
+  scene.add(ring); scene.add(wall); SLAMRINGS.push({ m: ring, w: wall, t: 0, x, y, z, dT: 0 }); }
 function slamRingStep(dt) {
-  for (const S of SLAMRINGS) { S.t += dt; const u = S.t / .38, r = .4 + (SLAM.r * 1.15) * Math.sqrt(Math.min(1, u)); S.m.scale.set(r, r, 1); S.m.material.opacity = .9 * (1 - u); if (u >= 1) { S.m.removeFromParent(); S.m.geometry.dispose(); S.dead = 1; } }
+  for (const S of SLAMRINGS) { S.t += dt;
+    if (S.old) { const u = S.t / .38, r = .4 + (SLAM.r * 1.15) * Math.sqrt(Math.min(1, u)); S.m.scale.set(r, r, 1); S.m.material.opacity = .9 * (1 - u); if (u >= 1) { S.m.removeFromParent(); S.m.geometry.dispose(); S.dead = 1; } continue; }
+    const u = Math.min(1, S.t / SLAMFX.T), e = 1 - Math.pow(1 - u, 2.4), r = .3 + SLAM.r * 1.2 * e, a = Math.pow(1 - u, 1.3);
+    S.m.scale.set(r, r, 1); S.m.material.uniforms.uT.value = S.t; S.m.material.uniforms.uA.value = a;
+    S.w.scale.set(r, SLAMFX.wallH * Math.sin(Math.min(1, u * 2.2) * Math.PI * .5) * (1 - u), r); S.w.material.uniforms.uT.value = S.t; S.w.material.uniforms.uA.value = a * .9;
+    if ((S.dT -= dt) <= 0 && u < .8) { S.dT = SLAMFX.dustEvery; for (let k = 0; k < SLAMFX.dust; k++) { const an = Math.random() * 6.283; smokeAt(S.x + Math.cos(an) * r, S.y + .05, S.z + Math.sin(an) * r, 1.1 + Math.random() * .8, 1.1, [.6, .55, .47]); } }
+    if (u >= 1) { S.m.removeFromParent(); S.w.removeFromParent(); S.m.material.dispose(); S.w.material.dispose(); S.dead = 1; } }
   if (SLAMRINGS.length && SLAMRINGS.some(S => S.dead)) SLAMRINGS = SLAMRINGS.filter(S => !S.dead);
 }
 // m1086: FREEFLOW. *"Develop a more stringy melee system so you can keep swiping and string those attacks from one guy to the next guy to the
