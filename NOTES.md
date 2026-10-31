@@ -5,6 +5,23 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1907 -- THE SKY TEMPLE step 6: the route from the landing to the halo, and the zipline down (TEMPLE.md)
+
+`TEMPLE.route` (stable ids `temple_route_*`), built by `templeMassMake` and registered by `templeBuild` into the systems that already exist:
+ladders `kitClimbAdd` (+ `mark`, `fg`), the high bar `hbarMake` into `HBAR.list`, the zip into `ZIPS`. The path is the JADE LIPS.
+- A, landing (6) -> tier 1 (16): ledge a1 (lip 9.8: a plain jump catches it, a wall run makes it easy) and a2 (13.0) up tier 1's face left of
+  the guardian, then tier 1's own lip. B: a LADDER up tier 2's face (gold stiles, wood rungs) to 24. C: a HIGH BAR on tier 2's west strip
+  beside the tower -- swing and let go at the tower's west face, or wall-run it -- to four ledges staggered up that face (29.0, 32.3, 35.6,
+  38.9), then the tower's lip (42). D: the pinnacle's lip (45.5): the orb (now solid) under the halo. DOWN: a 59 m ZIPLINE off the tower's
+  front edge (43.8) over the portal and the stair to the plaza (2.6 at z 30), a gold post and a jade knob at each end.
+- **A LEDGE HAS TO BE AT LEAST `LEDGE.tall` (1.2 x SZ = .86 m) TALL OR `ledgeFind` WILL NOT TAKE IT.** Step 5's pylon cornices were .4 m slabs
+  -- scenery, not handholds. They are 1.2 m now (lips 12 / 24 / 36), and every route ledge is a 1.2 m block. The catch band: hands at
+  feet + 1.076, +-.55 -- so a lip up to ~4.4 m over the feet he jumps from is catchable at the apex; the spacings here are 3.2-3.8 m.
+- Two rails came out because they stood exactly where a mantle lands: tier 1's front-left (over a2) and tier 2's front-left (the ladder top).
+- DONE WHEN, honestly: the route is BUILT, not proven -- no harness here plays a ledge hang or a bar release. **Shipped unverified**; the
+  spacings are from the measured catch band and jump apex, and the bar's release onto c1 is the part most likely to want tuning on the phone.
+- Budget: **36 draw calls for the widest frame (the high bar adds 5 of its own), 65k triangles.** Next: step 7, his pass.
+
 ## m1905 -- THE SKY TEMPLE step 5: the detail -- guardians, palms, vines, jade channels, cornices to hang from (TEMPLE.md)
 
 - GUARDIAN STATUES (`temple_statue_l/r`, kind `statue`): block-carved figures 7.4 m to the headdress on gold-banded pedestals either side of
