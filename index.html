@@ -10593,7 +10593,7 @@ function swatchClear() { if (SWATCH.on) { bldClear(SWATCH.on); SWATCH.on = null;
 //    pushed out of it and BOUNCES off (and drifts off again); his footsteps and landings KICK UP puffs that arc and fall.
 // (the Jin willow's numbers live here, above the Snowfield that reads them while it builds -- see `willowBuild`, m1740)
 const WILLOW = { at: [-24, -22], ter: 11, terH: .6, tiers: [[10.5, .3, 0], [7.5, .6, .3]], strips: 14, k: 1.3, boughs: 13, strands: 300, seg: 12, iters: 3, w: .15, dampK: .9, wind: 1.3, push: .55, brush: .35, simR: 55, list: null, stat: { brushes: 0 } };
-// m15BZ: THE BLIZZARD THAT COMES AND GOES + SPINDRIFT (BUILDINGS.md snow pass 2). `weather` AUTO cycles calm (`calm` s) -> storm (`stormT` s), easing
+// m1996: THE BLIZZARD THAT COMES AND GOES + SPINDRIFT (BUILDINGS.md snow pass 2). `weather` AUTO cycles calm (`calm` s) -> storm (`stormT` s), easing
 // over `rampHL`; CLEAR / BLIZZARD hold one (TOOLS > SNOW, `?storm=`). The storm multiplies the wind (`stormWind`), pulls the fog in to `fogNear` /
 // `fogFar`, dims the sun, swells the flakes, and drives the SPINDRIFT: `drift` low points streaming along the wind a hand's height over the pack.
 const SNOWSTORM = { weather: (() => { try { const m = /[?&]storm=(auto|clear|blizzard)/i.exec(location.search); if (m) return m[1].toUpperCase(); return localStorage.getItem('mel.storm') || 'AUTO'; } catch (e) { return 'AUTO'; } })(),
@@ -10660,7 +10660,7 @@ function snowStage(g) {
     vertexShader: 'attribute float aSize; attribute float aA; uniform float uPx; varying float vA; void main() { vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = aSize * uPx / max(.1, -mv.z); vA = aA * smoothstep(.3, 1.2, -mv.z); gl_Position = projectionMatrix * mv; }',
     fragmentShader: 'varying float vA; void main() { vec2 d = gl_PointCoord - .5; float r = dot(d, d) * 4.0; if (r > 1.0) discard; gl_FragColor = vec4(1.0, 1.0, 1.0, vA * (1.0 - r * r)); }' });
   const pts = new THREE.Points(pg, pm); pts.frustumCulled = false; g.add(pts); Z.air = { pts, pg, pm, P, S, A, F, NF, NP };
-  { const W = SNOWSTORM, N = W.drift, DP = new Float32Array(N * 3), DS = new Float32Array(N), DA = new Float32Array(N), ph = new Float32Array(N), k = new Float32Array(N);     // m15BZ: the spindrift
+  { const W = SNOWSTORM, N = W.drift, DP = new Float32Array(N * 3), DS = new Float32Array(N), DA = new Float32Array(N), ph = new Float32Array(N), k = new Float32Array(N);     // m1996: the spindrift
     for (let i = 0; i < N; i++) { DP[i * 3] = (Math.random() - .5) * W.driftBox; DP[i * 3 + 2] = (Math.random() - .5) * W.driftBox; ph[i] = Math.random() * 100; k[i] = Math.pow(Math.random(), 2.2); DS[i] = .05 + Math.random() * .06; DP[i * 3 + 1] = Z.depth * Z.base + k[i] * W.driftH; }
     const dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.BufferAttribute(DP, 3)); dg.setAttribute('aSize', new THREE.BufferAttribute(DS, 1)); dg.setAttribute('aA', new THREE.BufferAttribute(DA, 1));
     const dp = new THREE.Points(dg, pm); dp.frustumCulled = false; g.add(dp); Z.drift = { dp, dg, DP, DS, DA, ph, k, N };
@@ -10868,7 +10868,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     snowPuff(_snF.x + Math.sin(p.faceH) * .22, _snF.y - .05, _snF.z + Math.cos(p.faceH) * .22, 5, .25, .35); }
   Z.acc += dt; if (Z.acc > .25) { const inc = Math.max(1, Math.round(Z.refill * 255 * Z.acc)); Z.acc = 0; const D = Z.D, B = Z.B; for (let k = 0; k < D.length; k++) if (D[k] < B[k]) D[k] = Math.min(B[k], D[k] + inc); Z.dirty = 1; }
   if (Z.dirty) { Z.T.needsUpdate = true; Z.dirty = 0; }
-  // m15BZ: THE WEATHER -- calm and storm take turns (AUTO), or one held
+  // m1996: THE WEATHER -- calm and storm take turns (AUTO), or one held
   { const W = SNOWSTORM; if (W.weather === 'AUTO') { Z.stormNext -= dt; if (Z.stormNext <= 0) { Z.stormGoal = Z.stormGoal > .5 ? 0 : 1; const r = Z.stormGoal ? W.stormT : W.calm; Z.stormNext = r[0] + Math.random() * (r[1] - r[0]); } }
     else Z.stormGoal = W.weather === 'BLIZZARD' ? 1 : 0;
     Z.storm += (Z.stormGoal - Z.storm) * (1 - Math.exp(-dt * Math.LN2 / W.rampHL)); const st = Z.storm;
@@ -10878,7 +10878,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
   // the AIR
   const SW = 1 + (SNOWSTORM.stormWind - 1) * Z.storm;
   const P = A.P, F = A.F, cx = camera.position.x, cz = camera.position.z, hb = Z.box / 2, gx = Z.wind[0] * SW * (1 + Z.gust * Math.max(0, Math.sin(t * .23) * Math.sin(t * .61))), gz = (Z.wind[2] + Math.sin(t * .17) * .6) * SW;
-  if (Z.drift) { const D = Z.drift, W = SNOWSTORM, hbD = W.driftBox / 2, st = Z.storm, gust = Math.max(0, Math.sin(t * .23) * Math.sin(t * .61)), aK = .18 + .5 * st + .25 * gust;     // m15BZ: the spindrift streams along the wind, low
+  if (Z.drift) { const D = Z.drift, W = SNOWSTORM, hbD = W.driftBox / 2, st = Z.storm, gust = Math.max(0, Math.sin(t * .23) * Math.sin(t * .61)), aK = .18 + .5 * st + .25 * gust;     // m1996: the spindrift streams along the wind, low
     for (let i = 0; i < D.N; i++) { const o = i * 3, ph = D.ph[i], v = W.driftV * (.6 + .8 * D.k[i] + st * 1.5) ; let x = D.DP[o] + (gx * v + Math.sin(t * 2.3 + ph) * .3) * dt, z = D.DP[o + 2] + (gz * v + Math.cos(t * 1.9 + ph) * .3) * dt;
       if (x - cx > hbD) x -= W.driftBox; else if (x - cx < -hbD) x += W.driftBox; if (z - cz > hbD) z -= W.driftBox; else if (z - cz < -hbD) z += W.driftBox;
       const gy = Math.abs(x) < Z.size / 2 && Math.abs(z) < Z.size / 2 ? snowAt(x, z) * Z.depth : Z.depth * Z.base;
@@ -15725,7 +15725,7 @@ function arenaUi() {
       else if (a === 'cart') { CART.pose = CART.poses[(CART.poses.indexOf(CART.pose) + 1) % CART.poses.length]; try { localStorage.setItem('mel.cart2', CART.pose); } catch (err) {} }
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
-      else if (a === 'storm') { const L = ['AUTO', 'CLEAR', 'BLIZZARD']; SNOWSTORM.weather = L[(L.indexOf(SNOWSTORM.weather) + 1) % 3]; try { localStorage.setItem('mel.storm', SNOWSTORM.weather); } catch (err) {} }     // m15BZ
+      else if (a === 'storm') { const L = ['AUTO', 'CLEAR', 'BLIZZARD']; SNOWSTORM.weather = L[(L.indexOf(SNOWSTORM.weather) + 1) % 3]; try { localStorage.setItem('mel.storm', SNOWSTORM.weather); } catch (err) {} }     // m1996
       else if (a === 'bevel') { LOOK.bevel = !LOOK.bevel; try { localStorage.setItem('mel.bevel', LOOK.bevel ? '1' : '0'); } catch (err) {} }     // m1978
       else if (a === 'look') { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (err) {} }     // m1967
       else if (a === 'stairs') { STAIRS.on = STAIRS.on ? 0 : 1; try { localStorage.setItem('mel.stairs', STAIRS.on ? 'clips' : 'lean'); } catch (err) {} }     // m1956

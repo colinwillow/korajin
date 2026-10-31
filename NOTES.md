@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15BZ -- the BLIZZARD that comes and goes, and SPINDRIFT (Oct 31 2026)
+## m1996 -- the BLIZZARD that comes and goes, and SPINDRIFT (Oct 31 2026)
 His "keep going" after m1995. `SNOWSTORM`: AUTO weather takes turns -- calm 70-110 s, storm 40-65 s, easing over a 7 s half-life. The storm multiplies the
 wind x4.5 (flakes race sideways), pulls the fog in to 6..60 m and whitens it, dims the sun 45%, swells the flakes x1.7, and fades the (unfogged) peaks
 into the whiteout. SPINDRIFT: 1600 low points (one draw, the flakes' material) streaming along the wind a hand's height over the pack, following its
