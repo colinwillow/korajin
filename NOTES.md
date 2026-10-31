@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15WP -- clean-out: the Weirdport city is no longer a world (and no longer loads behind the menu)
+## m1918 -- clean-out: the Weirdport city is no longer a world (and no longer loads behind the menu)
 His go: *"No, I don't need them... weirdport will keep it... now you got it, you can cut it."* The city lives on in
 `colinwillow/weirdport` (and `colinwillow/zap`).
 - **What was found on the way: the default world was `tkit`.** The KORAJIN menu sits over whatever world the page booted, and with no

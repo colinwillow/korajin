@@ -2546,7 +2546,7 @@ const WEAP = {
 // ZAP: the story layer is OFF unless ?story=1 (see the tkit build in init)
 const PLAIN = !/[?&]story=1\b/.test(location.search);
 const WORLD = {
-  now: 'forge',     // m15WP: was 'tkit' -- every launch loaded the whole Weirdport city behind the KORAJIN menu
+  now: 'forge',     // m1918: was 'tkit' -- every launch loaded the whole Weirdport city behind the KORAJIN menu
   store: 'mel.world',
   // KIT CITY FIRST, so the key's cycle starts from the main world
   list: { arena: 'ARENA', test: 'WHITE BOX', home: 'RED HOLLOWS', forge: 'BUILDING FORGE' },     // m1110: Grumbo's refuge (KORAJIN)   // ZAP: two worlds -- the plain kit city and the white box   // m438: Level 1, the alien plaza   // m432: his alien planet
@@ -2656,7 +2656,7 @@ const progReset = () => {
   Object.assign(SAVE, { ch: 0, forms: ['zap'], regions: [], flags: {}, portals: [], juice: 0, turf: {}, tgood: {}, tswap: {} });
   progSave();
 };
-const inWP = () => false;     // m15WP: Weirdport, the toon city, the kit house and the kit city are cut -- these stay as false until their callers go
+const inWP = () => false;     // m1918: Weirdport, the toon city, the kit house and the kit city are cut -- these stay as false until their callers go
 // **A THIRD WORLD IS A THIRD PREDICATE, NOT AN `else` (m157).** Every `if (inWP()) ... else`
 // in this file reads "Weirdport or the test site", and with a third world the `else` quietly
 // becomes "anything that is not Weirdport" -- so the toon city would have grown the test
@@ -2671,7 +2671,7 @@ const inKit = () => false;
 // is BOTH a toon city and a kit world, so every system that means "the kit's buildings are here"
 // asks `kitWorld()`, and every one that means "the toon city's streets are here" asks `tcWorld()`.
 const inTK = () => false;
-const kitWorld = () => false;     // m15WP: the kit city is cut
+const kitWorld = () => false;     // m1918: the kit city is cut
 const inTest = () => WORLD.now === 'test';
 
 // WEIRDPORT -- his Blender slice, measured off the two files before a line of this was written.
@@ -73394,7 +73394,7 @@ async function init() {
     g => { if (kitWorld() && /^(KCITY(VIS|COL|BLD)|TOONBRK)$/.test(tag.name)) { try { mkrRead(g.scene, tag.name); } catch (e) { note('MARK READ FAIL'); } }  // his markers, before the builder prunes (m293)
            try { tag.build(g); } catch (e) { console.error('[melee] ' + tag.name + ' build failed', e); note(tag.name + ' FAILED'); } },
     e => { PROG.done++; console.warn('[melee] ' + tag.name + ' did not load', e); note('NO ' + tag.name + ' GLB'); });
-  if (inHome()) {     // m15WP: the Weirdport / toon / kit world branches are cut (kept in colinwillow/weirdport and zap)
+  if (inHome()) {     // m1918: the Weirdport / toon / kit world branches are cut (kept in colinwillow/weirdport and zap)
     try { await buildHome(); } catch (e) { console.error('[melee] refuge', e); note('HOME FAILED'); }     // m1110
   } else if (inArena()) {
     // z1: the arena -- the stadium is built at module scope; nobody in it until the SPAWN menu
