@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15WP -- the wing-pack rides the spine through flips; LOOK at the top of TOOLS and in GOD
+His words (Oct 31): *"jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance away -- it
+should always be mounted to whatever spine joint it's on"* / *"I still don't see how to check the new rendering style -- not in the old Weirdport debug
+menu, not in ours."*
+- **TWO causes, both fixed and rendered mid air-flip:** (1) the pack took the spine joint's POSITION but its turn from his heading (or the flight's
+  frame) -- it turns WITH the joint now (`WG.corr`: the spine's axes -> the pack's frame, taken once on a calm standing frame); (2) `wingFrame` ran in
+  the pose chain BEFORE `hbarPose` / `airFlipPose` / `wrunPose` / the dragon -- every procedural turn of the root came after it, so a flip turned him
+  out from under the pack. It runs after them all now (just before the springs). Rendered before: upright above him; after: on his back, turned with him.
+- **LOOK:** its own heading at the TOP of TOOLS (it was buried in MOVE), and a GOD menu button beside the old SKY / render switches. `?look=soft` too.
+
 ## m1971 -- JOINTS: every bridge end and wall end now MEETS something (`brJoint`)
 
 His: *"between sky castle and the Red Hollows, where bridges meet towers or mountainsides they just randomly overlap... there need to be joints:
