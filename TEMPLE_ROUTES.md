@@ -49,4 +49,5 @@ Kishotenketsu over the whole climb: INTRODUCE the chimney low, introduce the BAR
 
 ## Built
 - (m1924) the golden path 1-6, checkpoints, the ladders and the broken 8-10 m ledge columns removed. Unplayed.
-- (m-pass2) the watchtowers: front two SPIRALS of floating stones (double-jump hops), back two CHIMNEYS with rest ledges; a checkpoint on every deck.
+- (m1925) the watchtowers: front two SPIRALS of floating stones (double-jump hops), back two CHIMNEYS with rest ledges; a checkpoint on every deck.
+- (m-pass3) monkey bars tower top -> pylon 3 roof (a fifth seal, a checkpoint, a zip home); zips from the back towers' decks to the balconies.

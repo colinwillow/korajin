@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1926 -- THE SKY TEMPLE route pass 3: monkey bars to pylon 3, a fifth seal, the upper level reconnected by zips (TEMPLE_ROUTES.md)
+
+- OPTIONAL BRANCH, THE MONKEY BARS (`mbar`, into `MBAR.list` -- the gym's own system): from the tower's top (105) 22 m across to the left
+  pylon's roof (100), rungs every metre at 107.4 (a jump off the tower top reaches them), gold side rails and posts down to each floor. Over
+  there: where the halo's red chains land, a FIFTH SEAL (the great door now wants all five), a CHECKPOINT, and a zip off the roof's west edge
+  back down to the plaza -- the shortcut home.
+- THE UPPER LEVEL is reachable again without the hatch ladders: a zip off each back tower's deck (BL 76.5, BR 66.5) down onto its side's
+  balcony (60), whose plank bridge climbs on to the upper satellite (75). The towers are the way up; the balconies the way across.
+- Unplayed. Next: the monkey bars' far end and the balconies want a look on the phone; then branches on the satellites and the enemies by zone.
+
 ## m1925 -- THE SKY TEMPLE route pass 2: the watchtowers are climbs, not ledge columns (TEMPLE_ROUTES.md)
 
 The towers' m1922 ledge columns were 9.75 m apart (3.9 design units x2.5) -- past every comfy number in the move table, a ladder you could
