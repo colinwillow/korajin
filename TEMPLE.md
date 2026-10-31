@@ -73,6 +73,8 @@ difference, ship, repeat. The order, biggest first (re-ranked every pass):
 - [~] L5. (medallion, rim cornice, masonry skirt done; spikes still organic) The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
 - [x] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.
 - [x] L8. (m1940) THE PORTAL: a pointed doorway (chamfered top corners, a gable crown, gold edges, a jade gem) and the two jackal guardians in JADE BRONZE out of the wall, flanking it.
+- [x] L10. (m1942) OVERGROWTH: vines spill over every tier's lip (every block's four top edges), leaning with the batter.
+- [x] L11. (m1945) SANDSTONE SATELLITES: the four hanging satellite spires in the temple's masonry, not the dark glyph basalt (the concepts' spires are stone with a jade core).
 
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)
 - [ ] the route from the stair to the halo is climbable end to end with the game's moves, and the zipline brings you back

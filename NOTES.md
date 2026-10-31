@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1945 -- THE SKY TEMPLE look loop, pass 11: SANDSTONE SATELLITES (TEMPLE.md L11)
+
+In all five concepts the hanging satellite spires are the same sandstone masonry as the temple, with the jade core in the hanging pylon under
+them; ours were the dark glyph basalt (`style: 'tech'`), which made four big dark wedges the loudest thing on the sides. The four inverted
+columns (`temple_pillarE/W_col`, `temple_satE/W_body`) drop the tech style and pick up the stone megalith skin plus the block dressing (gold band,
+studs, panels). Same boxes, same colliders: no route moves. Draw calls unchanged (63 wide). Shipped unverified.
+
 ## m1944 -- stairs: the drawn height rides a ramp through the treads; the camera follows it tightly
 His words (Oct 31): *"the new running upstairs is interesting -- the camera zooms up on his butt, and he still stutters up the steps; at least he's
 not going through the ground now, but it's still not great."*
