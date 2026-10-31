@@ -19,7 +19,7 @@ under it, a banner hanging under each side of the platform, rope rails round it,
   the up-normal is now taken with the run's sign. And the drifting rocks keep out of the front sector (one sat squarely in front of the temple
   in the spawn's view).
 - Budget: **32 draw calls for the widest frame, 60k triangles.** Headless wide / east / west renders checked. Next: step 5, the detail.
-## m15xx -- the builder's ROPE BRIDGES dip and sway under him
+## m1904 -- the builder's ROPE BRIDGES dip and sway under him
 
 - A rope bridge's deck is now a FUNCTION, not fixed triangles: `lbRopeY(B, u)` = the straight line - the hang (sag 4u(1-u)) - a DIP shaped like a
   tent peaking where he stands (`pu`); it swings sideways by `sw` 4u(1-u). `groundAt` reads `lbRopeDeck`, so his feet ride the live shape.
