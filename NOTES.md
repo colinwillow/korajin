@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15FO -- the folded wings' flashing, for real (Oct 31 2026)
+## m2001 -- the folded wings' flashing, for real (Oct 31 2026)
 His photo of the folded pack from behind: *"it's the folded-up wings -- they need a different offset so they don't sit on the exact same plane."* m1998 hid
 panels 2 and 3, but the flicker was the two ROOT panels: folded, each hangs down and inward from its shoulder joint (z -.14, rotated 1.35 rad about z),
 so left and right lie in one plane and cross in the middle -- z-fighting. The right root panel now folds .035 m behind the left (eased out as it opens).

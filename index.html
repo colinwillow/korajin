@@ -36856,7 +36856,7 @@ function wingFold(k) {
     const s = side ? -1 : 1, J = WG.j[side];
     for (let i = 0; i < 3; i++) {
       const u = clamp((k - i * .25) / .5, 0, 1), e = u * u * (3 - 2 * u); J[i].visible = i === 0 || u > .04;     // m1998 (his: "a weird triangle thing flashing on the folded pack"): folded, panels 2 and 3 lay back over panel 1 at 169 deg and cut through it -- hidden while folded
-      if (i === 0) { J[i].rotation.set(0, s * lerp(0, .14, e), -s * lerp(1.35, .22, e)); J[i].position.z = -.14 - (side ? .035 : 0) * (1 - e); }     // m15FO (his photo: "the folded wings flash -- they're on the exact same plane"): folded, both root panels hang down and inward in the SAME plane (z -.14) and cross at the middle; the right one folds .035 behind the left
+      if (i === 0) { J[i].rotation.set(0, s * lerp(0, .14, e), -s * lerp(1.35, .22, e)); J[i].position.z = -.14 - (side ? .035 : 0) * (1 - e); }     // m2001 (his photo: "the folded wings flash -- they're on the exact same plane"): folded, both root panels hang down and inward in the SAME plane (z -.14) and cross at the middle; the right one folds .035 behind the left
       else J[i].rotation.set(0, s * lerp(i === 1 ? 2.95 : -2.95, .05, e), -s * lerp(0, .06, e));
     }
   }
