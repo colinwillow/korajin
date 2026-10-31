@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1920 -- THE SKY TEMPLE: the floating cones are LANDMASSES now (his)
+
+His: *"anything that's like an upside-down floating cone needs to become more organic or irregular, more like an actual landmass than a
+geometric form."*
+- `templeRock` rewritten (same signature, same returns): the top ring is the SAME noisy outline as before (so the paving, the walkable fan, the
+  rim rails and the lanterns' rim all stay put), and under it 13 rings fall away on a bulging profile, each pushed in and out by 3D value noise
+  (`templeN3` / `templeF3`) that grows with depth, scalloped into 2-5 LOBES so the underside splits into roots, the whole column DRIFTING
+  sideways as it goes down (it bends), with two lumpy SHELVES, the heights jittered. Smooth-shaded (indexed, normals, then un-indexed to
+  merge -- and the far islands' merge no longer recomputes flat normals over them). Every number is in `TROCKS`.
+- Everything that was a cone goes through it: the island's own body, every SPIKE under it (each a small landmass now, 8-12 sided), the seven
+  far islands and the drifting rocks.
+- 43 draws, 170k triangles (from 149k: rounder rocks). Next: colour strips, crests and ledges on the temple.
+
 ## m1919 -- THE SKY TEMPLE: the stone texture broken up by noise, and eroded (his)
 
 His: *"make duplicates of the texture so we can offset it by a noise pattern, to break up the repetitiveness -- eroded, basically."*
