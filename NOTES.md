@@ -5,6 +5,12 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15PD -- THE FROZEN POND (Oct 31 2026)
+Snow pass 2's pond, at (27, 30): a lobed sheet (r ~11 m) of a NEW painted ice tile (`textures/snow_ice.webp`: turquoise, white fractures, trapped
+bubbles; glossy, a teal glow from under), the pack swept off it with a low bank round the edge (`POND.bank`), pines / rocks / bamboo kept off. On it he
+SLIDES (`POND.grip` 1.1 /s: his velocity only creeps toward what the stick asks, applied from the previous frame's actual velocity, so it works with
+any move); a hard turn throws ice shavings. Measured headless: let go at 6 m/s on the ice, he is still at 4.5 m/s 0.67 s later and 3.8 m on.
+
 ## m1996 -- the BLIZZARD that comes and goes, and SPINDRIFT (Oct 31 2026)
 His "keep going" after m1995. `SNOWSTORM`: AUTO weather takes turns -- calm 70-110 s, storm 40-65 s, easing over a 7 s half-life. The storm multiplies the
 wind x4.5 (flakes race sideways), pulls the fog in to 6..60 m and whitens it, dims the sun 45%, swells the flakes x1.7, and fades the (unfogged) peaks
