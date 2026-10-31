@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1901 -- THE SKY TEMPLE step 3: the summit halo, the jade orb and beam, the pylons' banners (TEMPLE.md)
+
+- THE SUMMIT (`TEMPLE.halo` + `temple_pinnacle` in `TEMPLE.mass`): a battered pinnacle on the tower (top at 45.5 local), a gold collar and a
+  jade ORB (r 1.25) at 47.4, four gold struts out to the HALO at 49.5 (local; 109.5 world): a gold torus (R 6.6), an outer gold band, 20 gold
+  studs and a jade band inside -- its own group (two draws) turning at .12 rad/s in `templeTick`. A teal BEAM rises 420 m out of the orb (in
+  the far islands' merged beam mesh: no extra draw).
+- BANNERS: his diamond banner (`lbBanner2Mat`, tattered tail) at 3.6 x 14 m, four of them -- front and back of each pylon -- hung from gold rods
+  off the pylons' tops, clear of every tier below, swaying through `lbFlutter` (`userData.banner`). Four draws.
+- Budget: **29 draw calls for the whole frame headless, 57k triangles.** Headless front / summit / back renders checked against the sheet.
+  Next: step 4, the bridges.
+
 ## m1900 -- THE SKY TEMPLE step 2: the temple mass (TEMPLE.md)
 
 All in the TEMPLE block; the data is `TEMPLE.mass` (stable ids, local to the island's top, front = +Z), built by `templeMassMake(T, rim)` into

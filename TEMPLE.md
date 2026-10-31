@@ -30,7 +30,7 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
       planes), a warm sky, 4-6 distant floating islands with spires and teal light beams (cheap: billboards / low-poly), fall-off = respawn.
 - [x] 2. (m1900) THE TEMPLE MASS: the stepped megalith core (battered walls, two side pylons, the central tower), the grand stair with a red carpet,
       the landing with braziers, the door (jade-ringed, sealed), rope rails along every edge. All of it climbable / walkable.
-- [ ] 3. THE SUMMIT: the gold HALO ring with the jade core and a beam up into the sky; the pylons' banners (his diamond banner, swaying).
+- [x] 3. (m1901) THE SUMMIT: the gold HALO ring with the jade core and a beam up into the sky; the pylons' banners (his diamond banner, swaying).
 - [ ] 4. THE BRIDGES: side bridges off to two satellite pillars (one plank with rope rails, one sky bridge), braziers at the ends.
 - [ ] 5. DETAIL: guardian statues flanking the door, palms in stone planters, vines, jade channels glowing down the walls, ledges to hang on.
 - [ ] 6. THE ROUTE: a parkour route from the landing to the halo using the game's moves -- wall runs up the pylons, ledges, a high bar, a
