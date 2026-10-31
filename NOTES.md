@@ -20,6 +20,16 @@ Fixed: the sky bridge's walls and roof are ~1.2 m pieces that follow the drawn s
 sphere; the head stops at the face and the snout has its own small box; the stones' squares are .8 r (corners on the rim). After: those are gone;
 what is left is centimetres at stair-tread edges and the rope rails (the rope is the drawn thing). The eroded megaliths (m1955) did not show up
 (their tops sit within .3 m of their boxes). Shipped unverified.
+## m15NS -- stairs: he rides the line through the step NOSES (no sinking); leans back more going down
+His words (Oct 31, photo going down the temple stair): *"I figured he would lean back more, and he still goes through the ground a little -- he needs to
+just be on top of the stairs; put a collider that's a straight ramp at the tips of the stairs so he can't go through them."*
+- `stepRamp`: the drawn height was the AVERAGE of the ground round him -- a line through the middle of each step, half a riser under the noses. It is
+  the line through the NOSES now: the slope `k` across a 1.2 m window (9 samples along his travel), then the upper envelope max(g(o) - k*o). The ease
+  went .05 -> .012 s: measured, at 2 m/s of climb the old ease alone trailed .15 m. The body is drawn on that ramp; the collider, the camera and the
+  step-up are unchanged (the ramp is the picture's, as m228's kerb ease was).
+- Measured against the true nose line on a .30 x .45 flight at 3.1 m/s: going up -0.06..-0.01 m (was -0.30..-0.26), going down +0.05..+0.08 (was
+  +0.19..+0.33); worst dip under his collider -0.03 m (was -0.51 with the old per-step ease). Jerk .67 vs the old ease's 1.08.
+- `leanDown` .25 -> .5.
 
 ## m1955 -- THE SKY TEMPLE: ERODED STONE -- rounded, chipped edges on every megalith
 

@@ -34550,7 +34550,7 @@ function idlePick() { const I = IDLEPICK; if (HERO.pick !== 'agoblin' || !rig.ac
 // tiptoeing. Just use the regular running animations and tilt the body to whatever angle the stairs go up at, and call it good"): the Mixamo stair clips
 // are a slow careful climb (measured: they move the planted foot .27-.60 m/s), so at a run they cannot keep up. `on` 0 (LEAN, the default) keeps his
 // ordinary gait and LEANS him into the slope (`stairLean`); 1 (CLIPS, TOOLS > STAIRS) is m1950's stair walk.
-const STAIRS = { on: (() => { try { return localStorage.getItem('mel.stairs') === 'clips' ? 1 : 0; } catch (e) { return 0; } })(), meas: {}, leanUp: .45, leanDown: .25, leanMax: .35, leanHL: .1,     /* m1820 turned it off (his: "walking upstairs is absolutely f---ed" -- the glide, the rate); m1947: back on, the rate measured by `stairsMeasure` */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 6, riser: .3, ref: {} };
+const STAIRS = { on: (() => { try { return localStorage.getItem('mel.stairs') === 'clips' ? 1 : 0; } catch (e) { return 0; } })(), meas: {}, leanUp: .45, leanDown: .5, leanMax: .35, leanHL: .1,     /* m1820 turned it off (his: "walking upstairs is absolutely f---ed" -- the glide, the rate); m1947: back on, the rate measured by `stairsMeasure` */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 6, riser: .3, ref: {} };
 function stairsWant(sp) { const p = player; if (!p.grounded || sp < .6 || p.melee || p.roll || p.slide || p.beam || p.wrun || p.ledge || p.board || p.riding || p.dragon) { p.slopeS = 0; p.stairs = ''; return ''; }
   const h = Math.atan2(p.vel.x, p.vel.z), fx = Math.sin(h), fz = Math.cos(h), L = STAIRS.look, y = p.pos.y;
   const a = groundAt(p.pos.x + fx * L, p.pos.z + fz * L, y + .7, .01), b = groundAt(p.pos.x - fx * L, p.pos.z - fz * L, y + .7, .01);
@@ -35291,7 +35291,7 @@ const _roll = new THREE.Vector3();
 // nothing -- falling is the physics' job -- and a teleport (ladder top, respawn) is bigger than a step
 // and ignored. The board rides the same offset, so a skater pops up the kerb with the deck under him.
 // A real step-up clip is the honest fix; this is what makes the snap stop reading as one until then.
-const STEPUP = { on: 1, hl: .07, min: .03, n: 0, ramp: 1, hl2: .05, L: .45, n: 5 };     // m1944: `ramp` 1 = the predictive stair filter (`stepRamp`); 0 = the old per-step ease
+const STEPUP = { on: 1, hl: .07, min: .03, n: 0, ramp: 1, hl2: .012, L: .6, n: 9 };     // m1944: `ramp` 1 = the predictive stair filter (`stepRamp`); 0 = the old per-step ease
 const CAMY = { on: 1, hl: .05, air: .05, snap: 3 };     // m1944: hl .2 -> .05 -- the drawn height is smooth now (`stepRamp`), and a slow ease trailed below him     // m1928: the camera's own height ease (see `cam.tgt`)
 function stepEase(dt) {
   const p = player, y = p.pos.y;
@@ -35310,15 +35310,16 @@ function stepEase(dt) {
 // lead, so a flight becomes the straight ramp through its treads (no lag in a steady climb, no stair-steps). The camera rides the drawn height.
 // Off the ground, or on a jump bigger than a step, it lets go at once (physics owns the air).
 function stepRamp(dt, dy) { const p = player, y = p.pos.y, S = STEPUP;
-  // measured (m15ST's first cut): a filter on his own height rings on every step -- a snap is one frame of 18 m/s -- and drew 3x the jerk of the old
-  // ease. So the ramp is GEOMETRIC: the ground averaged over `n` points from `L` m behind to `L` m ahead along his travel (a cliff or a wall past
-  // `MOVE.step` x1.6 is left out), lightly eased -- on a flight that is the line through the treads; on the flat it is his own height.
+  // m15NS (his: "he still goes through the ground a little -- put a straight ramp at the TIPS of the stairs so he can't go through them"): the average of the
+  // ground ran through the MIDDLE of each step, half a riser under the noses. The ramp is now the line through the NOSES: the slope `k` across the window,
+  // then the upper envelope max(g(o) - k*o) -- on a flight that is the straight line touching every step's edge; on the flat it is his own height.
   if (!p.grounded || Math.abs(dy) > MOVE.step * 1.6) { p.rampY = null; p.stepOff = damp(p.stepOff || 0, 0, .04, dt); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; return; }
-  const sp = Math.hypot(p.vel.x, p.vel.z), h = sp > .3 ? Math.atan2(p.vel.x, p.vel.z) : p.faceH, fx = Math.sin(h), fz = Math.cos(h); let sum = 0, n = 0;
+  const sp = Math.hypot(p.vel.x, p.vel.z), h = sp > .3 ? Math.atan2(p.vel.x, p.vel.z) : p.faceH, fx = Math.sin(h), fz = Math.cos(h), os = [], gs = [];
   for (let k = 0; k < S.n; k++) { const o = -S.L + 2 * S.L * k / (S.n - 1), g = groundAt(p.pos.x + fx * o, p.pos.z + fz * o, y + MOVE.step * 1.6, MOVE.step * 1.6);
-    if (isFinite(g) && Math.abs(g - y) <= MOVE.step * 1.6) { sum += g; n++; } }
-  const tgt = n ? sum / n : y; p.rampY = p.rampY == null ? y + (p.stepOff || 0) : damp(p.rampY, tgt, S.hl2, dt);
-  p.stepOff = clamp(p.rampY - y, -MOVE.step * 1.2, MOVE.step * .8); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; }
+    if (isFinite(g) && Math.abs(g - y) <= MOVE.step * 1.6) { os.push(o); gs.push(g); } }
+  let tgt = y; if (gs.length >= 2) { const kk = (gs[gs.length - 1] - gs[0]) / ((os[os.length - 1] - os[0]) || 1); tgt = -Infinity; for (let q = 0; q < gs.length; q++) tgt = Math.max(tgt, gs[q] - kk * os[q]); }
+  p.rampY = p.rampY == null ? y + (p.stepOff || 0) : damp(p.rampY, tgt, S.hl2, dt);
+  p.stepOff = clamp(p.rampY - y, -MOVE.step * 1.2, MOVE.step * 1.2); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; }
 function boardPose(dt) {
   // **ZEROED FIRST, ABOVE EVERY EARLY RETURN.** `_roll` is read by the root block later in the
   // same frame, so a frame that leaves this function early must leave a zero behind rather than
