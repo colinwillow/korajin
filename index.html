@@ -10631,11 +10631,11 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
       P.setXYZ(i, x, y, z); } geo.computeVertexNormals(); return geo; };
   const block = (b, y0, y1) => { const hh = y1 - y0, geo = rough(new THREE.BoxGeometry(b.w, hh, b.d, Math.max(4, Math.round(b.w / 1.1)), Math.max(3, Math.round(hh / .9)), Math.max(4, Math.round(b.d / 1.1))).translate(b.x, y0 + hh / 2, b.z), 1.5, y1, b.x, b.z, b.w / 2, b.d / 2);
     rock.push(geo); BOXES.push({ minx: b.x - b.w / 2, maxx: b.x + b.w / 2, miny: y0, maxy: y1, minz: b.z - b.d / 2, maxz: b.z + b.d / 2 });
-    const cp = new THREE.BoxGeometry(b.w + .3, .4, b.d + .3, Math.max(4, Math.round(b.w)), 1, Math.max(4, Math.round(b.d))); const P = cp.attributes.position; for (let i = 0; i < P.count; i++) { const ex = Math.abs(P.getX(i)) / (b.w / 2 + .15), ez = Math.abs(P.getZ(i)) / (b.d / 2 + .15), e = Math.max(ex, ez); if (P.getY(i) > 0) P.setY(i, .2 + .16 * (1 - e * e)); else P.setY(i, -.2 - .25 * Math.max(0, Math.sin(P.getX(i) * 1.7 + P.getZ(i) * 1.3)) * (e > .97 ? 1 : 0)); }     /* a soft pillow of snow, drooping over the lip */
-    cp.translate(b.x, y1 + .02, b.z); cap.push(rough(cp, .25, y1 + .1, b.x, b.z, b.w / 2 + .15, b.d / 2 + .15)); };
+    const cp = new THREE.BoxGeometry(b.w + .3, .4, b.d + .3, Math.max(4, Math.round(b.w)), 1, Math.max(4, Math.round(b.d))); const P = cp.attributes.position; for (let i = 0; i < P.count; i++) { const ex = Math.abs(P.getX(i)) / (b.w / 2 + .15), ez = Math.abs(P.getZ(i)) / (b.d / 2 + .15), e = Math.max(ex, ez); if (P.getY(i) > 0) P.setY(i, .02 + .04 * (1 - e * e)); else P.setY(i, -.2 - .25 * Math.max(0, Math.sin(P.getX(i) * 1.7 + P.getZ(i) * 1.3)) * (e > .97 ? 1 : 0)); }     /* a soft pillow of snow, drooping over the lip */
+    cp.translate(b.x, y1 + .02, b.z); cap.push(rough(cp, .25, y1 + .1, b.x, b.z, b.w / 2 + .15, b.d / 2 + .15)); patchAdd(b.x, b.z, b.w, b.d, y1 + .06, 1); };     /* m15PS: a thin skin, and a PUSHABLE patch of snow on top */
   for (const b of C.blocks) block(b, 0, b.h);
   for (const S of C.shelves) { const geo = new THREE.BoxGeometry(S.w, S.t, S.d, 6, 1, 3); geo.translate(S.x, S.y - S.t / 2, S.z); ice.push(geo); BOXES.push({ minx: S.x - S.w / 2, maxx: S.x + S.w / 2, miny: S.y - S.t, maxy: S.y, minz: S.z - S.d / 2, maxz: S.z + S.d / 2 });
-    const cp = new THREE.BoxGeometry(S.w - .4, .14, S.d - .4).translate(S.x, S.y + .05, S.z); cap.push(cp);
+    patchAdd(S.x, S.z, S.w - .3, S.d - .3, S.y, 0);
     for (let k = 0; k < S.w * 1.6; k++) { const L = .4 + R() * 1.4, x = S.x - S.w / 2 + R() * S.w, z = S.z + (R() < .6 ? S.d / 2 - .2 : (R() - .5) * S.d); ice.push(new THREE.ConeGeometry(.08 + R() * .1, L, 5).rotateX(Math.PI).translate(x, S.y - S.t - L / 2 + .05, z)); } }     // icicles under the shelf
   for (const b of C.blocks) if (b.h > 3) for (let k = 0; k < b.w * .7; k++) { const L = .3 + R() * 1.1, x = b.x - b.w / 2 + R() * b.w; ice.push(new THREE.ConeGeometry(.07 + R() * .08, L, 5).rotateX(Math.PI).translate(x, b.h - L / 2 - .05, b.z + b.d / 2 + .25)); }     // icicles off the lips
   // the FROZEN WATERFALL: a bulging ice curtain of fluted columns down the cliff face, and an iced pool at its foot
@@ -10675,8 +10675,9 @@ const SNOWKIT = { places: [{ id: 'grotto', x: 60, z: -14, r: 10 }, { id: 'bridge
 function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { rock: [], cap: [], ice: [], glow: [], plant: [], dark: [] }, box = (x0, x1, y0, y1, z0, z1) => BOXES.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1 });
   const nz = (x, y, z) => Math.sin(x * 1.1 + z * .7 + y * .4) * .45 + Math.sin(z * 2.3 - y * 1.6 + x * .6) * .3 + Math.sin(x * 4.1 + y * 3.3 - z * 1.3) * .15;
   const lump = (geo, k) => { const P = geo.attributes.position; for (let i = 0; i < P.count; i++) { const x = P.getX(i), y = P.getY(i), z = P.getZ(i), n = nz(x, y, z) * k; P.setXYZ(i, x + n, y + n * .4, z + n * .8); } geo.computeVertexNormals(); return geo; };
-  const pillar = (x, z, w, d, h, capOn = 1) => { L.rock.push(lump(new THREE.BoxGeometry(w, h, d, 3, Math.max(2, Math.round(h)), 3).translate(x, h / 2, z), .35)); box(x - w / 2, x + w / 2, 0, h, z - d / 2, z + d / 2);
-    if (capOn) L.cap.push(lump(new THREE.CylinderGeometry(Math.max(w, d) * .62, Math.max(w, d) * .66, .35, 9).scale(w / Math.max(w, d), 1, d / Math.max(w, d)).translate(x, h + .1, z), .08)); };
+  const pillar = (x, z, w, d, h, capOn = 1) => { const geo = new THREE.BoxGeometry(w, h, d, 5, Math.max(3, Math.round(h * 1.2)), 5); const Pp = geo.attributes.position;     // m15PS: rounded in plan, tapered, lumpy -- not a box
+      for (let i = 0; i < Pp.count; i++) { const u = Pp.getX(i) / (w / 2), v = Pp.getZ(i) / (d / 2), t = Pp.getY(i) / h + .5, m = Math.pow(u ** 4 + v ** 4, .25) || 1, k = Math.max(Math.abs(u), Math.abs(v)) / m * (1 + .16 * (1 - t)); Pp.setX(i, Pp.getX(i) * k); Pp.setZ(i, Pp.getZ(i) * k); }
+      L.rock.push(lump(geo.translate(x, h / 2, z), .5)); box(x - w / 2, x + w / 2, 0, h, z - d / 2, z + d / 2); if (capOn) patchAdd(x, z, w * .95, d * .95, h + .02, 1); };
   const crystal = (x, y, z, s, tilt, mat) => { const n = 3 + Math.floor(R() * 3); for (let k = 0; k < n; k++) { const h = s * (.6 + R() * .8), r = h * .12, a = R() * 6.28, t = tilt + R() * .45;
       for (const q of [new THREE.CylinderGeometry(r, r, h, 6).translate(0, h / 2, 0), new THREE.ConeGeometry(r, r * 2.2, 6).translate(0, h + r * 1.1, 0)]) { q.rotateZ(t * Math.cos(a)).rotateX(t * Math.sin(a)).translate(x, y, z); (mat || L.ice).push(q); } } };
   const icicles = (x0, x1, y, z, n) => { for (let k = 0; k < n; k++) { const l = .3 + R() * 1.1; L.ice.push(new THREE.ConeGeometry(.07 + R() * .08, l, 5).rotateX(Math.PI).translate(x0 + R() * (x1 - x0), y - l / 2, z + (R() - .5) * .6)); } };
@@ -10686,7 +10687,6 @@ function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { ro
     const sh = new THREE.SphereGeometry(Rr, 28, 12, open + half, Math.PI * 2 - half * 2, 0, Math.PI / 2); sh.scale(1, H / Rr, 1); { const Pp = sh.attributes.position; for (let i = 0; i < Pp.count; i++) { const x = Pp.getX(i), y = Pp.getY(i), z = Pp.getZ(i), n = nz(x * .8, y, z * .8); const k = 1 + n * .14; Pp.setXYZ(i, x * k, y * (1 + n * .08), z * k); } sh.computeVertexNormals(); }
     const inner = sh.clone(); inner.scale(.86, .9, .86); { const ix = inner.index.array; for (let i = 0; i < ix.length; i += 3) { const t = ix[i]; ix[i] = ix[i + 2]; ix[i + 2] = t; } inner.computeVertexNormals(); }     // the inside face (flipped), so the dome reads from within
     L.rock.push(sh.translate(G.x, 0, G.z)); L.rock.push(inner.translate(G.x, 0, G.z));
-    L.cap.push(new THREE.SphereGeometry(Rr * 1.02, 24, 6, open + half + .1, Math.PI * 2 - half * 2 - .2, 0, .55).scale(1, H / Rr * 1.02, 1).translate(G.x, .05, G.z));     // snow on its crown
     for (let k = 0; k < 18; k++) { const a = open + half + (k + .5) / 18 * (Math.PI * 2 - half * 2), cx = G.x - Math.cos(a) * Rr * .93, cz = G.z + Math.sin(a) * Rr * .93; box(cx - .9, cx + .9, 0, H * .8, cz - .9, cz + .9); }
     L.dark.push(new THREE.CircleGeometry(Rr * .84, 24).rotateX(-Math.PI / 2).translate(G.x, .04, G.z));     // a dark rock floor, swept of snow
     for (let k = 0; k < 22; k++) { const a = R() * 6.28, d = R() * Rr * .7, l = .4 + R() * 1.5; L.ice.push(new THREE.ConeGeometry(.1 + R() * .12, l, 5).rotateX(Math.PI).translate(G.x + Math.cos(a) * d, H * .86 * Math.sqrt(1 - (d / Rr) ** 2) - l / 2, G.z + Math.sin(a) * d)); }
@@ -10697,7 +10697,7 @@ function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { ro
   // BRIDGE: two pillars, a deck 6 m up, boulder steps
   { const B = P.bridge; pillar(B.x - 6, B.z, 3, 3.2, 6, 0); pillar(B.x + 6, B.z, 3.2, 3, 6, 0);
     L.rock.push(lump(new THREE.BoxGeometry(15.5, 1.3, 3.2, 10, 2, 3).translate(B.x, 6 - .65, B.z), .25)); box(B.x - 7.75, B.x + 7.75, 4.7, 6, B.z - 1.6, B.z + 1.6);
-    L.cap.push(lump(new THREE.BoxGeometry(15.3, .3, 3.0, 10, 1, 3).translate(B.x, 6.1, B.z), .06)); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z + 1.4, 26); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z - 1.4, 18);
+    patchAdd(B.x, B.z, 15.2, 3.0, 6.02, 0); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z + 1.4, 26); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z - 1.4, 18);
     [[1.4, -10.5, 3.5], [2.8, -12.5, 6.2], [4.2, -11, 8.8], [5.4, -8.6, 10.2]].forEach(([h, dx, dz]) => pillar(B.x + dx, B.z + dz - 6, 2.4, 2.4, h)); }
   // STONES: the ring, and its floating crystal
   { const S = P.stones; for (let k = 0; k < 7; k++) { const a = k / 7 * Math.PI * 2 + .2, x = S.x + Math.cos(a) * 9, z = S.z + Math.sin(a) * 9, h = 3 + R() * 2.5, w = 1.1 + R() * .5;
@@ -10721,6 +10721,32 @@ function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { ro
     plant: snowTriMat('snow_needles', 1.1, 0xb8d0c8, .9), dark: new THREE.MeshStandardMaterial({ color: 0x2a3340, roughness: .95 }) };
   for (const k in L) { if (!L[k].length) continue; const geo = mergeGeometries(L[k].map(q => { q = q.index ? q.toNonIndexed() : q; for (const a of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(a)) q.deleteAttribute(a); if (!q.attributes.uv) q.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(q.attributes.position.count * 2), 2)); return q; }));
     const m = new THREE.Mesh(geo, mats[k]); m.castShadow = k !== 'glow' && k !== 'dark'; m.receiveShadow = true; g.add(m); } }
+// m15PS: SNOW PATCHES (his: "the snow-covered platforms don't react -- they should push around like the ground"). Every platform top carries its own
+// little pack: a height grid (`cell` m, up to `depth` m, falling to nothing at the rounded edge) merged into ONE mesh, carved by his feet, his body, a
+// landing, a blade, a fist, a blast, refilling slowly. `patchSurf` is the snow surface over a patch (or null), used by every spray.
+const SNOWPATCH = { cell: .3, depth: .34, refill: .04, list: [], mesh: null, dirty: 0, acc: 0 };
+function patchAdd(x, z, w, d, top, round) { SNOWPATCH.list.push({ x, z, w, d, top, round }); }
+function patchAt(x, z, y) { for (const P of SNOWPATCH.list) if (Math.abs(x - P.x) < P.w / 2 && Math.abs(z - P.z) < P.d / 2 && y > P.top - .7 && y < P.top + 2.5) return P; return null; }
+function patchH(P, x, z) { const C = SNOWPATCH.cell, fi = clamp((x - P.x0) / C, 0, P.nx - 1.001), fj = clamp((z - P.z0) / C, 0, P.nz - 1.001), i = fi | 0, j = fj | 0, a = fi - i, b = fj - j, H = P.h, n = P.nx;
+  return (H[j * n + i] * (1 - a) + H[j * n + i + 1] * a) * (1 - b) + (H[(j + 1) * n + i] * (1 - a) + H[(j + 1) * n + i + 1] * a) * b; }
+function patchSurf(x, y, z) { const P = SNOWPATCH.mesh && patchAt(x, z, y); return P ? P.top + patchH(P, x, z) : null; }
+function patchStamp(x, y, z, r, keep) { const S = SNOWPATCH, P = S.mesh && patchAt(x, z, y); if (!P) return 0; const C = S.cell, rim = .25;
+  for (let j = Math.max(0, Math.floor((z - P.z0 - r - rim) / C)); j <= Math.min(P.nz - 1, Math.ceil((z - P.z0 + r + rim) / C)); j++) for (let i = Math.max(0, Math.floor((x - P.x0 - r - rim) / C)); i <= Math.min(P.nx - 1, Math.ceil((x - P.x0 + r + rim) / C)); i++) {
+    const k = j * P.nx + i, dd = Math.hypot(P.x0 + i * C - x, P.z0 + j * C - z), cap = P.b[k] * keep; if (dd < r) { if (P.h[k] > cap) P.h[k] = cap; } else if (dd < r + rim && P.b[k] > 0) P.h[k] = Math.min(P.b[k] * 1.5, P.h[k] + .02); }
+  S.dirty = 1; return 1; }
+function patchBuild(g) { const S = SNOWPATCH, C = S.cell; if (!S.list.length) return; let nv = 0; const pos = [], idx = [];
+  for (const P of S.list) { P.nx = Math.max(2, Math.ceil(P.w / C) + 1); P.nz = Math.max(2, Math.ceil(P.d / C) + 1); P.x0 = P.x - (P.nx - 1) * C / 2; P.z0 = P.z - (P.nz - 1) * C / 2; P.h = new Float32Array(P.nx * P.nz); P.b = new Float32Array(P.nx * P.nz); P.v0 = nv;
+    for (let j = 0; j < P.nz; j++) for (let i = 0; i < P.nx; i++) { const u = (P.x0 + i * C - P.x) / (P.w / 2), v = (P.z0 + j * C - P.z) / (P.d / 2), m = P.round ? Math.pow(u ** 4 + v ** 4, .25) : Math.max(Math.abs(u), Math.abs(v));
+      const k = j * P.nx + i, h = S.depth * (1 - smooth(.74, 1, m)) * (.85 + .15 * Math.sin(i * 1.7 + j * 2.3)); P.h[k] = P.b[k] = Math.max(0, h); pos.push(P.x0 + i * C, P.top + P.h[k] - (m > 1 ? .2 : 0), P.z0 + j * C); }
+    for (let j = 0; j < P.nz - 1; j++) for (let i = 0; i < P.nx - 1; i++) { const a = nv + j * P.nx + i, b = a + 1, c = a + P.nx, d = c + 1; idx.push(a, c, b, b, c, d); } nv += P.nx * P.nz; }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3).setUsage(THREE.DynamicDrawUsage)); geo.setIndex(idx); geo.computeVertexNormals();
+  const m = new THREE.Mesh(geo, snowTriMat('snow_snow', 2.5, 0xffffff, .85)); m.receiveShadow = true; m.castShadow = false; m.frustumCulled = false; g.add(m); S.mesh = m; }
+function patchStep(dt) { const S = SNOWPATCH; if (!S.mesh) return; S.acc += dt;
+  if (S.acc > .3) { const a = S.refill * S.acc; S.acc = 0; for (const P of S.list) for (let k = 0; k < P.h.length; k++) if (P.h[k] !== P.b[k]) { const d = P.b[k] - P.h[k]; P.h[k] = Math.abs(d) < a ? P.b[k] : P.h[k] + Math.sign(d) * a; S.dirty = 1; } }
+  if (!S.dirty) return; S.dirty = 0; const A = S.mesh.geometry.attributes.position; for (const P of S.list) for (let k = 0; k < P.h.length; k++) A.setY(P.v0 + k, P.top + P.h[k] - (P.b[k] <= 0 ? .2 : 0)); A.needsUpdate = true; S.mesh.geometry.computeVertexNormals(); }
+// the snow surface wherever a body is: a patch under him if there is one, else the field's pack
+function snowSurfY(x, y, z) { const ps = patchSurf(x, y, z); if (ps != null) return ps; const Z = SNOWZ; return Math.abs(x) < Z.size / 2 && Math.abs(z) < Z.size / 2 ? snowAt(x, z) * Z.depth : null; }
+function snowDig(x, y, z, r, keep) { if (patchStamp(x, y, z, r, keep)) return; const Z = SNOWZ; if (Math.abs(x) < Z.size / 2 && Math.abs(z) < Z.size / 2 && y < Z.depth + 1) { const s = snowAt(x, z); snowStamp(x, z, r, s * keep); } }
 function snowKitIce() { return SNOWKIT.iceM || (SNOWKIT.iceM = new THREE.MeshStandardMaterial({ map: texGet('snow_ice'), color: 0xd6f2ff, roughness: .12, metalness: .1, emissive: 0x1a6a80, emissiveIntensity: .45 })); }
 const SNOWZ = { paint: (() => { try { return !/[?&]paint=0\b/.test(location.search); } catch (e) { return true; } })() ? 1 : 0, bump: 7, want: 0, on: null, size: 160, res: 640, depth: 1.1, base: .5, drift: .42, pines: 46,     /* m1632: depth 1.1 m with a base fill of .5 (= the old .55 m) so DRIFTS can rise over it */ refill: .012, foot: .17, plough: .32, rim: .2, rimAdd: .14, drag: 2.6,
   flakes: 5000, box: 34, puffs: 1400,     /* m2003: 600 -> 1400 for the blasts */ fall: [.55, 1.2], flutter: .5, wind: [1.2, 0, .4], gust: 1.6 };
@@ -10745,6 +10771,7 @@ function snowTriMat(name, scale, col, rough, vc) { const m = new THREE.MeshStand
         diffuseColor.rgb *= mix(tc * ${vc ? '2.1' : '1.0'}, vec3(1.0), capK); }`); };
   return m; }
 function snowStage(g) {
+  SNOWPATCH.list = []; SNOWPATCH.mesh = null;
   const Z = SNOWZ, N = Z.res; Z.D = new Uint8Array(N * N); Z.B = new Uint8Array(N * N);
   // m1632: WIND-SHAPED DRIFTS AND BANKS -- the pack's resting depth is a field, not a sheet: long ridges stretched ALONG the wind (2.6x), banks
   // where the noise piles up, the base everywhere else; the refill returns to THIS, not to full. Flat round the spawn.
@@ -10821,6 +10848,7 @@ function snowStage(g) {
   try { willowBuild(g); } catch (e) { console.error('[melee] willow', e); note('WILLOW THREW ' + e.message); }     // m1740
   try { snowCliffs(g); } catch (e) { console.error('[melee] cliffs', e); note('CLIFFS THREW ' + e.message); }     // m2000
   try { snowKit(g); } catch (e) { console.error('[melee] snowkit', e); note('SNOWKIT THREW ' + e.message); }     // m2004
+  try { SNOWPATCH.mesh = null; patchBuild(g); } catch (e) { console.error('[melee] patches', e); note('PATCH THREW ' + e.message); }     // m15PS
   Z.on = { g }; Z.t = 0; Z.acc = 0; Z.breath = 1; }
 // m1740 (his: "a cool alien weeping willow -- a big one, with vines you can actually brush through, like actual chains, so there's a dynamic
 // to it; a big magical Japanese garden with a willow; put it in the snow level for now"): THE JIN WILLOW, pass 1, in the Snowfield.
@@ -10979,8 +11007,8 @@ function snowStamp(x, z, r, to) { const Z = SNOWZ, N = Z.res, cs = Z.size / N, c
 function snowSpray(x, y, z, n, vx, vy, vz, jit) { const A = SNOWZ.air; if (!A) return; const F = A.F; for (let k = 0; k < n; k++) { const i = A.NF + (F.nextP++ % A.NP);
     A.P[i * 3] = x + (Math.random() - .5) * .3; A.P[i * 3 + 1] = y; A.P[i * 3 + 2] = z + (Math.random() - .5) * .3; F.vx[i] = vx * (.6 + Math.random() * .6) + (Math.random() - .5) * jit; F.vy[i] = vy * (.5 + Math.random() * .8); F.vz[i] = vz * (.6 + Math.random() * .6) + (Math.random() - .5) * jit;
     F.life[i] = .7 + Math.random() * .7; A.S[i] = .05 + Math.random() * .08; A.A[i] = .9; } }
-function snowBlast(x, y, z, r, k) { const Z = SNOWZ; if (!Z.air || !Z.D || Math.abs(x) > Z.size / 2 || Math.abs(z) > Z.size / 2) return; const sy = snowAt(x, z) * Z.depth; if (y > sy + r + .6) return;     // only when it lands in the snow
-  snowStamp(x, z, r * .55, .03); const n = Math.round(110 * k); for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, d = Math.random() * r * .6, v = (2 + Math.random() * 5) * k;
+function snowBlast(x, y, z, r, k) { const Z = SNOWZ; if (!Z.air || !Z.D) return; const sy = snowSurfY(x, y, z); if (sy == null || y > sy + r + .6) return;     // only when it lands in snow (the field or a platform's patch, m15PS)
+  snowDig(x, y, z, r * .55, .05); const n = Math.round(110 * k); for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, d = Math.random() * r * .6, v = (2 + Math.random() * 5) * k;
     snowSpray(x + Math.cos(a) * d, sy + .1, z + Math.sin(a) * d, 1, Math.cos(a) * v, (4 + Math.random() * 5) * Math.sqrt(k), Math.sin(a) * v, 1); } }
 function snowPuff(x, y, z, n, up, sp) { const A = SNOWZ.air; if (!A) return; const F = A.F; for (let k = 0; k < n; k++) { const i = A.NF + (F.nextP++ % A.NP), a = Math.random() * 6.283, s = Math.random() * sp;
     A.P[i * 3] = x; A.P[i * 3 + 1] = y; A.P[i * 3 + 2] = z; F.vx[i] = Math.cos(a) * s; F.vz[i] = Math.sin(a) * s; F.vy[i] = up * (.5 + Math.random() * .7); F.life[i] = .8 + Math.random() * .6; A.S[i] = .05 + Math.random() * .07; A.A[i] = .9; } }
@@ -10999,18 +11027,30 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     if (p.grounded && !Z.wasG && (Z.lastVy || 0) < -6) { snowStamp(p.pos.x, p.pos.z, 1.1, .02); snowPuff(p.pos.x, under * Z.depth, p.pos.z, 40, 3.5, 3.5); }     // a landing digs a crater
   }
   Z.wasG = p.grounded; Z.lastVy = p.vel.y;
-  { const B = (p.melee || p.chargeGo || p.torn || p.slam || p.meleeAir) && typeof bladeSeg === 'function' ? bladeSeg() : null;     // m2003: a blade sweeping low throws snow along its way
-    if (B && inField) { const tip = muzzleWorld(), pv = Z.tipPrev; if (pv && dt > 0) { const vx = (tip.x - pv.x) / dt, vy = (tip.y - pv.y) / dt, vz = (tip.z - pv.z) / dt, sp2 = Math.hypot(vx, vz);
-        for (const u of [1, .7, .4]) { const q = _snBp.copy(pv).lerp(tip, 1).sub(B.a.clone().multiplyScalar((1 - u) * 1.0)), sy = snowAt(q.x, q.z) * Z.depth, h = q.y - sy;
-          if (h < 1.1 && sp2 > 3) { const n = Math.min(6, (1.1 - Math.max(0, h)) * sp2 * dt * 9); if (n > .2) snowSpray(q.x, sy + .05, q.z, Math.ceil(n), vx * .35, 2.5 + sp2 * .15, vz * .35, 1.2); if (h < .15) snowStamp(q.x, q.z, .22, Math.max(0, (sy - .25) / Z.depth)); } } }
-      Z.tipPrev = (Z.tipPrev || new THREE.Vector3()).copy(tip); } else Z.tipPrev = null;
-    if (p.torn && inField && p.pos.y < Z.depth + 1.5) { const a = t * 11, r = 1.4 + Math.random() * 1.2, x = p.pos.x + Math.cos(a) * r, z = p.pos.z + Math.sin(a) * r;     // the whirlwind: a spiralling ring of powder, the snow swept flat round him
-      snowSpray(x, snowAt(x, z) * Z.depth + .05, z, 3, -Math.sin(a) * 6, 4, Math.cos(a) * 6, 1.5); if (Math.random() < dt * 8) snowStamp(p.pos.x, p.pos.z, 1.3, .2); } }
+  // m15PS: ON A PLATFORM'S PATCH his feet, his body and a landing carve it, as on the ground
+  { const PP = p.grounded && SNOWPATCH.mesh ? patchAt(p.pos.x, p.pos.z, p.pos.y) : null;
+    if (PP && Math.abs(p.pos.y - PP.top) < .35) { const bn = rig.bones || {}; for (const nm of ['mixamorig_LeftToeBase', 'mixamorig_RightToeBase']) { const b = bn[nm]; if (!b) continue; b.getWorldPosition(_snF); const sy = patchSurf(_snF.x, _snF.y, _snF.z);
+        if (sy != null && _snF.y < sy + .05) { const had = sy - PP.top; patchStamp(_snF.x, _snF.y, _snF.z, Z.foot, .3); if (had > .15 && sp > .5 && Math.random() < .5) snowPuff(_snF.x, sy, _snF.z, 3, 1.6, 1.2); } }
+      if (sp > .4) patchStamp(p.pos.x, p.pos.y, p.pos.z, Z.plough * Math.min(1, sp / 4), .45); if (p.roll) patchStamp(p.pos.x, p.pos.y, p.pos.z, .6, .1);
+      if (!Z.wasPG && (Z.lastVy || 0) < -6) { patchStamp(p.pos.x, p.pos.y, p.pos.z, 1, .05); snowPuff(p.pos.x, PP.top + .2, p.pos.z, 34, 3.2, 3.2); } }
+    Z.wasPG = !!(PP && Math.abs(p.pos.y - PP.top) < .35); }
+  // m2003 + m15PS: anything that strikes low throws snow along its sweep -- the BLADE (three points along it) or, with no blade, his FISTS and FEET
+  { const atk = p.melee || p.chargeGo || p.torn || p.slam || p.meleeAir, B = atk && typeof bladeSeg === 'function' ? bladeSeg() : null, pts = Z.swPts || (Z.swPts = []); pts.length = 0;
+    if (B) { const tip = muzzleWorld(); for (const u of [1, .7, .4]) pts.push(['b' + u, tip.clone().sub(B.a.clone().multiplyScalar((1 - u) * 1.0))]); }
+    else if (atk && rig.bones) for (const nm of ['mixamorig_LeftHand', 'mixamorig_RightHand', 'mixamorig_LeftFoot', 'mixamorig_RightFoot']) { const b = rig.bones[nm]; if (b) pts.push([nm, b.getWorldPosition(new THREE.Vector3())]); }
+    const prev = Z.swPrev || (Z.swPrev = {}), seen = {};
+    for (const [key, q] of pts) { seen[key] = 1; const pv = prev[key]; if (pv && dt > 0) { const vx = (q.x - pv.x) / dt, vz = (q.z - pv.z) / dt, sp2 = Math.hypot(vx, vz), sy = snowSurfY(q.x, q.y, q.z);
+        if (sy != null) { const h = q.y - sy; if (h < 1.1 && sp2 > 3) { const n = Math.min(6, (1.1 - Math.max(0, h)) * sp2 * dt * (B ? 9 : 7)); if (n > .2) snowSpray(q.x, sy + .05, q.z, Math.ceil(n), vx * .35, 2.5 + sp2 * .15, vz * .35, 1.2); if (h < .15) snowDig(q.x, q.y, q.z, B ? .22 : .28, .3); } } }
+      prev[key] = (prev[key] || new THREE.Vector3()).copy(q); }
+    for (const k in prev) if (!seen[k]) delete prev[k];
+    if (p.torn && p.pos.y < 40) { const a = t * 11, r = 1.4 + Math.random() * 1.2, x = p.pos.x + Math.cos(a) * r, z = p.pos.z + Math.sin(a) * r, sy = snowSurfY(x, p.pos.y, z);     // the whirlwind: a spiralling ring of powder, the snow swept flat round him
+      if (sy != null && Math.abs(p.pos.y - sy) < 1.6) { snowSpray(x, sy + .05, z, 3, -Math.sin(a) * 6, 4, Math.cos(a) * 6, 1.5); if (Math.random() < dt * 8) snowDig(p.pos.x, p.pos.y, p.pos.z, 1.3, .4); } } }
   if (p.grounded && p.pos.y < .4 && pondIn(p.pos.x, p.pos.z) && !p.dragon && !p.wing) {     // m1997: on the ice he slides
     if (!Z.iceV) Z.iceV = new THREE.Vector2(p.vel.x, p.vel.z); const V = Z.iceV, k = 1 - Math.exp(-POND.grip * dt), wx = p.vel.x, wz = p.vel.z;
     V.x += (wx - V.x) * k; V.y += (wz - V.y) * k; p.pos.x += (V.x - wx) * dt; p.pos.z += (V.y - wz) * dt; p.vel.x = V.x; p.vel.z = V.y;
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
+  patchStep(dt);     // m15PS
   if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;
     for (let i = 0; i < PN.T.length; i++) { const P = PN.T[i], d = Math.hypot(p.pos.x - P.x, p.pos.z - P.z);

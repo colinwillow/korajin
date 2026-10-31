@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15PS -- PUSHABLE SNOW ON EVERY PLATFORM, and fists and feet throw snow (Oct 31 2026)
+*"The snow-covered stuff doesn't react -- it doesn't push snow around the way the ground does; and the melees that don't have the sword should push snow
+around too."* `SNOWPATCH`: every snow-topped platform (the 7 cliff blocks, both ice shelves, the bridge deck, the boulder steps, the spire mound -- 16)
+carries its own small pack, a height grid (.3 m cells, up to .34 m, falling to nothing at the rounded edge, the old pillow cap now a thin skin under it),
+all merged into ONE mesh. On a patch his toes carve prints, his body ploughs, a roll digs, a landing makes a crater (with a puff); it refills slowly.
+`snowSurfY` / `snowDig` pick the patch under a body or the field's pack, so the slashes, the whirlwind, the slam and the arrow blasts (m2003) now work
+on the platforms too. With NO blade, any attack tracks his hands and feet instead and they throw powder the same way. Also from the m2004 render: the
+grotto's snow crown (stray arcs) is gone, and the kit's pillars round off in plan, taper and lump like the cliffs. Rendered: 16 patches, 1 mesh.
+
 ## m2004 -- THE SNOW KIT: a grotto, a rock bridge, the standing stones, a crystal spire, snowy plants (Oct 31 2026)
 *"Keep going with the snow zone -- caves, ice crystals, snowy plants, alien structures; temples later."* `SNOWKIT` (four places with ids + a scatter, 6 draws):
 the GROTTO at (60, -14), a rock half-dome open to the west with an inside face, a ring of wall colliders, a dark swept floor, ice stalactites, glowing
