@@ -129,7 +129,7 @@ His: *"make duplicates of the texture so we can offset it by a noise pattern, to
   the island's rock, the paving (now on this material too) and the far islands. Every number is in `TROCK`.
 - The first pass was too faint to see (12-40 m noise on 40 m walls); it was proved live with an exaggerated test render, then tightened.
 - No draw or triangle change. Next, the same ask: the floating cones become irregular landmasses, then colour strips and crests.
-## m15LD -- ladders (stick up is up, touch to grab, off the rungs), the camera on stairs, air recovery after a blast; and the dead city functions cut
+## m1928 -- ladders (stick up is up, touch to grab, off the rungs), the camera on stairs, air recovery after a blast; and the dead city functions cut
 His screenshots and words (Oct 31): *"when I spin the camera round so I can see his belly, up on the left stick becomes down... it should always be
 up on a ladder"* / *"the ladder is going through the middle of him"* / *"touch the ladder and you're on it, press up to go up... at the bottom
 keep pressing down or jump and you're off"* / *"the camera stutters [on stairs] instead of an eased transition"* / *"a rocket sends you flying
