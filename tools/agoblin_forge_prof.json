@@ -307,6 +307,22 @@
    "edit": {
     "inPlace": 1
    }
+  },
+  {
+   "role": "fly_a",
+   "stem": "Falling_Idle",
+   "name": "Falling_Idle",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "fly_c",
+   "stem": "Floating",
+   "name": "Floating",
+   "edit": {
+    "inPlace": 1
+   }
   }
  ]
 }
