@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1919 -- THE SKY TEMPLE: the stone texture broken up by noise, and eroded (his)
+
+His: *"make duplicates of the texture so we can offset it by a noise pattern, to break up the repetitiveness -- eroded, basically."*
+- `templeRockMat` now samples the megalith texture THREE times -- as laid, slid .431 along the courses, and scaled x1.13 and shifted -- and a
+  world-space fbm noise (`TROCK.blendK`, ~12 m features) chooses between them, so no two stretches of wall repeat the same run of slabs.
+- EROSION on top, all in world space (indifferent to how a face was UV'd): a blotchy darkening (`blotch` .58-1.12 at ~5 m), vertical rain
+  STREAKS (`streakK`), and LICHEN patches tinted green-grey (`moss`). One shader (`onBeforeCompile`, one program key) for the temple's stone,
+  the island's rock, the paving (now on this material too) and the far islands. Every number is in `TROCK`.
+- The first pass was too faint to see (12-40 m noise on 40 m walls); it was proved live with an exaggerated test render, then tightened.
+- No draw or triangle change. Next, the same ask: the floating cones become irregular landmasses, then colour strips and crests.
+
 ## m1918 -- clean-out: the Weirdport city is no longer a world (and no longer loads behind the menu)
 His go: *"No, I don't need them... weirdport will keep it... now you got it, you can cut it."* The city lives on in
 `colinwillow/weirdport` (and `colinwillow/zap`).
