@@ -34,7 +34,7 @@ the cloth and dressing, 11 textures. This pass:
 - A storage yard behind the dome: crates (framed, banded, one stacked), four iron-banded barrels, sacks -- crates and barrels solid.
 - Process note: a label rename (`m1980` -> `m1981`) at pass 5 also rewrote another worker's kite labels and BUILD itself; fixed in the
   "Label m1982" commit. Rename only my own marker strings, never a bare build number.
-## m15WF -- the wings fly level, never lock upside down; the hangings calm
+## m1985 -- the wings fly level, never lock upside down; the hangings calm
 His words (Oct 31): *"he flies crooked, at a tilt; the new tassels go absolutely crazy -- I need damping; the double tap flips him as well as getting the suit
 out, he usually locks in upside down -- that might lead to the tilt."*
 - **UPSIDE DOWN:** an air flip still running when the wings opened kept turning the root on top of the flight (`airFlipPose` ran after `wingPose`). Opening
