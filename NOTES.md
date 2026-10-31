@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1954 -- THE SKY TEMPLE: the entrance is the main session's HERO DROP
+
+His: *"No, you should use the one that the other context window just made."* m1952's temple-only slam intro (`templeIntro` /
+`templeIntroStep`, the float and the auto `slamGo`, the pad lock in `templeTick`) is DELETED; the first build now calls `heroDrop(x, y, z,
+spawn.yaw, TEMPLE.intro.h)` (m1953: the falling loop, the superhero landing, the dust ring and the thud) from 20 m over the plaza spawn. A fall
+respawn is still a plain `templeHome`. Without Grumbo's clips `heroDrop` returns 0 and he simply stands at the spawn. Shipped unverified.
+
 ## m1952 -- THE SKY TEMPLE: the ENTRANCE -- he drops from the sky and SLAMS into the plaza
 
 His: *"For the entrance of the level he starts in the air like he's falling, and then he slams down to the ground -- when he's unarmed and you
