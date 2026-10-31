@@ -312,7 +312,7 @@ then start building the building, kinda like you built his home -- a ton of pass
 - [x] (m1808) a ring of rope bridges to every islet
 - [x] (m1814) eight calm samurai guards: doors, throne, rounds, lift, balcony
 - [x] (m1819) every tower has a room: armoury, library, storeroom, bunk room
-- [ ] townsfolk (non-fighters) on the lawns
+- [x] townsfolk (non-fighters) on the lawns -- m1966: six Toad Wanderers on lawn loops (`gcFolk`)
 - [x] **the way UP (m1794):** the Jinra lift -- bridge, gantry, a bronze cage on rails from the plateau; plaza steps, interiors, the FALLEN state, wide sails, colliders that follow the live turn
 - [ ] castle pass 1..N: the keep, the round towers and roofs, the walls and walkways, the bridges to the satellites, banners, awnings,
       the water-wheel, trees, interiors -- as many passes as the home had; FALLEN / RESTORED like every Red Hollows piece

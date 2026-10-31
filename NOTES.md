@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1966 -- THE SKY CASTLE'S TOWNSFOLK: six Toad Wanderers on the lawns (pass 20)
+
+His (yes to "townsfolk who aren't fighters, walking the lawns"). `gcFolk` (beside `gcGuards`, stepped from `gcastleStep`), numbers in `GCFOLK`:
+- Six `TOAD` bodies (m1812's village NPC, the hick's pacifist brain on ZAPK's clips), spawned while the castle is up and he is within 130 m,
+  gone when it falls. NOT in `HORDE.list`, never aggro.
+- Each walks its own `d.route` of four lawn spots on the ring r 19.5-22.5 (the plaza is r <= 17, a 0.5 m lip they cannot step; the towers
+  are at r ~29). Every spot is checked at spawn: ground within 1.6 m of Y0 and `resolveBoxes` clear at the body's radius.
+- `d.routeWait` (new, in `foeWander`): a route body may carry its own linger ([2, 6] s here) instead of m338's .4-2 s.
+- Struck, they flee -- but a flight past r 24.5 is called off (the rim), `callT` is held at 0 (no phone call, no heat), and one knocked
+  more than 25 m under the deck is let go.
+- Measured headless (`?hs=restored`, 30 s of `stepDummies`): 6 spawned, all on the lawn at r 19.1-22.5, y -0.3..+0.5 off Y0, routes
+  advancing, stuckT 0 throughout. Not looked at on a phone. Open: they don't talk to each other or react to the guards.
+
 ## m1965 -- THE SKY TEMPLE: the STORM -- rain, splashes on the floor, lightning
 
 His: *"It would be interesting to have rain and clouds and lightning... the rain falling, and the rain hitting the ground, weird little
