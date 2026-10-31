@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15JK -- THE JACKAL GUARDIAN, a spawnable kind (Oct 31 2026)
+## m1986 -- THE JACKAL GUARDIAN, a spawnable kind (Oct 31 2026)
 *"Well do this guy next as a guardian of the temple."* His four views -> Tripo (quads, P2 model) -> `hero.sh jackal --rot -90 --profile samurai`:
 ARP rig renamed 22/22 to mixamorig, Forge baked the samurai's 121 clips, hips 0% off. `models/characters/jackal_game.glb` (4.6 MB).
 `ARENA.kinds.JACKAL`: the samurai's duel brain and clip names on his body, h 2.6, hp 18, hitDmg 16, stunHits 3, jade beam. SPAWN > Jackal Guardian.
