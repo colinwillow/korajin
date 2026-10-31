@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1925 -- THE SKY TEMPLE route pass 2: the watchtowers are climbs, not ledge columns (TEMPLE_ROUTES.md)
+
+The towers' m1922 ledge columns were 9.75 m apart (3.9 design units x2.5) -- past every comfy number in the move table, a ladder you could
+not even climb. `templeClimbs` builds each tower's climb in METRES after the scale (`TCLIMB` holds every number):
+- FRONT TOWERS, SPIRALS (`climb: 'spiral'`): floating stones round the tower (4.5 m flat tops on small landmasses), each 3.2 m above the last
+  and ~5 m across -- a double jump (comfy 4.01 up / 9.98 across) -- starting on the side facing the temple and winding up (front-right the
+  other way round), the last a hop onto the deck's lip. 13 stones up the 41.5 m tower, 17 up the 56.5 m one.
+- BACK TOWERS, CHIMNEYS (`climb: 'chimney'`): a fin 4.6 m off the tower's OUTER face (the wall-chain gap), from the podium to just under the deck,
+  a REST ledge on the tower every 18 m inside the chimney, out over the deck's lip. (Their inner faces look at the core's corners -- no room.)
+  The podium's back side-rails ran right down those chimneys' floors and were cut back to the back edge.
+- A CHECKPOINT on every deck: fall off after a seal and you start again at that tower's top, not the plaza.
+- Unplayed. 47 draws on these frames.
+
 ## m1924 -- THE SKY TEMPLE: the ladders are gone; the golden path is a COURSE built from the move table (TEMPLE_ROUTES.md)
 
 His (m1923): *"There's a super high ladder you just climb and climb -- that defeats the whole purpose of this game. He can run up walls, jump

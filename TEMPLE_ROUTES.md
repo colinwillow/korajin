@@ -48,4 +48,5 @@ Kishotenketsu over the whole climb: INTRODUCE the chimney low, introduce the BAR
 - **Enemies by zone** (LEVELDESIGN layer 3): never on a rest pad, never firing at a chimney you cannot leave; archers on the bar platform's far side.
 
 ## Built
-- (m-next) the golden path 1-6, checkpoints, the ladders and the broken 8-10 m ledge columns removed. Unplayed.
+- (m1924) the golden path 1-6, checkpoints, the ladders and the broken 8-10 m ledge columns removed. Unplayed.
+- (m-pass2) the watchtowers: front two SPIRALS of floating stones (double-jump hops), back two CHIMNEYS with rest ledges; a checkpoint on every deck.
