@@ -36589,16 +36589,37 @@ function wingGlowTex() {
   WG.tex = new THREE.CanvasTexture(c); WG.tex.colorSpace = THREE.SRGBColorSpace;
   return WG.tex;
 }
+// m15WS (his: "style the wing suit more like a game -- Japanese inspired, rustic, older, ancient temple; a Chinese dragon, a Japanese samurai hut,
+// architectural"): a TEMPLE DRAGON-KITE on the same joints (the fold, the tips, the jets are unchanged). The pack is a lacquered SHRINE BOX with a flared
+// tiled roof, red corner posts and a gold ridge; each wing is three tapered WASHI panels -- painted in ink with dragon SCALES, a red sun on the root
+// panel and brush strokes (`wingWashiTex`) -- on red-lacquer leading SPARS with gold collars and dark wooden RIBS; each tip hangs a paper LANTERN with a
+// tassel, and the jets burn JADE. The airflow is gold embers. One canvas texture; the materials are shared.
+let _wWashi = null;
+function wingWashiTex() { if (_wWashi) return _wWashi; const cv = document.createElement('canvas'); cv.width = 512; cv.height = 256; const q = cv.getContext('2d');
+  q.fillStyle = '#efe3c6'; q.fillRect(0, 0, 512, 256); for (let k = 0; k < 900; k++) { q.fillStyle = 'rgba(150,120,80,' + (Math.random() * .06) + ')'; q.fillRect(Math.random() * 512, Math.random() * 256, 1 + Math.random() * 3, 1 + Math.random() * 9); }     // paper fibre
+  q.strokeStyle = 'rgba(30,24,22,.55)'; q.lineWidth = 2.2; for (let y = 40; y < 250; y += 26) for (let x = (y / 26 % 2) * 22; x < 520; x += 44) { q.beginPath(); q.arc(x, y, 22, Math.PI * 1.05, Math.PI * 1.95); q.stroke(); }     // the dragon's scales
+  q.fillStyle = 'rgba(178,40,32,.85)'; q.beginPath(); q.arc(110, 118, 54, 0, Math.PI * 2); q.fill();     // the red sun
+  q.strokeStyle = 'rgba(25,18,16,.8)'; q.lineCap = 'round'; for (let k = 0; k < 5; k++) { const x = 300 + k * 38; q.lineWidth = 7 - k * .6; q.beginPath(); q.moveTo(x, 50); q.quadraticCurveTo(x + 14, 110, x - 6, 170 + k * 8); q.stroke(); q.lineWidth = 4; q.beginPath(); q.moveTo(x - 12, 92); q.lineTo(x + 12, 98); q.stroke(); }     // brush strokes
+  q.strokeStyle = 'rgba(120,30,24,.9)'; q.lineWidth = 10; q.strokeRect(5, 5, 502, 246);     // the lacquered border
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return (_wWashi = t); }
 function wingBuild() {
   const g = new THREE.Group(); g.visible = false; g.name = 'wings'; scene.add(g);
-  const panel = new THREE.MeshStandardMaterial({ color: 0xff6fa5, roughness: .45, metalness: .15, side: THREE.DoubleSide });
-  const edge = new THREE.MeshStandardMaterial({ color: 0x5fe1ff, roughness: .35, metalness: .2, emissive: 0x1a6a80, emissiveIntensity: .6 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x2a1f3d, roughness: .6, metalness: .3 });
-  const metal = new THREE.MeshStandardMaterial({ color: 0x9aa3b8, roughness: .3, metalness: .8 });
-  for (const m of [panel, edge, dark, metal]) m.userData.noPaint = 1;
+  const washi = new THREE.MeshStandardMaterial({ map: wingWashiTex(), roughness: .85, metalness: 0, side: THREE.DoubleSide, emissive: 0x2a1a08, emissiveIntensity: .25 });
+  const lacq = new THREE.MeshStandardMaterial({ color: 0xa8281e, roughness: .38, metalness: .1 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x3a2418, roughness: .75, metalness: 0 });
+  const gold = new THREE.MeshStandardMaterial({ color: 0xc9a14a, roughness: .3, metalness: .85 });
+  const tile = new THREE.MeshStandardMaterial({ color: 0x343a44, roughness: .6, metalness: .2 });
+  const lamp = new THREE.MeshStandardMaterial({ color: 0xd8442e, roughness: .6, emissive: 0xff7a2a, emissiveIntensity: .7 });
+  for (const m of [washi, lacq, wood, gold, tile, lamp]) m.userData.noPaint = 1;
   const mesh = (geo, mat) => { const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.userData.noHole = 1; return m; };
-  const pack = mesh(new THREE.BoxGeometry(.30, .36, .11), dark); pack.position.set(0, 0, -.06); g.add(pack);
-  const stripe = mesh(new THREE.BoxGeometry(.31, .05, .12), edge); stripe.position.set(0, .08, -.06); g.add(stripe);
+  // THE SHRINE BOX: body, corner posts, a flared two-slab tiled roof, a gold ridge
+  const pack = mesh(new THREE.BoxGeometry(.26, .32, .12), wood); pack.position.set(0, -.01, -.07); g.add(pack);
+  for (const sx of [-1, 1]) for (const sz of [0, 1]) { const po = mesh(new THREE.CylinderGeometry(.014, .014, .34, 6), lacq); po.position.set(sx * .13, -.01, -.01 - sz * .12); g.add(po); }
+  for (const sx of [-1, 1]) { const rf = mesh(new THREE.BoxGeometry(.2, .018, .2), tile); rf.position.set(sx * .085, .19, -.07); rf.rotation.z = -sx * .42; g.add(rf);
+    const ev = mesh(new THREE.BoxGeometry(.05, .016, .2), tile); ev.position.set(sx * .185, .145, -.07); ev.rotation.z = -sx * .05; g.add(ev); }     // the eave turns up at the edge
+  const ridge = mesh(new THREE.BoxGeometry(.06, .03, .22), gold); ridge.position.set(0, .235, -.07); g.add(ridge);
+  const crest = mesh(new THREE.TorusGeometry(.045, .012, 6, 16), gold); crest.position.set(0, .03, -.135); g.add(crest);     // the gold mon on the back
+  const ribGeo = new THREE.CylinderGeometry(.007, .007, 1, 5), sparGeo = new THREE.CylinderGeometry(.016, .016, 1, 7).rotateZ(Math.PI / 2), collar = new THREE.CylinderGeometry(.022, .022, .03, 8).rotateZ(Math.PI / 2);
   for (const s of [1, -1]) {
     const k = s > 0 ? 0 : 1;
     let par = g;
@@ -36606,15 +36627,21 @@ function wingBuild() {
       const L = WING.seg[i], C = WING.chord[i], jt = new THREE.Group();
       if (i === 0) jt.position.set(s * .12, .10, -.14); else jt.position.set(s * WING.seg[i - 1], 0, -.012 * (i % 2 ? 1 : -1));
       par.add(jt); WG.j[k].push(jt);
-      const pl = mesh(new THREE.BoxGeometry(L, C, .022), panel); pl.position.set(s * L / 2, -C * .25, 0); jt.add(pl);
-      const le = mesh(new THREE.BoxGeometry(L, .035, .03), edge); le.position.set(s * L / 2, C * .25, -.004); jt.add(le);
+      // a TAPERED washi panel (its trailing edge shorter toward the tip), UV'd as one strip of the painting per segment
+      const sh = new THREE.Shape(); const a = C * .25, b = -C * .75, bt = -C * .75 * (i === 2 ? .45 : .72); sh.moveTo(0, a); sh.lineTo(L, a * .9); sh.lineTo(L, bt); sh.lineTo(0, b); sh.closePath();
+      const pg = new THREE.ShapeGeometry(sh); const uv = pg.attributes.uv, P = pg.attributes.position; for (let v = 0; v < P.count; v++) uv.setXY(v, (i + P.getX(v) / L) / 3, (P.getY(v) - b) / (a - b));
+      const pl = mesh(pg, washi); pl.scale.x = s; jt.add(pl);
+      const sp = mesh(sparGeo, lacq); sp.scale.set(L, 1, 1); sp.position.set(s * L / 2, a, -.004); jt.add(sp);     // the leading spar
+      const co = mesh(collar, gold); co.position.set(0, a, -.004); jt.add(co);
+      for (const f of [.4, .8]) { const rb = mesh(ribGeo, wood); const yb = lerp(b, bt, f); rb.scale.y = a - yb; rb.position.set(s * L * f, (a + yb) / 2, .003); jt.add(rb); }     // the ribs
       par = jt;
     }
     const tip = new THREE.Group(); tip.position.set(s * WING.seg[2], -.03, 0); par.add(tip);
-    const noz = mesh(new THREE.CylinderGeometry(.05, .032, .15, 10), metal); noz.position.set(0, -.06, 0); tip.add(noz);
-    const jet = new THREE.Sprite(new THREE.SpriteMaterial({ map: wingGlowTex(), color: 0xffffff, transparent: true,
-      blending: THREE.AdditiveBlending, depthWrite: false }));
-    jet.position.set(0, -.17, 0); jet.scale.setScalar(.3); jet.userData.noHole = 1; tip.add(jet);
+    const lan = mesh(new THREE.SphereGeometry(.05, 10, 8).scale(1, 1.25, 1), lamp); lan.position.set(0, -.08, 0); tip.add(lan);     // the paper lantern
+    for (const yy of [-.017, -.143]) { const cap = mesh(new THREE.CylinderGeometry(.024, .024, .016, 8), gold); cap.position.set(0, yy, 0); tip.add(cap); }
+    const tas = mesh(new THREE.CylinderGeometry(.006, .012, .12, 5), lacq); tas.position.set(0, -.21, 0); tip.add(tas);     // the tassel
+    const jet = new THREE.Sprite(new THREE.SpriteMaterial({ map: wingGlowTex(), color: 0x6dffc8, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    jet.position.set(0, -.08, 0); jet.scale.setScalar(.3); jet.userData.noHole = 1; tip.add(jet);
     WG.tips.push(tip); WG.jets.push(jet);
   }
   WG.g = g;
@@ -36631,7 +36658,7 @@ function wingFold(k) {
   }
 }
 const _wkv = new THREE.Vector3(), _wko = new THREE.Vector3(), _wkT = new THREE.Vector3(), _wkD = new THREE.Vector3();
-const WING_COL = [.45, .9, 1];
+const WING_COL = [1, .78, .35];     // m15WS: gold embers off the lanterns (was cyan)
 function wingFrame(dt) {
   const p = player, W = WING;
   W.open = clamp(W.open + (p.wing ? 1 : -1) * dt / W.openT, 0, 1);

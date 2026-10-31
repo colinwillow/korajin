@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15WS -- the wing-pack restyled: a temple dragon-kite
+His ask (Oct 31): *"style the wing suit more like a game -- Japanese inspired, rustic, older, ancient temple; a Chinese dragon, a Japanese samurai hut,
+architectural."*
+- `wingBuild` rebuilt on the SAME joints (`WG.j`, the tips, the jets -- the fold and the flight are untouched): the pack is a dark-wood SHRINE BOX with four
+  red-lacquer corner posts, a flared two-slab tiled roof with upturned eaves, a gold ridge and a gold mon on the back; each wing is three TAPERED washi
+  panels (`ShapeGeometry`, UV'd as one strip of the painting across the three) -- `wingWashiTex`: paper fibre, ink dragon SCALES, a red SUN on the root
+  panel, brush strokes, a lacquered border -- on red-lacquer leading spars with gold collars and two dark-wood ribs a panel; each tip hangs a paper LANTERN
+  (gold caps, a tassel), the jets burn JADE, the airflow is gold embers (`WING_COL`). One canvas texture, six shared materials.
+- Rendered folded (on his back) and open in flight.
+
 ## m1974 -- LIVE ROPE BRIDGES: the Rope Course's bridge, out in the Red Hollows (`RSPAN`, `rspAdd`)
 
 His: *"we built rope bridges with proper rope, dynamics and railings in another sandbox; some rope bridges in the Red Hollows don't have the
