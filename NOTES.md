@@ -86,6 +86,19 @@ them); ours were three stepped tiers -- Mayan steps, not his silhouette.
   pylons' vines hang from their top front edge; the monkey bars run 3 m further to land on the narrower roof (seal, checkpoint, chains, zip
   all still on it).
 - Next: L3, the gold rivets and panels over the stone (and the island's spare plaza, L2's second half).
+## m15AU -- sound after leaving the app: done the way his other games do it
+His words (Oct 31): *"the audio context still does not work if you navigate away and come back -- it's gone. I don't get why it's this game only,
+no other games."*
+- **The difference, found by reading his other game:** culture_war's `src/fx/sfx.js` makes ONE context and, in a tap, `resume()`s it when it is not
+  running -- nothing else. This file had grown three extra cures over m1097 / m1699 / m1760 / m1879, each a guess at this same bug:
+  `navigator.audioSession.type = 'playback'` (iOS then treats the page as a media player, which it interrupts on the way out), a silent `<audio>`
+  element played on return, and CLOSING the context and building a new one on every return (iOS allows only a few contexts a page). They are the
+  only things this game does that the working ones do not.
+- `SFXM.simple` 1 (default): one context, born in a real activation (touchend / click / key), never closed; any touch that finds it not
+  running calls `resume()` (+ the one-sample unlock). No audio session type, no silent element, no rebuild. The sound button shows TAP FOR SOUND
+  only while the context is not running, and a tap resumes it.
+- TOOLS > AUDIO SIMPLE / OLD FIX flips back to the old path (`mel.audiomode`), so if simple is worse on his phone it is one tap away.
+- Not testable here: a headless browser has no iOS audio session. His phone is the test.
 
 ## m1932 -- THE SKY TEMPLE look loop, pass 1: the palette (his: "run the loop detail pass -- I want it to look exactly like this")
 
