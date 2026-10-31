@@ -410,9 +410,10 @@ Mint is ONLY Jinra. The bottles, canisters, globe and crystals are the shared **
     way up: 14 FLOATING STONES spiralling from the lookout's deck (96 m) up to the island, each about a 2 m jump
   - [x] **pass 4 (m1979):** the HERO EXTERIOR -- the globe's Jinra alive (curling, rising wisps, `gjSwirl`) in a heavy copper frame with a capped, valved crown; the dome dressed (timber ribs, a copper pipe band on iron brackets, five glowing portholes, iron straps); the deck made heavy (fascia, capped corner posts); mint bulb strings under the awnings
   - [x] **pass 5 (m1982):** THE INTERIOR -- a doorway cut in the dome (porch, lamp, pent roof), an inner shell, ring colliders; curved shelves of vessels round the back, the PROCESSING VAT fed from the globe by a copper pipe pouring live Jinra, storage canisters and a globe tank, the shop counter, a rug, hanging lamps; the front counter split in two stalls. AND the deck could not be climbed from the front (one turned box's bounds walled the steps): now 1 m cells
+  - [x] **pass 6 (m1983):** THE GROUND AND UNDERSIDE -- a sandy cap (was a flat green disc), grass mounds and solid boulders round its edge, Jinra crystal outcrops glowing out of the rim and nine clusters hanging from the rock's measured underside, a flagstone path from the floating stones to the steps, a storage yard of crates, barrels and sacks behind the dome
 - **DONE WHEN:**
   - [ ] the exterior reads as the sheet's hero (dome, globe, pipes, deck, awnings, banners) from the lookout and from the valley
-  - [ ] the interior: shelves of bottles, the PROCESSING STATION (the dripping vat fed by pipes), the LARGE STORAGE gallery
+  - [x] the interior: shelves of bottles, the PROCESSING STATION (the dripping vat fed by pipes), storage (m1982; a separate LARGE STORAGE gallery is not built)
   - [ ] the floating stones are a fun climb (bobbing, measured jumps) and the island is framed with the peak and the valley
   - [ ] what it sells and what it does with Jinra (his call), wired to `COIN` / the Jinra he carries
   - [ ] his sign-off on the phone

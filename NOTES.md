@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1983 -- THE JINRA REFINERY, pass 6: the ground and the underside
+
+- The cap is SAND (`sandM`, painted) -- it was a flat green disc; the floating stones keep their green tops (the old `grass` material is
+  shared with them and bob-patched, so it is left alone).
+- 16 spots round the cap's edge, off the deck and the front: grass mounds (leaves paint) and every third a solid boulder.
+- Jinra CRYSTALS (`hwCrystal` in `M.jin`): five outcrops on the rim; nine clusters hanging under the island, each at the LOWEST rock vertex
+  within 1.6 m of its spot (measured off `islG`) -- placed by a typed depth they were buried inside the lobes and none showed.
+- A flagstone path from where the floating stones arrive (front edge) to the steps.
+- A storage yard behind the dome: crates (framed, banded, one stacked), four iron-banded barrels, sacks -- crates and barrels solid.
+- Process note: a label rename (`m1980` -> `m1981`) at pass 5 also rewrote another worker's kite labels and BUILD itself; fixed in the
+  "Label m1982" commit. Rename only my own marker strings, never a bare build number.
+
 ## m1982 -- THE JINRA REFINERY, pass 5: the interior, and the deck you could not climb onto
 
 - THE DOME IS A ROOM: the shell's triangles in a doorway (|x| < 1.15, under 2.45 m, front half) are dropped (`cut`), an inner BackSide shell
