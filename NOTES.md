@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15WL -- willow leaves: no outline, no cut-off leaves (Oct 31 2026)
+## m2002 -- willow leaves: no outline, no cut-off leaves (Oct 31 2026)
 His photo under the willow: *"I don't like the outline... and at the tips of the branches some leaves get cut off -- only whole leaves."* The leaf strip
 (`willowLeafTex`) lost its dark rim (gradient + a faint midrib only). The cut leaves had two causes: the old strip's top and bottom leaves ran off the
 canvas (clipped every tile), and each vine's V ended wherever its length fell. Now 8 leaves sit in clean 32 px cells (rotated leaf centred, half-height
