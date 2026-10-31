@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1964 -- THE SKY TEMPLE: real SKIES -- three generated 360 panoramas as background AND light (DAWN / DAY / STORM)
+
+His: *"Sunrise -- do we have an HDR already on this level? Clouds, lightning, sun... I don't think you're using one, that might add a lot. We
+have a few in the repo, but we could generate new ones."* Checked: the temple had NO sky image -- a gradient shader dome -- and its image-based
+light was the FORGE's sky at environment .35, so the gold and stone reflected a sky that was not the one on screen. Now three generated
+equirectangular panoramas (`gpt-image-2`, 1536x1024): `textures/temple_sky_dawn|day|storm.webp`, 2048x1024, made seamless at the left/right
+seam and RE-PROJECTED so the horizon (measured: the brightest row band, at .557-.582 of the art) is the equator. `templeSkyApply(name)` loads one
+as `scene.background` and as the IBL (`PMREMGenerator.fromEquirectangular` -> `scene.environment`, intensity per sky), hides the gradient dome,
+and matches the rest to it: the SUN light's direction (`_sunOff`) from where the disc is in the image (dawn's at u .206 measured; day's set by
+eye -- its brightest pixel was a cloud), never below 16 deg so a horizon sun still lights the fronts; its colour and strength; the hemisphere
+light; the fog colour (and a shorter fog for the storm); the cloud sea's under-colour; the cumulus heaps' tint. `TSKIES` holds every number.
+A SKY key under the TEMPLE key cycles DAWN / DAY / STORM live (no reload) and remembers the pick; default DAWN. Rain and lightning are next.
+Shipped unverified.
+
 ## m1962 -- THE SKY TEMPLE: everything left untextured, textured (palms, planks, rope, red frieze, jade, the halo's gold)
 
 His: *"The palm tree in the background, we could texture the bark and the leaves -- just go through the entire level and anything that's not
