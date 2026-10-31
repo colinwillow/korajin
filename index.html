@@ -35310,7 +35310,7 @@ function stepEase(dt) {
 // lead, so a flight becomes the straight ramp through its treads (no lag in a steady climb, no stair-steps). The camera rides the drawn height.
 // Off the ground, or on a jump bigger than a step, it lets go at once (physics owns the air).
 function stepRamp(dt, dy) { const p = player, y = p.pos.y, S = STEPUP;
-  // m15NS (his: "he still goes through the ground a little -- put a straight ramp at the TIPS of the stairs so he can't go through them"): the average of the
+  // m1958 (his: "he still goes through the ground a little -- put a straight ramp at the TIPS of the stairs so he can't go through them"): the average of the
   // ground ran through the MIDDLE of each step, half a riser under the noses. The ramp is now the line through the NOSES: the slope `k` across the window,
   // then the upper envelope max(g(o) - k*o) -- on a flight that is the straight line touching every step's edge; on the flat it is his own height.
   if (!p.grounded || Math.abs(dy) > MOVE.step * 1.6) { p.rampY = null; p.stepOff = damp(p.stepOff || 0, 0, .04, dt); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; return; }

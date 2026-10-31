@@ -20,7 +20,7 @@ Fixed: the sky bridge's walls and roof are ~1.2 m pieces that follow the drawn s
 sphere; the head stops at the face and the snout has its own small box; the stones' squares are .8 r (corners on the rim). After: those are gone;
 what is left is centimetres at stair-tread edges and the rope rails (the rope is the drawn thing). The eroded megaliths (m1955) did not show up
 (their tops sit within .3 m of their boxes). Shipped unverified.
-## m15NS -- stairs: he rides the line through the step NOSES (no sinking); leans back more going down
+## m1958 -- stairs: he rides the line through the step NOSES (no sinking); leans back more going down
 His words (Oct 31, photo going down the temple stair): *"I figured he would lean back more, and he still goes through the ground a little -- he needs to
 just be on top of the stairs; put a collider that's a straight ramp at the tips of the stairs so he can't go through them."*
 - `stepRamp`: the drawn height was the AVERAGE of the ground round him -- a line through the middle of each step, half a riser under the noses. It is
