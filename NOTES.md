@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15WF -- wing suit: the cape rides over the pack, a flip finishes into the wings, the up/down flick is a TUCK (Oct 31 2026)
+*"Make the cape not poke through."* The pack is two body spheres for the cape springs while it is drawn (`WING.capeR` .2 of the pack scale, at the box's
+top and bottom). *"When I flip and then pull out the wing suit he pops to the pose, not finishing the flip."* `wingStart` keeps the air flip's axis and
+angle (`p.wFlip`) and runs it on to its whole turn at its own rate (min 7 rad/s) on top of the flight pose, and the body slerps in from the frame before
+(`p.wingIn`, `WING.finT` .35 s). *"Flick up and down does really big loops -- temporarily pull in the wings, do the flip, wings out again."* The loop is
+now `k: 'tuck'`: the flight path holds (pitch levels), the body turns one whole flip about its side axis in `WING.tuckT` .75 s (up = back, down = front),
+and the wings fold to `tuckFold` .12 in the first quarter and open over the last 30%. The side rolls are unchanged. Shipped unverified.
+
 ## m1992 -- THE MAMMOTH in the game (Oct 31 2026)
 *"Run this through Tripo and Auto-Rig Pro if they have a quadruped -- this could be like his horse."* ARP's humanoid path does not fit four legs, so
 `blender-addons/pipeline/mammoth_rig.py` builds the rig from his MEASURED feet (the four clusters in the bottom 8%), heat weights, and keys the clips
