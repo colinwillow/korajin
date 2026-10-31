@@ -7675,7 +7675,7 @@ const ARENA = {
     CEO: { t: 'The CEO', sub: 'MORPH him: the boss super transform', civ: 'CEO', both: 1, beam: [1, .8, .3] },
     CEOALIEN: { bones: 'reptile', t: 'The CEO, unleashed', sub: 'his reptilian self', file: 'models/characters/ceo_alien.glb', weapon: 'models/weapons/w_brute_cleaver.glb', h: 2.3, hp: 18, hitDmg: 20, beam: [1, .8, .3], noShield: 1 },
     // m974: BEASTS -- his robits creatures, through the doors, on their own brains (`beastStep`)
-    MAMMOTH: { creature: 'mammoth', t: 'Mammoth', sub: 'charges and stomps', file: 'models/creatures/mammoth.glb', h: 4.4, hp: 26, hitDmg: 20, beam: [.9, .7, .4], noShield: 1 },     // m15MM
+    MAMMOTH: { creature: 'mammoth', t: 'Mammoth', sub: 'charges and stomps', file: 'models/creatures/mammoth.glb', h: 4.4, hp: 26, hitDmg: 20, beam: [.9, .7, .4], noShield: 1 },     // m1992
     DOG: { creature: 'dog', t: 'Three-Headed Dog', sub: 'bites and lunges', file: 'models/creatures/3_headed_dog.glb', h: 2.3, hp: 16, hitDmg: 16, beam: [1, .45, .2], noShield: 1 },
     DRAGON: { creature: 'dragon', t: 'Blue Dragon', sub: 'fireballs', file: 'models/creatures/blue_dragon.glb', h: 3.2, hp: 20, hitDmg: 18, beam: [.3, .6, 1], noShield: 1 },
     MECH: { creature: 'mech', t: 'Mech Lightning Dragon', sub: 'flies, calls lightning', file: 'models/creatures/mech_lightning_dragon.glb', h: 2.2, hp: 14, hitDmg: 14, beam: [.5, .85, 1], noShield: 1 },
@@ -9782,7 +9782,7 @@ function arenaDoorStep(dt) {
 // through `dummyBlow` like any body; `beastHurt` turns it into a flinch, a stun meter (`stunAt`) that ends in `dizzy` (and the
 // finisher: dizzy sets `d.exposed`), or `death`, then he sinks out. `ARENA.beast` holds every number.
 ARENA.beast = {
-  // m15MM: THE MAMMOTH (his concept -> Tripo quads -> `mammoth_rig.py`: a quadruped rig placed from his measured feet, clips keyed in Blender --
+  // m1992: THE MAMMOTH (his concept -> Tripo quads -> `mammoth_rig.py`: a quadruped rig placed from his measured feet, clips keyed in Blender --
   // Mixamo has none). Slow and heavy: a walk, a trot for the charge, the STOMP (rears, slams) as his attack and his entrance. Later: his mount.
   mammoth: { r: 2.1, reach: 3.4, speed: 4.6, tsMax: 1.25, hitAt: .62, lunge: 2, stunAt: 9, dizzyT: 3, think: [.45, 1], stomp: 1.6, pitch: .45,
     clips: { idle: 'idle', rest: ['idle'], run: 'trot', walk: 'walk', atk: ['stomp'], hit: 'hit', dizzy: 'dizzy', death: 'death', entrance: 'stomp' } },
@@ -9825,7 +9825,7 @@ function beastPrep(K) {     // trim the padding off every clip, de-drift the loo
     out.push(c.name + ' ' + c.duration.toFixed(2));
   }
   P.proto.updateMatrixWorld(true);
-  const hb = P.proto.getObjectByName('Bip001_Head') || P.proto.getObjectByName('head'), pb = P.proto.getObjectByName('Bip001_Pelvis') || P.proto.getObjectByName('hips');     // m15MM: the mammoth's own rig names
+  const hb = P.proto.getObjectByName('Bip001_Head') || P.proto.getObjectByName('head'), pb = P.proto.getObjectByName('Bip001_Pelvis') || P.proto.getObjectByName('hips');     // m1992: the mammoth's own rig names
   if (hb && pb) { const h = hb.getWorldPosition(new THREE.Vector3()), p = pb.getWorldPosition(new THREE.Vector3()); P.faceOff = -Math.atan2(h.x - p.x, h.z - p.z); }
   console.log('[melee] beast ' + K.creature + ': x' + P.scale.toFixed(3) + ', face ' + (P.faceOff * 180 / Math.PI).toFixed(0) + ' deg | ' + out.join(', '));
 }

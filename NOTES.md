@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15MM -- THE MAMMOTH in the game (Oct 31 2026)
+## m1992 -- THE MAMMOTH in the game (Oct 31 2026)
 *"Run this through Tripo and Auto-Rig Pro if they have a quadruped -- this could be like his horse."* ARP's humanoid path does not fit four legs, so
 `blender-addons/pipeline/mammoth_rig.py` builds the rig from his MEASURED feet (the four clusters in the bottom 8%), heat weights, and keys the clips
 (Mixamo has no quadrupeds): idle, walk, trot, stomp, and now hit, dizzy and death (he buckles and rolls onto his side). 6.5 MB -> 0.9 MB
