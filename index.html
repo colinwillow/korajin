@@ -10617,7 +10617,7 @@ const SNOWCLIFF = { area: [-26, 40, -84, -42],
     { id: 'cliff', x: 6, z: -73, w: 56, d: 14, h: 9.5 }, { id: 'crag', x: 4, z: -79, w: 22, d: 8, h: 13.5 }, { id: 'spur', x: -16, z: -63, w: 9, d: 8, h: 6.8 } ],
   shelves: [ { id: 'shelf1', x: 6, z: -63, w: 14, d: 6.5, y: 6.0, t: .7 }, { id: 'shelf2', x: 24, z: -62.5, w: 8, d: 5, y: 7.8, t: .6 } ],
   falls: { x: 31, w: 6, top: 9.5, z: -66 }, lair: { x: 4, z: -75, w: 5, h: 4.6 } };
-function cliffIn(x, z, m) { const A = SNOWCLIFF.area; m = m || 0; return x > A[0] - m && x < A[1] + m && z > A[2] - m && z < A[3] + m; }
+function cliffIn(x, z, m) { const A = SNOWCLIFF.area; m = m || 0; if (x > A[0] - m && x < A[1] + m && z > A[2] - m && z < A[3] + m) return true; for (const P of SNOWKIT.places) if (Math.hypot(x - P.x, z - P.z) < P.r + m) return true; return false; }
 function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap = [], ice = [], dark = [];
   // m2000: not boxes -- every block TAPERS (wider at the foot), its corners ROUND off (a superellipse in plan), and its faces are pushed by 3D noise
   // at three scales; the top stays flat to walk on, the lip only a little ragged
@@ -10662,6 +10662,66 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
     const ms = new THREE.Mesh(geo, m); ms.castShadow = shadow; ms.receiveShadow = true; g.add(ms); return ms; };
   put(rock, mat.rock, true); put(cap, mat.cap, true); put(ice, mat.ice, true); put(dark, mat.dark, false);
   SNOWZ.cliff = { C }; }     /* no boxGrid() here: the stage builds before BGRID exists (its own build re-grids) */
+// m15KT: THE SNOW KIT (his: "keep going with the snow zone -- caves, ice crystals, snowy plants, alien structures; temples later"). Four PLACES and a
+// scatter, each from its own table, merged per material (rock / snow / ice / glow / plant / dark = 6 draws for all of it):
+//   GROTTO      a rock half-dome cave open to the west, deep enough to walk into: ice stalactites, glowing crystals, an alien shrine stone at the back
+//   BRIDGE      a natural rock bridge 6 m up between two pillars, climbed by four boulder steps (1.4 / 2.8 / 4.2 / 5.4), icicles under its span
+//   STONES      a ring of seven standing stones (3-5.5 m) with glowing rune strips, round a floating ice crystal that turns
+//   SPIRE       a crystal spire 15 m tall on a rock mound, the mound climbable in two steps (2.2, 4.0)
+//   PLANTS      snow shrubs (lumpy blobs under white caps), frost ferns (fans of curled fronds), alien GLOW BULBS (teal orbs on stalks) -- on the ground,
+//               on the bridge, the spire's mound and the cliff ledges (VERTICALITY)
+const SNOWKIT = { places: [{ id: 'grotto', x: 60, z: -14, r: 10 }, { id: 'bridge', x: -46, z: 22, r: 10 }, { id: 'stones', x: -44, z: 52, r: 12 }, { id: 'spire', x: 56, z: 48, r: 8 }],
+  shrubs: 70, ferns: 50, bulbs: 26, spin: null };
+function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { rock: [], cap: [], ice: [], glow: [], plant: [], dark: [] }, box = (x0, x1, y0, y1, z0, z1) => BOXES.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1 });
+  const nz = (x, y, z) => Math.sin(x * 1.1 + z * .7 + y * .4) * .45 + Math.sin(z * 2.3 - y * 1.6 + x * .6) * .3 + Math.sin(x * 4.1 + y * 3.3 - z * 1.3) * .15;
+  const lump = (geo, k) => { const P = geo.attributes.position; for (let i = 0; i < P.count; i++) { const x = P.getX(i), y = P.getY(i), z = P.getZ(i), n = nz(x, y, z) * k; P.setXYZ(i, x + n, y + n * .4, z + n * .8); } geo.computeVertexNormals(); return geo; };
+  const pillar = (x, z, w, d, h, capOn = 1) => { L.rock.push(lump(new THREE.BoxGeometry(w, h, d, 3, Math.max(2, Math.round(h)), 3).translate(x, h / 2, z), .35)); box(x - w / 2, x + w / 2, 0, h, z - d / 2, z + d / 2);
+    if (capOn) L.cap.push(lump(new THREE.CylinderGeometry(Math.max(w, d) * .62, Math.max(w, d) * .66, .35, 9).scale(w / Math.max(w, d), 1, d / Math.max(w, d)).translate(x, h + .1, z), .08)); };
+  const crystal = (x, y, z, s, tilt, mat) => { const n = 3 + Math.floor(R() * 3); for (let k = 0; k < n; k++) { const h = s * (.6 + R() * .8), r = h * .12, a = R() * 6.28, t = tilt + R() * .45;
+      for (const q of [new THREE.CylinderGeometry(r, r, h, 6).translate(0, h / 2, 0), new THREE.ConeGeometry(r, r * 2.2, 6).translate(0, h + r * 1.1, 0)]) { q.rotateZ(t * Math.cos(a)).rotateX(t * Math.sin(a)).translate(x, y, z); (mat || L.ice).push(q); } } };
+  const icicles = (x0, x1, y, z, n) => { for (let k = 0; k < n; k++) { const l = .3 + R() * 1.1; L.ice.push(new THREE.ConeGeometry(.07 + R() * .08, l, 5).rotateX(Math.PI).translate(x0 + R() * (x1 - x0), y - l / 2, z + (R() - .5) * .6)); } };
+  const P = {}; for (const q of K.places) P[q.id] = q;
+  // GROTTO: a half-dome shell (open to the west), its wall a ring of colliders
+  { const G = P.grotto, Rr = 7, H = 5.6, open = 0, half = 1.05;     // three's sphere puts phi at x = -cos(phi), z = sin(phi): the gap round phi 0 faces -X (west, toward the field)
+    const sh = new THREE.SphereGeometry(Rr, 28, 12, open + half, Math.PI * 2 - half * 2, 0, Math.PI / 2); sh.scale(1, H / Rr, 1); { const Pp = sh.attributes.position; for (let i = 0; i < Pp.count; i++) { const x = Pp.getX(i), y = Pp.getY(i), z = Pp.getZ(i), n = nz(x * .8, y, z * .8); const k = 1 + n * .14; Pp.setXYZ(i, x * k, y * (1 + n * .08), z * k); } sh.computeVertexNormals(); }
+    const inner = sh.clone(); inner.scale(.86, .9, .86); { const ix = inner.index.array; for (let i = 0; i < ix.length; i += 3) { const t = ix[i]; ix[i] = ix[i + 2]; ix[i + 2] = t; } inner.computeVertexNormals(); }     // the inside face (flipped), so the dome reads from within
+    L.rock.push(sh.translate(G.x, 0, G.z)); L.rock.push(inner.translate(G.x, 0, G.z));
+    L.cap.push(new THREE.SphereGeometry(Rr * 1.02, 24, 6, open + half + .1, Math.PI * 2 - half * 2 - .2, 0, .55).scale(1, H / Rr * 1.02, 1).translate(G.x, .05, G.z));     // snow on its crown
+    for (let k = 0; k < 18; k++) { const a = open + half + (k + .5) / 18 * (Math.PI * 2 - half * 2), cx = G.x - Math.cos(a) * Rr * .93, cz = G.z + Math.sin(a) * Rr * .93; box(cx - .9, cx + .9, 0, H * .8, cz - .9, cz + .9); }
+    L.dark.push(new THREE.CircleGeometry(Rr * .84, 24).rotateX(-Math.PI / 2).translate(G.x, .04, G.z));     // a dark rock floor, swept of snow
+    for (let k = 0; k < 22; k++) { const a = R() * 6.28, d = R() * Rr * .7, l = .4 + R() * 1.5; L.ice.push(new THREE.ConeGeometry(.1 + R() * .12, l, 5).rotateX(Math.PI).translate(G.x + Math.cos(a) * d, H * .86 * Math.sqrt(1 - (d / Rr) ** 2) - l / 2, G.z + Math.sin(a) * d)); }
+    for (const [a, d, sz] of [[.4, 5, 1.6], [-.5, 5.2, 1.9], [.0, 5.6, 1.2], [1.2, 4.4, 1.4], [-1.3, 4.5, 1.5]]) crystal(G.x + Math.cos(a) * d, 0, G.z + Math.sin(a) * d, sz, .5, L.glow);
+    // the SHRINE STONE at the back: a dark slab, a glowing ring set into it
+    L.rock.push(lump(new THREE.BoxGeometry(1.4, 3.2, .8, 2, 3, 2).translate(G.x + 4.6, 1.6, G.z), .12)); box(G.x + 4.2, G.x + 5, 0, 3.2, G.z - .7, G.z + .7);
+    L.glow.push(new THREE.TorusGeometry(.42, .07, 6, 20).rotateY(Math.PI / 2).translate(G.x + 4.18, 2.1, G.z)); }
+  // BRIDGE: two pillars, a deck 6 m up, boulder steps
+  { const B = P.bridge; pillar(B.x - 6, B.z, 3, 3.2, 6, 0); pillar(B.x + 6, B.z, 3.2, 3, 6, 0);
+    L.rock.push(lump(new THREE.BoxGeometry(15.5, 1.3, 3.2, 10, 2, 3).translate(B.x, 6 - .65, B.z), .25)); box(B.x - 7.75, B.x + 7.75, 4.7, 6, B.z - 1.6, B.z + 1.6);
+    L.cap.push(lump(new THREE.BoxGeometry(15.3, .3, 3.0, 10, 1, 3).translate(B.x, 6.1, B.z), .06)); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z + 1.4, 26); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z - 1.4, 18);
+    [[1.4, -10.5, 3.5], [2.8, -12.5, 6.2], [4.2, -11, 8.8], [5.4, -8.6, 10.2]].forEach(([h, dx, dz]) => pillar(B.x + dx, B.z + dz - 6, 2.4, 2.4, h)); }
+  // STONES: the ring, and its floating crystal
+  { const S = P.stones; for (let k = 0; k < 7; k++) { const a = k / 7 * Math.PI * 2 + .2, x = S.x + Math.cos(a) * 9, z = S.z + Math.sin(a) * 9, h = 3 + R() * 2.5, w = 1.1 + R() * .5;
+      const geo = lump(new THREE.BoxGeometry(w, h, .7, 2, 4, 2), .1); geo.rotateY(-a + Math.PI / 2); geo.rotateZ((R() - .5) * .12); geo.translate(x, h / 2 - .2, z); L.rock.push(geo); box(x - .6, x + .6, 0, h - .2, z - .6, z + .6);
+      for (let j = 0; j < 3; j++) { const rr = new THREE.BoxGeometry(w * .5, .12, .74); rr.rotateY(-a + Math.PI / 2); rr.translate(x, h * (.35 + j * .18), z); L.glow.push(rr); }
+      L.cap.push(new THREE.BoxGeometry(w * 1.05, .18, .78).rotateY(-a + Math.PI / 2).translate(x, h - .14, z)); }
+    const cg = []; crystal(0, -2.2, 0, 3.4, .15, cg); const cm = new THREE.Mesh(mergeGeometries(cg.map(q => q.index ? q.toNonIndexed() : q)), snowKitIce()); cm.position.set(S.x, 5.5, S.z); g.add(cm); K.spin = cm; }
+  // SPIRE: a mound in two steps, a tall stack of crystals
+  { const S = P.spire; pillar(S.x, S.z, 9, 9, 2.2); pillar(S.x + 1, S.z - .5, 5.5, 5.5, 4); crystal(S.x + 1, 4, S.z - .5, 9, .08); crystal(S.x + 1, 4, S.z - .5, 15, .02); crystal(S.x - 3, 2.2, S.z + 3, 3, .4); }
+  // PLANTS
+  const ok = (x, z) => Math.abs(x) < 76 && Math.abs(z) < 76 && Math.hypot(x, z - 8) > 10 && Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) > WILLOW.ter + 3 && !pondIn(x, z, 2) && !cliffIn(x, z, 1);
+  const tiers = [[4, 2.0, -48, 6], [16, 3.8, -55, 4], [-16, 6.8, -63, 3], [P.bridge.x, 6.1, P.bridge.z, 6], [P.spire.x, 2.2, P.spire.z, 4]];     // high places to put plants on
+  const at = () => { if (R() < .16) { const T = tiers[Math.floor(R() * tiers.length)]; return [T[0] + (R() - .5) * T[3], T[1], T[2] + (R() - .5) * T[3] * .5]; } for (let k = 0; k < 20; k++) { const x = (R() - .5) * 150, z = (R() - .5) * 150; if (ok(x, z)) return [x, snowAt(x, z) * Z.depth - .15, z]; } return null; };
+  for (let i = 0; i < K.shrubs; i++) { const q = at(); if (!q) continue; const s = .5 + R() * .8; for (let k = 0; k < 3; k++) { const b = plantBlob(s * (.7 + R() * .4), 2300 + i * 3 + k, 1); b.translate(q[0] + (R() - .5) * s, q[1] + s * .45, q[2] + (R() - .5) * s); L.plant.push(b);
+      const c = plantBlob(s * .62, 2400 + i * 3 + k, 1); c.scale(1, .45, 1); c.translate(b.boundingBox ? 0 : 0, 0, 0); b.computeBoundingBox(); c.translate((b.boundingBox.min.x + b.boundingBox.max.x) / 2, b.boundingBox.max.y - s * .12, (b.boundingBox.min.z + b.boundingBox.max.z) / 2); L.cap.push(c); } }
+  for (let i = 0; i < K.ferns; i++) { const q = at(); if (!q) continue; const n = 5 + Math.floor(R() * 4), s = .6 + R() * .7; for (let k = 0; k < n; k++) { const a = k / n * 6.28 + R() * .3, fr = new THREE.ConeGeometry(.07 * s, 1.1 * s, 4, 3); const Pp = fr.attributes.position;
+      for (let j = 0; j < Pp.count; j++) { const y = Pp.getY(j) / (1.1 * s) + .5; Pp.setZ(j, Pp.getZ(j) + y * y * .45 * s); } fr.translate(0, .55 * s, 0); fr.rotateX(.75); fr.rotateY(a); fr.translate(q[0], q[1] + .1, q[2]); fr.computeVertexNormals(); L.plant.push(fr); } }
+  for (let i = 0; i < K.bulbs; i++) { const q = at(); if (!q) continue; const n = 2 + Math.floor(R() * 4); for (let k = 0; k < n; k++) { const h = .5 + R() * 1.3, x = q[0] + (R() - .5) * 1.2, z = q[2] + (R() - .5) * 1.2, lean = (R() - .5) * .4;
+      L.plant.push(new THREE.CylinderGeometry(.03, .05, h, 5).translate(0, h / 2, 0).rotateZ(lean).translate(x, q[1], z)); L.glow.push(new THREE.SphereGeometry(.1 + R() * .1, 8, 6).translate(-Math.sin(lean) * h, Math.cos(lean) * h, 0).translate(x, q[1], z)); } }
+  const mats = { rock: snowTriMat('snow_rock', 2, 0xd0d6e4, .95), cap: snowTriMat('snow_snow', 2.5, 0xffffff, .85), ice: snowKitIce(), glow: new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false }),
+    plant: snowTriMat('snow_needles', 1.1, 0xb8d0c8, .9), dark: new THREE.MeshStandardMaterial({ color: 0x2a3340, roughness: .95 }) };
+  for (const k in L) { if (!L[k].length) continue; const geo = mergeGeometries(L[k].map(q => { q = q.index ? q.toNonIndexed() : q; for (const a of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(a)) q.deleteAttribute(a); if (!q.attributes.uv) q.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(q.attributes.position.count * 2), 2)); return q; }));
+    const m = new THREE.Mesh(geo, mats[k]); m.castShadow = k !== 'glow' && k !== 'dark'; m.receiveShadow = true; g.add(m); } }
+function snowKitIce() { return SNOWKIT.iceM || (SNOWKIT.iceM = new THREE.MeshStandardMaterial({ map: texGet('snow_ice'), color: 0xd6f2ff, roughness: .12, metalness: .1, emissive: 0x1a6a80, emissiveIntensity: .45 })); }
 const SNOWZ = { paint: (() => { try { return !/[?&]paint=0\b/.test(location.search); } catch (e) { return true; } })() ? 1 : 0, bump: 7, want: 0, on: null, size: 160, res: 640, depth: 1.1, base: .5, drift: .42, pines: 46,     /* m1632: depth 1.1 m with a base fill of .5 (= the old .55 m) so DRIFTS can rise over it */ refill: .012, foot: .17, plough: .32, rim: .2, rimAdd: .14, drag: 2.6,
   flakes: 5000, box: 34, puffs: 1400,     /* m2003: 600 -> 1400 for the blasts */ fall: [.55, 1.2], flutter: .5, wind: [1.2, 0, .4], gust: 1.6 };
 try { if (/[?&]zone=snow\b/.test(location.search)) SNOWZ.want = 1; } catch (e) {}
@@ -10760,6 +10820,7 @@ function snowStage(g) {
   }
   try { willowBuild(g); } catch (e) { console.error('[melee] willow', e); note('WILLOW THREW ' + e.message); }     // m1740
   try { snowCliffs(g); } catch (e) { console.error('[melee] cliffs', e); note('CLIFFS THREW ' + e.message); }     // m2000
+  try { snowKit(g); } catch (e) { console.error('[melee] snowkit', e); note('SNOWKIT THREW ' + e.message); }     // m15KT
   Z.on = { g }; Z.t = 0; Z.acc = 0; Z.breath = 1; }
 // m1740 (his: "a cool alien weeping willow -- a big one, with vines you can actually brush through, like actual chains, so there's a dynamic
 // to it; a big magical Japanese garden with a willow; put it in the snow level for now"): THE JIN WILLOW, pass 1, in the Snowfield.
@@ -10950,6 +11011,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     V.x += (wx - V.x) * k; V.y += (wz - V.y) * k; p.pos.x += (V.x - wx) * dt; p.pos.z += (V.y - wz) * dt; p.vel.x = V.x; p.vel.z = V.y;
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
+  if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m15KT
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;
     for (let i = 0; i < PN.T.length; i++) { const P = PN.T[i], d = Math.hypot(p.pos.x - P.x, p.pos.z - P.z);
       if (P.cap > .99 && fast && d < 1.9 * P.s && p.pos.y < 3) { P.cap = 0; P.t = 0; for (let k = 0; k < 3; k++) snowPuff(P.x, (2.4 + k * 1.15) * P.s, P.z, 30, 1.2, 2.2); snd('thud', { g: .35, r: .6, x: P.x, z: P.z }); }

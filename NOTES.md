@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15KT -- THE SNOW KIT: a grotto, a rock bridge, the standing stones, a crystal spire, snowy plants (Oct 31 2026)
+*"Keep going with the snow zone -- caves, ice crystals, snowy plants, alien structures; temples later."* `SNOWKIT` (four places with ids + a scatter, 6 draws):
+the GROTTO at (60, -14), a rock half-dome open to the west with an inside face, a ring of wall colliders, a dark swept floor, ice stalactites, glowing
+crystals and an alien shrine stone with a glowing ring; the BRIDGE at (-46, 22), a rock deck 6 m up between two pillars, four boulder steps (1.4 / 2.8 /
+4.2 / 5.4) to climb it, icicles under the span; the STONES at (-44, 52), seven standing stones with glowing rune strips round a floating, turning ice crystal;
+the SPIRE at (56, 48), a 15 m crystal stack on a two-step mound (2.2, 4.0). PLANTS: 70 snow shrubs, 50 frost ferns, 26 glow-bulb clumps, some on the ledges,
+the bridge and the mound. Pushed WITHOUT a render (the render was interrupted); the whole kit is inside a try/catch (`SNOWKIT THREW` in the chip if not).
+Next (his): the snow on platforms should push around like the ground; unarmed attacks should throw snow too.
+
 ## m2003 -- the katana and the arrows throw the SNOW (Oct 31 2026)
 *"In the snow, the katana attacks -- the whirlwind, the slam, all of them -- should affect the snow; the slashes kick it up; the exploding arrows make it go
 everywhere."* In the Snowfield (`snowStep`, all reading the real blade: `bladeSeg` + `muzzleWorld`):
