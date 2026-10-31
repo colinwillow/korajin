@@ -5,6 +5,33 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1924 -- THE SKY TEMPLE: the ladders are gone; the golden path is a COURSE built from the move table (TEMPLE_ROUTES.md)
+
+His (m1923): *"There's a super high ladder you just climb and climb -- that defeats the whole purpose of this game. He can run up walls, jump
+between two walls back and forth, wall run; we designed this whole kit. Plan out all of the paths. Do a million more passes."*
+- **What was wrong, honestly:** the hatch ladders (45 m) and the tier-2 ladder were the route, and the ledge columns from m1907 had been
+  scaled x2.5 into 8-10 m gaps -- past every comfortable number in `tools/moves.json` (sprint wall-run lip 3.61, run-jump 4.16). The old route
+  was a ladder where it worked and impossible where it did not.
+- **TEMPLE_ROUTES.md** plans every path first: the move table's comfy numbers, every height, the golden path stage by stage, and the later
+  passes (the towers, the upper level, optional branches, shortcuts, enemies by zone). The route is now written in METRES (`m: 1` -- `templeScale`
+  leaves those alone: the temple grows, his moves do not).
+- **THE GOLDEN PATH** (kishotenketsu: introduce the chimney low, introduce the bar, develop the chimney long, conclude with ledge hops):
+  1. the stair to the landing (15) -- CHECKPOINT;
+  2. CHIMNEY I, 15 -> 40: two ancient-tech fins 4.6 m apart (the measured wall-chain gap; +1.66-2.07 a kick), chevrons at their foot, a stone
+     bridge onto tier 1 -- CHECKPOINT;
+  3. THE BARS, 40 -> 50 -> 60: a high bar on tier 1 launches for height onto a FLOATING PLATFORM (+10 m, 6 across: inside the bar's 11.9 comfy),
+     a second bar on it launches onto tier 2 (+10, 13 across) -- CHECKPOINT; a miss drops 10-20 m onto tier 1 (safe fall is 24);
+  4. CHIMNEY II, 60 -> 105: a fin in two legs beside the tower's west face, stepped to follow its batter (the gap stays 4.6-5.4), a REST LEDGE at
+     82 on the tower face halfway -- CHECKPOINT -- and out over the tower's lip;
+  5. THE PINNACLE, 105 -> 109.5 -> 113.75: two double-jump ledge hops (comfy 4.69), the orb under the halo -- "THE HALO";
+  6. the zip back down to the plaza.
+- CHECKPOINTS (`cp`, a jade ring on the floor): stand in one and falling off the island brings you back THERE, not to the start (fail forward).
+- Removed: both hatch ladders, the tier-2 ladder, the old bar, the m1907 ledge columns, and chevrons that marked nothing. A palm that grew up
+  through the bar platform moved to tier 1's back.
+- **Shipped unverified -- no harness here plays a chimney chain or a bar launch.** The spacings are the move table's comfy numbers; the second
+  bar launch (+10 m up, 13 across, over tier 2's lip) is the one most likely to want a nudge. Still on the list: the watchtowers' ledge columns
+  (9.75 m), the upper level's way up, the optional branches.
+
 ## m1923 -- THE SKY TEMPLE: the floating colliders fixed, and AMBUSHES with the game's enemies (his, from the phone at m1922)
 
 His: *"there's some areas where the collider just makes me float"* (two shots: standing on air over the guardian statue's head, and hanging
