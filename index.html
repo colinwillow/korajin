@@ -50035,7 +50035,7 @@ const FEAR = {
 };
 // A5 builds the stars out of this; until then it is a number that only goes up and down
 const HEAT = { v: 0, calls: 0 };
-function heatAdd(n, why) { return 0; }     // m15PO: the police / stars system is cut (it was OFF since m895); the story's callers still call this
+function heatAdd(n, why) { return 0; }     // m1916: the police / stars system is cut (it was OFF since m895); the story's callers still call this
 const fearLooks = () => { const k = player.mphK; return k ? /alien/i.test(mphName(k)) : !HERO.human[HERO.pick]; };     // m963: a human hero is not an alien to them
 const fearHuman = d => { const K = d.K; return K.ai && K.pacifist && !K.pal && !K.repair && !d.wasK && !/alien|officer|clancy/i.test(mphName(K)); };
 const fear = { mats: {} };

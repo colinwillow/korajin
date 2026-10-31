@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15PO -- clean-out: the police / wanted-stars system is gone
+## m1916 -- clean-out: the police / wanted-stars system is gone
 His go-ahead: *"Yeah, probably keep going with the cleaner... the one thing I worry is that we accidentally clean out some stuff we need."*
 It had been OFF since m895 (*"get rid of the police star system"*), so nothing on screen changes.
 - Cut: `COPS`, `heatStep`, `heatLvl`, `copExtras`, the tracers (`copFx`, `copTracer`, `copFire`), `heatHit`, `copAI`, the cop branch in
