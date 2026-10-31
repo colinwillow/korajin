@@ -18,7 +18,7 @@ UVs keep the 'mega' tiling (3.2 m a tile, courses horizontal), so the generated 
 (an eroded box has more than eight corners). Colliders unchanged. Cost: ~190k -> ~335k triangles in the wide view, draw calls unchanged (65).
 `TERODE` holds every number; `TERODE.on = 0` is the A/B (wants a reload). Still sharp: the dark glyph pilasters, the gold and the red bands.
 Shipped unverified.
-## m15LN -- stairs: his own run, leaned into the slope (the stair clips behind a switch)
+## m1956 -- stairs: his own run, leaned into the slope (the stair clips behind a switch)
 His call (Oct 31): *"the climbing-stairs animation is playing now but it's given the speed of his gait -- it looks ridiculous unless you're going
 really slow, like him tiptoeing. Use the regular running animations and tilt the body to whatever angle the stairs go up at, and call it good."*
 - `STAIRS.on` 0 = LEAN (default): his ordinary gait on stairs and slopes, and `stairLean` pitches him about his own left-right axis -- forward by

@@ -15633,7 +15633,7 @@ function arenaUi() {
       else if (a === 'cart') { CART.pose = CART.poses[(CART.poses.indexOf(CART.pose) + 1) % CART.poses.length]; try { localStorage.setItem('mel.cart2', CART.pose); } catch (err) {} }
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
-      else if (a === 'stairs') { STAIRS.on = STAIRS.on ? 0 : 1; try { localStorage.setItem('mel.stairs', STAIRS.on ? 'clips' : 'lean'); } catch (err) {} }     // m15LN
+      else if (a === 'stairs') { STAIRS.on = STAIRS.on ? 0 : 1; try { localStorage.setItem('mel.stairs', STAIRS.on ? 'clips' : 'lean'); } catch (err) {} }     // m1956
       else if (a === 'hdrop') { HDROP.want = 1; }     // m1953
       else if (a === 'audmode') { SFXM.simple = !SFXM.simple; try { localStorage.setItem('mel.audiomode', SFXM.simple ? 'simple' : 'heavy'); } catch (err) {} try { SFX.ctx && SFX.ctx.close(); } catch (err) {} SFX.ctx = null; SFX.ready = 0; sfxWake(); }     // m1943
       else if (a === 'lhold') { LHOLD.pick = LHOLD.picks[(LHOLD.picks.indexOf(LHOLD.pick) + 1) % LHOLD.picks.length]; try { localStorage.setItem('mel.lhold', LHOLD.pick); } catch (err) {} }     // m1093
@@ -34543,7 +34543,7 @@ function idlePick() { const I = IDLEPICK; if (HERO.pick !== 'agoblin' || !rig.ac
   if (I.boredOn != null && (!still || now - I.boredOn > bd.getClip().duration - .25)) { I.boredOn = null; I.stillT = 0; }
   const nm = I.boredOn != null ? I.bored : pick; CLIPS.idle = nm;
   if (nm !== I.bored) { const a = rig.actions[nm]; if (a && a.loop !== THREE.LoopRepeat) { ONCE.delete(nm); a.setLoop(THREE.LoopRepeat, Infinity); a.clampWhenFinished = false; } idleAmp(nm, I.energy); } }
-// m15LN (his: "the stair animation is playing now but it's given the speed of his gait -- it looks ridiculous unless you're going really slow, like him
+// m1956 (his: "the stair animation is playing now but it's given the speed of his gait -- it looks ridiculous unless you're going really slow, like him
 // tiptoeing. Just use the regular running animations and tilt the body to whatever angle the stairs go up at, and call it good"): the Mixamo stair clips
 // are a slow careful climb (measured: they move the planted foot .27-.60 m/s), so at a run they cannot keep up. `on` 0 (LEAN, the default) keeps his
 // ordinary gait and LEANS him into the slope (`stairLean`); 1 (CLIPS, TOOLS > STAIRS) is m1950's stair walk.
@@ -34552,7 +34552,7 @@ function stairsWant(sp) { const p = player; if (!p.grounded || sp < .6 || p.mele
   const h = Math.atan2(p.vel.x, p.vel.z), fx = Math.sin(h), fz = Math.cos(h), L = STAIRS.look, y = p.pos.y;
   const a = groundAt(p.pos.x + fx * L, p.pos.z + fz * L, y + .7, .01), b = groundAt(p.pos.x - fx * L, p.pos.z - fz * L, y + .7, .01);
   const sl = isFinite(a) && isFinite(b) && a > y - 1.5 && b > y - 1.5 ? (a - b) / (2 * L) : 0; p.slopeS = damp(p.slopeS || 0, clamp(sl, -1.2, 1.2), STAIRS.half, 1 / 60);
-  if (!STAIRS.on) { p.stairs = ''; return ''; }     // m15LN: LEAN mode -- the slope is still read (for `stairLean`), no clip
+  if (!STAIRS.on) { p.stairs = ''; return ''; }     // m1956: LEAN mode -- the slope is still read (for `stairLean`), no clip
   const s = p.slopeS, cur = p.stairs || '', up = cur.startsWith('stairs_u') || cur === 'stairs_run' ? s > STAIRS.out : s > STAIRS.upAt, dn = cur === 'stairs_down' ? s < -STAIRS.out : s < -STAIRS.downAt;
   const nm = up ? (sp > STAIRS.runAt && rig.actions.stairs_run ? 'stairs_run' : 'stairs_up') : dn ? 'stairs_down' : ''; p.stairs = nm && rig.actions[nm] ? nm : ''; return p.stairs; }
 // m1947 (his: "there should be a Mixamo stair walk clip -- it must've got messed up; we definitely need one"): what broke m1813 was the RATE. `arenaRef`
@@ -59381,7 +59381,7 @@ function frameBody() {
     swimPose(dt);                      // a swimmer lies along his stroke, about his hips (m594)
     bladeTilt(dt);                     // her body square to the face she skates (m269)
     bladeBody(dt);                     // her hips, flip, lean, swivel, twist and feet, in her order (m271)
-    stairLean(dt);                     // m15LN: on stairs and slopes he leans into them (LEAN mode)
+    stairLean(dt);                     // m1956: on stairs and slopes he leans into them (LEAN mode)
     wingFrame(dt);
     hbarPose();                        // m1034: on the high bar / flying off it, turned about the bar
     if (player.vault && player.vault.ox != null) { rig.root.position.x -= player.vault.ox; rig.root.position.z -= player.vault.oz; }     // m1051: the vault's picture, drawn back to its root
