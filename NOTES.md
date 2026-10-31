@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15CW -- THE MAMMOTH ON HIS ALIEN COW'S SKELETON: 75 real quadruped clips (Oct 31 2026)
+## m1999 -- THE MAMMOTH ON HIS ALIEN COW'S SKELETON: 75 real quadruped clips (Oct 31 2026)
 *"The mammoth is very stiff, very robotic, not a lot of movement in any of the chains... I have a cow with a ton of animations on whatever skeleton it
 was built on -- an alien cow in Plutopia."* `plutopia/models/alien_cow.glb`: `Arm_Cow`, 47 bones (spine x5, neck x2, head, mouth, ears, eyelids, four legs
 of 5-6 bones to a hoof tip, a 5-bone tail, an udder), 75 clips (idle x6, walk / trot / run in every direction, turns, jumps start / air / land, falls,
