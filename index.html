@@ -10604,6 +10604,64 @@ const SNOWSTORM = { weather: (() => { try { const m = /[?&]storm=(auto|clear|bli
 const POND = { at: [27, 30], r: 11, grip: 1.1, bank: .22, tex: 11 };
 function pondR(a) { return POND.r * (1 + .1 * Math.sin(3 * a + 1.3) + .06 * Math.sin(5 * a - .4)); }
 function pondIn(x, z, m) { const dx = x - POND.at[0], dz = z - POND.at[1]; return Math.hypot(dx, dz) < pondR(Math.atan2(dz, dx)) + (m || 0); }
+// m15CL: THE CLIMB TO THE LAIR (BUILDINGS.md snow: "a REGION with height -- ice shelves, a frozen waterfall, cliffs, a cave -- toward the snow dragon's
+// lair"; his: "big ice castle temple... ice crystals, big artsy land masses, icicles and ice structures"). At the north end of the field, a stepped
+// climb sized off TEMPLE_KIT's move table: snow ledges at 2.0 and 3.8 (run + jump, comfy 2.2), an ICE SHELF at 6.0 you can walk under (double jump,
+// comfy 4), the long CLIFF at 9.5 (double jump from the shelf, or a wall run), and the CRAG at 13.5 with the LAIR'S MOUTH -- a dark arch flanked by
+// crystals. A FROZEN WATERFALL hangs down the cliff into an iced pool; ICE CRYSTALS cluster on every tier and FLOAT above the crag (the high tier);
+// ICICLES hang under the shelf and the lips. Every block is a box collider; the look is rough painted granite with a snow cap (`snow_rock` / `snow_snow`)
+// and the painted ice (`snow_ice`) -- a handful of draws. Placement table `SNOWCLIFF.blocks` (stable ids, SCENE_COMPANION).
+const SNOWCLIFF = { area: [-26, 40, -84, -42],
+  blocks: [ { id: 'ledge1', x: 4, z: -48, w: 14, d: 8, h: 2.0 }, { id: 'ledge1b', x: -8, z: -51, w: 9, d: 7, h: 1.2 },
+    { id: 'ledge2', x: 16, z: -55, w: 10, d: 8, h: 3.8 }, { id: 'ledge2b', x: 28, z: -54, w: 7, d: 6, h: 2.6 },
+    { id: 'cliff', x: 6, z: -73, w: 56, d: 14, h: 9.5 }, { id: 'crag', x: 4, z: -79, w: 22, d: 8, h: 13.5 }, { id: 'spur', x: -16, z: -63, w: 9, d: 8, h: 6.8 } ],
+  shelves: [ { id: 'shelf1', x: 6, z: -63, w: 14, d: 6.5, y: 6.0, t: .7 }, { id: 'shelf2', x: 24, z: -62.5, w: 8, d: 5, y: 7.8, t: .6 } ],
+  falls: { x: 31, w: 6, top: 9.5, z: -66 }, lair: { x: 4, z: -75, w: 5, h: 4.6 } };
+function cliffIn(x, z, m) { const A = SNOWCLIFF.area; m = m || 0; return x > A[0] - m && x < A[1] + m && z > A[2] - m && z < A[3] + m; }
+function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap = [], ice = [], dark = [];
+  // m15CL: not boxes -- every block TAPERS (wider at the foot), its corners ROUND off (a superellipse in plan), and its faces are pushed by 3D noise
+  // at three scales; the top stays flat to walk on, the lip only a little ragged
+  const nz3 = (x, y, z) => Math.sin(x * .9 + z * .6 + y * .3) * .45 + Math.sin(z * 1.9 - y * 1.4 + x * .5) * .3 + Math.sin(x * 3.3 + y * 2.7 - z * 1.1) * .17 + Math.sin(y * 5.1 + z * 4.3) * .08;
+  const rough = (geo, k, top, cx, cz, hw, hd) => { const P = geo.attributes.position; geo.computeBoundingBox(); const bb = geo.boundingBox, y0 = bb.min.y, hy = (bb.max.y - y0) || 1;
+    cx = cx != null ? cx : (bb.min.x + bb.max.x) / 2; cz = cz != null ? cz : (bb.min.z + bb.max.z) / 2; hw = hw || (bb.max.x - bb.min.x) / 2; hd = hd || (bb.max.z - bb.min.z) / 2;
+    for (let i = 0; i < P.count; i++) { let x = P.getX(i), y = P.getY(i), z = P.getZ(i); const u = (x - cx) / hw, v = (z - cz) / hd, t = (y - y0) / hy, isTop = top != null && y > top - .01;
+      const m = Math.pow(Math.pow(Math.abs(u), 4) + Math.pow(Math.abs(v), 4), .25) || 1, rnd = Math.max(Math.abs(u), Math.abs(v)) / m;     // square -> rounded square
+      const tap = 1 + .14 * (1 - t), n = nz3(x, y, z) * k * (isTop ? .25 : 1);
+      x = cx + u * hw * rnd * tap + Math.sign(u) * n * Math.min(1, Math.abs(u)); z = cz + v * hd * rnd * tap + Math.sign(v) * n * Math.min(1, Math.abs(v)); if (!isTop) y += nz3(z, x, y) * k * .25 * Math.min(1, t * 4);
+      P.setXYZ(i, x, y, z); } geo.computeVertexNormals(); return geo; };
+  const block = (b, y0, y1) => { const hh = y1 - y0, geo = rough(new THREE.BoxGeometry(b.w, hh, b.d, Math.max(4, Math.round(b.w / 1.1)), Math.max(3, Math.round(hh / .9)), Math.max(4, Math.round(b.d / 1.1))).translate(b.x, y0 + hh / 2, b.z), 1.5, y1, b.x, b.z, b.w / 2, b.d / 2);
+    rock.push(geo); BOXES.push({ minx: b.x - b.w / 2, maxx: b.x + b.w / 2, miny: y0, maxy: y1, minz: b.z - b.d / 2, maxz: b.z + b.d / 2 });
+    const cp = new THREE.BoxGeometry(b.w + .3, .4, b.d + .3, Math.max(4, Math.round(b.w)), 1, Math.max(4, Math.round(b.d))); const P = cp.attributes.position; for (let i = 0; i < P.count; i++) { const ex = Math.abs(P.getX(i)) / (b.w / 2 + .15), ez = Math.abs(P.getZ(i)) / (b.d / 2 + .15), e = Math.max(ex, ez); if (P.getY(i) > 0) P.setY(i, .2 + .16 * (1 - e * e)); else P.setY(i, -.2 - .25 * Math.max(0, Math.sin(P.getX(i) * 1.7 + P.getZ(i) * 1.3)) * (e > .97 ? 1 : 0)); }     /* a soft pillow of snow, drooping over the lip */
+    cp.translate(b.x, y1 + .02, b.z); cap.push(rough(cp, .25, y1 + .1, b.x, b.z, b.w / 2 + .15, b.d / 2 + .15)); };
+  for (const b of C.blocks) block(b, 0, b.h);
+  for (const S of C.shelves) { const geo = new THREE.BoxGeometry(S.w, S.t, S.d, 6, 1, 3); geo.translate(S.x, S.y - S.t / 2, S.z); ice.push(geo); BOXES.push({ minx: S.x - S.w / 2, maxx: S.x + S.w / 2, miny: S.y - S.t, maxy: S.y, minz: S.z - S.d / 2, maxz: S.z + S.d / 2 });
+    const cp = new THREE.BoxGeometry(S.w - .4, .14, S.d - .4).translate(S.x, S.y + .05, S.z); cap.push(cp);
+    for (let k = 0; k < S.w * 1.6; k++) { const L = .4 + R() * 1.4, x = S.x - S.w / 2 + R() * S.w, z = S.z + (R() < .6 ? S.d / 2 - .2 : (R() - .5) * S.d); ice.push(new THREE.ConeGeometry(.08 + R() * .1, L, 5).rotateX(Math.PI).translate(x, S.y - S.t - L / 2 + .05, z)); } }     // icicles under the shelf
+  for (const b of C.blocks) if (b.h > 3) for (let k = 0; k < b.w * .7; k++) { const L = .3 + R() * 1.1, x = b.x - b.w / 2 + R() * b.w; ice.push(new THREE.ConeGeometry(.07 + R() * .08, L, 5).rotateX(Math.PI).translate(x, b.h - L / 2 - .05, b.z + b.d / 2 + .25)); }     // icicles off the lips
+  // the FROZEN WATERFALL: a bulging ice curtain of fluted columns down the cliff face, and an iced pool at its foot
+  { const F = C.falls; for (let k = 0; k < 9; k++) { const x = F.x - F.w / 2 + (k + .5) * F.w / 9 + (R() - .5) * .3, r = .35 + R() * .3, top = F.top - R() * .6;
+      const geo = new THREE.CylinderGeometry(r * .7, r * 1.4, top, 7, 6); const P = geo.attributes.position; for (let i = 0; i < P.count; i++) { const y = P.getY(i) / top + .5, bul = Math.sin(y * Math.PI * 2.3 + k) * .18 + (1 - y) * .5; P.setXYZ(i, P.getX(i) * (1 + bul * .5), P.getY(i), P.getZ(i) * (1 + bul * .5) + bul * .6); }
+      geo.computeVertexNormals(); ice.push(geo.translate(x, top / 2, F.z + .5)); }
+    ice.push(new THREE.CylinderGeometry(5, 5.4, .3, 20).scale(1.3, 1, .8).translate(F.x, .15, F.z + 4.5)); }
+  // the LAIR'S MOUTH in the crag's face: two leaning ice-rock jambs, a lintel, the dark inside
+  { const L = C.lair, zf = -79 + 4 + .8;     /* jambs stand proud of the roughened face */ rock.push(rough(new THREE.BoxGeometry(1.6, L.h + 1, 1.8, 2, 4, 2).rotateZ(.08).translate(L.x - L.w / 2 - .6, 9.5 + (L.h + 1) / 2, zf), .6), rough(new THREE.BoxGeometry(1.6, L.h + 1, 1.8, 2, 4, 2).rotateZ(-.08).translate(L.x + L.w / 2 + .6, 9.5 + (L.h + 1) / 2, zf), .6));
+    rock.push(rough(new THREE.BoxGeometry(L.w + 3.4, 1.3, 2, 4, 1, 2).translate(L.x, 9.5 + L.h + .9, zf), .5)); dark.push(new THREE.PlaneGeometry(L.w + .6, L.h + .2).translate(L.x, 9.5 + L.h / 2, zf - .15)); }
+  // ICE CRYSTALS: clusters on every tier, and big ones FLOATING above the crag
+  const crystal = (x, y, z, s, tilt) => { const n = 3 + Math.floor(R() * 4); for (let k = 0; k < n; k++) { const h = s * (.6 + R() * .9), r = h * .12, a = R() * 6.28, t = tilt + R() * .5;
+      const geo = new THREE.CylinderGeometry(r, r, h, 6).translate(0, h / 2, 0); const tip = new THREE.ConeGeometry(r, r * 2.2, 6).translate(0, h + r * 1.1, 0);
+      for (const q of [geo, tip]) { q.rotateZ(t * Math.cos(a)).rotateX(t * Math.sin(a)).translate(x, y, z); ice.push(q); } } };
+  const spots = [[-3, 2, -45, 2.2], [11, 2, -45.5, 1.6], [20, 3.8, -52, 3], [-12, 1.2, -48.5, 2], [31, 2.6, -52, 2.4], [-18, 6.8, -60, 3.2], [13, 6, -60.5, 1.8], [-6, 9.5, -67.5, 3.6],
+    [26, 9.5, -67, 2.6], [36, 0, -60, 4.5], [-24, 0, -56, 4], [-3, 13.5, -76, 2.8], [12, 13.5, -76.5, 3.2]];
+  for (const [x, y, z, sz] of spots) crystal(x, y + .1, z, sz, .25);
+  for (let k = 0; k < 6; k++) { const x = -14 + k * 6 + (R() - .5) * 3, y = 18 + R() * 9, z = -70 - R() * 10, sz = 2.5 + R() * 2.5;     // the floating ones: a crystal cluster on a small upturned rock
+    const isl = plantBlob(1, 1600 + k * 7, 2); isl.scale(sz * .75, sz * 1.1, sz * .75); { const P = isl.attributes.position; for (let i = 0; i < P.count; i++) { let yy = P.getY(i); if (yy > sz * .15) yy = sz * .15 + (yy - sz * .15) * .1; else yy -= Math.max(0, -yy) * .6; P.setY(i, yy); } isl.computeVertexNormals(); }     /* a lumpy rock, flat on top, hanging to a point */
+    isl.translate(x, y - sz * .15, z); rock.push(isl); crystal(x, y - .1, z, sz, .3); }
+  const mat = { rock: snowTriMat('snow_rock', 2.2, 0xd0d6e4, .95), cap: snowTriMat('snow_snow', 2.5, 0xffffff, .85), ice: new THREE.MeshStandardMaterial({ map: texGet('snow_ice'), color: 0xd6f2ff, roughness: .12, metalness: .1, emissive: 0x1a6a80, emissiveIntensity: .45 }),
+    dark: new THREE.MeshBasicMaterial({ color: 0x0a1420 }) };
+  const put = (list, m, shadow) => { if (!list.length) return; const geo = mergeGeometries(list.map(q => q.index ? q.toNonIndexed() : q).map(q => { for (const k of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(k)) q.deleteAttribute(k); if (!q.attributes.uv) q.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(q.attributes.position.count * 2), 2)); return q; }));
+    const ms = new THREE.Mesh(geo, m); ms.castShadow = shadow; ms.receiveShadow = true; g.add(ms); return ms; };
+  put(rock, mat.rock, true); put(cap, mat.cap, true); put(ice, mat.ice, true); put(dark, mat.dark, false);
+  SNOWZ.cliff = { C }; }     /* no boxGrid() here: the stage builds before BGRID exists (its own build re-grids) */
 const SNOWZ = { paint: (() => { try { return !/[?&]paint=0\b/.test(location.search); } catch (e) { return true; } })() ? 1 : 0, bump: 7, want: 0, on: null, size: 160, res: 640, depth: 1.1, base: .5, drift: .42, pines: 46,     /* m1632: depth 1.1 m with a base fill of .5 (= the old .55 m) so DRIFTS can rise over it */ refill: .012, foot: .17, plough: .32, rim: .2, rimAdd: .14, drag: 2.6,
   flakes: 5000, box: 34, puffs: 600, fall: [.55, 1.2], flutter: .5, wind: [1.2, 0, .4], gust: 1.6 };
 try { if (/[?&]zone=snow\b/.test(location.search)) SNOWZ.want = 1; } catch (e) {}
@@ -10679,7 +10737,7 @@ function snowStage(g) {
   // m1632: SNOWY PINES in stands, each three dark tiers under a white CAP (instanced: trunks, needles, caps = 3 draws), a collider on the trunk.
   // A strike or a body slammed into one SHAKES it: the caps drop in a burst of powder and grow back over half a minute.
   { const R = plantRnd(301), T = [], mk = (n, geo, mat) => { const m = new THREE.InstancedMesh(geo, mat, n); m.castShadow = true; m.receiveShadow = true; m.frustumCulled = false; g.add(m); return m; };
-    for (let c = 0; c < 7; c++) { const a = R() * 6.283, d = 22 + R() * 50, cx = Math.cos(a) * d, cz = Math.sin(a) * d; for (let k = 0; k < Z.pines / 7; k++) { const x = cx + (R() - .5) * 14, z = cz + (R() - .5) * 14; if (Math.hypot(x, z - 8) < 12 || Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) < WILLOW.ter + 6 || pondIn(x, z, 3)) continue; T.push({ x, z, s: .8 + R() * .7, yaw: R() * 6.28, cap: 1, t: 0 }); } }
+    for (let c = 0; c < 7; c++) { const a = R() * 6.283, d = 22 + R() * 50, cx = Math.cos(a) * d, cz = Math.sin(a) * d; for (let k = 0; k < Z.pines / 7; k++) { const x = cx + (R() - .5) * 14, z = cz + (R() - .5) * 14; if (Math.hypot(x, z - 8) < 12 || Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) < WILLOW.ter + 6 || pondIn(x, z, 3) || cliffIn(x, z, 3)) continue; T.push({ x, z, s: .8 + R() * .7, yaw: R() * 6.28, cap: 1, t: 0 }); } }
     const tg = [], cg = []; for (let k = 0; k < 3; k++) { const r = 1.5 - k * .38, y = 1.7 + k * 1.15; tg.push(new THREE.ConeGeometry(r, 1.7, 8).translate(0, y, 0)); cg.push(new THREE.ConeGeometry(r * .82, .95, 8).translate(0, y + .48, 0)); }
     const pt = Z.paint ? (n, sc, c, r) => snowTriMat(n, sc, c, r) : (n, sc, c, r) => new THREE.MeshStandardMaterial({ color: c, roughness: r });     // m1995: his painted maps, laid on in world space
     const tr = mk(T.length, new THREE.CylinderGeometry(.13, .22, 2, 6).translate(0, 1, 0), Z.paint ? snowTriMat('snow_bark', .9, 0xb08070, .95) : pt(0, 0, 0x3e2a1e, .95)),
@@ -10690,10 +10748,10 @@ function snowStage(g) {
   // m1730 (his: "bamboo... a good little scatter -- I could see it in the snow world"): GROVES of snow-dusted bamboo between the pine stands,
   // 5 groves of 5-9 clumps, kept off the spawn. They sway, bend as he runs through, knock like hollow wood, and shed leaves when struck.
   { const R = plantRnd(733), rec = []; for (let c = 0; c < 5; c++) { const a = .6 + c * 1.27 + R() * .4, d = 16 + R() * 34, cx = Math.cos(a) * d, cz = Math.sin(a) * d, n = 5 + Math.floor(R() * 5);
-      for (let k = 0; k < n; k++) { const x = cx + (R() - .5) * 9, z = cz + (R() - .5) * 9; if (Math.hypot(x, z - 8) < 10 || Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) < WILLOW.ter + 4 || pondIn(x, z, 2.5)) continue; plantPlant(rec, 'bamboo_snow', x, 0, z, .8 + R() * .5, R() * 6.28); } }
+      for (let k = 0; k < n; k++) { const x = cx + (R() - .5) * 9, z = cz + (R() - .5) * 9; if (Math.hypot(x, z - 8) < 10 || Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) < WILLOW.ter + 4 || pondIn(x, z, 2.5) || cliffIn(x, z, 2)) continue; plantPlant(rec, 'bamboo_snow', x, 0, z, .8 + R() * .5, R() * 6.28); } }
     // m1745: SNOW ROCKS -- granite boulders with white caps, in clusters between the stands (solid; they break), and fallen TEMPLE blocks
     // round the willow's terrace (a ruin the garden was built on)
-    { const W = WILLOW.at, ok = (x, z) => !pondIn(x, z, 2) && Math.hypot(x, z - 8) > 9 && Math.hypot(x - W[0], z - W[1]) > WILLOW.ter + 3 && Math.abs(x) < Z.size / 2 - 4 && Math.abs(z) < Z.size / 2 - 4;
+    { const W = WILLOW.at, ok = (x, z) => !pondIn(x, z, 2) && !cliffIn(x, z, 2) && Math.hypot(x, z - 8) > 9 && Math.hypot(x - W[0], z - W[1]) > WILLOW.ter + 3 && Math.abs(x) < Z.size / 2 - 4 && Math.abs(z) < Z.size / 2 - 4;
       for (let c = 0; c < 9; c++) { const a = c * .7 + R() * 2, d = 14 + R() * 55, cx = Math.cos(a) * d, cz = Math.sin(a) * d, n = 2 + Math.floor(R() * 4);
         for (let k = 0; k < n; k++) { const x = cx + (R() - .5) * 7, z = cz + (R() - .5) * 7; if (ok(x, z)) { const sc = .6 + R() * .9; plantPlant(rec, 'rock_snow', x, snowAt(x, z) * Z.depth + .3 * sc, z, sc, R() * 6.28); } } }     // set ON the snow pack (it is up to a metre deep), not buried in it
       for (let k = 0; k < 8; k++) { const a = R() * 6.28, d = WILLOW.ter + 2 + R() * 6, x = W[0] + Math.cos(a) * d, z = W[1] + Math.sin(a) * d; if (Math.abs(x - W[0]) < 3 && z > W[1]) continue; plantPlant(rec, 'rock_temple', x, snowAt(x, z) * Z.depth - .25, z, .7 + R() * .6, R() * 6.28); } }
@@ -10701,6 +10759,7 @@ function snowStage(g) {
     if (Z.paint) for (const m of Z.bamboo) if (m.userData.kind === 'rock_snow') m.material = snowTriMat('snow_rock', 1.6, 0xffffff, .9, 1);     // m1995: the boulders wear the painted granite over their snow caps
   }
   try { willowBuild(g); } catch (e) { console.error('[melee] willow', e); note('WILLOW THREW ' + e.message); }     // m1740
+  try { snowCliffs(g); } catch (e) { console.error('[melee] cliffs', e); note('CLIFFS THREW ' + e.message); }     // m15CL
   Z.on = { g }; Z.t = 0; Z.acc = 0; Z.breath = 1; }
 // m1740 (his: "a cool alien weeping willow -- a big one, with vines you can actually brush through, like actual chains, so there's a dynamic
 // to it; a big magical Japanese garden with a willow; put it in the snow level for now"): THE JIN WILLOW, pass 1, in the Snowfield.

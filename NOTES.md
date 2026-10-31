@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15CL -- THE CLIMB TO THE LAIR: cliffs, ice shelves, a frozen waterfall, ice crystals (Oct 31 2026)
+*"Giving the snowfield height: cliffs, ice shelves and a frozen waterfall leading up toward the snow dragon's lair -- this next"* / *"big ice castle temple,
+ice crystals, big artsy land masses, icicles and ice structures."* North of the field (x -26..40, z -84..-42, `SNOWCLIFF`, placement table with ids):
+- the ROUTE, sized off TEMPLE_KIT's move table: snow ledges at 1.2 / 2.0 / 2.6 / 3.8 (run + jump), the ICE SHELF at 6.0 you can walk under (+2.2), a second
+  at 7.8, a rock spur at 6.8, the long CLIFF at 9.5 (+3.5: double jump or wall run), the CRAG at 13.5 (+4) with the LAIR'S MOUTH in its face -- a dark
+  doorway between leaning jambs and a lintel at the cliff top
+- the FROZEN WATERFALL: nine fluted, bulging ice columns down the cliff face into an iced pool
+- ICE CRYSTALS (hex prisms with points, in leaning clusters) on every tier and on six FLOATING rocks above the crag (y 18-27); ICICLES under both shelves
+  and along every high lip
+- the look: no boxes -- each block TAPERS, its plan corners round off (a superellipse), its faces carry 3-scale noise, and a soft PILLOW of snow drooping
+  over the lip; painted granite + painted snow (`snowTriMat`), the painted ice (glowing teal) on shelves, falls, crystals, icicles. 4 draws for all of it.
+Every block / shelf is a box collider. Pines, rocks and bamboo are kept out of the area. Rendered headless (3 views). Not built: the lair's inside and
+the snow dragon himself; an ice CASTLE / temple is the next big piece up there.
+
 ## m1999 -- THE MAMMOTH ON HIS ALIEN COW'S SKELETON: 75 real quadruped clips (Oct 31 2026)
 *"The mammoth is very stiff, very robotic, not a lot of movement in any of the chains... I have a cow with a ton of animations on whatever skeleton it
 was built on -- an alien cow in Plutopia."* `plutopia/models/alien_cow.glb`: `Arm_Cow`, 47 bones (spine x5, neck x2, head, mouth, ears, eyelids, four legs
