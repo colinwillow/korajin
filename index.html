@@ -15304,7 +15304,7 @@ const _bfA = new THREE.Vector3(), _bfB = new THREE.Vector3();
 // `carry` of the blade's own velocity, so a swing leaves a ribbon of flame hanging in the air behind it. The sprite is the flame atlas
 // (`gfireTex`), coloured white-yellow at the core -> orange -> deep red, fading (NORMAL blending: additive goes white on snow). Embers: a few
 // bright motes that drift higher and longer. TOOLS > BLADE FIRE.
-// m15FR (his photo: "so sparse when you're running it looks like little orange leaf petals; the sprites have a direction and always point UP, which kills
+// m1950 (his photo: "so sparse when you're running it looks like little orange leaf petals; the sprites have a direction and always point UP, which kills
 // the illusion"): three fixes, all measured against what the code did -- (1) each tongue kept only `carry` .22 of the blade's speed, so at a run it was
 // dropped behind him on the floor: now it keeps `follow` of his BODY's velocity (plus `carry` of the swing on top), so the fire stays on the sword and
 // drags back off it; (2) the sprite turned only by a small random wobble round upright: now it POINTS along its own motion relative to him plus the
@@ -34523,7 +34523,7 @@ function stairsMeasure(nm) { const a = rig.actions[nm], c = a && a.getClip(), md
   for (const [x, w, t, en, pz] of was) { x.setEffectiveWeight(w); x.time = t; x.enabled = en; x.paused = pz; } if (!run0) a.stop(); mxr.update(0);
   const hs = [], vs = []; for (let i = 0; i < N; i++) { const k = F[i][0].y < F[i][1].y ? 0 : 1, d = F[i + 1][k].clone().sub(F[i][k]); if (d.z < 0) { hs.push(-d.z / (T / N)); vs.push(-d.y / (T / N)); } }
   if (hs.length < 4) return null; hs.sort((x, y) => x - y); vs.sort((x, y) => x - y); return { h: hs[hs.length >> 1], v: vs[vs.length >> 1], n: hs.length }; }
-// m15FR: the rate by CADENCE. Measured on his rig the in-place stair clips barely slide the planted foot back (stairs_up .27 m/s at 1x, stairs_down
+// m1950: the rate by CADENCE. Measured on his rig the in-place stair clips barely slide the planted foot back (stairs_up .27 m/s at 1x, stairs_down
 // .33), so "speed over foot slide" asked for x11 and was pinned at the cap -- his feet behind his travel. A stair clip's cycle is TWO treads, so the
 // rate that puts one step on each tread he crosses is (his speed / tread depth) / (2 / clip length), the depth read off the slope he is on
 // (`riser` / slope). `tsHi` is high because a fast run up a flight IS fast feet.
@@ -42496,7 +42496,7 @@ function forgedHero() {
   if (!fz && FORGED.index && FORGED.index.includes(forgedKey(RIG.file))) forgedFetch(forgedKey(RIG.file));     // m1074: picked after boot -- fetch his now (it calls back here)
   if (!fz || !rig.mixer) return 0; let n = 0;
   for (let c of fz) { if (rig.actions[c.name]) continue; if (c.name === 'wall_side' && WRUN.sideCut) c = clipCutLoop(c, WRUN.sideCut[0], WRUN.sideCut[1], WRUN.sideCut[2]); rig.clips[c.name] = c; const a = rig.mixer.clipAction(c);     /* m1863: only the middle stride of Wall_Run_1 (his: 'it shows him getting on, getting off') */
-    const loop = /^(run_std|sprint_std|wall_side|wall_up|stairs_up|stairs_run|stairs_down)$/.test(c.name);     /* m1860: the wall runs LOOP (they were played once and frozen); m15FR: the STAIR clips too -- measured, each ran its one cycle and stopped on its last frame (timescale 0, time = duration): his "frog pose, not moving", and m1813's too */ if (!loop) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; ONCE.add(c.name); } a.enabled = true; a.setEffectiveWeight(0); a.play(); rig.actions[c.name] = a; n++;
+    const loop = /^(run_std|sprint_std|wall_side|wall_up|stairs_up|stairs_run|stairs_down)$/.test(c.name);     /* m1860: the wall runs LOOP (they were played once and frozen); m1950: the STAIR clips too -- measured, each ran its one cycle and stopped on its last frame (timescale 0, time = duration): his "frog pose, not moving", and m1813's too */ if (!loop) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; ONCE.add(c.name); } a.enabled = true; a.setEffectiveWeight(0); a.play(); rig.actions[c.name] = a; n++;
     if (c.name === CLIPS.carry || c.name === KATANA.guard || /^bow_(draw|recoil|aim)$/.test(c.name)) for (const [suf, f] of [[UPS, isUpperSq], [UP, isUpper]]) {     // its upper halves, as `deriveClips` makes them at load
       const h = new THREE.AnimationClip(c.name + suf, c.duration, c.tracks.filter(t => f(t.name)).map(t => t.clone())); rig.clips[h.name] = h;
       const b = rig.mixer.clipAction(h); b.setLoop(THREE.LoopOnce, 1); b.clampWhenFinished = true; b.enabled = true; b.setEffectiveWeight(0); b.play(); rig.actions[h.name] = b; } }

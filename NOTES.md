@@ -28,7 +28,7 @@ cap as a box from `y1 - .5` to `y1` -- its top face exactly level with the fin's
 band that stops .06 m under the top (`y1 - .06`), still .08 proud of the sides, so it reads as a rim and nothing shares the walking plane. The
 jackal statues' gold plinth slab had the same fault (top at 1.2 x k, level with the plinth's top) and now stops under it. Colliders unchanged.
 Shipped unverified.
-## m15FR -- the stair walk ACTUALLY walks (it was frozen on its last frame); the blade fire stays on the sword and streams back
+## m1950 -- the stair walk ACTUALLY walks (it was frozen on its last frame); the blade fire stays on the sword and streams back
 His words (Oct 31): *"you put the stair animation back -- which is just him stuck in a frog pose, not moving"* / *"the blade fire is so sparse when
 you're running it looks like little orange leaf petals; the sprites have a direction and always point up, which kills the illusion"*.
 - **THE STAIR CLIPS WERE PLAY-ONCE.** `forgedHero` sets every Forge-baked clip to `LoopOnce` + clamp unless its name is on a loop list (run_std,
