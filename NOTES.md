@@ -5,6 +5,27 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1971 -- JOINTS: every bridge end and wall end now MEETS something (`brJoint`)
+
+His: *"between sky castle and the Red Hollows, where bridges meet towers or mountainsides they just randomly overlap... there need to be joints:
+a pillar on either side, railing... it used to be a method to the madness."* A render tour of every span (headless, `?hs=restored`) found:
+- the canyon's two rope bridges ran into the side of their ledge paths with nothing at the end, and their rails were 1-px `LineSegments`;
+- every islet-ring bridge on the sky castle (9) and the two lawn bridges' far ends just stopped in the air over the islet's lip;
+- the curtain walls butted flat into the round towers half-way up.
+What was built:
+- `brJoint(E, u, w, o)` (beside `hwPath`): ONE bridge-end vocabulary -- timber landing + sills, two anchor posts (sunk) with bronze caps and
+  rope collars at rail height, a red lintel with upturned tips over the way, tie-back ropes to a stake behind each post, two struts under
+  the lip. Returns geometry per material; callers merge it into their own buckets (`brRod` is the point-to-point rod).
+- Canyon: a joint at both ends of both bridges, posts at the ledge path's outer edge (2.4 m off the face), a tapered stone pier under
+  each landing on the side AWAY from where the path drops (so it never buries the path), walkable landing tris; rails are now tube ropes
+  post to post with hangers; planks .42 -> .52 wide.
+- Castle islets: a joint at both ends of all nine ring bridges and the lawn bridges' islet ends, in the islets' own bob-patched
+  materials with the islet's phase on every vertex (`A.ibM`, `aBobOf`), so they ride the bob with the rock. Ring rails now reach the far
+  post (they stopped a segment short). Lawn ends: the old square posts replaced by the same gate.
+- Curtain walls: two stone buttresses flank the wall-walk at each tower, capped, a lintel slab over, a lit doorway in the tower between.
+Draws: about +4 (canyon), +6 (castle). Not done: the mill (already has gate turrets), the Forge town's sky bridges (`bridgeSpan` has its
+own end gates), the refinery/peak stairs; unlooked-at on a phone.
+
 ## m1970 -- WINGS takes the FORMS ring segment (the floating button retired)
 His words (Oct 31, photo): *"the old FORMS button is still there -- remove it and put the wings in its place, but make it match the style where it's a
 section of a ring button."*
