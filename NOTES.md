@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15CR -- the katana charge keeps the run: charge pose on top, run legs below
+## m1968 -- the katana charge keeps the run: charge pose on top, run legs below
 His words (Oct 31): *"already running with the katana out, I hold up on the right stick -- he goes into the guard because he's charging, so he's
 walking really slow and yet you're still going at the speed of the run. A hybrid: maintain the run -- the upper torso does the guard charge, the legs
 the run."*
