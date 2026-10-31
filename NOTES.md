@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15I2 -- the ICE BEAM, pass 2: the charge, frozen solid, frost on the snow (Oct 31 2026)
+His "keep going". `iceCharge`: before the beam, an orb of frost swells in his jaws (the mouth flare growing to 2.5 m, flickering) and motes are drawn
+in from all round him. `iceFreeze`: three ticks inside one beam and you are ENCASED -- a lumpy translucent ice block snaps round you (in .12 s), your
+pose holds (the mixer paused), you are stunned `frzT` 1.5 s, then it SHATTERS: a ring of nine spikes, fifty chunks of powder, a crack and a shake.
+`iceFrost`: the swept snow freezes into flat frost discs (60 pooled, glossy ice, fading over 9 s). Rendered headless: the spikes erupting at the
+impact (strong); the charge orb and the freeze not caught on camera -- judge them on the phone.
+
 ## m2006 -- THE BLUE DRAGON'S ICE BEAM, pass 1 (Oct 31 2026)
 *"The blue dragon -- maybe the ice world is where you find him; he could shoot a blue ice ray beam, crazy; a little jump-flap-fly thing and an ice beam.
 The fireballs are very low level. A few passes on the ice beam."* In the Snowfield (`ICEB`, `iceBeamOn`): his `attack_air` becomes the BEAM --
