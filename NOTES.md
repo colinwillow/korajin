@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m1981 -- THE JINRA REFINERY, pass 5: the interior, and the deck you could not climb onto
+## m1982 -- THE JINRA REFINERY, pass 5: the interior, and the deck you could not climb onto
 
 - THE DOME IS A ROOM: the shell's triangles in a doorway (|x| < 1.15, under 2.45 m, front half) are dropped (`cut`), an inner BackSide shell
   (`stoneIn`, darker, a warm emissive so it reads lamplit without a light), and the solid fill of column boxes is now a RING of .6 m cells

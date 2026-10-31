@@ -36382,7 +36382,7 @@ const WING = { clip: (() => { try { const v = localStorage.getItem('mel.flypose'
   lie: 80 * Math.PI / 180, bank: .7, bankHL: .15, camFollow: 3.0, camIdle: .6, settle: 7,
   spinAt: 60 * Math.PI / 180, spinT: .55,
   trail: 1, trailN: 2, trailLife: .5,
-  seg: [.44, .38, .32], chord: [.52, .42, .3],     // m1981: broad kite sails (was .30 / .24 / .17 -- a strip from above)
+  seg: [.44, .38, .32], chord: [.52, .42, .3],     // m1980: broad kite sails (was .30 / .24 / .17 -- a strip from above)
   pilot: { cruise: 1.7, thrust: 1.5, gk: .45 } };   // m848: the pilot form's flight
 // m356 (C4-1): AND THE GLIDER'S FORM -- the roster's `glider` stem (Jack, standing in), worn and settled -- flies the same
 // flight under a hang glider instead of her wingsuit. His model is one line in `ROSTER`.
@@ -36603,7 +36603,7 @@ function wingWashiTex() { if (_wWashi) return _wWashi; const cv = document.creat
   q.strokeStyle = 'rgba(25,18,16,.8)'; q.lineCap = 'round'; for (let k = 0; k < 5; k++) { const x = 300 + k * 38; q.lineWidth = 7 - k * .6; q.beginPath(); q.moveTo(x, 50); q.quadraticCurveTo(x + 14, 110, x - 6, 170 + k * 8); q.stroke(); q.lineWidth = 4; q.beginPath(); q.moveTo(x - 12, 92); q.lineTo(x + 12, 98); q.stroke(); }     // brush strokes
   q.strokeStyle = 'rgba(120,30,24,.9)'; q.lineWidth = 10; q.strokeRect(5, 5, 502, 246);     // the lacquered border
   const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return (_wWashi = t); }
-// m1981: THE KITE'S HANGINGS (his: "Chinese kites have a lot of things hanging from them -- streamers, a line of beads of different styles from big to small;
+// m1980: THE KITE'S HANGINGS (his: "Chinese kites have a lot of things hanging from them -- streamers, a line of beads of different styles from big to small;
 // put some on the wing suit and make it even crazier"). Every hanging is a VERLET chain in WORLD space pinned to a marker on the kite (`WG.hang`): bead
 // strings off each panel, a long ribbon off each lantern, two whiskers off the roof dragon, a kite tail of shrinking beads off the box. They hang under
 // gravity at rest and stream back behind him in flight (they simply lag the pinned end), with a little flutter. All beads are ONE instanced mesh, each
@@ -36646,7 +36646,7 @@ function wingBuild() {
     const ev = mesh(new THREE.BoxGeometry(.05, .016, .2), tile); ev.position.set(sx * .185, .145, -.07); ev.rotation.z = -sx * .05; g.add(ev); }     // the eave turns up at the edge
   const ridge = mesh(new THREE.BoxGeometry(.06, .03, .22), gold); ridge.position.set(0, .235, -.07); g.add(ridge);
   const crest = mesh(new THREE.TorusGeometry(.045, .012, 6, 16), gold); crest.position.set(0, .03, -.135); g.add(crest);     // the gold mon on the back
-  // m1981: THE DRAGON on the roof -- a gold head (snout, brow, two swept horns, red mane), two whisker streamers -- and a KITE TAIL of shrinking beads off the box
+  // m1980: THE DRAGON on the roof -- a gold head (snout, brow, two swept horns, red mane), two whisker streamers -- and a KITE TAIL of shrinking beads off the box
   { const hd = new THREE.Group(); hd.position.set(0, .27, -.03); g.add(hd);
     const sk = mesh(new THREE.BoxGeometry(.07, .06, .1), gold); hd.add(sk); const sn = mesh(new THREE.BoxGeometry(.05, .035, .07), gold); sn.position.set(0, -.012, .07); hd.add(sn);
     for (const sx of [-1, 1]) { const hn = mesh(new THREE.ConeGeometry(.012, .13, 5), gold); hn.position.set(sx * .025, .06, -.04); hn.rotation.set(-1.0, 0, sx * .35); hd.add(hn);
@@ -36669,14 +36669,14 @@ function wingBuild() {
       const sp = mesh(sparGeo, lacq); sp.scale.set(L, 1, 1); sp.position.set(s * L / 2, a, -.004); jt.add(sp);     // the leading spar
       const co = mesh(collar, gold); co.position.set(0, a, -.004); jt.add(co);
       for (const f of [.4, .8]) { const rb = mesh(ribGeo, wood); const yb = lerp(b, bt, f); rb.scale.y = a - yb; rb.position.set(s * L * f, (a + yb) / 2, .003); jt.add(rb); }     // the ribs
-      { const mk = new THREE.Object3D(); mk.position.set(s * L * .55, lerp(b, bt, .55), 0); jt.add(mk); WG.hang.push({ mk, kind: 'beads', n: 6, seg: .075, r0: .034, r1: .012, cols: [0xb3322a, 0xc9a14a, 0x2de0b0] }); }     // m1981: a bead string off every panel's trailing edge
+      { const mk = new THREE.Object3D(); mk.position.set(s * L * .55, lerp(b, bt, .55), 0); jt.add(mk); WG.hang.push({ mk, kind: 'beads', n: 6, seg: .075, r0: .034, r1: .012, cols: [0xb3322a, 0xc9a14a, 0x2de0b0] }); }     // m1980: a bead string off every panel's trailing edge
       par = jt;
     }
     const tip = new THREE.Group(); tip.position.set(s * WING.seg[2], -.03, 0); par.add(tip);
     const lan = mesh(new THREE.SphereGeometry(.05, 10, 8).scale(1, 1.25, 1), lamp); lan.position.set(0, -.08, 0); tip.add(lan);     // the paper lantern
     for (const yy of [-.017, -.143]) { const cap = mesh(new THREE.CylinderGeometry(.024, .024, .016, 8), gold); cap.position.set(0, yy, 0); tip.add(cap); }
     const tas = mesh(new THREE.CylinderGeometry(.006, .012, .12, 5), lacq); tas.position.set(0, -.21, 0); tip.add(tas);     // the tassel
-    { const mk = new THREE.Object3D(); mk.position.set(0, -.26, 0); tip.add(mk); WG.hang.push({ mk, kind: 'ribbon', n: 16, seg: .12, w: .09, col: s > 0 ? 0xc8261c : 0xe0b040 }); }     // m1981: the long streamer off each lantern
+    { const mk = new THREE.Object3D(); mk.position.set(0, -.26, 0); tip.add(mk); WG.hang.push({ mk, kind: 'ribbon', n: 16, seg: .12, w: .09, col: s > 0 ? 0xc8261c : 0xe0b040 }); }     // m1980: the long streamer off each lantern
     const jet = new THREE.Sprite(new THREE.SpriteMaterial({ map: wingGlowTex(), color: 0x6dffc8, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     jet.position.set(0, -.08, 0); jet.scale.setScalar(.3); jet.userData.noHole = 1; tip.add(jet);
     WG.tips.push(tip); WG.jets.push(jet);
@@ -36727,7 +36727,7 @@ function wingFrame(dt) {
   _wko.set(0, .02 * sc, -.13 * sc).applyQuaternion(g.quaternion);
   g.position.copy(_wkv).add(_wko);
   wingFold(W.open);
-  try { wingHangStep(dt, sc); } catch (e) { WTR.on = 0; note('WING HANG THREW ' + e.message); }     // m1981
+  try { wingHangStep(dt, sc); } catch (e) { WTR.on = 0; note('WING HANG THREW ' + e.message); }     // m1980
   const gl = gliderOn(); wingGlider(gl, W.open);                       // m356: his hang glider, not her wingsuit
   const on = W.open > .9 && p.wing ? 1 : 0, f = .8 + .2 * (p.wPitch > 0 ? 1 : 0) + Math.random() * .35;
   for (const j of WG.jets) { j.visible = on > 0 && !gl; if (on) j.scale.setScalar(.34 * f * sc); }
@@ -61552,15 +61552,15 @@ function gjinraBuild() {
   // ---- THE DECK on stilts, its front steps; the DOME; the GLOBE TANK and its copper cage; PIPES and the CHIMNEY ----
   const Y = Y0 + 1.0, dx0 = -8, dx1 = 8, dz0 = -6, dz1 = 7; A.deckY = Y;
   for (let z = dz0; z < dz1 - .01; z += .34) vbox(dx0, dx1, Y - .12, Y, z + .015, z + .325, woodP, 0);
-  // pass 5 (m1981): the deck is 1 m CELLS -- it was ONE box, and the island is turned (yaw -1.95), so its world-aligned bounds spilled metres
+  // pass 5 (m1982): the deck is 1 m CELLS -- it was ONE box, and the island is turned (yaw -1.95), so its world-aligned bounds spilled metres
   // past the deck and walled off the front steps: he could not climb onto it from the front. (Its `quad`s are never added to the walk store:
   // the island bobs and only its boxes ride the bob, so everything he stands on here is a box)
   for (let z = dz0; z < dz1 - .01; z += 1) for (let x = dx0; x < dx1 - .01; x += 1) box(x, x + 1, Y0, Y, z, z + 1); quad([dx0, Y + .01, dz0], [dx1, Y + .01, dz0], [dx1, Y + .01, dz1], [dx0, Y + .01, dz1]);
   for (let x = dx0 + .3; x <= dx1; x += 2.6) for (const z of [dz0 + .3, dz1 - .3]) vbox(x - .15, x + .15, Y0 - .3, Y, z - .15, z + .15, wood, 0);
-  for (let k = 0; k < 3; k++) { const y = Y - (k + 1) * .33, z = dz1 + .2 + k * .36; vbox(-1.6, 1.6, y - .12, y, z, z + .36, woodP, 0); for (let x = -1.6; x < 1.59; x += .4) box(x, x + .4, Y0, y, z + .04, z + .32);     /* m1981: in cells (a turned box was a wall) */ quad([-1.6, y + .01, z], [1.6, y + .01, z], [1.6, y + .01, z + .36], [-1.6, y + .01, z + .36]); }
+  for (let k = 0; k < 3; k++) { const y = Y - (k + 1) * .33, z = dz1 + .2 + k * .36; vbox(-1.6, 1.6, y - .12, y, z, z + .36, woodP, 0); for (let x = -1.6; x < 1.59; x += .4) box(x, x + .4, Y0, y, z + .04, z + .32);     /* m1982: in cells (a turned box was a wall) */ quad([-1.6, y + .01, z], [1.6, y + .01, z], [1.6, y + .01, z + .36], [-1.6, y + .01, z + .36]); }
   for (let x = dx0 + .2; x <= dx1; x += 2) { if (Math.abs(x) < 1.8) continue; vbox(x - .1, x + .1, Y, Y + 1.1, dz1 - .2, dz1, wood, 1, NC); } vbox(dx0, -1.8, Y + 1, Y + 1.1, dz1 - .2, dz1, wood, 0); vbox(1.8, dx1, Y + 1, Y + 1.1, dz1 - .2, dz1, wood, 0);
   const DR = 5.4, DH = 5.2;
-  // pass 5 (m1981): THE DOME IS A ROOM. A DOORWAY is cut in its front (the shell's triangles there dropped), an inner shell faces in (a
+  // pass 5 (m1982): THE DOME IS A ROOM. A DOORWAY is cut in its front (the shell's triangles there dropped), an inner shell faces in (a
   // darker, lamp-warmed stone), and its colliders are a RING round the wall instead of a solid fill -- the door gap left open
   const DW = 1.15, DHt = 2.45, cut = geo => { geo = geo.toNonIndexed(); const P = geo.attributes.position, keep = []; for (let i = 0; i < P.count; i += 3) { const cx = (P.getX(i) + P.getX(i + 1) + P.getX(i + 2)) / 3, cy = (P.getY(i) + P.getY(i + 1) + P.getY(i + 2)) / 3, cz = (P.getZ(i) + P.getZ(i + 1) + P.getZ(i + 2)) / 3; if (Math.abs(cx) < DW && cy < Y + DHt && cz > 0) continue; keep.push(i); }
     const out = new THREE.BufferGeometry(); for (const k of ['position', 'normal']) { const a = geo.attributes[k], arr = new Float32Array(keep.length * 9); keep.forEach((i, j) => { for (let v = 0; v < 3; v++) for (let c2 = 0; c2 < 3; c2++) arr[j * 9 + v * 3 + c2] = a.array[(i + v) * 3 + c2]; }); out.setAttribute(k, new THREE.BufferAttribute(arr, 3)); } return out; };
