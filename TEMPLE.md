@@ -70,7 +70,7 @@ difference, ship, repeat. The order, biggest first (re-ranked every pass):
 - [~] L2. MASSING (pylons done): the temple fills the island (the stair down to its front edge); the two side PYLONS are smooth massive battered wedges, not steps.
 - [x] L3. RIVETS + PANELS: gold rivets over all the stone, gold-framed panels, jade window slits on the faces.
 - [x] L4. The SATELLITES close in, on short beams at two levels, each a hanging lantern spire.
-- [~] L5. (medallion + rim cornice done) The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
+- [~] L5. (medallion, rim cornice, masonry skirt done; spikes still organic) The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
 - [x] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.
 - [x] L8. (m1940) THE PORTAL: a pointed doorway (chamfered top corners, a gable crown, gold edges, a jade gem) and the two jackal guardians in JADE BRONZE out of the wall, flanking it.
 

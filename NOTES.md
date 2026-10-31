@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1941 -- THE SKY TEMPLE look loop, pass 9: THE MASONRY SKIRT (TEMPLE.md L5, still open)
+
+His concepts' island edge is a band of SQUARED stone blocks under the paving, stepping in and out, with corbels under them; ours went
+straight from the gold cornice into a rounded rock flank. `$rim` now hangs a ring of tangent-aligned megalith blocks round the rim (seeded:
+3.2-7.6 m tall x2.5, each projecting a different amount), about half with a gold-capped corbel under it, clear of the front medallion. Merged into
+the stone and gold buckets: no new draw calls (63 wide). All of it is under the paving edge -- no colliders, the routes do not touch it.
+Still open on L5: the spikes themselves are organic rock, the concept's are faceted masonry. Shipped unverified.
+
 ## m1940 -- THE SKY TEMPLE look loop, pass 8: THE PORTAL (TEMPLE.md L8)
 
 Against `temple_02_front.png` the biggest miss was the focal point: his doorway is a tall POINTED portal with two big jade-armoured jackal
