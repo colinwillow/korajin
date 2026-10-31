@@ -11890,7 +11890,7 @@ function dragLook() { const B = DRAGZ.on && DRAGZ.on.B; if (!B) return; const L 
 // less his seated HIP height, MEASURED live off his hips bone in that pose (so the seat is under his hips, not his feet). Tap again: an arc back
 // down to the ring. Only CAPTURED lets you on (the taming, box 6, is what makes him CAPTURED in the story). While mounted the pads are the
 // dragon's: no jump, no roll, no strike; the lens follows behind him after `camIdle` s and pulls back `camPull` m for his size.
-// m15MT: THE LEAP MOUNT (his: "he sort of floats up into the rider seat and lands facing backwards -- when you press the button you should jump
+// m1994: THE LEAP MOUNT (his: "he sort of floats up into the rider seat and lands facing backwards -- when you press the button you should jump
 // pretty high in the air and land on the saddle; it should be cinematic"). The old mount lerped him along `ride_on` (Entering_Car, which turns him
 // round to sit -- the backwards landing). Now: a crouch, a high ballistic arc (`lift` m over the straight line), turned to the mount's heading by
 // `faceBy` of the way, one FRONT FLIP about his middle between `flipA` and `flipB` (tucked), and he drops onto the saddle: a dip (`dip` m, `landT` s),
@@ -12268,7 +12268,7 @@ function dragClipGo(nm, T) { const a = rig.actions[nm]; if (!a) return T; a.rese
 function dragAnim(dt, t) { const R = player.dragon;
   for (const n of ['ride_seat', 'ride_gun']) if (dragHas(n) && !R['loop_' + n]) { R['loop_' + n] = 1; ONCE.delete(n); rig.actions[n].reset().setLoop(THREE.LoopRepeat, Infinity); }     /* reset: a ONCE clip that already ran is paused on its last frame */
   let nm;
-  if (R.st === 'on' && R.leap) { const u = (R.t - MOUNT.crouch) / MOUNT.T; nm = u < 0 ? (dragHas('land_hero') ? 'land_hero' : CLIPS.idle) : u > MOUNT.flipA - .05 && u < MOUNT.flipB + .04 && dragHas('tuck') ? 'tuck' : dragHas('fall_hero') ? 'fall_hero' : dragHas('in_air') ? 'in_air' : CLIPS.idle; }     // m15MT: crouch, the tuck through the flip, the fall onto the seat
+  if (R.st === 'on' && R.leap) { const u = (R.t - MOUNT.crouch) / MOUNT.T; nm = u < 0 ? (dragHas('land_hero') ? 'land_hero' : CLIPS.idle) : u > MOUNT.flipA - .05 && u < MOUNT.flipB + .04 && dragHas('tuck') ? 'tuck' : dragHas('fall_hero') ? 'fall_hero' : dragHas('in_air') ? 'in_air' : CLIPS.idle; }     // m1994: crouch, the tuck through the flip, the fall onto the seat
   else if (R.st === 'on') nm = dragHas('ride_on') && R.t > .05 ? 'ride_on' : dragHas('in_air') ? 'in_air' : CLIPS.idle;
   else if (R.st === 'off') nm = dragHas('ride_off') ? 'ride_off' : R.t < (R.T || DRAGZ.offT) * .8 && dragHas('in_air') ? 'in_air' : CLIPS.idle;
   else nm = dragHas('ride_seat') ? 'ride_seat' : dragHas('driving') ? 'driving' : CLIPS.idle;     /* m1671: the fire is HIS now; Grumbo holds the reins */
@@ -59753,7 +59753,7 @@ function frameBody() {
     if (player.vault && player.vault.ox != null) { rig.root.position.x -= player.vault.ox; rig.root.position.z -= player.vault.oz; }     // m1051: the vault's picture, drawn back to its root
     else if (player.vaultRes) { const R = player.vaultRes; R.t += dt; const k = 1 - smooth(0, VAULT.resT, R.t); rig.root.position.x -= R.ox * k; rig.root.position.z -= R.oz * k; if (k <= 0) player.vaultRes = null; }     // and eased out as the clip fades
     airFlipPose();                     // m1050: the left stick's air flips, turned about his middle
-    mountFlipPose();                   // m15MT: the leap onto a mount flips him once, about his middle
+    mountFlipPose();                   // m1994: the leap onto a mount flips him once, about his middle
     wrunPose();                        // m1064: rolled off the wall on a side run
     zipPose();                         // m1684: hanging from the zip line, swung, hands on the cable
     duckPose(dt);                      // m1070: the cover duck (right pad down in half cover)
