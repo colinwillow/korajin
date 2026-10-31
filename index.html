@@ -36589,7 +36589,7 @@ function wingGlowTex() {
   WG.tex = new THREE.CanvasTexture(c); WG.tex.colorSpace = THREE.SRGBColorSpace;
   return WG.tex;
 }
-// m15WS (his: "style the wing suit more like a game -- Japanese inspired, rustic, older, ancient temple; a Chinese dragon, a Japanese samurai hut,
+// m1976 (his: "style the wing suit more like a game -- Japanese inspired, rustic, older, ancient temple; a Chinese dragon, a Japanese samurai hut,
 // architectural"): a TEMPLE DRAGON-KITE on the same joints (the fold, the tips, the jets are unchanged). The pack is a lacquered SHRINE BOX with a flared
 // tiled roof, red corner posts and a gold ridge; each wing is three tapered WASHI panels -- painted in ink with dragon SCALES, a red sun on the root
 // panel and brush strokes (`wingWashiTex`) -- on red-lacquer leading SPARS with gold collars and dark wooden RIBS; each tip hangs a paper LANTERN with a
@@ -36658,7 +36658,7 @@ function wingFold(k) {
   }
 }
 const _wkv = new THREE.Vector3(), _wko = new THREE.Vector3(), _wkT = new THREE.Vector3(), _wkD = new THREE.Vector3();
-const WING_COL = [1, .78, .35];     // m15WS: gold embers off the lanterns (was cyan)
+const WING_COL = [1, .78, .35];     // m1976: gold embers off the lanterns (was cyan)
 function wingFrame(dt) {
   const p = player, W = WING;
   W.open = clamp(W.open + (p.wing ? 1 : -1) * dt / W.openT, 0, 1);

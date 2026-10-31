@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15WS -- the wing-pack restyled: a temple dragon-kite
+## m1976 -- the wing-pack restyled: a temple dragon-kite
 His ask (Oct 31): *"style the wing suit more like a game -- Japanese inspired, rustic, older, ancient temple; a Chinese dragon, a Japanese samurai hut,
 architectural."*
 - `wingBuild` rebuilt on the SAME joints (`WG.j`, the tips, the jets -- the fold and the flight are untouched): the pack is a dark-wood SHRINE BOX with four
