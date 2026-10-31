@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1942 -- THE SKY TEMPLE look loop, pass 10: OVERGROWTH (TEMPLE.md L10)
+
+Against `temple_03_back.png` and `temple_01.png`: his temple is overgrown, vines spill over every ledge; ours had vines only on the dozen
+hand-listed edges. `$vines` now also walks every `block` in the mass: each of its four top edges drops 1+ seeded vine strips (~one per 4.5 m x
+scale), hung just under the lip and pushed out past the gold band and red frieze, each tilted by the wall's batter (`atan2(bat, h)`) so it lies
+ON a leaning face instead of inside it. Vine bucket only: no new draw calls (63 wide), a few hundred triangles. Look layer, no colliders.
+Shipped unverified.
+
 ## m1941 -- THE SKY TEMPLE look loop, pass 9: THE MASONRY SKIRT (TEMPLE.md L5, still open)
 
 His concepts' island edge is a band of SQUARED stone blocks under the paving, stepping in and out, with corbels under them; ours went
