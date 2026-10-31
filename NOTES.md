@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1952 -- THE SKY TEMPLE: the ENTRANCE -- he drops from the sky and SLAMS into the plaza
+
+His: *"For the entrance of the level he starts in the air like he's falling, and then he slams down to the ground -- when he's unarmed and you
+swipe down he does the slam, so play the in-air for a second or two, camera following him, then he slams down. A shockwave, some particle dust
+going up, then he gets up and now you have control."* Built from the REAL systems, nothing faked: `templeIntro()` runs once on the first
+build (after `templeHome`; a fall respawn is still a plain `templeHome`) and lifts him `TEMPLE.intro.h` 26 m over the plaza spawn. For `hold`
+1.3 s he floats down in the ordinary air pose (fall capped at `floatV` 7 m/s, no drift; the follow camera is the ordinary one), then
+`templeIntroStep` fires `slamGo(0, 1)` -- the unarmed down-flick's own slam, `weapon_melee_finish`, its arrival solved to the ground -- and
+`slamLand` does what it always does: the shockwave ring, the dust and grit ring, the crack decal, the camera shake, and the clip played out as
+the get-up. While it runs the pads are not his (left stick and jump zeroed each frame, from `templeTick`, which steps before the stick is read);
+control returns when he is grounded with the slam and the landing over (`max` 6 s failsafe), with a "THE SKY TEMPLE" toast. Shipped unverified.
+
 ## m1951 -- a deflected arrow catches the blade's fire
 His idea (Oct 31): *"with the flame katana or the blue flame katana, when you ricochet-deflect an arrow back at them it should light the arrow on fire
 -- blue flame, they explode with blue flame; red flame, they catch on fire."*
