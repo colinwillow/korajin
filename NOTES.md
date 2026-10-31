@@ -20,6 +20,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - CORNICES TO HANG ON: a .4 m stone ledge with a gold edge across each pylon's front at 12, 24 and 36 m (local) -- the mid-points of the
   pylon tiers -- for step 6's route.
 - Budget: **32 draw calls for the widest frame, 66k triangles.** Headless front / door / plaza renders checked. Next: step 6, the route.
+## m15xx -- TUTORIAL GROUNDWORK (DOCKET 38): move events + the breakable SIGN piece
+
+- MOVE EVENTS: `moveWatch` (each frame, first thing in the rig block) compares his state with the last frame and fires `moveEv(k)` once as each
+  move STARTS -- slam, strike, flip, wallrun, perch, ledge, climb, bar, monkey, zip, swing, loop; jump / djump off `p.jumps` rising in the air;
+  bow off a new arrow of his; bowl and pad fired where they happen. No move code was edited, so every verb is covered and a new one is a line.
+  `MOVEV.n` counts them (for a tutorial's progress), `MOVEV.subs` listen.
+- SIGN piece (`sign`: `verb`, `w`, `h`): a megalith block with the verb's word on both faces (DOWN, SLASH, JUMP, DOUBLE, FLIP, WALL RUN, PERCH,
+  HANG, CLIMB, SWING, BARS, ZIP, ROPE, LOOP, BOWL, BOUNCE, BOW -- `MOVEV.label`), VERB button cycles it. SOLID until broken; breaks when its verb
+  fires within `SIGN.R` 5.5 m (the BOW: one of his arrows inside its box + .4) -> collider out, 14 chunks flying (some carrying the word),
+  dust, a thud and a clink, a small shake, `moveEv('sign')`.
+- Headless: three signs (slam, jump, bow); a real jump by the JUMP sign -> +1 jump event, that sign broke, the DOWN sign 6 m away intact; a slam by
+  DOWN -> broke, colliders 3 -> 1, 28 debris live. Render checked (before / after). Signs carry no floating fragments.
 
 ## m1903 -- THE SKY TEMPLE step 4: the bridges to two satellite pillars (TEMPLE.md)
 
