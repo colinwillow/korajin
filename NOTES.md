@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15WA -- wing suit: the folded pack's flicker, arms at his sides, up = front flip, tucked flips, turns about his middle (Oct 31 2026)
+## m1998 -- wing suit: the folded pack's flicker, arms at his sides, up = front flip, tucked flips, turns about his middle (Oct 31 2026)
 - *"A weird triangle thing flashing on the folded backpack."* Folded, the outer two washi panels lie back over the first at 169 deg (`wingFold`) and CUT
   THROUGH it near the hinge -- z-fighting slivers. They are hidden while folded (`u < .04`); the first panel is the folded wing.
 - *"Arms should be at his side, like an idle; the legs are good."* His idle's shoulder / arm / forearm turns are read once off a calm standing frame

@@ -36519,7 +36519,7 @@ function wingStart() {
   if (p.rail) railOff(false);
   if (p.grounded) { p.vel.y = Math.max(p.vel.y, WING.pop); p.pos.y += .05; }
   p.trick = ''; p.trickName = ''; p.barrel = 0; p.barrelA = 0; p.bRoll = p.bYaw = p.bRollA = p.bYawA = 0;
-  if (rig.root) p.wingIn = { q: rig.root.quaternion.clone().multiply(_wkM.setFromAxisAngle(_wkY, rig.faceOff + RIG.spin).invert()), t: 0 };     /* m15WA: the BODY's turn (the model's facing offset taken off) */     // m1993 (his: "flip then pull out the wing suit, he pops to the pose, not finishing the flip"): the body eases in from where it was
+  if (rig.root) p.wingIn = { q: rig.root.quaternion.clone().multiply(_wkM.setFromAxisAngle(_wkY, rig.faceOff + RIG.spin).invert()), t: 0 };     /* m1998: the BODY's turn (the model's facing offset taken off) */     // m1993 (his: "flip then pull out the wing suit, he pops to the pose, not finishing the flip"): the body eases in from where it was
   if (p.aflip) { const F = p.aflip, k = F.w >= 0 ? Math.ceil(F.th / (Math.PI * 2) - .02) : Math.floor(F.th / (Math.PI * 2) + .02); p.wFlip = { axis: F.axis.clone(), th: F.th, tgt: k * Math.PI * 2, w: Math.max(Math.abs(F.w), 7) }; } else p.wFlip = null;     // ...and the flip runs on to its whole turn
   p.aflip = null; p.flip = ''; p.flipT = 0; p.melee = null; p.slam = 0;     // m1985 (his: "the double tap flips him as well as getting the suit out -- he locks in upside down"): opening the wings ends any flip
   const v = p.vel.length(), hs = Math.hypot(p.vel.x, p.vel.z), face0 = p.faceH;
@@ -36552,7 +36552,7 @@ function wingEnd() {
 function wingTrick(dx, dy) {
   const p = player;
   if (!p.wing || !WING.trick || p.wTrick) return false;
-  if (Math.abs(dy) >= Math.abs(dx)) p.wTrick = { k: 'tuck', s: dy < 0 ? -1 : 1,     /* m15WA: up = FRONT flip */ t: 0, dur: WING.tuckT, b: 0 };     // m1993 (his: "instead he temporarily pulls in the wings, does the flip, and the wings come out again"): no loop of the flight path
+  if (Math.abs(dy) >= Math.abs(dx)) p.wTrick = { k: 'tuck', s: dy < 0 ? -1 : 1,     /* m1998: up = FRONT flip */ t: 0, dur: WING.tuckT, b: 0 };     // m1993 (his: "instead he temporarily pulls in the wings, does the flip, and the wings come out again"): no loop of the flight path
   else p.wTrick = { k: 'roll', s: dx > 0 ? 1 : -1, t: 0, dur: WING.rollT, b: 0 };
   snd('swoosh', { r: .95, g: .4 });
   return true;
@@ -36671,7 +36671,7 @@ function wingPose(dt) {
     if (u >= 1) p.wingSpin = null; else _wkB.multiply(_wkq.setFromAxisAngle(_wkY, S.a * k));
   }
   if (p.wing && p.wFlip) { const F = p.wFlip, d = F.tgt - F.th; F.th += Math.sign(d) * Math.min(Math.abs(d), F.w * dt); _wkB.premultiply(_wkq.setFromAxisAngle(F.axis, F.th)); if (Math.abs(F.tgt - F.th) < 1e-3) p.wFlip = null; }     // m1993
-  if (p.wing && p.wingIn) { const I = p.wingIn; I.t += dt; const u = Math.min(1, I.t / WING.finT); _wkB.slerpQuaternions(I.q, _wkq3.copy(_wkB), u * u * (3 - 2 * u)); if (u >= 1) p.wingIn = null; }     // m15WA: blended BEFORE the hip pivot, so the turn is about his middle, not his feet
+  if (p.wing && p.wingIn) { const I = p.wingIn; I.t += dt; const u = Math.min(1, I.t / WING.finT); _wkB.slerpQuaternions(I.q, _wkq3.copy(_wkB), u * u * (3 - 2 * u)); if (u >= 1) p.wingIn = null; }     // m1998: blended BEFORE the hip pivot, so the turn is about his middle, not his feet
   rig.wingQ = (rig.wingQ || new THREE.Quaternion()).copy(_wkB);
   R.quaternion.copy(_wkB).multiply(_wkM.setFromAxisAngle(_wkY, rig.faceOff + RIG.spin));
 
@@ -36796,7 +36796,7 @@ function wingFold(k) {
   for (let side = 0; side < 2; side++) {
     const s = side ? -1 : 1, J = WG.j[side];
     for (let i = 0; i < 3; i++) {
-      const u = clamp((k - i * .25) / .5, 0, 1), e = u * u * (3 - 2 * u); J[i].visible = i === 0 || u > .04;     // m15WA (his: "a weird triangle thing flashing on the folded pack"): folded, panels 2 and 3 lay back over panel 1 at 169 deg and cut through it -- hidden while folded
+      const u = clamp((k - i * .25) / .5, 0, 1), e = u * u * (3 - 2 * u); J[i].visible = i === 0 || u > .04;     // m1998 (his: "a weird triangle thing flashing on the folded pack"): folded, panels 2 and 3 lay back over panel 1 at 169 deg and cut through it -- hidden while folded
       if (i === 0) J[i].rotation.set(0, s * lerp(0, .14, e), -s * lerp(1.35, .22, e));
       else J[i].rotation.set(0, s * lerp(i === 1 ? 2.95 : -2.95, .05, e), -s * lerp(0, .06, e));
     }
@@ -37362,7 +37362,7 @@ function rigAnim(dt) {
   // **AND WITH ZAP'S POOL ON HIM IT IS THE ORDINARY PATH (m119).** `morphAnim` is the three
   // clips a kind carries of its own; once `mphBorrow` has put zap's 50-odd on the skin, every
   // name below resolves and there is nothing left for a second animation path to do.
-  if (p.wing && p.wTrick && p.wTrick.k === 'tuck' && rig.actions.tuck) { setWeights({ tuck: 1 }, dt, .07); return; }     // m15WA: the flip is TUCKED (no hip hold: the tuck curls the spine)
+  if (p.wing && p.wTrick && p.wTrick.k === 'tuck' && rig.actions.tuck) { setWeights({ tuck: 1 }, dt, .07); return; }     // m1998: the flip is TUCKED (no hip hold: the tuck curls the spine)
   if (p.wing && WING.clip && rig.actions[WING.clip]) { setWeights({ [WING.clip]: 1 }, dt, .12); WING.holdHips = 1; return; }     // m1977: his own flight pose (it fell through to the wiggly in-air fall)
   if (p.hdrop) { const nm = p.hdrop.st === 'fall' ? HDROP.fall : HDROP.land; if (rig.actions[nm]) { setWeights({ [nm]: 1 }, dt, .04); return; } }     // m1953
   if (p.dragon && (!p.mphK || rig.borrowed || rig.actions.driving)) { dragAnim(dt, t); return; }     // m1614: climbing on, seated, climbing off (m1624: ahead of a worn form, when the skin has the seat)
@@ -59811,8 +59811,8 @@ function frameBody() {
     rig.root.position.add(_roll);      // written by `boardPose`, earlier in this same frame
     if (player.wing && WING.holdHips && WING.hipsHold && rig.bones && rig.bones.mixamorig_Hips && !rig.hipsQ0) { let sk = null; rig.model.traverse(o => { if (!sk && o.isSkinnedMesh) sk = o.skeleton; }); if (sk) { const r = bindLocalQ(sk, rig.model); rig.hipsQ0 = r.mixamorig_Hips || null; rig.spineQ0 = {}; for (const n of ['mixamorig_Spine', 'mixamorig_Spine1', 'mixamorig_Spine2']) if (r[n]) rig.spineQ0[n] = r[n]; } }     // m1985: the rest turn, from the skeleton's own bind pose (measured: the builder this hero loads through never captured one)
     if (player.wing && WING.holdHips && WING.hipsHold && rig.hipsQ0 && rig.bones && rig.bones.mixamorig_Hips) { rig.bones.mixamorig_Hips.quaternion.copy(rig.hipsQ0); for (const n in (rig.spineQ0 || {})) if (rig.bones[n]) rig.bones[n].quaternion.copy(rig.spineQ0[n]); }     /* measured: the hips alone left the wing span rolled ~25 deg -- the skydive clip twists the spine too */     // m1985 (his: "he flies crooked, at a tilt"): the flight clip's own hip turn stacked on the flight's lie; the flight alone owns the body's angle now
-    if (player.wing && WING.holdHips && WING.armsSide && rig.armQ && rig.armQM === rig.model && rig.bones) for (const n in rig.armQ) { const b = rig.bones[n]; if (b) b.quaternion.slerp(rig.armQ[n], WING.armsSide); }     // m15WA (his: "arms not straight out -- at his sides, like an idle"): the flight pose's arms laid back to his idle's
-    { const p = player; if (rig.bones && rig.armQM !== rig.model && p.grounded && !p.wing && (p.speed || 0) < .2 && !p.melee && !p.roll && !p.aim && !p.knock && !p.dragon && !p.flip && !p.aflip) { rig.armCalm = (rig.armCalm || 0) + dt; if (rig.armCalm > .8) { rig.armQ = {}; for (const sd of ['Left', 'Right']) for (const b of ['Shoulder', 'Arm', 'ForeArm']) { const n = 'mixamorig_' + sd + b; if (rig.bones[n]) rig.armQ[n] = rig.bones[n].quaternion.clone(); } rig.armQM = rig.model; } } else if (rig.armQM !== rig.model) rig.armCalm = 0; }     // m15WA: his idle arms, read once off a calm standing frame
+    if (player.wing && WING.holdHips && WING.armsSide && rig.armQ && rig.armQM === rig.model && rig.bones) for (const n in rig.armQ) { const b = rig.bones[n]; if (b) b.quaternion.slerp(rig.armQ[n], WING.armsSide); }     // m1998 (his: "arms not straight out -- at his sides, like an idle"): the flight pose's arms laid back to his idle's
+    { const p = player; if (rig.bones && rig.armQM !== rig.model && p.grounded && !p.wing && (p.speed || 0) < .2 && !p.melee && !p.roll && !p.aim && !p.knock && !p.dragon && !p.flip && !p.aflip) { rig.armCalm = (rig.armCalm || 0) + dt; if (rig.armCalm > .8) { rig.armQ = {}; for (const sd of ['Left', 'Right']) for (const b of ['Shoulder', 'Arm', 'ForeArm']) { const n = 'mixamorig_' + sd + b; if (rig.bones[n]) rig.armQ[n] = rig.bones[n].quaternion.clone(); } rig.armQM = rig.model; } } else if (rig.armQM !== rig.model) rig.armCalm = 0; }     // m1998: his idle arms, read once off a calm standing frame
     WING.holdHips = 0;
     wingPose(dt);                      // her wing suit lays her forward about her hips (m266)
     swimPose(dt);                      // a swimmer lies along his stroke, about his hips (m594)
