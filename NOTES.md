@@ -20,6 +20,19 @@ In all five concepts the hanging satellite spires are the same sandstone masonry
 them; ours were the dark glyph basalt (`style: 'tech'`), which made four big dark wedges the loudest thing on the sides. The four inverted
 columns (`temple_pillarE/W_col`, `temple_satE/W_body`) drop the tech style and pick up the stone megalith skin plus the block dressing (gold band,
 studs, panels). Same boxes, same colliders: no route moves. Draw calls unchanged (63 wide). Shipped unverified.
+## m15SW -- the stair walk is back, at a MEASURED rate; the stair ramp is geometric
+His correction (Oct 31): *"You're saying I decided the stair walk clip stays off -- that's not what I decided. When you implemented a so-called stair
+walk clip it didn't work: he was just gliding up the stairs and his feet were all f---ed. There should be a Mixamo stair walk clip; it must've got
+messed up. We definitely need a stair walk clip."* (m1820's note had read his "revert" as a verdict on stair clips; it was a verdict on MY version.)
+- **What broke m1813, found:** the clip data is fine -- read straight out of `forged/alien_goblin_game.glb`, all three loop clean (hips y first ==
+  last: stairs_up 45.65, stairs_run 47.16, stairs_down 47.53; no drift). The RATE was wrong: `arenaRef` counts only frames whose stance foot is at
+  the clip's lowest height -- right for a walk, wrong on stairs, where the planted foot stands on the HIGHER tread and sinks -- so it returned
+  nothing and the clip played at a guessed 1.3 / 3.5 m/s, capped at x1.9. That is the glide.
+- `stairsMeasure`: each frame the LOWER foot is the planted one; its backward speed `h` and sink `v` at 1x, on his body; the rate is his speed / `h`.
+  `STAIRS.on` 1 again, `tsHi` 1.9 -> 2.6. `STAIRS.meas` holds the numbers.
+- **The ramp (m1944's stair filter) was measured worse, and replaced:** on a 12-step .30 flight at a run, m1944's speed filter drew 3x the jerk of the
+  old per-step ease (3.15 vs 1.08) -- a step snap is one frame at 18 m/s and the filter rang on it. `stepRamp` is GEOMETRIC now: the ground averaged
+  over 5 points from .45 m behind to .45 m ahead along his travel (cliffs and walls past a step left out), eased .05 s.
 
 ## m1944 -- stairs: the drawn height rides a ramp through the treads; the camera follows it tightly
 His words (Oct 31): *"the new running upstairs is interesting -- the camera zooms up on his butt, and he still stutters up the steps; at least he's

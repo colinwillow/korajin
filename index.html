@@ -34490,15 +34490,29 @@ function idlePick() { const I = IDLEPICK; if (HERO.pick !== 'agoblin' || !rig.ac
   if (I.boredOn != null && (!still || now - I.boredOn > bd.getClip().duration - .25)) { I.boredOn = null; I.stillT = 0; }
   const nm = I.boredOn != null ? I.bored : pick; CLIPS.idle = nm;
   if (nm !== I.bored) { const a = rig.actions[nm]; if (a && a.loop !== THREE.LoopRepeat) { ONCE.delete(nm); a.setLoop(THREE.LoopRepeat, Infinity); a.clampWhenFinished = false; } idleAmp(nm, I.energy); } }
-const STAIRS = { on: 0,     /* m1820: OFF (his: "walking upstairs is absolutely f---ed -- revert to what it was; the same on the rope bridge") */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 1.9, ref: {} };
+const STAIRS = { on: 1, meas: {},     /* m1820 turned it off (his: "walking upstairs is absolutely f---ed" -- the glide, the rate); m15SW: back on, the rate measured by `stairsMeasure` */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 2.6, ref: {} };
 function stairsWant(sp) { const p = player; if (!STAIRS.on || !p.grounded || sp < .6 || p.melee || p.roll || p.slide || p.beam || p.wrun || p.ledge || p.board || p.riding || p.dragon) { p.slopeS = 0; p.stairs = ''; return ''; }
   const h = Math.atan2(p.vel.x, p.vel.z), fx = Math.sin(h), fz = Math.cos(h), L = STAIRS.look, y = p.pos.y;
   const a = groundAt(p.pos.x + fx * L, p.pos.z + fz * L, y + .7, .01), b = groundAt(p.pos.x - fx * L, p.pos.z - fz * L, y + .7, .01);
   const sl = isFinite(a) && isFinite(b) && a > y - 1.5 && b > y - 1.5 ? (a - b) / (2 * L) : 0; p.slopeS = damp(p.slopeS || 0, clamp(sl, -1.2, 1.2), STAIRS.half, 1 / 60);
   const s = p.slopeS, cur = p.stairs || '', up = cur.startsWith('stairs_u') || cur === 'stairs_run' ? s > STAIRS.out : s > STAIRS.upAt, dn = cur === 'stairs_down' ? s < -STAIRS.out : s < -STAIRS.downAt;
   const nm = up ? (sp > STAIRS.runAt && rig.actions.stairs_run ? 'stairs_run' : 'stairs_up') : dn ? 'stairs_down' : ''; p.stairs = nm && rig.actions[nm] ? nm : ''; return p.stairs; }
-function stairsRef(nm) { if (STAIRS.ref[nm] != null) return STAIRS.ref[nm]; const hd = { K: { h: RIG.height, file: RIG.file, gaitM: STAIRS.gm || (STAIRS.gm = {}) }, actions: rig.actions, mixer: rig.mixer, model: rig.model };
-  const r = arenaRef(hd, nm); return (STAIRS.ref[nm] = r > .2 ? r : nm === 'stairs_run' ? 3.5 : 1.3); }
+// m15SW (his: "there should be a Mixamo stair walk clip -- it must've got messed up; we definitely need one"): what broke m1813 was the RATE. `arenaRef`
+// counts only frames whose stance foot is at the clip's LOWEST height -- right for a walk, wrong for a stair clip, where the planted foot stands on the
+// HIGHER tread and sinks as he rises -- so it found nothing and the clip played at a guessed 1.3 / 3.5 m/s: the glide. `stairsMeasure` reads the
+// clip the way a stair climb works: each frame the LOWER foot is the planted one; its backward speed (`h`) and its sink (`v`) at 1x, in metres on his
+// body, medians over the frames where it moves back. The rate is then his speed over `h`, so a planted foot holds still on its tread.
+function stairsMeasure(nm) { const a = rig.actions[nm], c = a && a.getClip(), md = rig.model, L = md && md.getObjectByName('mixamorig_LeftToeBase'), R = md && md.getObjectByName('mixamorig_RightToeBase');
+  if (!a || !L || !R) return null;
+  const was = []; for (const k in rig.actions) { const x = rig.actions[k]; was.push([x, x.getEffectiveWeight(), x.time, x.enabled, x.paused]); x.setEffectiveWeight(0); }
+  const N = 48, T = c.duration, F = [], mxr = rig.mixer, o = new THREE.Vector3(), qi = rig.root.getWorldQuaternion(new THREE.Quaternion()).invert(), run0 = a.isRunning(); a.enabled = true; if (!run0) a.play(); a.setEffectiveWeight(1);
+  for (let i = 0; i <= N; i++) { a.time = T * i / N; mxr.update(0); rig.root.updateMatrixWorld(true); rig.root.getWorldPosition(o);
+    F.push([L.getWorldPosition(new THREE.Vector3()).sub(o).applyQuaternion(qi), R.getWorldPosition(new THREE.Vector3()).sub(o).applyQuaternion(qi)]); }
+  for (const [x, w, t, en, pz] of was) { x.setEffectiveWeight(w); x.time = t; x.enabled = en; x.paused = pz; } if (!run0) a.stop(); mxr.update(0);
+  const hs = [], vs = []; for (let i = 0; i < N; i++) { const k = F[i][0].y < F[i][1].y ? 0 : 1, d = F[i + 1][k].clone().sub(F[i][k]); if (d.z < 0) { hs.push(-d.z / (T / N)); vs.push(-d.y / (T / N)); } }
+  if (hs.length < 4) return null; hs.sort((x, y) => x - y); vs.sort((x, y) => x - y); return { h: hs[hs.length >> 1], v: vs[vs.length >> 1], n: hs.length }; }
+function stairsRef(nm) { if (STAIRS.ref[nm] != null) return STAIRS.ref[nm]; const M = stairsMeasure(nm); STAIRS.meas[nm] = M;
+  return (STAIRS.ref[nm] = M && M.h > .2 ? M.h : nm === 'stairs_run' ? 3.5 : 1.3); }
 const AUTOSPRINT = { on: 1, d: 4.6, minV: 3, turn: 1.4, dbl: 1 };     // m1809: d = 15 ft of running before the sprint
 try { if (localStorage.getItem('mel.autosprint') === '0') AUTOSPRINT.on = 0; } catch (e) {}
 const NINJA = { on: 1, look: 'RUN', looks: ['RUN', 'NINJA'], runClip: 'run_fast', runSpeed: 9, runFov: .5, runLines: .35, clip: 'ninja_run', jump: 'ninja_jump', speed: 11, minMag: .35, win: .4, jumpUp: 10.5, jumpFwd: 13.5, fov: 9, lines: .55, tsLo: .7, tsHi: 3.4, runTsHi: 1.7 };     /* m1871 (his: "with the katana the fast run's feet don't go crazy fast -- play the animation slower while moving him faster, it looks better; apply it to the unarmed run"): the unarmed fast run (`run_fast`) was allowed tsHi 3.4 against the katana run's GAIT.tsHi 1.6 -- `runTsHi` 1.7 */     // tsHi: her stride is short (2.1 m/s on the goblin) -- anime legs, not sliding feet
@@ -35203,7 +35217,7 @@ const _roll = new THREE.Vector3();
 // nothing -- falling is the physics' job -- and a teleport (ladder top, respawn) is bigger than a step
 // and ignored. The board rides the same offset, so a skater pops up the kerb with the deck under him.
 // A real step-up clip is the honest fix; this is what makes the snap stop reading as one until then.
-const STEPUP = { on: 1, hl: .07, min: .03, n: 0, ramp: 1, hl2: .12, vHl: .2 };     // m1944: `ramp` 1 = the predictive stair filter (`stepRamp`); 0 = the old per-step ease
+const STEPUP = { on: 1, hl: .07, min: .03, n: 0, ramp: 1, hl2: .05, L: .45, n: 5 };     // m1944: `ramp` 1 = the predictive stair filter (`stepRamp`); 0 = the old per-step ease
 const CAMY = { on: 1, hl: .05, air: .05, snap: 3 };     // m1944: hl .2 -> .05 -- the drawn height is smooth now (`stepRamp`), and a slow ease trailed below him     // m1928: the camera's own height ease (see `cam.tgt`)
 function stepEase(dt) {
   const p = player, y = p.pos.y;
@@ -35222,9 +35236,15 @@ function stepEase(dt) {
 // lead, so a flight becomes the straight ramp through its treads (no lag in a steady climb, no stair-steps). The camera rides the drawn height.
 // Off the ground, or on a jump bigger than a step, it lets go at once (physics owns the air).
 function stepRamp(dt, dy) { const p = player, y = p.pos.y, S = STEPUP;
-  if (!p.grounded || p.rampY == null || Math.abs(dy) > MOVE.step * 1.6) { p.rampY = y + (p.stepOff || 0); p.rampV = 0; p.stepOff = damp(p.stepOff || 0, 0, .04, dt); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; if (!p.grounded) p.rampY = y + p.stepOff; return; }
-  p.rampV = damp(p.rampV || 0, dt > 0 ? dy / dt : 0, S.vHl, dt); p.rampY = damp(p.rampY, y, S.hl2, dt);
-  p.stepOff = clamp(p.rampY + p.rampV * S.hl2 - y, -MOVE.step * 1.2, MOVE.step * .6); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; }
+  // measured (m15ST's first cut): a filter on his own height rings on every step -- a snap is one frame of 18 m/s -- and drew 3x the jerk of the old
+  // ease. So the ramp is GEOMETRIC: the ground averaged over `n` points from `L` m behind to `L` m ahead along his travel (a cliff or a wall past
+  // `MOVE.step` x1.6 is left out), lightly eased -- on a flight that is the line through the treads; on the flat it is his own height.
+  if (!p.grounded || Math.abs(dy) > MOVE.step * 1.6) { p.rampY = null; p.stepOff = damp(p.stepOff || 0, 0, .04, dt); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; return; }
+  const sp = Math.hypot(p.vel.x, p.vel.z), h = sp > .3 ? Math.atan2(p.vel.x, p.vel.z) : p.faceH, fx = Math.sin(h), fz = Math.cos(h); let sum = 0, n = 0;
+  for (let k = 0; k < S.n; k++) { const o = -S.L + 2 * S.L * k / (S.n - 1), g = groundAt(p.pos.x + fx * o, p.pos.z + fz * o, y + MOVE.step * 1.6, MOVE.step * 1.6);
+    if (isFinite(g) && Math.abs(g - y) <= MOVE.step * 1.6) { sum += g; n++; } }
+  const tgt = n ? sum / n : y; p.rampY = p.rampY == null ? y + (p.stepOff || 0) : damp(p.rampY, tgt, S.hl2, dt);
+  p.stepOff = clamp(p.rampY - y, -MOVE.step * 1.2, MOVE.step * .8); if (Math.abs(p.stepOff) < .002) p.stepOff = 0; }
 function boardPose(dt) {
   // **ZEROED FIRST, ABOVE EVERY EARLY RETURN.** `_roll` is read by the root block later in the
   // same frame, so a frame that leaves this function early must leave a zero behind rather than
