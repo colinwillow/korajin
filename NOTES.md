@@ -5,6 +5,27 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1922 -- THE SKY TEMPLE 8a: the defences -- watchtowers, turrets, seals, a floating chain, the great door that sinks (his direction)
+
+His (TEMPLE.md "Where it is going"): the outside heavily guarded and automated -- turrets, towers, floating pieces to reach -- and you strike
+things on different towers to open the giant front doors onto an under-temple ten times larger. It stays floating for now.
+- `watch` entries (expanded by `templeExpand` before the scale into ordinary blocks / ledges / chevrons): FOUR WATCHTOWERS at 40, 55, 65 and
+  75 m -- the front two on the plaza, the back two on the podium's back corners -- each a battered shaft, a gold-banded deck with four tech
+  merlons, a column of jade-lipped ledges every 3.9 design units (9.75 m: a wall run each) with chevrons at its foot, and a POSTED TURRET
+  (`turretAt`, facing the plaza).
+- A FLOATING CHAIN (`floats`: four small flat-topped landmasses, ~9 m apart, climbing 8.5 m) off the front-left tower's deck out past the rim to
+  a floating SEAL ISLAND (`floatisle`) over the drop.
+- SEALS (`seal`): red crystals on gold stands on three tower decks and the island -- each a smashable (`smashAdd`, any blade / arrow / bolt
+  through `bldHit`, 2 hits, never respawns) with its own crystal mesh that turns JADE; a toast counts them (SEAL n / 4). All four: THE GREAT
+  DOOR OPENS -- the slab (now its own group, with its jade ring) sinks into the landing over 4.5 s with dust, then its collider goes; behind it,
+  the dark (the way down -- the under-temple is its own piece, not built).
+- **TURRETS COST 40 DRAWS EACH** (~40 meshes): four took the widest frame from 44 to 252. `templeTurretFlat` folds each moving part's meshes
+  (base, head, pods) into one vertex-coloured mesh, keeping the eye (it changes colour) and the banner, and points `T.mats` at the new material
+  (hit flash and battered darkening still work): **76** on the widest frame, 32-38 close in. Still over the 60 budget from far out -- the honest
+  fix is a one-mesh turret in the turret system itself.
+- Fixed while looking: each seal first sat ON its turret (the offset cancelled) and the seal island hung square in front of the facade.
+- Known: a destroyed turret's smoke and debris fall to the forge floor (y 0, 180 m below) -- the turret system assumes the ground.
+
 ## m1921 -- THE SKY TEMPLE: colour strips, tech courses, corner pilasters and crests on every big block (his)
 
 His, looking at the renders: *"I love the variety where you can see black and green and red -- break up more of the temple with strips of

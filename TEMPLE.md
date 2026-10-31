@@ -44,6 +44,19 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
   - [x] 7d. (m1913) The halo's jade DISH and red chains down to the pylons; the jade porthole disc over the door; the BACK's gear disc and jade slit windows.
   - [x] 7e. (m1914) Jackal-headed jade-armoured guardians; gold studs in the stone; far islands as small temples with WATERFALLS.
 
+## Where it is going (his, Oct 31 2026)
+*"Eventually it'll be on the ground. You attack and beat a lot of the guards up in the watchtowers and the turrets, and you have to hit a bunch
+of things on different towers and figure out how to open the temple; then you open the giant front doors and go inside, and it's a giant
+UNDERGROUND temple -- the inside ten times larger. This could just be the part that sticks up above the ground, the tip of the iceberg. I like
+the outside heavily guarded, very automated -- turrets that shoot at you, towers, enemies, floating pieces you've got to figure out how to get
+to. Let's keep doing passes."* For now it stays floating (*"that's fine"*); the under-temple is its OWN sandbox (its own doc and DONE WHEN)
+once he starts it -- the doors here only open onto it.
+- [ ] 8a. THE DEFENCES: four watchtowers (40-75 m) with posted turrets and ledge columns, a floating stepping-stone chain to a seal island,
+      SEALS on three towers and the island -- strike them all and the great door sinks.
+- [ ] 8b. GUARDS in the towers (needs an enemy he has signed off -- the WHOLE-PIECE RULE: do not post an unfinished enemy here).
+- [ ] 8c. More floating pieces round the outside, each with a reason to reach it; a better tell for which seals are left.
+- [ ] 8d. On the ground: the temple as the tip of the iceberg (a ground variant of the island), the doors opening onto the way down.
+
 ## DONE WHEN
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)
 - [ ] the route from the stair to the halo is climbable end to end with the game's moves, and the zipline brings you back
