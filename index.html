@@ -944,7 +944,7 @@ body.kit3 #wepRow text { font-size: 12px; }
   <div class="sub" id="bootSub"></div>
   <div class="msg" id="bootMsg">loading</div>
   <div class="bar"><i id="bootBar"></i></div>
-  <div class="bld">BUILD <span id="bootBuild">m1914</span></div>
+  <div class="bld">BUILD <span id="bootBuild">m1915</span></div>
 </div>
 <script>
 // m1320: THE BOOT CARD SAYS WHICH GAME IS LOADING. *"It still says Weirdport and we're not even on that game. We could stylize the loading
@@ -956,7 +956,7 @@ body.kit3 #wepRow text { font-size: 12px; }
     b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_01.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')'; } })();
 </script>
 
-<div class="chip" id="build"><b id="buildN">m1914</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
+<div class="chip" id="build"><b id="buildN">m1915</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
 <div id="splash" aria-label="tap to start"><img class="blur" alt=""><img class="main" alt="Zap and Clancy"><div class="glow"></div><div class="bn"></div></div>
 <script>
 // m879 (STEER 02:22): THE SPLASH, before the module (so it shows on the first paint, while the boot carries on behind it). The image's
@@ -1066,7 +1066,7 @@ import { KTX2Loader } from './vendor/KTX2Loader.js';
 import { clone as skeletonClone } from './vendor/SkeletonUtils.js';
 import { mergeGeometries } from './vendor/BufferGeometryUtils.js';
 
-const BUILD = 'm1914';
+const BUILD = 'm1915';
 /* ASSETS:START */
 const ASSETS = {"textures/bronze.webp":"bdb5b1c0","textures/hollows_cliff.webp":"afd42c1e","textures/hollows_cream.webp":"3e412dd3","textures/hollows_leaves.webp":"09c66339","textures/hollows_pebble.webp":"49006598","textures/hollows_rock.webp":"a6d17614","textures/hollows_sand.webp":"b977d1fc","textures/marble.webp":"53c3d802","textures/red_cloth.webp":"82877ebd","textures/roof_tiles.webp":"bc0a6ac0","textures/sandstone.webp":"4d991588","textures/sky_sunset_01.webp":"db9645b5","textures/sky_sunset_02.webp":"385ca84e","textures/stone_blocks.webp":"419e5209","textures/wood_planks.webp":"c8b25167","textures/wood_timber.webp":"dc42d865","models/alien_lizard.glb":"faffcf4c","models/alien_lizard_ktx2.glb":"05da2a20","models/skate.glb":"0c612d5e","models/skateboard.glb":"5ba93796","models/characters/alien_antenna_game.glb":"f3ccf328","models/characters/alien_antenna_game_ktx2.glb":"28afac8c","models/characters/alien_female_purple.glb":"1c73eef1","models/characters/alien_female_purple_ktx2.glb":"fc914afb","models/characters/alien_goblin.glb":"3e91bffb","models/characters/alien_goblin_chains.glb":"e72d1550","models/characters/alien_goblin_game.glb":"cfabd926","models/characters/alien_grey_medium.glb":"5a779e8e","models/characters/alien_grey_medium_ktx2.glb":"61600c3e","models/characters/alien_rollerskate_blue.glb":"abf0917c","models/characters/alien_rollerskate_blue_ktx2.glb":"e9a7948a","models/characters/alien_warrior.glb":"f5cc9c49","models/characters/alien_warrior_ktx2.glb":"a13fb7b6","models/characters/beautiful_asian.glb":"910f6565","models/characters/beautiful_asian_ktx2.glb":"35281eef","models/characters/beautiful_blonde.glb":"edddc421","models/characters/beautiful_blonde_ktx2.glb":"89cf3899","models/characters/brute_warboss_armor.glb":"cc5c7936","models/characters/ceo_alien.glb":"844dc3a7","models/characters/ceo_human.glb":"ec289865","models/characters/clancy.glb":"4b9d271f","models/characters/clancy_ktx2.glb":"74edbc6e","models/characters/colin.glb":"99d38b7d","models/characters/colin_ktx2.glb":"35040f87","models/characters/contruction_worker.glb":"8bd3d7ce","models/characters/contruction_worker_ktx2.glb":"3df8c344","models/characters/dummy_officer.glb":"724965ac","models/characters/dummy_officer_ktx2.glb":"db640cda","models/characters/fat_activist_01.glb":"3c566fee","models/characters/fat_activist_01_ktx2.glb":"b9328df4","models/characters/fat_biker_01.glb":"576b7cf5","models/characters/fat_biker_01_ktx2.glb":"7142cfad","models/characters/fat_biker_02.glb":"ab5d7ec7","models/characters/fat_biker_02_ktx2.glb":"28cec6cc","models/characters/fat_hippie.glb":"f09a260d","models/characters/fat_hippie_ktx2.glb":"0be745a4","models/characters/fat_hipster.glb":"9cf45ffb","models/characters/fat_hipster_ktx2.glb":"18106ff3","models/characters/fat_secret_service.glb":"6d546fb0","models/characters/fat_secret_service_ktx2.glb":"a23a304e","models/characters/fat_trump.glb":"5de6bc56","models/characters/fat_trump_ktx2.glb":"a0ddaf4d","models/characters/firefighter.glb":"ebde005d","models/characters/firefighter_ktx2.glb":"ccf93c96","models/characters/goblin_game.glb":"db1cf0e0","models/characters/hick_skinny.glb":"1ebe78e8","models/characters/hick_skinny_ktx2.glb":"1e93f0ed","models/characters/hobo_01.glb":"34e80b1d","models/characters/hobo_01_ktx2.glb":"69497677","models/characters/jack.glb":"ab009b9b","models/characters/jack_ktx2.glb":"1f4c9f7f","models/characters/moussa.glb":"6d80b1cf","models/characters/moussa_ktx2.glb":"66e040f8","models/characters/orc_game.glb":"d9aa816d","models/characters/osari_bowman_game.glb":"2ee424af","models/characters/proxy_ceo.bin":"6eca0c34","models/characters/proxy_ceo.jpg":"fadc9d0a","models/characters/proxy_ceo.json":"e62a7975","models/characters/proxy_ceo_alien.bin":"be247ecc","models/characters/proxy_ceo_alien.jpg":"8f8bf8fc","models/characters/proxy_ceo_alien.json":"eb23e28f","models/characters/proxy_hick.bin":"4485560e","models/characters/proxy_hick.jpg":"8c331965","models/characters/proxy_hick.json":"d85a0d36","models/characters/proxy_zap.bin":"dd7b300e","models/characters/proxy_zap.jpg":"2e7330ae","models/characters/proxy_zap.json":"b3b42754","models/characters/proxy_zap2.bin":"51088f46","models/characters/proxy_zap2.jpg":"a954a815","models/characters/proxy_zap2.json":"5c50abb7","models/characters/rept_heavy_armor.glb":"934661c7","models/characters/samurai_game.glb":"c7940015","models/characters/toad_wanderer_game.glb":"2efc31c4","models/characters/xray_skeleton.glb":"46480317","models/characters/zap.glb":"5e5cca54","models/characters/zap_02.glb":"4ff12de0","models/characters/zap_02_lib.glb":"e23d91da","models/characters/zap_ktx2.glb":"4b29d886","models/characters/zoar.glb":"423a9de9","models/characters/zoar_game.glb":"d20a3736","models/vehicles/dump_truck.glb":"d870dc18","models/vehicles/dump_truck_ktx2.glb":"21ee7059","models/vehicles/motorcycle_fatboy.glb":"9ed9be28","models/weapons/alien_antenna_blaster_game.glb":"54083b44","models/weapons/alien_antenna_hammer_game.glb":"707b8a27","models/weapons/alien_launcher.glb":"ba8ab96a","models/weapons/hammer.glb":"3335fdf2","models/weapons/shield_brute.glb":"c6e5593f","models/weapons/spikey_mace.glb":"dcd43acd","models/weapons/w_brute_cleaver.glb":"07a97580","models/weapons/w_rept_maul.glb":"84c3a1a4","models/buildings/alien_base_01.glb":"d9b9fd7f","models/buildings/alien_base_01_ktx2.glb":"6cbbfef2","models/buildings/korajin_bld_01.glb":"edf3178e","models/towers/alien_tower_01.glb":"98d23375","models/towers/alien_tower_01_ktx2.glb":"47597651","models/streets/modular_streets_kit.glb":"6a4bcaa5","models/toon_city/impact_marks.json":"2b616620","models/toon_city/impact_marks_atlas.ktx2":"efe0840e","models/toon_city/impact_marks_atlas.png":"490ed049","models/toon_city/toon_city_breakables.glb":"29bddbc8","models/toon_city/toon_city_collision.glb":"fb3a693f","models/toon_city/toon_city_obb.json":"81c18a47","models/toon_city/toon_city_visual.glb":"5df62285","models/toon_city/toon_city_visual_ktx2.glb":"cf080531","models/toon_city/weirdkit_tint.js":"f6e9d802","models/toon_city_kit/toon_city_collision.glb":"5540a364","models/toon_city_kit/toon_city_kit_buildings.glb":"590e53f0","models/toon_city_kit/toon_city_kit_buildings_ktx2.glb":"e6dff3a3","models/toon_city_kit/toon_city_kit_pieces.glb":"8232bd6f","models/toon_city_kit/toon_city_kit_twins.glb":"fcc9fdfc","models/toon_city_kit/toon_city_visual.glb":"45cf2957","models/toon_city_kit/toon_city_visual_ktx2.glb":"f26a6984","models/toon_city_kit/weirdkit_detile.js":"dd05bd70","models/characters/morph/shapes.bin":"4e680384","models/characters/morph/shapes.json":"abfc949d","models/characters/forged/alien_female_purple.glb":"0308860e","models/characters/forged/alien_goblin_game.glb":"a0bbf14e","models/characters/forged/alien_rollerskate_blue.glb":"bcccc63f","models/characters/forged/alien_warrior.glb":"a067d5ab","models/characters/forged/beautiful_asian.glb":"f1c7baa5","models/characters/forged/beautiful_blonde.glb":"f83172bd","models/characters/forged/brute_warboss_armor.glb":"dc15dc94","models/characters/forged/ceo_alien.glb":"20659ac3","models/characters/forged/ceo_human.glb":"326d9e7e","models/characters/forged/clancy.glb":"19fabcce","models/characters/forged/contruction_worker.glb":"99fe1a17","models/characters/forged/dummy_officer.glb":"87a11843","models/characters/forged/fat_activist_01.glb":"6546645c","models/characters/forged/fat_biker_01.glb":"943f38ea","models/characters/forged/fat_biker_02.glb":"5d63a0cf","models/characters/forged/fat_hippie.glb":"ff0539ba","models/characters/forged/fat_hipster.glb":"792b92d8","models/characters/forged/fat_secret_service.glb":"7c29d1da","models/characters/forged/firefighter.glb":"20410689","models/characters/forged/goblin_game.glb":"3c813462","models/characters/forged/hick_skinny.glb":"d9232022","models/characters/forged/hobo_01.glb":"37d266c9","models/characters/forged/index.json":"7ac38412","models/characters/forged/jack.glb":"712b6241","models/characters/forged/moussa.glb":"74d19c70","models/characters/forged/orc_game.glb":"7bf3c227","models/characters/forged/osari_archer.glb":"bf2f27f5","models/characters/forged/rept_heavy_armor.glb":"01e631b0","models/characters/forged/samurai_archer.glb":"04db413e","models/characters/forged/samurai_game.glb":"a946c148","models/characters/forged/stone_guardian.glb":"8a9ff43d","models/characters/forged/stone_olmec.glb":"be0ae8f6","models/characters/forged/zap.glb":"10eda718","models/characters/forged/zap_02.glb":"fd513cea","models/characters/forged/zap_02_lib.glb":"fd513cea","models/characters/forged/zoar_game.glb":"b032a28e","models/characters/anims/wall_side.glb":"089d3dc7","levels/index.json":"2c8499e1","levels/sample_two_towers.json":"e2466683","images/crack_sprite_01.ktx2":"4aa55fde","images/crack_sprite_01.png":"16b52e8c","images/fire_sprites_01.ktx2":"922e1191","images/fire_sprites_01.png":"f87e2696","images/fire_sprites_02.ktx2":"e0cbfe1d","images/fire_sprites_02.png":"b373a6fd","images/fire_sprites_03.ktx2":"4fbbb985","images/fire_sprites_03.png":"7eece336","images/geyser_sprites_01.png":"b6325470","images/hdri_game.ktx2":"0feb5c79","images/hdri_game.png":"dac55f41","images/serpent_eye.webp":"b764e90d","images/serpent_fin.webp":"a592c818","images/serpent_skin.webp":"f7e0e45d","images/ship_lacquer.jpg":"51b8e6e5","images/ship_sail.jpg":"9d04714c","images/splash_zap_n_clancy.webp":"52a9d8a4","images/water_sprites_01.ktx2":"326924c5","images/water_sprites_01.png":"31e12659","audio/blaster_sound_01.mp3":"40d99583","audio/blaster_sound_02.mp3":"4bd7bb7c","audio/box_break_01.mp3":"e4127980","audio/electricity_beam_01.mp3":"986db8c9","audio/explosion_small.mp3":"f154a537","audio/metal_clang_01.mp3":"a333bd27","audio/metal_clang_02.mp3":"1e3ebbd6","audio/metal_clang_03.mp3":"afe44812","audio/metal_ping_01.mp3":"8ffca1a0","audio/plasma_canon.mp3":"e32c324d","audio/powerup_01.mp3":"48fbbe08","audio/swoosh_01.mp3":"193db185","audio/swoosh_02.mp3":"19145e70","audio/swoosh_03.mp3":"544fdffb","audio/swoosh_04.mp3":"843bee5d","audio/plasma_sounds/plasma_01.mp3":"e71c010f","audio/plasma_sounds/plasma_02.mp3":"ac3b1c75","audio/plasma_sounds/plasma_03.mp3":"eaa59355","audio/plasma_sounds/plasma_04.mp3":"bc7865e0","audio/plasma_sounds/plasma_05.mp3":"1d821cd0","audio/plasma_sounds/plasma_06.mp3":"cb979fbe","audio/plasma_sounds/plasma_hit.mp3":"30e5af5c","audio/alien_orc_grunt_sounds/alien_orc_grunt_01.mp3":"d6f4b343","audio/alien_orc_grunt_sounds/alien_orc_grunt_02.mp3":"78afc603","audio/alien_orc_grunt_sounds/alien_orc_grunt_03.mp3":"972c524a","audio/alien_orc_grunt_sounds/alien_orc_grunt_04.mp3":"b0ce76eb","audio/alien_orc_grunt_sounds/alien_orc_grunt_05.mp3":"1f0ba1f4","audio/alien_orc_grunt_sounds/alien_orc_grunt_06.mp3":"4f749866","audio/alien_orc_grunt_sounds/alien_orc_grunt_07.mp3":"dcf75925","audio/hit_sounds/hit_sound_01.mp3":"befaa2be","audio/hit_sounds/hit_sound_02.mp3":"73bc4433","audio/hit_sounds/hit_sound_03.mp3":"24b181e4","audio/hit_sounds/hit_sound_gound_01.mp3":"86ee2674","audio/hit_sounds/hit_sound_ground_02.mp3":"8a7cac73","audio/hit_sounds/hit_sound_plasma_01.mp3":"9abc0202","audio/hit_sounds/hit_sound_plasma_02.mp3":"6aaf0fe5","audio/hit_sounds/thud_a_1.mp3":"3e526f73","audio/hit_sounds/thud_a_2.mp3":"e99874e5","audio/hit_sounds/thud_a_3.mp3":"7aaaea7d","audio/hit_sounds/thud_b_1.mp3":"c6e4c4f4","audio/hit_sounds/thud_b_2.mp3":"db6b7fbb","audio/hit_sounds/thud_b_3.mp3":"5c7909e3","audio/creature_noises/creature_noise_01.mp3":"cbcc6ee7","audio/creature_noises/creature_noise_02.mp3":"201a8247","audio/creature_noises/creature_noise_03.mp3":"97680811","audio/creature_noises/creature_noise_04.mp3":"6f734df2","audio/creature_noises/creature_noise_05.mp3":"6f736441","audio/creature_noises/creature_noise_06.mp3":"992712e9","audio/creature_noises/creature_noise_07.mp3":"d9ad04b3","audio/footsteps/footstep_2_l.mp3":"abeabfbe","audio/footsteps/footstep_2_r.mp3":"7dd16046","audio/footsteps/footstep_3_L.mp3":"bc044ed9","audio/footsteps/footstep_3_R.mp3":"49c6f23d","audio/footsteps/footstep_l.mp3":"b66e579b","audio/footsteps/footstep_r.mp3":"96e13433","audio/footsteps/footsteps.mp3":"8ee73ccb","audio/footsteps/step3_1_l.mp3":"a855262e","audio/footsteps/step3_1_r.mp3":"1ea0a2b4","audio/footsteps/step3_2_l.mp3":"43ef40dd","audio/footsteps/step3_2_r.mp3":"91cfe687","audio/footsteps/step3_3_l.mp3":"56ff6eb2","audio/footsteps/step3_3_r.mp3":"0e73e8e3","audio/footsteps/step3_4_l.mp3":"26c965fd","audio/footsteps/step3_4_r.mp3":"c3110fbb","audio/footsteps/step_1_l.mp3":"f7efc3d9","audio/footsteps/step_1_r.mp3":"b236bde4","audio/footsteps/step_2_l.mp3":"0e397d22","audio/footsteps/step_2_r.mp3":"2392717c","audio/footsteps/step_3_l.mp3":"364d26a3","audio/footsteps/step_3_r.mp3":"8434aa01","audio/footsteps/step_4_l.mp3":"1fb763a6","audio/footsteps/step_4_r.mp3":"74f5aff2","audio/footsteps/step_5_l.mp3":"8619ec0e","audio/footsteps/step_5_r.mp3":"eff2c01e","audio/footsteps/step_6_l.mp3":"553ba89d","audio/footsteps/step_6_r.mp3":"f2fec766","models/props/prop_hydrant.glb":"f157fee9","models/props/prop_hydrant_collision.glb":"0bbfc4d2","models/creatures/3_headed_dog.glb":"9263480a","models/creatures/blue_dragon.glb":"d72f4da7","models/creatures/mech_lightning_dragon.glb":"5935bb67","models/creatures/osari_spider.glb":"6c38e031","models/creatures/stone_guardian.glb":"ad47ade1","models/creatures/stone_olmec.glb":"da3e8cbd"};
 /* ASSETS:END */
@@ -29626,7 +29626,8 @@ const TEMPLE = { top: 60, fallY: 24, seed: 31,
   halo: { id: 'temple_halo', at: [0, 49.5, -15], R: 6.6, tube: .42, studs: 20, orbY: 47.4, orb: 1.25, spin: 0, beam: 1,     // 7d: still (red chains tie it to the pylons now), a jade DISH inside
     chains: [[-14, 40, -13], [-14, 40, -19], [14, 40, -13], [14, 40, -19]], dish: 1 } };
 // SC_TEMPLE:END
-const TEMPLEZ = { want: 0, on: null };
+const TEMPLEZ = { want: 0, on: null, skin: 'sky', skins: ['sky', 'block'] };     // skin: which LOOK dresses the block-out (`TEMPLE_SKINS`)
+try { const v = new URLSearchParams(location.search).get('skin') || localStorage.getItem('mel.templeSkin'); if (TEMPLEZ.skins.includes(v)) TEMPLEZ.skin = v; } catch (e) {}
 try { if (/[?&]zone=temple\b/.test(location.search)) TEMPLEZ.want = 1; } catch (e) {}
 // a ragged floating rock: a top ring at y0 (an elliptical outline with noise), a lip just under it, then rings tapering to a tip. Flat
 // facets (non-indexed). Returns the side (UVs per metre) and the top cap (a fan; its triangles are the walkable floor).
@@ -29683,12 +29684,12 @@ function templeBeamMat() {
       #include <tonemapping_fragment>
     }` }); }
 // THE BUILDER -- a pure function of its table: { g, tris (walkable, flat xyz), U (the shader uniforms the tick runs) }
-function templeMake(T) { const g = new THREE.Group(), I = T.isle, Y = T.top, U = { uTime: { value: 0 }, uSun: { value: new THREE.Vector3(...T.sky.sun).normalize() }, uHor: { value: new THREE.Vector3(...T.sky.hor) } };
+function templeMake(T) { const g = new THREE.Group(), I = T.isle, Y = T.top, SK = TEMPLE_SKINS[T.skin] || TEMPLE_SKINS.sky, MT = (TEMPLEZ.mats = TEMPLEZ.mats || {}, SK.mats(I)), U = { uTime: { value: 0 }, uSun: { value: new THREE.Vector3(...T.sky.sun).normalize() }, uHor: { value: new THREE.Vector3(...T.sky.hor) } };
   g.name = 'temple';
   const sky = new THREE.Mesh(new THREE.SphereGeometry(1300, 32, 16), templeSkyMat(T)); sky.renderOrder = -2; sky.frustumCulled = false; sky.onBeforeRender = (rn, sc, cm) => { sky.position.copy(cm.position); sky.updateMatrixWorld(); }; g.add(sky);
   // the island: paving on top, ragged sandstone under it
   const M = templeRock(0, Y, 0, I.rx, I.rz, I.depth, I.sides, T.seed), MS = templeMassMake(T, M.rim);
-  { const Un = T.under; let s3 = Un.seed * 733 + 9; const q = () => (s3 = (s3 * 16807) % 2147483647) / 2147483647, S = [M.side];     // the SPIKES: square-ish inverted pyramids, jittered, longest at the middle
+  if (SK.env) { const Un = T.under; let s3 = Un.seed * 733 + 9; const q = () => (s3 = (s3 * 16807) % 2147483647) / 2147483647, S = [M.side];     // the SPIKES: square-ish inverted pyramids, jittered, longest at the middle
     for (let gx = -I.rx; gx <= I.rx; gx += Un.step) for (let gz = -I.rz; gz <= I.rz; gz += Un.step) { const x = gx + (q() - .5) * Un.step * .7, z = gz + (q() - .5) * Un.step * .7, e = Math.hypot(x / I.rx, z / I.rz);
       if (e > Un.fill || Un.drops.some(D => Math.hypot(x - D.at[0], z - D.at[2]) < 7 * D.s + 4)) continue; const c = 1 - e,     /* clear round each hanging pylon */ len = Un.len[0] + (Un.len[1] - Un.len[0]) * (c * .75 + q() * .35), r = Un.r[0] + (Un.r[1] - Un.r[0]) * q(), n = q() < .5 ? 4 : 5;
       const G = new THREE.ConeGeometry(r, len, n, 4).toNonIndexed(); G.rotateX(Math.PI); G.rotateY(q() * 6); const P = G.attributes.position, uv = G.attributes.uv, C = [];
@@ -29696,12 +29697,12 @@ function templeMake(T) { const g = new THREE.Group(), I = T.isle, Y = T.top, U =
         uv.setXY(i, uv.getX(i) * r * 6.3 / 9, uv.getY(i) * len / 4); const t = Math.min(1, (len / 2 - y + 9) / (Un.len[1] + 9)); C.push(1 - t * .42, .92 - t * .46, .8 - t * .46); }
       G.translate(x, Y + Un.top - len / 2, z); G.setAttribute('color', new THREE.Float32BufferAttribute(C, 3)); G.computeVertexNormals(); S.push(G); }
     M.side = mergeGeometries(S, false); }
-  const side = new THREE.Mesh(M.side, templeRockMat(I.rock)), cap = new THREE.Mesh(M.cap, lbMat(I.paving, 0, 'mega')); M.cap.deleteAttribute('color'); side.name = I.id; cap.name = I.id + '_top';
+  const side = new THREE.Mesh(M.side, MT.side), cap = new THREE.Mesh(M.cap, MT.cap); M.cap.deleteAttribute('color'); side.name = I.id; cap.name = I.id + '_top';
   side.castShadow = side.receiveShadow = cap.receiveShadow = true; g.add(side, cap);
   // the far islands, their spires and the drifting rocks: ONE merged rock geometry, ONE merged spire geometry
   const far = [], spire = [], beams = [], falls = []; let sd = T.rocks.seed * 101 + 7; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
   const box = (w, h, d, x, y, z, ry) => { const G = lbBoxGeo(w, h, d, 'mega'); G.rotateY(ry || 0); G.translate(x, y, z); spire.push(G); };
-  for (const P of T.place) { if (P.kind !== 'isle') continue; const q = P.p, [x, y, z] = P.at, h = lbHash(P.id), R = templeRock(x, y, z, q.r, q.r * (.8 + h * .4), q.d, 16, 3 + (h * 1000 | 0));
+  for (const P of T.place) { if (P.kind !== 'isle' || !SK.env) continue; const q = P.p, [x, y, z] = P.at, h = lbHash(P.id), R = templeRock(x, y, z, q.r, q.r * (.8 + h * .4), q.d, 16, 3 + (h * 1000 | 0));
     far.push(R.side.index ? R.side.toNonIndexed() : R.side, R.cap);
     for (let k = 0; k < q.spires; k++) { const a = k / Math.max(1, q.spires) * Math.PI * 2 + h * 6, rr = k ? q.r * (.35 + .25 * ((h * 7 + k * .37) % 1)) : 0, sx = x + Math.sin(a) * rr, sz = z + Math.cos(a) * rr;
       const H = (k ? .9 : 1.6) * q.r * (.7 + ((h * 13 + k * .29) % 1) * .5), W = q.r * (k ? .16 : .26), ry = a;
@@ -29711,10 +29712,10 @@ function templeMake(T) { const g = new THREE.Group(), I = T.isle, Y = T.top, U =
       const P = G.attributes.position; for (let i = 0; i < P.count; i++) { const u = (H / 2 - P.getY(i)) / H; P.setZ(i, Math.sqrt(u) * 9); } G.rotateY(Math.atan2(ux, uz)); G.translate(ex, y - H / 2 + .5, ez); falls.push(G); }
     if (q.beam) { const bh = 420, bu = new THREE.CylinderGeometry(q.r * .07 + .8, q.r * .07 + .8, bh, 12, 1, true); bu.translate(x, y + bh / 2, z); bu.setAttribute('aF', new THREE.Float32BufferAttribute(new Array(bu.attributes.position.count).fill(1), 1)); beams.push(bu);
       if (q.beam === 2) { const bd = new THREE.CylinderGeometry(q.r * .05 + .6, q.r * .05 + .6, 260, 12, 1, true); bd.translate(R.tip[0], R.tip[1] - 130, R.tip[2]); bd.setAttribute('aF', new THREE.Float32BufferAttribute(new Array(bd.attributes.position.count).fill(0), 1)); beams.push(bd); } } }
-  const RK = T.rocks; for (let k = 0; k < RK.n; k++) { let a = r() * Math.PI * 2; if (Math.cos(a) > .75) a += 1.4;     // never in front of the temple (the view from the spawn)
+  const RK = T.rocks; if (SK.env) for (let k = 0; k < RK.n; k++) { let a = r() * Math.PI * 2; if (Math.cos(a) > .75) a += 1.4;     // never in front of the temple (the view from the spawn)
     const d = RK.r0 + r() * (RK.r1 - RK.r0), s = RK.s0 + r() * (RK.s1 - RK.s0), R = templeRock(Math.sin(a) * d, Y + RK.y0 + r() * (RK.y1 - RK.y0), Math.cos(a) * d, s, s * (.7 + r() * .5), s * (1.4 + r()), 9, 50 + k);
     far.push(R.side, R.cap); }
-  const fm = new THREE.Mesh(mergeGeometries(far.map(G => { G.deleteAttribute('normal'); return G; }), false), templeRockMat(I.rock)); fm.geometry.computeVertexNormals(); fm.name = 'temple_far'; g.add(fm);
+  if (far.length) { const fm = new THREE.Mesh(mergeGeometries(far.map(G => { G.deleteAttribute('normal'); return G; }), false), templeRockMat(I.rock)); fm.geometry.computeVertexNormals(); fm.name = 'temple_far'; g.add(fm); }
   if (spire.length) { const sm = new THREE.Mesh(mergeGeometries(spire.map(G => G.index ? G.toNonIndexed() : G), false), lbMat(0xd9c39c, 0, 'mega')); sm.name = 'temple_spires'; g.add(sm); }
   beams.push(...MS.beam);
   if (falls.length) { const fm2 = new THREE.Mesh(mergeGeometries(falls.map(G => G.toNonIndexed()), false), new THREE.ShaderMaterial({ transparent: true, depthWrite: false, side: THREE.DoubleSide, uniforms: { uTime: U.uTime },
@@ -29730,10 +29731,10 @@ function templeMake(T) { const g = new THREE.Group(), I = T.isle, Y = T.top, U =
   // the temple itself (step 2): one mesh per material
   const merge = (L, mat, nm, shadow) => { if (!L.length) return null; const m = new THREE.Mesh(mergeGeometries(L, false), mat); m.name = nm; if (shadow) m.castShadow = m.receiveShadow = true; g.add(m); return m; };
   for (const k of ['stone', 'gold', 'glow', 'tech', 'post', 'wood']) MS[k] = MS[k].map(G => { if (G.index) G = G.toNonIndexed(); for (const a of Object.keys(G.attributes)) if (a !== 'position' && a !== 'normal' && a !== 'uv') G.deleteAttribute(a); if (!G.attributes.uv) G.setAttribute('uv', new THREE.Float32BufferAttribute(new Float32Array(G.attributes.position.count * 2), 2)); return G; });
-  for (const G of MS.stone) { const uv = G.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * .55, uv.getY(i) * .55); }     // megalith slabs at ~6 m, not the kit's 3.2
-  merge(MS.stone, templeRockMat(0xf2d2a0, 1), 'temple_stone', 1); merge(MS.gold.concat(MS.post), lbGoldMat(), 'temple_gold', 1); merge(MS.glow, lbGlowMat(), 'temple_glow'); merge(MS.tech, lbMat(0x2a3a3a, 0, 'tech'), 'temple_door', 1);
-  merge(MS.carpet, templeCarpetMat(), 'temple_carpet'); merge(MS.wood, lbMat(0x8a6a3a), 'temple_wood', 1); merge(MS.vine, lbVineMat(), 'temple_vines');
-  merge(MS.frond, (TEMPLEZ.mats.frond = TEMPLEZ.mats.frond || new THREE.MeshStandardMaterial({ color: 0x4f9a34, roughness: .8, side: THREE.DoubleSide, flatShading: true })), 'temple_fronds', 1); merge(MS.rope, (TEMPLEZ.mats.rope = TEMPLEZ.mats.rope || new THREE.MeshStandardMaterial({ color: 0xb3302a, roughness: .9 })), 'temple_rope');
+  if (SK.dress) for (const G of MS.stone) { const uv = G.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * .55, uv.getY(i) * .55); }     // megalith slabs at ~6 m, not the kit's 3.2
+  merge(MS.stone, MT.stone, 'temple_stone', 1); merge(MS.gold.concat(MS.post), MT.gold, 'temple_gold', 1); merge(MS.glow, MT.glow, 'temple_glow'); merge(MS.tech, MT.tech, 'temple_door', 1);
+  merge(MS.carpet, templeCarpetMat(), 'temple_carpet'); merge(MS.wood, MT.wood, 'temple_wood', 1); merge(MS.vine, lbVineMat(), 'temple_vines');
+  merge(MS.frond, (TEMPLEZ.mats.frond = TEMPLEZ.mats.frond || new THREE.MeshStandardMaterial({ color: 0x4f9a34, roughness: .8, side: THREE.DoubleSide, flatShading: true })), 'temple_fronds', 1); merge(MS.rope, MT.rope, 'temple_rope');
   const fl = merge(MS.flame, templeFlameMat(U), 'temple_flames'); if (fl) fl.frustumCulled = false;
   let halo = null; if (MS.halo) { const Hh = MS.halo; halo = new THREE.Group(); halo.position.set(...Hh.at); halo.name = 'temple_halo'; halo.userData.spin = Hh.spin;
     const hg = new THREE.Mesh(mergeGeometries(Hh.gold, false), lbGoldMat()), hj = new THREE.Mesh(mergeGeometries(Hh.glow, false), lbGlowMat()); hg.castShadow = true; halo.add(hg, hj); g.add(halo); }
@@ -29756,7 +29757,12 @@ function templeFlameMat(U) { return new THREE.ShaderMaterial({ transparent: true
   vertexShader: 'attribute vec3 aC; attribute float aS; uniform float uTime; void main() { float k = 1.0 + sin(uTime * 13.0 + aS * 40.0) * .12 + sin(uTime * 7.3 + aS) * .08; vec3 p = position - aC; float c = cos(uTime * 2.0 + aS), s = sin(uTime * 2.0 + aS);'
     + ' p.xz = mat2(c, -s, s, c) * p.xz / sqrt(k); p.y *= k; gl_Position = projectionMatrix * modelViewMatrix * vec4(p + aC, 1.0); }',
   fragmentShader: 'void main() { gl_FragColor = vec4(.12, .95, .62, .9); }' }); }
-function templeMassMake(T, rim) { const Y = T.top, out = { frond: [], vine: [], wood: [], stone: [], gold: [], glow: [], tech: [], carpet: [], flame: [], post: [], rope: [], boxes: [], tris: [], banner: [], beam: [], halo: null };
+// FUNCTION vs LOOK (his rule, LEVELBUILDER.md m1898): `templeMassMake` is the BLOCK-OUT -- every collider, walkable triangle, ladder / bar /
+// zip and the plain shape behind each; it plays the same with no dressing at all. A SKIN dresses it: `TEMPLE_SKINS[T.skin].dress` is a table of
+// dressing functions keyed by the kind they dress (`block`, `stair`, `door`, ... and `$drops` / `$lanterns` / `$vines` / `$halo` for the
+// whole-temple ones), each reading its own table entry. A new temple = this block-out (or another) + a new skin; 'block' draws the block-out
+// alone in the builder's flat block material, so the route can be judged by itself. Buckets (`out.*`) are materials; the skin maps them.
+function templeMassMake(T, rim) { const Y = T.top, SK = TEMPLE_SKINS[T.skin] || TEMPLE_SKINS.sky, DR = SK.dress, out = { frond: [], vine: [], wood: [], stone: [], gold: [], glow: [], tech: [], carpet: [], flame: [], post: [], rope: [], boxes: [], tris: [], banner: [], beam: [], halo: null };
   const rod = (a, b, r) => { const A = new THREE.Vector3(...a), B = new THREE.Vector3(...b), L = A.distanceTo(B), G = new THREE.CylinderGeometry(r, r, L, 6).toNonIndexed();     // a cylinder from a to b
     G.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), B.clone().sub(A).normalize())); const m = A.lerp(B, .5); G.translate(m.x, m.y, m.z); return G; };
   const geo = (G, x, y, z) => { G = G.index ? G.toNonIndexed() : G; G.translate(x, y, z); return G; };
@@ -29771,104 +29777,128 @@ function templeMassMake(T, rim) { const Y = T.top, out = { frond: [], vine: [], 
       if (cl && Math.abs(A.y - B.y) < .01) tbox(A.x, A.z, B.x, B.z, A.y - Y, A.y - Y + 1.1, .12, id);
       else if (cl) for (let i = 0; i < n; i++) { const a = A.clone().lerp(B, i / n), b = A.clone().lerp(B, (i + 1) / n);     // sloped (an axis run): one box per span
         coll(Math.min(a.x, b.x) - .12, Math.max(a.x, b.x) + .12, Math.min(a.y, b.y) - Y, Math.max(a.y, b.y) - Y + 1.1, Math.min(a.z, b.z) - .12, Math.max(a.z, b.z) + .12, id + '_' + s + '_' + i); } } };
-  for (const E of T.mass) { if (E.kind === 'block') { const [x0, x1, y0, y1, z0, z1] = E.box, b = E.bat || 0, G = lbBoxGeo(x1 - x0, y1 - y0, z1 - z0, 'mega'), P = G.attributes.position, hy = (y1 - y0) / 2;
+  const d = { out, Y, rim, rod, geo, box, coll, tbox, rail }, dress = (k, E) => { if (DR && DR[k]) DR[k](E, d); };
+  for (const E of T.mass) { if (E.kind === 'block') { const [x0, x1, y0, y1, z0, z1] = E.box, b = E.bat || 0, G = lbBoxGeo(x1 - x0, y1 - y0, z1 - z0, 'mega'), P = G.attributes.position;
       if (b) for (let i = 0; i < P.count; i++) if (P.getY(i) > 0) { P.setX(i, P.getX(i) - Math.sign(P.getX(i)) * b); P.setZ(i, P.getZ(i) - Math.sign(P.getZ(i)) * b); }
-      out.stone.push(geo(G, (x0 + x1) / 2, Y + (y0 + y1) / 2, (z0 + z1) / 2)); coll(x0 + b / 2, x1 - b / 2, y0, y1, z0 + b / 2, z1 - b / 2, E.id);
-      if (E.gold) box('gold', x0 + b - .06, x1 - b + .06, y1 - .32, y1 - .08, z0 + b - .06, z1 - b + .06, 'plain');
-      if (E.gold && y1 - y0 > 2.5) { const ys = y1 - .7, bf = b * (ys - y0) / (y1 - y0), st = (ax, az) => box('gold', ax - .09, ax + .09, ys - .09, ys + .09, az - .09, az + .09, 'plain');     // 7e: gold STUDS in a row under the band
-        for (let u = x0 + bf + .8; u < x1 - bf - .7; u += 1.6) { st(u, z1 - bf + .02); st(u, z0 + bf - .02); } for (let u = z0 + bf + .8; u < z1 - bf - .7; u += 1.6) { st(x1 - bf + .02, u); st(x0 + bf - .02, u); } }
-      if (E.chan) for (const ox of E.chan) { const H = y1 - y0 - 2.5, a = Math.atan2(b, y1 - y0), Gc = new THREE.BoxGeometry(.5, H, .16), cx = (x0 + x1) / 2 + ox; Gc.rotateX(-a); out.glow.push(geo(Gc, cx, Y + y0 + 1 + H / 2, z1 - b * (1 + H / 2) / (y1 - y0) + .06));     // jade channels down the face (following the batter)
-        box('gold', cx - .45, cx + .45, y0 + .75, y0 + 1, z1 - b * .1 - .05, z1 - b * .1 + .2, 'plain'); }
-      if (E.chanB) for (const ox of E.chanB) { const H = y1 - y0 - 2.5, a = Math.atan2(b, y1 - y0), Gc = new THREE.BoxGeometry(.5, H, .16), cx = (x0 + x1) / 2 + ox; Gc.rotateX(a); out.glow.push(geo(Gc, cx, Y + y0 + 1 + H / 2, z0 + b * (1 + H / 2) / (y1 - y0) - .06)); }     // the same down the BACK
-      if (E.slits) for (const ox of E.slits.xs) { const [sa, sb] = E.slits.y, zf = z0 + b * ((sa + sb) / 2 - y0) / (y1 - y0), cx = (x0 + x1) / 2 + ox;     // jade slit windows in a gold frame, on the back
-        box('gold', cx - .45, cx + .45, sa - .3, sb + .3, zf - .12, zf + .02, 'plain'); box('glow', cx - .18, cx + .18, sa, sb, zf - .2, zf, 'plain'); }
-      continue; }
-    if (E.kind === 'stair') { const [x0, x1] = E.x, cw = E.cheek ? 1 : 0;
+      out.stone.push(geo(G, (x0 + x1) / 2, Y + (y0 + y1) / 2, (z0 + z1) / 2)); coll(x0 + b / 2, x1 - b / 2, y0, y1, z0 + b / 2, z1 - b / 2, E.id); }
+    else if (E.kind === 'stair') { const [x0, x1] = E.x, cw = E.cheek ? 1 : 0;
       for (let k = 0; k < E.n; k++) { const h = (k + 1) * E.rise, zb = E.z0 - (k + 1) * E.run, zf = E.z0 - k * E.run; box('stone', x0, x1, 0, h, zb, zf); coll(x0 + cw, x1 - cw, 0, h, zb, zf, E.id + '_' + k);
         if (cw) { coll(x0, x0 + cw, 0, h + 1, zb, zf, E.id + '_cl' + k); coll(x1 - cw, x1, 0, h + 1, zb, zf, E.id + '_cr' + k); } }
       if (cw) { const L = E.n * E.run, H = E.n * E.rise, len = Math.hypot(L, H), a = Math.atan2(H, L);
-        for (const cx of [x0 + cw / 2, x1 - cw / 2]) { const G = lbBoxGeo(cw, 1, len + .6, 'mega'); G.rotateX(a); out.stone.push(geo(G, cx, Y + H / 2 + .5 / Math.cos(a), E.z0 - L / 2));
-          const Gg = new THREE.BoxGeometry(cw + .08, .12, len + .6); Gg.rotateX(a); out.gold.push(geo(Gg, cx, Y + H / 2 + 1 / Math.cos(a), E.z0 - L / 2)); } }
-      if (E.carpet) { const cx = (x0 + x1) / 2, w = E.carpet / 2, P = [], UV = []; let v = 0;     // over every tread and riser, one strip
-        const quad = (a, b, c, d, v0, v1) => { P.push(...a, ...b, ...c, ...a, ...c, ...d); UV.push(0, v0, 1, v0, 1, v1, 0, v0, 1, v1, 0, v1); };
-        for (let k = 0; k < E.n; k++) { const y0 = Y + k * E.rise + .015, y1 = Y + (k + 1) * E.rise + .015, zf = E.z0 - k * E.run + .015, zb = E.z0 - (k + 1) * E.run;
-          quad([cx - w, y0, zf], [cx + w, y0, zf], [cx + w, y1, zf], [cx - w, y1, zf], v, v + E.rise / 3); v += E.rise / 3;
-          quad([cx - w, y1, zf], [cx + w, y1, zf], [cx + w, y1, zb], [cx - w, y1, zb], v, v + E.run / 3); v += E.run / 3; }
-        const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); G.setAttribute('uv', new THREE.Float32BufferAttribute(UV, 2)); G.computeVertexNormals(); out.carpet.push(G); }
-      continue; }
-    if (E.kind === 'carpet') { const G = new THREE.PlaneGeometry(E.x[1] - E.x[0], E.z[1] - E.z[0]); G.rotateX(-Math.PI / 2); const uv = G.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setY(i, uv.getY(i) * (E.z[1] - E.z[0]) / 3);
-      out.carpet.push(geo(G, (E.x[0] + E.x[1]) / 2, Y + E.y + .02, (E.z[0] + E.z[1]) / 2)); continue; }
-    if (E.kind === 'door') { const [x, y, z] = E.at, q = E.p, hw = q.w / 2, jw = 2.2, top = y + q.h, zf = z + q.d;     // a portal standing proud of the wall; the door sealed inside it
+        for (const cx of [x0 + cw / 2, x1 - cw / 2]) { const G = lbBoxGeo(cw, 1, len + .6, 'mega'); G.rotateX(a); out.stone.push(geo(G, cx, Y + H / 2 + .5 / Math.cos(a), E.z0 - L / 2)); } } }
+    else if (E.kind === 'door') { const [x, y, z] = E.at, q = E.p, hw = q.w / 2, jw = 2.2, top = y + q.h, zf = z + q.d;     // a portal standing proud of the wall; the door sealed inside it
       box('stone', x - hw - jw, x - hw, y, top + 2, z, zf); box('stone', x + hw, x + hw + jw, y, top + 2, z, zf); box('stone', x - hw - jw - .3, x + hw + jw + .3, top, top + 2.2, z - .2, zf + .3);
       coll(x - hw - jw, x - hw, y, top + 2, z, zf, E.id + '_jl'); coll(x + hw, x + hw + jw, y, top + 2, z, zf, E.id + '_jr'); coll(x - hw - jw - .3, x + hw + jw + .3, top, top + 2.2, z - .2, zf + .3, E.id + '_lin');
-      box('tech', x - hw, x + hw, y, top, z, z + 1.2, 'tech'); coll(x - hw, x + hw, y, top, z, z + 1.2, E.id);
-      box('gold', x - hw - .18, x - hw, y, top, zf - .05, zf + .05, 'plain'); box('gold', x + hw, x + hw + .18, y, top, zf - .05, zf + .05, 'plain'); box('gold', x - hw - jw - .32, x + hw + jw + .32, top + 1.9, top + 2.1, zf + .26, zf + .36, 'plain');
-      const ring = new THREE.TorusGeometry(Math.min(hw, q.h / 2) * .62, .16, 8, 32); out.glow.push(geo(ring, x, Y + y + q.h * .52, z + 1.26));
-      const rg = new THREE.TorusGeometry(Math.min(hw, q.h / 2) * .62 + .3, .1, 6, 32); out.gold.push(geo(rg, x, Y + y + q.h * .52, z + 1.24));
-      out.glow.push(geo(new THREE.CylinderGeometry(.08, .08, q.h, 6), x, Y + y + q.h / 2, z + 1.23)); continue; }
-    if (E.kind === 'brazier') { const [x, y, z] = E.at, K = 1.4;     // `lbBrazier`'s shape at x1.4: pedestal, gold band, bowl, two jade flames
-      out.stone.push(geo(lbBoxGeo(.55 * K, .7 * K, .55 * K, 'mega'), x, Y + y + .35 * K, z)); out.gold.push(geo(new THREE.BoxGeometry(.62 * K, .08 * K, .62 * K), x, Y + y + .72 * K, z));
-      out.stone.push(geo(new THREE.CylinderGeometry(.42 * K, .22 * K, .3 * K, 10), x, Y + y + .9 * K, z)); coll(x - .3 * K, x + .3 * K, y, y + 1.05 * K, z - .3 * K, z + .3 * K, E.id);
-      for (const [r0, h, o] of [[.3, .9, 0], [.18, 1.3, .1]]) { const G = geo(new THREE.ConeGeometry(r0 * K, h * K, 7, 1, true), x, Y + y + (1.05 + h / 2) * K, z), n = G.attributes.position.count, s = lbHash(E.id) * 9 + o;
-        G.setAttribute('aC', new THREE.Float32BufferAttribute(new Array(n).fill(0).flatMap(() => [x, Y + y + 1.05 * K, z]), 3)); G.setAttribute('aS', new THREE.Float32BufferAttribute(new Array(n).fill(s), 1)); out.flame.push(G); }
-      continue; }
-    if (E.kind === 'rail') { rail(E.pts, E.id, E.coll); continue; }
-    if (E.kind === 'disc') { const [x, y, z] = E.at, q = E.p, f = q.face, cyl = (r, d, oz, k) => out[k].push(geo(new THREE.CylinderGeometry(r, r, d, 32).rotateX(Math.PI / 2), x, Y + y, z + f * oz));
-      cyl(q.r, 1, .5, 'stone'); out.gold.push(geo(new THREE.TorusGeometry(q.r * .86, .2, 8, 36), x, Y + y, z + f * 1.02)); cyl(q.r * .62, .2, 1.05, 'gold'); cyl(q.r * .5, .2, 1.18, 'glow');
-      out.gold.push(geo(new THREE.TorusGeometry(q.r * .3, .12, 6, 24), x, Y + y, z + f * 1.3)); out.glow.push(geo(new THREE.SphereGeometry(q.r * .17, 12, 8), x, Y + y, z + f * 1.32));
-      for (let k = 0; k < (q.teeth || 0); k++) { const a = k / q.teeth * Math.PI * 2, G = new THREE.BoxGeometry(.6, .7, .9); G.rotateZ(a); out.gold.push(geo(G, x + Math.sin(a) * -1 * (q.r + .2), Y + y + Math.cos(a) * (q.r + .2), z + f * .5)); }
-      continue; }
-    if (E.kind === 'kiosk') { const [x, y, z] = E.at, w = E.p.w / 2, h = E.p.h;     // a small tower: a stone shaft, jade slits, gold bands, a pyramid roof and a spire
-      box('stone', x - w, x + w, y, y + h, z - w, z + w); box('gold', x - w - .08, x + w + .08, y + h - .3, y + h, z - w - .08, z + w + .08, 'plain'); box('gold', x - w - .08, x + w + .08, y, y + .25, z - w - .08, z + w + .08, 'plain');
-      for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) box('glow', x + dx * (w + .02) - .12 * !dx - .03 * Math.abs(dx), x + dx * (w + .02) + .12 * !dx + .03 * Math.abs(dx), y + h * .3, y + h * .8, z + dz * (w + .02) - .12 * !dz - .03 * Math.abs(dz), z + dz * (w + .02) + .12 * !dz + .03 * Math.abs(dz), 'plain');
-      out.gold.push(geo(new THREE.ConeGeometry(w * 1.65, h * .45, 4).rotateY(Math.PI / 4), x, Y + y + h + h * .225, z)); out.gold.push(geo(new THREE.ConeGeometry(.16, h * .5, 6), x, Y + y + h * 1.45 + h * .25, z));
-      out.glow.push(geo(new THREE.SphereGeometry(.28, 8, 6), x, Y + y + h * 1.45, z)); coll(x - w, x + w, y, y + h, z - w, z + w, E.id); continue; }
-    if (E.kind === 'glow') { const [x0, x1, y0, y1, z0, z1] = E.box; box('glow', x0, x1, y0, y1, z0, z1, 'plain'); continue; }
-    if (E.kind === 'statue') { const [x, y, z] = E.at, sd = E.p.staff, B = (k, w, h, d, ox, oy, oz) => box(k, x + ox - w / 2, x + ox + w / 2, y + oy, y + oy + h, z + oz - d / 2, z + oz + d / 2, k === 'stone' ? 'mega' : k === 'tech' ? 'tech' : 'plain');     // 7e: a JACKAL-headed guardian in dark jade-lined armour (ANCIENT TECH stone), gold trim, a staff
-      B('stone', 2.4, 1.2, 2.4, 0, 0, 0); B('gold', 2.5, .16, 2.5, 0, 1.04, 0); for (const lx of [-.42, .42]) { B('tech', .6, 1.7, .75, lx, 1.2, 0); B('gold', .66, .14, .8, lx, 1.3, 0); B('gold', .66, .12, .8, lx, 2.2, 0); }
-      B('tech', 1.6, .85, 1, 0, 2.9, 0); B('gold', 1.66, .22, 1.06, 0, 3.5, 0); B('gold', .5, .8, .08, 0, 2.75, .52); B('tech', 1.5, 1.5, 1, 0, 3.75, 0); B('glow', .9, .7, .06, 0, 4.15, .52); B('gold', 1.0, .1, .08, 0, 4.85, .52);
-      B('tech', 2.1, .55, 1.05, 0, 4.95, 0); B('gold', 2.2, .12, 1.12, 0, 4.95, 0); for (const ax of [-1.2, 1.2]) { B('tech', .5, 1.35, .55, ax, 3.6, 0); B('gold', .56, .18, .6, ax, 3.95, 0); B('glow', .56, .1, .6, ax, 4.6, 0); }
-      B('gold', 1.4, .35, 1.1, 0, 5.45, 0); B('gold', 1.15, 1.1, .3, 0, 5.1, -.45);     // a gold collar and the striped head-cloth falling behind
-      B('tech', .8, .85, .85, 0, 5.75, 0); B('tech', .42, .38, .8, 0, 5.85, .7); B('stone', .2, .14, .16, 0, 6.06, 1.06); B('glow', .16, .08, .04, -.2, 6.32, .43); B('glow', .16, .08, .04, .2, 6.32, .43);     // head, the long snout, the nose, jade eyes
-      for (const ex of [-.26, .26]) out.tech.push(geo(new THREE.ConeGeometry(.2, 1.1, 4).rotateY(Math.PI / 4), x + ex, Y + y + 7.1, z - .05));     // the tall ears
-      B('tech', .5, .5, .9, 1.2 * sd, 4.45, .35); out.gold.push(rod([x + 1.25 * sd, Y + y + 1.25, z + .75], [x + 1.25 * sd, Y + y + 7.4, z + .75], .08)); B('glow', .34, .34, .34, 1.25 * sd, 7.4, .75);
-      coll(x - 1.2, x + 1.2, y, y + 7, z - 1.2, z + 1.2, E.id); continue; }
-    if (E.kind === 'palm') { const [x, y, z] = E.at, q = E.p, h = lbHash(E.id); box('stone', x - .8, x + .8, y, y + .9, z - .8, z + .8); box('gold', x - .84, x + .84, y + .74, y + .86, z - .84, z + .84, 'plain'); coll(x - .8, x + .8, y, y + .9, z - .8, z + .8, E.id);
-      const pts = []; for (let i = 0; i <= 6; i++) { const u = i / 6; pts.push(new THREE.Vector3(x + q.lean * u * u * 1.6, Y + y + .85 + u * q.h, z + q.lean * .5 * u * u)); }
-      for (let i = 0; i < 6; i++) { const A = pts[i], Bv = pts[i + 1], G = new THREE.CylinderGeometry(.16 - i * .012, .2 - i * .012, A.distanceTo(Bv) + .05, 7).toNonIndexed(); G.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), Bv.clone().sub(A).normalize())); const m = A.clone().lerp(Bv, .5); G.translate(m.x, m.y, m.z); out.wood.push(G); }
-      const top = pts[6], F = [];     // fronds: arched, tapering strips, drooping
-      for (let k = 0; k < 9; k++) { const a = k / 9 * Math.PI * 2 + h * 3, ca = Math.cos(a), sa = Math.sin(a), len = 2.6 + ((h * 17 + k * .31) % 1) * .9, rise = .5 + ((h * 7 + k * .23) % 1) * .4;
-        let prev = null; for (let j = 0; j <= 6; j++) { const u = j / 6, r0 = u * len, yy = top.y + rise * Math.sin(u * Math.PI * .9) - u * u * 1.4, wd = .42 * Math.sin(Math.PI * Math.min(1, u * 1.15 + .05)), cx = top.x + sa * r0, cz = top.z + ca * r0;
-          const L = [cx + ca * wd, yy - wd * .25, cz - sa * wd], R = [cx - ca * wd, yy - wd * .25, cz + sa * wd], C = [cx, yy, cz];
-          if (prev) { F.push(...prev[0], ...prev[1], ...C, ...prev[1], ...prev[2], ...C, ...prev[0], ...C, ...L, ...prev[2], ...R, ...C); } prev = [L, C, R]; } }
-      const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(F, 3)); G.computeVertexNormals(); out.frond.push(G); continue; }
-    if (E.kind === 'plank' || E.kind === 'skybridge') { const [ax, ay, az] = E.a, [bx, by] = E.b, dx = bx - ax, dy = by - ay, L = Math.hypot(dx, dy), th = Math.atan2(dy, dx), w = E.w, upx = -dy / L * Math.sign(dx), upy = Math.abs(dx) / L, at = u => [ax + dx * u, Y + ay + dy * u + .06];
-      const along = (k, len, h, d, u, oy, oz, role) => { const G = role === 'mega' ? lbBoxGeo(len, h, d, 'mega') : new THREE.BoxGeometry(len, h, d); G.rotateZ(th); const [x, y] = at(u); out[k].push(geo(G, x + upx * oy, y + upy * oy, az + oz)); };
+      box('tech', x - hw, x + hw, y, top, z, z + 1.2, 'tech'); coll(x - hw, x + hw, y, top, z, z + 1.2, E.id); }
+    else if (E.kind === 'brazier') { const [x, y, z] = E.at, K = 1.4;     // the obstacle: pedestal and bowl (the flames are the skin's)
+      out.stone.push(geo(lbBoxGeo(.55 * K, .7 * K, .55 * K, 'mega'), x, Y + y + .35 * K, z)); out.stone.push(geo(new THREE.CylinderGeometry(.42 * K, .22 * K, .3 * K, 10), x, Y + y + .9 * K, z)); coll(x - .3 * K, x + .3 * K, y, y + 1.05 * K, z - .3 * K, z + .3 * K, E.id); }
+    else if (E.kind === 'rail') rail(E.pts, E.id, E.coll);
+    else if (E.kind === 'kiosk') { const [x, y, z] = E.at, w = E.p.w / 2, h = E.p.h; box('stone', x - w, x + w, y, y + h, z - w, z + w); coll(x - w, x + w, y, y + h, z - w, z + w, E.id); }
+    else if (E.kind === 'statue') { const [x, y, z] = E.at; box('stone', x - 1.2, x + 1.2, y, y + 1.2, z - 1.2, z + 1.2); if (!DR) box('stone', x - .9, x + .9, y + 1.2, y + 7, z - .6, z + .6); coll(x - 1.2, x + 1.2, y, y + 7, z - 1.2, z + 1.2, E.id); }     // the plinth; the figure's volume is the collider
+    else if (E.kind === 'palm') { const [x, y, z] = E.at; box('stone', x - .8, x + .8, y, y + .9, z - .8, z + .8); coll(x - .8, x + .8, y, y + .9, z - .8, z + .8, E.id); }     // the planter
+    else if (E.kind === 'plank' || E.kind === 'skybridge') { const [ax, ay, az] = E.a, [bx, by] = E.b, dx = bx - ax, dy = by - ay, L = Math.hypot(dx, dy), th = Math.atan2(dy, dx), w = E.w, upx = -dy / L * Math.sign(dx), upy = Math.abs(dx) / L, at = u => [ax + dx * u, Y + ay + dy * u + .06];
+      const along = (k, len, h, dd, u, oy, oz, role) => { const G = role === 'mega' ? lbBoxGeo(len, h, dd, 'mega') : new THREE.BoxGeometry(len, h, dd); G.rotateZ(th); const [x, y] = at(u); out[k].push(geo(G, x + upx * oy, y + upy * oy, az + oz)); };
+      E._along = along; E._at = at;     // the skin dresses along the same run
       const [x0, y0] = at(0), [x1, y1] = at(1); out.tris.push(x0, y0, az - w / 2, x1, y1, az - w / 2, x1, y1, az + w / 2, x0, y0, az - w / 2, x1, y1, az + w / 2, x0, y0, az + w / 2);     // the deck: two walkable triangles
       if (E.kind === 'plank') { const n = Math.round(L / .55); for (let i = 0; i < n; i++) along('wood', .45, .12, w, (i + .5) / n, -.06, 0);
         for (const sz of [-1, 1]) along('wood', L, .24, .2, .5, -.24, sz * (w / 2 - .25));
         for (const sz of [-1, 1]) rail([[ax, ay, az + sz * (w / 2 + .06)], [bx, by, az + sz * (w / 2 + .06)]], E.id + '_rail' + sz, 1); }
-      else { const H = E.h, nb = Math.max(2, Math.round(L / 3.6));     // floor slab, parapets, pillars per bay, the roof; jade strips along the floor
-        along('stone', L, .5, w + .7, .5, -.25, 0, 'mega'); along('stone', L + .6, .4, w + 1.4, .5, H + .2, 0, 'mega'); along('gold', L + .6, .12, w + 1.5, .5, H - .02, 0);
-        for (const sz of [-1, 1]) { along('stone', L, 1, .35, .5, .5, sz * (w / 2 + .17), 'mega'); along('gold', L, .08, .45, .5, 1.02, sz * (w / 2 + .17)); along('glow', L, .05, .1, .5, .03, sz * (w / 2 - .12)); }
+      else { const H = E.h, nb = Math.max(2, Math.round(L / 3.6));     // floor slab, parapets, pillars per bay, the roof
+        along('stone', L, .5, w + .7, .5, -.25, 0, 'mega'); along('stone', L + .6, .4, w + 1.4, .5, H + .2, 0, 'mega');
+        for (const sz of [-1, 1]) along('stone', L, 1, .35, .5, .5, sz * (w / 2 + .17), 'mega');
         for (let i = 0; i <= nb; i++) { const [x, y] = at(i / nb); for (const sz of [-1, 1]) box('stone', x - .25, x + .25, y - Y, y - Y + H, az + sz * (w / 2 + .17) - .25, az + sz * (w / 2 + .17) + .25); }
         for (let i = 0; i < nb; i++) { const [xa, ya] = at(i / nb), [xb, yb] = at((i + 1) / nb), lo = Math.min(ya, yb) - Y, hi = Math.max(ya, yb) - Y;
           for (const sz of [-1, 1]) coll(Math.min(xa, xb), Math.max(xa, xb), lo - .5, hi + 1.05, az + sz * (w / 2 + .17) - .18, az + sz * (w / 2 + .17) + .18, E.id + '_wall' + sz + i);
-          coll(Math.min(xa, xb), Math.max(xa, xb), lo + H, hi + H + .4, az - w / 2 - .7, az + w / 2 + .7, E.id + '_roof' + i); } }
-      continue; }
-    if (E.kind === 'banner') { const [x, y, z] = E.at, q = E.p; out.gold.push(rod([x, Y + y + .15, q.wall], [x, Y + y + .15, z + q.face * .25], .1)); out.gold.push(geo(new THREE.BoxGeometry(q.w + .4, .12, .12), x, Y + y + .1, z));
-      out.banner.push({ id: E.id, x, y: Y + y - q.h / 2, z, w: q.w, h: q.h, face: q.face }); continue; }
-    if (E.kind === 'rim') { const N = rim.length, pts = [];     // round the island's edge, `inset` in, open across the gaps
-      const open = a => E.gaps.some(([g0, g1]) => { const d = (a * 180 / Math.PI + 360) % 360; return d > g0 && d < g1; });
+          coll(Math.min(xa, xb), Math.max(xa, xb), lo + H, hi + H + .4, az - w / 2 - .7, az + w / 2 + .7, E.id + '_roof' + i); } } }
+    else if (E.kind === 'rim') { const N = rim.length, pts = [];     // round the island's edge, `inset` in, open across the gaps
+      const open = a => E.gaps.some(([g0, g1]) => { const dd = (a * 180 / Math.PI + 360) % 360; return dd > g0 && dd < g1; });
       let run = []; for (let i = 0; i <= N; i++) { const v = rim[i % N], L = Math.hypot(v[0], v[2]), a = Math.atan2(v[0], v[2]); if (open(a)) { if (run.length > 1) pts.push(run); run = []; continue; } run.push([v[0] * (L - E.inset) / L, 0, v[2] * (L - E.inset) / L]); }
-      if (run.length > 1) pts.push(run); pts.forEach((r, j) => { rail(r, E.id + '_' + j, 0); for (let i = 0; i < r.length - 1; i++) tbox(r[i][0], r[i][2], r[i + 1][0], r[i + 1][2], 0, 1.1, .12, E.id + '_' + j + '_' + i); }); continue; } }
-  for (const D of T.under.drops) { const [x, y, z] = D.at, k = D.s, at = v => Y + y + v * k;     // a hanging PYLON: gold collar, jade core in gold rings, gold drum, a spiked gold tip
+      if (run.length > 1) pts.push(run); pts.forEach((r, j) => { rail(r, E.id + '_' + j, 0); for (let i = 0; i < r.length - 1; i++) tbox(r[i][0], r[i][2], r[i + 1][0], r[i + 1][2], 0, 1.1, .12, E.id + '_' + j + '_' + i); }); }
+    dress(E.kind, E); }     // kinds with no function (carpet, glow, disc, banner) are the skin's alone
+  out.ladders = []; out.bars = []; out.zips = [];
+  for (const E of T.route) { const B = E.box;
+    if (E.kind === 'ledge') { const [x0, x1, y0, y1, z0, z1] = B; box('stone', x0, x1, y0, y1 - .14, z0, z1); box('glow', x0 - .03, x1 + .03, y1 - .14, y1, z0 - .03, z1 + .03, 'plain'); coll(x0, x1, y0, y1, z0, z1, E.id); }     // the jade lip IS function: it marks the path
+    else if (E.kind === 'solid') { coll(...B, E.id); if (!DR) box('stone', ...B); }
+    else if (E.kind === 'ladder') { const [x0, x1, y0, y1, z0, z1] = B, mz = (z0 + z1) / 2 + E.front[1] * .12, mx = (x0 + x1) / 2 + E.front[0] * .12, alongX = !E.front[0];     // stiles, rungs every .32
+      for (const o of [-.42, .42]) out.gold.push(rod([mx + (alongX ? o : 0), Y + y0, mz + (alongX ? 0 : o)], [mx + (alongX ? o : 0), Y + y1 + 1, mz + (alongX ? 0 : o)], .06));
+      for (let r = y0 + .3; r < y1 + .9; r += .32) out.wood.push(rod([mx - (alongX ? .42 : 0), Y + r, mz - (alongX ? 0 : .42)], [mx + (alongX ? .42 : 0), Y + r, mz + (alongX ? 0 : .42)], .045));
+      out.ladders.push({ id: E.id, box: { minx: x0, maxx: x1, miny: Y + y0, maxy: Y + y1, minz: z0, maxz: z1 }, top: Y + E.top, mark: { x: E.mark[0], y: Y + E.mark[1], z: E.mark[2] }, front: E.front }); }
+    else if (E.kind === 'hbar') out.bars.push({ id: E.id, x: E.at[0], y: Y + E.at[1], z: E.at[2], yaw: E.yaw });
+    else if (E.kind === 'zip') { const A = [E.from[0], Y + E.from[1], E.from[2]], Bz = [E.to[0], Y + E.to[1], E.to[2]];     // the cable, a post each end
+      out.rope.push(new THREE.TubeGeometry(new THREE.LineCurve3(new THREE.Vector3(...A), new THREE.Vector3(...Bz)), 32, .05, 6).toNonIndexed());
+      for (const P of [A, Bz]) { out.gold.push(geo(new THREE.BoxGeometry(.3, 2.4, .3), P[0], P[1] - 1.0, P[2])); out.glow.push(geo(new THREE.SphereGeometry(.22, 10, 8), P[0], P[1] + .3, P[2])); }
+      out.zips.push({ A, B: Bz, id: E.id }); } }
+  for (const k of ['$drops', '$lanterns', '$vines', '$halo']) dress(k, T);
+  return out; }
+// THE SKY TEMPLE SKIN (his concepts docs/concepts/temple_01..05): sandstone, gold, jade -- every function here dresses one kind of the block-out
+const TEMPLE_SKY = {
+  block(E, { out, Y, box, geo }) { const [x0, x1, y0, y1, z0, z1] = E.box, b = E.bat || 0;
+    if (E.gold) box('gold', x0 + b - .06, x1 - b + .06, y1 - .32, y1 - .08, z0 + b - .06, z1 - b + .06, 'plain');
+    if (E.gold && y1 - y0 > 2.5) { const ys = y1 - .7, bf = b * (ys - y0) / (y1 - y0), st = (ax, az) => box('gold', ax - .09, ax + .09, ys - .09, ys + .09, az - .09, az + .09, 'plain');     // gold STUDS in a row under the band
+      for (let u = x0 + bf + .8; u < x1 - bf - .7; u += 1.6) { st(u, z1 - bf + .02); st(u, z0 + bf - .02); } for (let u = z0 + bf + .8; u < z1 - bf - .7; u += 1.6) { st(x1 - bf + .02, u); st(x0 + bf - .02, u); } }
+    if (E.chan) for (const ox of E.chan) { const H = y1 - y0 - 2.5, a = Math.atan2(b, y1 - y0), Gc = new THREE.BoxGeometry(.5, H, .16), cx = (x0 + x1) / 2 + ox; Gc.rotateX(-a); out.glow.push(geo(Gc, cx, Y + y0 + 1 + H / 2, z1 - b * (1 + H / 2) / (y1 - y0) + .06));     // jade channels down the face (following the batter)
+      box('gold', cx - .45, cx + .45, y0 + .75, y0 + 1, z1 - b * .1 - .05, z1 - b * .1 + .2, 'plain'); }
+    if (E.chanB) for (const ox of E.chanB) { const H = y1 - y0 - 2.5, a = Math.atan2(b, y1 - y0), Gc = new THREE.BoxGeometry(.5, H, .16), cx = (x0 + x1) / 2 + ox; Gc.rotateX(a); out.glow.push(geo(Gc, cx, Y + y0 + 1 + H / 2, z0 + b * (1 + H / 2) / (y1 - y0) - .06)); }     // the same down the BACK
+    if (E.slits) for (const ox of E.slits.xs) { const [sa, sb] = E.slits.y, zf = z0 + b * ((sa + sb) / 2 - y0) / (y1 - y0), cx = (x0 + x1) / 2 + ox;     // jade slit windows in a gold frame, on the back
+      box('gold', cx - .45, cx + .45, sa - .3, sb + .3, zf - .12, zf + .02, 'plain'); box('glow', cx - .18, cx + .18, sa, sb, zf - .2, zf, 'plain'); } },
+  stair(E, { out, Y, geo }) { const [x0, x1] = E.x, cw = E.cheek ? 1 : 0;
+    if (cw) { const L = E.n * E.run, H = E.n * E.rise, len = Math.hypot(L, H), a = Math.atan2(H, L);     // the cheeks' gold coping
+      for (const cx of [x0 + cw / 2, x1 - cw / 2]) { const Gg = new THREE.BoxGeometry(cw + .08, .12, len + .6); Gg.rotateX(a); out.gold.push(geo(Gg, cx, Y + H / 2 + 1 / Math.cos(a), E.z0 - L / 2)); } }
+    if (E.carpet) { const cx = (x0 + x1) / 2, w = E.carpet / 2, P = [], UV = []; let v = 0;     // the red carpet over every tread and riser, one strip
+      const quad = (a, b, c, dd, v0, v1) => { P.push(...a, ...b, ...c, ...a, ...c, ...dd); UV.push(0, v0, 1, v0, 1, v1, 0, v0, 1, v1, 0, v1); };
+      for (let k = 0; k < E.n; k++) { const y0 = Y + k * E.rise + .015, y1 = Y + (k + 1) * E.rise + .015, zf = E.z0 - k * E.run + .015, zb = E.z0 - (k + 1) * E.run;
+        quad([cx - w, y0, zf], [cx + w, y0, zf], [cx + w, y1, zf], [cx - w, y1, zf], v, v + E.rise / 3); v += E.rise / 3;
+        quad([cx - w, y1, zf], [cx + w, y1, zf], [cx + w, y1, zb], [cx - w, y1, zb], v, v + E.run / 3); v += E.run / 3; }
+      const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); G.setAttribute('uv', new THREE.Float32BufferAttribute(UV, 2)); G.computeVertexNormals(); out.carpet.push(G); } },
+  carpet(E, { out, Y, geo }) { const G = new THREE.PlaneGeometry(E.x[1] - E.x[0], E.z[1] - E.z[0]); G.rotateX(-Math.PI / 2); const uv = G.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setY(i, uv.getY(i) * (E.z[1] - E.z[0]) / 3);
+    out.carpet.push(geo(G, (E.x[0] + E.x[1]) / 2, Y + E.y + .02, (E.z[0] + E.z[1]) / 2)); },
+  door(E, { out, Y, box, geo }) { const [x, y, z] = E.at, q = E.p, hw = q.w / 2, jw = 2.2, top = y + q.h, zf = z + q.d;     // gold jamb edges, a gold band, the jade ring in a gold ring, a jade seam
+    box('gold', x - hw - .18, x - hw, y, top, zf - .05, zf + .05, 'plain'); box('gold', x + hw, x + hw + .18, y, top, zf - .05, zf + .05, 'plain'); box('gold', x - hw - jw - .32, x + hw + jw + .32, top + 1.9, top + 2.1, zf + .26, zf + .36, 'plain');
+    out.glow.push(geo(new THREE.TorusGeometry(Math.min(hw, q.h / 2) * .62, .16, 8, 32), x, Y + y + q.h * .52, z + 1.26)); out.gold.push(geo(new THREE.TorusGeometry(Math.min(hw, q.h / 2) * .62 + .3, .1, 6, 32), x, Y + y + q.h * .52, z + 1.24));
+    out.glow.push(geo(new THREE.CylinderGeometry(.08, .08, q.h, 6), x, Y + y + q.h / 2, z + 1.23)); },
+  brazier(E, { out, Y, geo }) { const [x, y, z] = E.at, K = 1.4;     // `lbBrazier`'s gold band and two jade flames (`templeFlameMat` flickers them)
+    out.gold.push(geo(new THREE.BoxGeometry(.62 * K, .08 * K, .62 * K), x, Y + y + .72 * K, z));
+    for (const [r0, h, o] of [[.3, .9, 0], [.18, 1.3, .1]]) { const G = geo(new THREE.ConeGeometry(r0 * K, h * K, 7, 1, true), x, Y + y + (1.05 + h / 2) * K, z), n = G.attributes.position.count, s = lbHash(E.id) * 9 + o;
+      G.setAttribute('aC', new THREE.Float32BufferAttribute(new Array(n).fill(0).flatMap(() => [x, Y + y + 1.05 * K, z]), 3)); G.setAttribute('aS', new THREE.Float32BufferAttribute(new Array(n).fill(s), 1)); out.flame.push(G); } },
+  disc(E, { out, Y, geo }) { const [x, y, z] = E.at, q = E.p, f = q.face, cyl = (r, dd, oz, k) => out[k].push(geo(new THREE.CylinderGeometry(r, r, dd, 32).rotateX(Math.PI / 2), x, Y + y, z + f * oz));     // the porthole / the gear
+    cyl(q.r, 1, .5, 'stone'); out.gold.push(geo(new THREE.TorusGeometry(q.r * .86, .2, 8, 36), x, Y + y, z + f * 1.02)); cyl(q.r * .62, .2, 1.05, 'gold'); cyl(q.r * .5, .2, 1.18, 'glow');
+    out.gold.push(geo(new THREE.TorusGeometry(q.r * .3, .12, 6, 24), x, Y + y, z + f * 1.3)); out.glow.push(geo(new THREE.SphereGeometry(q.r * .17, 12, 8), x, Y + y, z + f * 1.32));
+    for (let k = 0; k < (q.teeth || 0); k++) { const a = k / q.teeth * Math.PI * 2, G = new THREE.BoxGeometry(.6, .7, .9); G.rotateZ(a); out.gold.push(geo(G, x + Math.sin(a) * -1 * (q.r + .2), Y + y + Math.cos(a) * (q.r + .2), z + f * .5)); } },
+  kiosk(E, { out, Y, box, geo }) { const [x, y, z] = E.at, w = E.p.w / 2, h = E.p.h;     // gold bands, jade slits, a pyramid roof and a spire
+    box('gold', x - w - .08, x + w + .08, y + h - .3, y + h, z - w - .08, z + w + .08, 'plain'); box('gold', x - w - .08, x + w + .08, y, y + .25, z - w - .08, z + w + .08, 'plain');
+    for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) box('glow', x + dx * (w + .02) - .12 * !dx - .03 * Math.abs(dx), x + dx * (w + .02) + .12 * !dx + .03 * Math.abs(dx), y + h * .3, y + h * .8, z + dz * (w + .02) - .12 * !dz - .03 * Math.abs(dz), z + dz * (w + .02) + .12 * !dz + .03 * Math.abs(dz), 'plain');
+    out.gold.push(geo(new THREE.ConeGeometry(w * 1.65, h * .45, 4).rotateY(Math.PI / 4), x, Y + y + h + h * .225, z)); out.gold.push(geo(new THREE.ConeGeometry(.16, h * .5, 6), x, Y + y + h * 1.45 + h * .25, z));
+    out.glow.push(geo(new THREE.SphereGeometry(.28, 8, 6), x, Y + y + h * 1.45, z)); },
+  glow(E, { box }) { const [x0, x1, y0, y1, z0, z1] = E.box; box('glow', x0, x1, y0, y1, z0, z1, 'plain'); },
+  statue(E, { out, Y, box, rod, geo }) { const [x, y, z] = E.at, sd = E.p.staff, B = (k, w, h, dd, ox, oy, oz) => box(k, x + ox - w / 2, x + ox + w / 2, y + oy, y + oy + h, z + oz - dd / 2, z + oz + dd / 2, k === 'stone' ? 'mega' : k === 'tech' ? 'tech' : 'plain');     // a JACKAL-headed guardian in dark jade-lined armour, gold trim, a staff
+    B('gold', 2.5, .16, 2.5, 0, 1.04, 0); for (const lx of [-.42, .42]) { B('tech', .6, 1.7, .75, lx, 1.2, 0); B('gold', .66, .14, .8, lx, 1.3, 0); B('gold', .66, .12, .8, lx, 2.2, 0); }
+    B('tech', 1.6, .85, 1, 0, 2.9, 0); B('gold', 1.66, .22, 1.06, 0, 3.5, 0); B('gold', .5, .8, .08, 0, 2.75, .52); B('tech', 1.5, 1.5, 1, 0, 3.75, 0); B('glow', .9, .7, .06, 0, 4.15, .52); B('gold', 1.0, .1, .08, 0, 4.85, .52);
+    B('tech', 2.1, .55, 1.05, 0, 4.95, 0); B('gold', 2.2, .12, 1.12, 0, 4.95, 0); for (const ax of [-1.2, 1.2]) { B('tech', .5, 1.35, .55, ax, 3.6, 0); B('gold', .56, .18, .6, ax, 3.95, 0); B('glow', .56, .1, .6, ax, 4.6, 0); }
+    B('gold', 1.4, .35, 1.1, 0, 5.45, 0); B('gold', 1.15, 1.1, .3, 0, 5.1, -.45);     // a gold collar and the striped head-cloth falling behind
+    B('tech', .8, .85, .85, 0, 5.75, 0); B('tech', .42, .38, .8, 0, 5.85, .7); B('stone', .2, .14, .16, 0, 6.06, 1.06); B('glow', .16, .08, .04, -.2, 6.32, .43); B('glow', .16, .08, .04, .2, 6.32, .43);     // head, the long snout, the nose, jade eyes
+    for (const ex of [-.26, .26]) out.tech.push(geo(new THREE.ConeGeometry(.2, 1.1, 4).rotateY(Math.PI / 4), x + ex, Y + y + 7.1, z - .05));     // the tall ears
+    B('tech', .5, .5, .9, 1.2 * sd, 4.45, .35); out.gold.push(rod([x + 1.25 * sd, Y + y + 1.25, z + .75], [x + 1.25 * sd, Y + y + 7.4, z + .75], .08)); B('glow', .34, .34, .34, 1.25 * sd, 7.4, .75); },
+  palm(E, { out, Y, box }) { const [x, y, z] = E.at, q = E.p, h = lbHash(E.id); box('gold', x - .84, x + .84, y + .74, y + .86, z - .84, z + .84, 'plain');     // the trunk and the fronds
+    const pts = []; for (let i = 0; i <= 6; i++) { const u = i / 6; pts.push(new THREE.Vector3(x + q.lean * u * u * 1.6, Y + y + .85 + u * q.h, z + q.lean * .5 * u * u)); }
+    for (let i = 0; i < 6; i++) { const A = pts[i], Bv = pts[i + 1], G = new THREE.CylinderGeometry(.16 - i * .012, .2 - i * .012, A.distanceTo(Bv) + .05, 7).toNonIndexed(); G.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), Bv.clone().sub(A).normalize())); const m = A.clone().lerp(Bv, .5); G.translate(m.x, m.y, m.z); out.wood.push(G); }
+    const top = pts[6], F = [];     // fronds: arched, tapering strips, drooping
+    for (let k = 0; k < 9; k++) { const a = k / 9 * Math.PI * 2 + h * 3, ca = Math.cos(a), sa = Math.sin(a), len = 2.6 + ((h * 17 + k * .31) % 1) * .9, rise = .5 + ((h * 7 + k * .23) % 1) * .4;
+      let prev = null; for (let j = 0; j <= 6; j++) { const u = j / 6, r0 = u * len, yy = top.y + rise * Math.sin(u * Math.PI * .9) - u * u * 1.4, wd = .42 * Math.sin(Math.PI * Math.min(1, u * 1.15 + .05)), cx = top.x + sa * r0, cz = top.z + ca * r0;
+        const L = [cx + ca * wd, yy - wd * .25, cz - sa * wd], R = [cx - ca * wd, yy - wd * .25, cz + sa * wd], C = [cx, yy, cz];
+        if (prev) { F.push(...prev[0], ...prev[1], ...C, ...prev[1], ...prev[2], ...C, ...prev[0], ...C, ...L, ...prev[2], ...R, ...C); } prev = [L, C, R]; } }
+    const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(F, 3)); G.computeVertexNormals(); out.frond.push(G); },
+  skybridge(E) { const w = E.w, H = E.h, along = E._along;     // gold bands under the roof and on the parapets, jade strips along the floor
+    const L = Math.hypot(E.b[0] - E.a[0], E.b[1] - E.a[1]); along('gold', L + .6, .12, w + 1.5, .5, H - .02, 0);
+    for (const sz of [-1, 1]) { along('gold', L, .08, .45, .5, 1.02, sz * (w / 2 + .17)); along('glow', L, .05, .1, .5, .03, sz * (w / 2 - .12)); } },
+  banner(E, { out, Y, rod, geo }) { const [x, y, z] = E.at, q = E.p; out.gold.push(rod([x, Y + y + .15, q.wall], [x, Y + y + .15, z + q.face * .25], .1)); out.gold.push(geo(new THREE.BoxGeometry(q.w + .4, .12, .12), x, Y + y + .1, z));
+    out.banner.push({ id: E.id, x, y: Y + y - q.h / 2, z, w: q.w, h: q.h, face: q.face }); },
+  $drops(T, { out, Y, geo }) { for (const D of T.under.drops) { const [x, y, z] = D.at, k = D.s, at = v => Y + y + v * k;     // a hanging PYLON: gold collar, jade core in gold rings, gold drum, a spiked gold tip
     out.gold.push(geo(new THREE.CylinderGeometry(4.2 * k, 3.4 * k, 2 * k, 10), x, at(-1), z)); out.gold.push(geo(new THREE.CylinderGeometry(2.9 * k, 2.9 * k, 1.2 * k, 10), x, at(-2.6), z));
     out.glow.push(geo(new THREE.CylinderGeometry(1.9 * k, 1.9 * k, 15 * k, 12), x, at(-10.7), z));
     for (const v of [-5.5, -9.5, -13.5]) out.gold.push(geo(new THREE.CylinderGeometry(2.45 * k, 2.45 * k, .7 * k, 12), x, at(v), z));
     out.gold.push(geo(new THREE.CylinderGeometry(2.9 * k, 2.5 * k, 2.6 * k, 10), x, at(-19.4), z)); out.gold.push(geo(new THREE.CylinderGeometry(1.7 * k, 1.7 * k, 1.4 * k, 10), x, at(-21.4), z));
-    out.glow.push(geo(new THREE.CylinderGeometry(1.2 * k, 1.2 * k, 1.6 * k, 10), x, at(-22.8), z)); out.gold.push(geo(new THREE.ConeGeometry(1.6 * k, 7 * k, 8).rotateX(Math.PI), x, at(-27.1), z)); }
-  { const LT = T.lanterns; let s4 = LT.seed * 577 + 3; const q = () => (s4 = (s4 * 16807) % 2147483647) / 2147483647;
+    out.glow.push(geo(new THREE.CylinderGeometry(1.2 * k, 1.2 * k, 1.6 * k, 10), x, at(-22.8), z)); out.gold.push(geo(new THREE.ConeGeometry(1.6 * k, 7 * k, 8).rotateX(Math.PI), x, at(-27.1), z)); } },
+  $lanterns(T, { out, Y, rim, rod, geo }) { const LT = T.lanterns; let s4 = LT.seed * 577 + 3; const q = () => (s4 = (s4 * 16807) % 2147483647) / 2147483647;
     const lantern = (x, y, z, chain, k) => { const b = y - chain, cy = v => b - v * k;     // b = the bottom of the chain; the lantern hangs under it
       out.gold.push(geo(new THREE.CylinderGeometry(.045, .045, chain, 4), x, y - chain / 2, z)); out.gold.push(geo(new THREE.ConeGeometry(.16 * k, .5 * k, 6), x, cy(.1), z));
       out.gold.push(geo(new THREE.ConeGeometry(.7 * k, .55 * k, 8), x, cy(.55), z)); out.gold.push(geo(new THREE.CylinderGeometry(.62 * k, .62 * k, .16 * k, 8), x, cy(.88), z));
@@ -29878,25 +29908,12 @@ function templeMassMake(T, rim) { const Y = T.top, out = { frond: [], vine: [], 
     for (const L of LT.place) lantern(L.at[0], Y + L.at[1], L.at[2], L.chain, L.k);
     const N = rim.length; for (let i = 0; i < LT.rim; i++) { const v = rim[Math.floor((i + q() * .6) / LT.rim * N) % N], Lr = Math.hypot(v[0], v[2]), o = (Lr + LT.rimOut) / Lr;
       lantern(v[0] * o, Y - 1.5, v[2] * o, LT.chain[0] + q() * (LT.chain[1] - LT.chain[0]), LT.k[0] + q() * (LT.k[1] - LT.k[0]));
-      const i0 = (Lr - 1) / Lr; out.gold.push(rod([v[0] * i0, Y - 3.5, v[2] * i0], [v[0] * o, Y - 1.4, v[2] * o], .1)); out.gold.push(rod([v[0] * i0, Y - .3, v[2] * i0], [v[0] * o, Y - 1.4, v[2] * o], .08)); } }     // a gold bracket from the rim
-  out.ladders = []; out.bars = []; out.zips = [];
-  for (const E of T.route) { const B = E.box;
-    if (E.kind === 'ledge') { const [x0, x1, y0, y1, z0, z1] = B; box('stone', x0, x1, y0, y1 - .14, z0, z1); box('glow', x0 - .03, x1 + .03, y1 - .14, y1, z0 - .03, z1 + .03, 'plain'); coll(x0, x1, y0, y1, z0, z1, E.id); continue; }
-    if (E.kind === 'solid') { coll(...B, E.id); continue; }
-    if (E.kind === 'ladder') { const [x0, x1, y0, y1, z0, z1] = B, mz = (z0 + z1) / 2 + E.front[1] * .12, mx = (x0 + x1) / 2 + E.front[0] * .12, alongX = !E.front[0];     // gold stiles, rungs every .32
-      for (const o of [-.42, .42]) out.gold.push(rod([mx + (alongX ? o : 0), Y + y0, mz + (alongX ? 0 : o)], [mx + (alongX ? o : 0), Y + y1 + 1, mz + (alongX ? 0 : o)], .06));
-      for (let r = y0 + .3; r < y1 + .9; r += .32) out.wood.push(rod([mx - (alongX ? .42 : 0), Y + r, mz - (alongX ? 0 : .42)], [mx + (alongX ? .42 : 0), Y + r, mz + (alongX ? 0 : .42)], .045));
-      out.ladders.push({ id: E.id, box: { minx: x0, maxx: x1, miny: Y + y0, maxy: Y + y1, minz: z0, maxz: z1 }, top: Y + E.top, mark: { x: E.mark[0], y: Y + E.mark[1], z: E.mark[2] }, front: E.front }); continue; }
-    if (E.kind === 'hbar') { out.bars.push({ id: E.id, x: E.at[0], y: Y + E.at[1], z: E.at[2], yaw: E.yaw }); continue; }
-    if (E.kind === 'zip') { const A = [E.from[0], Y + E.from[1], E.from[2]], Bz = [E.to[0], Y + E.to[1], E.to[2]];     // the cable, a gold post each end
-      out.rope.push(new THREE.TubeGeometry(new THREE.LineCurve3(new THREE.Vector3(...A), new THREE.Vector3(...Bz)), 32, .05, 6).toNonIndexed());
-      for (const P of [A, Bz]) { out.gold.push(geo(new THREE.BoxGeometry(.3, 2.4, .3), P[0], P[1] - 1.0, P[2])); out.glow.push(geo(new THREE.SphereGeometry(.22, 10, 8), P[0], P[1] + .3, P[2])); }
-      out.zips.push({ A, B: Bz, id: E.id }); continue; } }
-  { const V = T.vines; let sd = V.seed * 131 + 1; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;     // VINES: alpha strips draped from edges, and over the island's rim
-    const vine = (x, y, z, nx, nz, w, len) => { const G = new THREE.PlaneGeometry(w, len); G.rotateY(Math.atan2(nx, nz)); G.rotateX(0); out.vine.push(geo(G, x + nx * .03, y - len / 2, z + nz * .03)); };
+      const i0 = (Lr - 1) / Lr; out.gold.push(rod([v[0] * i0, Y - 3.5, v[2] * i0], [v[0] * o, Y - 1.4, v[2] * o], .1)); out.gold.push(rod([v[0] * i0, Y - .3, v[2] * i0], [v[0] * o, Y - 1.4, v[2] * o], .08)); } },     // a gold bracket from the rim
+  $vines(T, { out, Y, rim, geo }) { const V = T.vines; let sd = V.seed * 131 + 1; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;     // VINES: alpha strips draped from edges, and over the island's rim
+    const vine = (x, y, z, nx, nz, w, len) => { const G = new THREE.PlaneGeometry(w, len); G.rotateY(Math.atan2(nx, nz)); out.vine.push(geo(G, x + nx * .03, y - len / 2, z + nz * .03)); };
     for (const Ed of V.edges) for (let i = 0; i < Ed.n; i++) { const u = (i + .2 + r() * .6) / Ed.n, x = Ed.a[0] + (Ed.b[0] - Ed.a[0]) * u, z = Ed.a[2] + (Ed.b[2] - Ed.a[2]) * u; vine(x, Y + Ed.a[1] + .05, z, Ed.nx || 0, Ed.nz || 0, .9 + r() * .7, 2.2 + r() * 3.6); }
-    const N = rim.length; for (let k = 0; k < V.rim; k++) { const v = rim[(k * 7 + (r() * 3 | 0)) % N], L = Math.hypot(v[0], v[2]), nx = v[0] / L, nz = v[2] / L; vine(v[0] + nx * 1.6, Y + .1, v[2] + nz * 1.6, nx, nz, 1.2 + r() * .8, 4 + r() * 7); } }
-  { const H = T.halo, [x, y, z] = H.at, oy = Y + H.orbY;     // THE SUMMIT: orb on a collar, struts, the halo (its own two meshes: it turns)
+    const N = rim.length; for (let k = 0; k < V.rim; k++) { const v = rim[(k * 7 + (r() * 3 | 0)) % N], L = Math.hypot(v[0], v[2]), nx = v[0] / L, nz = v[2] / L; vine(v[0] + nx * 1.6, Y + .1, v[2] + nz * 1.6, nx, nz, 1.2 + r() * .8, 4 + r() * 7); } },
+  $halo(T, { out, Y, rod, geo }) { const H = T.halo, [x, y, z] = H.at, oy = Y + H.orbY;     // THE SUMMIT: orb on a collar, struts, the halo (its own group), its dish, its chains, the beam
     out.gold.push(geo(new THREE.CylinderGeometry(1.1, 1.5, .8, 12), x, oy - H.orb - .1, z)); out.glow.push(geo(new THREE.SphereGeometry(H.orb, 18, 12), x, oy, z));
     for (let k = 0; k < 4; k++) { const a = Math.PI / 4 + k * Math.PI / 2, sx = Math.sin(a), sz = Math.cos(a); out.gold.push(rod([x + sx * 2.3, Y + 45.4, z + sz * 2.3], [x + sx * (H.R - .1), Y + y - .2, z + sz * (H.R - .1)], .16)); }
     const gold = [new THREE.TorusGeometry(H.R, H.tube, 10, 48).rotateX(Math.PI / 2).toNonIndexed(), new THREE.TorusGeometry(H.R + .55, .14, 6, 48).rotateX(Math.PI / 2).translate(0, .32, 0).toNonIndexed()];
@@ -29906,10 +29923,16 @@ function templeMassMake(T, rim) { const Y = T.top, out = { frond: [], vine: [], 
     out.halo = { at: [x, Y + y, z], gold, glow, spin: H.spin };
     for (const A of H.chains || []) { const dx = A[0] - x, dz = A[2] - z, L = Math.hypot(dx, dz), P0 = new THREE.Vector3(x + dx / L * (H.R + .1), Y + y, z + dz / L * (H.R + .1)), P1 = new THREE.Vector3(A[0], Y + A[1] + 1.2, A[2]);     // red chains, sagging, to gold posts on the pylon tops
       const m = P0.clone().lerp(P1, .5); m.y -= 2.2; out.rope.push(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(P0, m, P1), 16, .07, 5).toNonIndexed()); out.gold.push(geo(new THREE.CylinderGeometry(.12, .16, 1.4, 6), A[0], Y + A[1] + .7, A[2])); }
-    if (H.beam) { const bu = new THREE.CylinderGeometry(.75, .75, 420, 12, 1, true); bu.translate(x, oy + 210, z); bu.setAttribute('aF', new THREE.Float32BufferAttribute(new Array(bu.attributes.position.count).fill(1), 1)); out.beam.push(bu); } }
-  return out; }
+    if (H.beam) { const bu = new THREE.CylinderGeometry(.75, .75, 420, 12, 1, true); bu.translate(x, oy + 210, z); bu.setAttribute('aF', new THREE.Float32BufferAttribute(new Array(bu.attributes.position.count).fill(1), 1)); out.beam.push(bu); } } };
+// THE SKINS: which dressing, and which material each bucket is drawn in. 'block' = the block-out alone, in the builder's flat block material
+// (the route's jade lips stay green: they ARE function). The env flag is the far islands, the spikes and the waterfalls -- scenery, not play.
+const TEMPLE_SKINS = {
+  sky: { dress: TEMPLE_SKY, env: 1, mats: I => ({ stone: templeRockMat(0xf2d2a0, 1), gold: lbGoldMat(), glow: lbGlowMat(), tech: lbMat(0x2a3a3a, 0, 'tech'), wood: lbMat(0x8a6a3a), cap: lbMat(I.paving, 0, 'mega'), side: templeRockMat(I.rock),
+    rope: TEMPLEZ.mats.rope || (TEMPLEZ.mats.rope = new THREE.MeshStandardMaterial({ color: 0xb3302a, roughness: .9 })) }) },
+  block: { dress: null, env: 0, mats: () => ({ stone: lbMat(0xb9bec6, false, 'block'), gold: lbMat(0x8a7a5a, false, 'block'), glow: lbGlowMat(), tech: lbMat(0x6d7480, false, 'block'), wood: lbMat(0xc8a878, false, 'block'),
+    cap: lbMat(0xdfe2e7, false, 'block'), side: lbMat(0x9aa0a8, false, 'block'), rope: lbMat(0x5a6068, false, 'block') }) } };
 function templeHome() { const p = player, S = TEMPLE.spawn; p.pos.set(S.at[0], TEMPLE.top + S.at[1] + .05, S.at[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = S.yaw; cam.az = S.yaw; p.grounded = false; }
-function templeBuild() { const Z = TEMPLEZ, T = TEMPLE; Z.want = 2; if (Z.on) return; const R = templeMake(T), S = T.sky; scene.add(R.g);
+function templeBuild() { const Z = TEMPLEZ, T = TEMPLE; Z.want = 2; if (Z.on) return; const R = templeMake(Object.assign({}, T, { skin: Z.skin })), S = T.sky; scene.add(R.g); templeSkinKey();
   const O = { boxes: R.boxes }; bldTris(O, R.tris); for (const b of R.boxes) BOXES.push(b);
   for (const L of R.ladders) { const K = kitClimbAdd(L.box, L.id, L.top); K.mark = L.mark; K.fg = { x: L.front[0], z: L.front[1] }; }     // the route's moves, into their systems
   for (const Bb of R.bars) HBAR.list.push(hbarMake(Bb.x, Bb.z, Bb.yaw, Bb.y));
@@ -29921,6 +29944,11 @@ function templeBuild() { const Z = TEMPLEZ, T = TEMPLE; Z.want = 2; if (Z.on) re
   camera.far = Math.max(camera.far, 1500); camera.updateProjectionMatrix();
   Z.on = { g: R.g, O, U: R.U, t: 0, halo: R.halo }; templeHome();
   if (window.mel) Object.assign(window.mel, { TEMPLE, TEMPLEZ, templeHome }); }
+// the SKIN switch, on the phone: a small key top-centre; a tap swaps sky <-> block-out and reloads (the choice is remembered)
+function templeSkinKey() { const Z = TEMPLEZ; if (Z.key) return; const b = document.createElement('button'); Z.key = b; b.textContent = 'TEMPLE: ' + (Z.skin === 'block' ? 'BLOCK-OUT' : 'SKY');
+  b.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);top:calc(6px + env(safe-area-inset-top));z-index:15;font:700 11px system-ui;padding:6px 9px;border-radius:8px;border:1px solid #4a7aa0;background:rgba(23,48,74,.8);color:#e6f4ff;';
+  b.onclick = () => { const n = Z.skins[(Z.skins.indexOf(Z.skin) + 1) % Z.skins.length]; try { localStorage.setItem('mel.templeSkin', n); } catch (e) {} const q = new URLSearchParams(location.search); q.set('skin', n); location.search = q.toString(); };
+  document.body.appendChild(b); }
 function templeTick(dt) { const Z = TEMPLEZ; if (Z.want === 1) templeBuild(); if (!Z.on) return; Z.on.t += dt; Z.on.U.uTime.value = Z.on.t; if (Z.on.halo) Z.on.halo.rotation.y += dt * Z.on.halo.userData.spin;
   if (player.pos.y < TEMPLE.top - TEMPLE.fallY) templeHome(); }     // off the edge, through the clouds: back on the island
 // TEMPLE:END

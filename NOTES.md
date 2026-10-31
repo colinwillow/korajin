@@ -5,6 +5,24 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1915 -- THE SKY TEMPLE: FUNCTION vs LOOK -- the block-out and the sky skin are separate layers, with a switch (his rule, LEVELBUILDER.md m1898)
+
+*"Build it really simple -- block out the functionality -- and any time we make a new temple, wrap the new design around the current build."*
+(Relayed by the planning session; checked against LEVELBUILDER.md's FUNCTION vs LOOK section before acting on it.)
+- `templeMassMake` is now the BLOCK-OUT only: every collider, walkable triangle, ladder / high bar / zip, and the plain shape behind each (the
+  masses, steps and stair cheeks, portal and sealed slab, brazier pedestals, kiosk shafts, statue plinths with the figure's volume as a box,
+  planters, rope rails, plank and sky bridge decks, walls and roofs, the route ledges WITH their jade lips -- the lip marks the path, so it
+  is function, like the builder's chevrons).
+- `TEMPLE_SKY` is the sky-temple SKIN: dressing functions keyed by the kind they dress (`block` bands / studs / channels / slits, `stair`
+  coping and carpet, `door`, `brazier` flames, `disc`, `kiosk` roof and slits, `statue` figure, `palm` trunk and fronds, `skybridge` trims,
+  `banner`, and `$drops` / `$lanterns` / `$vines` / `$halo` for the whole temple), each reading only its own table entry.
+- `TEMPLE_SKINS` = { sky, block }: the dressing table, whether the scenery comes (spikes, far islands, waterfalls, drifting rocks: `env`),
+  and which material each bucket is drawn in. 'block' = the builder's flat `lbMat(c, false, 'block')`, route lips still jade.
+- `TEMPLEZ.skin`: `?skin=block` or the remembered choice; a small **TEMPLE: SKY / BLOCK-OUT** key at the top-centre of the screen swaps and
+  reloads. A new temple = a new skin entry over this block-out (or this skin over another).
+- Checked headless: the sky skin renders exactly as m1914 did (42 draws, 100,246 triangles on the same frame); the block-out is 24 draws,
+  63k triangles, every collider and route piece present.
+
 ## m1914 -- THE SKY TEMPLE 7e: jackal-headed guardians, gold studs, waterfalls off the far islands (his second concepts)
 
 - THE GUARDIANS are jackal-headed now (`statue`): head, a long snout, a nose, two tall ears, jade eyes, a gold collar and a striped head-cloth
