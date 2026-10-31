@@ -36382,7 +36382,7 @@ const WING = { clip: (() => { try { const v = localStorage.getItem('mel.flypose'
   lie: 80 * Math.PI / 180, bank: .7, bankHL: .15, camFollow: 3.0, camIdle: .6, settle: 7,
   spinAt: 60 * Math.PI / 180, spinT: .55,
   trail: 1, trailN: 2, trailLife: .5,
-  seg: [.44, .38, .32], chord: [.30, .24, .17],
+  seg: [.44, .38, .32], chord: [.52, .42, .3],     // m15KT: broad kite sails (was .30 / .24 / .17 -- a strip from above)
   pilot: { cruise: 1.7, thrust: 1.5, gk: .45 } };   // m848: the pilot form's flight
 // m356 (C4-1): AND THE GLIDER'S FORM -- the roster's `glider` stem (Jack, standing in), worn and settled -- flies the same
 // flight under a hang glider instead of her wingsuit. His model is one line in `ROSTER`.
@@ -36603,8 +36603,34 @@ function wingWashiTex() { if (_wWashi) return _wWashi; const cv = document.creat
   q.strokeStyle = 'rgba(25,18,16,.8)'; q.lineCap = 'round'; for (let k = 0; k < 5; k++) { const x = 300 + k * 38; q.lineWidth = 7 - k * .6; q.beginPath(); q.moveTo(x, 50); q.quadraticCurveTo(x + 14, 110, x - 6, 170 + k * 8); q.stroke(); q.lineWidth = 4; q.beginPath(); q.moveTo(x - 12, 92); q.lineTo(x + 12, 98); q.stroke(); }     // brush strokes
   q.strokeStyle = 'rgba(120,30,24,.9)'; q.lineWidth = 10; q.strokeRect(5, 5, 502, 246);     // the lacquered border
   const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return (_wWashi = t); }
+// m15KT: THE KITE'S HANGINGS (his: "Chinese kites have a lot of things hanging from them -- streamers, a line of beads of different styles from big to small;
+// put some on the wing suit and make it even crazier"). Every hanging is a VERLET chain in WORLD space pinned to a marker on the kite (`WG.hang`): bead
+// strings off each panel, a long ribbon off each lantern, two whiskers off the roof dragon, a kite tail of shrinking beads off the box. They hang under
+// gravity at rest and stream back behind him in flight (they simply lag the pinned end), with a little flutter. All beads are ONE instanced mesh, each
+// ribbon a camera-facing strip; `WTR` holds the feel.
+const WTR = { on: 1, g: 9.8, drag: 2.2, iters: 3, flut: 1.4, maxB: 140 };
+let _wtrI = null; const _wtM = new THREE.Matrix4(), _wtC = new THREE.Color(), _wtV = new THREE.Vector3(), _wtA = new THREE.Vector3(), _wtB = new THREE.Vector3(), _wtS = new THREE.Vector3();
+function wingHangHide() { if (_wtrI) _wtrI.visible = false; if (WG.hang) for (const H of WG.hang) if (H.rib) H.rib.visible = false; }
+function wingHangStep(dt, sc) { if (!WTR.on || !WG.hang || !WG.g.visible) { wingHangHide(); return; }
+  if (!_wtrI) { _wtrI = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 8, 6), new THREE.MeshStandardMaterial({ roughness: .4, metalness: .35 }), WTR.maxB); _wtrI.frustumCulled = false; _wtrI.castShadow = true; _wtrI.material.userData.noPaint = 1; scene.add(_wtrI); }
+  WG.g.updateMatrixWorld(true); const t = performance.now() / 1000, h = Math.min(dt, 1 / 30); let bi = 0;
+  for (const H of WG.hang) { const n = H.n, L = H.seg * sc; H.mk.getWorldPosition(_wtA);
+    if (!H.p || _wtA.distanceTo(H.p[0]) > 3) { H.p = []; H.q = []; for (let k = 0; k < n; k++) { H.p.push(_wtA.clone().setY(_wtA.y - k * L)); H.q.push(H.p[k].clone()); } }
+    H.p[0].copy(_wtA); H.q[0].copy(_wtA); const kd = Math.exp(-WTR.drag * h);
+    for (let k = 1; k < n; k++) { const P = H.p[k], Q = H.q[k]; _wtV.subVectors(P, Q).multiplyScalar(kd); Q.copy(P);
+      P.add(_wtV); P.y -= WTR.g * h * h; P.x += Math.sin(t * 7 + k * .9 + H.n) * WTR.flut * h * h * k; P.z += Math.cos(t * 6 + k * 1.3) * WTR.flut * h * h * k; }
+    for (let it = 0; it < WTR.iters; it++) for (let k = 1; k < n; k++) { const A = H.p[k - 1], B = H.p[k]; _wtV.subVectors(B, A); const d = _wtV.length() || 1e-6; B.copy(A).addScaledVector(_wtV, L / d); }
+    if (H.kind === 'beads') { for (let k = 1; k < n && bi < WTR.maxB; k++) { const r = lerp(H.r0, H.r1, (k - 1) / Math.max(1, n - 2)) * sc; _wtM.makeScale(r, r, r).setPosition(H.p[k]); _wtrI.setMatrixAt(bi, _wtM); _wtrI.setColorAt(bi, _wtC.setHex(H.cols[k % H.cols.length])); bi++; } }
+    else { if (!H.rib) { const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 2 * 3), 3)); const ix = []; for (let k = 0; k < n - 1; k++) { const a = k * 2; ix.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } gg.setIndex(ix);
+        H.rib = new THREE.Mesh(gg, new THREE.MeshStandardMaterial({ color: H.col, roughness: .7, side: THREE.DoubleSide, emissive: H.col, emissiveIntensity: .15 })); H.rib.frustumCulled = false; H.rib.material.userData.noPaint = 1; scene.add(H.rib); }
+      H.rib.visible = true; const Pa = H.rib.geometry.attributes.position.array; camera.getWorldPosition(_wtS);
+      for (let k = 0; k < n; k++) { const A = H.p[Math.max(0, k - 1)], B = H.p[Math.min(n - 1, k + 1)]; _wtV.subVectors(B, A); _wtB.subVectors(_wtS, H.p[k]); _wtA.crossVectors(_wtV, _wtB).normalize().multiplyScalar(H.w * sc * (1 - .6 * k / n) * .5);
+        Pa[k * 6] = H.p[k].x + _wtA.x; Pa[k * 6 + 1] = H.p[k].y + _wtA.y; Pa[k * 6 + 2] = H.p[k].z + _wtA.z; Pa[k * 6 + 3] = H.p[k].x - _wtA.x; Pa[k * 6 + 4] = H.p[k].y - _wtA.y; Pa[k * 6 + 5] = H.p[k].z - _wtA.z; }
+      H.rib.geometry.attributes.position.needsUpdate = true; H.rib.geometry.computeVertexNormals(); } }
+  _wtrI.count = bi; _wtrI.instanceMatrix.needsUpdate = true; if (_wtrI.instanceColor) _wtrI.instanceColor.needsUpdate = true; _wtrI.visible = bi > 0; }
 function wingBuild() {
   const g = new THREE.Group(); g.visible = false; g.name = 'wings'; scene.add(g);
+  WG.hang = [];
   const washi = new THREE.MeshStandardMaterial({ map: wingWashiTex(), roughness: .85, metalness: 0, side: THREE.DoubleSide, emissive: 0x2a1a08, emissiveIntensity: .25 });
   const lacq = new THREE.MeshStandardMaterial({ color: 0xa8281e, roughness: .38, metalness: .1 });
   const wood = new THREE.MeshStandardMaterial({ color: 0x3a2418, roughness: .75, metalness: 0 });
@@ -36620,6 +36646,14 @@ function wingBuild() {
     const ev = mesh(new THREE.BoxGeometry(.05, .016, .2), tile); ev.position.set(sx * .185, .145, -.07); ev.rotation.z = -sx * .05; g.add(ev); }     // the eave turns up at the edge
   const ridge = mesh(new THREE.BoxGeometry(.06, .03, .22), gold); ridge.position.set(0, .235, -.07); g.add(ridge);
   const crest = mesh(new THREE.TorusGeometry(.045, .012, 6, 16), gold); crest.position.set(0, .03, -.135); g.add(crest);     // the gold mon on the back
+  // m15KT: THE DRAGON on the roof -- a gold head (snout, brow, two swept horns, red mane), two whisker streamers -- and a KITE TAIL of shrinking beads off the box
+  { const hd = new THREE.Group(); hd.position.set(0, .27, -.03); g.add(hd);
+    const sk = mesh(new THREE.BoxGeometry(.07, .06, .1), gold); hd.add(sk); const sn = mesh(new THREE.BoxGeometry(.05, .035, .07), gold); sn.position.set(0, -.012, .07); hd.add(sn);
+    for (const sx of [-1, 1]) { const hn = mesh(new THREE.ConeGeometry(.012, .13, 5), gold); hn.position.set(sx * .025, .06, -.04); hn.rotation.set(-1.0, 0, sx * .35); hd.add(hn);
+      const ey = mesh(new THREE.SphereGeometry(.011, 6, 5), new THREE.MeshBasicMaterial({ color: 0x2de0b0 })); ey.position.set(sx * .026, .012, .04); hd.add(ey);
+      const wk = new THREE.Object3D(); wk.position.set(sx * .026, -.02, .1); hd.add(wk); WG.hang.push({ mk: wk, kind: 'ribbon', n: 8, seg: .07, w: .018, col: 0xe0b040 }); }
+    const mn = mesh(new THREE.ConeGeometry(.045, .09, 6), lacq); mn.position.set(0, .04, -.07); mn.rotation.x = -1.2; hd.add(mn); }
+  { const mk = new THREE.Object3D(); mk.position.set(0, -.19, -.07); g.add(mk); WG.hang.push({ mk, kind: 'beads', n: 12, seg: .085, r0: .05, r1: .016, cols: [0xb3322a, 0xb3322a, 0xc9a14a] }); }
   const ribGeo = new THREE.CylinderGeometry(.007, .007, 1, 5), sparGeo = new THREE.CylinderGeometry(.016, .016, 1, 7).rotateZ(Math.PI / 2), collar = new THREE.CylinderGeometry(.022, .022, .03, 8).rotateZ(Math.PI / 2);
   for (const s of [1, -1]) {
     const k = s > 0 ? 0 : 1;
@@ -36635,12 +36669,14 @@ function wingBuild() {
       const sp = mesh(sparGeo, lacq); sp.scale.set(L, 1, 1); sp.position.set(s * L / 2, a, -.004); jt.add(sp);     // the leading spar
       const co = mesh(collar, gold); co.position.set(0, a, -.004); jt.add(co);
       for (const f of [.4, .8]) { const rb = mesh(ribGeo, wood); const yb = lerp(b, bt, f); rb.scale.y = a - yb; rb.position.set(s * L * f, (a + yb) / 2, .003); jt.add(rb); }     // the ribs
+      { const mk = new THREE.Object3D(); mk.position.set(s * L * .55, lerp(b, bt, .55), 0); jt.add(mk); WG.hang.push({ mk, kind: 'beads', n: 6, seg: .075, r0: .034, r1: .012, cols: [0xb3322a, 0xc9a14a, 0x2de0b0] }); }     // m15KT: a bead string off every panel's trailing edge
       par = jt;
     }
     const tip = new THREE.Group(); tip.position.set(s * WING.seg[2], -.03, 0); par.add(tip);
     const lan = mesh(new THREE.SphereGeometry(.05, 10, 8).scale(1, 1.25, 1), lamp); lan.position.set(0, -.08, 0); tip.add(lan);     // the paper lantern
     for (const yy of [-.017, -.143]) { const cap = mesh(new THREE.CylinderGeometry(.024, .024, .016, 8), gold); cap.position.set(0, yy, 0); tip.add(cap); }
     const tas = mesh(new THREE.CylinderGeometry(.006, .012, .12, 5), lacq); tas.position.set(0, -.21, 0); tip.add(tas);     // the tassel
+    { const mk = new THREE.Object3D(); mk.position.set(0, -.26, 0); tip.add(mk); WG.hang.push({ mk, kind: 'ribbon', n: 16, seg: .12, w: .09, col: s > 0 ? 0xc8261c : 0xe0b040 }); }     // m15KT: the long streamer off each lantern
     const jet = new THREE.Sprite(new THREE.SpriteMaterial({ map: wingGlowTex(), color: 0x6dffc8, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     jet.position.set(0, -.08, 0); jet.scale.setScalar(.3); jet.userData.noHole = 1; tip.add(jet);
     WG.tips.push(tip); WG.jets.push(jet);
@@ -36663,7 +36699,7 @@ const WING_COL = [1, .78, .35];     // m1976: gold embers off the lanterns (was 
 function wingFrame(dt) {
   const p = player, W = WING;
   W.open = clamp(W.open + (p.wing ? 1 : -1) * dt / W.openT, 0, 1);
-  if (W.open <= .001 && !(W.pack && !p.wing && !bladeOn())) { if (WG.g) WG.g.visible = false; return; }     // m1969: mounted, the folded pack rides on his back
+  if (W.open <= .001 && !(W.pack && !p.wing && !bladeOn())) { if (WG.g) WG.g.visible = false; wingHangHide(); return; }     // m1969: mounted, the folded pack rides on his back
   if (!WG.g) wingBuild();
   const g = WG.g;
   if (!rig.model) { g.visible = false; return; }
@@ -36691,6 +36727,7 @@ function wingFrame(dt) {
   _wko.set(0, .02 * sc, -.13 * sc).applyQuaternion(g.quaternion);
   g.position.copy(_wkv).add(_wko);
   wingFold(W.open);
+  try { wingHangStep(dt, sc); } catch (e) { WTR.on = 0; note('WING HANG THREW ' + e.message); }     // m15KT
   const gl = gliderOn(); wingGlider(gl, W.open);                       // m356: his hang glider, not her wingsuit
   const on = W.open > .9 && p.wing ? 1 : 0, f = .8 + .2 * (p.wPitch > 0 ? 1 : 0) + Math.random() * .35;
   for (const j of WG.jets) { j.visible = on > 0 && !gl; if (on) j.scale.setScalar(.34 * f * sc); }

@@ -32,6 +32,16 @@ His: *"extend the canyon down the stream a little, open it up at the end into a 
 - 26 rocks (boulders and a few stacks) round the wall's foot and the lake shore, solid; the middle is left EMPTY to build on.
 - Measured headless: walked from the old canyon end (z 140) down the canyon, into the basin and round its floor (7 waypoints, all reached,
   feet on the ground). Unlooked-at on a phone. Load: ~+35% land vertices, +65k height samples for the second depth map.
+## m15KT -- the kite's hangings: bead strings, streamers, a roof dragon and a kite tail; broader sails
+His ask (Oct 31): *"Chinese kites have a lot of things hanging from them -- streamers, a line of beads of different styles going from big to small. Put some
+on the wing suit and do another pass -- make it even crazier."*
+- `WG.hang`: VERLET chains in world space, each pinned to a marker on the kite -- a 6-bead string off every panel's trailing edge (red / gold / jade, big to
+  small), a 16-link ribbon streamer off each lantern (red one side, gold the other), two gold whisker ribbons off a new ROOF DRAGON (gold head, snout,
+  swept horns, jade eyes, red mane), and a 12-bead kite TAIL off the shrine box. They hang under gravity at rest and stream back in flight (they lag the
+  pinned end), with a little flutter (`WTR`). All beads are ONE instanced mesh; each ribbon is a camera-facing strip. Reset if a pin jumps > 3 m.
+- The sails: `WING.chord` .30 / .24 / .17 -> .52 / .42 / .30 (a kite, not a strip). Ribbon streamers wider / longer.
+- Measured in flight (the wing-pack's normal against world up): SKYDIVE pose -0.89 (the sails lie flat, belly down), FLOAT -0.58, OLD -0.67.
+  Rendered folded (streamers and tail down his back) and open.
 
 ## m1977 -- the wing flight has its own pose (no more wiggly fall)
 His words (Oct 31): *"in the air on the wing suit he's playing the in-air falling animation, which wiggles them around -- we need something else where he's not
