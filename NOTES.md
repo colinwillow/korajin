@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1937 -- THE SKY TEMPLE look loop, pass 5: the island's built edge and the front MEDALLION
+
+- `TEMPLE_SKY.$rim` (sky skin only): two GOLD cornices round the island's rim -- one at the paving's edge, one a course lower -- so the top reads
+  as a built platform's edge (his concepts), not a raw rock ring; a tube along the rim's own outline, in the gold mesh (no draw).
+- THE MEDALLION on the front face, under the stair and over the main jade pylon (his front view): a stone plate in a gold frame, a gold disc, a
+  jade disc, a gold ring and a jade eye -- placed off the rim's own front-most point.
+- The underside's spikes stay organic (his m1919 ask: no geometric cones); they carry the pale masonry and the rivets now.
+- Next: L6, the far islands as hazy temples with waterfalls; L2b, the island's spare plaza.
+
 ## m1936 -- THE SKY TEMPLE look loop, pass 4: the satellites close in, at two levels
 
 In every one of his views the four hanging lantern-spires sit CLOSE beside the temple -- the upper pair level with the pylons on short beams,

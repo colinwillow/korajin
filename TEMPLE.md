@@ -70,7 +70,7 @@ difference, ship, repeat. The order, biggest first (re-ranked every pass):
 - [~] L2. MASSING (pylons done): the temple fills the island (the stair down to its front edge); the two side PYLONS are smooth massive battered wedges, not steps.
 - [~] L3. RIVETS (done) + PANELS: gold rivets over all the stone, gold-framed panels, jade window slits on the faces.
 - [x] L4. The SATELLITES close in, on short beams at two levels, each a hanging lantern spire.
-- [ ] L5. The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
+- [~] L5. (medallion + rim cornice done) The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
 - [ ] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.
 
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)
