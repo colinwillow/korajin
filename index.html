@@ -36661,9 +36661,9 @@ function wingBuild() {
     const sk = mesh(new THREE.BoxGeometry(.07, .06, .1), gold); hd.add(sk); const sn = mesh(new THREE.BoxGeometry(.05, .035, .07), gold); sn.position.set(0, -.012, .07); hd.add(sn);
     for (const sx of [-1, 1]) { const hn = mesh(new THREE.ConeGeometry(.012, .13, 5), gold); hn.position.set(sx * .025, .06, -.04); hn.rotation.set(-1.0, 0, sx * .35); hd.add(hn);
       const ey = mesh(new THREE.SphereGeometry(.011, 6, 5), new THREE.MeshBasicMaterial({ color: 0x2de0b0 })); ey.position.set(sx * .026, .012, .04); hd.add(ey);
-      const wk = new THREE.Object3D(); wk.position.set(sx * .026, -.02, .1); hd.add(wk); WG.hang.push({ mk: wk, kind: 'ribbon', n: 8, seg: .07, w: .018, col: 0xe0b040 }); }
+      const wk = new THREE.Object3D(); wk.position.set(sx * .026, -.02, .1); hd.add(wk); WG.hang.push({ mk: wk, kind: 'ribbon', n: 5, seg: .06, w: .018, col: 0xe0b040 }); }
     const mn = mesh(new THREE.ConeGeometry(.045, .09, 6), lacq); mn.position.set(0, .04, -.07); mn.rotation.x = -1.2; hd.add(mn); }
-  { const mk = new THREE.Object3D(); mk.position.set(0, -.19, -.07); g.add(mk); WG.hang.push({ mk, kind: 'beads', n: 12, seg: .085, r0: .05, r1: .016, cols: [0xb3322a, 0xb3322a, 0xc9a14a] }); }
+  { const mk = new THREE.Object3D(); mk.position.set(0, -.19, -.07); g.add(mk); WG.hang.push({ mk, kind: 'beads', n: 7, seg: .075, r0: .05, r1: .016, cols: [0xb3322a, 0xb3322a, 0xc9a14a] }); }
   const ribGeo = new THREE.CylinderGeometry(.007, .007, 1, 5), sparGeo = new THREE.CylinderGeometry(.016, .016, 1, 7).rotateZ(Math.PI / 2), collar = new THREE.CylinderGeometry(.022, .022, .03, 8).rotateZ(Math.PI / 2);
   for (const s of [1, -1]) {
     const k = s > 0 ? 0 : 1;
@@ -36686,7 +36686,7 @@ function wingBuild() {
     const lan = mesh(new THREE.SphereGeometry(.05, 10, 8).scale(1, 1.25, 1), lamp); lan.position.set(0, -.08, 0); tip.add(lan);     // the paper lantern
     for (const yy of [-.017, -.143]) { const cap = mesh(new THREE.CylinderGeometry(.024, .024, .016, 8), gold); cap.position.set(0, yy, 0); tip.add(cap); }
     const tas = mesh(new THREE.CylinderGeometry(.006, .012, .12, 5), lacq); tas.position.set(0, -.21, 0); tip.add(tas);     // the tassel
-    { const mk = new THREE.Object3D(); mk.position.set(0, -.26, 0); tip.add(mk); WG.hang.push({ mk, kind: 'ribbon', n: 16, seg: .12, w: .09, col: s > 0 ? 0xc8261c : 0xe0b040 }); }     // m1980: the long streamer off each lantern
+    { const mk = new THREE.Object3D(); mk.position.set(0, -.26, 0); tip.add(mk); WG.hang.push({ mk, kind: 'ribbon', n: 6, seg: .08, w: .07, col: s > 0 ? 0xc8261c : 0xe0b040 }); }     // m1980: the long streamer off each lantern
     const jet = new THREE.Sprite(new THREE.SpriteMaterial({ map: wingGlowTex(), color: 0x6dffc8, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     jet.position.set(0, -.08, 0); jet.scale.setScalar(.3); jet.userData.noHole = 1; tip.add(jet);
     WG.tips.push(tip); WG.jets.push(jet);
@@ -59605,6 +59605,18 @@ function frame() {
       if (window.__crash) window.__crash('FRAME ' + BUILD + '\n' + ((e && e.stack) || k)); }
   }
 }
+// m15WS: the bind pose's LOCAL turn of each bone, READ from the skeleton's inverses -- never `skeleton.pose()` (m1985 called it: it rewrote every
+// bone's position from world matrices, and the hero vanished and stayed gone after the wings went away). A bone's bind world is inverse(boneInverse);
+// for the root bone the parent's bind world is the armature's, taken relative to the mesh (bindMatrix = the mesh's world at bind).
+function bindLocalQ(sk, model) {
+  model.updateMatrixWorld(true); const out = {}, W = new Map(), m = new THREE.Matrix4(), pos = new THREE.Vector3(), sc = new THREE.Vector3();
+  let mesh = null; model.traverse(o => { if (!mesh && o.isSkinnedMesh && o.skeleton === sk) mesh = o; });
+  sk.bones.forEach((b, i) => W.set(b, new THREE.Matrix4().copy(sk.boneInverses[i]).invert()));
+  for (const b of sk.bones) { let P = W.get(b.parent);
+    if (!P) { if (!mesh || !b.parent) continue; P = new THREE.Matrix4().copy(mesh.bindMatrix).multiply(m.copy(mesh.matrixWorld).invert()).multiply(b.parent.matrixWorld); }
+    const L = new THREE.Matrix4().copy(P).invert().multiply(W.get(b)), q = new THREE.Quaternion(); L.decompose(pos, q, sc); out[b.name] = q.normalize(); }
+  return out;
+}
 function frameBody() {
   idlePick();     // m1815
   const now = performance.now();
@@ -59698,7 +59710,7 @@ function frameBody() {
     // to the MAN AND THE DECK alike**, or the board stays behind while he goes round it.
     rig.root.rotation.z = player.board ? player.barrelA : 0;
     rig.root.position.add(_roll);      // written by `boardPose`, earlier in this same frame
-    if (player.wing && WING.holdHips && WING.hipsHold && rig.bones && rig.bones.mixamorig_Hips && !rig.hipsQ0) { let sk = null; rig.model.traverse(o => { if (!sk && o.isSkinnedMesh) sk = o.skeleton; }); if (sk) { sk.pose(); rig.hipsQ0 = rig.bones.mixamorig_Hips.quaternion.clone(); rig.spineQ0 = {}; for (const n of ['mixamorig_Spine', 'mixamorig_Spine1', 'mixamorig_Spine2']) if (rig.bones[n]) rig.spineQ0[n] = rig.bones[n].quaternion.clone(); } }     // m1985: the rest turn, from the skeleton's own bind pose (measured: the builder this hero loads through never captured one)
+    if (player.wing && WING.holdHips && WING.hipsHold && rig.bones && rig.bones.mixamorig_Hips && !rig.hipsQ0) { let sk = null; rig.model.traverse(o => { if (!sk && o.isSkinnedMesh) sk = o.skeleton; }); if (sk) { const r = bindLocalQ(sk, rig.model); rig.hipsQ0 = r.mixamorig_Hips || null; rig.spineQ0 = {}; for (const n of ['mixamorig_Spine', 'mixamorig_Spine1', 'mixamorig_Spine2']) if (r[n]) rig.spineQ0[n] = r[n]; } }     // m1985: the rest turn, from the skeleton's own bind pose (measured: the builder this hero loads through never captured one)
     if (player.wing && WING.holdHips && WING.hipsHold && rig.hipsQ0 && rig.bones && rig.bones.mixamorig_Hips) { rig.bones.mixamorig_Hips.quaternion.copy(rig.hipsQ0); for (const n in (rig.spineQ0 || {})) if (rig.bones[n]) rig.bones[n].quaternion.copy(rig.spineQ0[n]); }     /* measured: the hips alone left the wing span rolled ~25 deg -- the skydive clip twists the spine too */     // m1985 (his: "he flies crooked, at a tilt"): the flight clip's own hip turn stacked on the flight's lie; the flight alone owns the body's angle now
     WING.holdHips = 0;
     wingPose(dt);                      // her wing suit lays her forward about her hips (m266)

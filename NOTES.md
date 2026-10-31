@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15WS -- the wings made him vanish (and he stayed gone); the hangings cut short (Oct 31 2026)
+*"I pulled the wing suit out and my character disappeared, then I put it away and he was still gone."* m1985 captured the hips' rest turn lazily
+with `skeleton.pose()` -- the exact call the m-old landmine at `bladeFind` forbids (Rollergirl r36/r38): it writes world bind matrices into every
+bone's LOCAL position, so the body is drawn at the wrong size / place, and since clips only key rotations the bad positions outlived the wings.
+Now `bindLocalQ(sk, model)` READS the bind turns from `boneInverses` (root bone's parent = the armature, relative to the mesh's bindMatrix) and
+touches nothing. *"Shorten the tassels -- they flail like crazy."* Lantern streamers 16 x .12 m (1.9 m) -> 6 x .08 (.48 m), the box's tail 12 -> 7
+beads, the dragon whiskers 8 -> 5. Shipped unverified.
+
 ## m1990 -- THE JINRA REFINERY, pass 11: every material painted
 
 - Three maps generated (gpt-image-2, `gen.sh`) and tiled (`seam.py`, which also prints the linear mean): `textures/jinra_adobe.webp` (clay
