@@ -5,6 +5,22 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1957 -- THE SKY TEMPLE: colliders that floated him, MEASURED and fixed
+
+His (m1956 screenshot): *"still a bunch of places where colliders are not true to the geometry, so I get floating behaviours."* Measured, not
+guessed: `tools/temple_floatprobe.js` (run in the page, e.g. as tshot's PRE) samples a 7x7 grid on every temple collider's TOP, skips samples
+with another box on them (the batter slices inside a pylon), casts down onto the drawn triangles (sky, clouds, vines, flames, ropes excluded)
+and lists every box whose top stands > .3 m over what is drawn. 676 boxes; before, the real offenders were:
+  temple_bridgeW_roof* / _wall*   up to 9 m -- the roof is DRAWN offset along the slope's normal (3.7 m on this bridge) and the boxes stood
+                                  straight over the deck; one box per 3.6 m bay of a steep bridge also floated each top up to 1.7 m
+  temple_route_orb                a 6.5 m box round a 6.2 m sphere: off its shoulders
+  temple_statue_*_head            the head box ran over the snout at full head height (1 m of air)
+  temple_watch_*_stone*           the spiral stones' SQUARE colliders had corners at 1.41 r beyond a round top of 1.1 r
+Fixed: the sky bridge's walls and roof are ~1.2 m pieces that follow the drawn slabs (the roof along `upx`/`upy`); the orb's box sits inside the
+sphere; the head stops at the face and the snout has its own small box; the stones' squares are .8 r (corners on the rim). After: those are gone;
+what is left is centimetres at stair-tread edges and the rope rails (the rope is the drawn thing). The eroded megaliths (m1955) did not show up
+(their tops sit within .3 m of their boxes). Shipped unverified.
+
 ## m1955 -- THE SKY TEMPLE: ERODED STONE -- rounded, chipped edges on every megalith
 
 His (m1952 screenshot on a stone ledge): *"Is there any way to do an erosion shader on these hard straight lines? Temples have slightly eroded,
