@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15CW -- THE MAMMOTH ON HIS ALIEN COW'S SKELETON: 75 real quadruped clips (Oct 31 2026)
+*"The mammoth is very stiff, very robotic, not a lot of movement in any of the chains... I have a cow with a ton of animations on whatever skeleton it
+was built on -- an alien cow in Plutopia."* `plutopia/models/alien_cow.glb`: `Arm_Cow`, 47 bones (spine x5, neck x2, head, mouth, ears, eyelids, four legs
+of 5-6 bones to a hoof tip, a 5-bone tail, an udder), 75 clips (idle x6, walk / trot / run in every direction, turns, jumps start / air / land, falls,
+hits front / middle / back, deaths L / R, attacks F / L / R / back / running, eat, drink, lie, sleep, swim). `blender-addons/pipeline/mammoth_cow.py` fits
+THAT armature to the mammoth instead of my hand-keyed rig (m1992): the mammoth is scaled to the cow's height (2.1 m, so the cow's location keys stay in
+their own metres), every bone keeps its rest direction and length and only its head moves -- each leg chain slides so its hoof tip lands on his
+measured foot, the spine / head / tail chain stretches along his body -- eyes, eyelids and udder do not deform, and a 4-bone trunk is added under the
+head (unkeyed for now). Heat weights. Rendered in Blender: walk, run, the rearing jump, an attack, a hit and the death (onto his side) all move the whole
+body. 4.3 MB (2048 webp, resampled, draco). The beast brain plays Idle_1 (Idle_2..4 as rests), Walk_F_IP, Run_F_IP, Attack_F_IP / L / R, Hit_Front,
+Hit_Middle (stun), Death_L, JumpAir_high (entrance). `beastPrep` also finds `Spine_base` for his facing.
+Open: the trunk is stiff (a spring chain, next); the RIDE (the leap mount onto a saddle) is the next build; the cow rig is now the house quadruped
+rig -- the jackal-dog, a sphinx, any four-legged thing can go through `mammoth_cow.py` the same way.
+
 ## m1998 -- wing suit: the folded pack's flicker, arms at his sides, up = front flip, tucked flips, turns about his middle (Oct 31 2026)
 - *"A weird triangle thing flashing on the folded backpack."* Folded, the outer two washi panels lie back over the first at 169 deg (`wingFold`) and CUT
   THROUGH it near the hinge -- z-fighting slivers. They are hidden while folded (`u < .04`); the first panel is the folded wing.
