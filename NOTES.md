@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1913 -- THE SKY TEMPLE 7d: the halo's jade dish and red chains, the porthole over the door, the back's gear disc and slits (his second concepts)
+
+- THE HALO holds a jade DISH (a shallow jade bowl filling the ring, a jade stem down to the orb) and is tied to the pylons' tops by four RED
+  CHAINS (sagging tubes in the rope mesh, gold posts on the pylon tops: `TEMPLE.halo.chains`). It no longer turns (`spin` 0) -- a ring tied
+  down by chains does not spin.
+- THE PORTHOLE (`temple_porthole`, kind `disc`): a stone drum on tier 2's front over the balcony, a gold ring, a gold plate, a jade disc, a gold
+  inner ring and a jade eye. THE GEAR (`temple_gear`): the same disc with 16 gold teeth on the middle of the podium's back face.
+- THE BACK: jade channels down tier 1, the tower (`chanB`) and four jade SLIT windows in gold frames on tiers 1 and 2 (`slits`).
+- No extra draws (all into the stone / gold / glow / rope meshes): 39 on the widest frame, 96k triangles. Headless front and back renders
+  checked against `temple_02_front` / `temple_03_back`. Next: 7e, the jackal-headed guardians, gold studs, far islands with waterfalls.
+
 ## m1912 -- THE SKY TEMPLE 7c: satellites at two levels, the upper bridges, red rope rails (his second concepts)
 
 - The two LOWER satellites stop standing on a column into the clouds: each deck now sits on a tapered HANGING body (`bat` -2: wide at the top)
