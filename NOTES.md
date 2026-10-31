@@ -32,7 +32,7 @@ His: *"extend the canyon down the stream a little, open it up at the end into a 
 - 26 rocks (boulders and a few stacks) round the wall's foot and the lake shore, solid; the middle is left EMPTY to build on.
 - Measured headless: walked from the old canyon end (z 140) down the canyon, into the basin and round its floor (7 waypoints, all reached,
   feet on the ground). Unlooked-at on a phone. Load: ~+35% land vertices, +65k height samples for the second depth map.
-## m15KT -- the kite's hangings: bead strings, streamers, a roof dragon and a kite tail; broader sails
+## m1980 -- the kite's hangings: bead strings, streamers, a roof dragon and a kite tail; broader sails
 His ask (Oct 31): *"Chinese kites have a lot of things hanging from them -- streamers, a line of beads of different styles going from big to small. Put some
 on the wing suit and do another pass -- make it even crazier."*
 - `WG.hang`: VERLET chains in world space, each pinned to a marker on the kite -- a 6-bead string off every panel's trailing edge (red / gold / jade, big to

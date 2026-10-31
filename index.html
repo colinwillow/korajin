@@ -36382,7 +36382,7 @@ const WING = { clip: (() => { try { const v = localStorage.getItem('mel.flypose'
   lie: 80 * Math.PI / 180, bank: .7, bankHL: .15, camFollow: 3.0, camIdle: .6, settle: 7,
   spinAt: 60 * Math.PI / 180, spinT: .55,
   trail: 1, trailN: 2, trailLife: .5,
-  seg: [.44, .38, .32], chord: [.52, .42, .3],     // m15KT: broad kite sails (was .30 / .24 / .17 -- a strip from above)
+  seg: [.44, .38, .32], chord: [.52, .42, .3],     // m1980: broad kite sails (was .30 / .24 / .17 -- a strip from above)
   pilot: { cruise: 1.7, thrust: 1.5, gk: .45 } };   // m848: the pilot form's flight
 // m356 (C4-1): AND THE GLIDER'S FORM -- the roster's `glider` stem (Jack, standing in), worn and settled -- flies the same
 // flight under a hang glider instead of her wingsuit. His model is one line in `ROSTER`.
@@ -36603,7 +36603,7 @@ function wingWashiTex() { if (_wWashi) return _wWashi; const cv = document.creat
   q.strokeStyle = 'rgba(25,18,16,.8)'; q.lineCap = 'round'; for (let k = 0; k < 5; k++) { const x = 300 + k * 38; q.lineWidth = 7 - k * .6; q.beginPath(); q.moveTo(x, 50); q.quadraticCurveTo(x + 14, 110, x - 6, 170 + k * 8); q.stroke(); q.lineWidth = 4; q.beginPath(); q.moveTo(x - 12, 92); q.lineTo(x + 12, 98); q.stroke(); }     // brush strokes
   q.strokeStyle = 'rgba(120,30,24,.9)'; q.lineWidth = 10; q.strokeRect(5, 5, 502, 246);     // the lacquered border
   const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return (_wWashi = t); }
-// m15KT: THE KITE'S HANGINGS (his: "Chinese kites have a lot of things hanging from them -- streamers, a line of beads of different styles from big to small;
+// m1980: THE KITE'S HANGINGS (his: "Chinese kites have a lot of things hanging from them -- streamers, a line of beads of different styles from big to small;
 // put some on the wing suit and make it even crazier"). Every hanging is a VERLET chain in WORLD space pinned to a marker on the kite (`WG.hang`): bead
 // strings off each panel, a long ribbon off each lantern, two whiskers off the roof dragon, a kite tail of shrinking beads off the box. They hang under
 // gravity at rest and stream back behind him in flight (they simply lag the pinned end), with a little flutter. All beads are ONE instanced mesh, each
@@ -36646,7 +36646,7 @@ function wingBuild() {
     const ev = mesh(new THREE.BoxGeometry(.05, .016, .2), tile); ev.position.set(sx * .185, .145, -.07); ev.rotation.z = -sx * .05; g.add(ev); }     // the eave turns up at the edge
   const ridge = mesh(new THREE.BoxGeometry(.06, .03, .22), gold); ridge.position.set(0, .235, -.07); g.add(ridge);
   const crest = mesh(new THREE.TorusGeometry(.045, .012, 6, 16), gold); crest.position.set(0, .03, -.135); g.add(crest);     // the gold mon on the back
-  // m15KT: THE DRAGON on the roof -- a gold head (snout, brow, two swept horns, red mane), two whisker streamers -- and a KITE TAIL of shrinking beads off the box
+  // m1980: THE DRAGON on the roof -- a gold head (snout, brow, two swept horns, red mane), two whisker streamers -- and a KITE TAIL of shrinking beads off the box
   { const hd = new THREE.Group(); hd.position.set(0, .27, -.03); g.add(hd);
     const sk = mesh(new THREE.BoxGeometry(.07, .06, .1), gold); hd.add(sk); const sn = mesh(new THREE.BoxGeometry(.05, .035, .07), gold); sn.position.set(0, -.012, .07); hd.add(sn);
     for (const sx of [-1, 1]) { const hn = mesh(new THREE.ConeGeometry(.012, .13, 5), gold); hn.position.set(sx * .025, .06, -.04); hn.rotation.set(-1.0, 0, sx * .35); hd.add(hn);
@@ -36669,14 +36669,14 @@ function wingBuild() {
       const sp = mesh(sparGeo, lacq); sp.scale.set(L, 1, 1); sp.position.set(s * L / 2, a, -.004); jt.add(sp);     // the leading spar
       const co = mesh(collar, gold); co.position.set(0, a, -.004); jt.add(co);
       for (const f of [.4, .8]) { const rb = mesh(ribGeo, wood); const yb = lerp(b, bt, f); rb.scale.y = a - yb; rb.position.set(s * L * f, (a + yb) / 2, .003); jt.add(rb); }     // the ribs
-      { const mk = new THREE.Object3D(); mk.position.set(s * L * .55, lerp(b, bt, .55), 0); jt.add(mk); WG.hang.push({ mk, kind: 'beads', n: 6, seg: .075, r0: .034, r1: .012, cols: [0xb3322a, 0xc9a14a, 0x2de0b0] }); }     // m15KT: a bead string off every panel's trailing edge
+      { const mk = new THREE.Object3D(); mk.position.set(s * L * .55, lerp(b, bt, .55), 0); jt.add(mk); WG.hang.push({ mk, kind: 'beads', n: 6, seg: .075, r0: .034, r1: .012, cols: [0xb3322a, 0xc9a14a, 0x2de0b0] }); }     // m1980: a bead string off every panel's trailing edge
       par = jt;
     }
     const tip = new THREE.Group(); tip.position.set(s * WING.seg[2], -.03, 0); par.add(tip);
     const lan = mesh(new THREE.SphereGeometry(.05, 10, 8).scale(1, 1.25, 1), lamp); lan.position.set(0, -.08, 0); tip.add(lan);     // the paper lantern
     for (const yy of [-.017, -.143]) { const cap = mesh(new THREE.CylinderGeometry(.024, .024, .016, 8), gold); cap.position.set(0, yy, 0); tip.add(cap); }
     const tas = mesh(new THREE.CylinderGeometry(.006, .012, .12, 5), lacq); tas.position.set(0, -.21, 0); tip.add(tas);     // the tassel
-    { const mk = new THREE.Object3D(); mk.position.set(0, -.26, 0); tip.add(mk); WG.hang.push({ mk, kind: 'ribbon', n: 16, seg: .12, w: .09, col: s > 0 ? 0xc8261c : 0xe0b040 }); }     // m15KT: the long streamer off each lantern
+    { const mk = new THREE.Object3D(); mk.position.set(0, -.26, 0); tip.add(mk); WG.hang.push({ mk, kind: 'ribbon', n: 16, seg: .12, w: .09, col: s > 0 ? 0xc8261c : 0xe0b040 }); }     // m1980: the long streamer off each lantern
     const jet = new THREE.Sprite(new THREE.SpriteMaterial({ map: wingGlowTex(), color: 0x6dffc8, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     jet.position.set(0, -.08, 0); jet.scale.setScalar(.3); jet.userData.noHole = 1; tip.add(jet);
     WG.tips.push(tip); WG.jets.push(jet);
@@ -36727,7 +36727,7 @@ function wingFrame(dt) {
   _wko.set(0, .02 * sc, -.13 * sc).applyQuaternion(g.quaternion);
   g.position.copy(_wkv).add(_wko);
   wingFold(W.open);
-  try { wingHangStep(dt, sc); } catch (e) { WTR.on = 0; note('WING HANG THREW ' + e.message); }     // m15KT
+  try { wingHangStep(dt, sc); } catch (e) { WTR.on = 0; note('WING HANG THREW ' + e.message); }     // m1980
   const gl = gliderOn(); wingGlider(gl, W.open);                       // m356: his hang glider, not her wingsuit
   const on = W.open > .9 && p.wing ? 1 : 0, f = .8 + .2 * (p.wPitch > 0 ? 1 : 0) + Math.random() * .35;
   for (const j of WG.jets) { j.visible = on > 0 && !gl; if (on) j.scale.setScalar(.34 * f * sc); }
