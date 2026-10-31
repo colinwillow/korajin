@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15MM -- THE MAMMOTH in the game (Oct 31 2026)
+*"Run this through Tripo and Auto-Rig Pro if they have a quadruped -- this could be like his horse."* ARP's humanoid path does not fit four legs, so
+`blender-addons/pipeline/mammoth_rig.py` builds the rig from his MEASURED feet (the four clusters in the bottom 8%), heat weights, and keys the clips
+(Mixamo has no quadrupeds): idle, walk, trot, stomp, and now hit, dizzy and death (he buckles and rolls onto his side). 6.5 MB -> 0.9 MB
+(2048 webp + draco) at `models/creatures/mammoth.glb`. He runs on the beast brain (`ARENA.beast.mammoth`: trot to charge, the STOMP as his attack
+and entrance, r 2.1, 4.4 m tall, hp 26); `beastPrep` / `beastHead` now also find his `head` / `hips` (the robits rigs are `Bip001_*`).
+SPAWN > beasts > Mammoth. Open: the MOUNT (riding him) is its own build; Tripo wrote doubleSided on his material (left as is).
+
 ## m1991 -- the wings made him vanish (and he stayed gone); the hangings cut short (Oct 31 2026)
 *"I pulled the wing suit out and my character disappeared, then I put it away and he was still gone."* m1985 captured the hips' rest turn lazily
 with `skeleton.pose()` -- the exact call the m-old landmine at `bladeFind` forbids (Rollergirl r36/r38): it writes world bind matrices into every
