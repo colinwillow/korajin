@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15IG -- a deflected arrow catches the blade's fire
+## m1951 -- a deflected arrow catches the blade's fire
 His idea (Oct 31): *"with the flame katana or the blue flame katana, when you ricochet-deflect an arrow back at them it should light the arrow on fire
 -- blue flame, they explode with blue flame; red flame, they catch on fire."*
 - `arrowIgnite(A)`, called by BOTH deflect paths (the aimed send-back in `deflectThreat`, and the guard's glance): with BLADE FIRE lit the arrow

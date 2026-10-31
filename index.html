@@ -15283,7 +15283,7 @@ function bowLoose() { const p = player; const { k, full, type, o, gk, g, T, dx, 
 // m1782 (his: "a full charge with the exploding arrows should explode the archers -- those are powerful arrows"): a FULL draw's blast is `fullK`
 // wider and harder, and every archer (or horde body) inside it is blown apart (`limbBoom`)
 function arrowBlast(P, dirH, full) { BOW.stat.blasts++; const R = BOW.blastR * (full ? BOW.fullK : 1);
-  if (_arJin) { for (let k = 0; k < 90; k++) { const a2 = Math.random() * 6.283, r2 = Math.random() * R * .8; bflPut(P.x + Math.cos(a2) * r2 * .3, P.y + Math.random() * .4, P.z + Math.sin(a2) * r2 * .3, Math.cos(a2) * r2 * 2.2, 1 + Math.random() * 3, Math.sin(a2) * r2 * 2.2, 2.2, Math.random() < .25); } spkBurst(P.x, P.y, P.z, 30, { col: [.4, 1, .95], spread: 7, size: .2, life: .6 }); }     // m15IG: the Jin arrow bursts in turquoise flame
+  if (_arJin) { for (let k = 0; k < 90; k++) { const a2 = Math.random() * 6.283, r2 = Math.random() * R * .8; bflPut(P.x + Math.cos(a2) * r2 * .3, P.y + Math.random() * .4, P.z + Math.sin(a2) * r2 * .3, Math.cos(a2) * r2 * 2.2, 1 + Math.random() * 3, Math.sin(a2) * r2 * 2.2, 2.2, Math.random() < .25); } spkBurst(P.x, P.y, P.z, 30, { col: [.4, 1, .95], spread: 7, size: .2, life: .6 }); }     // m1951: the Jin arrow bursts in turquoise flame
   if (full) for (const d of DUMMIES.slice()) { if (d.st === 'gone' || d.boomed || !d.root.visible || !(d.archer || d.K.archer || d.horde)) continue; const Q = d.root.position;
     if (Math.hypot(Q.x - P.x, Q.z - P.z) < R + (d.K.r || .4) && Math.abs(Q.y + (d.K.h || 1.8) * .5 - P.y) < R + 1) { dummyBlow(d, Math.atan2(Q.x - P.x, Q.z - P.z), 2, 99); limbBoom(d, Math.atan2(Q.x - P.x, Q.z - P.z)); } }
   for (let i = 0; i < 3; i++) spkBurst(P.x, P.y, P.z, 18, { col: i ? [1, .55, .15] : [1, 1, .85], spread: 6, size: .22, life: .55 });
@@ -32808,7 +32808,7 @@ function chargeIntercept(T) { const p = player, g = MOVE.g, ga = T.A ? MOVE.g * 
     { const A = KATANA.air, nm = rig.actions[A.clip] ? A.clip : null; if (nm) { const len = clipLen(nm); p.slamClip = nm; playOnce(nm, Math.max(.3, (A.strike - A.upFrom) * len / t)); rig.actions[nm].time = A.upFrom * len; } }
     p.inter = { T, t: 0, until: t + .25 }; snd('swoosh', { r: .8, g: .8 }); DEFL.stat.inter = (DEFL.stat.inter || 0) + 1; return 1; }
   return 0; }
-// m15IG (his: "with the flame katana or the blue flame katana, when you deflect an arrow back at them it should light the arrow on fire and send it back --
+// m1951 (his: "with the flame katana or the blue flame katana, when you deflect an arrow back at them it should light the arrow on fire and send it back --
 // blue flame, they explode with blue flame; red flame, they catch on fire"): a deflected arrow takes the blade's fire. RED (`BFIRE.on` 1): a FIRE arrow
 // -- the blade's own flame trails it, and what it hits BURNS (`burnStart`). JIN (2): a BLAST arrow that bursts in turquoise flame where it lands.
 // Both deflect paths call it (the aimed send-back and the guard's glance).
