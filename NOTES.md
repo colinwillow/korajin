@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1978 -- THE BASIN: the canyon carries on downstream and opens into a valley (`HBASIN`)
+
+His: *"extend the canyon down the stream a little, open it up at the end into a basin, and then we'll start building some stuff."*
+- Downstream is +z (the river's `uFlow`). The land was a 340 m square, the canyon cut off at z 170 with the river running out into the
+  backdrop. `hwHeight0` now carries the canyon on to `mouth` (z 205), where its walls swing open into a round valley (floor radius `R` 56,
+  `wx` 1.15 wider than long, centre z 262) walled up to the plateau over `wall` 16 m with the canyon's own lumps, a LAKE (`lake` 22, shore
+  wandering with the lumps, dug to the river's bed) where the river ends, and the plateau closing the canyon off beyond (`min` of the two cuts).
+- The land plane runs to `zEnd` (z 360). Walk triangles and wall columns used to stop at r 150 / z +-150; `hwWalkIn` adds the canyon from
+  z 100 and the basin to both; the wall band runs to the mouth, the steep-cell columns cover the basin's wall.
+- The water's depth map (`uHgt`, 160 m round the hut) read anything outside it as 30 m deep -- no shore, no foam. A second map (`HOME.ht2`,
+  240 m centred at z 236, `uHgt2`/`uHT2`) covers the lower canyon and the basin.
+- 26 rocks (boulders and a few stacks) round the wall's foot and the lake shore, solid; the middle is left EMPTY to build on.
+- Measured headless: walked from the old canyon end (z 140) down the canyon, into the basin and round its floor (7 waypoints, all reached,
+  feet on the ground). Unlooked-at on a phone. Load: ~+35% land vertices, +65k height samples for the second depth map.
+
 ## m1977 -- the wing flight has its own pose (no more wiggly fall)
 His words (Oct 31): *"in the air on the wing suit he's playing the in-air falling animation, which wiggles them around -- we need something else where he's not
 wiggling so much."*

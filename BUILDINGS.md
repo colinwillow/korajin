@@ -315,6 +315,7 @@ then start building the building, kinda like you built his home -- a ton of pass
 - [x] townsfolk (non-fighters) on the lawns -- m1966: six Toad Wanderers on lawn loops (`gcFolk`)
 - [x] JOINTS where bridges and walls meet the land -- m1971: `brJoint` gates on every rope bridge end (canyon, islet ring, lawn), wall/tower buttresses + doorways
 - [x] LIVE ROPE BRIDGES in the Hollows -- m1974: the canyon's two and the sky castle's eleven are the Rope Course's verlet bridge (`rspAdd`)
+- [x] THE BASIN -- m1978: the canyon runs on downstream past the old edge (z 170) and opens into a walled round valley with a lake (`HBASIN`); empty floor, ready to build on
 - [x] **the way UP (m1794):** the Jinra lift -- bridge, gantry, a bronze cage on rails from the plateau; plaza steps, interiors, the FALLEN state, wide sails, colliders that follow the live turn
 - [ ] castle pass 1..N: the keep, the round towers and roofs, the walls and walkways, the bridges to the satellites, banners, awnings,
       the water-wheel, trees, interiors -- as many passes as the home had; FALLEN / RESTORED like every Red Hollows piece
