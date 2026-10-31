@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1930 -- THE SKY TEMPLE: GIANT STONE three-headed dogs on the watchtowers instead of the turrets (his, from the phone)
+
+His (screenshot at m1922, on the old ladder): *"these giant pillars or towers -- you could have massive statues that come to life that you
+have to fight, instead of this tiny, tiny little turret that looks insanely small. The three-headed dog could become a statue -- it doesn't
+have a statue form yet."* (His phone was still on m1922; the ladder he was on went at m1924.)
+- `templeGiants` + `TGIANT`: his 3_headed_dog.glb (`ARENA.kinds.DOG`, loaded through `arenaLoad`) at x6.5 its size (~15 m), frozen on a frame
+  of `idle_1`, every material through `statueStone` and tinted the temple's sandstone (`tint`), on every watchtower deck -- set toward the
+  front edge, looking down at the plaza -- solid (a box at .42 of its footprint, .7 of its height: you can climb onto its back). The THE
+  STONE FORM, per STATUES.md: one rig, two looks.
+- The TURRETS are gone from the towers (`turret: 0`; `giant: 'DOG'`) -- they were human-sized on 16 m decks, and 40 draws each.
+- Fixed while looking: the first render had all four dogs 180 m below the temple (their deck height was over the paving, never plus `top`).
+- NEXT (TEMPLE.md 8e): the WAKE -- strike that tower's seal and its dog comes alive (the glowing live look, the roar), comes down off the tower
+  and fights at giant size; a dragon / sphinx form for the back towers.
+
 ## m1929 -- the bow shoots DOWN (and the lens looks down with it); Wall Park tower A's ladders reach their lips; the railing opens for the rope
 His words (Oct 31): *"we still need the downward bow shot -- it's hard to; I don't know if the reticle is actually going down. Also the camera needs
 to tilt up so I can see what I'm shooting down at"* / *"the top of the second ladder -- a gap between the top of the ladder and the ledge"* /

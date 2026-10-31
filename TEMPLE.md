@@ -54,6 +54,7 @@ once he starts it -- the doors here only open onto it.
 - [x] 8a. (m1922) THE DEFENCES: four watchtowers (40-75 m) with posted turrets and ledge columns, a floating stepping-stone chain to a seal island,
       SEALS on three towers and the island -- strike them all and the great door sinks.
 - [~] 8b. GUARDS: trigger-zone AMBUSHES with the game's existing enemies, "just to play around with" (his go-ahead, m1922); the strategic plan is his, later.
+- [~] 8e. THE GIANTS (his, m1927: "massive statues that come to life that you have to fight, instead of this tiny turret"): (pass 1) the three-headed dog in STONE at x6.5 on every watchtower deck, the turrets gone. Next: the WAKE -- striking that tower's seal wakes it (an event, STATUES.md), it comes down off the tower and fights at giant size; then a dragon / sphinx form for the back towers.
 - [ ] 8c. More floating pieces round the outside, each with a reason to reach it; a better tell for which seals are left.
 - [ ] 8d. On the ground: the temple as the tip of the iceberg (a ground variant of the island), the doors opening onto the way down.
 
