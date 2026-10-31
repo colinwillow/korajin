@@ -28,6 +28,23 @@ cap as a box from `y1 - .5` to `y1` -- its top face exactly level with the fin's
 band that stops .06 m under the top (`y1 - .06`), still .08 proud of the sides, so it reads as a rim and nothing shares the walking plane. The
 jackal statues' gold plinth slab had the same fault (top at 1.2 x k, level with the plinth's top) and now stops under it. Colliders unchanged.
 Shipped unverified.
+## m15FR -- the stair walk ACTUALLY walks (it was frozen on its last frame); the blade fire stays on the sword and streams back
+His words (Oct 31): *"you put the stair animation back -- which is just him stuck in a frog pose, not moving"* / *"the blade fire is so sparse when
+you're running it looks like little orange leaf petals; the sprites have a direction and always point up, which kills the illusion"*.
+- **THE STAIR CLIPS WERE PLAY-ONCE.** `forgedHero` sets every Forge-baked clip to `LoopOnce` + clamp unless its name is on a loop list (run_std,
+  sprint_std, wall_side, wall_up -- m1860 found the same bug on the wall runs). The stair clips were not on it, so each ran ONE cycle and stopped on
+  its last frame. Measured headless on a .30 x .45 flight: time = duration (1.23 / 0.97), timescale 0, weight 1 -- the frog. m1813's "it works" had
+  measured the clip's WEIGHT, never whether its time moved; this is almost certainly what he saw then too. Now on the loop list; the same trace
+  shows the time wrapping.
+- **THE RATE BY CADENCE** (`stairsRate`): the in-place clips barely slide the planted foot (measured stairs_up .27 m/s at 1x, stairs_down .33,
+  stairs_run .60), so speed-over-slide wanted x11 and sat on the cap. A cycle is two treads; the rate puts one step on each tread he crosses
+  (tread = `riser` .3 / the slope he is on). Measured: x4.2 walking up at 3.1 m/s. `tsHi` 6. Rendered side-on, up and down: knee up onto the next
+  tread / the leading foot reaching for the one below.
+- **THE FIRE** (`BFL`): (1) a tongue kept only .22 of the blade's speed, so at a run it was left on the floor behind him -- now `follow` .9 of his
+  body's velocity plus `carry` of the swing; (2) the sprite only wobbled round upright -- now it leans AWAY from its own way through the air plus the
+  heat's rise (`airK` .5, `upK` 1.6), projected to the screen each frame: up at rest, swept back at a run, trailing a swing (`rotSign` -1, picked
+  by rendering both: +1 pointed the tips forward); (3) the rate rises `runK` .35 per m/s, the pool 620 -> 1400. Rendered standing and at a 7.2 m/s
+  run: ~190 tongues live, a dense trail streaming back off the blade.
 
 ## m1946 -- THE SKY TEMPLE: real BLUE FIRE in the braziers
 

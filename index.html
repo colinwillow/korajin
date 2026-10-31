@@ -15304,7 +15304,13 @@ const _bfA = new THREE.Vector3(), _bfB = new THREE.Vector3();
 // `carry` of the blade's own velocity, so a swing leaves a ribbon of flame hanging in the air behind it. The sprite is the flame atlas
 // (`gfireTex`), coloured white-yellow at the core -> orange -> deep red, fading (NORMAL blending: additive goes white on snow). Embers: a few
 // bright motes that drift higher and longer. TOOLS > BLADE FIRE.
-const BFL = { n: 620, i: 0, pts: null, rate: 100, swing: 3, tipW: .35, size: [.1, .2], tipK: 1.5, rise: [.35, .8], buoy: 1.4, curl: 1.2, carry: .22,
+// m15FR (his photo: "so sparse when you're running it looks like little orange leaf petals; the sprites have a direction and always point UP, which kills
+// the illusion"): three fixes, all measured against what the code did -- (1) each tongue kept only `carry` .22 of the blade's speed, so at a run it was
+// dropped behind him on the floor: now it keeps `follow` of his BODY's velocity (plus `carry` of the swing on top), so the fire stays on the sword and
+// drags back off it; (2) the sprite turned only by a small random wobble round upright: now it POINTS along its own motion relative to him plus the
+// heat's rise (`upK`), projected onto the screen each frame -- it streams back as he runs, up when he stands; (3) the rate rises with his speed
+// (`runK` per m/s), the pool doubled.
+const BFL = { n: 1400, i: 0, pts: null, rate: 110, swing: 3, tipW: .35, size: [.12, .22], tipK: 1.5, rise: [.35, .8], buoy: 1.4, curl: 1.2, carry: .22, follow: .9, runK: .35, upK: 1.6, airK: .5, rotSign: -1, bodyV: null,
   lifeR: [.28, .55], ember: .1, prev: null };
 function bflInit() { const N = BFL.n, g = new THREE.BufferGeometry(); for (const [k, d] of [['position', 3], ['aCol', 3], ['aSize', 1], ['aA', 1], ['aF', 1], ['aR', 1]]) g.setAttribute(k, new THREE.BufferAttribute(new Float32Array(N * d).fill(k === 'position' ? -999 : 0), d));
   const m = new THREE.ShaderMaterial({ uniforms: { uT: { value: gfireTex() }, uPx: { value: 600 } }, transparent: true, depthWrite: false,
@@ -15316,14 +15322,18 @@ const bflR = (a) => a[0] + Math.random() * (a[1] - a[0]);
 function bflPut(x, y, z, vx, vy, vz, k, em) { if (!BFL.pts) bflInit(); const B = BFL, i = B.i = (B.i + 1) % B.n, g = B.pts.geometry.attributes, o = i * 3;
   g.position.array[o] = x; g.position.array[o + 1] = y; g.position.array[o + 2] = z; B.v[o] = vx; B.v[o + 1] = vy; B.v[o + 2] = vz; B.em[i] = em ? 1 : 0;
   B.L0[i] = B.life[i] = bflR(B.lifeR) * (em ? 2.6 : 1); B.s0[i] = em ? .035 + Math.random() * .03 : bflR(B.size) * k; g.aR.array[i] = (Math.random() - .5) * .8; B.w[i] = (Math.random() - .5) * 3; g.aF.array[i] = em ? -1 : Math.floor(Math.random() * 4); B.live = 1; }
+const _bfR = new THREE.Vector3(), _bfU = new THREE.Vector3();
 function bflStep(dt) { const B = BFL; if (!B.pts || !B.live) return; const g = B.pts.geometry.attributes, P = g.position.array, C = g.aCol.array, t = performance.now() / 1000; let any = 0;
+  camera.updateMatrixWorld(); _bfR.setFromMatrixColumn(camera.matrixWorld, 0); _bfU.setFromMatrixColumn(camera.matrixWorld, 1);
   for (let i = 0; i < B.n; i++) { if (B.life[i] <= 0) continue; any = 1; B.life[i] -= dt; const u = 1 - Math.max(0, B.life[i]) / B.L0[i], o = i * 3, e = B.em[i];
     B.v[o] *= Math.exp(-3 * dt); B.v[o + 2] *= Math.exp(-3 * dt); B.v[o + 1] = B.v[o + 1] * Math.exp(-2 * dt) + B.buoy * dt;     // the blade's push dies off; heat lifts it
     B.v[o] += Math.sin(t * 6 + i * 1.3) * B.curl * dt; B.v[o + 2] += Math.cos(t * 5 + i * 2.1) * B.curl * dt;
     P[o] += B.v[o] * dt; P[o + 1] += B.v[o + 1] * dt; P[o + 2] += B.v[o + 2] * dt;
+    if (!e) { const rx = -B.v[o] * B.airK, ry = B.upK, rz = -B.v[o + 2] * B.airK;     // a flame leans AWAY from its own way through the (still) air, plus the heat's rise: up at rest, swept back at a run, trailing a swing
+      const sx = rx * _bfR.x + ry * _bfR.y + rz * _bfR.z, sy = rx * _bfU.x + ry * _bfU.y + rz * _bfU.z; g.aR.array[i] = B.rotSign * -Math.atan2(sx, sy) + Math.sin(t * 9 + i) * .12; }
     if (e) { g.aSize.array[i] = B.s0[i]; g.aA.array[i] = B.life[i] <= 0 ? 0 : (1 - u) * (.7 + .3 * Math.sin(t * 40 + i)); if (BFIRE.on === 2) { C[o] = .5; C[o + 1] = 1; C[o + 2] = .95; } else { C[o] = 1; C[o + 1] = .55 + .3 * (1 - u); C[o + 2] = .15; } }
     else { g.aSize.array[i] = B.s0[i] * (.8 + .5 * Math.sin(Math.min(1, u * 1.6) * Math.PI * .5)) * (1 - u * .45);     // swells a little, then narrows as it burns out
-      g.aA.array[i] = B.life[i] <= 0 ? 0 : Math.min(1, u * 9) * Math.pow(1 - u, .9) * .95; g.aR.array[i] += B.w[i] * dt; if (Math.random() < .06) g.aF.array[i] = Math.floor(Math.random() * 4);
+      g.aA.array[i] = B.life[i] <= 0 ? 0 : Math.min(1, u * 9) * Math.pow(1 - u, .9) * .95; if (Math.random() < .06) g.aF.array[i] = Math.floor(Math.random() * 4);
       const c = BFIRE.on === 2 ? (u < .3 ? [.55 - u, 1, .95] : u < .65 ? [.25 - (u - .3) * .3, .95 - (u - .3) * .3, .9] : [.12, .82 - (u - .65) * .6, .85 - (u - .65) * .5]) : u < .3 ? [1, .78 - u * .6, .25 - u * .4] : u < .65 ? [1 - (u - .3) * .5, .6 - (u - .3) * 1, .13 - (u - .3) * .2] : [.82 - (u - .65) * 1.2, .25 - (u - .65) * .4, .06];     // m1779: JIN = turquoise
       C[o] = c[0]; C[o + 1] = Math.max(.05, c[1]); C[o + 2] = Math.max(.02, c[2]); }
     if (B.life[i] <= 0) { P[o + 1] = -999; g.aA.array[i] = 0; } }
@@ -15331,13 +15341,14 @@ function bflStep(dt) { const B = BFL; if (!B.pts || !B.live) return; const g = B
   B.pts.material.uniforms.uPx.value = renderer.domElement.height / (2 * Math.tan(camera.fov * Math.PI / 360)); if (!any) B.live = 0; }
 function bladeFireStep(dt) { bflStep(dt); if (!bladeFire() || player.swapHid) { BFL.prev = null; return; } const w = WEAP.worn[slotNow().key]; if (!w || !w.group || !w.group.visible) { BFL.prev = null; return; }
   const HS = heroSword(); w.group.updateWorldMatrix(true, false); w.group.localToWorld(_bfA.set(0, HS ? HS.base : BTRAIL.base, 0)); w.group.localToWorld(_bfB.set(0, HS ? HS.tip : BTRAIL.tip, 0));
-  const pv = BFL.prev, n = BFL.rate * dt * (player.melee || player.chargeGo ? BFL.swing : 1), id = 1 / Math.max(dt, .008);
+  const bvx = player.vel.x, bvy = player.grounded ? 0 : player.vel.y, bvz = player.vel.z, spd = Math.hypot(bvx, bvz);
+  const pv = BFL.prev, n = BFL.rate * dt * (player.melee || player.chargeGo ? BFL.swing : 1) * (1 + BFL.runK * spd), id = 1 / Math.max(dt, .008);
   for (let i = 0; i < n || Math.random() < n - i; i++) { const r = Math.random(), u = 1 - Math.pow(1 - r, 1 + BFL.tipW * 2), q = Math.random();     // weighted to the tip
     const x = _bfA.x + (_bfB.x - _bfA.x) * u, y = _bfA.y + (_bfB.y - _bfA.y) * u, z = _bfA.z + (_bfB.z - _bfA.z) * u;
-    let vx = 0, vy = 0, vz = 0; if (pv) { const ox = pv[0] + (pv[3] - pv[0]) * u, oy = pv[1] + (pv[4] - pv[1]) * u, oz = pv[2] + (pv[5] - pv[2]) * u; vx = (x - ox) * id * BFL.carry; vy = (y - oy) * id * BFL.carry; vz = (z - oz) * id * BFL.carry;
+    let vx = 0, vy = 0, vz = 0; if (pv) { const ox = pv[0] + (pv[3] - pv[0]) * u, oy = pv[1] + (pv[4] - pv[1]) * u, oz = pv[2] + (pv[5] - pv[2]) * u; vx = bvx * BFL.follow + ((x - ox) * id - bvx) * BFL.carry; vy = bvy * BFL.follow + ((y - oy) * id - bvy) * BFL.carry; vz = bvz * BFL.follow + ((z - oz) * id - bvz) * BFL.carry;
       const lx = x - (x - ox) * q, ly = y - (y - oy) * q, lz = z - (z - oz) * q; bflPut(lx, ly, lz, vx, vy + bflR(BFL.rise), vz, 1 + u * (BFL.tipK - 1), Math.random() < BFL.ember); }     // spread back along this frame's sweep: no gaps in a fast swing
-    else bflPut(x, y, z, 0, bflR(BFL.rise), 0, 1 + u * (BFL.tipK - 1), Math.random() < BFL.ember);
-    if (i > 40) break; }
+    else bflPut(x, y, z, bvx * BFL.follow, bvy * BFL.follow + bflR(BFL.rise), bvz * BFL.follow, 1 + u * (BFL.tipK - 1), Math.random() < BFL.ember);
+    if (i > 90) break; }
   BFL.prev = [_bfA.x, _bfA.y, _bfA.z, _bfB.x, _bfB.y, _bfB.z]; }
 // m1744 (his: "it's hard to tell, if you were to release right now, where the arrow would land; and the crosshair should show an interaction with
 // what you're aiming at -- it's hard to see"): THE ARC. While he draws, the shot as `bowSolve` would loose it is FLOWN in advance -- the same
@@ -34491,7 +34502,7 @@ function idlePick() { const I = IDLEPICK; if (HERO.pick !== 'agoblin' || !rig.ac
   if (I.boredOn != null && (!still || now - I.boredOn > bd.getClip().duration - .25)) { I.boredOn = null; I.stillT = 0; }
   const nm = I.boredOn != null ? I.bored : pick; CLIPS.idle = nm;
   if (nm !== I.bored) { const a = rig.actions[nm]; if (a && a.loop !== THREE.LoopRepeat) { ONCE.delete(nm); a.setLoop(THREE.LoopRepeat, Infinity); a.clampWhenFinished = false; } idleAmp(nm, I.energy); } }
-const STAIRS = { on: 1, meas: {},     /* m1820 turned it off (his: "walking upstairs is absolutely f---ed" -- the glide, the rate); m1947: back on, the rate measured by `stairsMeasure` */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 2.6, ref: {} };
+const STAIRS = { on: 1, meas: {},     /* m1820 turned it off (his: "walking upstairs is absolutely f---ed" -- the glide, the rate); m1947: back on, the rate measured by `stairsMeasure` */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 6, riser: .3, ref: {} };
 function stairsWant(sp) { const p = player; if (!STAIRS.on || !p.grounded || sp < .6 || p.melee || p.roll || p.slide || p.beam || p.wrun || p.ledge || p.board || p.riding || p.dragon) { p.slopeS = 0; p.stairs = ''; return ''; }
   const h = Math.atan2(p.vel.x, p.vel.z), fx = Math.sin(h), fz = Math.cos(h), L = STAIRS.look, y = p.pos.y;
   const a = groundAt(p.pos.x + fx * L, p.pos.z + fz * L, y + .7, .01), b = groundAt(p.pos.x - fx * L, p.pos.z - fz * L, y + .7, .01);
@@ -34512,6 +34523,12 @@ function stairsMeasure(nm) { const a = rig.actions[nm], c = a && a.getClip(), md
   for (const [x, w, t, en, pz] of was) { x.setEffectiveWeight(w); x.time = t; x.enabled = en; x.paused = pz; } if (!run0) a.stop(); mxr.update(0);
   const hs = [], vs = []; for (let i = 0; i < N; i++) { const k = F[i][0].y < F[i][1].y ? 0 : 1, d = F[i + 1][k].clone().sub(F[i][k]); if (d.z < 0) { hs.push(-d.z / (T / N)); vs.push(-d.y / (T / N)); } }
   if (hs.length < 4) return null; hs.sort((x, y) => x - y); vs.sort((x, y) => x - y); return { h: hs[hs.length >> 1], v: vs[vs.length >> 1], n: hs.length }; }
+// m15FR: the rate by CADENCE. Measured on his rig the in-place stair clips barely slide the planted foot back (stairs_up .27 m/s at 1x, stairs_down
+// .33), so "speed over foot slide" asked for x11 and was pinned at the cap -- his feet behind his travel. A stair clip's cycle is TWO treads, so the
+// rate that puts one step on each tread he crosses is (his speed / tread depth) / (2 / clip length), the depth read off the slope he is on
+// (`riser` / slope). `tsHi` is high because a fast run up a flight IS fast feet.
+function stairsRate(nm, sp) { const c = rig.clips[nm] || (rig.actions[nm] && rig.actions[nm].getClip()); if (!c) return 1;
+  const tread = STAIRS.riser / Math.max(.25, Math.abs(player.slopeS || .67)); return clamp(sp * c.duration / (2 * tread), STAIRS.tsLo, STAIRS.tsHi); }
 function stairsRef(nm) { if (STAIRS.ref[nm] != null) return STAIRS.ref[nm]; const M = stairsMeasure(nm); STAIRS.meas[nm] = M;
   return (STAIRS.ref[nm] = M && M.h > .2 ? M.h : nm === 'stairs_run' ? 3.5 : 1.3); }
 const AUTOSPRINT = { on: 1, d: 4.6, minV: 3, turn: 1.4, dbl: 1 };     // m1809: d = 15 ft of running before the sprint
@@ -37322,7 +37339,7 @@ function rigAnim(dt) {
   // m1031: *"the one we had is the best [STD]... the other one that was decent, that we could use for the faster run, was the one called
   // FASTRUN."* The right-pad sprint (look RUN) plays the library's "Fast Run" (`run_fast`) at its measured ref -- not the katana's stance
   // run, which keeps its own -- and the RUN key's pick stays the ordinary run.
-  { const st = stairsWant(sp); if (st) { add(L(st), rest, 0); setScale(L(st), clamp(sp / (stairsRef(st) * (rig.gaitK || 1)), STAIRS.tsLo, STAIRS.tsHi)); setWeights(t, dt); return; } }     // m1813: on stairs and slopes
+  { const st = stairsWant(sp); if (st) { add(L(st), rest, 0); setScale(L(st), stairsRate(st, sp)); setWeights(t, dt); return; } }     // m1813: on stairs and slopes
   if (p.ninja && NINJA.look === 'RUN' && !katStance() && rig.actions[NINJA.runClip]) {
     const R = GAIT.runSets.fastrun, ref = R && R.runRef > .2 ? R.runRef : GAIT.sprintRef;
     add(L(NINJA.runClip), rest, 0); setScale(L(NINJA.runClip), clamp(sp / (Math.max(.5, ref) * (rig.gaitK || 1)), NINJA.tsLo, NINJA.runTsHi));     // m1871: its own cap (the katana's lesson)
@@ -42479,7 +42496,7 @@ function forgedHero() {
   if (!fz && FORGED.index && FORGED.index.includes(forgedKey(RIG.file))) forgedFetch(forgedKey(RIG.file));     // m1074: picked after boot -- fetch his now (it calls back here)
   if (!fz || !rig.mixer) return 0; let n = 0;
   for (let c of fz) { if (rig.actions[c.name]) continue; if (c.name === 'wall_side' && WRUN.sideCut) c = clipCutLoop(c, WRUN.sideCut[0], WRUN.sideCut[1], WRUN.sideCut[2]); rig.clips[c.name] = c; const a = rig.mixer.clipAction(c);     /* m1863: only the middle stride of Wall_Run_1 (his: 'it shows him getting on, getting off') */
-    const loop = /^(run_std|sprint_std|wall_side|wall_up)$/.test(c.name);     /* m1860: the wall runs LOOP (they were played once and frozen) */ if (!loop) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; ONCE.add(c.name); } a.enabled = true; a.setEffectiveWeight(0); a.play(); rig.actions[c.name] = a; n++;
+    const loop = /^(run_std|sprint_std|wall_side|wall_up|stairs_up|stairs_run|stairs_down)$/.test(c.name);     /* m1860: the wall runs LOOP (they were played once and frozen); m15FR: the STAIR clips too -- measured, each ran its one cycle and stopped on its last frame (timescale 0, time = duration): his "frog pose, not moving", and m1813's too */ if (!loop) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; ONCE.add(c.name); } a.enabled = true; a.setEffectiveWeight(0); a.play(); rig.actions[c.name] = a; n++;
     if (c.name === CLIPS.carry || c.name === KATANA.guard || /^bow_(draw|recoil|aim)$/.test(c.name)) for (const [suf, f] of [[UPS, isUpperSq], [UP, isUpper]]) {     // its upper halves, as `deriveClips` makes them at load
       const h = new THREE.AnimationClip(c.name + suf, c.duration, c.tracks.filter(t => f(t.name)).map(t => t.clone())); rig.clips[h.name] = h;
       const b = rig.mixer.clipAction(h); b.setLoop(THREE.LoopOnce, 1); b.clampWhenFinished = true; b.enabled = true; b.setEffectiveWeight(0); b.play(); rig.actions[h.name] = b; } }
