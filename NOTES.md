@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15FX -- the slam ring expands in every world; ?look=soft; the WINGS button (Rollergirl's wing-pack on anyone)
+## m1969 -- the slam ring expands in every world; ?look=soft; the WINGS button (Rollergirl's wing-pack on anyone)
 His words (Oct 31): *"the new slam shockwave just makes a new ring on the ground and it stays there, doesn't move, doesn't expand"* / *"how do I see the
 render technique in the Red Hollows?"* / *"instead of GOD's fly mode, borrow the flight wings from Rollergirl -- a little button above the right stick
 to mount them; mounted, a double jump brings you into flying and double tapping again dismounts -- so I can look at parts of maps I can't get to yet."*
