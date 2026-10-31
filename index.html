@@ -65482,6 +65482,7 @@ function buildCrash() {
 }
 // m474: his wreck at (x, y, z), its +X turned onto the travel direction (dx, dz); the colliders out of his collision file
 // (each `col_bld_*` one exact turned box, `kitObb`); returns his empties' world positions by name
+const CRASH_COLS = { tag: 'ALIEN', cols: 1, cell: .8, maxCells: 4096, tol: .35, full: .92, fill: .5 };     // m15CU: was AW.cols (the alien world's, cut)
 function crashModel(g, cg, x, y, z, dx, dz) {
   const yaw = Math.atan2(-dz, dx), root = g.scene;
   root.position.set(x, y, z); root.rotation.set(0, yaw, 0); root.updateMatrixWorld(true);
@@ -65493,7 +65494,7 @@ function crashModel(g, cg, x, y, z, dx, dz) {
   let nb = 0;
   if (cg) { const cr = cg.scene; cr.position.copy(root.position); cr.rotation.copy(root.rotation); cr.updateMatrixWorld(true);
     cr.traverse(o => { if (!o.isMesh || !/^col_/.test(o.name || '')) return; const b = kitObb(o);
-      if (b.box8) { b.name = o.name; BOXES.push(b); nb++; } else { const got = []; solidColumns(o, AW.cols, got); for (const c of got) { c.name = o.name; BOXES.push(c); nb++; } } }); }
+      if (b.box8) { b.name = o.name; BOXES.push(b); nb++; } else { const got = []; solidColumns(o, CRASH_COLS, got); for (const c of got) { c.name = o.name; BOXES.push(c); nb++; } } }); }
   const out = { boxes: nb }, v = new THREE.Vector3();
   for (const nm of ['fire_0', 'fire_1', 'smoke', 'hatch', 'clancy', 'you']) { const e = root.getObjectByName(nm); if (e) { e.getWorldPosition(v); out[nm] = [v.x, v.y, v.z]; } }
   CRASH.model_ok = 1; console.log('[melee] wreck model: ' + nb + ' collider boxes, markers ' + Object.keys(out).filter(k => k !== 'boxes').join(' '));
@@ -67231,16 +67232,6 @@ const godMid = F => godFarm((F.u[0] + F.u[1]) / 2, F.v[0] - 2, 0);
 const godFL = H => { const [x, z] = flWorld(H.a, H.b); return [x, null, z, Math.atan2(-FARMLAND.ub[0], -FARMLAND.ub[1])]; };
 // THE PLACES. One line each: where it is, what world, and a function that answers [x, y|null, z, heading|null].
 const GODPLACES = [
-  // THE ALIEN WORLD (m432): read off his own decks, kit roots and placements at load (`awPlaces`), never typed
-  { id: 'awplaza', world: 'alien', name: 'ALIEN WORLD · the town plaza', at: () => AW.places.plaza },
-  { id: 'awskyway', world: 'alien', name: 'ALIEN WORLD · the street district, up on the skyway', at: () => AW.places.skyway },
-  { id: 'awcoast', world: 'alien', name: 'ALIEN WORLD · the coast plaza (south)', at: () => AW.places.coast },
-  { id: 'awsummit', world: 'alien', name: 'ALIEN WORLD · the summit, by the comms tower', at: () => AW.places.summit },
-  { id: 'awisles', world: 'alien', name: 'ALIEN WORLD · the sky islands', at: () => AW.places.isles },
-  { id: 'awlift', world: 'alien', name: 'ALIEN WORLD · the top of the cliff lift', at: () => AW.places.lift },
-  { id: 'awfire', world: 'alien', name: 'ALIEN WORLD · the fire region (south)', at: () => AW.places.fire },
-  { id: 'awgoo', world: 'alien', name: 'ALIEN WORLD · the goo region (west)', at: () => AW.places.goo },
-  { id: 'awcrater', world: 'alien', name: 'ALIEN WORLD · the crash crater (east)', at: () => AW.places.crater },
   { id: 'oldtown',  world: 'tkit', name: 'OLD TOWN · the kit city', at: () => [KCITY.spawn[0], null, KCITY.spawn[1], null] },
   { id: 'footbridge', world: 'tkit', name: 'OLD TOWN · the broken footbridge to The Pearl (west shore)', at: () => FOOT.footAt },
   { id: 'pearldock', world: 'tkit', name: "THE PEARL · dock 1, across the footbridge (Chapter 2's door)", at: () => FOOT.dockAt },
@@ -67392,7 +67383,6 @@ const GODPLACES = [
 // the live ones in THIS world: every portal and everybody with something to say
 function godLive() {
   const out = [];
-  if (inPL()) for (const M of PL.marks) out.push({ id: 'pl_' + M.name, world: 'plaza', name: 'GLOWTIDE · ' + M.name + (M.kind ? ' (' + M.kind + ')' : ''), at: () => [M.x, M.y + .05, M.z, M.h] });   // m438
   for (const P of PORTALS) out.push({ id: 'pt_' + P.id, world: WORLD.now, name: 'PORTAL · ' + P.name, at: () => [P.x, P.y + .1, P.z, null] });
   for (const d of DUMMIES) if (d.talk) { const R = d.root.position; out.push({ id: 'tk_' + d.talk.id, world: WORLD.now, name: 'TALK · ' + d.talk.name, at: () => [R.x + 1.6, null, R.z + 1.6, null] }); }
   return out;
@@ -67528,7 +67518,6 @@ function godMenuOpen(on) {
   if (inHome()) btn('RED HOLLOWS: ' + (AGE.st === 'fallen' ? 'FALLEN' : 'RESTORED') + ' (tap: watch it turn ' + (AGE.st === 'fallen' ? 'RESTORED' : 'FALLEN') + ')', () => hwAgeLive());
   if (inHome() && GCASTLE.plaza) btn('GO: SKY CASTLE (' + (AGE.st === 'fallen' ? 'crashed on the plateau: FALLEN' : 'in the sky: RESTORED') + ')', () => { const [x, y, z] = GCASTLE.plaza; player.pos.set(x, y + 1 + GCASTLE.colY, z); player.vel.set(0, 0, 0); godMenuOpen(0); });
   if (inHome() && GCASTLE.liftAt) btn('GO: SKY CASTLE LIFT (its foot, on the plateau)', () => { const [x, y, z] = GCASTLE.liftAt; player.pos.set(x + 3, y + 1, z); player.vel.set(0, 0, 0); godMenuOpen(0); });
-  if (inAW()) btn('ALIEN BUILDINGS ' + (AW.bldOn ? 'ON' : 'OFF') + ' (reloads; ' + AW.bld + ' placed, ' + AW.missing.length + ' missing)', () => { try { localStorage.setItem('mel.awbld', AW.bldOn ? '0' : '1'); } catch (e) {} location.replace(location.pathname); });   // m434
   { const al = /alien_pano/.test(SKY.img); btn('SKY: ' + (al ? 'THE ALIEN PANO' : 'THE GAME HDRI') + ' (tap for ' + (al ? 'the game HDRI' : 'the alien pano') + ', reloads)', () => { try { localStorage.setItem('mel.skypick', al ? 'game' : 'alien'); } catch (e) {} location.replace(location.pathname); }); }   // m435
   btn('ALL KIT ' + (GEAR.all ? 'ON' : 'OFF') + ' (campaign: everything, not just what he has found)', () => { GEAR.all = GEAR.all ? 0 : 1; try { localStorage.setItem('mel.allkit', GEAR.all ? '1' : '0'); } catch (e) {} GEAR.pack = gearHas('pack'); gearSync(1); godMenuOpen(1); });   // m465
   btn('TALK FONT ' + TALK.font.toUpperCase() + ' (comic / hand / plain)', () => { const F = TALK.fonts; TALK.font = F[(F.indexOf(TALK.font) + 1) % F.length]; try { localStorage.setItem('mel.talkfont', TALK.font); } catch (e) {} if (talk.cur) talkShow(); godMenuOpen(1); });   // m471
@@ -69810,7 +69799,6 @@ function frameBody() {
     thermStep(dt);        // the needle's thermal: him floating in it, the dust rising, the tether, the gulls (m395)
     isleStep(dt);         // the sea's rule, right after he moved (m264)
     if (HOME.live) homeStep(dt);     // m1110
-    awStep(dt);           // the alien world's water and falls (m432)
     _pt = pT('plyr', _pt);
     // AFTER HIM, because the deck is drawn where he ENDED UP -- read before `stepPlayer` it is
     // a board trailing the man standing on it by a frame, which at 13 m/s is 22 cm.
@@ -70421,394 +70409,7 @@ addEventListener('resize', resize);
 addEventListener('orientationchange', () => setTimeout(resize, 120));
 resize();
 
-// ============================================================================================
-// THE ALIEN WORLD (m432, STEER "the alien world as a new world you can explore", `AW`, world key `alien`, `?w=alien`)
-// ============================================================================================
-// His Blender session's export, `models/alien_world/` -- read `README_ALIEN_WORLD.md` there, it is the contract. Six files at
-// ONE shared origin: the 260 m town level with its ~3,000 scatter nodes, the street district, the coast region to the south,
-// its collision, and fifteen kit buildings with theirs. Measured before a line of this was written (`npm run worlds alien`
-// re-measures it in the game):
-//     alien_town.glb        8.9 MB  draco   7,721 draws  5.0M tris   <- 4.0M of it is SC_ scatter: a flower clump is 7,056
-//                                                                      tris, a fern 6,000, a street lamp 8,172 in 11 pieces
-//     alien_coast.glb      20.7 MB  NO draco 10,915 draws  370k tris  <- 7,755 nodes, the town blocks as loose kit pieces
-//     alien_town_kit_*.glb 23.2 MB  NO draco  3,928 draws  380k tris  <- the textures duplicate the coast's (cloth_red ...)
-//     alien_streets.glb     3.0 MB  draco      210 draws  156k tris
-//     alien_sky.glb         2.7 MB              1 draw    <- NOT loaded: the pano (KTX2 twin) is the sky, as SKY.img
-// So the load does what the kit city's does, generically (`awOptimize`): colliders out of the picture and into the
-// collider; everything that repeats INSTANCED per 48 m cell, everything else MERGED per material and cell; every result on
-// the fog cull; the scatter (`SC_`) on a short draw distance of its own (`AW.scatterFar`), because no amount of batching
-// makes 4 million triangles cheap -- the real fix is decimating the scatter in Blender, and the chip says how far off it is.
-// **WHAT IS NOT HERE YET** (each its own build): the 24 per-building GLBs the placements name (loaded when they arrive, no
-// code change: `NO BLD <n>` in the chip until then), the kit buildings as BREAKABLE (`buildKit`/`kitSwap` -- static for now),
-// the splat shader on the two terrains, the water shader, the lift, the boats' bob and the balloons' float, the critters
-// (`critters.glb` is not in the repo), and bodies.
-const AW = {
-  dir: 'models/alien_world/',
-  town: 'alien_town.glb', streets: 'alien_streets.glb', coast: 'alien_coast.glb', coastCol: 'alien_coast_collision.glb',
-  kit: 'alien_town_kit_buildings.glb', kitCol: 'alien_town_kit_buildings_collision.glb', place: 'alien_town_placements.json',
-  pano: 'models/alien_world/textures/sky_alien_pano.png',
-  // the README's light: a low warm sun FROM (.55, .35, .45), a teal/violet hemisphere, a violet haze
-  sun: { col: 0xffd1a8, int: 2.2, dir: [.55, .35, .45] }, hemi: { sky: 0x7fd8e0, gnd: 0x6a3f86, int: .9 },
-  fog: { col: 0x6b548c, near: 60, far: 260 },
-  // the water: y -2 in the town, -6 on the coast (its terrain's own rectangle, measured at load); a body more than `deep`
-  // under it is swimming, which this world does not have yet, so he is put back on the last dry ground
-  water: -2, coastWater: -6, deep: 1.2, kill: -40,
-  // colliders by prefix, as the README says; never drawn
-  colRe: /^(col_|deck_|bld_|ramp_|climb_|ground_|solid_)/,
-  walkRe: /^(col_deck_|deck_|ground_|ramp_|col_ramp_)/, climbRe: /^(col_)?climb_/, critRe: /CRIT_/,
-  cols: { tag: 'ALIEN', cols: 1, cell: .8, maxCells: 4096, tol: .35, full: .92, fill: .5 },
-  // his scatter: `SC_*` nodes, whose multi-material meshes come back as parts named `X_*` -- so the test is the whole chain
-  scatterRe: /^(SC_|X_)/,
-  scatterFar: 55,         // m past which a scatter cell is not drawn (the fog ends at 260)
-  scatterTiny: 32,        // ... and the ground cover (flower clumps, grass, pebbles, shells, reeds)
-  tinyRe: /^(SC_|X_)(FILL|GRASS|SHORE|shore|PLANT|flowers|rock_cliff|SRC_bulb|bulb)/,
-  // INSTANCE only what is heavy (scatter, or >= `instMin` tris a copy); a light repeated piece (his kit's wall variants,
-  // 50-500 tris) is MERGED per material and cell instead -- instancing it was one draw per variant per cell, thousands
-  instMin: 1500,
-  // and each coast / kit cell gets a FLAT far copy (one draw for the whole cell) past `lodOut` m outside it
-  lodOut: 50,
-  // HIS 24 BUILDINGS ARE 90k-470k TRIANGLES EACH (spore_pharmacy 471k, res_complex 287k) -- several million in all. A far copy
-  // of one is the same triangles again (437 MB of geometry with them), so they get none; they get a draw distance instead,
-  // inside the fog (half-fogged at 160), until they are decimated in Blender. This is a STOPGAP and pops.
-  bldFar: 150,
-  // ITS OWN CELL, twice the kit city's: with ~260 materials across his three files, a draw is a material in a cell, so the
-  // cell count in view is the multiplier (48 m: 1,300 draws at the plaza)
-  cell: 96,
-  scatCell: 32,           // the scatter's cells are SMALL instead: it is culled by distance, so a cell is how much of it rides along
-  cast: 0,                // receives shadows, casts none: a merged cell never culls out of the shadow pass
-  // ---- state
-  root: null, coastBox: null, anim: [], missing: [], bld: 0, safe: null, safeT: 0, puts: 0,
-  n: { inst: 0, instN: 0, merged: 0, mergedN: 0, kept: 0, colTri: 0, walk: 0, box: 0, cols: 0, climb: 0, dropped: 0, texDup: 0 },
-  draws0: 0, places: {}, decks: {},
-};
-const inAW = () => WORLD.now === 'alien';
-// m438: GLOWTIDE, Level 1 -- his first small hand-made alien level, loaded through the same machinery as his planet
-const inPL = () => WORLD.now === 'plaza', alienLike = () => inAW() || inPL();
-AW.texBy = new Map();
-// m434: HIS 24 BUILDINGS CAN BE LEFT OUT (`?bld=0`, or the GOD switch, which is remembered) -- they are ~250 MB of the world's
-// memory until they are decimated, and a phone tab that dies on them needs a way back in that does not need a computer
-AW.bldOn = 1;
-try { if (/[?&]bld=0/.test(location.search) || localStorage.getItem('mel.awbld') === '0') AW.bldOn = 0; } catch (e) {}
-// a material once: a closed shell is front-faced (Blender's double-sided default is fill nobody sees), a card keeps both
-// faces; a texture with the same name and size as one already loaded IS that texture (the coast and the kit carry the same
-// sixteen maps, each its own upload otherwise)
-function awMat(m) {
-  if (!m || m.userData.aw) return; m.userData.aw = 1;
-  if (m.side === THREE.DoubleSide && !m.transparent && !m.alphaTest) { m.side = THREE.FrontSide; m.needsUpdate = true; }
-  for (const k of ['map', 'emissiveMap', 'normalMap', 'roughnessMap', 'metalnessMap', 'alphaMap', 'aoMap']) {
-    const t = m[k]; if (!t || !t.image) continue;
-    const key = (t.name || '') + '|' + (t.image.width | 0) + 'x' + (t.image.height | 0);
-    if (!t.name) continue;
-    const have = AW.texBy.get(key);
-    if (have && have !== t) { m[k] = have; m.needsUpdate = true; AW.n.texDup++; if (t.image.close) { try { t.image.close(); } catch (e) {} } t.dispose(); }
-    else if (!have) AW.texBy.set(key, t);
-  }
-}
-// a multi-part mesh comes back from the loader as a GROUP carrying the node's name, its parts carrying the MESH's name (the
-// plaza's collider is the plaza's own five-material mesh) -- so the name that says "collider" may be a parent's
-const awColName = o => { for (let a = o; a && !a.userData.awRoot; a = a.parent) if (AW.colRe.test(a.name || '') || (a.userData && a.userData.collider)) return a.name || ''; return ''; };
-const awIsCol = o => !!awColName(o);
-const _awCB = new THREE.Box3(), _awCV = new THREE.Vector3();
-function awCellOf(o, sz) {
-  sz = sz || AW.cell;
-  if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
-  o.updateWorldMatrix(true, false);
-  _awCB.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld).getCenter(_awCV);
-  return '|' + Math.floor(_awCV.x / sz) + ',' + Math.floor(_awCV.z / sz);
-}
-// THE COLLIDER, from any of the files (the town carries its own `col_*`; the coast and the kit have a file each)
-const _awA = new THREE.Vector3(), _awB = new THREE.Vector3(), _awC = new THREE.Vector3();
-// **HIS LATER DECKS ARE 150 m NORTH OF THEIR PICTURES (m432, measured).** Every tree, rock, lamp and bollard collider in the
-// town sits on its scatter to 0.1-0.8 m; but `col_deck_deck_*` (streets, bridges, the stilt village, the sky islands, the
-// lift's top) and `col_bld_wall_*` (their railings) are all ~150 m further north: street S1 is drawn at z -18..2 and its
-// collider is at -168..-149, sky island A at -120..-105 against -268..-255. An export bug (his to fix in Blender); until
-// then the shift is MEASURED off the streets -- each has a drawn `street_<id>` and a `col_deck_deck_street_<id>` -- and
-// applied to those two families only. No pairs, no shift, and the chip says `AW SHIFT ?`.
-AW.shiftRe = /^col_(deck_deck_|bld_wall_)/; AW.shift = null; AW.streetVis = {};
-const _awSM = new THREE.Matrix4();
-function awShiftMeasure(root) {
-  const dx = [], dz = [];
-  root.updateMatrixWorld(true);
-  const seen = new Set();
-  root.traverse(o => { const m = /^col_deck_deck_street_([A-Za-z0-9]+)$/.exec(o.name || ''); if (!m || seen.has(m[1])) return; seen.add(m[1]);
-    const V = AW.streetVis[m[1]]; if (!V) return;
-    const b = new THREE.Box3().setFromObject(o);
-    dx.push((V.min.x + V.max.x) / 2 - (b.min.x + b.max.x) / 2); dz.push((V.min.z + V.max.z) / 2 - (b.min.z + b.max.z) / 2); });
-  if (!dx.length) { note('AW SHIFT ?'); return null; }
-  const med = a => a.slice().sort((p, q) => p - q)[a.length >> 1];
-  AW.shift = { dx: med(dx), dz: med(dz), n: dx.length };
-  // a shift under half a metre is noise in a decimated path, not an offset
-  if (Math.hypot(AW.shift.dx, AW.shift.dz) < .5) AW.shift.dx = AW.shift.dz = 0;
-  return AW.shift;
-}
-function awColMesh(o) {
-  const nm = awColName(o) || o.name || '';
-  if (!o.isMesh || !o.geometry || !o.geometry.attributes.position) return 0;
-  if (AW.critRe.test(nm)) return 1;                                   // the jellies' colliders: they float over the lake
-  o.updateWorldMatrix(true, false);
-  if (AW.shift && (AW.shift.dx || AW.shift.dz) && AW.shiftRe.test(nm) && !o.userData.awShifted) {
-    o.userData.awShifted = 1; o.matrixWorld.premultiply(_awSM.makeTranslation(AW.shift.dx, 0, AW.shift.dz)); }
-  const bx = new THREE.Box3().setFromBufferAttribute(o.geometry.attributes.position).applyMatrix4(o.matrixWorld);
-  const key = nm.replace(/_\d+$/, '').replace(/^(col_deck_deck_|col_deck_|deck_|ground_)/, '');
-  AW.decks[key] = AW.decks[key] ? AW.decks[key].union(bx) : bx;                                                 // walkable names are the GOD places' landmarks
-  if (AW.climbRe.test(nm)) { kitClimbAdd(kitObb(o), nm, null); AW.n.climb++; return 1; }
-  const walk = AW.walkRe.test(nm);
-  const pos = o.geometry.attributes.position, idx = o.geometry.index, n = idx ? idx.count : pos.count, M = o.matrixWorld;
-  for (let i = 0; i < n; i += 3) {
-    _awA.fromBufferAttribute(pos, idx ? idx.getX(i) : i).applyMatrix4(M);
-    _awB.fromBufferAttribute(pos, idx ? idx.getX(i + 1) : i + 1).applyMatrix4(M);
-    _awC.fromBufferAttribute(pos, idx ? idx.getX(i + 2) : i + 2).applyMatrix4(M);
-    if (walk) AW.n.walk += triAdd(_awA.x, _awA.y, _awA.z, _awB.x, _awB.y, _awB.z, _awC.x, _awC.y, _awC.z);
-    surfAdd(_awA.x, _awA.y, _awA.z, _awB.x, _awB.y, _awB.z, _awC.x, _awC.y, _awC.z);
-    AW.n.colTri++;
-  }
-  if (walk) return 1;
-  // a solid: a box is its own turned box (24 or 8 corners); anything rounder (a tank, a rock) is rasterised into columns
-  const b = kitObb(o);
-  if (b.box8) { b.name = nm; BOXES.push(b); AW.n.box++; return 1; }
-  const got = []; solidColumns(o, AW.cols, got);
-  for (const c of got) { c.name = nm; BOXES.push(c); }
-  AW.n.cols += got.length;
-  return 1;
-}
-function awColFile(g) {
-  g.scene.userData.awRoot = 1; g.scene.updateMatrixWorld(true);
-  let n = 0;
-  g.scene.traverse(o => { if (o.isMesh && awIsCol(o)) n += awColMesh(o); });
-  // the coast's terrain is the coast's rectangle: its sea level is -6, the town's -2
-  g.scene.traverse(o => { if (o.isMesh && /coast_terrain/.test(o.name || '')) AW.coastBox = new THREE.Box3().setFromObject(o); });
-  return n;
-}
-// THE PICTURE, batched: the colliders taken out (handed to `awColMesh` first if `withCol`), the animated nodes kept whole,
-// then INSTANCED by geometry + material + cell and MERGED by material + attribute set + cell, everything on the fog cull
-function awOptimize(g, tag, withCol, opts) {
-  opts = opts || {};
-  const root = g.scene; root.userData.awRoot = 1; root.updateMatrixWorld(true);
-  const meshes = [], drop = [], keep = new Set();
-  root.traverse(o => { if ((o.userData && o.userData.animate) || (opts.keepRe && opts.keepRe.test(o.name || ''))) { AW.anim.push(o); o.traverse(c => keep.add(c)); if (opts.kept) opts.kept[o.name] = o; } });
-  root.traverse(o => {
-    if (!o.isMesh) return;
-    AW.draws0 += Array.isArray(o.material) ? o.material.length : 1;
-    if (awIsCol(o)) { if (withCol) awColMesh(o); drop.push(o); return; }
-    o.castShadow = !!AW.cast; o.receiveShadow = true;
-    for (const m of [].concat(o.material)) awMat(m);
-    if (keep.has(o)) return;
-    meshes.push(o);
-  });
-  for (const o of drop) { o.parent && o.parent.remove(o); AW.n.dropped++; }
-  const famOf = o => { for (let a = o; a; a = a.parent) if (a.name && a !== root) return a.name; return ''; };
-  // the scatter distance off the WHOLE chain (a part named `X_FILL_flowers1` under a node named `SC_flowers.012`)
-  const farOfO = o => { let f = 0; for (let a = o; a && a !== root; a = a.parent) { const nm = a.name || ''; if (AW.scatterRe.test(nm)) { const d = AW.tinyRe.test(nm) ? AW.scatterTiny : AW.scatterFar; f = f ? Math.min(f, d) : d; } } return f; };
-  const farOf = x => typeof x === 'string' ? 0 : farOfO(x);
-  const own = o => farOfO(o) || opts.far || 0;      // a placed building's own draw distance (`AW.bldFar`)
-  const trisOf = ge => (ge.index ? ge.index.count : ge.attributes.position.count) / 3;
-  const lodCells = new Map(), lodPut = (m, o) => { if (!opts.lod || farOfO(o)) return; const k = awCellOf(o); let Q = lodCells.get(k); if (!Q) lodCells.set(k, Q = []); Q.push(m); };
-  const out = new THREE.Group(); out.name = 'aw_' + tag; AW.root.add(out);
-  // 1. INSTANCED
-  const by = new Map();
-  for (const o of meshes) {
-    if (Array.isArray(o.material) || o.isSkinnedMesh || o.isInstancedMesh) continue;
-    if (!farOfO(o) && trisOf(o.geometry) < AW.instMin) continue;     // light: merged below
-    const k = o.geometry.uuid + '|' + o.material.uuid + awCellOf(o, farOfO(o) ? AW.scatCell : AW.cell);
-    let L = by.get(k); if (!L) by.set(k, L = []); L.push(o);
-  }
-  const done = new Set();
-  for (const L of by.values()) {
-    if (L.length < 2) continue;
-    const im = new THREE.InstancedMesh(L[0].geometry, L[0].material, L.length);
-    im.name = 'awi_' + famOf(L[0]);
-    for (let i = 0; i < L.length; i++) { im.setMatrixAt(i, L[i].matrixWorld); done.add(L[i]); }
-    im.instanceMatrix.needsUpdate = true; im.castShadow = !!AW.cast; im.receiveShadow = true;
-    im.computeBoundingSphere(); out.add(im); cellReg(im, own(L[0])); lodPut(im, L[0]);
-    AW.n.inst++; AW.n.instN += L.length;
-  }
-  // 2. MERGED: what is left, per material + attribute layout + cell (a bucket that disagrees would merge to null)
-  const sig = ge => Object.keys(ge.attributes).sort().map(a => { const t = ge.attributes[a]; return a + t.itemSize + (t.normalized ? 'n' : '') + t.array.constructor.name; }).join(',') + (ge.index ? '|i' : '|n');
-  const mb = new Map();
-  for (const o of meshes) {
-    if (done.has(o) || Array.isArray(o.material) || o.isSkinnedMesh || o.isInstancedMesh) continue;
-    const k = o.material.uuid + '|' + sig(o.geometry) + awCellOf(o, farOfO(o) ? AW.scatCell : AW.cell) + '|' + farOfO(o);
-    let B = mb.get(k); if (!B) mb.set(k, B = { m: o.material, list: [] }); B.list.push(o);
-  }
-  for (const B of mb.values()) {
-    if (B.list.length < 2) { const o = B.list[0]; out.attach(o); cellReg(o, own(o)); lodPut(o, o); AW.n.kept++; continue; }
-    const parts = []; for (const o of B.list) { const ge = o.geometry.clone(); ge.applyMatrix4(o.matrixWorld); parts.push(ge); }
-    const one = mergeGeometries(parts, false); for (const p of parts) p.dispose();
-    if (!one) { for (const o of B.list) { out.attach(o); cellReg(o, own(o)); lodPut(o, o); AW.n.kept++; } continue; }
-    one.computeBoundingSphere();
-    const me = new THREE.Mesh(one, B.m); me.name = 'awm_' + famOf(B.list[0]); me.castShadow = !!AW.cast; me.receiveShadow = true;
-    out.add(me); cellReg(me, own(B.list[0])); lodPut(me, B.list[0]);
-    AW.n.merged++; AW.n.mergedN += B.list.length;
-  }
-  // the animated ones and whatever is left (multi-material, skinned) stay as they came, under the world
-  for (const o of AW.anim) if (o.parent === root || (o.parent && !out.children.includes(o))) out.attach(o);
-  // the far copies, one group per cell: past `lodOut` m outside it the cell is ONE flat draw
-  let nL = 0; for (const [k, Q] of lodCells) { try { if (lodAdd('aw:' + tag + k, Q, AW.lodOut, { flat: true })) nL++; } catch (e) { console.warn('[melee] alien far copy', e); } }
-  AW.n.lod = (AW.n.lod || 0) + nL;
-  return out.children.length;
-}
-// THE BUILDINGS THE PLACEMENTS NAME: loaded if the bump has hashed the file, skipped LOUDLY if not
-async function awBuildings(P) {
-  if (!AW.bldOn) { note('AW BLD OFF'); return; }
-  const L = (P && P.buildings) || [], names = [...new Set(L.map(b => b.building))];
-  for (const nm of names) {
-    const path = AW.dir + nm + '.glb';
-    if (!ASSETS[path]) { AW.missing.push(nm); continue; }
-    let g = null; try { g = await loadGLB(path, 'loading ' + nm); } catch (e) { AW.missing.push(nm); continue; }
-    for (const b of L.filter(q => q.building === nm)) {
-      const c = g.scene.clone(true); c.position.set(b.pos[0], b.pos[1], b.pos[2]); c.rotation.y = +b.rotY || 0;
-      const host = new THREE.Group(); host.add(c); host.updateMatrixWorld(true);
-      try { awOptimize({ scene: host }, nm, 1, { far: AW.bldFar }); AW.bld++; } catch (e) { console.warn('[melee] alien building ' + nm, e); note('AW BLD FAIL ' + nm); }
-    }
-  }
-  if (AW.missing.length) { note('NO BLD ' + AW.missing.length); console.warn('[melee] alien world: ' + AW.missing.length + ' building GLBs not in the repo: ' + AW.missing.join(', ')); }
-}
-// THE LIGHT AND THE SKY: the README's numbers (the pano is the sky through `SKY.img`, chosen at module scope)
-function awLight() {
-  sun.color.setHex(AW.sun.col); sun.intensity = AW.sun.int;
-  const L = Math.hypot(_sunOff.x, _sunOff.y, _sunOff.z) || 60, d = AW.sun.dir, dl = Math.hypot(d[0], d[1], d[2]);
-  _sunOff.set(d[0] / dl * L, d[1] / dl * L, d[2] / dl * L);
-  hemi.color.setHex(AW.hemi.sky); hemi.groundColor.setHex(AW.hemi.gnd); hemi.intensity = AW.hemi.int;
-  scene.fog.near = AW.fog.near; scene.fog.far = AW.fog.far;
-  if (!SKY.fog) scene.fog.color.setHex(AW.fog.col);
-}
-// THE SPAWN: the plaza's middle, searched outward for open ground (no box over it, not under water)
-function awOpen(x, z) {
-  const y = groundAt(x, z, 99, MOVE.step);
-  if (!(y > awSea(x, z) + .1)) return null;
-  for (const b of BOXES) if (x > b.minx - .4 && x < b.maxx + .4 && z > b.minz - .4 && z < b.maxz + .4 && b.maxy > y + .3 && b.miny < y + 1.8) {
-    if (b.cs === undefined) return null;
-    const dx = x - b.cx, dz = z - b.cz, u = dx * b.cs + dz * b.sn, v = -dx * b.sn + dz * b.cs;
-    if (Math.abs(u) < b.hx + .4 && Math.abs(v) < b.hz + .4) return null; }
-  return y;
-}
-function awSpot(x, z, R) {
-  for (let r = 0; r <= (R || 30); r += 1.5) for (let a = 0; a < 16; a++) {
-    const t = a / 16 * Math.PI * 2, px = x + Math.cos(t) * r, pz = z + Math.sin(t) * r, y = awOpen(px, pz);
-    if (y !== null) return [px, y, pz];
-    if (!r) break;
-  }
-  return null;
-}
-const awSea = (x, z) => { const C = AW.coastBox; return C && x > C.min.x && x < C.max.x && z > C.min.z && z < C.max.z ? AW.coastWater : AW.water; };
-// the GOD places, off his own names -- a deck, a building root, a placement -- never typed
-function awPlaces(P) {
-  const c = b => b ? [(b.min.x + b.max.x) / 2, (b.min.z + b.max.z) / 2] : null, D = AW.decks;
-  const at = (xz, R) => xz ? awSpot(xz[0], xz[1], R) : null;
-  const pl = AW.places, B = (P && P.buildings) || [];
-  pl.plaza = at(c(D.plaza), 30);
-  const st = Object.keys(D).filter(k => /^street_/.test(k)).sort((a, b) => D[b].max.y - D[a].max.y);
-  if (st.length) { const b = D[st[0]]; pl.skyway = [(b.min.x + b.max.x) / 2, b.max.y + .2, (b.min.z + b.max.z) / 2]; }
-  pl.coast = at(c(D.LV_coast_paving), 40);
-  const isle = D.LV_sky_isle_a || D.LV_sky_isle_b; if (isle) pl.isles = [(isle.min.x + isle.max.x) / 2, isle.max.y + .2, (isle.min.z + isle.max.z) / 2];
-  const sum = B.filter(b => b.building === 'comms_tower').sort((a, b) => b.pos[1] - a.pos[1])[0]; if (sum) pl.summit = at([sum.pos[0] + 8, sum.pos[2] + 8], 20);
-  const cr = B.find(b => b.building === 'signal_tower'); if (cr) pl.crater = at([cr.pos[0] - 10, cr.pos[2]], 25);
-  const reg = re => { const R = AW.kitRoots.filter(r => re.test(r.name)); if (!R.length) return null; let x = 0, z = 0; for (const r of R) { x += r.x; z += r.z; } return at([x / R.length, z / R.length], 30); };
-  pl.fire = reg(/^KB_fire_/); pl.goo = reg(/^KB_goo_/);
-  if (D.lift_top) pl.lift = [(D.lift_top.min.x + D.lift_top.max.x) / 2, D.lift_top.max.y + .2, (D.lift_top.min.z + D.lift_top.max.z) / 2];
-  return Object.keys(pl).filter(k => pl[k]).length;
-}
-AW.kitRoots = [];
-// EVERY FRAME: the water's rule and the fall's -- nothing here swims yet, so under it is back on the last dry ground
-function awStep(dt) {
-  if (!alienLike() || !rig.ready) return;
-  const p = player, P = p.pos, sea = inPL() ? PL.sea : awSea(P.x, P.z);
-  if (p.grounded && P.y > sea + .2 && !GOD.fly) { if ((AW.safeT -= dt) <= 0) { AW.safeT = .5; AW.safe = [P.x, P.y, P.z]; } }
-  if ((P.y < sea - AW.deep || P.y < AW.kill) && !GOD.fly) {
-    const s = AW.safe || AW.places.plaza || PL.spawn; if (!s) return;
-    console.log('[melee] alien put-back from ' + [P.x, P.y, P.z].map(v => v.toFixed(1)).join(',') + ' (sea ' + sea + ') to ' + s.map(v => v.toFixed(1)).join(','));
-    godTo(s[0], s[1] + .2, s[2]); GOD.n--; AW.puts++; toast('Too deep. Back on dry ground.', 1.4);
-  }
-}
-// ============================================================================================
-// GLOWTIDE, LEVEL 1 (m438, STEER "load the alien plaza as its own level", `PL`, `buildPlaza`, world key `plaza`, `?w=plaza`)
-// ============================================================================================
-// His first SMALL alien level (`models/alien_plaza/`, README_ALIEN_PLAZA.md is the contract, LEVELS.md the design): one
-// visual (static geometry joined into one object, ~15 materials, draco), one collision file with the usual prefixes, built
-// from the same layout table so nothing is offset, and the level data -- markers, events, ladders, ropes, water -- in
-// `alien_plaza_level.json`, IN BLENDER AXES (x, y, z) -> three (x, z, -y). It goes through `awOptimize` / `awColFile` like
-// his planet; the objects the level moves, hides or hits (`PL.keepRe`) stay whole for the event builds that follow.
-// NOT BUILT HERE (one build each, STEER): the events and movers, the Hover Pack, the launcher, the ziplines, the waves.
-const PL = {
-  dir: 'models/alien_plaza/', vis: 'alien_plaza.glb', col: 'alien_plaza_collision.glb', json: 'alien_plaza_level.json',
-  keepRe: /^PL_(canal_water|waterfall|sea|mover_|bells|generators|fuel_cell|sluice)/,
-  sea: -3, canal: -2,           // overwritten from the level's own `water`
-  spawn: null, marks: [], kept: {}, data: null,
-};
-// Blender (x, y, z) -> three (x, z, -y); a Blender yaw about +Z (0 = facing +Y, north) -> his heading (forward = (sin h, cos h))
-const plPos = p => [p[0], p[2], -p[1]], plYaw = y => Math.PI - (y || 0);
-async function buildPlaza() {
-  const t0 = performance.now();
-  AW.root = new THREE.Group(); AW.root.name = 'glowtide'; world.add(AW.root);
-  awLight();
-  try { const r = await fetch(A(PL.dir + PL.json)); PL.data = r.ok ? await r.json() : null; } catch (e) { PL.data = null; }
-  const D = PL.data;
-  if (!D) note('PL NO LEVEL JSON');
-  if (D && D.water) { PL.sea = D.water.sea; PL.canal = D.water.canal; }
-  const load = (f, label, build) => loadGLB(PL.dir + f, label).then(g => { try { build(g); } catch (e) { console.error('[melee] glowtide ' + f, e); note('PL ' + f + ' FAILED'); } },
-    e => { console.warn('[melee] glowtide ' + f + ' did not load', e); note('NO ' + f); });
-  await load(PL.col, 'loading Glowtide', g => awColFile(g));
-  await load(PL.vis, 'loading Glowtide', g => {
-    // every material multiplies by COLOR_0 (one plaster sheet, every wall colour); the window sheet is a cut-out
-    g.scene.traverse(o => { if (!o.isMesh) return; for (const m of [].concat(o.material)) { if (!m) continue;
-      if (o.geometry.attributes.color && !m.vertexColors) { m.vertexColors = true; m.needsUpdate = true; }
-      if (/winatlas/i.test(m.name || '')) { m.alphaTest = .5; m.transparent = false; m.needsUpdate = true; } } });
-    // **`PL_static` CARRIES `collider: "ground_"` IN ITS EXTRAS** (a Blender-side tag) and `awIsCol` honours that tag -- so the
-    // whole visible plaza was dropped as a hidden collider (8 draws, only the water drawn). This file's colliders are all in
-    // the collision file, so the tag is cleared here and the visual is judged by name alone.
-    let tagged = 0; g.scene.traverse(o => { if (o.userData && o.userData.collider) { delete o.userData.collider; tagged++; } });
-    if (tagged) console.warn('[melee] glowtide: ' + tagged + ' visual node(s) tagged as colliders in the export -- ignored');
-    awOptimize(g, 'plaza', 0, { keepRe: PL.keepRe, kept: PL.kept });
-  });
-  const nT = triBuild(), nS = surfBuild(), cells = boxGrid();
-  if (!nT) note('PL NO GROUND');
-  if (GLBNOIMG.n) note('GLB NO IMG ' + GLBNOIMG.n);
-  // the markers: every one a GOD place (`godLive`), at its own height
-  for (const M of (D && D.markers) || []) {
-    const [x, y, z] = plPos(M.pos), kind = (M.aw && (M.aw.kind || M.aw.type)) || M.kind || '';
-    PL.marks.push({ name: M.name, x, y, z, h: plYaw(M.yaw), kind: typeof kind === 'string' ? kind : '' });
-  }
-  const sp = PL.marks.find(m => m.name === (D && D.spawn || 'spawn_player'));
-  if (sp) {
-    const gy = groundAt(sp.x, sp.z, sp.y + 1, MOVE.step);
-    PL.spawn = [sp.x, gy > -500 ? gy : sp.y, sp.z];
-    player.pos.x = sp.x; player.pos.z = sp.z; cam.az = player.faceH = player.heading = sp.h;
-  } else note('PL NO SPAWN');
-  const kept = Object.keys(PL.kept);
-  console.log('[melee] glowtide: ' + AW.draws0 + ' source draws -> ' + AW.n.inst + ' instanced + ' + AW.n.merged + ' merges + ' + AW.n.kept + ' kept | ' +
-    kept.length + ' level objects kept whole (' + kept.join(' ') + ') | collider ' + nT + ' walkable tris of ' + AW.n.colTri + ', ' + AW.n.box + ' boxes, ' +
-    AW.n.cols + ' columns, ' + AW.n.climb + ' ladders | ' + PL.marks.length + ' markers | sea ' + PL.sea + ' canal ' + PL.canal + ' | ' + Math.round(performance.now() - t0) + ' ms');
-}
-
-async function buildAlienWorld() {
-  const t0 = performance.now();
-  AW.root = new THREE.Group(); AW.root.name = 'alienworld'; world.add(AW.root);
-  awLight();
-  let P = null;
-  try { const r = await fetch(A(AW.dir + AW.place)); P = r.ok ? await r.json() : null; } catch (e) { P = null; }
-  if (!P) note('AW NO PLACEMENTS');
-  const side = (f, label, build) => loadGLB(AW.dir + f, label).then(g => { try { build(g); } catch (e) { console.error('[melee] alien ' + f, e); note('AW ' + f + ' FAILED'); } },
-    e => { console.warn('[melee] alien ' + f + ' did not load', e); note('NO ' + f); });
-  // THE COLLISION FIRST (the ground he stands on), then the pictures; the town carries its own colliders
-  await side(AW.streets, 'loading the streets', g => { g.scene.updateMatrixWorld(true); g.scene.traverse(o => { const m = /^street_(\w+)$/.exec(o.name || ''); if (m && !AW.streetVis[m[1]]) AW.streetVis[m[1]] = new THREE.Box3().setFromObject(o); }); awOptimize(g, 'streets', 0); });
-  await side(AW.town, 'loading the alien town', g => { awShiftMeasure(g.scene); awOptimize(g, 'town', 1); });
-  await side(AW.coastCol, 'loading the coast', g => awColFile(g));
-  await side(AW.kitCol, 'loading the kit buildings', g => awColFile(g));
-  await side(AW.coast, 'loading the coast', g => awOptimize(g, 'coast', 0, { lod: 1 }));
-  await side(AW.kit, 'loading the kit buildings', g => { g.scene.traverse(o => { if (/^KB_[a-z]+(_[a-z])?_\d+$/.test(o.name || '')) { o.updateWorldMatrix(true, false); const e = o.matrixWorld.elements; AW.kitRoots.push({ name: o.name, x: e[12], z: e[14] }); } }); awOptimize(g, 'kit', 0, { lod: 1 }); });
-  await awBuildings(P);
-  const nT = triBuild(), nS = surfBuild(), cells = boxGrid();
-  if (!nT) note('AW NO GROUND');
-  if (GLBNOIMG.n) note('GLB NO IMG ' + GLBNOIMG.n);
-  if (AW.missing.length) setTimeout(() => { if (GOD.on) toast('NOT IN THE REPO YET: ' + AW.missing.join(', '), 8); }, 4000);
-  const nP = awPlaces(P);
-  const s = AW.places.plaza;
-  if (s) { player.pos.x = s[0]; player.pos.z = s[2]; } else note('AW NO SPAWN');
-  console.log('[melee] alien world: ' + AW.draws0 + ' source draws -> ' + AW.n.inst + ' instanced sets (' + AW.n.instN + ' nodes) + ' + AW.n.merged +
-    ' merges (' + AW.n.mergedN + ') + ' + AW.n.kept + ' kept | collider ' + nT + ' walkable tris of ' + AW.n.colTri + ', ' + AW.n.box + ' boxes, ' + AW.n.cols +
-    ' columns, ' + AW.n.climb + ' ladders, grid ' + cells + ' | ' + (AW.n.lod || 0) + ' far-copy cells | ' + AW.n.texDup + ' duplicate textures shared | ' + nP + ' places | ' + AW.bld +
-    ' placed buildings, ' + AW.missing.length + ' missing | deck shift ' + (AW.shift ? AW.shift.dx.toFixed(1) + ',' + AW.shift.dz.toFixed(1) + ' off ' + AW.shift.n + ' streets' : 'none') + ' | ' + Math.round(performance.now() - t0) + ' ms');
-}
+const inAW = () => false, inPL = () => false, alienLike = () => false;     // m15CU: the alien world and Glowtide were never copied into this repo (no models, not in WORLD.list); their loaders are cut
 // m1110: THE REFUGE -- Grumbo's home, KORAJIN's third place (`?w=home`, KORAJIN > The Refuge). *"Build a nice cozy beautiful scene... his
 // refuge... Japanese mountainside or grassland or an island, water, sun god rays, a weird alien Japanese island tree, the fisherman-hat
 // docks and boats -- cyberpunk but retro samurai and future alien floating flying stuff."* First pass: a grass plateau (`HOME.ground`) that
@@ -74351,15 +73952,6 @@ async function init() {
     try { buildIsle(); } catch (e) { ISLE.live = 0; note('ISLE FAIL'); console.warn('[melee] island', e); }
     // AFTER the collider, so the y he lands on is the one his own road actually has.
     player.pos.x = TCITY.spawn[0]; player.pos.z = TCITY.spawn[1];
-  } else if (inPL()) {
-    // GLOWTIDE (m438): Level 1, on its own -- the plaza's two files, nothing of any other world
-    decalLoad();
-    try { await buildPlaza(); } catch (e) { console.error('[melee] glowtide', e); note('PL FAILED'); }
-  } else if (inAW()) {
-    // THE ALIEN WORLD (m432): his planet, and nothing of the other worlds' -- no crowd yet (every `at` table is test-site
-    // coordinates, and his town has no body placement in it), no test boxes
-    decalLoad();
-    try { await buildAlienWorld(); } catch (e) { console.error('[melee] alien world', e); note('AW FAILED'); }
   } else if (inHome()) {
     try { await buildHome(); } catch (e) { console.error('[melee] refuge', e); note('HOME FAILED'); }     // m1110
   } else if (inArena()) {
@@ -74507,7 +74099,7 @@ async function init() {
 
 // the console handle. Every tuning object is live, so a number can be moved on the phone
 // without a rebuild and without a push.
-window.melee = window.mel = { BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, PL, AW, awSpot, awOpen, awPlaces, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT, orbRelease, OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE, buildSkyline,
+window.melee = window.mel = { BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT, orbRelease, OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE, buildSkyline,
   // PROGRESS (m276): `mel.SAVE` is the save; the setters write it through; `mel.progReset()` is a new game
   // TALK (m277): `mel.TALK` live; `mel.TALKS` the scripts by kind; `mel.talk` the state
   TALK, TALKS, talk,
