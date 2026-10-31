@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15BW -- the bow shoots DOWN (and the lens looks down with it); Wall Park tower A's ladders reach their lips; the railing opens for the rope
+His words (Oct 31): *"we still need the downward bow shot -- it's hard to; I don't know if the reticle is actually going down. Also the camera needs
+to tilt up so I can see what I'm shooting down at"* / *"the top of the second ladder -- a gap between the top of the ladder and the ledge"* /
+*"a tight rope and a railing with no section cut out, so you walk through a bar"*.
+- **BOW DOWN** (`bowDownA`): the tilt only began once the drawing thumb was past the pad's CENTRE -- a long slide down from where the draw
+  leaves it. It is continuous from the draw's rest now: thumb still up (`downTop` -.5) = level, the centre = `down0` 12 deg, the bottom =
+  `downMax` 50 deg. The landing ring (`bowArc`) is the reticle and follows the solved arc.
+- **THE LENS LOOKS DOWN** with it: drawn and tilted, the camera rises over him by up to `BOW.camEl` .5 rad and the look point drops `camDrop`
+  .6 m, eased (`cam.bowK`), so the ring at the foot of a tower is in the frame.
+- **TOWER A**: both ladders stood mid-hatch, .6 / .8 m short of the lip the climb-out reaches for; they stand against that lip now.
+- **THE LOOKOUT RAIL**: it ran corner to corner through the half-walls' opening where the tightrope leaves; it stops at the opening now.
+
 ## m1926 -- THE SKY TEMPLE route pass 3: monkey bars to pylon 3, a fifth seal, the upper level reconnected by zips (TEMPLE_ROUTES.md)
 
 - OPTIONAL BRANCH, THE MONKEY BARS (`mbar`, into `MBAR.list` -- the gym's own system): from the tower's top (105) 22 m across to the left
