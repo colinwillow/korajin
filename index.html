@@ -16136,7 +16136,7 @@ function groundAt(x, z, y, step) {
   if (UNDER.box && best > y + step && x > UNDER.box[0] && x < UNDER.box[1] && z > UNDER.box[2] && z < UNDER.box[3] && y < UNDER.box[4]) best = -1e9;
   if (TRI.on) { const t = triGround(x, z, y, step); if (t > best) best = t; }
   if (ROPEB.on) { const r = ropeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }
-  if (RSPAN.list.length) { const r = rspDeck(x, z, y + step); if (r !== null && r > best) best = r; }     // m1973: the Rope Course's bridge, as spans out in the world
+  if (RSPAN.list.length) { const r = rspDeck(x, z, y + step); if (r !== null && r > best) best = r; }     // m1974: the Rope Course's bridge, as spans out in the world
   if (LB.rbs && LB.rbs.length) { const r = lbRopeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }     // m1904: the builder's live rope bridges     // m1800: the rope bridge's deck
   for (const b of boxesNear(x, x, z, z, _bnG)) {
     if (x < b.minx || x > b.maxx || z < b.minz || z > b.maxz) continue;
@@ -29186,11 +29186,11 @@ function ropeStep(dt) { const B = ROPEB.on; if (!B || !(dt > 1e-4)) return; ROPE
 // (`lean.acc`, inertia), eased (`lean.half`), about his feet; past `lean.arms` of lean his arms go out (the beam's own `caSwing`)
 function ropePose(ax = 1, az = 0) { const Z = ROPEB, p = player; if (!Z.on || !Z.bal) return; const want = Z.stat.on && !p.melee && !p.roll ? clamp(Z.bal.roll * Z.leanRoll - Z.bal.az * Z.leanAcc, -.45, .45) : 0;
   const dt = Math.min(.05, Z.dtPose || .016); Z.lean = damp(isFinite(Z.lean) ? Z.lean : 0, isFinite(want) ? want : 0, Z.leanHalf, dt); if (Math.abs(Z.lean) < 1e-3) return;
-  _bmA.set(ax, 0, az); _bmQ.setFromAxisAngle(_bmA, Z.lean); rig.root.quaternion.premultiply(_bmQ);     // about +x by +a tips his head toward +z (m1973: a span's own axis)
+  _bmA.set(ax, 0, az); _bmQ.setFromAxisAngle(_bmA, Z.lean); rig.root.quaternion.premultiply(_bmQ);     // about +x by +a tips his head toward +z (m1974: a span's own axis)
   const k = Math.min(1, Math.abs(Z.lean) / Z.leanArms), Bn = rig.bones || {}, RA = Bn.mixamorig_RightArm, RF = Bn.mixamorig_RightForeArm, LA = Bn.mixamorig_LeftArm, LF = Bn.mixamorig_LeftForeArm;
   if (k > .05 && RA && RF && LA && LF) { rig.root.updateMatrixWorld(true); RA.getWorldPosition(_caR); LA.getWorldPosition(_bmL); _caR.sub(_bmL); _caR.y = 0;
     if (_caR.lengthSq() > 1e-8) { _caR.normalize(); caSwing(RA, RF, _caR, BEAM.arms * k); caSwing(LA, LF, _bmL.copy(_caR).negate(), BEAM.arms * k); } } }
-// m1973 (his: "we built rope bridges with proper rope, dynamics and railings in another sandbox -- swap the Red Hollows' dead ones for real
+// m1974 (his: "we built rope bridges with proper rope, dynamics and railings in another sandbox -- swap the Red Hollows' dead ones for real
 // ones"): ROPE SPANS -- the Rope Course's bridge (ROPEB: four verlet ropes, the deck a floor that dips under his weight, bounces on a landing,
 // ripples with his steps, swings with the wind and carries him, hand ropes he cannot walk through, his lean) as MANY bridges, in ANY direction,
 // their two ends at any heights. Each span keeps its ropes in its OWN frame (x along from 0 to `L`, z across, y the world's) inside a turned
@@ -36629,7 +36629,7 @@ function wingFrame(dt) {
   if (!WG.spine) { g.visible = false; return; }
   g.visible = true;
   // her body's frame: the flight's own while flying, the drawn yaw otherwise
-  // m1973 (his: "jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance from my body -- it
+  // m1974 (his: "jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance from my body -- it
   // should always be mounted to whatever spine joint it's on"): it took the spine's POSITION but its turn from his heading / the flight's frame, so a flip
   // rolled his back out from under it. It turns WITH the spine joint now: `WG.corr` (the spine's own axes -> the pack's body frame) is taken once on a calm
   // standing frame (`inv(spine) * yaw(faceH)`), and from then on the pack is the joint's world turn times that. Before the first calm frame: the old rule.
@@ -57472,7 +57472,7 @@ function godMenuOpen(on) {
   if (inHome()) btn('RED HOLLOWS: ' + (AGE.st === 'fallen' ? 'FALLEN' : 'RESTORED') + ' (tap: watch it turn ' + (AGE.st === 'fallen' ? 'RESTORED' : 'FALLEN') + ')', () => hwAgeLive());
   if (inHome() && GCASTLE.plaza) btn('GO: SKY CASTLE (' + (AGE.st === 'fallen' ? 'crashed on the plateau: FALLEN' : 'in the sky: RESTORED') + ')', () => { const [x, y, z] = GCASTLE.plaza; player.pos.set(x, y + 1 + GCASTLE.colY, z); player.vel.set(0, 0, 0); godMenuOpen(0); });
   if (inHome() && GCASTLE.liftAt) btn('GO: SKY CASTLE LIFT (its foot, on the plateau)', () => { const [x, y, z] = GCASTLE.liftAt; player.pos.set(x + 3, y + 1, z); player.vel.set(0, 0, 0); godMenuOpen(0); });
-  btn('LOOK: ' + (LOOK.soft ? 'SOFT (tap for CURRENT)' : 'CURRENT (tap for SOFT)'), () => { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (e) {} godMenuOpen(0); godMenuOpen(1); });     // m1973: the soft look, here beside the old render switches
+  btn('LOOK: ' + (LOOK.soft ? 'SOFT (tap for CURRENT)' : 'CURRENT (tap for SOFT)'), () => { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (e) {} godMenuOpen(0); godMenuOpen(1); });     // m1974: the soft look, here beside the old render switches
   { const al = /alien_pano/.test(SKY.img); btn('SKY: ' + (al ? 'THE ALIEN PANO' : 'THE GAME HDRI') + ' (tap for ' + (al ? 'the game HDRI' : 'the alien pano') + ', reloads)', () => { try { localStorage.setItem('mel.skypick', al ? 'game' : 'alien'); } catch (e) {} location.replace(location.pathname); }); }   // m435
   btn('ALL KIT ' + (GEAR.all ? 'ON' : 'OFF') + ' (campaign: everything, not just what he has found)', () => { GEAR.all = GEAR.all ? 0 : 1; try { localStorage.setItem('mel.allkit', GEAR.all ? '1' : '0'); } catch (e) {} GEAR.pack = gearHas('pack'); gearSync(1); godMenuOpen(1); });   // m465
   btn('TALK FONT ' + TALK.font.toUpperCase() + ' (comic / hand / plain)', () => { const F = TALK.fonts; TALK.font = F[(F.indexOf(TALK.font) + 1) % F.length]; try { localStorage.setItem('mel.talkfont', TALK.font); } catch (e) {} if (talk.cur) talkShow(); godMenuOpen(1); });   // m471
@@ -59624,7 +59624,7 @@ function frameBody() {
     idleFixPose();                     // m1820: the Dwarf idle's arms and wrists corrected
     runToePose();                      // m1853: no toe flick on the run's back stride
     ropePose();                        // m1805: on the rope bridge, leaning against its tilt and swing
-    rspPose();                         // m1973: and on the Hollows' rope spans
+    rspPose();                         // m1974: and on the Hollows' rope spans
     vinePose();                        // m1856: along the swing rope
     pumpPose(dt);                      // m1883: the swing's pump (rope and high bar) + his hands on the rope
     loopPose();                        // m1889: his up toward the loop's centre
@@ -59639,7 +59639,7 @@ function frameBody() {
     if (DRAGZ.ui && !(player.dragon && player.dragon.st === 'sit')) dragAimUi();     // m1703: the FIRE button goes when he leaves the saddle
     bowStep(dt);                       // m1719: the bow in his hands, after every pose
     dragRiderPose();                   // m1619: in the saddle, pitched and banked with his dragon (after every pose that writes the root)
-    rig.root.updateMatrixWorld(true); wingFrame(dt);     // m1973: the wing-pack AFTER every pose that turns the root (the air flips, the bar, the dragon...) -- it was placed before them, so a flip turned him out from under it
+    rig.root.updateMatrixWorld(true); wingFrame(dt);     // m1974: the wing-pack AFTER every pose that turns the root (the air flips, the bar, the dragon...) -- it was placed before them, so a flip turned him out from under it
     rig.root.updateMatrixWorld(true); springsStep(dt);     // m1058: hair / cape chains, on the FINAL root (after every pose above)
     dollStep(dt);
     if (GROPE.list.length) gymRopeStep(dt);
@@ -61630,7 +61630,7 @@ function gcFolk() { const A = GCASTLE, F = GCFOLK; if (!A.g) return; const g = A
       A.folk = out;
     } catch (e) { console.error('[melee] sky castle townsfolk', e); note('CASTLE FOLK FAILED'); } finally { A.folkBusy = 0; } })(); }
 const _gcF = new THREE.Vector3();
-function gcastleStep(dt) { const A = GCASTLE; if (A.spans) { const up = A.g && A.g.visible && Math.abs(A.g.position.y) < .01; for (const I of A.spans) I.live = up; }     /* m1973: its live rope bridges are there only while it is up */
+function gcastleStep(dt) { const A = GCASTLE; if (A.spans) { const up = A.g && A.g.visible && Math.abs(A.g.position.y) < .01; for (const I of A.spans) I.live = up; }     /* m1974: its live rope bridges are there only while it is up */
   gcLiftStep(dt); gcIsleStep(); gcGuards(); gcFolk();
   // m1789: the throne room's brazier burns -- flame-coloured sparks lift off it, a curl of smoke now and then (only while the castle is up)
   if (A.brazier && A.g && Math.abs(A.g.position.y) < .01 && Math.hypot(player.pos.x - A.g.position.x, player.pos.z - A.g.position.z) < 40) { A.bt = (A.bt || 0) - dt; if (A.bt <= 0) { A.bt = .07; const w = A.g.localToWorld(new THREE.Vector3(...A.brazier)); spkBurst(w.x, w.y - .3, w.z, 2, { col: Math.random() < .5 ? [1, .55, .15] : [1, .85, .35], spread: .7, up: 2.2, size: .13, life: .55 }); if (Math.random() < .08) smokeAt(w.x, w.y + .4, w.z, 1, .8, [.4, .36, .34]); } } if (A.orb) { const t = performance.now() * .001; A.orb.rotation.x = Math.sin(t * .9) * .09; A.orb.rotation.z = Math.sin(t * .63 + 1) * .06; } if (!A.g || Math.abs(A.g.position.y) > .01 || !A.chim) return; A.st = (A.st || 0) - dt; if (A.st > 0) return; A.st = .3;
@@ -61716,14 +61716,14 @@ function gcastleBuild() { const b0 = BOXES.length, A = GCASTLE, [cx, cz] = A.at,
       { const J = brJoint([ux * r0, y0, uz * r0], [ux, uz], .78, { noDeck: 1, noStrut: 1, back: 1.6 }); for (const q of J.tim) putR(q, tim); for (const q of J.cap) putR(q, jGold); for (const q of J.red) putR(q, jRed); for (const q of J.rope) putR(q, rope); }
       jEnd([ux * L0, top, uz * L0], [-ux, -uz], I[5]);
       { const C4 = [[-1.2, r0 - 2.4], [1.2, r0 - 2.4], [1.2, r0], [-1.2, r0]].map(([w, r]) => { wv.set(ux * r + vx * w, y0 + .01, uz * r + vz * w).applyMatrix4(g.matrixWorld); return [wv.x, wv.y, wv.z]; }); tris.push(...C4[0], ...C4[1], ...C4[2], ...C4[0], ...C4[2], ...C4[3]); }
-      // m1973: the span is a LIVE rope bridge (`rspAdd`): lawn end still, islet end riding the islet's bob
+      // m1974: the span is a LIVE rope bridge (`rspAdd`): lawn end still, islet end riding the islet's bob
       { const w0 = new THREE.Vector3(ux * r0, y0, uz * r0).applyMatrix4(g.matrixWorld), w1 = new THREE.Vector3(ux * L0, top, uz * L0).applyMatrix4(g.matrixWorld); A.spans.push(rspAdd(w0.toArray(), w1.toArray(), { w: 1.5, bob: [null, I[5]] })); } }
     // pass 17 (m1792): a RING of rope bridges joins every islet to its neighbours (0-1-2-...-8-0), so all nine shrines and rocks are walkable
     // from the two on the lawn's bridges; each spans edge to edge at the islets' tops (their bob is .3, inside a step)
     const MR0 = new Map(MR); MR.clear(); A.rtris = []; const isl = [...A.islets].sort((p, q) => p[6] - q[6]); A.ringBridges = 0;
     for (let i = 0; i < isl.length; i++) { const P0 = isl[i], P1 = isl[(i + 1) % isl.length], dx = P1[0] - P0[0], dz = P1[2] - P0[2], D = Math.hypot(dx, dz), ux = dx / D, uz = dz / D, vx = -uz, vz = ux;
       const sx = P0[0] + ux * P0[3] * .55, sz = P0[2] + uz * P0[3] * .55, ex = P1[0] - ux * P1[3] * .55, ez = P1[2] - uz * P1[3] * .55, L = Math.hypot(ex - sx, ez - sz), N = Math.ceil(L / .5), rails = [[], []], ry = Math.atan2(ux, uz);
-      { const w0 = new THREE.Vector3(sx, P0[4], sz).applyMatrix4(g.matrixWorld), w1 = new THREE.Vector3(ex, P1[4], ez).applyMatrix4(g.matrixWorld); A.spans.push(rspAdd(w0.toArray(), w1.toArray(), { w: 1.5, bob: [P0[5], P1[5]] })); }     // m1973: live
+      { const w0 = new THREE.Vector3(sx, P0[4], sz).applyMatrix4(g.matrixWorld), w1 = new THREE.Vector3(ex, P1[4], ez).applyMatrix4(g.matrixWorld); A.spans.push(rspAdd(w0.toArray(), w1.toArray(), { w: 1.5, bob: [P0[5], P1[5]] })); }     // m1974: live
       A.ringBridges++; jEnd([sx, P0[4], sz], [ux, uz], P0[5]); jEnd([ex, P1[4], ez], [-ux, -uz], P1[5]); }
     for (const [m, list] of MR0) { const o = new THREE.Mesh(mergeGeometries(list), m); o.castShadow = true; g.add(o); } for (const [m, list] of MR) { const o = new THREE.Mesh(mergeGeometries(list), m); o.castShadow = true; g.add(o); A.isle.push(o); } for (const [m, list] of MJ) { const o = new THREE.Mesh(mergeGeometries(list), m); o.castShadow = true; g.add(o); A.isle.push(o); } }
   // THE KEEP (m1773, pass 4 of 6; his sheet's FRONT and ARCHITECTURE DETAIL): on the plaza a round HALL (cream stone, a big arched wooden
@@ -62859,7 +62859,7 @@ function hollowDress() {
   // ROPE BRIDGES across the canyon, high up, sagging; banners hang from them
   const ban = [], banM = new THREE.MeshStandardMaterial({ map: hwBanner(), side: THREE.DoubleSide, roughness: .9, transparent: true, alphaTest: .4 });
   // m1971: each end is a JOINT (`brJoint`): a stone pier and timber landing where the ledge path tops out, two anchor posts the rails tie to,
-  // a red lintel, tie-backs into the wall (m1973: the span between the posts is a live rope bridge, `rspAdd`)
+  // a red lintel, tie-backs into the wall (m1974: the span between the posts is a live rope bridge, `rspAdd`)
   { const plank = [], rope = [], J = { deck: [], tim: [], cap: [], red: [], rope: [] }, pier = []; for (const [z, y0] of [[-24, 15], [32, 21]]) { const xa = hwWallAt(z, -1, y0 + .3, -1.2), xb = hwWallAt(z, 1, y0 + .3, -1.2), N = Math.max(12, Math.round(Math.abs(xb - xa) / .62)), sag = Math.abs(xb - xa) * .07;     // anchored IN the wall at its height
       const at = u => [xa + (xb - xa) * u, y0 - sag * 4 * u * (1 - u), z];
       for (const side of [-1, 1]) hwPath(side, z, y0, z < 0 ? -1 : 1);     // m1114: a ledge path up the wall to each end
@@ -62870,7 +62870,7 @@ function hollowDress() {
         // the pier stands on the side AWAY from the path (the path drops off the bridge's axis toward `dir`), so it never buries the path
         const dz = z < 0 ? -1 : 1, zc = z - dz * .8; pg.scale(1, 1, 2.2 / 3.4); pg.translate(xp[k] + sd * 1.3, E[1] - 2.25, zc); pier.push(pg); hwSolid(pg, .6, E[1] - 4.35);
         const x0 = xf[k] + sd * .3, x1 = xp[k] - sd * .2, za = z - dz * 1.9, zb = z + dz * .3, yt = E[1] - .01; triAdd(x0, yt, za, x1, yt, za, x1, yt, zb); triAdd(x0, yt, za, x1, yt, zb, x0, yt, zb); triAdd(x0, yt, za, x1, yt, zb, x1, yt, za); triAdd(x0, yt, za, x0, yt, zb, x1, yt, zb); }
-      // m1973: the span itself is a LIVE rope bridge (`rspAdd`, the Rope Course's), pinned at the two posts: it dips under him, bounces,
+      // m1974: the span itself is a LIVE rope bridge (`rspAdd`, the Rope Course's), pinned at the two posts: it dips under him, bounces,
       // sways, and its hand ropes hold him on (the old static planks, ropes, walk tris and the three banners on it are gone)
       rspAdd([xp[0], y0, z], [xp[1], y0, z], { w: 2.0 }); }     /* the ends level with the path tops (the old deck's sag put them a metre under) */
     rwMesh(J.deck, hwPaint(rwMat(0x6e4a2e), 'planks')); rwMesh(J.rope.map(q => { q.deleteAttribute('uv'); return q; }), rwMat(0x9a7a50, { roughness: 1 }));
