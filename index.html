@@ -15633,7 +15633,7 @@ function arenaUi() {
       else if (a === 'cart') { CART.pose = CART.poses[(CART.poses.indexOf(CART.pose) + 1) % CART.poses.length]; try { localStorage.setItem('mel.cart2', CART.pose); } catch (err) {} }
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
-      else if (a === 'hdrop') { HDROP.want = 1; }     // m15HD
+      else if (a === 'hdrop') { HDROP.want = 1; }     // m1953
       else if (a === 'audmode') { SFXM.simple = !SFXM.simple; try { localStorage.setItem('mel.audiomode', SFXM.simple ? 'simple' : 'heavy'); } catch (err) {} try { SFX.ctx && SFX.ctx.close(); } catch (err) {} SFX.ctx = null; SFX.ready = 0; sfxWake(); }     // m1943
       else if (a === 'lhold') { LHOLD.pick = LHOLD.picks[(LHOLD.picks.indexOf(LHOLD.pick) + 1) % LHOLD.picks.length]; try { localStorage.setItem('mel.lhold', LHOLD.pick); } catch (err) {} }     // m1093
       else if (a === 'prewarm') { BOOTWARM.kinds = BOOTWARM.kinds ? 0 : 1; try { localStorage.setItem('mel.prewarm', BOOTWARM.kinds ? '1' : '0'); } catch (err) {} }     // m1100
@@ -35367,7 +35367,7 @@ function boardPose(dt) {
   }
 }
 
-// m15HD: THE HERO DROP -- a level's ENTRANCE (his: "the entrance of the level shows him falling through the air for a second, then he slams down to the
+// m1953: THE HERO DROP -- a level's ENTRANCE (his: "the entrance of the level shows him falling through the air for a second, then he slams down to the
 // ground and there's dust settling -- a Superman land"). Two library clips Forge-baked onto Grumbo: `fall_hero` (Mixamo Fall A Loop, looped) and
 // `land_hero` (Mixamo Hard Landing (1), picked by rendering the candidates: it starts in the air and drops into a deep crouch, one hand to the ground,
 // knee bent -- Hard Landing jumps up first, Landing barely bends). `heroDrop(x, y, z, h, H)` puts him `H` m over the spot and owns the body: he falls in
@@ -35396,7 +35396,7 @@ function hdropStep(dt, s) { const p = player, D = p.hdrop; D.t += dt;
   if (D.t >= L || (D.t > L * HDROP.ctl && s && s.mag > .3)) p.hdrop = null;
   return 1; }
 function stepPlayer(dt) {
-  if (HDROP.want && rig.actions && rig.actions[HDROP.land]) { HDROP.want = 0; heroDrop(player.pos.x, player.pos.y, player.pos.z, player.faceH); }     // m15HD
+  if (HDROP.want && rig.actions && rig.actions[HDROP.land]) { HDROP.want = 0; heroDrop(player.pos.x, player.pos.y, player.pos.z, player.faceH); }     // m1953
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
   if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (DRAGZ.on) dragStep(dt); }
   if (PLANT.list.length) plantStep(dt);     // m1424
@@ -35410,7 +35410,7 @@ function stepPlayer(dt) {
   p.lock = findLock();
   if (p.lock && p.lock !== hadLock) snd('lock', { g: .3, r: 1.5 });
   const s = p.lock ? stickLocked(p.lock) : stickWorld();
-  if (p.hdrop) { hdropStep(dt, s); return; }     // m15HD: the hero drop owns the body
+  if (p.hdrop) { hdropStep(dt, s); return; }     // m1953: the hero drop owns the body
 
   // **THE SLAM ENDS WHEN HE MEETS THE GROUND (m81)**, which is the opposite of every other
   // strike here -- they all end when he leaves it. That is why this is its own branch and not a
@@ -36924,7 +36924,7 @@ function rigAnim(dt) {
   // **AND WITH ZAP'S POOL ON HIM IT IS THE ORDINARY PATH (m119).** `morphAnim` is the three
   // clips a kind carries of its own; once `mphBorrow` has put zap's 50-odd on the skin, every
   // name below resolves and there is nothing left for a second animation path to do.
-  if (p.hdrop) { const nm = p.hdrop.st === 'fall' ? HDROP.fall : HDROP.land; if (rig.actions[nm]) { setWeights({ [nm]: 1 }, dt, .04); return; } }     // m15HD
+  if (p.hdrop) { const nm = p.hdrop.st === 'fall' ? HDROP.fall : HDROP.land; if (rig.actions[nm]) { setWeights({ [nm]: 1 }, dt, .04); return; } }     // m1953
   if (p.dragon && (!p.mphK || rig.borrowed || rig.actions.driving)) { dragAnim(dt, t); return; }     // m1614: climbing on, seated, climbing off (m1624: ahead of a worn form, when the skin has the seat)
   if (p.mphK && !rig.borrowed) { morphAnim(dt); return; }
 

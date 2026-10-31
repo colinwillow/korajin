@@ -16,7 +16,7 @@ build (after `templeHome`; a fall respawn is still a plain `templeHome`) and lif
 `slamLand` does what it always does: the shockwave ring, the dust and grit ring, the crack decal, the camera shake, and the clip played out as
 the get-up. While it runs the pads are not his (left stick and jump zeroed each frame, from `templeTick`, which steps before the stick is read);
 control returns when he is grounded with the slam and the landing over (`max` 6 s failsafe), with a "THE SKY TEMPLE" toast. Shipped unverified.
-## m15HD -- the HERO DROP: a level entrance (fall, superhero landing, dust)
+## m1953 -- the HERO DROP: a level entrance (fall, superhero landing, dust)
 His ask (Oct 31): *"an animation from Mixamo where he's superhero-slammed down to the ground -- for certain levels the entrance shows him falling through
 the air for a second, then he slams down and there's dust settling, like a Spider-Man or Superman land. Let me know once you add it, and I can use it
 in the temple."*
