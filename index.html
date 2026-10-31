@@ -69237,7 +69237,7 @@ const LB = { on: 0, KINDS: {
     swing: { p: { h: 12, len: 9 }, c: 0xb3322a, label: 'SWING ROPE' },     /* m1884: a gantry and the gym's swing rope (VINE) */
     pad: { p: { s: 2.4, v: 18 }, c: 0x39e07a, label: 'BOUNCE PAD' },
     spawn: { p: {}, c: 0x2de0b0, label: 'SPAWN' },
-    sign: { p: { verb: 'slam', w: 3.2, h: 1.8 }, c: 0xd9b44a, label: 'SIGN' },     /* m1905: a breakable letter block -- do its VERB beside it and it shatters (DOCKET 38's tutorial)*/     /* m1902: where the player starts when the level is opened as a place */     /* m1884: step on it, launched up at `v` m/s */
+    sign: { p: { verb: 'slam', w: 3.2, h: 1.8 }, c: 0xd9b44a, label: 'SIGN' },     /* m1906: a breakable letter block -- do its VERB beside it and it shatters (DOCKET 38's tutorial)*/     /* m1902: where the player starts when the level is opened as a place */     /* m1884: step on it, launched up at `v` m/s */
     platform: { p: { w: 6, d: 4 }, c: 0xd9a441, label: 'PLATFORM', top: 4 },
     block: { p: { s: 2 }, c: 0xb3322a, label: 'BLOCK' } },
   PORTS: ['closed', 'open', 'balcony', 'bar', 'ladder'], PCOL: { closed: 0x9aa3ad, open: 0x47d16b, balcony: 0xffb02e, bar: 0xe6e9ee, ladder: 0xc8743a },     // m1882: + a HIGH BAR on that edge, a LADDER down that face
@@ -69597,7 +69597,7 @@ function lbCmd(a, k) { const L = LB.cur, P = LB.sel && L.pieces.find(q => q.id =
   else if (a === 'turn') P.yaw = ((P.yaw || 0) + 1) % 4;
   else if (a === 'roof') P.p = Object.assign({}, P.p, { roof: P.p && P.p.roof === 0 ? 1 : 0 });
   else if (a === 'style') { const cur = (P.p && P.p.style) || ''; P.p = Object.assign({}, P.p, { style: ({ '': 'brick', brick: 'mega', mega: 'tech', tech: 'block', block: '' })[cur] }); }     // m1894; m1898: '' = follow the level's THEME
-  else if (a === 'verb') { const vs = Object.keys(MOVEV.label), cur = (P.p && P.p.verb) || 'slam'; P.p = Object.assign({}, P.p, { verb: vs[(vs.indexOf(cur) + 1) % vs.length] }); }     // m1905
+  else if (a === 'verb') { const vs = Object.keys(MOVEV.label), cur = (P.p && P.p.verb) || 'slam'; P.p = Object.assign({}, P.p, { verb: vs[(vs.indexOf(cur) + 1) % vs.length] }); }     // m1906
   else if (a === 'steps') P.p = Object.assign({}, P.p, { steps: P.p && P.p.steps === 0 ? 1 : 0 });
   else if (a === 'size') { const K = LB.KINDS[P.kind], q = Object.assign({}, K.p, P.p), key = P.kind === 'tower' ? 'base' : P.kind === 'pad' ? 'v' : P.kind === 'lwall' || P.kind === 'qbowl' || P.kind === 'loop' ? 'r' : P.kind === 'swing' ? 'len' : P.kind === 'wall' || P.kind === 'monkey' ? 'len' : P.kind === 'chimney' ? 'gap' : P.kind === 'platform' ? 'w' : 's', st = P.kind === 'block' || P.kind === 'chimney' ? .5 : 1;
     P.p = Object.assign({}, P.p, { [key]: clamp(q[key] + st * +k, 1, 60) }); if (P.kind === 'platform') P.p.d = clamp(q.d + st * +k, 1, 60); }
@@ -69679,7 +69679,7 @@ function lbRopeDraw(B) { const N = B.N, P = i => { const u = i / N, s2 = B.sw * 
   for (const sd of [0, 1]) { const o = (sd ? 1 : -1) * B.W / 2 * 1.05; for (let i = 0; i < N; i++) { const a = pts[i].clone().add(new THREE.Vector3(B.px * o, 1, B.pz * o)), b = pts[i + 1].clone().add(new THREE.Vector3(B.px * o, 1, B.pz * o)), m = B.rails[sd][i];
       m.position.copy(a).lerp(b, .5); m.scale.set(1, a.distanceTo(b), 1); m.quaternion.setFromUnitVectors(_rbUp, b.sub(a).normalize()); } } }
 const _rbUp = new THREE.Vector3(0, 1, 0);
-// m1905: MOVE EVENTS (DOCKET 38). One watcher (`moveWatch`, each frame) compares his state with the last frame and announces each move once as it
+// m1906: MOVE EVENTS (DOCKET 38). One watcher (`moveWatch`, each frame) compares his state with the last frame and announces each move once as it
 // STARTS -- no move code is touched, so every verb is covered and a new one is a line here. `moveEv(k)` counts it and tells the subscribers.
 const MOVEV = { n: {}, subs: [], last: {}, label: { slam: 'DOWN', strike: 'SLASH', jump: 'JUMP', djump: 'DOUBLE', flip: 'FLIP', wallrun: 'WALL RUN', perch: 'PERCH', ledge: 'HANG', climb: 'CLIMB', bar: 'SWING', monkey: 'BARS', zip: 'ZIP', swing: 'ROPE', loop: 'LOOP', bowl: 'BOWL', pad: 'BOUNCE', bow: 'BOW' } };
 function moveEv(k) { MOVEV.n[k] = (MOVEV.n[k] || 0) + 1; for (const f of MOVEV.subs) f(k); }
@@ -69735,7 +69735,7 @@ function frameBody() {
     { const p = player; if ((p.aflip || p.barFly) && (p.loop || p.ledge || p.wrun || p.mantle || p.climb || p.rope || p.vine || p.mbar || p.zip || p.hook || (p.bar && p.aflip))) { p.aflip = null; p.aflipPop = 0; if (!p.bar) p.barFly = null; } }     // m1878 (his: "land on a ledge mid-flip and he's stuck in the tuck pose"): `airFlipStep` -- the only thing that ended a flip -- does not run in a hold, and rigAnim asks "mid flip?" first; any hold now ends it
     if (LB.pads && LB.pads.length) lbPadStep();     // m1884: the builder's bounce pads
     if (LB.rbs && LB.rbs.length) lbRopeStep(dt);     // m1904: the builder's rope bridges dip and sway
-    moveWatch(); lbSignStep(dt);     // m1905: move events (the tutorial's signal) + the builder's signs
+    moveWatch(); lbSignStep(dt);     // m1906: move events (the tutorial's signal) + the builder's signs
     stepAim(dt);          // one eased answer, before anything reads it
     stepKit(dt);
     kaimStep(dt);         // m1071: the charge's aim and its arc -- here, where it runs every frame (stepKit returns early in states)
