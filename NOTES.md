@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1965 -- THE SKY TEMPLE: the STORM -- rain, splashes on the floor, lightning
+
+His: *"It would be interesting to have rain and clouds and lightning... the rain falling, and the rain hitting the ground, weird little
+atmospheric effects."* Under the STORM sky only (SKY key -> STORM), three draws, all temple-scoped (`TSTORM` holds every number):
+- RAIN: 1,500 streaks in a 60 m box round the camera, slanted by the wind, animated entirely in the vertex shader and WORLD-anchored by wrapping
+  (running through it reads; it is not glued to the lens). Each is a 3 cm camera-facing RIBBON -- the first cut was `LineSegments`, which are
+  1 physical pixel at any distance: invisible at dpr 3.
+- SPLASHES: 140 pooled rings that grow and fade (.45 s) on the REAL floor round him (`groundAt` under each, skipped when nothing is within
+  12 m of his height), ~220 a second.
+- LIGHTNING: every 4-11 s a jagged ribbon from the clouds down past the horizon, 380-700 m out, and a DOUBLE flash (on, dip, on, decay) of the
+  hemisphere light, the sun and the sky's own brightness. A sky switch mid-flash restores the lights.
+No thunder: this repo has no thunder recording and one is not faked. Shipped unverified.
+
 ## m1964 -- THE SKY TEMPLE: real SKIES -- three generated 360 panoramas as background AND light (DAWN / DAY / STORM)
 
 His: *"Sunrise -- do we have an HDR already on this level? Clouds, lightning, sun... I don't think you're using one, that might add a lot. We
