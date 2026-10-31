@@ -5,6 +5,27 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1917 -- THE SKY TEMPLE IS MASSIVE (x2.5), with ancient-tech accents and wall-run chevrons (his)
+
+His: *"this castle is gonna be massive, like very large -- everything in this game needs to size up a little, because his ninja abilities
+are so vast: he can run up hundred-foot buildings, clear hundred-foot distances. These buildings need to be absolutely huge, and with
+hugeness we can add more complexity."* And the ramp image (the level builder's ANCIENT TECH style -- basalt, jade glyphs, white chevrons):
+*"incorporate accents of this -- not everywhere, pieces of it, I like this mixed."*
+- `TEMPLE` stays in DESIGN units; `templeScale(T)` builds a copy at `scale` 2.5 (tower top ~105 m over the paving, the halo ~125 m, the podium
+  105 x 85 m, the island 170 x 210 m, spikes to 110 m, satellites 115-160 m out). What is sized to HIM does not grow: stairs keep .3 x .5
+  steps and get 2.5x as many (the grand stair is 50 steps, 15 m), rail posts and their 1.1 m colliders, ladder rungs, the high bar, carpet
+  pattern. Typed-in-metre shapes (door, statues -- now 17 m guardians, palms, discs, braziers at x1.6, the halo, vines, lantern brackets) take
+  `p.k`. The far islands spread x1.5 (`farScale`), their heights rebased on the new `top`.
+- `top` 60 -> **180** (the spikes hang 120 m; the forge's invisible floor is at 0), the clouds to 98-113, respawn below 135 (`fallY` 45);
+  fog 300-1700, the sky dome 2200, `camera.far` 2600, the cloud planes 4600 m with their fades pushed out.
+- ACCENTS, his ramp style: blocks take `style: 'tech'` -> basalt with jade glyphs (the pinnacle, all four satellites' hanging bodies, the side
+  landings); WHITE CHEVRONS (`lbArrowMat`, route kind `chev`, one draw, also in the block-out -- they are function) up the wall-run faces: tier
+  1 beside the first ledges, the tower's west face, both pylons' fronts.
+- THE ROUTE AT THIS SIZE: ledge spacings are now ~8 m vertical -- beyond a jump's catch (~4.4 m), inside a sprint wall run's ~12 m (`WRUN.upMax`
+  17 m/s against `gUp` 12). It is a WALL-RUN route now, chevrons marking where. Unplayed; the bar-to-tower gap (12 m) is the likeliest to need
+  a step added. Ladders are 45 m.
+- Checked headless: 43 draws, 149k triangles on the widest frame (was 100k; the 2.5x stairs and the spikes' extra rings).
+
 ## m1916 -- clean-out: the police / wanted-stars system is gone
 His go-ahead: *"Yeah, probably keep going with the cleaner... the one thing I worry is that we accidentally clean out some stuff we need."*
 It had been OFF since m895 (*"get rid of the police star system"*), so nothing on screen changes.
