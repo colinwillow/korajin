@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1961 -- THE SKY TEMPLE: real GOLD (worn, engraved, triplanar) and no more checkpoint rings
+
+His (m1956 screenshot, standing on a gold top): *"a giant gold plane... it just looks like a solid plane. Can we texture this gold to look more
+realistic, imperfection maps, eroded gold? Also, what are these giant blue circles?"*
+- GOLD: a generated worn, engraved gilded-bronze map (`textures/temple_gold.webp`, seamless) on a new temple-only `templeGoldMat` (the kit's
+  `lbGoldMat` is untouched): sampled TRIPLANAR in world space (the gold is boxes, rods and tubes whose own UVs stretch one tile over a whole face),
+  2.2 m a tile; the map's brightness drives ROUGHNESS (grime in the grooves dull .7, the rubbed raised gold .3) and a slow tarnish blotch varies
+  it. `TGOLD` holds the numbers. First pass at metalness .72 rendered dark olive bronze -- there is no environment map in the temple for a metal to
+  reflect -- so it is .42 with the tint and emissive lifted.
+- THE RINGS were the CHECKPOINT markers (a jade ring on the floor at every `cp`). The drawn ring is gone; the checkpoint itself is unchanged (it
+  still saves where he respawns and still toasts CHECKPOINT / THE HALO).
+Same draw calls. Shipped unverified.
+
 ## m1959 -- THE SKY TEMPLE: generated CLOTH -- the carpet runner, the banners, a weave
 
 His (m1956 screenshot on the stair carpet, flat red and yellow): *"Can we make some textures for the cloth... a few general cloth textures and
