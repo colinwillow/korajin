@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1990 -- THE JINRA REFINERY, pass 11: every material painted
+
+- Three maps generated (gpt-image-2, `gen.sh`) and tiled (`seam.py`, which also prints the linear mean): `textures/jinra_adobe.webp` (clay
+  plaster, the mound outside and the inner shell, tinted), `jinra_iron.webp` (dark forged iron with rust blooms) and `jinra_teal.webp` (teal
+  paint over copper with verdigris streaks, the pipes). All through `triMat` (world-space triplanar, relief on).
+- The iron and the vessels' wood are this building's own: `M = Object.assign({}, jvesMats(), { iron, wood })`, so `jvesPut` here gets them
+  and the shared kit elsewhere is untouched.
+- The teal cloth (awnings, sails, banners, rug): a warp/weft on the canvas, sun-faded streaks, grime toward the hem, darns.
+- The mound's shell was FACETED -- normals computed on the non-indexed copy are per face. Now computed on the indexed shell and carried
+  through the cut. The bead strings off the collar hung down THROUGH the ceiling into the room: gone (the pipes' strings stay).
+- Already painted before this pass: the timber, planks and copper (the texture library), the sand cap, the rock (hwPaint).
+Five passes asked (7-11) are done: the views, the deck, the shopfronts, the cloth, the textures. Unlooked-at on a phone.
+
 ## m1989 -- THE JINRA REFINERY, pass 10: the cloth and the dressing
 
 - `sail(Pa, Pb, Pc, Pd, sag)`: a bilinear cloth patch between four points, its middle let down by `sag`, in the teal awning material (its
