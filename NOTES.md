@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15WA -- wing suit: the folded pack's flicker, arms at his sides, up = front flip, tucked flips, turns about his middle (Oct 31 2026)
+- *"A weird triangle thing flashing on the folded backpack."* Folded, the outer two washi panels lie back over the first at 169 deg (`wingFold`) and CUT
+  THROUGH it near the hinge -- z-fighting slivers. They are hidden while folded (`u < .04`); the first panel is the folded wing.
+- *"Arms should be at his side, like an idle; the legs are good."* His idle's shoulder / arm / forearm turns are read once off a calm standing frame
+  (`rig.armQ`, per model) and the flight pose's arms are laid back to them (`WING.armsSide` 1 = fully, 0 = the clip's arms).
+- *"Flick up should be a front flip, down a backflip."* Swapped. *"He needs to tuck."* The flip plays `tuck` (and the hip hold lets go for it).
+- *"It rotates about his origin, not his hips, between the fly and non-fly states."* m1993's ease-in slerped the ROOT's turn after the hip pivot had
+  been placed for the target, so the body swung round his feet. The blend is on the BODY's turn (`_wkB`, facing offset taken off the captured root)
+  BEFORE the pivot, so every frame of it turns about his middle.
+
 ## m1997 -- THE FROZEN POND (Oct 31 2026)
 Snow pass 2's pond, at (27, 30): a lobed sheet (r ~11 m) of a NEW painted ice tile (`textures/snow_ice.webp`: turquoise, white fractures, trapped
 bubbles; glossy, a teal glow from under), the pack swept off it with a low bank round the edge (`POND.bank`), pines / rocks / bamboo kept off. On it he
