@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15SK -- the katana and the arrows throw the SNOW (Oct 31 2026)
+## m2003 -- the katana and the arrows throw the SNOW (Oct 31 2026)
 *"In the snow, the katana attacks -- the whirlwind, the slam, all of them -- should affect the snow; the slashes kick it up; the exploding arrows make it go
 everywhere."* In the Snowfield (`snowStep`, all reading the real blade: `bladeSeg` + `muzzleWorld`):
 - SLASHES: three points along the blade, tracked frame to frame; any swing whose blade passes within 1.1 m of the pack at > 3 m/s throws powder ALONG
