@@ -22146,15 +22146,19 @@ function tornGo() { const p = player; TORN.stat.charges++; p.torn = { n: TORN.sp
 // each restart the body's heading jumps -276 deg to cancel the pose snapping back, so the eye sees one unbroken turn. The first spin starts
 // from the clip's own wind-up (0), the last plays on into the settle (`last`). And it LAUNCHES: `go` m/s along the way he faced, bleeding
 // at `bleed`/s, with the left stick steering on top (`TORN.speed`).
-const WHIRL = { on: 1, idle: .3, spins: [2, 3], R: 3, Rk: 1, dmg: 3, power: 1.1, dur: .21,     /* m1347: *"at least double the speed"* -- .42 -> .21 s a spin */ from: .078, to: .3125, last: .36, turn: 276, go: 8, bleed: 1.1, stat: { whirls: 0, hits: 0 } };
-function whirlGo(k, mir) { const p = player; WHIRL.stat.whirls++; const g = WHIRL.go * (.7 + .3 * k); p.torn = { n: Math.round(lerp(WHIRL.spins[0], WHIRL.spins[1], k)), whirl: 1, k, i: 0, mir: !!(mir && rig.actions[TORNADO.sword + '_m']), vx: Math.sin(p.faceH) * g, vz: Math.cos(p.faceH) * g }; p.ltHold = 0; p.jump = 0; whirlSpin(); }
+const WHIRL = { leftRev: 1, on: 1, idle: .3, spins: [2, 3], R: 3, Rk: 1, dmg: 3, power: 1.1, dur: .21,     /* m1347: *"at least double the speed"* -- .42 -> .21 s a spin */ from: .078, to: .3125, last: .36, turn: 276, go: 8, bleed: 1.1, stat: { whirls: 0, hits: 0 } };
+function whirlGo(k, mir) { const p = player; WHIRL.stat.whirls++; const g = WHIRL.go * (.7 + .3 * k); p.torn = { n: Math.round(lerp(WHIRL.spins[0], WHIRL.spins[1], k)), whirl: 1, k, i: 0, mir: !!(mir && (WHIRL.leftRev || rig.actions[TORNADO.sword + '_m'])), vx: Math.sin(p.faceH) * g, vz: Math.cos(p.faceH) * g }; p.ltHold = 0; p.jump = 0; whirlSpin(); }
 function whirlSpin() {
-  const p = player, nm = TORNADO.sword + (p.torn && p.torn.mir ? '_m' : ''); if (!rig.actions[nm]) { p.torn = null; return; }     // m1723: `mir` = the leftward whirl
+  // m15WL (his: "hold right and release: the right whirlwind; hold LEFT and he tries the same but his sword isn't really out -- maybe because you mirrored
+  // the animation and he's reaching out with his left hand, which doesn't have a sword"): exactly that -- `katana_360h_m` swaps his arms, so the sweep
+  // reached out with the EMPTY hand. `WHIRL.leftRev` 1: the leftward whirl is the ORIGINAL clip played BACKWARDS -- the same spin turning the other way,
+  // the katana still in the hand that reaches. 0 = the mirror (m1723).
+  const p = player, rev = !!(p.torn && p.torn.mir && WHIRL.leftRev), nm = TORNADO.sword + (p.torn && p.torn.mir && !rev ? '_m' : ''); if (!rig.actions[nm]) { p.torn = null; return; }     // m1723: `mir` = the leftward whirl
   p.melee = 1; p.meleeIx = 0; p.meleeT = 0; p.meleeName = nm; p.meleeAir = 0; p.meleeBody = 0; p.melWall = 0; p.melFist = 0; p.melFront = 0; p.melWin = null; p.multi = 1;
   p.meleeDur = WHIRL.dur; p.meleeChain = 0; p.melFired = 0; p.melU = 0; p.swPrev = null; p.swRootX = null; p.swRootZ = null; p.melV = 0; p.melTgt = null; p.melH = p.faceH;
   { const W = WHIRL, T = p.torn || { i: 0, n: 1 }, first = !T.i, lastS = T.n <= 1, a0 = first ? 0 : W.from, a1 = lastS ? W.last : W.to, L0 = clipLen(nm);
     if (!first) { p.faceH -= (T.mir ? -1 : 1) * W.turn * Math.PI / 180; p.heading = p.faceH; p.melH = p.faceH; }     /* cancel the pose's snap-back: one unbroken turn */
-    p.meleeDur = W.dur * (a1 - a0) / (W.to - W.from); playOnce(nm, L0 * (a1 - a0) / p.meleeDur); rig.actions[nm].time = L0 * a0; T.i = (T.i || 0) + 1; }
+    p.meleeDur = W.dur * (a1 - a0) / (W.to - W.from); const rt = L0 * (a1 - a0) / p.meleeDur; playOnce(nm, rev ? -rt : rt); rig.actions[nm].time = L0 * (rev ? a1 : a0); T.i = (T.i || 0) + 1; }
   snd('swoosh', { r: .7 + Math.random() * .2, g: 1 }); if (!p.torn || p.torn.i <= 1) snd('swoosh', { r: 1.1, g: .6 });
   // the RING: everyone within reach, all the way round, takes the blow outward (the clip's own sweep may catch them too -- `tierHit`'s 140 ms
   // debounce keeps that one blow), and machines / walls / props round him take it too

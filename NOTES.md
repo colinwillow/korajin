@@ -17,6 +17,15 @@ just tint them... we need to start texturing the level a little better."* Three 
   temple_weave.webp   neutral grey canvas weave, seamless -- the "general cloth to tint": multiplied lightly over the banners (6 x 24 tiles); it is
                       the map to put under any new cloth
 Same draw calls. Re-roll any: `python3 tools/temple_textures.py carpet|weave|banner`. Shipped unverified.
+## m15WL -- the LEFT whirlwind swings the sword (the original clip backwards, not its mirror)
+His words (Oct 31): *"charge the katana, hold RIGHT on the left stick and release: the proper whirlwind. Hold LEFT and he tries the same but his sword
+isn't really out -- it doesn't have the same outward reach. Maybe because you mirrored the animation and he's reaching out with his left hand, which
+doesn't have a sword in it."*
+- He was right: the leftward whirl played `katana_360h_m`, the MIRROR -- the arms swap, so the sweep reached out with the empty hand while the katana
+  (mounted on the right) trailed. `WHIRL.leftRev` 1: the leftward whirl is `katana_360h` played BACKWARDS over the same window (timescale -3.57,
+  starting at the window's end) -- the same spin turning the other way, the sword in the hand that reaches. 0 = the mirror.
+- Rendered from above, six moments of each: the right spin and the left spin both carry the blade out.
+- Not changed: the right pad's left side-slash still uses mirrored clips (`KATANA.orig.left`); say if it reads the same way.
 
 ## m1957 -- THE SKY TEMPLE: colliders that floated him, MEASURED and fixed
 
