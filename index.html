@@ -34490,14 +34490,14 @@ function idlePick() { const I = IDLEPICK; if (HERO.pick !== 'agoblin' || !rig.ac
   if (I.boredOn != null && (!still || now - I.boredOn > bd.getClip().duration - .25)) { I.boredOn = null; I.stillT = 0; }
   const nm = I.boredOn != null ? I.bored : pick; CLIPS.idle = nm;
   if (nm !== I.bored) { const a = rig.actions[nm]; if (a && a.loop !== THREE.LoopRepeat) { ONCE.delete(nm); a.setLoop(THREE.LoopRepeat, Infinity); a.clampWhenFinished = false; } idleAmp(nm, I.energy); } }
-const STAIRS = { on: 1, meas: {},     /* m1820 turned it off (his: "walking upstairs is absolutely f---ed" -- the glide, the rate); m15SW: back on, the rate measured by `stairsMeasure` */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 2.6, ref: {} };
+const STAIRS = { on: 1, meas: {},     /* m1820 turned it off (his: "walking upstairs is absolutely f---ed" -- the glide, the rate); m1947: back on, the rate measured by `stairsMeasure` */ look: .7, upAt: .22, downAt: .22, out: .1, half: .08, runAt: 4.2, tsLo: .6, tsHi: 2.6, ref: {} };
 function stairsWant(sp) { const p = player; if (!STAIRS.on || !p.grounded || sp < .6 || p.melee || p.roll || p.slide || p.beam || p.wrun || p.ledge || p.board || p.riding || p.dragon) { p.slopeS = 0; p.stairs = ''; return ''; }
   const h = Math.atan2(p.vel.x, p.vel.z), fx = Math.sin(h), fz = Math.cos(h), L = STAIRS.look, y = p.pos.y;
   const a = groundAt(p.pos.x + fx * L, p.pos.z + fz * L, y + .7, .01), b = groundAt(p.pos.x - fx * L, p.pos.z - fz * L, y + .7, .01);
   const sl = isFinite(a) && isFinite(b) && a > y - 1.5 && b > y - 1.5 ? (a - b) / (2 * L) : 0; p.slopeS = damp(p.slopeS || 0, clamp(sl, -1.2, 1.2), STAIRS.half, 1 / 60);
   const s = p.slopeS, cur = p.stairs || '', up = cur.startsWith('stairs_u') || cur === 'stairs_run' ? s > STAIRS.out : s > STAIRS.upAt, dn = cur === 'stairs_down' ? s < -STAIRS.out : s < -STAIRS.downAt;
   const nm = up ? (sp > STAIRS.runAt && rig.actions.stairs_run ? 'stairs_run' : 'stairs_up') : dn ? 'stairs_down' : ''; p.stairs = nm && rig.actions[nm] ? nm : ''; return p.stairs; }
-// m15SW (his: "there should be a Mixamo stair walk clip -- it must've got messed up; we definitely need one"): what broke m1813 was the RATE. `arenaRef`
+// m1947 (his: "there should be a Mixamo stair walk clip -- it must've got messed up; we definitely need one"): what broke m1813 was the RATE. `arenaRef`
 // counts only frames whose stance foot is at the clip's LOWEST height -- right for a walk, wrong for a stair clip, where the planted foot stands on the
 // HIGHER tread and sinks as he rises -- so it found nothing and the clip played at a guessed 1.3 / 3.5 m/s: the glide. `stairsMeasure` reads the
 // clip the way a stair climb works: each frame the LOWER foot is the planted one; its backward speed (`h`) and its sink (`v`) at 1x, in metres on his

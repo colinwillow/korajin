@@ -20,7 +20,7 @@ In all five concepts the hanging satellite spires are the same sandstone masonry
 them; ours were the dark glyph basalt (`style: 'tech'`), which made four big dark wedges the loudest thing on the sides. The four inverted
 columns (`temple_pillarE/W_col`, `temple_satE/W_body`) drop the tech style and pick up the stone megalith skin plus the block dressing (gold band,
 studs, panels). Same boxes, same colliders: no route moves. Draw calls unchanged (63 wide). Shipped unverified.
-## m15SW -- the stair walk is back, at a MEASURED rate; the stair ramp is geometric
+## m1947 -- the stair walk is back, at a MEASURED rate; the stair ramp is geometric
 His correction (Oct 31): *"You're saying I decided the stair walk clip stays off -- that's not what I decided. When you implemented a so-called stair
 walk clip it didn't work: he was just gliding up the stairs and his feet were all f---ed. There should be a Mixamo stair walk clip; it must've got
 messed up. We definitely need a stair walk clip."* (m1820's note had read his "revert" as a verdict on stair clips; it was a verdict on MY version.)
