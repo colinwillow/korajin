@@ -72,6 +72,7 @@ difference, ship, repeat. The order, biggest first (re-ranked every pass):
 - [x] L4. The SATELLITES close in, on short beams at two levels, each a hanging lantern spire.
 - [~] L5. (medallion + rim cornice done) The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
 - [x] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.
+- [x] L8. (m1940) THE PORTAL: a pointed doorway (chamfered top corners, a gable crown, gold edges, a jade gem) and the two jackal guardians in JADE BRONZE out of the wall, flanking it.
 
 - [ ] it reads as his concept from the front, back, left and right (compare against the four-view sheet)
 - [ ] the route from the stair to the halo is climbable end to end with the game's moves, and the zipline brings you back

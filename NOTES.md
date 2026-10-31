@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1940 -- THE SKY TEMPLE look loop, pass 8: THE PORTAL (TEMPLE.md L8)
+
+Against `temple_02_front.png` the biggest miss was the focal point: his doorway is a tall POINTED portal with two big jade-armoured jackal
+guardians flanking it; ours was a square opening and the guardians were set back into the wall in the same dark glyph pattern as the new panels,
+so they vanished. Now: (1) the guardians are their own jade-bronze material (`temple_jade`, one draw call) and stand forward on the landing at
+(+-7.4, -1.6) design, out of the wall; the door braziers moved out to +-10.4 to make room. (2) the door dresser adds chamfered top corners in the
+opening, a stone gable crown over the lintel with gold edges and a gold chevron, a dark tympanum with a jade gem in a gold ring, a gold+jade finial,
+gold inner edges up the jambs. All crown pieces are above his head; the statue colliders move with their entries. 50 draws close, 63 wide.
+Shipped unverified.
+
 ## m1939 -- THE SKY TEMPLE look loop, pass 7: PANELS (TEMPLE.md L3 done)
 
 His concepts carry dark recessed panels framed in gold with jade window slits down every big face. `TEMPLE_SKY.block` (big blocks only) now
