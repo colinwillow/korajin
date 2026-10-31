@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15SK -- the katana and the arrows throw the SNOW (Oct 31 2026)
+*"In the snow, the katana attacks -- the whirlwind, the slam, all of them -- should affect the snow; the slashes kick it up; the exploding arrows make it go
+everywhere."* In the Snowfield (`snowStep`, all reading the real blade: `bladeSeg` + `muzzleWorld`):
+- SLASHES: three points along the blade, tracked frame to frame; any swing whose blade passes within 1.1 m of the pack at > 3 m/s throws powder ALONG
+  its sweep (`snowSpray`, more the lower and faster), and a blade that dips into the pack cuts a groove
+- the WHIRLWIND (`p.torn`): a spiralling ring of powder round him, the snow swept flat underfoot
+- the SLAM (`slamRing`) and every exploding ARROW (`arrowBlast`; a full draw bigger): `snowBlast` -- a crater dug where it lands and a dome of powder
+  thrown out and up (only when it lands in the snow)
+The puff pool went 600 -> 1400 to carry the blasts. Shipped unverified.
+
 ## m2002 -- willow leaves: no outline, no cut-off leaves (Oct 31 2026)
 His photo under the willow: *"I don't like the outline... and at the tips of the branches some leaves get cut off -- only whole leaves."* The leaf strip
 (`willowLeafTex`) lost its dark rim (gradient + a faint midrib only). The cut leaves had two causes: the old strip's top and bottom leaves ran off the

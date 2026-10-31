@@ -10663,7 +10663,7 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
   put(rock, mat.rock, true); put(cap, mat.cap, true); put(ice, mat.ice, true); put(dark, mat.dark, false);
   SNOWZ.cliff = { C }; }     /* no boxGrid() here: the stage builds before BGRID exists (its own build re-grids) */
 const SNOWZ = { paint: (() => { try { return !/[?&]paint=0\b/.test(location.search); } catch (e) { return true; } })() ? 1 : 0, bump: 7, want: 0, on: null, size: 160, res: 640, depth: 1.1, base: .5, drift: .42, pines: 46,     /* m1632: depth 1.1 m with a base fill of .5 (= the old .55 m) so DRIFTS can rise over it */ refill: .012, foot: .17, plough: .32, rim: .2, rimAdd: .14, drag: 2.6,
-  flakes: 5000, box: 34, puffs: 600, fall: [.55, 1.2], flutter: .5, wind: [1.2, 0, .4], gust: 1.6 };
+  flakes: 5000, box: 34, puffs: 1400,     /* m15SK: 600 -> 1400 for the blasts */ fall: [.55, 1.2], flutter: .5, wind: [1.2, 0, .4], gust: 1.6 };
 try { if (/[?&]zone=snow\b/.test(location.search)) SNOWZ.want = 1; } catch (e) {}
 // m1995 (his: "make some painted texture maps for that level -- the snow, the trees, the rocks -- and make the snow more realistic, more passes"):
 // four hand-painted tiles (`textures/snow_*.webp`, made seamless by a half-offset blend). TRIPLANAR in world space, so they need no UVs and suit
@@ -10913,10 +10913,18 @@ function snowStamp(x, z, r, to) { const Z = SNOWZ, N = Z.res, cs = Z.size / N, c
   for (let j = Math.max(0, Math.floor(cj - R)); j <= Math.min(N - 1, Math.ceil(cj + R)); j++) for (let i = Math.max(0, Math.floor(ci - R)); i <= Math.min(N - 1, Math.ceil(ci + R)); i++) {
     const d = Math.hypot(i - ci, j - cj) * cs, k = j * N + i; if (d < r) { if (D[k] > t) D[k] = t; } else if (d < r + Z.rim && D[k] > t + 20) D[k] = Math.min(255, D[k] + add * (1 - (d - r) / Z.rim) * .5); }
   Z.dirty = 1; }
+// m15SK (his: "in the snow, the katana attacks -- the whirlwind, the slam, the slashes -- should kick up snow, and the exploding arrows make it go everywhere"):
+// `snowSpray` throws puffs ALONG a velocity (a slash's sweep), `snowBlast` digs a crater and throws a dome of powder (the slam, an arrow's blast)
+function snowSpray(x, y, z, n, vx, vy, vz, jit) { const A = SNOWZ.air; if (!A) return; const F = A.F; for (let k = 0; k < n; k++) { const i = A.NF + (F.nextP++ % A.NP);
+    A.P[i * 3] = x + (Math.random() - .5) * .3; A.P[i * 3 + 1] = y; A.P[i * 3 + 2] = z + (Math.random() - .5) * .3; F.vx[i] = vx * (.6 + Math.random() * .6) + (Math.random() - .5) * jit; F.vy[i] = vy * (.5 + Math.random() * .8); F.vz[i] = vz * (.6 + Math.random() * .6) + (Math.random() - .5) * jit;
+    F.life[i] = .7 + Math.random() * .7; A.S[i] = .05 + Math.random() * .08; A.A[i] = .9; } }
+function snowBlast(x, y, z, r, k) { const Z = SNOWZ; if (!Z.air || !Z.D || Math.abs(x) > Z.size / 2 || Math.abs(z) > Z.size / 2) return; const sy = snowAt(x, z) * Z.depth; if (y > sy + r + .6) return;     // only when it lands in the snow
+  snowStamp(x, z, r * .55, .03); const n = Math.round(110 * k); for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, d = Math.random() * r * .6, v = (2 + Math.random() * 5) * k;
+    snowSpray(x + Math.cos(a) * d, sy + .1, z + Math.sin(a) * d, 1, Math.cos(a) * v, (4 + Math.random() * 5) * Math.sqrt(k), Math.sin(a) * v, 1); } }
 function snowPuff(x, y, z, n, up, sp) { const A = SNOWZ.air; if (!A) return; const F = A.F; for (let k = 0; k < n; k++) { const i = A.NF + (F.nextP++ % A.NP), a = Math.random() * 6.283, s = Math.random() * sp;
     A.P[i * 3] = x; A.P[i * 3 + 1] = y; A.P[i * 3 + 2] = z; F.vx[i] = Math.cos(a) * s; F.vz[i] = Math.sin(a) * s; F.vy[i] = up * (.5 + Math.random() * .7); F.life[i] = .8 + Math.random() * .6; A.S[i] = .05 + Math.random() * .07; A.A[i] = .9; } }
 const _snF = new THREE.Vector3();
-const _snCw = new THREE.Color(), _snC2w = new THREE.Color();
+const _snBp = new THREE.Vector3(), _snCw = new THREE.Color(), _snC2w = new THREE.Color();
 function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; Z.t += dt; const t = Z.t; willowStep(dt);
   // the PACK: feet, the plough, the drag, the refill
   const under = snowAt(p.pos.x, p.pos.z), sp = Math.hypot(p.vel.x, p.vel.z), inField = Math.abs(p.pos.x) < Z.size / 2 && Math.abs(p.pos.z) < Z.size / 2;
@@ -10930,6 +10938,13 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     if (p.grounded && !Z.wasG && (Z.lastVy || 0) < -6) { snowStamp(p.pos.x, p.pos.z, 1.1, .02); snowPuff(p.pos.x, under * Z.depth, p.pos.z, 40, 3.5, 3.5); }     // a landing digs a crater
   }
   Z.wasG = p.grounded; Z.lastVy = p.vel.y;
+  { const B = (p.melee || p.chargeGo || p.torn || p.slam || p.meleeAir) && typeof bladeSeg === 'function' ? bladeSeg() : null;     // m15SK: a blade sweeping low throws snow along its way
+    if (B && inField) { const tip = muzzleWorld(), pv = Z.tipPrev; if (pv && dt > 0) { const vx = (tip.x - pv.x) / dt, vy = (tip.y - pv.y) / dt, vz = (tip.z - pv.z) / dt, sp2 = Math.hypot(vx, vz);
+        for (const u of [1, .7, .4]) { const q = _snBp.copy(pv).lerp(tip, 1).sub(B.a.clone().multiplyScalar((1 - u) * 1.0)), sy = snowAt(q.x, q.z) * Z.depth, h = q.y - sy;
+          if (h < 1.1 && sp2 > 3) { const n = Math.min(6, (1.1 - Math.max(0, h)) * sp2 * dt * 9); if (n > .2) snowSpray(q.x, sy + .05, q.z, Math.ceil(n), vx * .35, 2.5 + sp2 * .15, vz * .35, 1.2); if (h < .15) snowStamp(q.x, q.z, .22, Math.max(0, (sy - .25) / Z.depth)); } } }
+      Z.tipPrev = (Z.tipPrev || new THREE.Vector3()).copy(tip); } else Z.tipPrev = null;
+    if (p.torn && inField && p.pos.y < Z.depth + 1.5) { const a = t * 11, r = 1.4 + Math.random() * 1.2, x = p.pos.x + Math.cos(a) * r, z = p.pos.z + Math.sin(a) * r;     // the whirlwind: a spiralling ring of powder, the snow swept flat round him
+      snowSpray(x, snowAt(x, z) * Z.depth + .05, z, 3, -Math.sin(a) * 6, 4, Math.cos(a) * 6, 1.5); if (Math.random() < dt * 8) snowStamp(p.pos.x, p.pos.z, 1.3, .2); } }
   if (p.grounded && p.pos.y < .4 && pondIn(p.pos.x, p.pos.z) && !p.dragon && !p.wing) {     // m1997: on the ice he slides
     if (!Z.iceV) Z.iceV = new THREE.Vector2(p.vel.x, p.vel.z); const V = Z.iceV, k = 1 - Math.exp(-POND.grip * dt), wx = p.vel.x, wz = p.vel.z;
     V.x += (wx - V.x) * k; V.y += (wz - V.y) * k; p.pos.x += (V.x - wx) * dt; p.pos.z += (V.y - wz) * dt; p.vel.x = V.x; p.vel.z = V.y;
@@ -15451,7 +15466,7 @@ function bowLoose() { const p = player; const { k, full, type, o, gk, g, T, dx, 
 // a BLAST arrow's burst, wherever it ends
 // m1782 (his: "a full charge with the exploding arrows should explode the archers -- those are powerful arrows"): a FULL draw's blast is `fullK`
 // wider and harder, and every archer (or horde body) inside it is blown apart (`limbBoom`)
-function arrowBlast(P, dirH, full) { BOW.stat.blasts++; const R = BOW.blastR * (full ? BOW.fullK : 1);
+function arrowBlast(P, dirH, full) { BOW.stat.blasts++; const R = BOW.blastR * (full ? BOW.fullK : 1); if (SNOWZ.air) snowBlast(P.x, P.y, P.z, R, full ? 1.6 : 1.1);     // m15SK
   if (_arJin) { for (let k = 0; k < 90; k++) { const a2 = Math.random() * 6.283, r2 = Math.random() * R * .8; bflPut(P.x + Math.cos(a2) * r2 * .3, P.y + Math.random() * .4, P.z + Math.sin(a2) * r2 * .3, Math.cos(a2) * r2 * 2.2, 1 + Math.random() * 3, Math.sin(a2) * r2 * 2.2, 2.2, Math.random() < .25); } spkBurst(P.x, P.y, P.z, 30, { col: [.4, 1, .95], spread: 7, size: .2, life: .6 }); }     // m1951: the Jin arrow bursts in turquoise flame
   if (full) for (const d of DUMMIES.slice()) { if (d.st === 'gone' || d.boomed || !d.root.visible || !(d.archer || d.K.archer || d.horde)) continue; const Q = d.root.position;
     if (Math.hypot(Q.x - P.x, Q.z - P.z) < R + (d.K.r || .4) && Math.abs(Q.y + (d.K.h || 1.8) * .5 - P.y) < R + 1) { dummyBlow(d, Math.atan2(Q.x - P.x, Q.z - P.z), 2, 99); limbBoom(d, Math.atan2(Q.x - P.x, Q.z - P.z)); } }
@@ -22386,6 +22401,7 @@ function slamFxGeo() { if (_slG) return _slG; const ring = new THREE.RingGeometr
 function slamFxMat(fs) { const G = slamFxGeo(); return new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uA: { value: 1 }, uC: { value: new THREE.Color(...SLAMFX.col) }, uH: { value: new THREE.Color(...SLAMFX.hot) } },
   vertexShader: G.vs, fragmentShader: fs, transparent: true, depthWrite: false, blending: THREE.NormalBlending, side: THREE.DoubleSide, toneMapped: false }); }     // normal, not additive: additive washed out on his pale temple stone (rendered)
 function slamRing(x, y, z) {     // the slam's shockwave
+  if (SNOWZ.air) snowBlast(x, y, z, 3.2, 1.3);     // m15SK
   if (!SLAMFX.on) { const m = new THREE.Mesh(new THREE.RingGeometry(.86, 1, 48), new THREE.MeshBasicMaterial({ color: 0xffe2a8, transparent: true, opacity: .9, toneMapped: false, depthWrite: false }));
     m.rotation.x = -Math.PI / 2; m.position.set(x, y + .06, z); scene.add(m); SLAMRINGS.push({ m, t: 0, old: 1 }); return; }
   const G = slamFxGeo(), ring = new THREE.Mesh(G.ring, slamFxMat(G.ringFS)), wall = new THREE.Mesh(G.wall, slamFxMat(G.wallFS));
