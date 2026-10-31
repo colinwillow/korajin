@@ -25,6 +25,18 @@ dynamic -- swap them for real rope bridges."* The sandbox (ROPEB, m1800-m1818) w
   arc length gained, settle 300) -- stacking rounds before it settles overshot to 0.7 m. Now: the canyon deck dips ~1.6 m under him
   mid-span and he walks end to end onto the landing; the 34 m ring span (15 m climb) walks end to end on the deck.
 - Draws: two per span (planks, ropes; instanced) = 26, less the static buckets they replace (~4). Unlooked-at on a phone.
+## m15BV -- LOOK.md piece 2: the SHADER BEVEL (light rolls over box edges; no geometry)
+His go (Oct 31): *"definitely do the shader [bevel]"* -- "round off all the edges, bevelled edges, with just a shader, without adding compute or geometry".
+- Box geometry from `lbBoxGeo` (the level builder, the gym / Wall Park pieces, the temple's blockout) and the Wall Park towers' slabs is TAGGED (`userData.bev`)
+  and carries its own centre + half-size on every vertex (`aBoxC` / `aBoxH`, `bevTag`). `mergeGeometries` is now a wrapper (`bevFill`) that rewrites the
+  tagged boxes' data from their FINAL bounds (after any translate) and gives untagged geometry in the same merge zeros, so no merge can fail on
+  mismatched attributes. Measured first pass: the Wall Park's pieces are separate meshes, never merged, so 0 of 115 meshes had the data -- it is
+  written when the box is made now.
+- In the LOOK patch (vertex + `normal_fragment_maps`): within `uLkBev` .16 m of an edge the normal becomes a rounded box's, (p - clamp(p, -(h - r), h - r)),
+  turned to view space by the normal matrix; skipped outside the recorded box (a stale centre can never paint garbage). On with SOFT; TOOLS > LOOK > BEVEL
+  toggles it. No draws, no triangles; the silhouette stays straight.
+- Rendered on the Wall Park, SOFT, bevel off / on, cropped at a block's corner: the top face shades down into the edge and the front face catches the
+  light under it. No shader errors (`onShaderError` hooked).
 
 ## m1972 -- the wing-pack rides the spine through flips; LOOK at the top of TOOLS and in GOD
 His words (Oct 31): *"jumping and flipping, the wing suit doesn't follow the rotation of my body; equipped mid-flip it's a fair distance away -- it

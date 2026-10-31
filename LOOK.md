@@ -26,7 +26,7 @@ His references: a small round planet, a blue axolotl-ish character, soft blob fo
 
 ## DONE WHEN
 - [x] SOFT LIGHT on a switch, rendered side by side with CURRENT (m1967)
-- [ ] SHADER BEVEL on the level boxes
+- [x] SHADER BEVEL on the level boxes (m15BV)
 - [ ] ROUNDED boxes on the Wall Park's blockout
 - [ ] RAIN with ripples and puddles, and MIST, on a weather switch
 - [ ] soft rocks and blob foliage (one kit, used in one place)
