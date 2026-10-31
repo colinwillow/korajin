@@ -10798,11 +10798,13 @@ function willowLeafTex() { const cv = document.createElement('canvas'); cv.width
   // is its own dark plum-bark colour; each LEAF is painted -- deep jade at the stem, bright mint at the tip, a pale midrib, a darker rim -- so it
   // carries detail and reads against snow. The vertex colour now only SHADES (darker high up, inside the curtain); the glow is kept to the leaves.
   q.fillStyle = '#5b3a52'; q.fillRect(29, 0, 6, 256);
-  for (let k = 0; k < 9; k++) { const y = 10 + k * 28, s = k % 2 ? 1 : -1; q.save(); q.translate(32, y); q.rotate(s * .55);
-    const g = q.createLinearGradient(0, 0, s * 26, 18); g.addColorStop(0, '#1f7a5a'); g.addColorStop(.55, '#3fd59a'); g.addColorStop(1, '#b8ffd8');
-    q.fillStyle = '#0f4a3a'; q.beginPath(); q.ellipse(s * 13, 6, 7, 18, 0, 0, Math.PI * 2); q.fill();
-    q.fillStyle = g; q.beginPath(); q.ellipse(s * 13, 6, 5.6, 16.5, 0, 0, Math.PI * 2); q.fill();
-    q.strokeStyle = 'rgba(225,255,235,.8)'; q.lineWidth = 1.2; q.beginPath(); q.moveTo(s * 13, -9); q.lineTo(s * 13, 21); q.stroke(); q.restore(); }
+  // m15WL (his: "I don't like the outline -- and the tips of some branches get cut off; only whole leaves"): NO dark rim; and the leaves sit in 8 clean
+  // 32 px cells (each leaf ~22 px tall, centred), drawn once more a tile up / down so the strip wraps seamlessly -- every cell boundary is a gap
+  // between leaves, and each vine's V is snapped to end ON one (`willowBuild`)
+  for (let k = 0; k < 8; k++) for (const w of [-256, 0, 256]) { const y = 16 + k * 32 + w, s = k % 2 ? 1 : -1; q.save(); q.translate(32, y - 10); q.rotate(s * .55);     /* the rotated leaf centres on its cell (measured: centre y + 10, half-height 11) */
+    const g = q.createLinearGradient(0, 0, s * 22, 14); g.addColorStop(0, '#1b6e50'); g.addColorStop(.55, '#38c890'); g.addColorStop(1, '#a8f8cc');
+    q.fillStyle = g; q.beginPath(); q.ellipse(s * 11, 5, 5.2, 12.5, 0, 0, Math.PI * 2); q.fill();
+    q.strokeStyle = 'rgba(225,255,235,.55)'; q.lineWidth = 1; q.beginPath(); q.moveTo(s * 11, -6); q.lineTo(s * 11, 16); q.stroke(); q.restore(); }
   const t = new THREE.CanvasTexture(cv); t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.generateMipmaps = false; t.minFilter = THREE.LinearFilter; return t; }     // no mips: an alpha-tested leaf averaged into its mips drops under .5 and the whole curtain vanished past ~45 m
 function willowBuild(g) { const Z = WILLOW, [cx, cz] = Z.at, H = Z.terH, R = plantRnd(1740), base = new THREE.Vector3(cx, H, cz);
   // ---- the garden: the terrace, its steps (on the side facing the spawn, +z), the raked rings, two lanterns ----
@@ -10872,7 +10874,7 @@ function willowBuild(g) { const Z = WILLOW, [cx, cz] = Z.at, H = Z.terH, R = pla
     for (let k = 0; k <= S; k++) { const o = (i * (S + 1) + k) * 3; P[o] = Q[o] = A.x; P[o + 1] = Q[o + 1] = A.y - k * len[i]; P[o + 2] = Q[o + 2] = A.z; } }
   // the ribbons: per link-point, 4 vertices (a quad across X and a quad across Z); per segment, two quads
   const V = NP * 4, pos = new Float32Array(V * 3), uv = new Float32Array(V * 2), nor = new Float32Array(V * 3), col = new Float32Array(V * 3), glow = new Float32Array(V), idx = [];
-  for (let i = 0; i < n; i++) for (let k = 0; k <= S; k++) { const p = i * (S + 1) + k, t = k / S, v0 = p * 4, vv = k * len[i] / .9;
+  for (let i = 0; i < n; i++) for (let k = 0; k <= S; k++) { const p = i * (S + 1) + k, t = k / S, v0 = p * 4, Lv = S * len[i] / .9, vv = k * len[i] / .9 * (Math.max(1, Math.round(Lv * 8)) / 8) / Lv;     /* m15WL: the strand ends on a leaf gap */
     for (let c = 0; c < 4; c++) { uv[(v0 + c) * 2] = c % 2; uv[(v0 + c) * 2 + 1] = vv; const nz = c < 2; nor[(v0 + c) * 3] = nz ? 0 : 1; nor[(v0 + c) * 3 + 2] = nz ? 1 : 0;
       const sh = .55 + .45 * t; col[(v0 + c) * 3] = sh; col[(v0 + c) * 3 + 1] = sh; col[(v0 + c) * 3 + 2] = sh; glow[v0 + c] = Math.pow(t, 3.5); }
     if (k < S) for (const c of [0, 2]) { const a = v0 + c, b = a + 1, a2 = a + 4, b2 = b + 4; idx.push(a, a2, b, b, a2, b2); } }

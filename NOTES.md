@@ -5,6 +5,12 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15WL -- willow leaves: no outline, no cut-off leaves (Oct 31 2026)
+His photo under the willow: *"I don't like the outline... and at the tips of the branches some leaves get cut off -- only whole leaves."* The leaf strip
+(`willowLeafTex`) lost its dark rim (gradient + a faint midrib only). The cut leaves had two causes: the old strip's top and bottom leaves ran off the
+canvas (clipped every tile), and each vine's V ended wherever its length fell. Now 8 leaves sit in clean 32 px cells (rotated leaf centred, half-height
+11 px, so every cell edge is a gap), drawn again a tile up and down so it wraps, and every strand's V is scaled to end exactly on a cell edge.
+
 ## m2001 -- the folded wings' flashing, for real (Oct 31 2026)
 His photo of the folded pack from behind: *"it's the folded-up wings -- they need a different offset so they don't sit on the exact same plane."* m1998 hid
 panels 2 and 3, but the flicker was the two ROOT panels: folded, each hangs down and inward from its shoulder joint (z -.14, rotated 1.35 rad about z),
