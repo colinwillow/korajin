@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1934 -- THE SKY TEMPLE look loop, pass 2: the side pylons are the concepts' smooth WEDGES
+
+In all five of his views the two side pylons are single massive battered wedges (wide at the foot, a narrow flat top, the banners high on
+them); ours were three stepped tiers -- Mayan steps, not his silhouette.
+- `temple_pylonL` / `temple_pylonR`: one block each, 10 x 12 (design) at the foot, battered 3 all round to 4 x 6 at the top (100 m), gold
+  crowned, a jade channel up the front AND the back; the dressing (the tech course, the corner pilasters leaning with the slope, the red
+  frieze, the crests) follows the batter. Their colliders are the slope slices (`_sc`), only the top a ledge.
+- Re-fitted to the new faces: the pylon cornices (they would float off a sloped face) are gone; the balconies reach in to the slope; the
+  pylons' vines hang from their top front edge; the monkey bars run 3 m further to land on the narrower roof (seal, checkpoint, chains, zip
+  all still on it).
+- Next: L3, the gold rivets and panels over the stone (and the island's spare plaza, L2's second half).
+
 ## m1932 -- THE SKY TEMPLE look loop, pass 1: the palette (his: "run the loop detail pass -- I want it to look exactly like this")
 
 THE LOOK LOOP (TEMPLE.md): render the concept sheet's views (front / back / left / right / temple_01's hero), set them beside his five

@@ -67,7 +67,7 @@ once he starts it -- the doors here only open onto it.
 Every pass: render the sheet's views (front / back / left / right / the temple_01 hero) headless, set them beside his concepts, fix the BIGGEST
 difference, ship, repeat. The order, biggest first (re-ranked every pass):
 - [x] L1. PALETTE: pale pink-beige stone, a clear blue sky, white clouds, a blue distance haze; the underside the same pale stone.
-- [ ] L2. MASSING: the temple fills the island (the stair down to its front edge); the two side PYLONS are smooth massive battered wedges, not steps.
+- [~] L2. MASSING (pylons done): the temple fills the island (the stair down to its front edge); the two side PYLONS are smooth massive battered wedges, not steps.
 - [ ] L3. RIVETS + PANELS: gold rivets over all the stone, gold-framed panels, jade window slits on the faces.
 - [ ] L4. The SATELLITES close in, on short beams at two levels, each a hanging lantern spire.
 - [ ] L5. The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
