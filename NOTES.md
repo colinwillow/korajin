@@ -86,7 +86,7 @@ them); ours were three stepped tiers -- Mayan steps, not his silhouette.
   pylons' vines hang from their top front edge; the monkey bars run 3 m further to land on the narrower roof (seal, checkpoint, chains, zip
   all still on it).
 - Next: L3, the gold rivets and panels over the stone (and the island's spare plaza, L2's second half).
-## m15AU -- sound after leaving the app: done the way his other games do it
+## m1943 -- sound after leaving the app: done the way his other games do it
 His words (Oct 31): *"the audio context still does not work if you navigate away and come back -- it's gone. I don't get why it's this game only,
 no other games."*
 - **The difference, found by reading his other game:** culture_war's `src/fx/sfx.js` makes ONE context and, in a tap, `resume()`s it when it is not

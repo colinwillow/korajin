@@ -6221,7 +6221,7 @@ function sfxSilentWav() { const n = 2000, b = new Uint8Array(44 + n), dv = new D
 function sfxSession() { try { if (!SFXQ.el) { const a = SFXQ.el = document.createElement('audio'); a.setAttribute('playsinline', ''); a.muted = false; a.loop = false;
   a.src = sfxSilentWav(); }
   SFXQ.el.currentTime = 0; const q = SFXQ.el.play(); if (q && q.catch) q.catch(() => {}); } catch (e) {} }
-// m15AU (his: "the audio context still does not work if you navigate away and come back... I don't get why it's this game only, no other games"):
+// m1943 (his: "the audio context still does not work if you navigate away and come back... I don't get why it's this game only, no other games"):
 // his other games do the PLAIN thing -- ONE context, never closed, and `resume()` inside a tap when it is not running (culture_war's sfx.js). This one
 // had grown three cures on top, each a guess at this same bug: `navigator.audioSession.type = 'playback'` (which makes iOS treat the page as a media
 // player and interrupt it on the way out), a silent <audio> element, and closing the context and building a NEW one on every return (iOS allows only a
@@ -15619,7 +15619,7 @@ function arenaUi() {
       else if (a === 'cart') { CART.pose = CART.poses[(CART.poses.indexOf(CART.pose) + 1) % CART.poses.length]; try { localStorage.setItem('mel.cart2', CART.pose); } catch (err) {} }
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
-      else if (a === 'audmode') { SFXM.simple = !SFXM.simple; try { localStorage.setItem('mel.audiomode', SFXM.simple ? 'simple' : 'heavy'); } catch (err) {} try { SFX.ctx && SFX.ctx.close(); } catch (err) {} SFX.ctx = null; SFX.ready = 0; sfxWake(); }     // m15AU
+      else if (a === 'audmode') { SFXM.simple = !SFXM.simple; try { localStorage.setItem('mel.audiomode', SFXM.simple ? 'simple' : 'heavy'); } catch (err) {} try { SFX.ctx && SFX.ctx.close(); } catch (err) {} SFX.ctx = null; SFX.ready = 0; sfxWake(); }     // m1943
       else if (a === 'lhold') { LHOLD.pick = LHOLD.picks[(LHOLD.picks.indexOf(LHOLD.pick) + 1) % LHOLD.picks.length]; try { localStorage.setItem('mel.lhold', LHOLD.pick); } catch (err) {} }     // m1093
       else if (a === 'prewarm') { BOOTWARM.kinds = BOOTWARM.kinds ? 0 : 1; try { localStorage.setItem('mel.prewarm', BOOTWARM.kinds ? '1' : '0'); } catch (err) {} }     // m1100
       else if (a === 'runslash') { RUNSLASH.on = RUNSLASH.on ? 0 : 1; try { localStorage.setItem('mel.runslash', RUNSLASH.on ? '1' : '0'); } catch (err) {} }     // m1107
