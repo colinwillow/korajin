@@ -15642,7 +15642,7 @@ function arenaUi() {
       else if (a === 'cart') { CART.pose = CART.poses[(CART.poses.indexOf(CART.pose) + 1) % CART.poses.length]; try { localStorage.setItem('mel.cart2', CART.pose); } catch (err) {} }
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
-      else if (a === 'bevel') { LOOK.bevel = !LOOK.bevel; try { localStorage.setItem('mel.bevel', LOOK.bevel ? '1' : '0'); } catch (err) {} }     // m15BV
+      else if (a === 'bevel') { LOOK.bevel = !LOOK.bevel; try { localStorage.setItem('mel.bevel', LOOK.bevel ? '1' : '0'); } catch (err) {} }     // m1975
       else if (a === 'look') { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (err) {} }     // m1967
       else if (a === 'stairs') { STAIRS.on = STAIRS.on ? 0 : 1; try { localStorage.setItem('mel.stairs', STAIRS.on ? 'clips' : 'lean'); } catch (err) {} }     // m1956
       else if (a === 'hdrop') { HDROP.want = 1; }     // m1953
@@ -35612,7 +35612,7 @@ function hdropStep(dt, s) { const p = player, D = p.hdrop; D.t += dt;
 // soft-edged light BANDS (`bands`, mixed in by `band`), shadows TINTED toward `tint` instead of going grey, and a RIM light on the edges turned away from
 // the eye. Every patched material reads the same uniforms (`LOOKU`), so TOOLS > LOOK flips CURRENT <-> SOFT with no recompile, and the patch adds no
 // draws. Materials are patched as they appear (a sweep every `every` s while SOFT is on). `m.userData.noLook` opts one out.
-// m15BV: THE SHADER BEVEL (LOOK.md piece 2; his: "round off all the edges, bevelled edges, with just a shader -- without adding compute or geometry").
+// m1975: THE SHADER BEVEL (LOOK.md piece 2; his: "round off all the edges, bevelled edges, with just a shader -- without adding compute or geometry").
 // A box geometry tagged `userData.bev` (the level builder's `lbBoxGeo`, the wall park's slabs) gets, at MERGE time, its own centre and half-size written on
 // every vertex (`aBoxC` / `aBoxH`, read off its bounding box after it was placed); untagged geometry in the same merge gets zeros, so a merge never fails
 // on mismatched attributes. In the LOOK patch, within `uLkBev` m of an edge the normal becomes a ROUNDED box's -- (p - clamp(p, -(h - r), h - r)) -- so
@@ -35640,7 +35640,7 @@ function lookPatch(m) { if (!m || m.userData.lookP || m.userData.noLook || !(m.i
   m.userData.lookP = 1; const prev = m.onBeforeCompile, pk = m.customProgramCacheKey;
   m.onBeforeCompile = function (sh, r) { if (prev) prev.call(this, sh, r); if (sh.fragmentShader.indexOf('lights_fragment_begin') < 0 || sh.fragmentShader.indexOf('#include <opaque_fragment>') < 0) return;
     Object.assign(sh.uniforms, LOOKU);
-    if (sh.vertexShader.indexOf('#include <begin_vertex>') >= 0 && sh.fragmentShader.indexOf('#include <normal_fragment_maps>') >= 0) {     // m15BV: the bevel
+    if (sh.vertexShader.indexOf('#include <begin_vertex>') >= 0 && sh.fragmentShader.indexOf('#include <normal_fragment_maps>') >= 0) {     // m1975: the bevel
       sh.vertexShader = 'attribute vec3 aBoxC; attribute vec3 aBoxH; varying vec3 vBevQ; varying vec3 vBevH; varying mat3 vBevNM;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n vBevQ = position - aBoxC; vBevH = aBoxH; vBevNM = normalMatrix;');
       sh.fragmentShader = 'varying vec3 vBevQ; varying vec3 vBevH; varying mat3 vBevNM; uniform float uLkBev, uLkBevOn;\n' + sh.fragmentShader.replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\n if (vBevH.x > 0.0 && uLkBevOn * uLkLook > 0.001 && all(lessThan(abs(vBevQ), vBevH + 0.03))) { float br = min(uLkBev, min(vBevH.x, min(vBevH.y, vBevH.z)) * .9); vec3 inr = clamp(vBevQ, -(vBevH - br), vBevH - br); vec3 nr = vBevQ - inr; float nl = length(nr); if (nl > 1e-5) { vec3 nv = normalize(vBevNM * (nr / nl)); if (dot(nv, normal) > -0.2) normal = normalize(mix(normal, nv, uLkBevOn * uLkLook)); } }'); }
     sh.fragmentShader = 'uniform float uLkLook, uLkBands, uLkBandK, uLkEdge, uLkTintK, uLkRimK, uLkRimP; uniform vec3 uLkTint, uLkRimC;\n' + sh.fragmentShader.replace('#include <opaque_fragment>', LOOKFS + '#include <opaque_fragment>'); };

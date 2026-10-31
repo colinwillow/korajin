@@ -25,7 +25,7 @@ dynamic -- swap them for real rope bridges."* The sandbox (ROPEB, m1800-m1818) w
   arc length gained, settle 300) -- stacking rounds before it settles overshot to 0.7 m. Now: the canyon deck dips ~1.6 m under him
   mid-span and he walks end to end onto the landing; the 34 m ring span (15 m climb) walks end to end on the deck.
 - Draws: two per span (planks, ropes; instanced) = 26, less the static buckets they replace (~4). Unlooked-at on a phone.
-## m15BV -- LOOK.md piece 2: the SHADER BEVEL (light rolls over box edges; no geometry)
+## m1975 -- LOOK.md piece 2: the SHADER BEVEL (light rolls over box edges; no geometry)
 His go (Oct 31): *"definitely do the shader [bevel]"* -- "round off all the edges, bevelled edges, with just a shader, without adding compute or geometry".
 - Box geometry from `lbBoxGeo` (the level builder, the gym / Wall Park pieces, the temple's blockout) and the Wall Park towers' slabs is TAGGED (`userData.bev`)
   and carries its own centre + half-size on every vertex (`aBoxC` / `aBoxH`, `bevTag`). `mergeGeometries` is now a wrapper (`bevFill`) that rewrites the
