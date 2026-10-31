@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1946 -- THE SKY TEMPLE: real BLUE FIRE in the braziers
+
+His (m1941 screenshot of a landing brazier): *"These kinds of fire things need actual blue fire looking stuff."* The flames were two solid
+jade cones (`fragmentShader: vec4(.12, .95, .62, .9)` -- one flat colour). Now each brazier is two flame SHEETS and six EMBERS, every one a quad
+turned to the camera about Y in the vertex shader (camera right from `viewMatrix`, world up), so it reads as fire from any angle. The sheet's
+fragment shader builds a teardrop out of scrolling fbm noise (`tF`/`tN` from `TEMPLEGLSL_N`): tongues licking upward, deep blue at the edges,
+cyan body, a pale hot core low in the bowl. Embers rise and fade on their own seeded clocks. Still ONE draw call (`temple_flames`), additive,
+no depth write; only the braziers feed it. Shipped unverified.
+
 ## m1945 -- THE SKY TEMPLE look loop, pass 11: SANDSTONE SATELLITES (TEMPLE.md L11)
 
 In all five concepts the hanging satellite spires are the same sandstone masonry as the temple, with the jade core in the hanging pylon under
