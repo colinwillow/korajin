@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m1908 -- THE SKY TEMPLE 7a: the underside is a cluster of stone spikes, with jade-core hanging pylons (his second concepts)
+## m1909 -- THE SKY TEMPLE 7a: the underside is a cluster of stone spikes, with jade-core hanging pylons (his second concepts)
 
 His four new views (`docs/concepts/temple_02_front` .. `temple_05`, described in docs/concepts/README.md). Step 7 is split into 7a-7e in TEMPLE.md
 from what they show that the build does not.
