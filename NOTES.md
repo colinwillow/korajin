@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15IB -- THE BLUE DRAGON'S ICE BEAM, pass 1 (Oct 31 2026)
+## m2006 -- THE BLUE DRAGON'S ICE BEAM, pass 1 (Oct 31 2026)
 *"The blue dragon -- maybe the ice world is where you find him; he could shoot a blue ice ray beam, crazy; a little jump-flap-fly thing and an ice beam.
 The fireballs are very low level. A few passes on the ice beam."* In the Snowfield (`ICEB`, `iceBeamOn`): his `attack_air` becomes the BEAM --
 - he HOPS 2.4 m up (eased in .4 s; the clip slowed to .35 so the wings beat through it) and comes back down after

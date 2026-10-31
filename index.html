@@ -9850,7 +9850,7 @@ function beastHurt(d, dirH, power) {
   const busy = d.st === 'cDizzy' || d.st === 'cFire' || (d.st === 'cAtk' && d.t > skinLen(d, d.cur) * C.hitAt * .7);
   if (!busy && power > .2) beastGo(d, 'cHit', C.clips.hit);
 }
-// m15IB: THE ICE BEAM (his: "the blue dragon -- maybe the ice world is where you find him; he could shoot a blue ice ray beam, crazy; messing around in
+// m2006: THE ICE BEAM (his: "the blue dragon -- maybe the ice world is where you find him; he could shoot a blue ice ray beam, crazy; messing around in
 // the snow, a little jump-flap-fly thing and an ice beam -- the fireballs are very low level"). In the Snowfield his `attack_air` becomes the beam: he
 // HOPS up `hopH` m (wings flapping, the clip slowed to `clipK`), and from his mouth a beam -- a white-hot core in a blue sheath, scrolling frost bands,
 // a flare at each end -- reaches the snow and SWEEPS after you (the aim point chases you at `chase` m/s, so you can outrun it sideways) for `T` s.
@@ -9989,7 +9989,7 @@ function beastStep(d, dt, t) {
     return true;
   }
   if (fly) return beastFly(d, dt, t, dd, toP);
-  P.y = 0; if (d.st !== 'cFire') d.beam = null;     // m15IB: a hit ends the beam
+  P.y = 0; if (d.st !== 'cFire') d.beam = null;     // m2006: a hit ends the beam
   if (d.st === 'cHit') { t[d.cur] = 1; if (d.t >= skinLen(d, d.cur) * .9) beastGo(d, 'cIdle'); return true; }
   if (d.st === 'cDizzy') { t[d.cur] = 1; if (d.actions[d.cur] && d.t % skinLen(d, d.cur) < dt) skinPlay(d, d.cur, 1);
     if (d.t >= C.dizzyT) { d.exposed = 0; beastGo(d, 'cIdle'); } return true; }
@@ -10002,7 +10002,7 @@ function beastStep(d, dt, t) {
       snd('thud', { g: .8, r: .6, x: P.x, z: P.z }); }
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
-  if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m15IB: in the snow, his ICE BEAM
+  if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m2006: in the snow, his ICE BEAM
     const B = ICEB; d.lift = B.hopH * smooth(0, B.hopUp, d.t); P.y = d.lift;
     if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; d.beam = { t: 0, aim: player.pos.clone(), hurt: 0, spk: 0 }; setSkinScale(d, d.cur, B.clipK); snd('zap', { g: .9, r: .45, x: P.x, z: P.z }); camShake(.15); }
     if (d.beam) { iceBeamStep(d, dt); if (d.beam.t >= B.T) { d.beam = null; d.fireT = C.fireCool; setSkinScale(d, d.cur, 1); beastGo(d, 'cRecover'); } }
@@ -10013,7 +10013,7 @@ function beastStep(d, dt, t) {
     if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; beastFire(d); d.fireT = C.fireCool; }
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
-  if (d.lift) { d.lift = Math.max(0, d.lift - dt * 5); P.y = d.lift; }     // m15IB: down from the hop
+  if (d.lift) { d.lift = Math.max(0, d.lift - dt * 5); P.y = d.lift; }     // m2006: down from the hop
   if (d.st === 'cRecover') { t[C.clips.idle] = 1; if (d.t >= Lv.recover * .8) beastGo(d, 'cIdle'); return true; }
   d.fireT = Math.max(0, (d.fireT || 0) - dt);
   const canFire = C.clips.fire && d.fireT <= 0 && dd > C.fireMin;
@@ -11099,8 +11099,8 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
   patchStep(dt);     // m2005
-  iceSpikeStep(dt);     // m15IB
-  if (!Z.dragonWoke && p.pos.z < -30 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON) { Z.dragonWoke = 1; try { arenaSpawn('DRAGON'); tipShow('Something stirs by the cliffs...', 3); } catch (e) {} }     // m15IB: the blue dragon lives up here
+  iceSpikeStep(dt);     // m2006
+  if (!Z.dragonWoke && p.pos.z < -30 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON) { Z.dragonWoke = 1; try { arenaSpawn('DRAGON'); tipShow('Something stirs by the cliffs...', 3); } catch (e) {} }     // m2006: the blue dragon lives up here
   if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;
     for (let i = 0; i < PN.T.length; i++) { const P = PN.T[i], d = Math.hypot(p.pos.x - P.x, p.pos.z - P.z);
