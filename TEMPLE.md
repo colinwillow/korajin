@@ -68,7 +68,7 @@ Every pass: render the sheet's views (front / back / left / right / the temple_0
 difference, ship, repeat. The order, biggest first (re-ranked every pass):
 - [x] L1. PALETTE: pale pink-beige stone, a clear blue sky, white clouds, a blue distance haze; the underside the same pale stone.
 - [~] L2. MASSING (pylons done): the temple fills the island (the stair down to its front edge); the two side PYLONS are smooth massive battered wedges, not steps.
-- [~] L3. RIVETS (done) + PANELS: gold rivets over all the stone, gold-framed panels, jade window slits on the faces.
+- [x] L3. RIVETS + PANELS: gold rivets over all the stone, gold-framed panels, jade window slits on the faces.
 - [x] L4. The SATELLITES close in, on short beams at two levels, each a hanging lantern spire.
 - [~] L5. (medallion + rim cornice done) The UNDERSIDE: block-built spikes in the same masonry, the gold medallion under the stair.
 - [x] L6. The FAR ISLANDS: small temples with waterfalls in a blue haze.

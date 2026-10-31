@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1939 -- THE SKY TEMPLE look loop, pass 7: PANELS (TEMPLE.md L3 done)
+
+His concepts carry dark recessed panels framed in gold with jade window slits down every big face. `TEMPLE_SKY.block` (big blocks only) now
+lays a row of them along all four faces between the tech course and the cornice: a dark tech recess, a gold frame (side + top/bottom bars) and a
+glow slit, leaning with the block's batter. Merged into the existing gold / tech / glow buckets, so no new draw calls (49-62 on the views).
+Purely LOOK layer -- no colliders touched, the routes are unchanged. Still open in the loop: the island's spare plaza, facade columns, underside.
+Shipped unverified.
+
 ## m1938 -- THE SKY TEMPLE look loop, pass 6: the far islands are little temples
 
 His concepts' distant islands are small temple complexes in a blue haze, waterfalls pouring off them; ours were rock cones with three plain
