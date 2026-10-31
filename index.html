@@ -10604,7 +10604,7 @@ const SNOWSTORM = { weather: (() => { try { const m = /[?&]storm=(auto|clear|bli
 const POND = { at: [27, 30], r: 11, grip: 1.1, bank: .22, tex: 11 };
 function pondR(a) { return POND.r * (1 + .1 * Math.sin(3 * a + 1.3) + .06 * Math.sin(5 * a - .4)); }
 function pondIn(x, z, m) { const dx = x - POND.at[0], dz = z - POND.at[1]; return Math.hypot(dx, dz) < pondR(Math.atan2(dz, dx)) + (m || 0); }
-// m15CL: THE CLIMB TO THE LAIR (BUILDINGS.md snow: "a REGION with height -- ice shelves, a frozen waterfall, cliffs, a cave -- toward the snow dragon's
+// m2000: THE CLIMB TO THE LAIR (BUILDINGS.md snow: "a REGION with height -- ice shelves, a frozen waterfall, cliffs, a cave -- toward the snow dragon's
 // lair"; his: "big ice castle temple... ice crystals, big artsy land masses, icicles and ice structures"). At the north end of the field, a stepped
 // climb sized off TEMPLE_KIT's move table: snow ledges at 2.0 and 3.8 (run + jump, comfy 2.2), an ICE SHELF at 6.0 you can walk under (double jump,
 // comfy 4), the long CLIFF at 9.5 (double jump from the shelf, or a wall run), and the CRAG at 13.5 with the LAIR'S MOUTH -- a dark arch flanked by
@@ -10619,7 +10619,7 @@ const SNOWCLIFF = { area: [-26, 40, -84, -42],
   falls: { x: 31, w: 6, top: 9.5, z: -66 }, lair: { x: 4, z: -75, w: 5, h: 4.6 } };
 function cliffIn(x, z, m) { const A = SNOWCLIFF.area; m = m || 0; return x > A[0] - m && x < A[1] + m && z > A[2] - m && z < A[3] + m; }
 function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap = [], ice = [], dark = [];
-  // m15CL: not boxes -- every block TAPERS (wider at the foot), its corners ROUND off (a superellipse in plan), and its faces are pushed by 3D noise
+  // m2000: not boxes -- every block TAPERS (wider at the foot), its corners ROUND off (a superellipse in plan), and its faces are pushed by 3D noise
   // at three scales; the top stays flat to walk on, the lip only a little ragged
   const nz3 = (x, y, z) => Math.sin(x * .9 + z * .6 + y * .3) * .45 + Math.sin(z * 1.9 - y * 1.4 + x * .5) * .3 + Math.sin(x * 3.3 + y * 2.7 - z * 1.1) * .17 + Math.sin(y * 5.1 + z * 4.3) * .08;
   const rough = (geo, k, top, cx, cz, hw, hd) => { const P = geo.attributes.position; geo.computeBoundingBox(); const bb = geo.boundingBox, y0 = bb.min.y, hy = (bb.max.y - y0) || 1;
@@ -10759,7 +10759,7 @@ function snowStage(g) {
     if (Z.paint) for (const m of Z.bamboo) if (m.userData.kind === 'rock_snow') m.material = snowTriMat('snow_rock', 1.6, 0xffffff, .9, 1);     // m1995: the boulders wear the painted granite over their snow caps
   }
   try { willowBuild(g); } catch (e) { console.error('[melee] willow', e); note('WILLOW THREW ' + e.message); }     // m1740
-  try { snowCliffs(g); } catch (e) { console.error('[melee] cliffs', e); note('CLIFFS THREW ' + e.message); }     // m15CL
+  try { snowCliffs(g); } catch (e) { console.error('[melee] cliffs', e); note('CLIFFS THREW ' + e.message); }     // m2000
   Z.on = { g }; Z.t = 0; Z.acc = 0; Z.breath = 1; }
 // m1740 (his: "a cool alien weeping willow -- a big one, with vines you can actually brush through, like actual chains, so there's a dynamic
 // to it; a big magical Japanese garden with a willow; put it in the snow level for now"): THE JIN WILLOW, pass 1, in the Snowfield.

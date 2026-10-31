@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15CL -- THE CLIMB TO THE LAIR: cliffs, ice shelves, a frozen waterfall, ice crystals (Oct 31 2026)
+## m2000 -- THE CLIMB TO THE LAIR: cliffs, ice shelves, a frozen waterfall, ice crystals (Oct 31 2026)
 *"Giving the snowfield height: cliffs, ice shelves and a frozen waterfall leading up toward the snow dragon's lair -- this next"* / *"big ice castle temple,
 ice crystals, big artsy land masses, icicles and ice structures."* North of the field (x -26..40, z -84..-42, `SNOWCLIFF`, placement table with ids):
 - the ROUTE, sized off TEMPLE_KIT's move table: snow ledges at 1.2 / 2.0 / 2.6 / 3.8 (run + jump), the ICE SHELF at 6.0 you can walk under (+2.2), a second

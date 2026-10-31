@@ -197,7 +197,7 @@ different functions: bars and ramps, interior and exterior, turrets, ballistae, 
     - [ ] garden pass 2: a koi pond under the curtain (ice at the rim), an arched bridge, stepping stones, a stone basin, moss on the walls
     - [ ] the vines: the katana CUTS them (the cut end falls and fades; they grow back), and he can CLIMB / swing on a vine
     - [ ] drifting Jinra motes round the canopy at night; a second smaller willow; snow sliding off the boughs when the tree is struck
-  - [x] **pass 3a (m15CL): THE CLIMB** -- cliffs (1.2 -> 13.5 m in tiers), two ice shelves, a frozen waterfall, ice crystals (some floating), icicles, the lair's mouth; painted maps (m1995), a blizzard + spindrift (m1996), the frozen pond (m1997)
+  - [x] **pass 3a (m2000): THE CLIMB** -- cliffs (1.2 -> 13.5 m in tiers), two ice shelves, a frozen waterfall, ice crystals (some floating), icicles, the lair's mouth; painted maps (m1995), a blizzard + spindrift (m1996), the frozen pond (m1997)
   - [ ] pass 2 (rest):
     - snow that SETTLES on him (his shoulders and head whiten while he stands, shaken off when he moves)
     - his breath fogs
