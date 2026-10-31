@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15BZ -- the BLIZZARD that comes and goes, and SPINDRIFT (Oct 31 2026)
+His "keep going" after m1995. `SNOWSTORM`: AUTO weather takes turns -- calm 70-110 s, storm 40-65 s, easing over a 7 s half-life. The storm multiplies the
+wind x4.5 (flakes race sideways), pulls the fog in to 6..60 m and whitens it, dims the sun 45%, swells the flakes x1.7, and fades the (unfogged) peaks
+into the whiteout. SPINDRIFT: 1600 low points (one draw, the flakes' material) streaming along the wind a hand's height over the pack, following its
+surface, thicker and faster in gusts and storms. TOOLS > SNOW > WEATHER: AUTO / CLEAR / BLIZZARD (remembered), `?storm=blizzard`. Rendered headless
+in a held blizzard: fog 60 m, 89 draws. Spindrift is white on white and reads by its MOTION -- a still frame barely shows it; judge it moving.
+
 ## m1995 -- the Snowfield gets PAINTED maps (Oct 31 2026)
 *"Make some painted texture maps for that level -- the snow, the trees, the rocks -- and anything to make the snow more realistic, more passes."* Four
 hand-painted tiles made by the image API (`textures/snow_snow|needles|bark|rock.webp`, 1024, made seamless by a half-offset blend; 33-262 KB):
