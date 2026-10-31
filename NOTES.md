@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15MT -- THE LEAP MOUNT (Oct 31 2026)
+*"With the dragon he sort of floats up into the rider seat, and lands facing backwards, then is just in the right spot. When you press the button you
+should jump pretty high in the air and land on the saddle -- cinematic."* The old mount lerped him to the seat on `ride_on` (Entering_Car: the clip
+itself turns him round to sit -- the backwards landing). `MOUNT` now: a .14 s crouch (`land_hero`'s crouch), a ballistic arc `lift` 4.2 m over the
+line to the seat in 1.2 s, turned to the dragon's heading by 45% of the way, one FRONT FLIP about his middle (`mountFlipPose`, tucked) between .30 and
+.76, `fall_hero` onto the seat, then a .2 m dip with a camera shake and a thud before the ride starts. Measured headless (dragon zone): apex 7.0 m, lands
+and sits facing the dragon's heading. `mel.DRAGZ.leap = 0` is the old float. The mammoth will mount the same way when he gets a saddle.
+
 ## m1993 -- wing suit: the cape rides over the pack, a flip finishes into the wings, the up/down flick is a TUCK (Oct 31 2026)
 *"Make the cape not poke through."* The pack is two body spheres for the cape springs while it is drawn (`WING.capeR` .2 of the pack scale, at the box's
 top and bottom). *"When I flip and then pull out the wing suit he pops to the pose, not finishing the flip."* `wingStart` keeps the air flip's axis and

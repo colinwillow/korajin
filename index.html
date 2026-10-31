@@ -11890,7 +11890,13 @@ function dragLook() { const B = DRAGZ.on && DRAGZ.on.B; if (!B) return; const L 
 // less his seated HIP height, MEASURED live off his hips bone in that pose (so the seat is under his hips, not his feet). Tap again: an arc back
 // down to the ring. Only CAPTURED lets you on (the taming, box 6, is what makes him CAPTURED in the story). While mounted the pads are the
 // dragon's: no jump, no roll, no strike; the lens follows behind him after `camIdle` s and pulls back `camPull` m for his size.
-Object.assign(DRAGZ, { reach: 2.6, mountT: .85, offT: .7, arc: 1.8, camIdle: .8, camFollow: 2.2, camPull: 9, camLift: 1.6, camEl: .22, offTap: .45 });
+// m15MT: THE LEAP MOUNT (his: "he sort of floats up into the rider seat and lands facing backwards -- when you press the button you should jump
+// pretty high in the air and land on the saddle; it should be cinematic"). The old mount lerped him along `ride_on` (Entering_Car, which turns him
+// round to sit -- the backwards landing). Now: a crouch, a high ballistic arc (`lift` m over the straight line), turned to the mount's heading by
+// `faceBy` of the way, one FRONT FLIP about his middle between `flipA` and `flipB` (tucked), and he drops onto the saddle: a dip (`dip` m, `landT` s),
+// a shake, then the seat. `leap: 0` is the old float (a taste switch: `mel.DRAGZ.leap`).
+const MOUNT = { T: 1.2, crouch: .14, lift: 4.2, faceBy: .45, flipA: .3, flipB: .76, flip: 1, landT: .42, dip: .2, shake: .18 };
+Object.assign(DRAGZ, { leap: 1, reach: 2.6, mountT: .85, offT: .7, arc: 1.8, camIdle: .8, camFollow: 2.2, camPull: 9, camLift: 1.6, camEl: .22, offTap: .45 });
 const _drV = new THREE.Vector3(), _drV2 = new THREE.Vector3();
 const dragH = B => B.root.rotation.y - (B.faceOff || 0);
 function dragSeat(B, m, root, P) { const K = dragKit(m, root, B.hd), sp = K.bw('Bip001_Spine1'); B.faceOff = P.faceOff || 0; if (!sp) return;
@@ -11908,13 +11914,22 @@ function dragTap() { if (!DRAGZ.on) return false; const p = player, R = p.dragon
   if (!dragNear() || !p.grounded) return false;
   if (DRAGZ.look !== 'CAPTURED' || DRAGZ.on.B.tame) { tipShow(DRAGZ.look === 'EVIL' ? 'He is wild. Bring him good Jinra -- the spring by the start.' : 'He will not be ridden like that. (TOOLS > DRAGON)', 4); return true; }
   const B = DRAGZ.on.B; if (!B.seat) return false;
-  p.dragon = { st: 'on', t: 0, T: dragClipGo('ride_on', DRAGZ.mountT), from: p.pos.clone(), h0: p.faceH, hip: (rig.hipY || .6) * .6 }; p.vel.set(0, 0, 0); snd('swoosh', { g: .5, r: .9 }); return true; }
+  p.dragon = DRAGZ.leap ? { st: 'on', leap: 1, t: 0, T: MOUNT.crouch + MOUNT.T, from: p.pos.clone(), h0: p.faceH, hip: (rig.hipY || .6) * .6 } : { st: 'on', t: 0, T: dragClipGo('ride_on', DRAGZ.mountT), from: p.pos.clone(), h0: p.faceH, hip: (rig.hipY || .6) * .6 }; p.vel.set(0, 0, 0); if (!DRAGZ.leap) snd('swoosh', { g: .5, r: .9 }); return true; }
 // the body while mounted: called from the top of `stepPlayer`, which it replaces
 function dragRide(dt) { const p = player, R = p.dragon, B = DRAGZ.on && DRAGZ.on.B; if (!B || !B.seat) { p.dragon = null; return; }
   R.t += dt; p.vel.set(0, 0, 0); p.speed = 0; p.grounded = true; p.jump = 0; p.stepOff = 0; p.roll = null; p.melee = null;
   const hb = rig.bones.mixamorig_Hips; if (hb && R.st === 'sit' && R.t > .3) { const hy = hb.getWorldPosition(_drV2).y - rig.root.position.y; if (hy > .1 && hy < 1.5) R.hip = damp(R.hip, hy, .12, dt); }
   const seat = B.seat.getWorldPosition(_drV), sx = seat.x, sy = seat.y - R.hip, sz = seat.z, h = dragH(B);
-  if (R.st === 'on') { const u = Math.min(1, R.t / (R.T || DRAGZ.mountT)), k = smooth(0, 1, u);
+  if (R.st === 'on' && R.leap) { const M = MOUNT, tt = R.t - M.crouch, u = clamp(tt / M.T, 0, 1);
+    if (tt < 0) { p.pos.copy(R.from); R.flipA = 0; }     // the crouch
+    else { if (!R.sprung) { R.sprung = 1; snd('swoosh', { g: .6, r: .8 }); }
+      p.pos.set(R.from.x + (sx - R.from.x) * u, R.from.y + (sy - R.from.y) * u + 4 * M.lift * u * (1 - u), R.from.z + (sz - R.from.z) * u);
+      p.faceH = p.heading = R.h0 + wrapAngle(h - R.h0) * smooth(0, M.faceBy, u);
+      R.flipA = M.flip ? Math.PI * 2 * smooth(M.flipA, M.flipB, u) : 0; }
+    if (u >= 1) { R.st = 'land'; R.t = 0; R.flipA = 0; p.pos.set(sx, sy, sz); camShake(M.shake); snd('thud', { g: .5, r: .8 }); } }
+  else if (R.st === 'land') { const M = MOUNT, u = Math.min(1, R.t / M.landT); p.pos.set(sx, sy - M.dip * Math.sin(Math.PI * Math.min(1, u * 1.6)) * (1 - u * .6), sz); p.faceH = p.heading = h;
+    if (u >= 1) { R.st = 'sit'; R.t = 0; dragDriveStart(B); tipShow('In the saddle. Left pad: ride. Right tap: jump; double tap: fly. Right hold: hover. Right pad held UP: fireballs. Right flick: bite (ground) / fireball (air). Left flick in the air: rolls and loops. Double-tap the left pad (meadow): get off.', 6); } }
+  else if (R.st === 'on') { const u = Math.min(1, R.t / (R.T || DRAGZ.mountT)), k = smooth(0, 1, u);
     p.pos.set(R.from.x + (sx - R.from.x) * k, R.from.y + (sy - R.from.y) * k + Math.sin(u * Math.PI) * DRAGZ.arc, R.from.z + (sz - R.from.z) * k);
     p.faceH = p.heading = R.h0 + wrapAngle(h - R.h0) * k; if (u >= 1) { R.st = 'sit'; R.t = 0; dragDriveStart(B); tipShow('In the saddle. Left pad: ride. Right tap: jump; double tap: fly. Right hold: hover. Right pad held UP: fireballs. Right flick: bite (ground) / fireball (air). Left flick in the air: rolls and loops. Double-tap the left pad (meadow): get off.', 6); } }
   else if (R.st === 'sit') { p.pos.set(sx, sy, sz); p.faceH = p.heading = h; p.speed = B.drive ? B.drive.v * .3 : 0; dragGun(dt); dragHoldR(R, dt); }
@@ -12246,11 +12261,15 @@ function dragWild(B, dt) { const Z = DRAGZ, p = player, P = B.root.position, dx 
 // `ride_on` (Entering_Car 1.6-3.4 s, in place, x1.4: the swing in and the sit), `ride_off` (Exiting_Car 1.3-3.6 s, in place, x2: the swing out
 // and the stand), `ride_gun` (Sitting_Gun_Motion, while the gun is held). Each falls back to his own `driving` / `in_air` if the bake is absent.
 const dragHas = n => !!(n && rig.actions[n]);
+function mountFlipPose() { const p = player, R = p.dragon; if (!R || !R.flipA || !rig.root) return;
+  const H = hbarH(), ax = _afV2.set(Math.cos(p.faceH), 0, -Math.sin(p.faceH)); _afQ2.setFromAxisAngle(ax, R.flipA); rig.root.quaternion.premultiply(_afQ2);     /* his LEFT is +X of the heading frame: a positive turn about it pitches him forward */
+  const c = rig.root.position, my = c.y + H * .5; _afV2.set(0, -H * .5, 0).applyQuaternion(_afQ2); c.set(c.x + _afV2.x, my + _afV2.y, c.z + _afV2.z); }
 function dragClipGo(nm, T) { const a = rig.actions[nm]; if (!a) return T; a.reset(); a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; return rig.clips[nm] ? rig.clips[nm].duration : T; }
 function dragAnim(dt, t) { const R = player.dragon;
   for (const n of ['ride_seat', 'ride_gun']) if (dragHas(n) && !R['loop_' + n]) { R['loop_' + n] = 1; ONCE.delete(n); rig.actions[n].reset().setLoop(THREE.LoopRepeat, Infinity); }     /* reset: a ONCE clip that already ran is paused on its last frame */
   let nm;
-  if (R.st === 'on') nm = dragHas('ride_on') && R.t > .05 ? 'ride_on' : dragHas('in_air') ? 'in_air' : CLIPS.idle;
+  if (R.st === 'on' && R.leap) { const u = (R.t - MOUNT.crouch) / MOUNT.T; nm = u < 0 ? (dragHas('land_hero') ? 'land_hero' : CLIPS.idle) : u > MOUNT.flipA - .05 && u < MOUNT.flipB + .04 && dragHas('tuck') ? 'tuck' : dragHas('fall_hero') ? 'fall_hero' : dragHas('in_air') ? 'in_air' : CLIPS.idle; }     // m15MT: crouch, the tuck through the flip, the fall onto the seat
+  else if (R.st === 'on') nm = dragHas('ride_on') && R.t > .05 ? 'ride_on' : dragHas('in_air') ? 'in_air' : CLIPS.idle;
   else if (R.st === 'off') nm = dragHas('ride_off') ? 'ride_off' : R.t < (R.T || DRAGZ.offT) * .8 && dragHas('in_air') ? 'in_air' : CLIPS.idle;
   else nm = dragHas('ride_seat') ? 'ride_seat' : dragHas('driving') ? 'driving' : CLIPS.idle;     /* m1671: the fire is HIS now; Grumbo holds the reins */
   t[nm] = 1; setWeights(t, dt); }
@@ -59734,6 +59753,7 @@ function frameBody() {
     if (player.vault && player.vault.ox != null) { rig.root.position.x -= player.vault.ox; rig.root.position.z -= player.vault.oz; }     // m1051: the vault's picture, drawn back to its root
     else if (player.vaultRes) { const R = player.vaultRes; R.t += dt; const k = 1 - smooth(0, VAULT.resT, R.t); rig.root.position.x -= R.ox * k; rig.root.position.z -= R.oz * k; if (k <= 0) player.vaultRes = null; }     // and eased out as the clip fades
     airFlipPose();                     // m1050: the left stick's air flips, turned about his middle
+    mountFlipPose();                   // m15MT: the leap onto a mount flips him once, about his middle
     wrunPose();                        // m1064: rolled off the wall on a side run
     zipPose();                         // m1684: hanging from the zip line, swung, hands on the cable
     duckPose(dt);                      // m1070: the cover duck (right pad down in half cover)
