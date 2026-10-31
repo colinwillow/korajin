@@ -29358,7 +29358,7 @@ function netMsg(m) {
   if (m.type === 'event' && m.e === 'hit' && m.to === NET.myId) { netHurt(m); return; }
   if (m.type === 'event' && m.e === 'ko' && m.to === NET.myId) { NET.kos = (NET.kos || 0) + 1; duelBanner('K.O.!', '#ffd84a'); snd('clang', { g: 1, r: .6 }); return; }
   if (m.type === 'event' && m.e === 'sw' && NET.peers[m.id]) { const P = NET.peers[m.id]; snd('swoosh', { r: 1.1, g: .5, x: P.root.position.x, z: P.root.position.z }); return; }     // stage 2: their swing's sound
-  if (m.type === 'state' && m.id && m.id !== NET.myId) { NET.rxN++; const P = netPeer(m.id); if (!P) return; P.zone = m.z; P.hero = m.h; P.k = m.k; P.sw = m.sw; if (m.hp != null && m.hp !== P.hp) { P.hp = m.hp; netTag(P); }
+  if (m.type === 'state' && m.id && m.id !== NET.myId) { NET.rxN++; const P = netPeer(m.id); if (!P) return; P.zone = m.z; P.hero = m.h; P.k = m.k; P.sw = m.sw; P.fire = m.f; if (m.hp != null && m.hp !== P.hp) { P.hp = m.hp; netTag(P); }
     const raw = atob(m.B), u8 = new Uint8Array(raw.length); for (let i = 0; i < raw.length; i++) u8[i] = raw.charCodeAt(i); const q = new Int16Array(u8.buffer), Q = new Float32Array(q.length); for (let i = 0; i < q.length; i++) Q[i] = q[i] / 32767;
     P.buf.push({ t: performance.now(), P: m.P, Q, seq: m.s }); if (P.buf.length > NET.keep) P.buf.shift(); P.lastT = performance.now(); } }
 function netPeer(id) { let P = NET.peers[id]; if (P) return P; if (!rig.model) return null;
@@ -29370,7 +29370,7 @@ function netPeer(id) { let P = NET.peers[id]; if (P) return P; if (!rig.model) r
 function netTag(P) { const c = P.cv.getContext('2d'); c.clearRect(0, 0, 256, 64); c.font = 'bold 34px sans-serif'; c.textAlign = 'center'; c.lineWidth = 6; c.strokeStyle = 'rgba(0,0,0,.7)'; c.fillStyle = '#5affe0'; c.strokeText(P.name, 128, 30); c.fillText(P.name, 128, 30);
   if (netVersus() && P.hp != null) { c.fillStyle = 'rgba(0,0,0,.6)'; c.fillRect(48, 40, 160, 16); c.fillStyle = P.hp > 35 ? '#5aff7a' : '#ff5a3a'; c.fillRect(50, 42, 156 * Math.max(0, P.hp) / HEALTH.max, 12); }
   P.tag.material.map.needsUpdate = true; }
-function netDrop(id) { const P = NET.peers[id]; if (!P) return; scene.remove(P.root); delete NET.peers[id]; }
+function netDrop(id) { const P = NET.peers[id]; if (!P) return; scene.remove(P.root); if (P.trail) scene.remove(P.trail.m); delete NET.peers[id]; }
 const _nq1 = new THREE.Quaternion(), _nq2 = new THREE.Quaternion();
 function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.autoRoom); NET.autoRoom = ''; }
   netChip(); duelKoStep(dt); if (!NET.on || !rig.model) return; const now = performance.now();
@@ -29379,7 +29379,7 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
   if (NET.myId && now - NET.sendT >= 1000 / NET.hz) { NET.sendT = now; if (!NET.bones) NET.bones = netBones(rig.model); const B = NET.bones, q = new Int16Array(B.length * 4);
     for (let i = 0; i < B.length; i++) { const b = B[i].quaternion; q[i * 4] = Math.round(b.x * 32767); q[i * 4 + 1] = Math.round(b.y * 32767); q[i * 4 + 2] = Math.round(b.z * 32767); q[i * 4 + 3] = Math.round(b.w * 32767); }
     const u8 = new Uint8Array(q.buffer); let bin = ''; for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
-    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), k: (slotNow() || {}).key || '', hp: Math.round(player.hp), sw: player.melee || player.slam || player.chargeGo ? 1 : 0, P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
+    const R = rig.root, r4 = v => Math.round(v * 1e4) / 1e4; netSend({ type: 'state', s: NET.seq++, h: HERO.pick, z: netZone(), k: (slotNow() || {}).key || '', hp: Math.round(player.hp), sw: player.melee || player.slam || player.chargeGo ? 1 : 0, f: bladeFire() ? 1 : 0,     /* m1907: their blade's fire */ P: [r4(R.position.x), r4(R.position.y), r4(R.position.z), r4(R.quaternion.x), r4(R.quaternion.y), r4(R.quaternion.z), r4(R.quaternion.w)], B: btoa(bin) }); }
   try { netHits(); } catch (e) { NET.err = 'hits ' + e.message; }
   // DRAW: each puppet at `delay` s ago, between the two snapshots that bracket it
   const rt = now - NET.delay * 1000;
@@ -29387,7 +29387,7 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
     let a = bf[0], b = bf[bf.length - 1], u = 1; for (let i = 0; i < bf.length - 1; i++) if (bf[i].t <= rt && bf[i + 1].t >= rt) { a = bf[i]; b = bf[i + 1]; u = (rt - a.t) / Math.max(1, b.t - a.t); break; }
     if (rt < bf[0].t) { a = b = bf[0]; u = 0; }
     for (const w of P.weap) w.visible = w.name === 'weapon:' + P.k;
-    if (P.sw && P.root.visible) { const W = P.weap.find(w => w.visible), q = new THREE.Vector3(); (W || P.root).getWorldPosition(q); if (!W) q.y += 1; spkBurst(q.x, q.y, q.z, 2, { col: [.75, .95, 1], spread: .6, size: .07, life: .22 }); }     // stage 2: their swing leaves a streak
+    if (P.root.visible) netBlade(P, dt); else if (P.trail) P.trail.m.visible = false;     // m1907 (NETPLAY stage 2): their blade's TRAIL and FIRE, as mine
     const A = a.P, Bp = b.P; P.root.position.set(A[0] + (Bp[0] - A[0]) * u, A[1] + (Bp[1] - A[1]) * u, A[2] + (Bp[2] - A[2]) * u);
     _nq1.set(A[3], A[4], A[5], A[6]); _nq2.set(Bp[3], Bp[4], Bp[5], Bp[6]); P.root.quaternion.slerpQuaternions(_nq1, _nq2, u);
     const n = Math.min(P.bones.length, a.Q.length / 4, b.Q.length / 4);
@@ -29398,6 +29398,23 @@ function netStep(dt) { if (!NET.on && NET.autoRoom && rig.model) { netJoin(NET.a
 // dash; contact: a hand, a foot or the blade's tip inside their body (`r` round the puppet's root, feet to `tall`); one hit per `cool` s.
 const NETHIT = { r: .6, tall: 1.8, wind: .1, cool: .45, swing: { push: 5.5, up: 2.5, stun: .35, knock: .3, dmg: 12 }, heavy: { push: 9, up: 4.5, stun: .6, knock: 1, dmg: 25 } };
 const _nhP = new THREE.Vector3();
+// m1907 (NETPLAY stage 2 -- his "can I see them swing"): THEIR BLADE as mine looks. A TRAIL: while their swing flag is up (and `hold` s after), the
+// puppet's own blade (its weapon group, the hero sword's base / tip in its local Y -- the same model, the same numbers) is sampled each frame; the
+// last `n` samples make a ribbon, older ones drawn narrower toward the tip and fainter, in the local trail's blue. FIRE: their `f` flag lights
+// the same flame particles along it (`bflPut`) at the local rate.
+const NBT = { n: 12, hold: .22, op: .6 };
+const _nbA = new THREE.Vector3(), _nbB = new THREE.Vector3();
+function netBlade(P, dt) { const W = P.weap.find(w => w.visible), HS = heroSword(); if (!W || !(WEAP.slots.find(q => q.key === P.k) || {}).blade) { if (P.trail) P.trail.m.visible = false; return; }
+  W.updateWorldMatrix(true, false); W.localToWorld(_nbA.set(0, HS ? HS.base : BTRAIL.base, 0)); W.localToWorld(_nbB.set(0, HS ? HS.tip : BTRAIL.tip, 0));
+  if (P.fire) { const n = BFL.rate * dt * (P.sw ? BFL.swing : 1); for (let i = 0; i < n || Math.random() < n - i; i++) { const u = 1 - Math.pow(1 - Math.random(), 1 + BFL.tipW * 2); bflPut(_nbA.x + (_nbB.x - _nbA.x) * u, _nbA.y + (_nbB.y - _nbA.y) * u, _nbA.z + (_nbB.z - _nbA.z) * u, 0, bflR(BFL.rise), 0, 1 + u * (BFL.tipK - 1), Math.random() < BFL.ember); if (i > 30) break; } }
+  const T = P.trail || (P.trail = netTrailMake()); T.hold = P.sw ? NBT.hold : Math.max(0, (T.hold || 0) - dt);
+  if (T.hold > 0) { T.pts.unshift([_nbA.x, _nbA.y, _nbA.z, _nbB.x, _nbB.y, _nbB.z]); if (T.pts.length > NBT.n) T.pts.length = NBT.n; } else if (T.pts.length) T.pts.pop();
+  const pos = T.m.geometry.attributes.position, m = T.pts.length; T.m.visible = m > 1; if (m < 2) return;
+  for (let i = 0; i < NBT.n; i++) { const q = T.pts[Math.min(i, m - 1)], k = Math.min(i, m - 1) / Math.max(1, m - 1), w = 1 - k * .85;     // older = narrower, pulled toward the tip
+    pos.setXYZ(i * 2, q[3] + (q[0] - q[3]) * w, q[4] + (q[1] - q[4]) * w, q[5] + (q[2] - q[5]) * w); pos.setXYZ(i * 2 + 1, q[3], q[4], q[5]); }
+  pos.needsUpdate = true; T.m.geometry.computeBoundingSphere(); T.m.material.opacity = NBT.op * Math.min(1, T.hold / NBT.hold + .3); }
+function netTrailMake() { const n = NBT.n, g = new THREE.BufferGeometry(), idx = []; g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 2 * 3), 3)); for (let i = 0; i < n - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } g.setIndex(idx);
+  const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: new THREE.Color(BTRAIL.col[0], BTRAIL.col[1], BTRAIL.col[2]), transparent: true, opacity: NBT.op, side: THREE.DoubleSide, depthWrite: false })); m.frustumCulled = false; m.renderOrder = 60; scene.add(m); return { m, pts: [], hold: 0 }; }
 function netHits() { const p = player; if (!NET.myId) return; const heavy = !!(p.slam || p.chargeGo), act = heavy || (p.melee && (p.meleeT || 0) > NETHIT.wind); if (act && !NET.wasAct) netSend({ type: 'event', e: 'sw' }); NET.wasAct = act; if (!act || p.koT > 0) return;
   const pts = []; if (rig.bones) for (const n of ['RightHand', 'LeftHand', 'RightFoot', 'LeftFoot']) { const b = rig.bones['mixamorig_' + n]; if (b) pts.push(b.getWorldPosition(new THREE.Vector3())); }
   const w = WEAP.worn[(slotNow() || {}).key]; if (w && w.muzzle && w.host) pts.push(muzzleWorld().clone());

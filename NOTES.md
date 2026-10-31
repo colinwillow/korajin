@@ -21,6 +21,14 @@ ladders `kitClimbAdd` (+ `mark`, `fg`), the high bar `hbarMake` into `HBAR.list`
 - DONE WHEN, honestly: the route is BUILT, not proven -- no harness here plays a ledge hang or a bar release. **Shipped unverified**; the
   spacings are from the measured catch band and jump apex, and the bar's release onto c1 is the part most likely to want tuning on the phone.
 - Budget: **36 draw calls for the widest frame (the high bar adds 5 of its own), 65k triangles.** Next: step 7, his pass.
+## m15NB -- online: the other player's blade trail and blade fire
+His list item 4: *"blade fire and trail visible on the other player, then co-op."*
+- The packet carries `f` (1 while `bladeFire()` is lit). The receiver keeps `P.fire`; `P.sw` (swinging) was already there.
+- `netBlade(P, dt)`: reads base/tip off the PUPPET's visible weapon (its own `heroSword()` / `BTRAIL` local points, so it is
+  their blade, not a guess), spawns `bflPut` flames while `P.fire`, and keeps a 12-sample ribbon (`netTrailMake`, BTRAIL blue,
+  one draw call per peer) while they swing plus a .22 s hold. `NBT` holds the numbers. `netDrop` removes the ribbon.
+- Headless, a fabricated katana peer: trail made and visible while swinging, hidden after, removed on drop.
+- Not done: co-op against the arena's enemies (host-run) stays NETPLAY stage 4's open line -- a build of its own.
 
 ## m1905 -- THE SKY TEMPLE step 5: the detail -- guardians, palms, vines, jade channels, cornices to hang from (TEMPLE.md)
 
