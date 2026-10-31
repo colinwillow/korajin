@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15SN -- the Snowfield gets PAINTED maps (Oct 31 2026)
+## m1995 -- the Snowfield gets PAINTED maps (Oct 31 2026)
 *"Make some painted texture maps for that level -- the snow, the trees, the rocks -- and anything to make the snow more realistic, more passes."* Four
 hand-painted tiles made by the image API (`textures/snow_snow|needles|bark|rock.webp`, 1024, made seamless by a half-offset blend; 33-262 KB):
 - the PACK: the painted wind-ripple snow at two scales (7 m, and 29 m turned 37 deg so it never visibly repeats) over the depth tint; a BUMP from the
