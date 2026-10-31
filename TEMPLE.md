@@ -39,7 +39,7 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
   - [x] 7a. (m1909) THE UNDERSIDE: a cluster of downward stone SPIKES under a ragged slab (not one rounded cone), a jade-core hanging PYLON (gold rings,
         jade cylinder, spiked gold tip) from the middle and smaller ones under the corners.
   - [x] 7b. (m1911) HANGING LANTERNS: gold-capped cages with jade glass and a spiked tip, on chains -- under the island, the bridges, the satellites. One draw.
-  - [ ] 7c. SATELLITES at two levels: inverted-spire towers with a jade core and a small top with a palm; an UPPER bridge off each pylon; the
+  - [x] 7c. (m1912) SATELLITES at two levels: inverted-spire towers with a jade core and a small top with a palm; an UPPER bridge off each pylon; the
         rope rails go RED.
   - [ ] 7d. The halo's jade DISH and red chains down to the pylons; the jade porthole disc over the door; the BACK's gear disc and jade slit windows.
   - [ ] 7e. Jackal-headed jade-armoured guardians; gold studs in the stone; far islands as small temples with WATERFALLS.

@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1912 -- THE SKY TEMPLE 7c: satellites at two levels, the upper bridges, red rope rails (his second concepts)
+
+- The two LOWER satellites stop standing on a column into the clouds: each deck now sits on a tapered HANGING body (`bat` -2: wide at the top)
+  over a jade pendant (`under.drops`: `temple_drop_satE/W`), with a small tower on its deck (`kiosk`: stone shaft, jade slits on four faces,
+  gold bands, a gold pyramid roof, a spire with a jade knob; solid).
+- THE UPPER LEVEL, both sides: a BALCONY off each pylon's outer face at 24 (a gold-banded slab, built round a HATCH), a LADDER (`temple_ladder_upW/E`)
+  from the side landing (6) up through the hatch, a plank bridge with red rails climbing 6 m out to an UPPER SATELLITE at 30 (x +-46..53):
+  deck, a hanging body, a jade pendant, a kiosk, a palm, a brazier, rails round it. Every view of his has these four satellites, two high, two low.
+- ROPE RAILS ARE RED (the temple's own rope material; the level builder's shared `_lvM.rope` is untouched). The zip cable shares it.
+- Budget: 41 draws on the widest frame, 92k triangles. Headless front / side / balcony renders checked against `temple_02_front` and the side views.
+  Next: 7d, the halo's dish and chains, the porthole over the door, the back's gear disc.
+
 ## m1911 -- THE SKY TEMPLE 7b: hanging lanterns (his second concepts)
 
 `TEMPLE.lanterns`: a gold finial and cap, a jade glass cage in gold rings and four gold bars, a gold foot with a spiked tip, on a chain -- the
