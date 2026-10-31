@@ -16,6 +16,19 @@ build (after `templeHome`; a fall respawn is still a plain `templeHome`) and lif
 `slamLand` does what it always does: the shockwave ring, the dust and grit ring, the crack decal, the camera shake, and the clip played out as
 the get-up. While it runs the pads are not his (left stick and jump zeroed each frame, from `templeTick`, which steps before the stick is read);
 control returns when he is grounded with the slam and the landing over (`max` 6 s failsafe), with a "THE SKY TEMPLE" toast. Shipped unverified.
+## m15HD -- the HERO DROP: a level entrance (fall, superhero landing, dust)
+His ask (Oct 31): *"an animation from Mixamo where he's superhero-slammed down to the ground -- for certain levels the entrance shows him falling through
+the air for a second, then he slams down and there's dust settling, like a Spider-Man or Superman land. Let me know once you add it, and I can use it
+in the temple."*
+- **Clips, picked by LOOKING:** the library has no "superhero landing"; four candidates were Forge-baked onto Grumbo and rendered at five moments each
+  (Hard Landing, Hard Landing (1), Landing, Fall A Loop). Hard Landing jumps UP first; Landing barely bends; **Hard Landing (1)** starts in the air and
+  drops into a deep crouch, one hand to the ground, knee bent -- that is `land_hero`. Fall A Loop is `fall_hero` (on the loop list). The profile
+  (`tools/agoblin_forge_prof.json`) is 37 roles; the bake is 3.89 MB.
+- `heroDrop(x, y, z, h, H)` (`mel.heroDrop`): him `H` m (14 default) over the spot, facing `h`; real gravity in `fall_hero`; on touchdown `land_hero` from
+  its touch moment (`hdropTouch`: the hips' lowest point, measured on his rig, minus `pre` .08), a ring of dust, a camera shake, a thud; control back
+  after `ctl` .55 of the clip if the thumb moves, or at its end. `?drop=1` drops at any spawn; TOOLS > HERO DROP tests it where he stands.
+- Headless (white box, from 8 m): fall 53 frames, touch .16 s into the clip, control back ~1.9 s after impact; rendered falling / impact / crouch /
+  rise. **For the temple session:** call `heroDrop(spawnX, spawnY, spawnZ, spawnYaw)` after the zone's colliders are up.
 
 ## m1951 -- a deflected arrow catches the blade's fire
 His idea (Oct 31): *"with the flame katana or the blue flame katana, when you ricochet-deflect an arrow back at them it should light the arrow on fire

@@ -291,6 +291,22 @@
    "role": "ledge_shim_l",
    "stem": "Braced_Hang_Shimmy_1",
    "name": "Braced_Hang_Shimmy_1"
+  },
+  {
+   "role": "land_hero",
+   "stem": "Hard_Landing_1",
+   "name": "Hard_Landing_1",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "fall_hero",
+   "stem": "Fall_A_Loop",
+   "name": "Fall_A_Loop",
+   "edit": {
+    "inPlace": 1
+   }
   }
  ]
 }
