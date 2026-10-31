@@ -7677,7 +7677,7 @@ const ARENA = {
     // m974: BEASTS -- his robits creatures, through the doors, on their own brains (`beastStep`)
     MAMMOTH: { creature: 'mammoth', t: 'Mammoth', sub: 'charges and stomps', file: 'models/creatures/mammoth.glb', h: 4.4, hp: 26, hitDmg: 20, beam: [.9, .7, .4], noShield: 1 },     // m1992
     DOG: { creature: 'dog', t: 'Three-Headed Dog', sub: 'bites and lunges', file: 'models/creatures/3_headed_dog.glb', h: 2.3, hp: 16, hitDmg: 16, beam: [1, .45, .2], noShield: 1 },
-    DRAGON: { creature: 'dragon', t: 'Blue Dragon', sub: 'fireballs', file: 'models/creatures/blue_dragon.glb', h: 3.2, hp: 20, hitDmg: 18, beam: [.3, .6, 1], noShield: 1 },
+    DRAGON: { creature: 'dragon', t: 'Blue Dragon', sub: 'fireballs (an ICE BEAM in the snow)', file: 'models/creatures/blue_dragon.glb', h: 3.2, hp: 20, hitDmg: 18, beam: [.3, .6, 1], noShield: 1 },
     MECH: { creature: 'mech', t: 'Mech Lightning Dragon', sub: 'flies, calls lightning', file: 'models/creatures/mech_lightning_dragon.glb', h: 2.2, hp: 14, hitDmg: 14, beam: [.5, .85, 1], noShield: 1 },
     // m980: THE MIRROR MATCH -- the samurai, played by the computer: his file, his katana, the duel brain (wind-ups, the guard,
     // the rush, the circling), EASY / MEDIUM / HARD from TOOLS. Tinted so you can tell him from you. `rival` = the RIVALS menu.
@@ -9850,6 +9850,47 @@ function beastHurt(d, dirH, power) {
   const busy = d.st === 'cDizzy' || d.st === 'cFire' || (d.st === 'cAtk' && d.t > skinLen(d, d.cur) * C.hitAt * .7);
   if (!busy && power > .2) beastGo(d, 'cHit', C.clips.hit);
 }
+// m15IB: THE ICE BEAM (his: "the blue dragon -- maybe the ice world is where you find him; he could shoot a blue ice ray beam, crazy; messing around in
+// the snow, a little jump-flap-fly thing and an ice beam -- the fireballs are very low level"). In the Snowfield his `attack_air` becomes the beam: he
+// HOPS up `hopH` m (wings flapping, the clip slowed to `clipK`), and from his mouth a beam -- a white-hot core in a blue sheath, scrolling frost bands,
+// a flare at each end -- reaches the snow and SWEEPS after you (the aim point chases you at `chase` m/s, so you can outrun it sideways) for `T` s.
+// Where it hits: ICE SPIKES erupt (pooled, `spikes`), the snow is blasted out and dug, frost mist rises. Inside `r` of the beam you are frozen-hurt
+// every `tick` s (a roll goes through). Your first trip north of z -30 wakes him by the cliffs. `ICEB.on = 0` gives him his fireballs back.
+const ICEB = { on: 1, T: 1.9, hopH: 2.4, hopUp: .4, clipK: .35, chase: 7.5, len: 34, r: .9, tick: .28, dmgK: .3, spikes: 70, spikeLife: 4.5, mesh: null, seen: -9, sp: [], stat: { beams: 0 } };
+function iceBeamOn(d) { return ICEB.on && d.K.creature === 'dragon' && !!SNOWZ.air; }
+function iceBeamMesh() { if (ICEB.mesh) return ICEB.mesh; const g = new THREE.Group();
+  const mk = (r, a) => new THREE.Mesh(new THREE.CylinderGeometry(r, r, 1, 14, 1, true).translate(0, .5, 0), new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uA: { value: a } }, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+    vertexShader: 'varying vec2 vUv; varying vec3 vN; varying vec3 vV; void main() { vUv = uv; vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
+    fragmentShader: 'uniform float uT; uniform float uA; varying vec2 vUv; varying vec3 vN; varying vec3 vV; void main() { float f = abs(dot(vN, vV)); float core = pow(f, 3.0); float band = .6 + .4 * sin(vUv.y * 60.0 - uT * 40.0) * sin(vUv.y * 23.0 + uT * 17.0 + vUv.x * 6.28);\n vec3 c = mix(vec3(.25, .6, 1.0), vec3(.9, .98, 1.0), core); gl_FragColor = vec4(c * (core * 1.4 + .35) * band, uA * (core + .25) * smoothstep(0.0, .04, vUv.y)); }' }));
+  const core = mk(.22, 1), sheath = mk(.55, .45); core.renderOrder = sheath.renderOrder = 52; g.add(sheath); g.add(core); g.userData.parts = [core, sheath];
+  const tex = (() => { const cv = document.createElement('canvas'); cv.width = cv.height = 64; const c = cv.getContext('2d'), gr = c.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.3, 'rgba(170,225,255,.8)'); gr.addColorStop(1, 'rgba(60,140,255,0)'); c.fillStyle = gr; c.fillRect(0, 0, 64, 64); const T = new THREE.CanvasTexture(cv); T.colorSpace = THREE.SRGBColorSpace; return T; })();
+  const fl = () => { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, toneMapped: false })); sp.renderOrder = 53; scene.add(sp); return sp; };
+  ICEB.mouth = fl(); ICEB.hit = fl(); g.frustumCulled = false; scene.add(g); ICEB.mesh = g; return g; }
+function iceBeamStep(d, dt) { const B = ICEB, Bm = d.beam, g = iceBeamMesh(); Bm.t += dt; ICEB.seen = SNOWZ.t;
+  const o = beastHead(d), f = new THREE.Vector3(Math.sin(d.h), 0, Math.cos(d.h)); o.addScaledVector(f, d.K.h * .3); o.y -= .1;
+  const tgt = player.pos, dx = tgt.x - Bm.aim.x, dz = tgt.z - Bm.aim.z, dl = Math.hypot(dx, dz), mv = Math.min(dl, B.chase * dt); if (dl > 1e-3) { Bm.aim.x += dx / dl * mv; Bm.aim.z += dz / dl * mv; }
+  const sy = snowSurfY(Bm.aim.x, tgt.y, Bm.aim.z); Bm.aim.y = sy != null ? sy : tgt.y; const dir = Bm.aim.clone().sub(o); let L = dir.length(); if (L > B.len) { dir.multiplyScalar(B.len / L); L = B.len; } dir.normalize();
+  const end = o.clone().addScaledVector(dir, L), grow = Math.min(1, Bm.t / .12), fade = Math.min(1, (B.T - Bm.t) / .2);
+  g.position.copy(o); g.quaternion.setFromUnitVectors(_ibUp, dir); g.scale.set(.6 + .4 * fade, L * grow, .6 + .4 * fade); g.visible = true; for (const m of g.userData.parts) m.material.uniforms.uT.value = SNOWZ.t;
+  ICEB.mouth.position.copy(o); ICEB.mouth.scale.setScalar(1.6 + Math.sin(SNOWZ.t * 50) * .3); ICEB.mouth.visible = true;
+  ICEB.hit.position.copy(end).y += .3; ICEB.hit.scale.setScalar((2.6 + Math.sin(SNOWZ.t * 37) * .5) * grow); ICEB.hit.visible = grow >= 1;
+  if (grow >= 1) { Bm.spk -= dt; if (Bm.spk <= 0) { Bm.spk = .045; iceSpike(end.x + (Math.random() - .5) * .8, end.y - .1, end.z + (Math.random() - .5) * .8, .6 + Math.random() * 1.1); snowDig(end.x, end.y + .2, end.z, .55, .2);
+      snowSpray(end.x, end.y + .1, end.z, 5, dir.x * 3, 3.5, dir.z * 3, 3); } }
+  // the hurt: his middle near the beam's line
+  Bm.hurt -= dt; const c = player.pos.clone(); c.y += .8; const q = c.clone().sub(o), tt = clamp(q.dot(dir), 0, L), dd = q.sub(dir.clone().multiplyScalar(tt)).length();
+  if (Bm.hurt <= 0 && dd < B.r && !player.roll) { Bm.hurt = B.tick; playerHurt(d.K.hitDmg * B.dmgK, d.h, d.K.push * .3, 1.2, .25, 1); }
+  if (Bm.t < dt * 1.5) B.stat.beams++; }
+const _ibUp = new THREE.Vector3(0, 1, 0), _ibM = new THREE.Matrix4(), _ibQ = new THREE.Quaternion(), _ibE = new THREE.Euler();
+function iceSpike(x, y, z, s) { const B = ICEB; if (!B.spM) { B.spM = new THREE.InstancedMesh(new THREE.ConeGeometry(.22, 1.6, 6).translate(0, .8, 0), snowKitIce(), B.spikes); B.spM.count = B.spikes; B.spM.frustumCulled = false; B.spM.castShadow = true;
+    for (let i = 0; i < B.spikes; i++) { B.sp.push({ a: 0 }); B.spM.setMatrixAt(i, _ibM.makeScale(0, 0, 0)); } scene.add(B.spM); B.spI = 0; }
+  const S = B.sp[B.spI]; B.spI = (B.spI + 1) % B.spikes; Object.assign(S, { x, y, z, s, a: .001, rx: (Math.random() - .5) * .7, rz: (Math.random() - .5) * .7, ry: Math.random() * 6.28 }); }
+function iceSpikeStep(dt) { const B = ICEB; if (!B.spM) return; let any = 0;
+  for (let i = 0; i < B.sp.length; i++) { const S = B.sp[i]; if (!S.a) continue; S.a += dt; any = 1; const k = S.a < .15 ? S.a / .15 : S.a > B.spikeLife - .4 ? Math.max(0, (B.spikeLife - S.a) / .4) : 1;
+    if (S.a > B.spikeLife) { S.a = 0; B.spM.setMatrixAt(i, _ibM.makeScale(0, 0, 0)); continue; }
+    _ibM.compose(_ibV.set(S.x, S.y, S.z), _ibQ.setFromEuler(_ibE.set(S.rx, S.ry, S.rz)), _ibS.set(S.s * k, S.s * k * (.8 + .4 * k), S.s * k)); B.spM.setMatrixAt(i, _ibM); }
+  if (any) B.spM.instanceMatrix.needsUpdate = true;
+  if (B.mesh && SNOWZ.t - B.seen > .08) { B.mesh.visible = false; B.mouth.visible = false; B.hit.visible = false; } }
+const _ibV = new THREE.Vector3(), _ibS = new THREE.Vector3();
 function beastFire(d) {     // a fireball from his head, led a little at you
   const C = beastC(d), o = beastHead(d), f = new THREE.Vector3(Math.sin(d.h), 0, Math.cos(d.h)); o.addScaledVector(f, d.K.h * .25);
   const tgt = player.pos.clone(); tgt.y += .7; const tt = o.distanceTo(tgt) / C.fireV;
@@ -9948,7 +9989,7 @@ function beastStep(d, dt, t) {
     return true;
   }
   if (fly) return beastFly(d, dt, t, dd, toP);
-  P.y = 0;
+  P.y = 0; if (d.st !== 'cFire') d.beam = null;     // m15IB: a hit ends the beam
   if (d.st === 'cHit') { t[d.cur] = 1; if (d.t >= skinLen(d, d.cur) * .9) beastGo(d, 'cIdle'); return true; }
   if (d.st === 'cDizzy') { t[d.cur] = 1; if (d.actions[d.cur] && d.t % skinLen(d, d.cur) < dt) skinPlay(d, d.cur, 1);
     if (d.t >= C.dizzyT) { d.exposed = 0; beastGo(d, 'cIdle'); } return true; }
@@ -9961,11 +10002,18 @@ function beastStep(d, dt, t) {
       snd('thud', { g: .8, r: .6, x: P.x, z: P.z }); }
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
+  if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m15IB: in the snow, his ICE BEAM
+    const B = ICEB; d.lift = B.hopH * smooth(0, B.hopUp, d.t); P.y = d.lift;
+    if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; d.beam = { t: 0, aim: player.pos.clone(), hurt: 0, spk: 0 }; setSkinScale(d, d.cur, B.clipK); snd('zap', { g: .9, r: .45, x: P.x, z: P.z }); camShake(.15); }
+    if (d.beam) { iceBeamStep(d, dt); if (d.beam.t >= B.T) { d.beam = null; d.fireT = C.fireCool; setSkinScale(d, d.cur, 1); beastGo(d, 'cRecover'); } }
+    else if (u >= .95 && d.hitDone) beastGo(d, 'cRecover');
+    return true; }
   if (d.st === 'cFire') {
     t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * 1.5);
     if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; beastFire(d); d.fireT = C.fireCool; }
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
+  if (d.lift) { d.lift = Math.max(0, d.lift - dt * 5); P.y = d.lift; }     // m15IB: down from the hop
   if (d.st === 'cRecover') { t[C.clips.idle] = 1; if (d.t >= Lv.recover * .8) beastGo(d, 'cIdle'); return true; }
   d.fireT = Math.max(0, (d.fireT || 0) - dt);
   const canFire = C.clips.fire && d.fireT <= 0 && dd > C.fireMin;
@@ -11051,6 +11099,8 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
   patchStep(dt);     // m2005
+  iceSpikeStep(dt);     // m15IB
+  if (!Z.dragonWoke && p.pos.z < -30 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON) { Z.dragonWoke = 1; try { arenaSpawn('DRAGON'); tipShow('Something stirs by the cliffs...', 3); } catch (e) {} }     // m15IB: the blue dragon lives up here
   if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;
     for (let i = 0; i < PN.T.length; i++) { const P = PN.T[i], d = Math.hypot(p.pos.x - P.x, p.pos.z - P.z);

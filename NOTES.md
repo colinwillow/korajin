@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15IB -- THE BLUE DRAGON'S ICE BEAM, pass 1 (Oct 31 2026)
+*"The blue dragon -- maybe the ice world is where you find him; he could shoot a blue ice ray beam, crazy; a little jump-flap-fly thing and an ice beam.
+The fireballs are very low level. A few passes on the ice beam."* In the Snowfield (`ICEB`, `iceBeamOn`): his `attack_air` becomes the BEAM --
+- he HOPS 2.4 m up (eased in .4 s; the clip slowed to .35 so the wings beat through it) and comes back down after
+- from his mouth: a white-hot core in a blue sheath (two additive cylinders, fresnel core, scrolling frost bands), a flare at the mouth and the impact
+- it reaches the snow and SWEEPS after you for 1.9 s -- the aim point chases at 7.5 m/s, so you can outrun it sideways; a roll goes through
+- where it hits: ICE SPIKES erupt (70 pooled, they grow in .15 s, stand 4.5 s, shrink), the snow is dug and thrown, frost mist rises
+- inside .9 m of the line you take a third of his hit every .28 s
+Your first trip north of z -30 wakes him (he walks out by the cliffs). Measured headless: hop 2.4 m, the beam live from 60 frames in, rendered.
+Next passes: a charge-up (frost gathering in his jaws), a wider finale blast, frozen-solid hits (you encased in ice), the beam freezing the pond and
+building ice walls, and flying strafes from the crag.
+
 ## m2005 -- PUSHABLE SNOW ON EVERY PLATFORM, and fists and feet throw snow (Oct 31 2026)
 *"The snow-covered stuff doesn't react -- it doesn't push snow around the way the ground does; and the melees that don't have the sword should push snow
 around too."* `SNOWPATCH`: every snow-topped platform (the 7 cliff blocks, both ice shelves, the bridge deck, the boulder steps, the spire mound -- 16)
