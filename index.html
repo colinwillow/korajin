@@ -15645,7 +15645,7 @@ function arenaUi() {
       else if (a === 'bevel') { LOOK.bevel = !LOOK.bevel; try { localStorage.setItem('mel.bevel', LOOK.bevel ? '1' : '0'); } catch (err) {} }     // m1975
       else if (a === 'look') { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (err) {} }     // m1967
       else if (a === 'stairs') { STAIRS.on = STAIRS.on ? 0 : 1; try { localStorage.setItem('mel.stairs', STAIRS.on ? 'clips' : 'lean'); } catch (err) {} }     // m1956
-      else if (a === 'flypose') { WING.clip = WING.clip === 'fly_a' ? 'fly_c' : WING.clip === 'fly_c' ? '' : 'fly_a'; try { localStorage.setItem('mel.flypose', WING.clip); } catch (err) {} }     // m15FP
+      else if (a === 'flypose') { WING.clip = WING.clip === 'fly_a' ? 'fly_c' : WING.clip === 'fly_c' ? '' : 'fly_a'; try { localStorage.setItem('mel.flypose', WING.clip); } catch (err) {} }     // m1977
       else if (a === 'hdrop') { HDROP.want = 1; }     // m1953
       else if (a === 'audmode') { SFXM.simple = !SFXM.simple; try { localStorage.setItem('mel.audiomode', SFXM.simple ? 'simple' : 'heavy'); } catch (err) {} try { SFX.ctx && SFX.ctx.close(); } catch (err) {} SFX.ctx = null; SFX.ready = 0; sfxWake(); }     // m1943
       else if (a === 'lhold') { LHOLD.pick = LHOLD.picks[(LHOLD.picks.indexOf(LHOLD.pick) + 1) % LHOLD.picks.length]; try { localStorage.setItem('mel.lhold', LHOLD.pick); } catch (err) {} }     // m1093
@@ -37217,7 +37217,7 @@ function rigAnim(dt) {
   // **AND WITH ZAP'S POOL ON HIM IT IS THE ORDINARY PATH (m119).** `morphAnim` is the three
   // clips a kind carries of its own; once `mphBorrow` has put zap's 50-odd on the skin, every
   // name below resolves and there is nothing left for a second animation path to do.
-  if (p.wing && WING.clip && rig.actions[WING.clip]) { setWeights({ [WING.clip]: 1 }, dt, .12); return; }     // m15FP: his own flight pose (it fell through to the wiggly in-air fall)
+  if (p.wing && WING.clip && rig.actions[WING.clip]) { setWeights({ [WING.clip]: 1 }, dt, .12); return; }     // m1977: his own flight pose (it fell through to the wiggly in-air fall)
   if (p.hdrop) { const nm = p.hdrop.st === 'fall' ? HDROP.fall : HDROP.land; if (rig.actions[nm]) { setWeights({ [nm]: 1 }, dt, .04); return; } }     // m1953
   if (p.dragon && (!p.mphK || rig.borrowed || rig.actions.driving)) { dragAnim(dt, t); return; }     // m1614: climbing on, seated, climbing off (m1624: ahead of a worn form, when the skin has the seat)
   if (p.mphK && !rig.borrowed) { morphAnim(dt); return; }

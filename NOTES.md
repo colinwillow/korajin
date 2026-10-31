@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15FP -- the wing flight has its own pose (no more wiggly fall)
+## m1977 -- the wing flight has its own pose (no more wiggly fall)
 His words (Oct 31): *"in the air on the wing suit he's playing the in-air falling animation, which wiggles them around -- we need something else where he's not
 wiggling so much."*
 - Flight had no clip of its own -- `rigAnim` fell through to the airborne fall. Three library clips Forge-baked onto Grumbo and rendered IN FLIGHT (the
