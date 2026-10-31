@@ -5,6 +5,24 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m1899 -- THE SKY TEMPLE step 1: the zone, the floating island, the cloud sea, the sky, the far islands (TEMPLE.md)
+
+KORAJIN > The Sky Temple (`?w=forge&zone=temple`). All of it is one block, `// TEMPLE:START` .. `// TEMPLE:END` (after `duelBuild`), table
+`TEMPLE` in `SC_TEMPLE:START/END`; outside it only the frame-line call (`templeTick(dt)`, which builds once and then runs) and the menu button.
+- THE ISLAND: `templeRock` -- an elliptical outline (34 x 42 m) with noise, a lip, then eight jittered rings tapering 48 m to a tip; flat facets.
+  Its top is at **y 60** (`TEMPLE.top`), paved (`lbMat` mega), and its fan triangles go in through `bldTris` -- that is the floor. The sides use
+  the megalith texture STRETCHED (9 m x 4 m per tile, so the slabs read as strata) with a vertex-colour fall-off to a dark underside.
+- WHY 60 M UP: the forge's `groundAt` floor is 0 everywhere. Below `top - fallY` (36) `templeTick` puts him back at `temple_spawn` (checked
+  headless: dropped off the east edge, came back to 0,60,30). The forge's white floor and peaks (`CWALL.g`'s children) are hidden.
+- THE SKY: a camera-following dome (blue zenith, peach horizon, a sun glow), the fog warm and pushed to 160-950 m, the sun moved to the
+  front-left (`_sunOff`), hemi sky-blue over a warm bounce, `camera.far` 1500.
+- THE CLOUD SEA: three fbm shader planes at 30 / 37 / 45 m (cover .95 / .55 / .32, drifting) plus 40 cumulus HEAPS (5 flattened spheres
+  each, merged: one draw) sitting on it, some round the island's root.
+- THE FAR ISLANDS: seven `place` entries (`temple_far_01..07`, kind `isle`) at tops from 38 to 160 m, 13-44 m across, with stepped spires and
+  teal BEAMS (additive, fading; `beam: 2` also hangs one below the tip), plus 12 seeded drifting rocks round the island (-26..+46 m). Rock in
+  ONE merged mesh, spires in one, beams in one.
+- Budget: the whole frame headless is **16 draw calls, 39k triangles**. Next: step 2, the temple mass.
+
 ## m1898 -- FUNCTION vs LOOK: level THEMES (block-out / Japanese / sky temple / ancient tech) that re-skin the same build
 
 His: *"build them really simple, and any time we make a new temple you can wrap the new design around the current build -- block out the

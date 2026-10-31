@@ -26,7 +26,7 @@ rope rails, ledges, futuristic, floating"*. It starts as ONE piece (his: *"like 
   with the build number. Render it headless and LOOK at it against the concept before ticking.
 
 ## Steps
-- [ ] 1. THE ISLAND + SKY: the zone exists; a floating rock island (tapered underside, ragged stone), a sea of clouds below (layered soft
+- [x] 1. (m1899) THE ISLAND + SKY: the zone exists; a floating rock island (tapered underside, ragged stone), a sea of clouds below (layered soft
       planes), a warm sky, 4-6 distant floating islands with spires and teal light beams (cheap: billboards / low-poly), fall-off = respawn.
 - [ ] 2. THE TEMPLE MASS: the stepped megalith core (battered walls, two side pylons, the central tower), the grand stair with a red carpet,
       the landing with braziers, the door (jade-ringed, sealed), rope rails along every edge. All of it climbable / walkable.
