@@ -568,15 +568,6 @@ body.dyn.desk .zone { display: none; }
   font-family: var(--disp); font-size: 13px; color: var(--ink); background: var(--sun); border: 2px solid var(--ink); border-radius: 7px; padding: 1px 6px 2px; }
 #wpt.on { display: block; }
 #wpt i { font-style: normal; display: inline-block; margin-right: 4px; }
-/* THE STARS (m280): under the weapon chip, top-right. Hidden at none; a level gained flashes. */
-#stars { position: fixed; top: calc(62px + env(safe-area-inset-top)); right: calc(12px + env(safe-area-inset-right));
-  z-index: 5; pointer-events: none; opacity: 0; transition: opacity .3s ease; font-family: var(--disp); font-size: 20px; letter-spacing: 2px; }
-#stars.on { opacity: 1; }
-#stars i { font-style: normal; color: rgba(255,255,255,.22); text-shadow: 0 2px 0 var(--ink); }
-#stars i::before { content: '\2605'; }
-#stars i.on { color: var(--sun); }
-#stars.flash { animation: stars .6s ease 3; }
-@keyframes stars { 50% { transform: scale(1.25); filter: brightness(1.6); } }
 /* THE SAMPLER (m282): green on the pad (the DNA round's colour), and a ring that fills over him */
 #padR.samp::after { opacity: 1; border-color: #6dff8a; }
 #samp { position: fixed; left: 50%; top: 50%; z-index: 6; display: none; pointer-events: none;
@@ -47280,7 +47271,6 @@ function dummyBlow(d, dirH, power, dmg, pal) {
   // a target for ever and never come back; the mark is YOUR interest and he follows it, so he
   // gives up when you do.
   if (!pal) d.mark = PALMARK;
-  if (!pal && !d.arena) heatHit(d);           // a blow you land is heat (m280) -- not in the arena (z1)
   if (!pal && d.markId && /^(protest|counter)_/.test(d.markId) && OPROTEST.st === 'rally') OPROTEST.provoked = 'you';
   if (!pal && d.markId && /^hc_(rally|pearl)_/.test(d.markId) && HCRALLY.st === 'speech') HCRALLY.provoked = 'you';       // m372   // m347
   // AND HOW A MAN WHO DOES NOT FIGHT DECIDES TO LEAVE. Capped, so standing over him and
@@ -50045,8 +50035,7 @@ const FEAR = {
 };
 // A5 builds the stars out of this; until then it is a number that only goes up and down
 const HEAT = { v: 0, calls: 0 };
-function heatAdd(n, why) { if (GOD.on || !COPS.on) return 0;     // z (m895): the police are OFF -- see COPS.on
-  HEAT.v = Math.max(0, HEAT.v + n); if (why === 'call') HEAT.calls++; return HEAT.v; }
+function heatAdd(n, why) { return 0; }     // m15PO: the police / stars system is cut (it was OFF since m895); the story's callers still call this
 const fearLooks = () => { const k = player.mphK; return k ? /alien/i.test(mphName(k)) : !HERO.human[HERO.pick]; };     // m963: a human hero is not an alien to them
 const fearHuman = d => { const K = d.K; return K.ai && K.pacifist && !K.pal && !K.repair && !d.wasK && !/alien|officer|clancy/i.test(mphName(K)); };
 const fear = { mats: {} };
@@ -50119,223 +50108,6 @@ function fearCall(d, dt, t, toP) {
   t[d.rest || d.K.clips.idle] = 1;
   if (d.callT <= 0) { FEAR.calls++; heatAdd(1, 'call'); if (d.sawX !== undefined) { HEAT.lx = d.sawX; HEAT.lz = d.sawZ; } }
   return true;
-}
-
-// ============================================================================================
-// HEAT & POLICE (m280, ROADMAP A5a) -- stars, and the officers finally get up off their spot
-// ============================================================================================
-// **HEAT IS ONE NUMBER AND THE STARS ARE THRESHOLDS ON IT** (`COPS.star`), so every source --
-// a witness's call, a cop who sees you, a blow on a cop or a civilian -- adds to the same
-// value and nothing decides a star level of its own. It cools only while NO cop has seen you
-// for `lose` seconds, and it cools `coolDisg` times faster while you look human: breaking line
-// of sight and changing form are the two ways out, exactly as the roadmap says.
-//   1 star  the officers walk to where you were last reported (`HEAT.lx/lz`)
-//   2 stars they run at you on sight and try to ARREST: in `reach`, a grab every `grabEvery`
-//           that hurts and staggers (no arrest clip in his file, so it is `playerHurt`'s stun)
-//   3, 4    not yet -- A5b is the pistol and the reinforcements
-// **THE OFFICER WAS A PUNCHING BAG WITH WALK AND RUN CLIPS NOBODY NAMED.** `dummy_officer.glb`
-// carries `walk_01`, `run_01`, `run_02`, `draw_weapon` and `shoot_pistol`; m280 names the first
-// two, and the rest is A5b. `copAI` lives in `stepDummies`' free branch, so every hit reaction,
-// knock-down and get-up he already had still outranks the chase.
-// **A COP DOES NOT SEE THROUGH A DISGUISE** (`fearLooks`): a human form walking past him is a
-// pedestrian, and heat cools fast while you wear one.
-// The gait refs are GUESSES (not measured): `npm run gait` on `walk_01`/`run_01` would settle them.
-const COPS = {
-  // m895: OFF. *"Get rid of the police star system... we are at phase one again."* Heat never rises, no stars, cops do not
-  // hunt. The whole system goes in the ROADMAP CUT; this is the switch until then.
-  on: 0,
-  star: [1, 2.5, 4.5, 7],    // heat at which each star lights
-  max: 8,
-  see: 22, cone: 1.4, feel: 4,   // m, rad, m -- a cop is LOOKING, so he sees further and wider
-  spotV: 2.5,                // a cop who sees the alien puts heat at least here (2 stars: chase)
-  lose: 6,                   // s unseen by any cop before heat starts to cool
-  cool: .22,                 // heat per second while unseen
-  coolDisg: 4,               // x that while you look human
-  hitCop: 1.2, hitCiv: .3,   // heat per blow you land
-  reach: 1.35,               // m he grabs from
-  grabEvery: 1.4,            // s between grabs
-  grabDmg: 5,
-  // THE PISTOL (m281, A5b) -- three stars
-  shootR: 18,                // m: inside this, seeing you, at 3 stars he stops and shoots
-  fireEvery: [1.0, 1.7],     // s between shots, rolled each time so two cops are not a metronome
-  fireLag: .14,              // s into `shoot_pistol` the round leaves (the recoil frame, by eye)
-  acc: [.6, .18],            // hit chance at point blank / at `shootR`, linear between
-  accRun: 14,                // m/s of your speed that halves it (moving targets are harder)
-  shotDmg: 7,
-  tracerT: .07,              // s a tracer is on screen
-  // REINFORCEMENTS (m281) -- four stars
-  extra: 3,                  // at most this many extra officers at once
-  extraEvery: 6,             // s between arrivals
-  extraR: [24, 32],          // m from you, behind you, where they turn up
-  extraGo: 12,               // s at no stars before the extras are taken away
-  // THE MILITARY (m740, F4-5a) -- at four stars the reinforcements are SOLDIERS (the roster's `military`: the officer in olive, a
-  // helmet), and a soldier is the better shot: further, faster, straighter. The ones already on the beat stay cops.
-  sol: 1,                    // 0: the four-star extras are cops again (the A/B)
-  solR: 1.5,                 // x `shootR`
-  solAcc: 1.35,              // x the hit chance (still capped below 1)
-  solFire: .65,              // x the time between rounds
-  n: 0, grabs: 0, shots: 0, hits: 0, extras: 0, soldiers: 0,   // chip
-};
-Object.assign(HEAT, { lvl: 0, seenT: 99, lx: undefined, lz: undefined, flash: 0, extraT: 0, calmT: 0 });
-const heatLvl = v => { let n = 0; for (const s of COPS.star) if (v >= s) n++; return n; };
-function heatStep(dt) {
-  if (!COPS.on) { HEAT.v = 0; return; }
-  HEAT.seenT += dt;
-  HEAT.v = Math.min(COPS.max, HEAT.v);
-  const human = !fearLooks();
-  if (HEAT.seenT > COPS.lose || human) HEAT.v = Math.max(0, HEAT.v - COPS.cool * (human ? COPS.coolDisg : 1) * dt);
-  const l = heatLvl(HEAT.v);
-  if (l !== HEAT.lvl) {
-    const el = document.getElementById('stars');
-    if (el) {
-      el.classList.toggle('on', l > 0);
-      el.querySelectorAll('i').forEach((s, i) => s.classList.toggle('on', i < l));
-      if (l > HEAT.lvl) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
-    }
-    HEAT.lvl = l;
-  }
-  copExtras(dt);
-  copFxStep(dt);
-}
-// FOUR STARS: more of them, from behind you, every `extraEvery`. Spawned and removed HERE, in
-// `heatStep`, which runs before `stepDummies` walks the list -- a splice inside that loop skips
-// the next body (m162's `VTURN` lesson).
-function copExtras(dt) {
-  if (!COPS.on || !DUMMY.P) return;
-  HEAT.calmT = HEAT.lvl ? 0 : HEAT.calmT + dt;
-  if (HEAT.calmT > COPS.extraGo) {
-    for (let i = DUMMIES.length - 1; i >= 0; i--) if (DUMMIES[i].copExtra) { const d = DUMMIES[i]; bodyGone(d); scene.remove(d.root); }
-    return;
-  }
-  if (HEAT.lvl < 4) { HEAT.extraT = Math.min(HEAT.extraT, 1.5); return; }
-  if ((HEAT.extraT -= dt) > 0) return;
-  HEAT.extraT = COPS.extraEvery;
-  let n = 0; for (const d of DUMMIES) if (d.copExtra) n++;
-  if (n >= COPS.extra) return;
-  const pp = player.pos;
-  for (let k = 0; k < 10; k++) {
-    const a = player.faceH + Math.PI + (Math.random() - .5) * 2.2, r = rnd(COPS.extraR);
-    const x = pp.x + Math.sin(a) * r, z = pp.z + Math.cos(a) * r;
-    let y;
-    if (kitWorld()) { y = kitStand(x, z); if (y == null) continue; }
-    else {
-      y = groundAt(x, z, pp.y + 2, MOVE.step);
-      if (!(y > -1e3) || Math.abs(y - pp.y) > 3) continue;
-      _wpP.x = x; _wpP.y = y; _wpP.z = z;
-      if (resolveBoxes(_wpP, DUMMY.r, 1.6)) continue;
-    }
-    const d = bodySpawn(DUMMY.P, DUMMY, x, z, y);
-    if (!d) return;
-    d.copExtra = 1; d.cx = x; d.cz = z; d.ch = d.h;
-    if (COPS.sol) { const R = rosterOf('military'); if (R) { rosterApply(d, R); d.soldier = 1; COPS.soldiers++; } }   // m740 (F4-5a)
-    COPS.extras++;
-    return;
-  }
-}
-// a tracer: one thin additive cylinder from the muzzle to where the round went, pooled
-const copFx = { pool: [], geo: null, mat: null, up: new THREE.Vector3(0, 1, 0), a: new THREE.Vector3(), b: new THREE.Vector3() };
-function copTracer(ax, ay, az, bx, by, bz) {
-  if (!copFx.geo) {
-    copFx.geo = new THREE.CylinderGeometry(.018, .018, 1, 5, 1, true);
-    copFx.mat = new THREE.MeshBasicMaterial({ color: 0xffe08a, transparent: true, opacity: .9,
-      blending: THREE.AdditiveBlending, depthWrite: false, fog: false });
-  }
-  let m = copFx.pool.find(q => q.userData.t <= 0);
-  if (!m) { m = new THREE.Mesh(copFx.geo, copFx.mat); m.frustumCulled = false; scene.add(m); copFx.pool.push(m); }
-  const A = copFx.a.set(ax, ay, az), B = copFx.b.set(bx, by, bz);
-  const L = A.distanceTo(B);
-  m.position.copy(A).add(B).multiplyScalar(.5);
-  m.quaternion.setFromUnitVectors(copFx.up, B.sub(A).divideScalar(L || 1));
-  m.scale.set(1, L, 1);
-  m.userData.t = COPS.tracerT; m.visible = true;
-}
-function copFxStep(dt) {
-  for (const m of copFx.pool) if (m.userData.t > 0 && (m.userData.t -= dt) <= 0) m.visible = false;
-}
-// the round leaves: a roll against distance and how fast you are going, a tracer either way
-function copFire(d) {
-  const P = d.root.position, pp = player.pos, p = player;
-  const dx = pp.x - P.x, dz = pp.z - P.z, q = Math.hypot(dx, dz), h = Math.atan2(dx, dz);
-  const mx = P.x + Math.sin(d.h) * .45 - Math.cos(d.h) * .18, my = P.y + 1.4, mz = P.z + Math.cos(d.h) * .45 + Math.sin(d.h) * .18;
-  const u = clamp(q / (COPS.shootR * (d.soldier ? COPS.solR : 1)), 0, 1);
-  const pr = Math.min(.95, (COPS.acc[0] + (COPS.acc[1] - COPS.acc[0]) * u) * (d.soldier ? COPS.solAcc : 1)) / (1 + (p.speed || 0) / COPS.accRun);
-  const hit = !p.roll && Math.random() < pr;
-  COPS.shots++;
-  snd('shot', { g: .55, r: .62 + Math.random() * .08, x: P.x, z: P.z });
-  if (hit && coverDucked()) { copTracer(mx, my, mz, pp.x, pp.y + 1.6, pp.z); return; }     // m1009: ducked behind half cover, it goes over him
-  if (hit) {
-    COPS.hits++;
-    copTracer(mx, my, mz, pp.x, pp.y + 1.1, pp.z);
-    playerHurt(COPS.shotDmg, h, FOE.push * .25, 0, FOE.stun * .5, 0);
-  } else {
-    const a = h + (Math.random() < .5 ? -1 : 1) * (.05 + Math.random() * .08), r = q + 3 + Math.random() * 6;
-    copTracer(mx, my, mz, P.x + Math.sin(a) * r, my + (pp.y + 1.1 - my) * (r / Math.max(q, .1)) + (Math.random() - .3) * .6, P.z + Math.cos(a) * r);
-  }
-}
-// a blow you land -- from `dummyBlow`, which every fist, bolt and blast reaches
-function heatHit(d) {
-  if (!COPS.on || d.role === 'robot') return;          // m385: Uplift's robots are no police matter
-  if (d.K.cop) { heatAdd(COPS.hitCop, 'cop'); HEAT.lx = player.pos.x; HEAT.lz = player.pos.z; }
-  else if (!d.K.pal && !d.wasK && !/alien/i.test(mphName(d.K))) heatAdd(COPS.hitCiv, 'civ');
-}
-function copAI(d, dt, t) {
-  const K = d.K, P = d.root.position, pp = player.pos;
-  if (d.cx === undefined) { d.cx = P.x; d.cz = P.z; d.ch = d.h; }
-  const dx = pp.x - P.x, dz = pp.z - P.z, dd = Math.hypot(dx, dz), toP = Math.atan2(dx, dz);
-  d.grabT = (d.grabT || 0) - dt;
-  if ((d.copChk = (d.copChk === undefined ? Math.random() * .3 : d.copChk) - dt) <= 0) {
-    d.copChk = .25;
-    const was = d.copSee;
-    d.copSee = fearLooks() && fearSees(d, COPS.see, COPS.cone, COPS.feel);
-    if (d.copSee && !was) { COPS.n++; d.fearS = 1.4; d.fearKind = 'cop'; }
-  }
-  if (d.copSee) {
-    HEAT.seenT = 0; HEAT.lx = pp.x; HEAT.lz = pp.z;
-    if (HEAT.v < COPS.spotV) HEAT.v = COPS.spotV;
-  }
-  const lvl = HEAT.lvl;
-  let sp = 0, clip = K.clips.idle;
-  if (lvl < 3) d.gun = 0;                  // holstered below three stars
-  if (d.shotAt > 0 && (d.shotAt -= dt) <= 0) copFire(d);
-  if (lvl >= 3 && d.copSee && dd > COPS.reach && dd < COPS.shootR * (d.soldier ? COPS.solR : 1)) {
-    // THREE STARS: stand, draw, shoot. The draw plays once per drawing; after it the shoot clip
-    // HOLDS its clamped last frame between rounds, which is the aim.
-    faceTo(d, toP, dt);
-    if (!d.gun) { d.gun = 1; d.drawT = skinLen(d, K.clips.draw) || .5; skinPlay(d, K.clips.draw, 1); d.fireT = .3; }
-    if (d.drawT > 0) { d.drawT -= dt; clip = K.clips.draw; }
-    else {
-      clip = K.clips.shoot;
-      if ((d.fireT -= dt) <= 0 && Math.abs(wrapAngle(toP - d.h)) < .35) {
-        d.fireT = rnd(COPS.fireEvery) * (d.soldier ? COPS.solFire : 1); d.shotAt = COPS.fireLag;
-        skinPlay(d, K.clips.shoot, 1);
-      }
-    }
-  } else if (lvl >= 2 && d.copSee) {
-    faceTo(d, toP, dt);
-    if (dd > COPS.reach) { sp = K.run; clip = K.clips.run; }
-    else if (d.grabT <= 0) {
-      d.grabT = COPS.grabEvery; COPS.grabs++;
-      playerHurt(COPS.grabDmg, toP, FOE.push * .6, FOE.pushUp * .5, FOE.stun, .25);
-    }
-  } else if (lvl >= 1 && HEAT.lx !== undefined) {
-    const gx = HEAT.lx - P.x, gz = HEAT.lz - P.z;
-    if (Math.hypot(gx, gz) > 1.6) {
-      faceTo(d, Math.atan2(gx, gz), dt);
-      const run = lvl >= 2;
-      sp = run ? K.run : K.walk; clip = run ? K.clips.run : K.clips.walk;
-    } else faceTo(d, d.h + dt * .8, dt);   // there: turning slowly, looking for you
-  } else {
-    const gx = d.cx - P.x, gz = d.cz - P.z;
-    if (Math.hypot(gx, gz) > 1) { faceTo(d, Math.atan2(gx, gz), dt); sp = K.walk; clip = K.clips.walk; }
-    else faceTo(d, d.ch, dt);
-  }
-  if (sp > 0 && clip) {
-    // only walk once roughly facing the way, or he moonwalks round corners
-    const fwd = Math.cos(wrapAngle((lvl >= 2 && d.copSee ? toP : d.h) - d.h));
-    foeMove(d, d.h, sp * ((d.v && d.v.pace) || 1) * Math.max(0, fwd), dt);
-    setSkinScale(d, clip, clamp(sp / (clip === K.clips.run ? K.runRef : K.walkRef), K.tsLo, K.tsHi));
-  }
-  t[clip || K.clips.idle] = 1;
 }
 
 // ============================================================================================
@@ -68053,7 +67825,6 @@ function buildGroundPaint() {
 function stepDummies(dt) {
   bodySep(dt);
   bodySeat();
-  heatStep(dt);                 // the stars, before anyone reads them this frame (m280)
   fearStep(dt);                 // before the AI, so a fright this frame runs this frame (m279)
   bodyCull();
   for (const d of DUMMIES) {
@@ -68187,8 +67958,6 @@ function stepDummies(dt) {
       archerAI(d, dt, t);         // m1103
     } else if (K.repair) {
       workerAI(d, dt, t);
-    } else if (K.cop && COPS.on) {
-      copAI(d, dt, t);            // heat & police (m280)
     } else if (K.ai) {
       foeAI(d, dt, t);
     } else {
@@ -70440,8 +70209,6 @@ function frameBody() {
       // Q: the active quest and step (m278) -- `Qq0.1` is quest q0 on its second step; no token = none active
       // FR: frights / calls phoned in / heat (m279) -- frights with no calls is the dice, no frights at all is sight
       (FEAR.n ? ' FR' + FEAR.n + '/' + FEAR.calls : '') +
-      // H: heat, stars, cop spots/grabs (m280) -- stars with no spots is all phone calls
-      (HEAT.v > 0 || COPS.n ? ' H' + HEAT.v.toFixed(1) + '*' + HEAT.lvl + ' cs' + COPS.n + '/' + COPS.grabs + (COPS.shots ? ' sh' + COPS.hits + '/' + COPS.shots : '') + (COPS.extras ? ' +' + COPS.extras + (COPS.soldiers ? 'm' + COPS.soldiers : '') : '') : '') +
       // S: samples taken / forms unlocked (m282)
       // J: juice in the tank (m284)
       ' J' + Math.floor(SAVE.juice) + (JUICE.n ? '!' + JUICE.n : '') +
@@ -74211,7 +73978,6 @@ window.melee = window.mel = { BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoSh
   questOn: id => { progFlag('qon:' + id); quest.cur = null; return id + ' on'; },
   // FEAR (m279): `mel.FEAR` live, `mel.HEAT` the stub A5 builds on
   FEAR, HEAT, heatAdd,
-  // POLICE (m280): `mel.COPS` live; `mel.heat(n)` sets the heat to look at a star level
   // SAMPLER (m282): `mel.SAMPLE` live, `mel.FORMK` the sampled kinds
   SAMPLE, FORMK,
   // FORMS (m283): `mel.formPick('hobo_01')` wears a sampled form; `mel.formNow()` is what you are
@@ -74250,7 +74016,6 @@ window.melee = window.mel = { BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoSh
   gateDemo: () => { gateDemo(1); return GATES.length + ' gates'; }, portalDemo: () => { portalDemo(1); return PORTALS.length + ' pads'; },
   GATE, GATES, GATE_TYPES, gate: t => { const p = player, h = p.faceH; const g = gateAdd(t || 'cordon', p.pos.x + Math.sin(h) * 4, p.pos.z + Math.cos(h) * 4, h + Math.PI); return g ? g.id : 'types: ' + Object.keys(GATE_TYPES).join(' '); },
   JUICE, juice: n => { SAVE.juice = n == null ? JUICE.cap : +n; progSave(); return SAVE.juice; },
-  COPS, heat: n => (HEAT.v = +n || 0),
   SAVE, progSave, progForm, progRegion, progPortal, progFlag, progChapter, progJuice, progReset,
   // THE SURGE (m248): `mel.SURGE` is live; `mel.surge(n)` throws n cubes off you once
   SURGE, surge: n => surgeEmit(rig.model, n || 300), WARM,

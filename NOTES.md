@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15PO -- clean-out: the police / wanted-stars system is gone
+His go-ahead: *"Yeah, probably keep going with the cleaner... the one thing I worry is that we accidentally clean out some stuff we need."*
+It had been OFF since m895 (*"get rid of the police star system"*), so nothing on screen changes.
+- Cut: `COPS`, `heatStep`, `heatLvl`, `copExtras`, the tracers (`copFx`, `copTracer`, `copFire`), `heatHit`, `copAI`, the cop branch in
+  `stepDummies` (a cop now goes on to the next branch, exactly as it did with `COPS.on = 0`), the `H` heat token in the chip, the
+  `#stars` CSS (no element ever used it any more), and `mel.COPS` / `mel.heat`. 236 lines.
+- Kept: `HEAT` (`{ v, calls }`) and `heatAdd`, now `return 0` -- the old story code still calls them; they go with the story.
+- How it was checked against cutting something needed: every name the block defined was grepped in what is left (only old
+  comments mention them), and the edit asserted each line it touched before touching it. `npm run check` 4 boot ok.
+
 ## m1915 -- THE SKY TEMPLE: FUNCTION vs LOOK -- the block-out and the sky skin are separate layers, with a switch (his rule, LEVELBUILDER.md m1898)
 
 *"Build it really simple -- block out the functionality -- and any time we make a new temple, wrap the new design around the current build."*
