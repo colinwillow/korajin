@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15ST -- snow footsteps, the ice beam's sound, a brush-ink START button (Oct 31 2026)
+## m2008 -- snow footsteps, the ice beam's sound, a brush-ink START button (Oct 31 2026)
 - *"Can you source a snow footsteps sound? The current footsteps sound ridiculous in the snow."* No sample library is reachable from here, so it is
   SYNTHESISED: `snowCrunchBufs` builds eight crunch buffers in code (a dense spray of 140-220 tiny noise grains front-loaded into ~.2 s, band-limited
   220 Hz..~3 kHz -- packed snow's squeak and crunch), registered as footstep set `foot_SNOW` and switched on while the Snowfield is up. A real

@@ -185,7 +185,7 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #splash img.blur { filter: blur(22px) brightness(.4); transform: scale(1.12); display: none; }
 @media (min-aspect-ratio: 3/4) { #splash img.main { object-fit: contain; } #splash img.blur { display: block; } }
 #splash .kjtap { position: absolute; left: 0; right: 0; margin: 0 auto; width: max-content; bottom: calc(7% + env(safe-area-inset-bottom)); padding: 16px 48px 18px 50px;     /* m1319: centred by margin, not transform */
-  /* m15ST (his: "the start button -- the rounded pill and the text don't match the title's aesthetic"): a torn RED BRUSH STROKE like the title's ink,
+  /* m2008 (his: "the start button -- the rounded pill and the text don't match the title's aesthetic"): a torn RED BRUSH STROKE like the title's ink,
      the words in a dry hand-lettered brush face, cream like the title, with a dark ink offset. No pill, no neon. */
   font: 400 25px 'Permanent Marker', var(--disp), sans-serif; letter-spacing: .1em; color: #f4e7cf; text-shadow: 2px 3px 0 #1a0b12, -1px -1px 0 rgba(26,11,18,.6);
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 110' preserveAspectRatio='none'%3E%3Cfilter id='r' x='-5%25' y='-20%25' width='110%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035 .6' numOctaves='3' seed='11'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='20'/%3E%3C/filter%3E%3Cpath filter='url%28%23r%29' d='M8 34 Q120 18 210 22 T394 28 L388 78 Q260 92 150 86 T12 80 Z' fill='%23a8121f'/%3E%3Cpath filter='url%28%23r%29' d='M30 40 Q150 28 250 32 T372 36 L366 52 Q220 46 120 50 T28 56 Z' fill='%23e0353c' opacity='.55'/%3E%3Cpath filter='url%28%23r%29' d='M40 82 Q200 92 360 80 L352 88 Q200 98 44 90 Z' fill='%235e0710' opacity='.6'/%3E%3C/svg%3E") center / 100% 100% no-repeat; transform: rotate(-2.5deg); animation: kjPulse 1.8s ease-in-out infinite; pointer-events: none; }
@@ -6478,7 +6478,7 @@ function bankLead(key) {
   _lead[key] = { n, cap: SFX.lead, v: lo };
   return lo;
 }
-// m15ST: SYNTH SOUNDS for the snow (his: "snow footsteps -- the current ones sound ridiculous in the snow; the ice beam's electric sound lingers too long").
+// m2008: SYNTH SOUNDS for the snow (his: "snow footsteps -- the current ones sound ridiculous in the snow; the ice beam's electric sound lingers too long").
 // `snowCrunchBufs` builds eight crunch buffers in code (no file): a dense spray of tiny noise grains front-loaded into ~.2 s, band-limited -- the
 // squeak-and-crunch of packed snow -- registered as the footstep set `foot_SNOW` (left / right pairs) and used while the Snowfield is up.
 // `synthHiss` is the beam: filtered noise sweeping up plus a trembling high tone, shaped to EXACTLY the beam's length and gone when it ends;
@@ -10052,7 +10052,7 @@ function beastStep(d, dt, t) {
   if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m2006: in the snow, his ICE BEAM
     const B = ICEB; d.lift = B.hopH * smooth(0, B.hopUp, d.t); P.y = d.lift;
     if (!d.hitDone) iceCharge(d, u / C.fireAt, dt);     // m2007: frost gathers in his jaws first
-    if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; d.beam = { t: 0, aim: player.pos.clone(), hurt: 0, spk: 0, hits: 0, fr: 0 }; setSkinScale(d, d.cur, B.clipK); synthHiss(B.T, P.x, P.z, .55); synthCrack(P.x, P.z, .5); camShake(.15); }     /* m15ST: the hiss lasts exactly the beam */
+    if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; d.beam = { t: 0, aim: player.pos.clone(), hurt: 0, spk: 0, hits: 0, fr: 0 }; setSkinScale(d, d.cur, B.clipK); synthHiss(B.T, P.x, P.z, .55); synthCrack(P.x, P.z, .5); camShake(.15); }     /* m2008: the hiss lasts exactly the beam */
     if (d.beam) { iceBeamStep(d, dt); if (d.beam.t >= B.T) { d.beam = null; d.fireT = C.fireCool; setSkinScale(d, d.cur, 1); beastGo(d, 'cRecover'); } }
     else if (u >= .95 && d.hitDone) beastGo(d, 'cRecover');
     return true; }
@@ -11147,7 +11147,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
   patchStep(dt);     // m2005
-  if (SFX.ctx && !SFX.buf.foot_SNOW) { try { SFX.buf.foot_SNOW = snowCrunchBufs(); } catch (e) {} } if (SFX.buf.foot_SNOW && STEP.set !== 'SNOW') { Z.stepSet0 = STEP.set; STEP.set = 'SNOW'; }     // m15ST: snow crunch footsteps
+  if (SFX.ctx && !SFX.buf.foot_SNOW) { try { SFX.buf.foot_SNOW = snowCrunchBufs(); } catch (e) {} } if (SFX.buf.foot_SNOW && STEP.set !== 'SNOW') { Z.stepSet0 = STEP.set; STEP.set = 'SNOW'; }     // m2008: snow crunch footsteps
   iceSpikeStep(dt);     // m2006
   iceFreezeStep(dt); iceFrostStep(dt);     // m2007
   if (!Z.dragonWoke && p.pos.z < -30 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON) { Z.dragonWoke = 1; try { arenaSpawn('DRAGON'); tipShow('Something stirs by the cliffs...', 3); } catch (e) {} }     // m2006: the blue dragon lives up here
