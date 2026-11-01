@@ -11809,7 +11809,7 @@ const CELLS = {
     spawn: { a: 216, r: 7, y: 0 } } };
 const TCELL = { want: 0, id: (() => { try { const m = /[?&]cell=([A-Za-z0-9]+)/.exec(location.search); return m ? m[1].toUpperCase() : 'C1'; } catch (e) { return 'C1'; } })(), stat: null };
 try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {}
-// m15BI: THE BLOCKOUT IMPORTER (his: "I'll design blockouts in Cinema 4D -- one room of a temple -- export them to you, you rebuild them with our stuff so I
+// m2047: THE BLOCKOUT IMPORTER (his: "I'll design blockouts in Cinema 4D -- one room of a temple -- export them to you, you rebuild them with our stuff so I
 // can play it"). `?w=forge&zone=blockout&file=levels/<name>.glb` (KORAJIN > Blockout: the sample). His GLB's objects become playable pieces BY NAME
 // (BLOCKOUT_IMPORT.md, TEMPLE_KIT section 6): any MESH is solid -- its collider an exact TURNED box from its own bounds and yaw (`obox`), drawn grey and
 // tinted by role (wall_ / ledge_ / floor_ / block_ ...); `bar_*` = a HIGH BAR along the mesh's long axis; `zip_<id>_a` + `zip_<id>_b` (empties or tiny
@@ -13914,7 +13914,7 @@ function arenaStage() {
   const R = ARENA.r, g = new THREE.Group(), L = ARENA.look; world.add(g);
   // m1117: THE BUILDING FORGE -- a clean white floor under the arena's sky, nothing else: the buildings are spawned into it (SPAWN > BUILDINGS)
   if (inForge() && DRAGZ.want) { dragStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1610: THE DRAGON RIDE's island instead of the white floor
-  if (inForge() && BLOCKIN.want) { try { blockStage(g); } catch (e) { note('BLOCKOUT THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m15BI: his Cinema 4D blockouts
+  if (inForge() && BLOCKIN.want) { try { blockStage(g); } catch (e) { note('BLOCKOUT THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2047: his Cinema 4D blockouts
   if (inForge() && TCELL.want) { try { cellStage(g); } catch (e) { note('CELL THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2040: one designed cell at a time
   if (inForge() && TLAY.want) { try { tlayStage(g); } catch (e) { note('TLAY THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2030: the temple layout generator
   if (inForge() && SNOWZ.want) { snowStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1384: THE SNOWFIELD instead of the white floor
