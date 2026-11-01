@@ -11339,7 +11339,7 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
   if (V.creek) { const C = V.creek, w = V.creekW || 2.4, pos = [], idx = [];     // the warm CREEK: swept out of the snow, a water ribbon, stones along its banks, steam (snowVillStep)
     for (let k = 0; k + 1 < C.length; k++) seg(C[k][0], C[k][1], C[k + 1][0], C[k + 1][1], w * .9);
     for (let k = 0; k < C.length; k++) { const a = C[Math.max(0, k - 1)], b = C[Math.min(C.length - 1, k + 1)], dx = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(dx, dz) || 1, nx = -dz / l * w / 2, nz = dx / l * w / 2;
-      pos.push(C[k][0] + nx, .16, C[k][1] + nz, C[k][0] - nx, .16, C[k][1] - nz);     /* pass 3b: above the swept pack (sweep .08 x depth), which hid it at .07 */ if (k) { const i = k * 2; idx.push(i - 2, i - 1, i, i - 1, i + 1, i); }
+      pos.push(C[k][0] + nx, .16, C[k][1] + nz, C[k][0] - nx, .16, C[k][1] - nz);     /* pass 3b: above the swept pack (sweep .08 x depth), which hid it at .07 */ if (k) { const i = k * 2; idx.push(i - 2, i, i - 1, i - 1, i, i + 1); }     /* pass 3c: wound to face UP (it faced down and was culled from above) */
       if (k + 1 < C.length) for (let s2 = 0; s2 < 3; s2++) for (const sd of [-1, 1]) { const t = (s2 + rnd()) / 3, x = C[k][0] + (C[k + 1][0] - C[k][0]) * t + sd * nx * 1.15 + (rnd() - .5) * .3, z = C[k][1] + (C[k + 1][1] - C[k][1]) * t + sd * nz * 1.15 + (rnd() - .5) * .3;
         L.stoneD.push(vilBox(.5 + rnd() * .4, .25 + rnd() * .2, .45 + rnd() * .4, .7).rotateY(rnd() * 3).translate(x, .12, z)); } }
     const cg = new THREE.BufferGeometry(); cg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); cg.setIndex(idx); cg.computeVertexNormals();
