@@ -5,6 +5,27 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2043 -- THE GREAT WATERFALL, pass 2: rebuilt against his reference image
+
+His reference: a huge turquoise fall WIDER than it is tall, framed by stacked stone pillars (snow pillows, gold-banded carved tops, crystal finials,
+icicle curtains), an arched aqueduct across the top on the right, a white mist cloud at its foot with a rainbow, open turquoise water with floes,
+snowy rocks and pines. `WFALL` (SC_WFALL) rebuilt to that:
+- Moved back to `at` [-140, 0, -46] (still one row, quarter-turn yaw). Wall 270 m wide, top ~92, a broad notch (`notchW` 38), lip at 78.
+- THE FALL is now a list of TONGUES (`fall.tongues`: x0, x1, lip, dz) -- eight strips across 80 m, at different depths and one lower lip, over a
+  full-width back sheet; turquoise with ropey vertical streaks (noise stretched down the fall), whiter toward the foot. Still one draw.
+- THE FRAME: 13 PILLARS (`place` kind 'pillar') stepping down toward the front and the outside on both flanks -- strata, a rounded snow PILLOW
+  on top, two GOLD bands and gold corner strips (`temple_gold`, one draw for all the gold), crystal finials, icicle curtains down each front,
+  pines on the tops. Each is a box collider.
+- THE AQUEDUCT across the brow on the right (`aqueduct`): piers every 14 m, round arches, a deck with a gold cornice, crystal finials.
+- MIST: 520 points, wider (the full 90 m), taller (to 46 m), bigger -- the white cloud at the foot. A faint additive RAINBOW arc on the right (no fog
+  on it, or it would add the fog colour as a haze).
+- THE POOL: 54 x 22 m, turquoise, foam along the whole impact line, sparkle; ice plates round its rim, 22 floes, snowy boulders and pines round
+  the front.
+- THE CLIMB moved with the fall's edge: five pillar-ledges up the left flank (2.7 .. 11.5 m) into a GROTTO carved into the face at 13.5 m behind
+  the water (the face's colliders leave its band open).
+- Headless (`wfMake` in node with the shipped text): 9 draws, 68 colliders, all valid; rock 64k tris in one draw.
+Still open: a spray sound; whether the panorama's own falls line up with it from the field (one row to move). Shipped unverified.
+
 ## m2042 -- THE GREAT WATERFALL, pass 1 (the panorama's falls, built for real)
 
 His: the huge waterfall in his snow-sky panorama (`images/snow_sky.webp`), built in 3D. Measured off the image: its biggest falls sit at u ~ .06
