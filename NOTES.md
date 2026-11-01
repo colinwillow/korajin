@@ -9,6 +9,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15HR -- THE REGION is HIDDEN (his call) (Nov 1 2026)
+His: *"I feel like I'm just burning credits... the other windows' plants and buildings look so good and what we're doing looks like trash. Hide the
+region. We need to build the village -- we have a fantastic kit and all the original beautiful stuff."* The generated region (m2070-m2097) had no art
+passes and was dressed with finished pieces before it looked like anything -- the scale-up-too-fast pattern. Its two menu buttons now only show with
+`?rgnmenu`; the code and the zone (`?w=forge&zone=region`) are untouched. The Snowfield never changed. Next: the village, small and hand-made, with
+the kit and the plants, many passes (VILLAGE_BLUEPRINT.md's design stands; the region site does not).
+
 ## m2099 -- THE FLORA: painted-in-code detail maps on the soft parts
 
 His: "do one and two" (1 = textures for the petals / caps / pipes, 2 = distance versions). No image files from him for the soft parts, so
