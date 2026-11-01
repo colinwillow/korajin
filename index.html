@@ -15951,12 +15951,21 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   // garden above is the BIG island (lawn at 0); the lookout islet (+4.8) is the waystation; MEDIUM floats at +11, SMALL at +21 -- each route climbs.
   // isles: [x, y, z] of the lawn centre, radii, depth; their dressing as rows; `fall` [deg] waterfalls off the rim. Blockout pass: shapes, routes,
   // a first dressing; refined when his references arrive.
-  isles: [{ id: 'isle_med', at: [68, 11, -34], rx: 16, rz: 13, depth: 26, seed: 61, fall: [120, 200],
-      trees: [{ id: 'willow_med_a', at: [72, -40], h: 8.2, k: .85, seed: 71, lean: [-.3, .4] }, { id: 'willow_med_b', at: [58, -27], h: 7.0, k: .75, seed: 83, lean: [.3, -.2] }],
-      pond: { at: [70, -31], r: 3.0 }, ring: { at: [62, -38], r: 4.2, n: 8 }, lanterns: [[62.5, -30.5], [75, -27]], crystals: [[78, -36, 1.0], [60, -44, .8]], cairns: [[80, -30]] },
+  // m2160 GRUMBO'S HOMESTEAD (his ref images/concepts/prologue/homestead_isle.png) replaces the medium blockout: his house -- the one he never sleeps in,
+  // because he naps in the hammock. Two tiers: the lower lawn (pond, waterwheel, arched footbridge, gazebo, vegetable beds) and a 2.4 m stone-walled
+  // upper terrace up a slab stair (the house, its deck under an awning, the cherry tree). `home` holds the homestead's own rows.
+  isles: [{ id: 'isle_home', at: [68, 11, -34], rx: 15, rz: 13, depth: 24, seed: 61, fall: [330, 75], blocks: 1,
+      trees: [{ id: 'cherry_home', at: [63.4, -42.6], h: 7.2, k: .85, seed: 73, lean: [.3, .3], blossom: 1, base2: 2.4 }],
+      pond: { at: [64.4, -30.9], r: 1.9 }, lanterns: [[66.6, -27.4], [73.4, -27.4], [56.8, -31.5]], crystals: [[80.5, -38, .8]], cairns: [],
+      home: { tier: { at: [70, -39.5], r: 8, h: 2.4 }, stair: { x: 70, hw: 1.0, tread: .5, n: 8 },
+        house: { at: [71, -42.4], w: 6.4, d: 5.0, h: 3.0 }, deck: { at: [76.6, -38.6], w: 3.4, d: 4.2 }, chimney: [73.2, -43.6],
+        gazebo: { at: [59.4, -36.4], r: 1.9 }, footbridge: { at: [63.6, -26.6], yaw: 1.45, L: 3.6 }, beds: { at: [75.5, -25.6], n: 3 },
+        banner: [78.6, -44.8], barrels: [[74.6, -40.6], [75.2, -41.4], [66.8, -40.2]], pots: [[67.6, -39.6], [68.3, -39.4], [58.4, -33.6], [77.8, -27.6]],
+        path: [[70, -27.3], [66.5, -26.6], [61, -26.6], [56.5, -28.2]], fence: [[-22, 62], [86, 150]],
+        clear: [[59.4, -36.4, 2.8], [75.5, -25.6, 2.6], [70, -27.5, 1.6]] } },
     { id: 'isle_small', at: [42, 21, -66], rx: 8, rz: 7, depth: 18, seed: 97, fall: [300],
       trees: [{ id: 'willow_small', at: [40, -69], h: 6.4, k: .65, seed: 91, lean: [.2, .3] }], lanterns: [[45.5, -62.5]], crystals: [[47, -68, 1.1]], cairns: [[37.5, -63]], bell: [44, -66] }],
-  bridges: [{ id: 'bridge_look_med', a: 'lookout', b: 'isle_med', w: 1.5 }, { id: 'bridge_med_small', a: 'isle_med', b: 'isle_small', w: 1.4 }],
+  bridges: [{ id: 'bridge_look_home', a: 'lookout', b: 'isle_home', w: 1.5 }, { id: 'bridge_home_small', a: 'isle_home', b: 'isle_small', w: 1.4 }],
   far: [{ id: 'far_pagoda', at: [-140, 48, -300], r: 30, d: 70, pagoda: 1, trees: 4, falls: [160, 220] }, { id: 'far_e', at: [170, 14, -210], r: 20, d: 46, trees: 4, falls: [250] },
     { id: 'far_w', at: [-230, -6, -40], r: 34, d: 60, trees: 7, falls: [100] }, { id: 'far_ne', at: [250, 66, 40], r: 15, d: 34, trees: 2 },
     { id: 'far_back', at: [70, 92, -420], r: 24, d: 54, trees: 4, falls: [200] }, { id: 'far_below', at: [-62, -34, 92], r: 11, d: 26, trees: 1, falls: [40] },
@@ -15993,6 +16002,9 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
     lamp: new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffc860, emissiveIntensity: 1.35, roughness: .6 }),
     crystal: triMat('garden_crystal', { scale: .9, rough: .15, metal: .1, bump: .6, color: 0xf0e0ff }),
     rope: new THREE.MeshStandardMaterial({ color: 0xcbb48a, roughness: .95 }) };
+  M.blossom = triMat('garden_blossom', { scale: 2.0, rough: .9, bump: .8 }); M.blossomCard = uvm('garden_blossom_card', { alphaTest: .4, side: THREE.DoubleSide, roughness: .85 });
+  M.awning = sway(uvm('garden_awning', { roughness: .95, side: THREE.DoubleSide }), .05, 1.2, 'aw'); M.awning.userData.sw = 1;
+  M.soil = new THREE.MeshStandardMaterial({ color: 0x4a3324, roughness: 1 }); M.clay = new THREE.MeshStandardMaterial({ color: 0xb8704a, roughness: .8 }); M.dark = new THREE.MeshStandardMaterial({ color: 0x3a2618, roughness: .85 });
   M.rock.vertexColors = true; M.crystal.emissive = new THREE.Color(0x6a2cd8); M.crystal.emissiveIntensity = .75; M.crystal.flatShading = true; for (const k of ['vine', 'ivy', 'banner_red', 'banner_teal']) M[k].userData.sw = 1;
   M.flag.polygonOffset = true; M.flag.polygonOffsetFactor = -1; M.flag.polygonOffsetUnits = -2;
   // THE JINRA WATER: glowing mint, flowing along `uv.y` (metres down the stream), brighter at the banks; `uGlow` is P2's drain
@@ -16093,7 +16105,7 @@ function gdnDisc(x, z, r, y0, y1) { const N = Math.max(3, Math.ceil(r * 2 / 1.1)
     const dd = (d + d2) / 2 > .3 ? Math.min(d2, d + .25) : 0; if (dd > .05) BOXES.push({ minx: x + a, maxx: x + b, miny: y0, maxy: y1, minz: z - dd, maxz: z + dd }); } }
 // THE BUILDER -- a pure function of GARDEN: fills G (the island-local group) and the colliders; returns parts
 function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 = Z.top, d2r = Math.PI / 180, parts = Z.parts; parts.length = 0;
-  const MG = new Map(), KEEP = new Set([M.sand, M.roof, M.hammock, M.banner_red, M.banner_teal, M.vine, M.ivy, M.clump, M.fern, M.flowers, M.water, M.fall]);
+  const MG = new Map(), KEEP = new Set([M.blossomCard, M.awning, M.sand, M.roof, M.hammock, M.banner_red, M.banner_teal, M.vine, M.ivy, M.clump, M.fern, M.flowers, M.water, M.fall]);
   const put = (geo, m, into) => { const key = into || 'main'; if (!MG.has(key)) MG.set(key, new Map()); const B = MG.get(key); if (!B.has(m)) B.set(m, []); let q = geo.index ? geo.toNonIndexed() : geo;
       const keep = ['position', 'normal']; if (KEEP.has(m)) keep.push('uv'); if (m.userData.sw) keep.push('aSw'); if (m === M.rock) keep.push('color');
       for (const k of Object.keys(q.attributes)) if (!keep.includes(k)) q.deleteAttribute(k);
@@ -16211,8 +16223,9 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       put(gdnTube(bp, 10, 8, t => (.32 - t * .22) * k).geo, M.bark, into); blobs.push([bp[3][0], bp[3][1] + .45 * k, bp[3][2], (1.7 + Rt() * .6) * k]); if (b % 2) blobs.push([bp[2][0], bp[2][1] + .8 * k, bp[2][2], (1.4 + Rt() * .5) * k]);
       if (b % 2 === 0) Z.lamps.push({ x: bp[2][0] * .5 + bp[3][0] * .5, y: Math.min(bp[2][1], bp[3][1]) - .1, z: bp[2][2] * .5 + bp[3][2] * .5, k, kind: b % 4 ? 'bell' : 'lantern', into }); }
     blobs.push([top.x, top.y + 1.0 * k, top.z, 2.4 * k]);
-    for (const [bx, byy, bz, br] of blobs) { put(gdnBlob(Rt, bx, byy, bz, br * .85, .42, 1), M.leaves, into); for (const q of dmtCards(Rt, bx, byy + br * .05, bz, br * 2.1, br * 1.2, 3, 0)) put(q, M.clump, into);
-      const nv = Math.round(br * 4.2); for (let i = 0; i < nv; i++) { const a = Rt() * Math.PI * 2, rr = br * (.7 + Rt() * .45), dd = Math.hypot(bx - x, bz - z), out = dd > .5 ? Math.max(0, Math.cos(a - Math.atan2(bz - z, bx - x))) : 1;
+    for (const [bx, byy, bz, br] of blobs) { put(gdnBlob(Rt, bx, byy, bz, br * .85, .42, 1), T.blossom ? M.blossom : M.leaves, into); for (const q of dmtCards(Rt, bx, byy + br * .05, bz, br * 2.1, br * 1.2, 3, 0)) put(q, T.blossom ? M.blossomCard : M.clump, into);
+      if (T.blossom) (Z.petalAt = Z.petalAt || []).push([bx, byy, bz, br]);
+      const nv = T.blossom ? 0 : Math.round(br * 4.2); for (let i = 0; i < nv; i++) { const a = Rt() * Math.PI * 2, rr = br * (.7 + Rt() * .45), dd = Math.hypot(bx - x, bz - z), out = dd > .5 ? Math.max(0, Math.cos(a - Math.atan2(bz - z, bx - x))) : 1;
         const len = (1.3 + Rt() * 2.2 + out * Rt() * 3.4) * (h / 9), vx = bx + Math.cos(a) * rr, vz = bz + Math.sin(a) * rr, vy = byy - br * .2;
         const q = new THREE.PlaneGeometry(1.2 * k, len, 1, 5).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(Rt() * Math.PI); put(q.translate(vx, vy, vz), M.vine, into); } }
     Z.treeAt[T.id] = { x, z, by, top: top.y, curve: tb.curve };
@@ -16291,6 +16304,82 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     const lf = new THREE.Mesh(gdnFall(lp[0], y + .05, lp[2], (lp[0] - x) / L, (lp[2] - z) / L, 1.1, 120, 1.2), M.fall); lf.renderOrder = 2; lf.frustumCulled = false; Z.fallLook = lf;
     water.length = 0; const pw = new THREE.Mesh(gdnRibbon([[x + (lp[0] - x) * .25, z + (lp[2] - z) * .25], [lp[0] * 1.0, lp[2]]], .9, y + .06, R, .2, 1).geo, M.water); pw.renderOrder = 1; Z.lookWater = pw;
     part(LK.id, 'islet', { x, y, z, r: LK.r }); Z.isleLook = { x, y, z, rim: rk.rim }; }
+  // ---- GRUMBO'S HOMESTEAD: the rows of `IS.home`, built onto that island's piece ----
+  const gdnHome = (IS, into) => { const H = IS.home, [ix, iy, iz] = IS.at, RH = gdnRnd(IS.seed + 3), P = (g, m) => put(g, m, into), bx = (x, z, hx, hz, y0, y1) => box(x, z, hx, hz, iy + y0, iy + y1);
+    const TT = H.tier, [tx, tz] = TT.at, TY = TT.h, top = iy + TY;
+    // the upper terrace: a stone-block drum, a lawn top, a moss lip; colliders as inscribed strips
+    { const wall = new THREE.CylinderGeometry(TT.r, TT.r + .3, TY + .4, 28, 2), Pp = wall.attributes.position; for (let i = 0; i < Pp.count; i++) { const k = 1 + (RH() - .5) * .03; Pp.setX(i, Pp.getX(i) * k); Pp.setZ(i, Pp.getZ(i) * k); }
+      wall.computeVertexNormals(); P(wall.translate(tx, iy + TY / 2 - .2, tz), M.pebble); P(gdnBlobDisc(tx, tz, TT.r - .02, top + .01, RH, 36), M.lawn);
+      for (let i = 0; i < 20; i++) { const a = i / 20 * 6.283; P(gdnBlob(RH, tx + Math.cos(a) * TT.r, top + .02, tz + Math.sin(a) * TT.r, .45 + RH() * .3, .4, 0), M.moss);
+        if (RH() < .6) { const len = 1 + RH() * 1.4, q = new THREE.PlaneGeometry(1.0, len, 1, 3).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); P(q.translate(tx + Math.cos(a) * (TT.r + .25), top, tz + Math.sin(a) * (TT.r + .25)), M.ivy); } }
+      gdnDisc(tx, tz, TT.r - .1, Y0 + iy - 1, Y0 + top); for (let i = 0; i < TT.r * 6; i++) { const a = RH() * 6.283, rr = Math.sqrt(RH()) * (TT.r - .8), x = tx + Math.cos(a) * rr, z = tz + Math.sin(a) * rr;
+        if (Math.hypot(x - H.house.at[0], z - H.house.at[1]) < 4.2 || Math.hypot(x - H.deck.at[0], z - H.deck.at[1]) < 2.8 || Math.abs(x - H.stair.x) < 1.4) continue; (Z.isleRec = Z.isleRec || []).push({ kind: RH() < .5 ? 'flowers' : 'grass', x, y: Y0 + top, z, s: .7 + RH() * .5, yaw: RH() * 6.3 }); }
+      part(IS.id + '_terrace', 'terrace', { x: tx, z: tz, r: TT.r, top: TY }); }
+    // the slab stair up the terrace's front: eight .30 risers
+    { const S = H.stair, z0 = tz + TT.r - .15; for (let k = 1; k <= S.n; k++) { const y = TY - .3 * k, za = z0 + S.tread * (k - 1) - .02, zb = z0 + S.tread * k;
+        P(new THREE.BoxGeometry(S.hw * 2 + RH() * .2, y + .25, zb - za).translate(S.x + (RH() - .5) * .08, iy + (y - .25) / 2, (za + zb) / 2), M.stone); bx(S.x, (za + zb) / 2, S.hw, (zb - za) / 2, -1, y); }
+      for (const sd of [-1, 1]) for (let k = 0; k <= S.n; k += 2) P(gdnBlob(RH, S.x + sd * (S.hw + .35), iy + TY - .3 * k + .05, z0 + S.tread * k, .3 + RH() * .15, .6, 0), RH() < .5 ? M.moss : M.pebble);
+      const pr = gdnRibbon(H.path, 1.6, .045, RH, .3, 0); put(pr.geo, M.flag, into); part(IS.id + '_stair', 'stair', { n: S.n }); }
+    // THE HOUSE: a stone plinth, plaster walls in a dark timber frame, a curved jade-tile roof, a chimney with smoke, a round lattice window, red banners
+    { const Ho = H.house, [hx, hz] = Ho.at, fy = top + .3, w2 = Ho.w / 2, d2 = Ho.d / 2, wy = fy + Ho.h;
+      P(new THREE.BoxGeometry(Ho.w + .8, .3, Ho.d + .8).translate(hx, top + .15, hz), M.stone); P(new THREE.BoxGeometry(Ho.w, Ho.h, Ho.d).translate(hx, fy + Ho.h / 2, hz), M.white);
+      for (const [cx, cz] of [[-1, -1], [1, -1], [-1, 1], [1, 1], [0, 1], [0, -1]]) P(new THREE.BoxGeometry(.24, Ho.h + .1, .24).translate(hx + cx * w2, fy + Ho.h / 2, hz + cz * d2), M.dark);
+      for (const yy of [fy + .15, wy - .1]) { P(new THREE.BoxGeometry(Ho.w + .2, .2, .22).translate(hx, yy, hz + d2), M.dark); P(new THREE.BoxGeometry(Ho.w + .2, .2, .22).translate(hx, yy, hz - d2), M.dark); P(new THREE.BoxGeometry(.22, .2, Ho.d + .2).translate(hx - w2, yy, hz), M.dark); P(new THREE.BoxGeometry(.22, .2, Ho.d + .2).translate(hx + w2, yy, hz), M.dark); }
+      P(new THREE.BoxGeometry(1.15, 2.15, .12).translate(hx + 1.5, fy + 1.07, hz + d2 + .04), M.wood); P(new THREE.BoxGeometry(1.4, .16, .2).translate(hx + 1.5, fy + 2.22, hz + d2 + .08), M.dark);
+      { const wx = hx - 1.25, wyy = fy + 1.65, wz = hz + d2 + .06; P(new THREE.TorusGeometry(.62, .1, 8, 28).translate(wx, wyy, wz), M.dark); P(new THREE.CircleGeometry(.6, 24).translate(wx, wyy, wz - .03), M.lamp);
+        for (const a of [0, Math.PI / 2, Math.PI / 4, -Math.PI / 4]) P(new THREE.BoxGeometry(1.2, .05, .05).rotateZ(a).translate(wx, wyy, wz), M.dark); Z.lanterns.push([IS.id + '_window', wx, wz + .4, wyy - iy - 1.72 + iy]); }
+      for (const sd of [-1, 1]) { const q = new THREE.PlaneGeometry(.7, 1.8, 1, 6).translate(0, -.9, 0); swOf(q, 0, 1.8); P(q.translate(hx + (sd < 0 ? -2.65 : 2.6), wy - .2, hz + d2 + .16), M.banner_red); }
+      const rf = gdnRoof(0, 0, 0, w2 + 1.1, .9, 2.1, .55); for (const f of rf.roof) P(f.scale(1, 1, (d2 + 1.1) / (w2 + 1.1)).translate(hx, wy + .05, hz), M.roof); for (const t of rf.trim) P(t.scale(1, 1, (d2 + 1.1) / (w2 + 1.1)).translate(hx, wy + .05, hz), M.gold);
+      P(new THREE.BoxGeometry(2.2, .25, .5).translate(hx, wy + 2.25, hz), M.gold);
+      const [cx, cz] = H.chimney; P(new THREE.BoxGeometry(.75, 2.6, .75).translate(cx, wy + 1.4, cz), M.pebble); P(new THREE.BoxGeometry(.95, .18, .95).translate(cx, wy + 2.75, cz), M.stone); (Z.smokeAt = Z.smokeAt || []).push([cx, wy + 2.9, cz]);
+      bx(hx, hz, w2 + .1, d2 + .1, TY, TY + .3 + Ho.h + 2.2); part(IS.id + '_house', 'house', { x: hx, z: hz, floor: fy }); }
+    // THE DECK: raised planks beside the house under a striped awning on posts, a rail, lanterns at its corners, cushions
+    { const D = H.deck, [dx, dz] = D.at, dy = top + .3, w2 = D.w / 2, d2 = D.d / 2; P(new THREE.BoxGeometry(D.w, .22, D.d).translate(dx, dy - .11, dz), M.wood);
+      for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { P(new THREE.BoxGeometry(.18, 3.2, .18).translate(dx + a * (w2 - .1), dy - 1.0 + 1.6, dz + b * (d2 - .1)), M.dark); bx(dx + a * (w2 - .1), dz + b * (d2 - .1), .12, .12, TY, TY + 2.6); }
+      for (const [a, len, rot] of [[1, D.d, 0], [0, D.w, 1]]) { const q = new THREE.BoxGeometry(rot ? len : .08, .08, rot ? .08 : len); P(q.clone().translate(dx + (rot ? 0 : w2 - .05), dy + .95, dz + (rot ? d2 - .05 : 0)), M.wood); P(q.translate(dx + (rot ? 0 : w2 - .05), dy + .5, dz + (rot ? d2 - .05 : 0)), M.wood); }
+      { const q = new THREE.PlaneGeometry(D.w + .5, D.d + .4, 6, 6), Pq = q.attributes.position, a = new Float32Array(Pq.count); for (let i = 0; i < Pq.count; i++) { const v = (Pq.getY(i) / (D.d + .4)) + .5; a[i] = v * .6; Pq.setZ(i, -Math.sin(v * Math.PI) * .12); }
+        q.setAttribute('aSw', new THREE.BufferAttribute(a, 1)); q.rotateX(-Math.PI / 2 + .22); P(q.translate(dx, dy + 2.45, dz), M.awning); }
+      for (const [a, b] of [[1, 1], [-1, 1]]) Z.lamps.push({ x: dx + a * (w2 - .1), y: dy + 2.25, z: dz + b * (d2 - .1), k: 1, kind: 'lantern', into });
+      for (let i = 0; i < 3; i++) P(new THREE.BoxGeometry(.7, .2, .7).translate(dx - .6 + i * .7, dy + .1, dz - d2 + .6), M.lacquer);
+      bx(dx, dz, w2, d2, TY, TY + .3); part(IS.id + '_deck', 'deck', { x: dx, z: dz }); }
+    // THE GAZEBO on the lower lawn: a raised floor, four posts, a little curved roof, cushions
+    { const Gz = H.gazebo, [gx, gz] = Gz.at, r = Gz.r; P(new THREE.CylinderGeometry(r + .3, r + .4, .3, 8).translate(gx, iy + .15, gz), M.stone); P(new THREE.CylinderGeometry(r + .1, r + .1, .04, 8).translate(gx, iy + .31, gz), M.wood);
+      for (let i = 0; i < 4; i++) { const a = i / 4 * 6.283 + .785, px = gx + Math.cos(a) * r, pz = gz + Math.sin(a) * r; P(new THREE.CylinderGeometry(.1, .12, 2.5, 8).translate(px, iy + 1.55, pz), M.lacquer); bx(px, pz, .14, .14, -1, 2.8); }
+      const rf = gdnRoof(gx, iy + 2.75, gz, r + .6, .2, 1.2, .45); for (const f of rf.roof) P(f, M.roof); for (const t of rf.trim) P(t, M.gold);
+      for (let i = 0; i < 4; i++) { const a = i / 4 * 6.283; P(new THREE.BoxGeometry(.75, .18, .75).rotateY(a).translate(gx + Math.cos(a) * .9, iy + .42, gz + Math.sin(a) * .9), i % 2 ? M.banner_red : M.lacquer); }
+      bx(gx, gz, r * .8, r * .8, -1, .3); part(IS.id + '_gazebo', 'gazebo', { x: gx, z: gz }); }
+    // THE ARCHED FOOTBRIDGE over the stream, walkable in five graded steps
+    { const F = H.footbridge, [fx, fz] = F.at, ca = Math.cos(F.yaw), sa = Math.sin(F.yaw), arc = []; for (let i = 0; i <= 10; i++) { const u = i / 10 - .5; arc.push(new THREE.Vector3(fx + sa * u * F.L, iy + .1 + .55 * (1 - 4 * u * u), fz + ca * u * F.L)); }
+      const C = new THREE.CatmullRomCurve3(arc); for (let i = 0; i < 12; i++) { const t = (i + .5) / 12, p = C.getPointAt(t); P(new THREE.BoxGeometry(1.3, .07, .26).rotateY(F.yaw).translate(p.x, p.y, p.z), M.wood); }
+      for (const sd of [-1, 1]) { const off = new THREE.Vector3(ca * sd * .62, .55, -sa * sd * .62); P(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(arc.map(v => v.clone().add(off))), 16, .04, 5), M.lacquer);
+        for (let i = 0; i <= 10; i += 2) P(new THREE.CylinderGeometry(.04, .04, .55, 5).translate(arc[i].x + off.x, arc[i].y + .27, arc[i].z + off.z), M.lacquer); }
+      for (let i = 0; i < 5; i++) { const u = (i + .5) / 5 - .5, y = .1 + .55 * (1 - 4 * u * u); BOXES.push(obox(fx + sa * u * F.L, fz + ca * u * F.L, .65, F.L / 10, -F.yaw, Y0 + iy - 1, Y0 + iy + y)); }
+      part(IS.id + '_footbridge', 'bridge', { x: fx, z: fz }); }
+    // THE WATERWHEEL turned by the cascade off the terrace into the pond (its own group, spun by gdnStep); the cascade itself; a ripple where it lands
+    { const [px, pz] = IS.pond.at, ex = px - tx, ez = pz - tz, L = Math.hypot(ex, ez), ux = ex / L, uz = ez / L, lx = tx + ux * (TT.r + .1), lz = tz + uz * (TT.r + .1);
+      Z.isleFalls = (Z.isleFalls || []).concat([gdnFall(lx, top + .05, lz, ux, uz, .8, TY + .3, .25)]); P(new THREE.BoxGeometry(.6, .2, .9).rotateY(Math.atan2(ux, uz)).translate(lx - ux * .15, top - .05, lz - uz * .15), M.stone);
+      (Z.splash = Z.splash || []).push([lx + ux * .6, iy + .1, lz + uz * .6]); if (Z.U.uRip) Z.U.uRip.value[2].set(lx + ux * .6, lz + uz * .6, 1);
+      const wg = new THREE.Group(), wx = lx + uz * 1.25 + ux * .35, wz = lz - ux * 1.25 + uz * .35; wg.position.set(wx, iy + 1.05, wz); wg.rotation.y = Math.atan2(ux, uz) + Math.PI / 2;
+      const parts2 = [new THREE.TorusGeometry(.95, .06, 6, 24).rotateY(Math.PI / 2).translate(-.18, 0, 0), new THREE.TorusGeometry(.95, .06, 6, 24).rotateY(Math.PI / 2).translate(.18, 0, 0), new THREE.CylinderGeometry(.12, .12, .6, 8).rotateZ(Math.PI / 2)];
+      for (let i = 0; i < 10; i++) { const a = i / 10 * 6.283; parts2.push(new THREE.BoxGeometry(.42, .05, .32).translate(0, .82, 0).rotateX(a)); parts2.push(new THREE.BoxGeometry(.05, .9, .05).translate(0, .45, 0).rotateX(a)); }
+      const wm = new THREE.Mesh(mergeGeometries(parts2.map(q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; })), M.wood); wm.castShadow = true; wg.add(wm);
+      wg.position.y += Y0 * 0; (Z.wheels = Z.wheels || []).push(wg); Z.wheelGroups = Z.wheelGroups || []; P(new THREE.BoxGeometry(.2, 1.2, .2).translate(wx + uz * .0, iy + .5, wz), M.dark); part(IS.id + '_waterwheel', 'waterwheel', { x: wx, z: wz }); }
+    // THE VEGETABLE BEDS under a cloth shade
+    { const B = H.beds, [vx, vz] = B.at; for (let i = 0; i < B.n; i++) { const x = vx - 1.3 + i * 1.3; P(new THREE.BoxGeometry(1.0, .45, 2.6).translate(x, iy + .22, vz), M.wood); P(new THREE.BoxGeometry(.86, .05, 2.46).translate(x, iy + .44, vz), M.soil);
+        for (let j = 0; j < 5; j++) P(gdnBlob(RH, x + (RH() - .5) * .2, iy + .55, vz - 1 + j * .5, .2 + RH() * .08, .7, 0), M.leaves); bx(x, vz, .5, 1.3, -1, .45); }
+      for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { P(new THREE.CylinderGeometry(.06, .06, 2.3, 6).translate(vx + a * 2.1, iy + 1.15, vz + b * 1.6), M.dark); bx(vx + a * 2.1, vz + b * 1.6, .08, .08, -1, 2.3); }
+      { const q = new THREE.PlaneGeometry(4.5, 3.6, 6, 4), Pq = q.attributes.position, a = new Float32Array(Pq.count); for (let i = 0; i < Pq.count; i++) { a[i] = .35; Pq.setZ(i, -Math.cos(Pq.getX(i) / 4.5 * Math.PI) * .14); } q.setAttribute('aSw', new THREE.BufferAttribute(a, 1)); q.rotateX(-Math.PI / 2); P(q.translate(vx, iy + 2.25, vz), M.awning); }
+      part(IS.id + '_beds', 'garden_beds', { x: vx, z: vz }); }
+    // FENCES (wooden rails on wooden posts) round the open edges; a red banner on a tall pole; barrels and pots
+    for (const [a0, a1] of H.fence) { const pts = []; for (let a = a0; a <= a1; a += 1.5) { const ar = a * Math.PI / 180; let best = null, bd = 9; for (const p of Z.isleAt[IS.id].rim) { let d = Math.abs(Math.atan2(p[0] - ix, p[2] - iz) - ar); d = Math.min(d, 6.283 - d); if (d < bd) { bd = d; best = p; } } pts.push([ix + (best[0] - ix) * .9, iz + (best[2] - iz) * .9]); }
+      const posts = [pts[0]]; let acc = 0; for (let i = 1; i < pts.length; i++) { acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if (acc > 2.4) { posts.push(pts[i]); acc = 0; } }
+      for (let i = 0; i < posts.length; i++) { const [x, z] = posts[i]; P(new THREE.BoxGeometry(.2, 1.1, .2).translate(x, iy + .55, z), M.dark);
+        if (i) { const [x0, z0] = posts[i - 1], L = Math.hypot(x - x0, z - z0), yaw = Math.atan2(x - x0, z - z0); for (const yy of [.5, .95]) P(new THREE.BoxGeometry(.07, .09, L).rotateY(yaw).translate((x + x0) / 2, iy + yy, (z + z0) / 2), M.wood); BOXES.push(obox((x + x0) / 2, (z + z0) / 2, L / 2 + .1, .12, Math.atan2(z - z0, x - x0), Y0 + iy - 1, Y0 + iy + 1.1)); } } }
+    { const [bx2, bz2] = H.banner; P(new THREE.CylinderGeometry(.08, .1, 6.2, 8).translate(bx2, top + 3.1, bz2), M.dark); P(new THREE.CylinderGeometry(.04, .04, 1.4, 6).rotateZ(Math.PI / 2).translate(bx2 - .65, top + 6.0, bz2), M.dark);
+      const q = new THREE.PlaneGeometry(1.1, 2.8, 1, 8).translate(0, -1.4, 0); swOf(q, 0, 2.8); P(q.translate(bx2 - .7, top + 5.95, bz2), M.banner_red); bx(bx2, bz2, .12, .12, TY - 1, TY + 6); }
+    for (const [x, z] of H.barrels) { const yb = Math.hypot(x - tx, z - tz) < TT.r ? top : iy; P(new THREE.CylinderGeometry(.32, .3, .8, 12).translate(x, yb + .4, z), M.wood); for (const yy of [.15, .65]) P(new THREE.TorusGeometry(.32, .025, 4, 14).rotateX(Math.PI / 2).translate(x, yb + yy, z), M.dark); }
+    for (const [x, z] of H.pots) { const yb = Math.hypot(x - tx, z - tz) < TT.r ? top : iy; P(new THREE.LatheGeometry([[0, 0], [.18, 0], [.26, .18], [.2, .4], [.24, .46], [.0, .46]].map(([a, b]) => new THREE.Vector2(a, b)), 12).translate(x, yb, z), M.clay); P(gdnBlob(RH, x, yb + .55, z, .26, .8, 0), RH() < .5 ? M.leaves : M.blossom); }
+    part(IS.id + '_home', 'homestead', { x: ix, z: iz }); };
   // ---- THE CLUSTER: the medium and small islands (same kit as the big one), each its own piece ----
   Z.isleAt = { isle_main: { x: 0, y: 0, z: 0, rim }, lookout: Z.isleLook };
   for (const IS of Z.isles) { const [ix, iy, iz] = IS.at, into = IS.id, RI = gdnRnd(IS.seed), rk = templeRock(ix, iy, iz, IS.rx, IS.rz, IS.depth, 44, IS.seed); put(rk.side, M.rock, into); rk.cap.deleteAttribute('color'); put(rk.cap, M.lawn, into);
@@ -16298,6 +16387,8 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     for (let i = 0; i < rk.rim.length; i++) { const [x, , z] = rk.rim[i], [x2, , z2] = rk.rim[(i + 1) % rk.rim.length], a = Math.atan2(x + x2 - 2 * ix, z + z2 - 2 * iz), L = Math.hypot(x2 - x, z2 - z);
       put(gdnBlob(RI, (x + x2) / 2, iy - .25, (z + z2) / 2, L * .62, .35, 1), M.moss, into);
       const u = RI(), px = x + (x2 - x) * u, pz = z + (z2 - z) * u, len = 2.5 + RI() * 4, q = new THREE.PlaneGeometry(1.4, len, 1, 4).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(a); put(q.translate(ix + (px - ix) * 1.035, iy - .15, iz + (pz - iz) * 1.035), M.ivy, into); }
+    if (IS.blocks) for (let i = 0; i < rk.rim.length; i += 1) { const [x, , z] = rk.rim[i], w = 1.6 + RI() * 1.4, h = 2.5 + RI() * 7, a = Math.atan2(x - ix, z - iz);     // the ref's blocky stone underside: columns hung under the rim
+      put(new THREE.BoxGeometry(w, h, w * .9).rotateY(a).translate(ix + (x - ix) * .96, iy - .4 - h / 2, iz + (z - iz) * .96), M.pebble, into); }
     for (const deg of IS.fall || []) { const lp = rk.rim[Math.round(rk.rim.length * deg / 360) % rk.rim.length], L = Math.hypot(lp[0] - ix, lp[2] - iz), ux = (lp[0] - ix) / L, uz = (lp[2] - iz) / L;
       const st = gdnRibbon([[ix + ux * L * .45, iz + uz * L * .45], [lp[0] + ux * .3, lp[2] + uz * .3]], 1.1, iy + .07, RI, .2, 1); Z.isleWater = (Z.isleWater || []).concat([st.geo]); put(gdnRibbon([[ix + ux * L * .45, iz + uz * L * .45], [lp[0], lp[2]]], 2.0, iy + .035, RI, .3, 0).geo, M.stone, into);
       Z.isleFalls = (Z.isleFalls || []).concat([gdnFall(lp[0] + ux * .4, iy + .06, lp[2] + uz * .4, ux, uz, 1.6, 130, 1.4)]); Z.fallsAt.push([lp[0] - 0, lp[2]]); Z.fallsY = (Z.fallsY || []).concat([iy]); }
@@ -16305,7 +16396,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       for (let i = 0; i < 14; i++) { const a = i / 14 * 6.283, rr = IS.pond.r + .4; put(gdnBlob(RI, px + Math.cos(a) * rr, iy + .05, pz + Math.sin(a) * rr, .25 + RI() * .2, .55, 0), RI() < .4 ? M.moss : M.pebble, into); } }
     if (IS.ring) { const [cx, cz] = IS.ring.at; put(gdnBlobDisc(cx, cz, IS.ring.r + .6, iy + .045, RI, 30), M.flag, into);     // a ring of standing stones on a paved disc
       for (let i = 0; i < IS.ring.n; i++) { const a = i / IS.ring.n * 6.283, x = cx + Math.cos(a) * IS.ring.r, z = cz + Math.sin(a) * IS.ring.r, h = 1.6 + RI() * .9; put(new THREE.BoxGeometry(.7, h, .45, 1, 2, 1).rotateY(-a).translate(x, iy + h / 2, z), M.stone, into); put(gdnBlob(RI, x, iy + h, z, .32, .4, 0), M.moss, into); box(x, z, .4, .4, iy - 1, iy + h); } }
-    { const n0 = Z.lamps.length; for (const T of IS.trees) gdnTreeAt(Object.assign({}, T, { base: iy }), into); gdnLamps(Z.lamps.slice(n0)); }
+    { const n0 = Z.lamps.length; if (IS.home) gdnHome(IS, into); for (const T of IS.trees) gdnTreeAt(Object.assign({}, T, { base: iy + (T.base2 || 0) }), into); gdnLamps(Z.lamps.slice(n0)); }
     for (const [x, z] of IS.lanterns || []) { gdnToro((g, m) => put(g, m, into), M, x, z, iy, 1.15); box(x, z, .32, .32, iy - 1, iy + 2.4); Z.lanterns.push(['toro_' + IS.id + '_' + x, x, z, iy]); }
     for (const [x, z, sc] of IS.crystals || []) { for (let i = 0; i < 6; i++) { const hh = (i ? .55 + RI() * .6 : 1.5) * sc, rr = (i ? .12 : .2) * sc, a = i * 1.17 + RI(), d = i ? (.22 + RI() * .12) * sc : 0;
         const Mx = new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(i ? Math.cos(a) * .4 : 0, RI(), i ? Math.sin(a) * .4 : 0)).setPosition(x + Math.cos(a) * d, iy, z + Math.sin(a) * d);
@@ -16318,8 +16409,9 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     // the dressing: plants over the lawn, clear of the ring, the pond and the trunks
     for (let i = 0; i < 260; i++) { const a = RI() * 6.283, rr = Math.sqrt(RI()) * .9, x = ix + Math.sin(a) * IS.rx * rr, z = iz + Math.cos(a) * IS.rz * rr;
       if (IS.ring && Math.hypot(x - IS.ring.at[0], z - IS.ring.at[1]) < IS.ring.r + 1) continue; if (IS.pond && Math.hypot(x - IS.pond.at[0], z - IS.pond.at[1]) < IS.pond.r + .9) continue;
-      if (IS.trees.some(T => Math.hypot(x - T.at[0], z - T.at[1]) < 1.6)) continue; const k = RI(); Z.isleRec = (Z.isleRec || []).concat([{ kind: k < .5 ? 'grass' : k < .62 ? 'fern' : k < .85 ? 'flowers' : 'stones', x, y: iy + Y0, z, s: .7 + RI() * .6, yaw: RI() * 6.3 }]); }
+      if (IS.trees.some(T => Math.hypot(x - T.at[0], z - T.at[1]) < 1.6)) continue; if (IS.home && (Math.hypot(x - IS.home.tier.at[0], z - IS.home.tier.at[1]) < IS.home.tier.r + .3 || IS.home.clear.some(c => Math.hypot(x - c[0], z - c[1]) < c[2]) || Math.abs(x - IS.home.stair.x) < 1.6 && z > -32 && z < -26)) continue; const k = RI(); Z.isleRec = (Z.isleRec || []).concat([{ kind: k < .5 ? 'grass' : k < .62 ? 'fern' : k < .85 ? 'flowers' : 'stones', x, y: iy + Y0, z, s: .7 + RI() * .6, yaw: RI() * 6.3 }]); }
     part(IS.id, 'island', { x: ix, y: iy, z: iz, rx: IS.rx, rz: IS.rz }); }
+  for (const w of Z.wheels || []) G.add(w);
   if (Z.isleWater) { const wm = new THREE.Mesh(mergeGeometries(Z.isleWater.map(q => { for (const k of Object.keys(q.attributes)) if (!['position', 'normal', 'uv', 'aFl'].includes(k)) q.deleteAttribute(k); return q.index ? q.toNonIndexed() : q; })), M.water); wm.renderOrder = 1; G.add(wm); }
   if (Z.isleFalls) { const fm = new THREE.Mesh(mergeGeometries(Z.isleFalls), M.fall); fm.renderOrder = 2; fm.frustumCulled = false; G.add(fm); }
   // ---- merge each piece per material: one draw each ----
@@ -16450,7 +16542,20 @@ function gdnGlow(G) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.seed + 9), P = [],
       else vA = .55 + .1 * sin(uTime * 2.3 + aP);
       vC = aC; vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = aS * uPx / max(.5, -mv.z); }`,
     fragmentShader: `uniform float uGlow; varying vec3 vC; varying float vA; void main() { float d = length(gl_PointCoord - .5) * 2.0; float a = pow(max(0.0, 1.0 - d), 2.2) * vA; gl_FragColor = vec4(vC * a * mix(.3, 1.0, uGlow), 1.0); }` });
-  const o = new THREE.Points(g, m); o.frustumCulled = false; o.renderOrder = 4; o.name = 'garden_glow'; G.add(o); Z.glow = o; }
+  const o = new THREE.Points(g, m); o.frustumCulled = false; o.renderOrder = 4; o.name = 'garden_glow'; G.add(o); Z.glow = o;
+  // DRIFT (normal-blended, one draw): chimney SMOKE that rises, swells and thins; cherry PETALS that flutter down out of the blossom and fade
+  { const P2 = [], S2 = [], H2 = [], K2 = [], ad = (x, y, z, s, k) => { P2.push(x, y, z); S2.push(s); H2.push(R() * 6.3); K2.push(k); };
+    for (const [x, y, z] of Z.smokeAt || []) for (let i = 0; i < 26; i++) ad(x, y, z, .5 + R() * .4, 0);
+    for (const [x, y, z, r] of Z.petalAt || []) for (let i = 0; i < 26; i++) { const a = R() * 6.3, rr = Math.sqrt(R()) * r; ad(x + Math.cos(a) * rr, y, z + Math.sin(a) * rr, .07 + R() * .05, 1); }
+    if (P2.length) { const g2 = new THREE.BufferGeometry(); g2.setAttribute('position', new THREE.Float32BufferAttribute(P2, 3)); g2.setAttribute('aS', new THREE.Float32BufferAttribute(S2, 1)); g2.setAttribute('aP', new THREE.Float32BufferAttribute(H2, 1)); g2.setAttribute('aK', new THREE.Float32BufferAttribute(K2, 1));
+      const m2 = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, uniforms: { uTime: U.uTime, uPx: U.uPx },
+        vertexShader: `attribute float aS, aP, aK; uniform float uTime, uPx; varying float vA, vK; void main() { vec3 p = position; float s = aS; vK = aK;
+          if (aK < .5) { float t = mod(uTime * .16 + aP * .159, 1.0); p += vec3(t * 2.2 + sin(uTime * .5 + aP) * .3, t * 5.5, sin(aP * 2.0) * t * .8); s *= 1.0 + t * 3.0; vA = smoothstep(0.0, .1, t) * (1.0 - t) * .5; }
+          else { float t = mod(uTime * .07 + aP * .159, 1.0); p += vec3(sin(uTime * 1.3 + aP * 3.0) * .5 + t * 2.0, -t * 7.0, cos(uTime * 1.1 + aP * 2.0) * .5); vA = smoothstep(0.0, .05, t) * (1.0 - smoothstep(.8, 1.0, t)); }
+          vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = s * uPx / max(.5, -mv.z); }`,
+        fragmentShader: `varying float vA, vK; void main() { vec2 q = gl_PointCoord - .5; float d = length(q) * 2.0; if (vK > .5) { float pe = length(q * vec2(1.0, 1.8)) * 2.0; if (pe > 1.0) discard; gl_FragColor = vec4(1.0, .74, .86, vA); }
+          else gl_FragColor = vec4(.93, .92, .94, vA * pow(max(0.0, 1.0 - d), 1.5)); }` });
+      const o2 = new THREE.Points(g2, m2); o2.frustumCulled = false; o2.renderOrder = 4; o2.name = 'garden_drift'; G.add(o2); } } }
 function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   const G = new THREE.Group(); G.name = 'garden'; G.position.y = Z.top; g.add(G); Z.pieces.main = new THREE.Group(); Z.pieces.main.name = 'garden_main'; G.add(Z.pieces.main);
   gdnBuild(G); gdnSky(g);
@@ -16473,6 +16578,7 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
   if (!O.tris) { O.tris = 1; try { bldTris(O, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } }
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
   if (Z.bridgeList && Z.bridgeList.length) rspStep(dt);
+  for (const w of Z.wheels || []) w.children[0].rotation.x -= dt * 1.1;     // the homestead's waterwheel, turned by its cascade
   if (Z.U.uPx) Z.U.uPx.value = renderer.domElement.height * camera.projectionMatrix.elements[5] / 2;
   const p = player, ly = p.pos.y - Z.top;
   // the hammock: still rocking from him getting out of it, then the breeze

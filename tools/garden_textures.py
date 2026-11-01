@@ -15,11 +15,14 @@ PROMPTS = {
   'crystal': "Close-up of faceted glowing PURPLE amethyst crystal surface: violet and magenta facets with bright lavender highlights, inner glow, fine internal fractures and sparkle, magical.",
   'sand': "Top-down fine pale cream ZEN GARDEN SAND, soft warm ivory with tiny grains and a few minute pebbles, very subtle, smooth and clean, sunlit.",
   'water': "Top-down shallow glowing magical JINRA water: luminous mint and turquoise water with bright caustic light ripples, soft swirls and sparkles, a few pale pebbles visible below, stylised hand-painted.",
+  'blossom': "Dense canopy of PINK CHERRY BLOSSOMS seen close up, countless small five-petal sakura flowers in soft pink, rose and white with a few tiny green leaves and dark twig hints, sunlit, filling the whole square.",
   'wood': "Weathered warm brown carved WOOD planks running vertically with soft grain, slightly worn, with faint red lacquer remains in the grain, temple timber.",
 }
 SINGLES = {
   'hammock': ("Flat front orthographic view of a woven fabric that fills the ENTIRE image edge to edge (no background): deep red cloth with cream-white woven stripes "
               "running along its length and a cream geometric diamond-and-key pattern border band, visible weave, hand-painted fantasy game style, even lighting, no folds, no text.", "1536x1024"),
+  'awning': ("Flat front orthographic view of a woven fabric filling the ENTIRE image edge to edge (no background): soft dusty-pink and cream cloth with wide pale stripes and a scalloped "
+             "dark-red trim band along the bottom edge, visible weave, hand-painted fantasy game style, even lighting, no folds, no text.", "1536x1024"),
   'banner_red': ("Flat front orthographic view of a long hanging temple BANNER filling the ENTIRE image edge to edge (no background, no pole): deep crimson red woven cloth, "
                  "a cream-gold embroidered border, and a large cream-white embroidered diamond emblem with a small tree glyph at its centre in the upper middle. Even lighting, no folds, no text.", "1024x1536"),
   'banner_teal': ("Flat front orthographic view of a long hanging temple BANNER filling the ENTIRE image edge to edge (no background, no pole): deep teal-green woven cloth, "
@@ -36,6 +39,8 @@ ALPHA = {
             "isolated on a fully transparent background, soft edges, no text.", "1536x1024", (768, 512)),
   'vine': ("A CURTAIN of six long hanging WEEPING WILLOW strands side by side filling the image width, each a trailing stem densely hung with small slender bright green leaves, a few glowing pale-mint tips, "
            "hanging straight down from the top edge, different lengths, dense at the top thinning toward the tips, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1536", (512, 768)),
+  'blossom_card': ("A round fluffy CLUMP of pink cherry blossoms (a sakura branch-end cluster seen from the side), many small pink and white five-petal flowers, irregular airy silhouette, "
+                   "stylised hand-painted fantasy game art, isolated on a fully transparent background, no stem, no shadow, no text.", "1024x1024", (512, 512)),
   'fern': ("A lush green FERN plant seen from the side, many arching fronds spreading from the base, bright and deep greens, stylised hand-painted fantasy game art, isolated on a fully transparent background, no pot, no shadow, no text.", "1024x1024", (512, 512)),
   'flowers': ("A small clump of wildflowers seen from the side: pink, white and lavender blossoms on green stems with leaves, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1024", (512, 512)),
 }
@@ -64,7 +69,7 @@ for n in (sys.argv[1:] or list(PROMPTS) + list(SINGLES) + list(ALPHA)):
       p, sz, out = ALPHA[n]; im = req({"model": "gpt-image-1.5", "prompt": p, "size": sz, "n": 1, "background": "transparent", "output_format": "png"}).convert('RGBA').resize(out, Image.LANCZOS)
       im.save(f'textures/garden_{n}.webp', quality=88, method=6); print('wrote', n, flush=True); continue
     if n in SINGLES:
-      p, sz = SINGLES[n]; im = gen(p, sz).convert('RGB'); im = im.resize((768, 512) if n == 'hammock' else (512, 768))
+      p, sz = SINGLES[n]; im = gen(p, sz).convert('RGB'); im = im.resize((768, 512) if n in ('hammock', 'awning') else (512, 768))
       im.save(f'textures/garden_{n}.webp', quality=86, method=6); print('wrote', n, flush=True); continue
     im = gen(COMMON + ' ' + PROMPTS[n]); seamless(im).resize((1024, 1024)).save(f'textures/garden_{n}.webp', quality=86, method=6); print('wrote', n, flush=True)
   except BaseException as e: print('FAILED', n, e, flush=True)
