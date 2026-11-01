@@ -5,6 +5,24 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2031 -- THE SNOW VILLAGE, pass 1: the hut as a code-built kit piece, eight of them on three tiers at the Snowfield's entry end
+
+His brief: SNOW_VILLAGE.md (concept `images/concepts/snow_village/hut_sheet.webp`). All in the `SNOW_VILLAGE:START/END` block, data in `SC_SNOWVIL`;
+three hook lines only (snowStage builds it, snowStep steps it, `cliffIn` keeps pines/bamboo/rocks/plants off `SNOWVIL.keep`). `?vil=0` leaves it out.
+- THE HUT, `vilHut(o)`: a pure function of its options (R, `sx` for a longhouse, wall/roof height, door, banner, chimney + its angle, porch, lanterns,
+  barrels, pots, jade lamp, windows, seed). Two-tier stone plinth (.3 m risers -- he walks up it anywhere, no stairs needed) with the gold meander band,
+  a dry-stone wall, timber posts and ring beam, a thatch dome under a lobed snow cap with icicles hanging off its tongues, the crossed gable beams with
+  gold caps, a porch gable with the jade plaque, glowing lattice windows with snowy sills, plank door, two lanterns, the red Korajin banner (sways in
+  the vertex shader), a stone chimney, step blocks with a jade lamp, barrels and pots. Textures painted on canvases at build (stone, meander, wood,
+  thatch, lattice, banner). Colliders: plinth tiers, wall, three stepped roof layers, chimney, step blocks -- outlines cut into axis-aligned strips.
+- THE VILLAGE (`SNOWVIL.place`, stable ids): ground huts 01/02/03/08 round a square with a FIRE PIT (flickering flames, smoke, log benches) and a WELL;
+  terrace 01 at 1.5 m (huts 04, 05), terrace 02 at 3.3 m (the LONGHOUSE, sx 1.6), a rock CRAG at 4.5 m (hut 07) -- all joined by .3 m stairs with
+  stepped cheeks. A banner GATE facing the spawn, three banner posts, seven jade lamp posts, fences along every terrace edge, barrel stacks.
+  Paths and the square are swept into the pack (D and its refill B) and flagged with stones; every ground hut's door gets a path to the nearest one.
+  Smoke off the six nearest chimneys from the shared puff pool. Terrace tops carry pushable snow patches.
+- Cost (headless): 8 huts, 22 other things, 642 collider boxes, the whole village 18 draws / ~74k triangles. Rendered from four views before pushing.
+Not done: no interiors (doors are shut), no snow patches on the roofs, the herd can wander into the village. Shipped unverified.
+
 ## m2030 -- THE TEMPLE LAYOUT GENERATOR, v1 (Nov 1 2026)
 *"Ok now start the temple layout tool."* KORAJIN > Temple Layout (`?w=forge&zone=tlayout`). From a SEED and a list of BEATS, `tlayGen` grows a route
 graph up the inside of a cylindrical chamber (outer ring r 31, inner r 19, height ~46): platforms sized by beat, edges = moves from the TEMPLE_KIT
