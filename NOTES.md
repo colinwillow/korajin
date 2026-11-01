@@ -8,7 +8,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- the snow kit back to its CLASSIC look by default (the jin style kept behind `?svkstyle=jin`)
+## m2093 -- the snow kit back to its CLASSIC look by default (the jin style kept behind `?svkstyle=jin`)
 
 His: *"No, I liked how it was before -- now it just feels chaotic. I was more talking about the SHAPES of the buildings ... the old textures were good."*
 `SVKSTYLE` defaults to 'classic' again (m2083's look, unchanged); m2089's jin look is kept behind `?svkstyle=jin`, nothing deleted. What he meant is the
