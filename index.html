@@ -11478,7 +11478,7 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
         // orbiting him on tilted, breathing paths, and SPARKS rising off him and fading. One additive Points draw (soft round sprite, size in world metres).
         const N = 90, P2 = new Float32Array(N * 3), C2 = new Float32Array(N * 3), cv = document.createElement('canvas'); cv.width = cv.height = 64; { const q = cv.getContext('2d'), gr = q.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.35, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); q.fillStyle = gr; q.fillRect(0, 0, 64, 64); }
         const motes = []; for (let i = 0; i < N; i++) { const rise = i >= 60, gold = !rise && i % 7 === 0; motes.push({ rise, a: Math.random() * 6.283, r: rise ? .2 + Math.random() * .5 : .7 + Math.random() * .9, h: rise ? Math.random() * 2.4 : (Math.random() - .3) * 1.4, sp: (rise ? .4 : .5 + Math.random() * .7) * (Math.random() < .5 ? -1 : 1), tilt: (Math.random() - .5) * .9, ph: Math.random() * 6.283 });
-          const c = rise ? [.75, 1, .9] : gold ? [1, .82, .45] : [.45, 1, .82]; C2[i * 3] = c[0]; C2[i * 3 + 1] = c[1]; C2[i * 3 + 2] = c[2]; }
+          const c = rise ? [.35, 1, .75] : gold ? [1, .75, .3] : [.2, 1, .7];     /* deeper jade: additive pale colours washed to white */ C2[i * 3] = c[0]; C2[i * 3 + 1] = c[1]; C2[i * 3 + 2] = c[2]; }
         const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(P2, 3)); pg.setAttribute('color', new THREE.BufferAttribute(C2, 3));
         const ring = new THREE.Points(pg, new THREE.PointsMaterial({ size: .14, map: new THREE.CanvasTexture(cv), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, sizeAttenuation: true }));
         ring.frustumCulled = false; ring.userData.motes = motes; root.add(ring);
@@ -11492,7 +11492,7 @@ function snowVillStep(dt) { const V = SNOWVIL; if (!V.g) return; if (!V.mel && w
   if (V.sageR) { const R2 = V.sageR; R2.t += dt; R2.mx.update(dt); R2.root.position.y = R2.y0 + Math.sin(R2.t * 1.1) * V.sage.bob; const Mo = R2.ring.userData.motes, PA = R2.ring.geometry.attributes.position; for (let i = 0; i < Mo.length; i++) { const m = Mo[i];     // m2130: the motes swirl, the sparks rise
       if (m.rise) { m.h += dt * (.35 + .25 * Math.sin(m.ph)); m.a += m.sp * dt; if (m.h > 2.6) { m.h = -.2; m.r = .2 + Math.random() * .5; } PA.setXYZ(i, Math.cos(m.a) * m.r, .5 + m.h, Math.sin(m.a) * m.r); }
       else { m.a += m.sp * dt; const rr = m.r * (1 + .12 * Math.sin(R2.t * 1.3 + m.ph)), x = Math.cos(m.a) * rr, z = Math.sin(m.a) * rr; PA.setXYZ(i, x, .55 + m.h + z * m.tilt + .15 * Math.sin(R2.t * 2 + m.ph), z); } }
-    PA.needsUpdate = true; R2.ring.material.size = .12 + .03 * Math.sin(R2.t * 3); }     // m2127: he floats and breathes
+    PA.needsUpdate = true; R2.ring.material.size = .24 + .05 * Math.sin(R2.t * 3); }     /* bigger: at .12 they read as white specks */     // m2127: he floats and breathes
   if (V.creekPts && (V.steamT = (V.steamT || 0) - dt) <= 0) { V.steamT = .22; const C = V.creekPts, k = Math.floor(Math.random() * (C.length - 1)), t = Math.random(), x = C[k][0] + (C[k + 1][0] - C[k][0]) * t, z = C[k][1] + (C[k + 1][1] - C[k][1]) * t;     // m2107: the warm creek steams
     if (Math.hypot(x - p.x, z - p.z) < 60 && typeof smokeAt === 'function') smokeAt(x, .2, z, .6, 1.4); }
   // smoke off the chimneys near him (the shared puff pool, so only the nearest few)
