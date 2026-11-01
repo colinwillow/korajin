@@ -25,8 +25,8 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | **approved** (gorge, horseshoe cliff, ~12 buildings) -- its PLACE on the region map waits on REGION_METHOD stage 1-2 |
 | 3 | **ZONES** -- what goes where, and why | a zoning map: each district placed by its reason (water, road, defence, status) | **drafted** (blueprint_pass3.png) |
 | 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | **drafted** |
-| 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | |
-| 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | |
+| 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | **drafted** (measured) |
+| 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | **drafted** |
 | 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | |
 | 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | |
 | 9 | **THE GAME** | the quest givers (THE STOLEN ONES), the shop, the healer, the way out to the valley / temple, the secrets | |
@@ -243,3 +243,37 @@ up to the spring; 5 the WATCHTOWER top; 6 the SHRINE, the reward view: every roo
 - **The temple cannot be seen from the village as the map stands.** Even from the watchtower (16 m) a 60 m crown on the temple is hidden by one
   ridge point (22, -118, ground 54 m). So at blockout **a NOTCH is cut in that ridge (~10 m)**: from the watchtower top the temple's crown sits in the
   notch -- the first sight of where the game is going. (From the TEMPLE STAIR it is in plain view.)
+Drawing: `images/concepts/snow_village/blueprint_pass5.png` (the six views as arrows).
+
+## PASS 6 -- THE HIGH ROUTE (drafted; every gap from the MOVE TABLE in TEMPLE_KIT.md, at COMFY, never max)
+Drawing: `images/concepts/snow_village/blueprint_pass6.png` (purple, numbered as below).
+
+One continuous line over the hamlet from the gate to the watchtower, built as a LADDER (introduce -> develop -> twist -> combine), ending in a
+ride down. Heights: roofs = their terrace + the building (huts eave ~2.4, gable ridges ~4); the aqueduct deck +11; the watchtower top +16.
+
+| # | from -> to | rise / gap | move | comfy limit | ladder step |
+|---|---|---|---|---|---|
+| 1 | crates (0.9) -> the watch house eave (2.4) | +1.5 / 1 m | jump | 2.2 / 5.9 | INTRODUCE: up onto a roof |
+| 2 | eave -> the GATE top (4.5) | +2.1 / 2.5 m | run + jump | 2.2 / 5.9 | introduce: roof to wall |
+| 3 | gate top -> the SMITHY ridge (5.2) | +0.7 / 4.5 m gap | run + jump | 5.9 | DEVELOP: a real gap, over the road |
+| 4 | smithy -> the WATER WHEEL's paddle | -2 / 3 m | drop + jump | -- | develop: onto something MOVING |
+| 5 | ride the wheel: 2 m -> 6 m | (it lifts you) | stand, time the jump | -- | TWIST: timing |
+| 6 | wheel top (6.0) -> the BATHHOUSE roof (6.6, ridge 8.6) | +0.6 / 3.5 m | run + jump | 5.9 | develop |
+| 7 | bathhouse ridge (8.6) -> the AQUEDUCT deck (11) up a pier face | +2.4 | wall-run UP, run | lip 2.7 | DEVELOP: the first wall-up |
+| 8 | the deck across the gorge (11, over the road) -> the STOREHOUSE roof (11.4) | 6 m along the cliff | SIDE wall-run on the cliff | 5.5 (run) / 6.5 (sprint) | TWIST: a sprint, and the drop is 11 m |
+| 9 | storehouse -> U3 the high bridge (10) -> the watchtower foot | -1.4 / walk | -- | -- | a breather, the view |
+| 10 | up the WATCHTOWER (+6 to 16): the tower face and the knoll rock 4.6 m apart | +6 | CHIMNEY wall-jumps (4 kicks) | +1.7 a kick | COMBINE: everything learned, up high |
+| -> | the top: a ZIP LINE down to the market square | -10 | zip | -- | the reward ride, back to the start of the loop |
+
+**What is up there (each dead end pays):** R1 the gate top -- the gate banner, and the first look down the gorge; R2 the storehouse roof -- a coin
+stash by the winch head; R3 the watchtower top -- the temple's crown in the ridge notch (pass 5) + the zip; R4 behind the third fall (the gorge
+path, not the high route) -- a hidden alcove for something better (a piece of gear, his call).
+
+**Shortcuts off the road (the same moves, used to save time):** every terrace wall ~3 m = a SPRINT wall-up (lip 3.6), not a run (2.7) -- so a
+shortcut needs speed; the gorge, higher bank to lower: run + jump 5.9 (the banks are ~4-6 m apart at the bridges); the third fall's side, 3 m, a
+sprint wall-up = the back way to the shrine instead of the tunnel stair.
+
+**Rules checked:** no gap over its comfy distance; no ledge over its comfy height; the one hard move (8, the side run with an 11 m drop) has a soft
+fail -- you land on the W2 roofs, not in a pit (there is no fall damage; a hard landing costs 1.15 s).
+
+**Next: pass 7 -- the buildings, one row each** (kit piece + options, terrace, door facing, who lives there) -- the table the blockout is built from.
