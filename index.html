@@ -19314,7 +19314,7 @@ function arrowStep(dt) {
     if (A.mine && SPIDER.list.length) { let sh = null; for (const S of SPIDER.list) { const M = spiderMid(S, _sdC); if (Math.hypot(P.x - M.x, (P.y - M.y) * 1.3, P.z - M.z) < SPIDER.w * S.k * SPIDER.hitR) { sh = S; break; } }     // m1719: his arrows find the spiders too
       if (sh) { if (A.type === 'blast') arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); else { spiderBlow(sh, Math.atan2(A.v.x, A.v.z), A.pow || .7, A.dmg || 3, P.x, P.z); if (A.type === 'fire') for (let k = 0; k < 14; k++) gfire(P.x, P.y, P.z, .7); } if (A.pl) BOW.stat.hits++; A.m.removeFromParent(); ARROWS.splice(i, 1); continue; } }
     if (A.mine && GUARD.list.length) { const gh = guardHit(P.x, P.y, P.z); if (gh) { if (A.type === 'blast') arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); else guardBlow(gh, Math.atan2(A.v.x, A.v.z), A.pow || .7, A.dmg || 3, P.x, P.y, P.z); if (A.pl) BOW.stat.hits++; A.m.removeFromParent(); ARROWS.splice(i, 1); continue; } }     // m1732: the guardian
-    if (A.mine) { let hit = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible) continue; const R = d.root.position, hh = (d.K.h || 1.8);
+    if (A.mine) { let hit = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const R = d.root.position, hh = (d.K.h || 1.8);
         if (Math.abs(P.y - (R.y + hh * .5)) < hh * .55 && Math.hypot(P.x - R.x, P.z - R.z) < (d.K.r || .4) + .25) { hit = d; break; } }
       if (!hit && bldHit(P.x, P.y, P.z, .3, 3)) { A.m.removeFromParent(); ARROWS.splice(i, 1); continue; }     // m1128: a bolt sent home smashes the ballista
       if (hit && A.type === 'blast') { arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); BOW.stat.hits++; A.m.removeFromParent(); ARROWS.splice(i, 1); continue; }
@@ -19542,7 +19542,7 @@ function bowArcInit() {
   const ring = new THREE.Group(), em = new THREE.Mesh(new THREE.PlaneGeometry(1.25, 1.25), new THREE.MeshBasicMaterial({ map: bowMkTex(), color: 0xffffff, transparent: true, opacity: .95, depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
   em.renderOrder = 62; ring.add(em); ring.userData.c = em;
   ring.frustumCulled = false; scene.add(ring); BARC.pts = pts; BARC.ring = ring; }
-function bowArcHit(x, y, z) { for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible) continue; const R = d.root.position, hh = (d.K.h || 1.8); if (Math.abs(y - (R.y + hh * .5)) < hh * .55 && Math.hypot(x - R.x, z - R.z) < (d.K.r || .4) + .25) return 1; }
+function bowArcHit(x, y, z) { for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const R = d.root.position, hh = (d.K.h || 1.8); if (Math.abs(y - (R.y + hh * .5)) < hh * .55 && Math.hypot(x - R.x, z - R.z) < (d.K.r || .4) + .25) return 1; }
   for (const S of SPIDER.list) { const M = spiderMid(S, _baR); if (Math.hypot(x - M.x, (y - M.y) * 1.3, z - M.z) < SPIDER.w * S.k * SPIDER.hitR) return 1; }
   if (GUARD.list.length && guardHit(x, y, z)) return 1; return 0; }
 function bowArc(show) { if (!BARC.pts) { if (!show) return; bowArcInit(); } const pts = BARC.pts, ring = BARC.ring;
@@ -27821,7 +27821,7 @@ function ghouseOil(G, dt) { const A = GHOUSE, [cx, cz] = A.at, p = player; if (G
     if (Math.random() < .6) spkBurst(cx + (Math.random() - .5) * 1.4, .2, cz + (Math.random() - .5) * 1.4, 4, { col: [.48, 1, .85], spread: 3, size: .12, life: .4 }); if (Math.random() < .3) smokeAt(cx, .5, cz, 1.2, 1.2, [.3, .28, .27]);
     const inPass = (x, y, z) => Math.abs(x - cx) < A.pw / 2 && Math.abs(z - cz) < A.th && y < A.s1 - .5;
     if (inPass(p.pos.x, p.pos.y, p.pos.z) && !(G.oilHit > G.t)) { G.oilHit = G.t + .6; playerHurt(A.oilDmg, Math.atan2(p.pos.x - cx, p.pos.z - cz), 5, 1.5, .25, 0); }
-    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || (d._oil || 0) > G.t) continue; const R = d.root.position; if (inPass(R.x, R.y, R.z)) { d._oil = G.t + 1; dummyBlow(d, Math.atan2(R.x - cx, R.z - cz), 1.4, A.oilDmg); } }
+    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame || (d._oil || 0) > G.t) continue; const R = d.root.position; if (inPass(R.x, R.y, R.z)) { d._oil = G.t + 1; dummyBlow(d, Math.atan2(R.x - cx, R.z - cz), 1.4, A.oilDmg); } }
     if (G.oilT <= 0) G.oil.visible = false; }
   else G.caul.rotation.z = Math.max(0, G.caul.rotation.z - dt * 1.2); }
 // RE-PASS 2 (m1534): THE GATEHOUSE COMES DOWN -- a blow on a support (an upper corner post, a torii pillar) chips it; cut through enough and
@@ -28144,13 +28144,13 @@ function pagodaBell(x, y, z, rad) {
   spkBurst(B.x, B.y - .75, B.z, 20, { col: [1, .85, .5], spread: 4, size: .14, life: .5 });
   if (!P.toll) { const m = new THREE.Mesh(new THREE.TorusGeometry(1, .08, 6, 48), new THREE.MeshBasicMaterial({ color: 0xffe0a0, transparent: true, opacity: .7, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
     m.rotation.x = Math.PI / 2; m.position.set(B.x, 1, B.z); P.g.add(m); P.toll = { m, t: 0 }; }
-  for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible) continue; const R = d.root.position, dd = Math.hypot(R.x - B.x, R.z - B.z);
+  for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const R = d.root.position, dd = Math.hypot(R.x - B.x, R.z - B.z);
     if (dd < PAGODA.tollR) dummyBlow(d, Math.atan2(R.x - B.x, R.z - B.z), 1.2, 2); }
   return 1;
 }
 function pagodaChain(x, y, z, rad) { const P = PAGODA.on; if (!P || !P.chain || P.chainCd > 0) return 0; const C = P.core.position; if (Math.hypot(x - C.x, y - C.y, z - C.z) > .8 + rad) return 0;
   const A = PAGODA, [sx, sy, sz] = P.spire, hit = [], pts = [[sx, sy, sz]]; let from = [sx, 0, sz], R = A.chainR;
-  for (let k = 0; k < A.chainN; k++) { let best = R, tg = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || hit.includes(d)) continue; const Q = d.root.position, q = Math.hypot(Q.x - from[0], Q.z - from[2]); if (q < best) { best = q; tg = d; } }
+  for (let k = 0; k < A.chainN; k++) { let best = R, tg = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame || hit.includes(d)) continue; const Q = d.root.position, q = Math.hypot(Q.x - from[0], Q.z - from[2]); if (q < best) { best = q; tg = d; } }
     if (!tg) break; hit.push(tg); const Q = tg.root.position; pts.push([Q.x, Q.y + 1, Q.z]); from = [Q.x, 0, Q.z]; R = A.chainHop; }
   P.chainCd = A.chainCd; snd('boom', { g: 1, r: 1.5, x: sx, z: sz }); camShake(.3); spkBurst(C.x, C.y, C.z, 16, { col: [.6, .95, 1], spread: 3, size: .12, life: .5 });
   if (pts.length < 2) { spkBurst(sx, sy, sz, 30, { col: [.6, .95, 1], spread: 5, size: .16, life: .8 }); return 1; }
@@ -29343,7 +29343,7 @@ function zepBombs(Q, dt) { const B = ZEP.bomb, p = player;
     const gy = groundAt(M.x, M.z, M.y + .5, .5); if (M.y > gy + .3) continue; W.m.removeFromParent(); Q.bombs.splice(i, 1);
     for (let k = 0; k < 4; k++) spkBurst(M.x, gy + .4, M.z, 24, { col: k % 2 ? [.4, .9, 1] : [1, .6, .2], spread: 9, size: .26, life: .9 }); for (let k = 0; k < 5; k++) smokeAt(M.x + (Math.random() - .5) * 2, gy + .5, M.z + (Math.random() - .5) * 2, 2.2, 1.6);
     snd('boom', { g: 1.2, r: .55, x: M.x, z: M.z }); camShake(Math.hypot(p.pos.x - M.x, p.pos.z - M.z) < 14 ? .4 : .15);
-    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible) continue; const P2 = d.root.position; if (Math.hypot(P2.x - M.x, P2.z - M.z) < B.r && Math.abs(P2.y - gy) < 2.5) dummyBlow(d, Math.atan2(P2.x - M.x, P2.z - M.z), 2.2, B.dmg); }
+    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const P2 = d.root.position; if (Math.hypot(P2.x - M.x, P2.z - M.z) < B.r && Math.abs(P2.y - gy) < 2.5) dummyBlow(d, Math.atan2(P2.x - M.x, P2.z - M.z), 2.2, B.dmg); }
     turretBlast(M.x, gy + .6, M.z, B.r * .6, 4); } }
 function zepLever(x, y, z, rad) { const Q = ZEP.on; if (!Q || (Q.R && Q.R.t < 1)) return 0;
   for (const Z of Q.zs) { if (!Z.lever) continue; const L = Z.lever.getWorldPosition(new THREE.Vector3()); if (Math.hypot(x - L.x, y - L.y - .7, z - L.z) > .7 + rad) continue;
@@ -29809,7 +29809,7 @@ function fworkStep(dt) { const W = FWORK.on; if (!W) return; W.t += dt; const C 
     const ang = u < L.lift ? (u / L.lift) * L.up : u < L.lift + L.drop ? L.up * (1 - (u - L.lift) / L.drop) : 0; W.hm.rotation.z = -ang;
     if (prev < L.lift + L.drop && u >= L.lift + L.drop) { const [x, z] = W.anvil; spkBurst(x, 1, z, 22, { col: [1, .75, .3], spread: 5, size: .12, life: .5 }); snd('clang', { g: 1, r: .45, x, z }); snd('bump', { g: .9, r: .6, x, z });
       const p = player; if (Math.hypot(p.pos.x - x, p.pos.z - z) < 1.1 && p.pos.y < 2) { camShake(.35); playerHurt(L.dmg, Math.atan2(p.pos.x - x, p.pos.z - z), 7, 1.5, .25, 0); } else if (Math.hypot(p.pos.x - x, p.pos.z - z) < 10) camShake(.05);
-      for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible) continue; const R = d.root.position; if (Math.hypot(R.x - x, R.z - z) < 1.2) dummyBlow(d, Math.atan2(R.x - x, R.z - z), 1.2, 4); } } }
+      for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const R = d.root.position; if (Math.hypot(R.x - x, R.z - z) < 1.2) dummyBlow(d, Math.atan2(R.x - x, R.z - z), 1.2, 4); } } }
   // the crane slews round; the bar under its hook rides with it, crosswise to the arm
   const a = W.t * .22; W.arm.rotation.y = a; const ax = W.arm.position.x + Math.cos(a) * C.arm, az = W.arm.position.z - Math.sin(a) * C.arm, B = W.bar;
   B.x = ax; B.z = az; B.top = C.top; B.y = C.top - HBAR.h; const yaw = a + Math.PI / 2; B.yaw = yaw; B.ax = Math.cos(yaw); B.az = -Math.sin(yaw); B.nx = -B.az; B.nz = B.ax;
@@ -29823,7 +29823,7 @@ function fworkStep(dt) { const W = FWORK.on; if (!W) return; W.t += dt; const C 
     if (Math.random() < .25) smokeAt(mx - J.len * Math.random(), my + .8, mz, 1, 1.2, [.3, .28, .26]);
     const inJet = (x, y, z) => { const d = mx - x; return d > -.2 && d < J.len && Math.abs(z - mz) < .8 + d * .25 && y < 3.4; };
     const p = player; if ((W.burnT = (W.burnT || 0) - dt) <= 0 && inJet(p.pos.x, p.pos.y, p.pos.z)) { W.burnT = .4; playerHurt(J.dmg, -Math.PI / 2, 3, 1.5, .25, 0); spkBurst(p.pos.x, p.pos.y + 1, p.pos.z, 8, { col: [1, .5, .1], spread: 3, size: .12, life: .4 }); }
-    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || (d._fwT || 0) > W.t) continue; const R = d.root.position; if (inJet(R.x, R.y, R.z)) { d._fwT = W.t + .5; dummyBlow(d, -Math.PI / 2, 1.1, J.dmg); } } }
+    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame || (d._fwT || 0) > W.t) continue; const R = d.root.position; if (inJet(R.x, R.y, R.z)) { d._fwT = W.t + .5; dummyBlow(d, -Math.PI / 2, 1.1, J.dmg); } } }
   { const b = W.jet > 0 ? .7 + Math.sin(W.t * 14) * .3 : .75 + Math.sin(W.t * 2.4) * .25; W.bel.scale.set(1, b, 1); for (let k = 0; k < W.ingots.length; k++) W.ingots[k].material.emissiveIntensity = Math.max(.1, 1.5 - k * .35 + Math.sin(W.t * 1.5 + k) * .15);
     const [cx, cz] = FWORK.at, a2 = W.t * .3; W.drone.position.set(cx + Math.cos(a2) * 9, 11 + Math.sin(W.t * 1.2) * .4, cz + Math.sin(a2) * 8); W.drone.rotation.y = -a2; W.drone.children[1].rotation.z = W.t * .6; }
   if (whole && (W.sT = (W.sT || 0) - dt) <= 0) { W.sT = .08; const [x, y, z] = W.flue; spk(x + (Math.random() - .5) * .5, y, z + (Math.random() - .5) * .5, (Math.random() - .5) * .6, 2 + Math.random() * 2, (Math.random() - .5) * .6, .12, .9, [1, .6, .2]);
@@ -31026,7 +31026,7 @@ function storiiStep(dt) { const S = STORII.on; if (!S) return; S.t += dt; const 
   if (S.fox > 0) { S.fox -= dt; for (let i = 0; i < S.wisps.length; i++) { const w = S.wisps[i], a = S.t * 2.4 + i * Math.PI, U = w.userData;
       if (U.dash > 0) { U.dash -= dt; const d = U.tgt; if (d && d.root.visible) { const R = d.root.position; w.position.lerp(new THREE.Vector3(R.x, R.y + 1.1, R.z), Math.min(1, dt * 10)); if (U.dash <= 0) { dummyBlow(d, Math.atan2(R.x - p.pos.x, R.z - p.pos.z), .9, A.foxDmg); spkBurst(R.x, R.y + 1, R.z, 16, { col: [.55, .85, 1], spread: 4, size: .12, life: .5 }); snd('swoosh', { g: .4, r: 2, x: R.x, z: R.z }); } } continue; }
       w.position.set(p.pos.x + Math.cos(a) * 1.3, p.pos.y + 1.5 + Math.sin(S.t * 3 + i) * .2, p.pos.z + Math.sin(a) * 1.3);
-      if ((U.cd = (U.cd || 0) - dt) <= 0) { let best = A.foxR, tg = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible) continue; const q = Math.hypot(d.root.position.x - p.pos.x, d.root.position.z - p.pos.z); if (q < best) { best = q; tg = d; } }
+      if ((U.cd = (U.cd || 0) - dt) <= 0) { let best = A.foxR, tg = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const q = Math.hypot(d.root.position.x - p.pos.x, d.root.position.z - p.pos.z); if (q < best) { best = q; tg = d; } }
         if (tg) { U.tgt = tg; U.dash = .35; U.cd = 1.4; } else U.cd = .3; }
       if (Math.random() < .5) spk(w.position.x, w.position.y, w.position.z, 0, .4, 0, .08, .4, [.55, .85, 1]); }
     if (S.fox <= 0) for (const w of S.wisps) w.visible = false; } }
@@ -31114,7 +31114,7 @@ function siegeStep(dt) { const S = SIEGE.on; if (!S) return; const A = SIEGE, p 
       for (let k = 0; k < 4; k++) spkBurst(P.x, P.y, P.z, 22, { col: k % 2 ? [.6, .55, .5] : [1, .7, .35], spread: 8, size: .26, life: .9 }); for (let k = 0; k < 5; k++) smokeAt(P.x + (Math.random() - .5) * 2, P.y + .5, P.z + (Math.random() - .5) * 2, 2.2, 1.6, [.6, .58, .55]);
       snd('boom', { g: 1.2, r: .6, x: P.x, z: P.z }); const dp = Math.hypot(p.pos.x - P.x, p.pos.z - P.z); camShake(dp < 12 ? .5 : .15);
       if (dp < A.blastR && Math.abs(p.pos.y - P.y) < 2.5) playerHurt(A.dmg, Math.atan2(p.pos.x - P.x, p.pos.z - P.z), 10, 1.5, .25, 0);
-      for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible) continue; const Q = d.root.position; if (Math.hypot(Q.x - P.x, Q.z - P.z) < A.blastR && Math.abs(Q.y - P.y) < 2.5) dummyBlow(d, Math.atan2(Q.x - P.x, Q.z - P.z), 2, A.dmg * .6); }
+      for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const Q = d.root.position; if (Math.hypot(Q.x - P.x, Q.z - P.z) < A.blastR && Math.abs(Q.y - P.y) < 2.5) dummyBlow(d, Math.atan2(Q.x - P.x, Q.z - P.z), 2, A.dmg * .6); }
       bldHit(P.x, P.y + .5, P.z, A.blastR * .6, 4); } } }
 function siegeBals(S, dt) { const A = SIEGE, p = player;
   for (const L of S.bals) { if (L.hc > 0) L.hc -= dt;
@@ -31309,7 +31309,7 @@ function coloStep(dt) { const C = COLO.on; if (!C) return; C.t += dt; const A = 
   C.eyeM.color.setRGB(w ? 1 : .2 + Math.sin(C.t * 1.3) * .15, w ? .95 : .7 + Math.sin(C.t * 1.3) * .25, 1); C.coreM.color.setRGB(C.wakeCd > 0 && !w ? .15 : .37, C.wakeCd > 0 && !w ? .3 : .95, 1);
   C.veinM.color.setRGB(w ? .6 : .25, w ? 1 : .66 + Math.sin(C.t * 2) * .1, w ? 1 : .78);
   if (C.waveT >= 0) { C.waveT += dt; const u = C.waveT / A.waveTime, R = u * A.waveR; C.wave.scale.setScalar(Math.max(.01, R)); C.wave.material.opacity = Math.max(0, .8 * (1 - u));
-    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d._coloW === C.waveId) continue; const P = d.root.position, q = Math.hypot(P.x - C.sword[0], P.z - C.sword[1]); if (q < R && q > R - 2.5) { d._coloW = C.waveId; dummyBlow(d, Math.atan2(P.x - C.sword[0], P.z - C.sword[1]), 2, A.waveDmg); } }
+    for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame || d._coloW === C.waveId) continue; const P = d.root.position, q = Math.hypot(P.x - C.sword[0], P.z - C.sword[1]); if (q < R && q > R - 2.5) { d._coloW = C.waveId; dummyBlow(d, Math.atan2(P.x - C.sword[0], P.z - C.sword[1]), 2, A.waveDmg); } }
     if (u >= 1) { C.waveT = -1; C.wave.material.opacity = 0; } } }
 function coloHit(x, y, z, rad) { const C = COLO.on; if (!C || C.wakeCd > 0) return 0; const P = C.core.position; if (Math.hypot(x - P.x, y - P.y, z - P.z) > 1.1 + rad) return 0;
   C.wake = 3; C.wakeCd = COLO.wakeCd; C.waveT = 0; C.waveId = (C.waveId || 0) + 1; snd('boom', { g: 1.2, r: .4, x: P.x, z: P.z }); snd('clang', { g: .9, r: .5, x: C.sword[0], z: C.sword[1] }); camShake(.5);
@@ -50861,7 +50861,7 @@ function strikeSweep(dt, power, live, dmg, body) {
 function dummyHit(x, z, dirH, power, reach, dmg, palK, maxN) {
   const near = [];
   for (const d of DUMMIES) {
-    if (d.cool > 0) continue;
+    if (d.cool > 0 || d.tame) continue;     // m2160: the tame mammoth (ridden or waiting) is never a target -- shots and swings pass it
     const rr = reach * (palK && d.K.pal ? palK : 1) + d.K.r;
     const dx = d.root.position.x - x, dz = d.root.position.z - z;
     const q = dx * dx + dz * dz;

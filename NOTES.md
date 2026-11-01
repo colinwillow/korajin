@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- shots from the mammoth's saddle go through the mammoth
+*"When you're riding the mammoth and you try to shoot, your projectiles shoot into the mammoth."* The tame mammoth already took no damage
+(`dummyBlow` returns on `d.tame`), but every HIT TEST still counted it: `dummyHit` (bolts, rockets, melee) is a 2D radius test and his
+`K.r` swallows the rider, so a bolt died the instant it left the barrel; the arrow/arc/blast loops likewise. Fix: `d.tame` is skipped in
+`dummyHit` and in the 11 `gone/down/visible` hit loops. No taller seat needed. Shipped unverified.
+
 ## m2159 -- THE GARDEN: the rusty sword by the hammock; room kept for the Sky Village (Nov 1 2026)
 From the main Korajin session (PROLOGUE.md DRAFT 4 -- THE LAST BELL): Grumbo's island is the quiet OUTSKIRTS, he is a dozy guardian.
 - **THE RUSTY SWORD** (`GARDEN.sword`, part `rusty_sword`, piece `GARDEN.pieces.sword`): a short rusted blade, guard, wrapped grip and pommel hung
