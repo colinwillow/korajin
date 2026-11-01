@@ -10992,7 +10992,7 @@ function snowPeakMat() { const rock = texGet('snow_rock'), snow = texGet('snow_s
 //               longhouse, a 4.5 m crag), stairs at .3 m risers, paths stamped into the pack and paved, fences, banner posts, a gate, jade lamp posts,
 //               a fire pit and a well.
 // SC_SNOWVIL:START
-const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search) ? 0 : 1; } catch (e) { return 1; } })(),     /* m15V1 (his: "we need to build the village"): ON by default now; ?vil=0 hides it */     /* m2033: OFF by default -- placement is another context's (SNOW_VILLAGE.md UPDATE); ?vil=1 */ seed: 2026,
+const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search) ? 0 : 1; } catch (e) { return 1; } })(),     /* m2104 (his: "we need to build the village"): ON by default now; ?vil=0 hides it */     /* m2033: OFF by default -- placement is another context's (SNOW_VILLAGE.md UPDATE); ?vil=1 */ seed: 2026,
   keep: [-38, -1, 16, 76],     // x0 x1 z0 z1 -- the village's ground: pines, bamboo, rocks and plants keep out (cliffIn)
   sweep: .08,                  // the pack's level (a fraction of SNOWZ.depth) where the village has swept it
   hut: { R: 2.7, sx: 1, wallH: 2.3, roofH: 2.8, eave: 1.0, door: 1, banner: 1, chimney: 1, chimA: -2.3, lanterns: 1, porch: 1, barrels: 2, pots: 2, lamp: 1, win: [1.2, -1.2, 2.45, -2.45], seed: 1 },

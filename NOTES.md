@@ -11,7 +11,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15V1 -- THE VILLAGE, pass 1: the kit session's hand-placed village is ON in the Snowfield (Nov 1 2026)
+## m2104 -- THE VILLAGE, pass 1: the kit session's hand-placed village is ON in the Snowfield (Nov 1 2026)
 His: *"we're ready to go"* (after the plant swap). The kit session had already placed a village (`SNOWVIL.place`: 8 huts + a longhouse on the ground,
 a 1.5 m terrace, a 3.3 m terrace and a 4.5 m crag; the gate, the square with its fire pit, the well, jade lamp posts, fences, banners, barrels, paved
 paths) behind `?vil=1` since m2033 -- off, waiting for "placement by another context". It is ON by default now (`?vil=0` hides it). Rendered
