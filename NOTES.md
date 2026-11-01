@@ -6,6 +6,22 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## m2074 -- THE GREAT WATERFALL: his SNOW-BIOME ALIEN FLORA sheet, six species
+
+His concept sheet (KORAJIN -- SNOW BIOME -- ALIEN FLORA). `flora(x, y, z, s, kind)` in `wfMake` now grows one of his six, picked by
+`WFALL.flora.mix`; each stands on a snow mound with 2-3 snowy rocks; still NO new draws (wood / petals / tubes in 'flesh', light in 'glow',
+snow in the snow draw, icicles in the ice draw):
+1 CANOPY TREE -- a twisted trunk splitting into 2-3 flat umbrella caps with glowing gills under them, icicle fringes, little ones at the foot.
+2 TUBE CORAL -- 5-8 lavender-to-teal tubes, open mouths with a snow ring and icicles, glowing holes down their sides.
+3 WEEPING VINE TREE -- a trunk arcing up and over, a snow-laden crown, twelve curtains of glowing fern-vine leaves.
+4 GLOW-BUD AGAVE -- 7-9 wide purple blades curling out at the tip, snow along each, 3-5 thin stalks lit by orbs.
+5 CRYSTAL BUD -- a gnarled stem holding four rings of petals round a glowing core, two small buds beside.
+6 LANTERN TREE -- twin twisting trunks under umbrella caps, glowing lantern pods in four-petal shells hanging on cords.
+Glowing KNOTS in the wood throughout. `?wfflora=1` puts one of each in a row in front of the pool (the render's specimen row).
+Rendered twice: the first pass was washed out (tubes white, the bud a pale blob, agave blades like grass) -- palette darkened and saturated,
+blades widened, vine leaves smaller and denser, the bud's petals tightened. Headless: ladders and colliders unchanged.
+Not yet: no bark / petal texture (flat vertex colour); the field's own pines and bamboo are other code. Shipped unverified on the phone.
+
 ## m2073 -- THE GREAT WATERFALL: ALIEN FLORA instead of pine trees
 
 His: "this game is supposed to be an alien world, not earth -- why the hell are there pine trees? Is there any way to make cooler alien plants?"
