@@ -19,7 +19,7 @@ frozen falls, pines). Look only; the colliders stay the blockout's slabs. `ICEVA
 - 150 PINES (bark trunk, four needle tiers, snow on each) and 60 snowy BOULDERS along both edges, on whichever terrace is under them, clear of the
   middle and the terrace faces; the terraces themselves rock faces under snow. No colliders on any of it.
 Cost: ~+90k triangles in the valley views (cells at 6 m were +200k; 9 m now). Shipped unverified.
-## m15S2 -- shield, snow steps and the dragon: five fixes from his play (Nov 1 2026)
+## m2024 -- shield, snow steps and the dragon: five fixes from his play (Nov 1 2026)
 - *"The shield's point faces his elbow; it should face down."* Its long axis was the forearm. Now it is the world's UP (projected off the face, a fifth
   of the way toward the forearm), so the point hangs down. Rendered: upright in front in the guard.
 - *"The ice beam doesn't get blocked by the shield."* With the KATANA the guard is the held charge -- `p.block` is never set then, and `shieldUp` asked

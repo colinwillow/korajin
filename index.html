@@ -9920,14 +9920,14 @@ function shieldBuild() { const g = new THREE.Group(), H = SHIELD.size, W = H * .
   for (const [x, y, s2] of [[0, H * .36, .7], [W * .33, H * .22, .55], [-W * .33, H * .22, .55]]) { const c = new THREE.Mesh(new THREE.ConeGeometry(.025 * s2, .12 * s2, 6).translate(0, .06 * s2, 0), snowKitIce()); c.position.set(x, y, .02); c.rotation.z = -x * 2.2; g.add(c); }
   g.add(face, rim, boss); for (const m of [face, rim, boss]) { m.castShadow = true; m.userData.noHole = 1; } g.userData.face = face; g.visible = false; scene.add(g); SHIELD.mesh = g; return g; }
 const _isdA = new THREE.Vector3(), _isdB = new THREE.Vector3(), _isdS = new THREE.Vector3(), _isdN = new THREE.Vector3(), _isdX = new THREE.Vector3(), _isdM = new THREE.Matrix4();
-const shieldGuard = () => !!(player.block || (player.charge && !player.chargeGo && slotNow().blade) || SHIELD.force);     // m15S2: with the KATANA the guard is the held charge (`p.block` is never set then -- why the beam went through in his play)     // `SHIELD.force` (mel) holds the guard for testing
+const shieldGuard = () => !!(player.block || (player.charge && !player.chargeGo && slotNow().blade) || SHIELD.force);     // m2024: with the KATANA the guard is the held charge (`p.block` is never set then -- why the beam went through in his play)     // `SHIELD.force` (mel) holds the guard for testing
 function shieldUp() { return SHIELD.on && SHIELD.mesh && SHIELD.mesh.visible && shieldGuard() && !(SHIELD.broken > 0); }
 function shieldFrame(dt) { const S = SHIELD, p = player, bn = rig.bones || {}; S.broken = Math.max(0, S.broken - dt); if (!shieldUp()) S.frost = Math.max(0, S.frost - dt * .5);
   const show = S.on && !(S.broken > 0) && !p.wing && !p.dragon && !p.riding && bn.mixamorig_LeftForeArm && bn.mixamorig_LeftHand;
   if (!show) { if (S.mesh) S.mesh.visible = false; return; } const g = S.mesh || shieldBuild(); g.visible = true;
   bn.mixamorig_LeftForeArm.getWorldPosition(_isdA); bn.mixamorig_LeftHand.getWorldPosition(_isdB); const d = _isdB.clone().sub(_isdA).normalize(), k = bodyK ? bodyK() : 1;
   _isdS.set(Math.cos(p.faceH), 0, -Math.sin(p.faceH)).addScaledVector(_isdN.set(Math.sin(p.faceH), 0, Math.cos(p.faceH)), S.w * 2.2);     // out from his LEFT side; in the guard, forward
-  const n = _isdS.sub(d.clone().multiplyScalar(_isdS.dot(d))).normalize(), up = new THREE.Vector3(0, 1, 0); up.sub(n.clone().multiplyScalar(up.dot(n))); if (up.lengthSq() < 1e-4) up.copy(d.clone().negate()); up.normalize().lerp(d.clone().negate().sub(n.clone().multiplyScalar(-d.dot(n))).normalize(), .2).normalize();     // m15S2 (his: "the point should face down -- it points at his elbow"): the shield's long axis is the world's UP (a little toward the forearm), so the point hangs down
+  const n = _isdS.sub(d.clone().multiplyScalar(_isdS.dot(d))).normalize(), up = new THREE.Vector3(0, 1, 0); up.sub(n.clone().multiplyScalar(up.dot(n))); if (up.lengthSq() < 1e-4) up.copy(d.clone().negate()); up.normalize().lerp(d.clone().negate().sub(n.clone().multiplyScalar(-d.dot(n))).normalize(), .2).normalize();     // m2024 (his: "the point should face down -- it points at his elbow"): the shield's long axis is the world's UP (a little toward the forearm), so the point hangs down
   const x = _isdX.crossVectors(up, n).normalize(); _isdM.makeBasis(x, up, n); g.quaternion.setFromRotationMatrix(_isdM); g.position.copy(_isdA).lerp(_isdB, .45).addScaledVector(n, .07 * k); g.scale.setScalar(k * (RIG.height || 1.25) / 1.25);
   const f = g.userData.face.material; f.emissiveIntensity = .5 + S.frost * 1.2 + (S.flash || 0); f.color.setHex(S.frost > .6 ? 0xf2fbff : 0xcfeeff); S.flash = Math.max(0, (S.flash || 0) - dt * 4); }
 function shieldPose(dt) { const S = SHIELD, p = player, g = shieldGuard(); if (g && !S.wasG) S.upAt = performance.now() / 1000; S.wasG = g; S.bash = Math.max(0, (S.bash || 0) - dt);
@@ -9937,7 +9937,7 @@ function shieldPose(dt) { const S = SHIELD, p = player, g = shieldGuard(); if (g
       for (const tr of c.tracks) { const m = /^(mixamorig_Left(?:Shoulder|Arm|ForeArm|Hand))\.quaternion$/.exec(tr.name); if (!m) continue; const v = tr.createInterpolant().evaluate(t); rig.shieldQ[m[1]] = new THREE.Quaternion(v[0], v[1], v[2], v[3]).normalize(); } } }
   if (!rig.shieldQ) return;
   if (S.bash > 0 && rig.clips && rig.clips.shield_block) { if (rig.shieldIM !== rig.model) { rig.shieldIM = rig.model; rig.shieldI = {}; for (const tr of rig.clips.shield_block.tracks) { const m = /^(mixamorig_Left(?:Shoulder|Arm|ForeArm|Hand))\.quaternion$/.exec(tr.name); if (m) rig.shieldI[m[1]] = tr.createInterpolant(); } }
-    const tt = (1 - S.bash / S.bashT) * rig.clips.shield_block.duration; for (const n in rig.shieldI) { const b = rig.bones[n], v = rig.shieldI[n].evaluate(tt); if (b) b.quaternion.slerp(_isdQ.set(v[0], v[1], v[2], v[3]).normalize(), S.w); } return; }     // m15S2: the PARRY is the shield's own shove (Sword And Shield Block)
+    const tt = (1 - S.bash / S.bashT) * rig.clips.shield_block.duration; for (const n in rig.shieldI) { const b = rig.bones[n], v = rig.shieldI[n].evaluate(tt); if (b) b.quaternion.slerp(_isdQ.set(v[0], v[1], v[2], v[3]).normalize(), S.w); } return; }     // m2024: the PARRY is the shield's own shove (Sword And Shield Block)
   for (const n in rig.shieldQ) { const b = rig.bones[n]; if (b) b.quaternion.slerp(rig.shieldQ[n], S.w); } }
 const _isdQ = new THREE.Quaternion();
 // the beam against it: returns the point it stops at (or null), and handles the glance, the frost, the crack and the perfect parry
@@ -10112,7 +10112,7 @@ function beastStep(d, dt, t) {
   if (fly) return beastFly(d, dt, t, dd, toP);
   { const gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0; d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m2012: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
   if (d.st !== 'cFire' && d.st !== 'cFly') d.beam = null;     // m2006: a hit ends the beam
-  if (d.home && !d.sleep && d.st !== 'cFly' && d.floorY < d.home[1] - 2 && iceBeamOn(d)) { d.fly = { ph: 'up', t: 0, a: 0, back: 1 }; beastGo(d, 'cFly', C.clips.fire); return true; }     // m15S2 (his: "the dragon fell off the cliff and was stuck trying to get back up"): off his cliff, he FLIES home
+  if (d.home && !d.sleep && d.st !== 'cFly' && d.floorY < d.home[1] - 2 && iceBeamOn(d)) { d.fly = { ph: 'up', t: 0, a: 0, back: 1 }; beastGo(d, 'cFly', C.clips.fire); return true; }     // m2024 (his: "the dragon fell off the cliff and was stuck trying to get back up"): off his cliff, he FLIES home
   if (d.sleep) { const C2 = beastC(d), wk = 'wake_up'; if (d.actions[wk]) { t[wk] = 1; setSkinScale(d, wk, 0); } else t[C2.clips.idle] = 1; if (dd < LAIR.wakeR || d.hitT) { d.sleep = 0; d.waking = 0; snd('creature', { g: 1, r: .5, x: P.x, z: P.z }); camShake(.4); if (SNOWZ.air) snowBlast(P.x, P.y, P.z, 5, 1.4); if (d.actions[wk]) { setSkinScale(d, wk, 1); skinPlay(d, wk, 1); } tipShow('The dragon wakes!', 2.5); } return true; }
   if (d.waking != null && d.actions.wake_up && d.waking < skinLen(d, 'wake_up')) { d.waking += dt; t.wake_up = 1; faceTo(d, toP, dt); return true; }
   if (d.home && Math.hypot(player.pos.x - d.home[0], player.pos.z - d.home[2]) > LAIR.leash && d.st !== 'cFire' && d.st !== 'cFly') { const hx = d.home[0] - P.x, hz = d.home[2] - P.z, hd = Math.hypot(hx, hz);     // he does not chase you off his cliff
@@ -48401,7 +48401,7 @@ function playerHurt0(dmg, dirH, push, up, stun, knock) {
   // you can do WELL. See `BLOCK`: a blow taken on the nose is DEFLECTED and costs nothing, and
   // holding it there is what the guard lock is for.
   const off = Math.abs(wrapAngle(dirH - Math.PI - p.faceH));
-  let guard = (p.block || (typeof shieldUp === 'function' && shieldUp())) && off < BLOCK.arc;     // m15S2: the shield guards blows too
+  let guard = (p.block || (typeof shieldUp === 'function' && shieldUp())) && off < BLOCK.arc;     // m2024: the shield guards blows too
   // m985: HIS CHOP BREAKS YOUR GUARD, as yours breaks his -- the same rule both ways: no cut, a long stun, your guard down
   if (guard && FOE_CLIP && KATANA.breakers.includes(FOE_CLIP)) { guard = false; p.block = 0; p.blockT = -.6; stun = Math.max(stun, .9); push *= 1.4; camShake(.3);
     spkBurst(p.pos.x, p.pos.y + 1.1, p.pos.z, 34, { col: [1, 1, 1], spread: 7, size: .2, life: .45 }); snd('clang', { g: 1.2, r: .7, x: p.pos.x, z: p.pos.z }); }
@@ -48409,7 +48409,7 @@ function playerHurt0(dmg, dirH, push, up, stun, knock) {
   if (parry) { dmg *= BLOCK.cutHard; push *= BLOCK.pushHard; stun *= BLOCK.stunHard; up = 0; }
   else if (guard) { dmg *= BLOCK.cut; push *= BLOCK.push; stun *= BLOCK.stun; up = 0; }
   if (guard) { blockFx(dirH, parry); p.parryT = parry ? BLOCK.show : 0; }
-  if (guard && typeof shieldUp === 'function' && shieldUp()) SHIELD.bash = SHIELD.bashT;     // m15S2: a blow on the shield -> the shield's shove
+  if (guard && typeof shieldUp === 'function' && shieldUp()) SHIELD.bash = SHIELD.bashT;     // m2024: a blow on the shield -> the shield's shove
   if (parry && slotNow().blade) katanaParry(dirH);     // m979: a parry with the katana staggers him
   // m1704 (his: "when I'm charging up on the right stick and the enemy attacks, it auto-lets-go -- I auto attack them. That's too easy, you'd
   // charge over and over and never get hurt. If you don't release in time it should just f--- you up"): a blow that LANDS breaks the charge.
