@@ -15,6 +15,20 @@ tower's railing."* The m2048 stair ran up beside the deck and stopped, its handr
   steps onto the square, turns RIGHT (east) and walks onto the deck. Same in the outpost's tower (it is the same piece).
 - Rendered from the stair side and from behind before pushing. Shipped unverified.
 
+## m2052 -- THE GREAT WATERFALL: the look, from the FIRST RENDERS (his: "send me a render after every pass")
+
+The renders (headless SwiftShader, `?w=forge&zone=snow`, five cameras: wide from the field, the pool, the ascent, the cave, the top) showed:
+the cliff read as a WHITE SNOW SLOPE (the rock tint was .74-1.25 and anything half up-facing turned white); the textured gold rendered as brown
+WOOD frames; the rainbow was a solid neon arc; the water too pale; the mist barely there; the cave lit evenly. So: rock dark blue-grey (.4) with
+faint strata bands, snow only on the clearly up-facing (ny > .72); the gold plain and bright (metal .85, warm emissive); the rainbow at ~40 %
+of its strength; the curtain's base a deeper turquoise with fewer white streaks; the mist half as strong again; the cave's vault and floor
+darker toward the edges. Look only. Renders follow in chat after the push.
+
+## m2050 -- THE GREAT WATERFALL: `mel.WFALL` / `mel.wfall()` / `mel.wfcave()` never existed (same cause as m2049)
+
+The second render timed out waiting for `mel.WFALL`: `wfallBuild` set them on `window.mel` inside a try, and at module scope `window.mel` is not
+there yet -- swallowed, so every build since m2041 shipped without its warps. They are set on the first step now, with the ladders. Shipped unverified.
+
 ## m2049 -- THE GREAT WATERFALL: m2046 left the WHOLE waterfall out (a TDZ read), found by its first render
 
 His: "send me a render after every pass." The first render (headless SwiftShader at `?w=forge&zone=snow`) never got a waterfall: the page logged
@@ -23,6 +37,17 @@ own comment says the same of BGRID), and m2046's ladder/zip registration read th
 `check` failure, just no waterfall at all on m2046. Fix: `wfallBuild` keeps a `reg` closure and `wfallStep` runs it once on the first frame.
 The node harness could not see it (it stubs KCLIMB as a plain const above the block): the landmine "a const read above its declaration" again,
 inside a try. Shipped; the renders follow in chat.
+
+## m2051 -- REFLECTION sandbox: beam turret, target, mirror, gate (Nov 1 2026)
+His words: *"the beam direction shield... you might as well build those things... doesn't hurt to build it."* Also: the wing suit is LATE GAME, the shield is likely
+gained before the dragon (ICE_TEMPLE_HEX.md updated; Hall A is now an ice-slide hall).
+- KORAJIN menu > **Reflection (shield puzzle)** = `?w=forge&zone=cell&cell=RF`. `CELLS.RF` is a ROOM cell (`room:[34,22]`); `cellStage` hands it to `cellRoomStage`.
+- Turrets pulse an ice beam (`on`/`off` s). `roomStep` traces it each frame against BOXES (`rfRayBox`, AABB), the player (hit = hurt, unless `shieldUp()` and he
+  faces into it: then it REFLECTS about his heading), mirrors (reflect about their normal) and targets. A target lit `TGT.hold` s opens its gate (sinks, box removed).
+  Up to `TGT.bounces` segments drawn as glowing cylinders.
+- Station 1 INTRODUCE: shield-bounce turret t1 into target g1 -> gate 1. Station 2 DEVELOP: turret t2 -> your shield -> the mirror -> target g2 -> gate 2.
+- Bugs met on the way: `_rfP` already existed (REPFLY), and `cellStep` already existed (the draw culler) -- the step is `roomStep`. The stepPlayer hook first ate the
+  dragon's step into a comment. Shipped unverified; open: aiming feel (reflect about his heading, not the shield mesh), whether the beam reads from far.
 
 ## m2048 -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
 
