@@ -10093,7 +10093,7 @@ function beastStep(d, dt, t) {
     if (u > C.hitAt - .12 && u < C.hitAt + .05) foeMove(d, d.h, C.lunge, dt);
     if (!d.hitDone && u >= C.hitAt) { d.hitDone = 1;
       if (dd < C.reach + .7 && Math.abs(wrapAngle(toP - d.h)) < 1 && !player.roll) { playerHurt(K.hitDmg * Lv.dmgK, d.h, K.push, K.pushUp, .5, 1); camShake(.25); ARENA.stop = Math.max(ARENA.stop, .06); }
-      snd('thud', { g: .8, r: .6, x: P.x, z: P.z }); }
+      snd('thud', { g: .8, r: .6, x: P.x, z: P.z }); if (SNOWZ.air) snowBlast(P.x + Math.sin(d.h) * C.reach * .7, .3, P.z + Math.cos(d.h) * C.reach * .7, 2 + (d.K.r || 1), 1.1); }     // m15DS: his blow lands in the snow
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
   if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m2006: in the snow, his ICE BEAM
@@ -11194,6 +11194,16 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
   patchStep(dt);     // m2005
+  // m15DS (his: "the dragon needs to affect the snow -- when he runs around and slams down"): EVERY body in the field carves it -- its FEET (toe / foot /
+  // hoof bones, found once per model) print and puff, its BODY ploughs a trench as it moves (radius from its size), and coming DOWN from a hop or a
+  // fall blasts a crater; his attack's blow lands as a blast too (`beastStep`)
+  for (const d of DUMMIES) { if (!d.root || !d.root.visible || d.st === 'gone' || !d.model) continue; const P = d.root.position, K = d.K || {}, r = (K.r || .4);
+    if (Math.abs(P.x) > Z.size / 2 || Math.abs(P.z) > Z.size / 2) continue;
+    if (!d.snowFeet || d.snowFeetM !== d.model) { d.snowFeetM = d.model; d.snowFeet = []; d.model.traverse(o => { if (o.isBone && /(^|_)(L|R|Left|Right)?_?(Toe0|ToeBase|Foot|hoof_.*_tip)$/i.test(o.name) && !/Toe01/.test(o.name)) d.snowFeet.push(o); }); d.snowFeet = d.snowFeet.slice(0, 6); }
+    const px = d.snowPx == null ? P.x : d.snowPx, pz = d.snowPz == null ? P.z : d.snowPz, v = dt > 0 ? Math.hypot(P.x - px, P.z - pz) / dt : 0; d.snowPx = P.x; d.snowPz = P.z;
+    for (const b of d.snowFeet) { b.getWorldPosition(_snF); const sy = snowSurfY(_snF.x, _snF.y, _snF.z); if (sy == null || _snF.y > sy + .08) continue; snowDig(_snF.x, _snF.y, _snF.z, Math.max(.2, r * .32), .35); if (v > 1 && Math.random() < dt * 10) snowPuff(_snF.x, sy, _snF.z, 3, 1.8 + v * .15, 1.4); }
+    if (v > .6 && P.y < .5) snowDig(P.x, P.y, P.z, r * .7 * Math.min(1, v / 4), .5);
+    const was = d.snowY == null ? P.y : d.snowY; if (was > .6 && P.y <= .15) snowBlast(P.x, P.y, P.z, 1.5 + r * 1.4, Math.min(1.6, .6 + was * .3)); d.snowY = P.y; }
   if (SFX.ctx && !SFX.buf.foot_SNOW) { try { SFX.buf.foot_SNOW = snowCrunchBufs(); } catch (e) {} } if (SFX.buf.foot_SNOW && STEP.set !== 'SNOW') { Z.stepSet0 = STEP.set; STEP.set = 'SNOW'; }     // m2008: snow crunch footsteps
   iceSpikeStep(dt);     // m2006
   iceFreezeStep(dt); iceFrostStep(dt);     // m2007

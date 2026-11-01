@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15DS -- the dragon (and every body) carves the snow (Nov 1 2026)
+*"The dragon needs to affect the snow -- when he runs around and slams down, it's not affecting it."* In `snowStep`, every body in `DUMMIES` inside the
+field: its FEET (toe / foot / hoof-tip bones -- `Bip001_L_Foot`, `Toe0`, Mixamo `ToeBase` / `Foot`, the cow rig's `hoof_*_tip`; found once per model, max 6)
+print where they touch and puff while it moves; its BODY ploughs a trench scaled by its size and speed; coming DOWN from the ice-beam hop or any fall
+from over .6 m blasts a crater (`snowBlast`, bigger the higher). A beast's attack blow (`beastStep` cAtk) lands as a blast in front of him. Works on the
+platform patches too (`snowDig`). Shipped unverified (boot check only).
+
 ## m2009 -- THE ICE SHIELD, level 1: on his forearm, raised by the guard, it stops the ice beam (Nov 1 2026)
 *"A proper shield -- a blue ice shield -- so you can deflect the ice beam; on the left forearm, the katana two-handed, and the parry a new pose with the
 shield front and centre."* (`SHIELD`, TOOLS > GEAR > ICE SHIELD, default ON)
