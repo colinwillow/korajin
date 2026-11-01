@@ -17,6 +17,40 @@ His: *"Go"* (the three offered: painted banners/band, paving, warm light on the 
   (Tried on the bridge shrines and taken off: they sit on the rail line, so half the pool hung in the air past the deck edge as a jade streak.)
 - Rendered by day (hut) and night (rows, aqueduct) before pushing. 25 draws. Shipped unverified.
 
+## m2063 -- THE GREAT WATERFALL: the face as stacked COLUMNS; thinner ice; less haze at the foot
+
+His: "all good, next pass". From the m2056 renders: the cliff was one smooth sheet (his reference is stacked columns), the frozen columns were
+fat regular slabs, the foot of the fall was a white haze, the gold bands stuck out as frames.
+- `wfCol` / `wfRel` / `wfH1` (global, one place): the face is split into ~7 m COLUMNS (wobbled widths), each set back 0..3.5 m by its own hash,
+  rounded at the front and grooved between; `wfTop` steps each column's top down 0..6 m (not in the notch), so the skyline is stepped. The sheet
+  is 160 columns of triangles (was 110). The ladders' `face` and the brow read the same functions.
+- COLLIDERS FOLLOW: each 8 m run of the face stops him at its most PROTRUDING column (never inside rock, never at the old plan line in front of a
+  recessed one). The chain ladder sits clear of both the rock and that collider (`frontAt`), its gold brackets reaching back to the real rock;
+  the pier ladder's foot is on the brow (`y: ['brow', ...]`).
+- ICE: frozen columns r .22-.6 (was .5-1.2), less bulge, more of them, mostly SHORT with a few long. GOLD bands .27 m proud (were .55). The
+  curtain whitens only in its last 18 % and the mist is .3 (was .45).
+- Caught on the way (headless, the shipped text): a comment placed mid-line swallowed the pier ladder's `else if` (NaN box) -- fixed before push.
+  Ladders: every foot on its pillar / the brow, bodies clear, marks on top of R3, R1, the brow, the deck; the pool -> hall walk meets only the shrine.
+Rendered BEFORE the push this time (renders in chat). Still: the gold band's back corners show where the face is recessed behind a pillar.
+
+
+## m2062 -- the Snowfield's see-through corners filled (Nov 1 2026)
+His words: *"the snow world is built on a square plane and the things around it make a circle -- the negative space between the edge of the square and the
+circle is just left, see-through."* The far white plain was `RingGeometry(size * .7, 900)` = from 112 m out, while the snowfield square ends at 80 m: along
+each side a 32 m strip showed the sky through the ground. Now a `ShapeGeometry` disc (r 900) with a square hole exactly the snowfield minus .3 m, at the
+same height as before. Shipped unverified.
+
+## m2061 -- the mammoth mount: a ring round HIM, an arrow over the saddle, the pad pulses; land on him from a jump; no crate sound (Nov 1 2026)
+His words: *"I don't want a circle on the ground -- within radius of the mammoth, an arrow above the saddle pointing down, maybe a ring around the mammoth
+once you're within radius, and the right stick highlights and pulses; tap and he jumps up and lands on it. Or jump and fall in the vicinity of the saddle --
+it orients you so you land on it. And it still plays that wood block breaking noise -- getting on the mammoth, the attack -- it defaults to that."*
+- `mamNear`: within `(K.r) + MAMR.near` (2.6 m) of his body. Then (and only then) the ring encircles him, the arrow bobs over the seat, and `#padR.mount`
+  pulses mint. `mamTap` mounts from anywhere in the ring (was a 2.6 m spot at his flank).
+- `mamFrame(dt)`: falling (vel.y < 0) within `catchR` 2.8 m of the seat and above it, he is steered onto it (xz eased, sideways speed damped); at the
+  seat (< .45 m above, < 1.1 m across) the ride starts at `land` -- he is on.
+- SOUND: `thud` is `box_break_01` (a crate). 65 calls outside break functions (stomps, landings, mounts, gates, bodies, the snow) now play `bump` = his
+  six `hit_sounds/thud_a/b`; 48 inside `*Break / *Fell / *Hit / smash / chunk` functions keep the crate. Shipped unverified.
+
 ## m2060 -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
 
 - A `rope` material; ROPE LASHINGS where the hut's gable beams cross (two coils) and two coils under every fence post's top rail.
