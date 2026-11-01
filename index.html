@@ -11011,7 +11011,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   // under a timber BRIDGE (the kit's `bridge_timber`) where the path comes in from the field.
   aq: [{ at: [5, 0, 59], yaw: Math.PI / 2, h: 6 }, { at: [5, 0, 51], yaw: Math.PI / 2, h: 6 }],
   creek: [[7.5, 66], [10.5, 57], [11.5, 46], [10, 36], [6, 26], [2.5, 17], [-1.5, 10], [-6, 3], [-12, -5]], creekW: 2.6,
-  bridges: [{ at: [0.6, 0, 13.2], yaw: Math.atan2(7, -6) - Math.PI / 2, span: 8 }],     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
+  bridges: [{ at: [0.6, 0, 13.2], yaw: Math.atan2(7, -6), span: 8 }],     /* pass 3d: turned 90 deg -- it ran ALONG the creek; now it spans it */     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
   place: [
     { id: 'vil_hut_01', kind: 'hut', at: [-28, 0, 27], face: [-18, 31], p: { R: 2.7, seed: 11, chimA: 2.4 } },
     { id: 'vil_hut_02', kind: 'hut', at: [-8.5, 0, 35], face: [-18, 31], p: { R: 2.5, seed: 12, banner: 0, barrels: 3 } },

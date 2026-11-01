@@ -13,6 +13,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15V3d -- village pass 3 fixes, found in the renders (Nov 1 2026)
+- The creek's water at y .07 sat UNDER the swept snow (the sweep leaves .08 x depth) -> raised to .16, with a dark bed strip under it so it reads.
+- The strip was wound facing DOWN, so it was culled from above -> invisible however high; re-wound (m2109).
+- The entry bridge was turned along the creek, not across it -> turned 90 deg.
+Renders: the creek runs from the spring past the bathhouse and out under the bridge at the entry; the aqueduct reads well.
+
 ## m2110 -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
 
 His reference (`images/concepts/snow_village/ref_hut_horned.webp`), from the prompt pack m2096 sent. The hut keeps the classic materials and its footprint,
