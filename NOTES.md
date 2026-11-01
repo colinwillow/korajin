@@ -10,6 +10,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2102 -- THE SNOWFIELD'S FLORA: his alien plants in place of the pines and bamboo
+
+The main session stopped editing index.html at his request (its last push m2100) and relayed: "swap your plants in for what is already there".
+- `SNOWFLORA` (+ `snowFloraBuild`): the Snowfield's PINE STANDS and BAMBOO GROVES now grow his alien flora on their own spots -- the pine
+  loop and the bamboo loop write plant ROWS (stable ids `sf_stand<c>_<k>`, `sf_grove<c>_<k>`) instead of pines / clumps, so every clearance
+  they kept (the spawn, the willow's terrace, the pond, the cliffs, the village) still holds. Stands: frostcaps, lantern maples, wisterias,
+  a blossom stand, pipes (every other pine spot, s 1-1.6); groves: pipes, agaves, blossoms (every third clump, s .85-1.1).
+- Same builder as the waterfall: `wfMake` takes a FLORA-ONLY table (`floraOnly`: rows of kind 'plant'; no wall / pool / falls -- it returns
+  after the place loop), and the plant meshes are factored into `wfPlantMeshes(G, O, T)` (full twins by 80 m cell, light twins all-in-one,
+  per-plant LOD) used by both. `wfLodCells` steps the waterfall's cells and the field's, and the LOD camera and the sway clock now tick even
+  with the waterfall off.
+- Frostcaps, wisterias and lantern maples get a TRUNK collider (the pines had one). The pine-shake (caps dropping powder) has nothing to shake
+  now -- its table is empty, not removed.
+- KEPT: the Jin Willow (his hero), the snow rocks and temple blocks, everything else. `?flora=0` brings the old pines and bamboo back.
+Rendered from the spawn, across the field both ways, and high over it. Shipped unverified on the phone.
+
 ## m2101 -- THE FLORA: DISTANCE VERSIONS (per-plant LOD, cell-culled full versions)
 
 His: "do one and two" -- two is distance versions, so the plants can go through the level ("not yet, but soon").
