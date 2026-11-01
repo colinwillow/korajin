@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15SH -- THE ICE SHIELD, level 1: on his forearm, raised by the guard, it stops the ice beam (Nov 1 2026)
+## m2009 -- THE ICE SHIELD, level 1: on his forearm, raised by the guard, it stops the ice beam (Nov 1 2026)
 *"A proper shield -- a blue ice shield -- so you can deflect the ice beam; on the left forearm, the katana two-handed, and the parry a new pose with the
 shield front and centre."* (`SHIELD`, TOOLS > GEAR > ICE SHIELD, default ON)
 - the SHIELD: a kite shield built in code -- extruded painted-ice face, a crystal rim tube, three crystal points, a glowing jade-teal boss -- placed every

@@ -9883,7 +9883,7 @@ const ICEB = { frzHits: 3, frzT: 1.5, frost: 60, frostLife: 9, frz: null, on: 1,
 // m2007: pass 2 -- the CHARGE (an orb of frost swelling in his jaws, motes drawn in from all round), FROZEN SOLID (three ticks in one beam and you are
 // encased in a block of ice for `frzT` s, the pose held, then it SHATTERS into spikes and powder), and the beam FREEZES the snow it sweeps (flat frost
 // discs, `frost` pooled, fading over `frostLife` s)
-// m15SH: THE ICE SHIELD, level 1 (his: "a proper shield -- a blue ice shield -- so you can deflect the ice beam; held on the left forearm, and the parry
+// m2009: THE ICE SHIELD, level 1 (his: "a proper shield -- a blue ice shield -- so you can deflect the ice beam; held on the left forearm, and the parry
 // a new pose with the shield front and centre"). A kite shield built in code (painted ice face, crystal rim, a glowing jade-teal boss) strapped to his
 // LEFT FOREARM, its face turned out from his side; the katana stays two-handed and every swing is unchanged. GUARD (right stick down) lays his left arm
 // into Mixamo's Sword And Shield Block Idle (Forge-baked as `shield_guard`, sampled once at mid-clip) so the shield comes up front and centre.
@@ -9963,7 +9963,7 @@ function iceBeamStep(d, dt) { const B = ICEB, Bm = d.beam, g = iceBeamMesh(); Bm
   const tgt = player.pos, dx = tgt.x - Bm.aim.x, dz = tgt.z - Bm.aim.z, dl = Math.hypot(dx, dz), mv = Math.min(dl, B.chase * dt); if (dl > 1e-3) { Bm.aim.x += dx / dl * mv; Bm.aim.z += dz / dl * mv; }
   const sy = snowSurfY(Bm.aim.x, tgt.y, Bm.aim.z); Bm.aim.y = sy != null ? sy : tgt.y; const dir = Bm.aim.clone().sub(o); let L = dir.length(); if (L > B.len) { dir.multiplyScalar(B.len / L); L = B.len; } dir.normalize();
   let end = o.clone().addScaledVector(dir, L); const grow = Math.min(1, Bm.t / .12), fade = Math.min(1, (B.T - Bm.t) / .2);
-  const shp = typeof shieldBeam === 'function' ? shieldBeam(d, Bm, o, dir, L, dt) : null; if (shp) { L = shp.distanceTo(o); end = shp.clone(); }     // m15SH: the shield stops it
+  const shp = typeof shieldBeam === 'function' ? shieldBeam(d, Bm, o, dir, L, dt) : null; if (shp) { L = shp.distanceTo(o); end = shp.clone(); }     // m2009: the shield stops it
   g.position.copy(o); g.quaternion.setFromUnitVectors(_ibUp, dir); g.scale.set(.6 + .4 * fade, L * grow, .6 + .4 * fade); g.visible = true; for (const m of g.userData.parts) m.material.uniforms.uT.value = SNOWZ.t;
   ICEB.mouth.position.copy(o); ICEB.mouth.scale.setScalar(1.6 + Math.sin(SNOWZ.t * 50) * .3); ICEB.mouth.visible = true;
   ICEB.hit.position.copy(end).y += .3; ICEB.hit.scale.setScalar((2.6 + Math.sin(SNOWZ.t * 37) * .5) * grow); ICEB.hit.visible = grow >= 1;
@@ -16066,7 +16066,7 @@ function arenaUi() {
       else if (a === 'cart') { CART.pose = CART.poses[(CART.poses.indexOf(CART.pose) + 1) % CART.poses.length]; try { localStorage.setItem('mel.cart2', CART.pose); } catch (err) {} }
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
-      else if (a === 'shield') { SHIELD.on = SHIELD.on ? 0 : 1; try { localStorage.setItem('mel.shield', SHIELD.on ? '1' : '0'); } catch (err) {} }     // m15SH
+      else if (a === 'shield') { SHIELD.on = SHIELD.on ? 0 : 1; try { localStorage.setItem('mel.shield', SHIELD.on ? '1' : '0'); } catch (err) {} }     // m2009
       else if (a === 'storm') { const L = ['AUTO', 'CLEAR', 'BLIZZARD']; SNOWSTORM.weather = L[(L.indexOf(SNOWSTORM.weather) + 1) % 3]; try { localStorage.setItem('mel.storm', SNOWSTORM.weather); } catch (err) {} }     // m1996
       else if (a === 'bevel') { LOOK.bevel = !LOOK.bevel; try { localStorage.setItem('mel.bevel', LOOK.bevel ? '1' : '0'); } catch (err) {} }     // m1978
       else if (a === 'look') { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (err) {} }     // m1967
@@ -60139,7 +60139,7 @@ function frameBody() {
     if (player.wing && WING.holdHips && WING.hipsHold && rig.bones && rig.bones.mixamorig_Hips && !rig.hipsQ0) { let sk = null; rig.model.traverse(o => { if (!sk && o.isSkinnedMesh) sk = o.skeleton; }); if (sk) { const r = bindLocalQ(sk, rig.model); rig.hipsQ0 = r.mixamorig_Hips || null; rig.spineQ0 = {}; for (const n of ['mixamorig_Spine', 'mixamorig_Spine1', 'mixamorig_Spine2']) if (r[n]) rig.spineQ0[n] = r[n]; } }     // m1985: the rest turn, from the skeleton's own bind pose (measured: the builder this hero loads through never captured one)
     if (player.wing && WING.holdHips && WING.hipsHold && rig.hipsQ0 && rig.bones && rig.bones.mixamorig_Hips) { rig.bones.mixamorig_Hips.quaternion.copy(rig.hipsQ0); for (const n in (rig.spineQ0 || {})) if (rig.bones[n]) rig.bones[n].quaternion.copy(rig.spineQ0[n]); }     /* measured: the hips alone left the wing span rolled ~25 deg -- the skydive clip twists the spine too */     // m1985 (his: "he flies crooked, at a tilt"): the flight clip's own hip turn stacked on the flight's lie; the flight alone owns the body's angle now
     if (player.wing && WING.holdHips && WING.armsSide && rig.armQ && rig.armQM === rig.model && rig.bones) for (const n in rig.armQ) { const b = rig.bones[n]; if (b) b.quaternion.slerp(rig.armQ[n], WING.armsSide); }     // m1998 (his: "arms not straight out -- at his sides, like an idle"): the flight pose's arms laid back to his idle's
-    shieldPose(dt);     // m15SH: the guard raises the shield front and centre (left arm only)
+    shieldPose(dt);     // m2009: the guard raises the shield front and centre (left arm only)
     { const p = player; if (rig.bones && rig.armQM !== rig.model && p.grounded && !p.wing && (p.speed || 0) < .2 && !p.melee && !p.roll && !p.aim && !p.knock && !p.dragon && !p.flip && !p.aflip) { rig.armCalm = (rig.armCalm || 0) + dt; if (rig.armCalm > .8) { rig.armQ = {}; for (const sd of ['Left', 'Right']) for (const b of ['Shoulder', 'Arm', 'ForeArm']) { const n = 'mixamorig_' + sd + b; if (rig.bones[n]) rig.armQ[n] = rig.bones[n].quaternion.clone(); } rig.armQM = rig.model; } } else if (rig.armQM !== rig.model) rig.armCalm = 0; }     // m1998: his idle arms, read once off a calm standing frame
     WING.holdHips = 0;
     wingPose(dt);                      // her wing suit lays her forward about her hips (m266)
@@ -60178,7 +60178,7 @@ function frameBody() {
     if (DRAGZ.ui && !(player.dragon && player.dragon.st === 'sit')) dragAimUi();     // m1703: the FIRE button goes when he leaves the saddle
     bowStep(dt);                       // m1719: the bow in his hands, after every pose
     dragRiderPose();                   // m1619: in the saddle, pitched and banked with his dragon (after every pose that writes the root)
-    rig.root.updateMatrixWorld(true); wingFrame(dt); try { shieldFrame(dt); } catch (e) { SHIELD.on = 0; note('SHIELD THREW ' + e.message); }     /* m15SH */     // m1974: the wing-pack AFTER every pose that turns the root (the air flips, the bar, the dragon...) -- it was placed before them, so a flip turned him out from under it
+    rig.root.updateMatrixWorld(true); wingFrame(dt); try { shieldFrame(dt); } catch (e) { SHIELD.on = 0; note('SHIELD THREW ' + e.message); }     /* m2009 */     // m1974: the wing-pack AFTER every pose that turns the root (the air flips, the bar, the dragon...) -- it was placed before them, so a flip turned him out from under it
     rig.root.updateMatrixWorld(true); springsStep(dt);     // m1058: hair / cape chains, on the FINAL root (after every pose above)
     dollStep(dt);
     if (GROPE.list.length) gymRopeStep(dt);
