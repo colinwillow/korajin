@@ -10799,7 +10799,7 @@ const WILLOW = { at: [-24, -22], ter: 11, terH: .6, tiers: [[10.5, .3, 0], [7.5,
 // m1996: THE BLIZZARD THAT COMES AND GOES + SPINDRIFT (BUILDINGS.md snow pass 2). `weather` AUTO cycles calm (`calm` s) -> storm (`stormT` s), easing
 // over `rampHL`; CLEAR / BLIZZARD hold one (TOOLS > SNOW, `?storm=`). The storm multiplies the wind (`stormWind`), pulls the fog in to `fogNear` /
 // `fogFar`, dims the sun, swells the flakes, and drives the SPINDRIFT: `drift` low points streaming along the wind a hand's height over the pack.
-const SNOWSTORM = { weather: (() => { try { const m = /[?&]storm=(auto|clear|blizzard)/i.exec(location.search); if (m) return m[1].toUpperCase(); return localStorage.getItem('mel.storm') || 'AUTO'; } catch (e) { return 'AUTO'; } })(),
+const SNOWSTORM = { weather: (() => { try { const m = /[?&]storm=(auto|clear|blizzard)/i.exec(location.search); if (m) return m[1].toUpperCase(); return localStorage.getItem('mel.storm2') || 'CLEAR'; } catch (e) { return 'CLEAR'; } })(),     /* m15WX (his: "half the time it's just a white blizzard -- you can't see the HDR"): CLEAR by default now; the cycle is TOOLS > SNOW > WEATHER AUTO (a new key, so a saved AUTO does not linger) */
   calm: [70, 110], stormT: [40, 65], rampHL: 7, stormWind: 4.5, fogNear: 6, fogFar: 60, sunDim: .45, drift: 1600, driftBox: 44, driftH: .55, driftV: 2.4 };
 // m1997: THE FROZEN POND (BUILDINGS.md snow pass 2): a lobed sheet of his painted ice (`snow_ice`) swept clear of snow, a bank round it, and on it
 // he SLIDES -- his velocity only creeps toward what he asks for (`grip` /s), so he skates on, drifts through turns and takes a while to stop; a hard
@@ -18529,7 +18529,7 @@ function arenaUi() {
       else if (a === 'tlayseed') { try { localStorage.setItem('mel.tlayseed', String(1 + Math.floor(Math.random() * 9999))); } catch (err) {} location.reload(); }     // m2030
       else if (a === 'snowsky') { try { localStorage.setItem('mel.snowsky', SNOWSKY.on ? 'PEAKS' : 'IMAGE'); } catch (err) {} location.reload(); }     // m2028
       else if (a === 'snowtime') { try { localStorage.setItem('mel.snowtime', SNOWNIGHT.on ? 'DAY' : 'NIGHT'); } catch (err) {} location.reload(); }     // m2018
-      else if (a === 'storm') { const L = ['AUTO', 'CLEAR', 'BLIZZARD']; SNOWSTORM.weather = L[(L.indexOf(SNOWSTORM.weather) + 1) % 3]; try { localStorage.setItem('mel.storm', SNOWSTORM.weather); } catch (err) {} }     // m1996
+      else if (a === 'storm') { const L = ['AUTO', 'CLEAR', 'BLIZZARD']; SNOWSTORM.weather = L[(L.indexOf(SNOWSTORM.weather) + 1) % 3]; try { localStorage.setItem('mel.storm2', SNOWSTORM.weather); } catch (err) {} }     // m1996
       else if (a === 'bevel') { LOOK.bevel = !LOOK.bevel; try { localStorage.setItem('mel.bevel', LOOK.bevel ? '1' : '0'); } catch (err) {} }     // m1978
       else if (a === 'look') { LOOK.soft = !LOOK.soft; LOOK.t = 0; try { localStorage.setItem('mel.look', LOOK.soft ? 'soft' : 'current'); } catch (err) {} }     // m1967
       else if (a === 'stairs') { STAIRS.on = STAIRS.on ? 0 : 1; try { localStorage.setItem('mel.stairs', STAIRS.on ? 'clips' : 'lean'); } catch (err) {} }     // m1956

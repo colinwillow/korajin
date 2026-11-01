@@ -13,6 +13,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15WX -- the Snowfield's weather is CLEAR by default (Nov 1 2026)
+His: *"half the time it's just a white blizzard in the sky -- you can't see the HDR at all, and sometimes you can see the beautiful HDR; is that a glitch
+or weather changing?"* It was the m-era blizzard cycle (`SNOWSTORM.weather` AUTO: 70-110 s calm, 40-65 s storm; while the storm is past .55 the sky
+panorama gives way to flat fog). Default is now CLEAR under a new storage key (`mel.storm2`), so his saved AUTO does not linger; AUTO / BLIZZARD are
+still on TOOLS > SNOW > WEATHER. (Also reported: parts of the map where the snow does not react -- the deformable pack is only the 160 m field; the
+waterfall area at x -140 and beyond are outside it. Asked him before changing it: a bigger pack costs detail and phone time.)
+
 ## m2123 -- THE ARMILLARY FORGE: the wrong sheet's pieces out, his forge's in
 
 His: "sorry, that was wrong" -- the potion-shop sheet was sent by mistake; the target is his forge. So out came what only that sheet had:
