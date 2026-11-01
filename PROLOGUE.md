@@ -53,7 +53,7 @@ BELL SHRINE -- (1) a pagoda roof on columns with a great bronze bell, or (2) a m
 
 ## The order we'd build it (one step at a time; each step done and signed off before the next)
 - [ ] **P0 -- this page, agreed.** The beats, the open questions below answered.
-- [ ] **P1 -- THE GARDEN, beat 1 only.** Its own zone, one floating courtyard, finished to the Red Hollows / Ship / Arena standard. Playable:
+- [ ] **P1 -- THE GARDEN, beat 1 only.** *(Built m2149-m2151: KORAJIN > Prologue -- the Garden, `?w=forge&zone=garden`; waiting on his look.)* Its own zone, one floating courtyard, finished to the Red Hollows / Ship / Arena standard. Playable:
       walk, jump, look. No story yet.
 - [ ] **P2 -- THE OMEN + THE STRIKE** in that garden (the light, the drain, the pillar's arrival) -- scripted, in-engine.
 - [ ] **P3 -- THE FALL** as a level (the breaking-apart, falling-pieces descent).

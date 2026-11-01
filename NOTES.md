@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2151 -- THE GARDEN, pass 3: the sky and the refs' last details (Nov 1 2026)
+- **SKY**: a deeper blue overhead; ~70 cumulus heaps on the cloud sea (bigger with distance, a raised crown on each, less self-glow so the sun
+  shades them) -- the refs' billowing sea instead of a flat white plane.
+- **THE SHRINE'S EAVES** (ref 1): two lanterns and two little bronze wind bells hang off the lower roof's horns (they join `GARDEN.lamps`, so they
+  get the halo from `gdnGlow`).
+- The Garden after three passes: island + layout, willows + hammock, water + falls, the bell shrine, props + plants, sky + light, detail. PROLOGUE P1
+  is NOT ticked -- the last box is his sign-off on the phone. Known gap: no lying-in-the-hammock pose (no sleep / get-up clip on Grumbo yet).
+  Shipped unverified.
+
 ## m2150 -- THE GARDEN, pass 2: props, plants and light against his refs (Nov 1 2026)
 Same zone (`?w=forge&zone=garden`). Looked at headless from the spawn, the zen circle, the bell, the trees, the rim and underneath, then fixed:
 - **NO MORE SHARDS**: `dmtBlob` jitters every vertex, which on a big blob reads as crumpled paper (the cloud heaps, the rim moss, the rocks). The
