@@ -10,6 +10,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2101 -- THE FLORA: DISTANCE VERSIONS (per-plant LOD, cell-culled full versions)
+
+His: "do one and two" -- two is distance versions, so the plants can go through the level ("not yet, but soon").
+- `flora` now grows each plant TWICE from its OWN seed (`R` is swapped per plant, so the light twin is the same plant): FULL, and LIGHT
+  (`LQ` 0: a third of the rings, half the tube sides, 30 % of lathe segments, half-resolution spheres, 3x1 leaves, every other raceme, no
+  icicles, no rocks). Both are lifted out of the shared lists into `O.plants` with the plant's centre on every vertex (`aCtr`).
+- `wfallBuild`: the LIGHT twins of every plant merge into ONE mesh per material (4 draws); the FULL twins merge per 80 m CELL (7 cells).
+- `wfLod(m, side)` (shader, before `project_vertex`, after the sway): a FULL mesh collapses a plant beyond `WFALL.lodU.r` (70 m) of the
+  camera to a point (zero-area triangles), the LIGHT mesh collapses it nearer -- so each plant swaps by ITS OWN distance and a cell edge
+  can never pop. `wfallStep` turns a whole cell off when it cannot hold a near plant.
+- Measured headless (47 plants): full 198k tris / light 63k (1.3k a plant); 4 light draws + up to 6 per live cell. Rendered: the same
+  plants full and light at one distance are nearly indistinguishable (the light one loses rocks and icicles).
+- For a LEVEL-WIDE scatter (hundreds of plants) a third, far tier (a card) will be wanted -- 1.3k x 500 is too many. Noted, not built.
+- CAUGHT before the push (the first render timed out): a `//` comment placed mid-line swallowed the rest of `wfallStep` -- the sway clock,
+  the shrines, the ladder / zip registration and `mel.WFALL`. Third time this file has done that; a scan of the waterfall code now finds none.
+
 ## m2100 -- THE REGION is HIDDEN (his call) (Nov 1 2026)
 His: *"I feel like I'm just burning credits... the other windows' plants and buildings look so good and what we're doing looks like trash. Hide the
 region. We need to build the village -- we have a fantastic kit and all the original beautiful stuff."* The generated region (m2070-m2097) had no art
