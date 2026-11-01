@@ -10,6 +10,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15V1 -- THE VILLAGE, pass 1: the kit session's hand-placed village is ON in the Snowfield (Nov 1 2026)
+His: *"we're ready to go"* (after the plant swap). The kit session had already placed a village (`SNOWVIL.place`: 8 huts + a longhouse on the ground,
+a 1.5 m terrace, a 3.3 m terrace and a 4.5 m crag; the gate, the square with its fire pit, the well, jade lamp posts, fences, banners, barrels, paved
+paths) behind `?vil=1` since m2033 -- off, waiting for "placement by another context". It is ON by default now (`?vil=0` hides it). Rendered
+headless (images/concepts/snow_village/village_pass1_street.jpg / _high.jpg): at street level it reads well -- warm windows, banners, the square.
+What it lacks, for the next passes: it sits on the flat field near the south edge (the field's edge shows behind it), the layout is a little gridded,
+the verticality is modest (1.5 / 3.3 / 4.5), and nothing from VILLAGE_BLUEPRINT.md's design is in it yet (the spring + aqueduct, the creek and its
+bridges, the watchtower, the market, the high route).
+
 ## m2103 -- THE FLORA: shake the snow off a plant (the pines' trick, back)
 
 His: "yeah add it" (m2102 lost the pine-shake). Every plant vertex now carries its plant's index (`aPI`); each plant set (the waterfall's
