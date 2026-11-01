@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- THE WATCHTOWER (his reference image, both variants)
+## m2120 -- THE WATCHTOWER (his reference image, both variants)
 
 His reference (`images/concepts/snow_village/ref_watchtower.webp`, two towers). Deck height and size, the stair, the landing and the rail gap are unchanged.
 - Default (left): knee braces under the eaves, a curled PAGODA roof in timber shingle (`svkPagoda` takes a material now) with a small upper tier and a
