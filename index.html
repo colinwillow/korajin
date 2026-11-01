@@ -12466,7 +12466,7 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
     // the places: a mint pole + its name
     const pm = new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false }), pg = new THREE.CylinderGeometry(.35, .35, 10, 8).translate(0, 5, 0);
     for (const Q of RGN.places) { const y = rgnH(Q.x, Q.z), pole = new THREE.Mesh(pg, pm); pole.position.set(Q.x, y, Q.z); g.add(pole); const lb = rgnLabel(Q.name); lb.position.set(Q.x, y + 12, Q.z); g.add(lb); }
-    // m15WL: THE MOVE-IN, step 3 -- the WILLOW SHRINE at its map place (a level dell at y 0 is cut for it in the region grid, so the willow's own
+    // m2090: THE MOVE-IN, step 3 -- the WILLOW SHRINE at its map place (a level dell at y 0 is cut for it in the region grid, so the willow's own
     // y-0 terrace, vines and boxes work unchanged); `willowStep` runs from `rgnStep`
     { const W = RGN.places.find(q => q.id === 'willow_shrine'); if (W && typeof willowBuild === 'function') { try { WILLOW.at = [W.x, W.z]; willowBuild(g); RGN.willow = 1; } catch (e) { note('WILLOW THREW ' + e.message); console.error(e); } } }
     if (meta.hamlet) { RGN.hm = meta.hamlet; fetch(A(meta.hamlet.file)).then(r => r.arrayBuffer()).then(b2 => { RGN.D = new Uint16Array(b2); rgnHamlet(g); }).catch(e => note('NO HAMLET ' + e.message)); }

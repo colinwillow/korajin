@@ -23,7 +23,7 @@ Greek key, timber posts, straw thatch, lattice windows, rectangular doors, cross
 - `SVKSTYLE` ('jin' default / 'classic' via `?svkstyle=classic`); footprints, colliders, piece and option names unchanged, so the village layout and its
   measured routes still fit. Rendered (hut, aqueduct, gate, deck) before pushing; the glyph band's glow toned down after the first look. Shipped unverified.
 
-## m15WL -- THE MOVE-IN, step 3: the WILLOW SHRINE at its map place (Nov 1 2026)
+## m2090 -- THE MOVE-IN, step 3: the WILLOW SHRINE at its map place (Nov 1 2026)
 His: *"eventually I want to expand and do more detail and building on the Willow shrine, but it's fine for now."* (So: moved as it is.)
 - The willow (`willowBuild`: the round terraces, the torii, the lanterns, the shimenawa, the vines and their verlet) is built entirely at y 0. Rather
   than offset every box and vine, `tools/regionpick.py` cuts a level DELL at y 0 at the WILLOW SHRINE place (-108, -189): 14 m round, the rim easing
