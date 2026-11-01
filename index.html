@@ -11082,8 +11082,9 @@ function vilMats() { const V = SNOWVIL; if (V.M) return V.M; const paint = SNOWZ
   const P0 = !paint ? null : { stone: pm('stone', .55, { roughness: .9 }), stoneD: pm('ashlar', .6, { color: 0xe4e0ec, roughness: .9 }), wood: pm('timber', .7, { roughness: .82 }), door: pm('planks', .8, { roughness: .85 }), thatch: pm('thatch', .75, { color: 0xf2e6d2, roughness: .95, bumpScale: 2.4 }), band: (() => { const t = texGet('svk_band'); t.repeat.set(1, 2.1); return std({ map: t, bumpMap: t, bumpScale: 1.2, roughness: .6, metalness: .15 }); })(), pave: pm('paving', .45, { roughness: .9 }) };
   return (V.M = { stone: P0 ? P0.stone : std({ map: vilTex('stone'), color: 0xc9c4d4, roughness: .92 }), stoneD: P0 ? P0.stoneD : std({ map: vilTex('stone'), color: 0x9a94a8, roughness: .94 }), band: P0 ? P0.band : std({ map: vilTex('band'), roughness: .7, metalness: .1 }), pave: P0 ? P0.pave : std({ map: vilTex('stone'), color: 0x9a94a8, roughness: .94 }),
     wood: P0 ? P0.wood : std({ map: vilTex('wood'), color: 0xd8b090, roughness: .85 }), door: P0 ? P0.door : std({ map: vilTex('wood'), color: 0x8a6048, roughness: .85 }), thatch: P0 ? P0.thatch : std({ map: vilTex('thatch'), roughness: .95 }),
-    snow: paint ? snowTriMat('snow_snow', 2.5, 0xffffff, .85) : std({ color: 0xf6f9ff, roughness: .85 }), gold: std({ color: 0xd9a441, roughness: .38, metalness: .55, emissive: 0x3a2400, emissiveIntensity: .4 }),
-    jade: new THREE.MeshBasicMaterial({ color: 0x6cffc8, toneMapped: false }), warm: new THREE.MeshBasicMaterial({ color: 0xffc46a, toneMapped: false }), win, ban, ice: snowKitIce(),
+    snow: paint ? snowTriMat('snow_snow', 2.5, 0xffffff, .85) : std({ color: 0xf6f9ff, roughness: .85 }),
+    gold: paint ? std({ map: texGet('temple_gold'), bumpMap: texGet('temple_gold'), bumpScale: 1.2, color: 0xffe2a8, roughness: .36, metalness: .55, emissive: 0x3a2400, emissiveIntensity: .35 }) : std({ color: 0xd9a441, roughness: .38, metalness: .55, emissive: 0x3a2400, emissiveIntensity: .4 }),     /* detail pass 5: hammered, engraved gold */
+    jade: paint ? new THREE.MeshStandardMaterial({ color: 0x3ab890, roughness: .25, metalness: .1, emissive: 0x8affd8, emissiveMap: texGet('temple_jade'), emissiveIntensity: 4.0, toneMapped: false }) : new THREE.MeshBasicMaterial({ color: 0x6cffc8, toneMapped: false }),     /* veined, carved jade, glowing */ warm: new THREE.MeshBasicMaterial({ color: 0xffc46a, toneMapped: false }), win, ban, ice: snowKitIce(),
     iron: std({ color: 0x3c3834, roughness: .55, metalness: .4 }), rope: std({ color: 0xc2a070, roughness: .95 }), cloth: std({ color: 0xa83228, roughness: .85, side: THREE.DoubleSide }), clay: std({ color: 0xa8653e, roughness: .9 }), rock: paint ? snowTriMat('snow_rock', 2, 0xd0d6e4, .95) : std({ color: 0x8e96a8, roughness: .95 }),
     dark: std({ color: 0x1c2630, roughness: .3, metalness: .2 }), fire: new THREE.MeshBasicMaterial({ color: 0xff8a2a, toneMapped: false, transparent: true, opacity: .9, depthWrite: false }) }); }
 // a box whose uvs run in METRES / tile (so a texture keeps its scale on any size of box)
@@ -11140,8 +11141,8 @@ function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.see
   const prof = [[R - .1, ye + .1], [Re - .1, ye - .1], [Re + .05, ye + .05]]; for (let k = 0; k <= 9; k++) prof.push(dome(k / 9)); prof[prof.length - 1][0] = 0;
   lat('thatch', prof, null, 1.4);
   // SNOW CAP: thick, lobed; it stops short of the lip so the thatch shows under it, and droops in tongues between
-  const s1 = rnd() * 6, s2 = rnd() * 6, s3 = rnd() * 6, lobe = a => .3 * Math.pow(Math.max(0, Math.sin(a * 7 + s1)), 2) + .16 * Math.pow(Math.max(0, Math.sin(a * 12 + s2)), 3) + .05 * Math.sin(a * 3 + s3);
-  const t0 = .07, sp = [[dome(t0)[0] - .35, dome(t0)[1] + .12, 'in'], [dome(t0)[0] + .12, dome(t0)[1] - .12, 'lip'], [dome(t0)[0] + .2, dome(t0)[1] + .1, 'lip2']];
+  const s1 = rnd() * 6, s2 = rnd() * 6, s3 = rnd() * 6, lobe = a => .42 * Math.pow(Math.max(0, Math.sin(a * 7 + s1)), 2) + .22 * Math.pow(Math.max(0, Math.sin(a * 12 + s2)), 3) + .07 * Math.sin(a * 3 + s3);     /* detail pass 5: chunkier tongues */
+  const t0 = .17, sp = [[dome(t0)[0] - .35, dome(t0)[1] + .12, 'in'], [dome(t0)[0] + .12, dome(t0)[1] - .12, 'lip'], [dome(t0)[0] + .2, dome(t0)[1] + .1, 'lip2']];
   for (let k = 1; k <= 8; k++) { const t = t0 + (1 - t0) * k / 8, d = dome(t); sp.push([d[0] + .17 * (1 - t * .6), d[1] + .2 + .1 * Math.sin(t * 3), 'top']); } sp[sp.length - 1][0] = 0;
   lat('snow', sp, (a, tag) => tag === 'lip' ? [lobe(a) * .15, -lobe(a)] : tag === 'lip2' ? [lobe(a) * .1, -lobe(a) * .45] : tag === 'in' ? [0, -lobe(a) * .3] : tag === 'top' ? [.05 * Math.sin(a * 4 + s3), 0] : [0, 0]);
   { const n = Math.round(Math.PI * 2 * Re * sx * 1.6); for (let k = 0; k < n; k++) { const a = (k + rnd() * .8) / n * Math.PI * 2, lb = lobe(a); if (Math.abs(Math.atan2(Math.sin(a), Math.cos(a))) < .35 && o.porch) continue;
@@ -11162,7 +11163,7 @@ function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.see
     if (o.porch) { const py = yb + 3.05, len = 1.6, z0 = dz + .55; for (const s of [-1, 1]) { const ang = s * .62, g = vilBox(1.5, .14, len, 1.4); g.translate(s * .66, 0, 0).rotateZ(-ang).translate(0, py, z0); add('thatch', g);
         const sn = vilBox(1.35, .14, len - .05, 2); sn.translate(s * .64, .13, 0).rotateZ(-ang).translate(0, py, z0); add('snow', sn);
         for (let k = 0; k < 6; k++) { const l = .15 + rnd() * .35, zz = z0 - len / 2 + (k + .5) / 6 * len; add('ice', new THREE.ConeGeometry(.04, l, 5).rotateX(Math.PI).translate(s * 1.26, py - .78 - l / 2, zz)); } }
-      put('wood', vilBox(2.6, .2, .2, 1), 0, py - .55, dz + 1.3); put('gold', vilBox(.62, .76, .1, 1), 0, py - .12, dz + 1.36); put('jade', vilBox(.36, .5, .06, 1), 0, py - .12, dz + 1.42);
+      put('wood', vilBox(2.6, .2, .2, 1), 0, py - .55, dz + 1.3); vilPlaque(add, .66, .82, 0, py - .12, dz + 1.33);
       put('wood', vilBox(.16, .16, 1.2, 1), 0, py + .1, dz + .7); }
     if (o.lanterns) for (const s of [-1, 1]) { const x = s * 1.12, y = yb + 1.85, z = dz + .4; put('wood', vilBox(.42, .06, .06, 1), s * .92, y + .28, dz + .26); put('iron', vilBox(.03, .2, .03, 1), x, y + .16, z);
       put('warm', vilBox(.2, .3, .2, 1), x, y - .09, z); for (const [ex, ez] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) put('wood', vilBox(.04, .34, .04, 1), x + ex * .11, y - .09, z + ez * .11);
@@ -11187,6 +11188,10 @@ function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.see
   for (let k = 0; k < (o.barrels | 0); k++) { const a = (k % 2 ? 1 : -1) * (.9 + rnd() * 1.6), [x, z] = at(a, R + .45 + rnd() * .2); vilBarrel(add, x, .3, z, rnd); }
   for (let k = 0; k < (o.pots | 0); k++) { const a = (k % 2 ? -1 : 1) * (.75 + rnd() * 1.9), [x, z] = at(a, R + .5 + rnd() * .2), s = .7 + rnd() * .5; const g = vilLathe([[0, 0], [.18 * s, 0], [.27 * s, .2 * s], [.22 * s, .42 * s], [.13 * s, .5 * s], [.16 * s, .56 * s], [.12 * s, .56 * s], [0, .52 * s]], 10, null, .5); add('clay', g.translate(x, .3, z)); add('snow', vilPillow(.24 * s, .04, .24 * s).translate(x, .3 + .55 * s, z)); }
   return { L, cols, smoke, pools }; }
+// detail pass 5: a CARVED PLAQUE -- a bevelled gold frame, a dark recess, a faceted jade gem, four gold studs; faces +Z (`face` -1: -Z)
+function vilPlaque(add, w, h, x, y, z, face = 1) { const g = [], t = Math.min(w, h) * .16, put = (k, q) => { q.translate(0, 0, .02); if (face < 0) q.rotateY(Math.PI); add(k, q.translate(x, y, z)); };
+  put('iron', vilBox(w - t, h - t, .06, 1)); for (const [bw, bh, bx, by] of [[w, t, 0, (h - t) / 2], [w, t, 0, -(h - t) / 2], [t, h - 2 * t, (w - t) / 2, 0], [t, h - 2 * t, -(w - t) / 2, 0]]) put('gold', vilRBox(bw, bh, .12, .5, .03).translate(bx, by, .02));
+  put('jade', new THREE.OctahedronGeometry(1, 0).scale((w - 2 * t) * .42, (h - 2 * t) * .46, .1).translate(0, 0, .06)); for (const [sx, sy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) put('gold', new THREE.SphereGeometry(t * .4, 6, 4).translate(sx * (w - t) / 2, sy * (h - t) / 2, .09)); }
 function vilBarrel(add, x, y, z, rnd) { const s = .85 + rnd() * .3; add('wood', vilLathe([[0, 0], [.26 * s, 0], [.31 * s, .36 * s], [.26 * s, .72 * s], [0, .72 * s]], 12, null, .5).translate(x, y, z));
   for (const b of [.12, .6]) add('iron', vilLathe([[.285 * s, b * s], [.3 * s, (b + .06) * s]], 12, null, .5).translate(x, y, z)); add('snow', vilPillow(.5 * s, .1, .5 * s).translate(x, y + .72 * s, z)); }
 // a jade crystal lamp: a gold cup, a tall jade crystal glowing in it
@@ -11654,7 +11659,7 @@ function svkGable(o) { const P = svkNew(), w = o.w || 4, d = o.d || 4, pitch = o
     const sn = vilBox(sl * .92, .16, d + ov * 2 - .1, 2); sn.translate(s * sl * .5, .19, 0).rotateZ(-s * pitch).translate(0, rise, 0); P.add('snow', sn);
     P.ice(-d / 2 - ov + .2, d / 2 + ov - .2, -.1, s * (half - .05), Math.round(d * 2.5), rnd, 'z'); }
   for (const sz of [-1, 1]) { const sh = new THREE.Shape(); sh.moveTo(-w / 2, 0); sh.lineTo(w / 2, 0); sh.lineTo(0, rise * (w / 2) / half); sh.closePath(); const tg = new THREE.ExtrudeGeometry(sh, { depth: .14, bevelEnabled: false }); tg.translate(0, 0, sz > 0 ? d / 2 - .14 : -d / 2); P.add('wood', tg);
-    P.box('gold', .5, .6, .08, 0, rise * .45, sz * (d / 2 + .04), 1); P.box('jade', .26, .36, .06, 0, rise * .45, sz * (d / 2 + .09), 1); }
+    vilPlaque(P.add, .56, .68, 0, rise * .45, sz * (d / 2 + .02), sz); }
   P.box('wood', .26, .26, d + ov * 2 + .3, 0, rise + .1, 0, 1); P.add('snow', vilPillow(.3, .08, d + ov * 2 + .2).translate(0, rise + .23, 0));
   for (const f of [.3, .65, .95]) P.col(-half * (1 - f) - .01, half * (1 - f) + .01, 0, rise * f, -d / 2 - ov, d / 2 + ov);
   P.port('seat', 0, 0, 0, 0, -1, 0); return P; }
@@ -11668,7 +11673,7 @@ const SVKP = {
   roof_round: o => { const q = Object.assign({}, SNOWVIL.hut, o, { base: 0 }), H = vilHut(q), P = svkNew(), Q = Object.assign(svkNew(), { L: H.L, cols: H.cols, smoke: H.smoke }); svkEmit(P, Q, [0, -(.6 + q.wallH), 0]); P.port('seat', 0, 0, 0, 0, -1, 0); return P; },
   roof_gable: o => svkGable(o),
   roof_beams: o => { const P = svkNew(); for (const s of [-1, 1]) { const Lb = 2.6, ang = s * .62, dx = -Math.sin(ang), dy = Math.cos(ang); P.add('wood', vilBox(.2, Lb, .22, 1).translate(0, Lb * .18, 0).rotateZ(ang).translate(0, .4, 0)); P.add('gold', vilBox(.28, .28, .3, 1).rotateZ(ang).translate(dx * Lb * .68, .4 + dy * Lb * .68, 0)); P.add('snow', vilPillow(.24, .07, .26).translate(dx * Lb * .68 + dx * .14, .52 + dy * Lb * .68, 0)); }
-    P.box('gold', .6, .74, .1, 0, .55, .18, 1); P.box('jade', .34, .48, .06, 0, .55, .24, 1); P.port('seat', 0, 0, 0, 0, -1, 0); return P; },
+    vilPlaque(P.add, .64, .8, 0, .55, .14); P.port('seat', 0, 0, 0, 0, -1, 0); return P; },
   chimney: o => { const P = svkNew(), h = o.h || 3.3; P.box('stoneD', 1.2, .4, 1.2, 0, .2, 0, 1); P.box('band', 1.22, .14, 1.22, 0, .33, 0, .6); P.box('stone', .9, h - .4, .9, 0, (h + .4) / 2, 0, 1.2); P.box('gold', .95, .1, .95, 0, h - .6, 0, 1); P.box('stoneD', 1.1, .16, 1.1, 0, h + .08, 0, 1); P.box('stone', .5, .3, .5, 0, h + .3, 0, 1);
     P.add('snow', vilPillow(1.0, .14, 1.0).translate(0, h + .16, 0)); P.ice(-.5, .5, h, .56, 4, plantRnd(3)); P.smoke.push([0, h + .55, 0]); P.col(-.6, .6, 0, h + .45, -.6, .6); P.port('top', 0, h + .45, 0, 0, 1, 0); return P; },
   stairs: o => { const P = svkNew(), n = o.n || 5, w = o.w || 2, tr = .6, L = n * tr; for (let k = 0; k < n; k++) { const top = (k + 1) * .3, z1 = L / 2 - k * tr, z0 = z1 - tr; P.box('stoneD', w, top, tr, 0, top / 2, (z0 + z1) / 2, 1); P.box('stone', w + .06, .08, tr + .04, 0, top - .04, (z0 + z1) / 2, 1); P.col(-w / 2, w / 2, 0, top, z0, z1);
@@ -11750,7 +11755,7 @@ Object.assign(SVKP, {
     const sh = new THREE.Shape(); sh.moveTo(-L / 2, ys); sh.lineTo(-r, ys); sh.absarc(0, ys, r, Math.PI, 0, true); sh.lineTo(L / 2, ys); sh.lineTo(L / 2, yt); sh.lineTo(-L / 2, yt); sh.closePath();
     const g = new THREE.ExtrudeGeometry(sh, { depth: t, bevelEnabled: false, curveSegments: 18 }); g.translate(0, 0, -t / 2); { const uv = g.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / 1.6, uv.getY(i) / 1.6); } P.add('stoneD', g);
     const ring = new THREE.Shape(); ring.absarc(0, ys, r + .5, Math.PI, 0, true); ring.lineTo(r, ys); ring.absarc(0, ys, r, 0, Math.PI, false); ring.closePath(); const rg = new THREE.ExtrudeGeometry(ring, { depth: t + .2, bevelEnabled: false, curveSegments: 18 }); rg.translate(0, 0, -t / 2 - .1); { const uv = rg.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / 1.2, uv.getY(i) / 1.2); } P.add('stone', rg);
-    for (const sz of [-1, 1]) { P.box('gold', .7, .8, .12, 0, ys + r + .3, sz * (t / 2 + .12), 1); P.box('jade', .36, .46, .08, 0, ys + r + .3, sz * (t / 2 + .18), 1); P.add('jade', new THREE.ConeGeometry(.12, .7, 5).rotateX(Math.PI).translate(0, ys + r - .2, sz * (t / 2 + .05)));
+    for (const sz of [-1, 1]) { vilPlaque(P.add, .74, .86, 0, ys + r + .3, sz * (t / 2 + .08), sz); P.add('jade', new THREE.ConeGeometry(.12, .7, 5).rotateX(Math.PI).translate(0, ys + r - .2, sz * (t / 2 + .05)));
       for (const sx of [-1, 1]) { P.box('gold', .36, .36, .06, sx * L * .32, yt - .45, sz * (t / 2 + .04), 1); P.box('jade', .16, .16, .06, sx * L * .32, yt - .45, sz * (t / 2 + .08), 1); } }
     P.ice(-r * .8, r * .8, ys + r * .55, 0, 8, rnd); P.col(-L / 2, L / 2, ys + r - .3, yt, -t / 2, t / 2); P.port('a', -(o.len || A.bay) / 2, h, 0, -1, 0, 0); P.port('b', (o.len || A.bay) / 2, h, 0, 1, 0, 0); return P; },
   aq_deck: o => { const P = svkNew(), A = SVKAQ, L = o.len || A.bay, w = A.deckW, T = A.deckT, rh = A.rail, rnd = plantRnd(L * 13 | 0);
@@ -11827,7 +11832,7 @@ Object.assign(SVKP, {
       if (wings) svkSnap(P, svkPiece('wall_straight', { len: 4, h: 3.3 }), 'a', [s * (w / 2 + 1.1), 0, 0], s > 0 ? 0 : Math.PI); }
     P.box('wood', w + 3.4, .45, .5, 0, ph + .25, 0, 1); P.box('wood', w + 1.6, .25, .36, 0, ph - .45, 0, 1); for (const s of [-1, 1]) P.box('gold', .4, .4, .56, s * (w / 2 + 1.75), ph + .25, 0, 1);
     svkSnap(P, svkPiece('roof_gable', { w: 2.0, d: w + 3, pitch: .95, seed: 8 }), 'seat', [0, ph + .48, 0], Math.PI / 2);
-    for (const sz of [-1, 1]) { P.box('gold', .9, .7, .1, 0, ph - .05, sz * .3, 1); P.box('jade', .5, .4, .08, 0, ph - .05, sz * .36, 1); P.add('ban', vilBanner(.8, 1.7, .25).rotateY(sz > 0 ? 0 : Math.PI).translate(sz * 1.2 * 0 + (sz > 0 ? 1.3 : -1.3), ph - .6, sz * .28)); }
+    for (const sz of [-1, 1]) { vilPlaque(P.add, .95, .75, 0, ph - .05, sz * .27, sz); P.add('ban', vilBanner(.8, 1.7, .25).rotateY(sz > 0 ? 0 : Math.PI).translate(sz * 1.2 * 0 + (sz > 0 ? 1.3 : -1.3), ph - .6, sz * .28)); }
     P.col(-w / 2 - 1, w / 2 + 1, ph - .6, ph + .5, -.25, .25); P.ports = P.ports.filter(q => (q.id === 'b' && Math.abs(q.at[0]) > w / 2 + 3)); P.ports.forEach((q, i) => q.id = q.at[0] < 0 ? 'a' : 'b'); P.port('through', 0, 0, 2, 0, 0, 1); return P; },
   // THE OUTPOST: a fenced compound -- the gate in its front, fence runs chained port to port round the other three sides, the watchtower in a back
   // corner, a hut, a fire pit, crates, a jade lamp

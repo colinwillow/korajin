@@ -6,6 +6,17 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## mNEXT -- the snow kit DETAIL PASS 5: thatch shows, painted gold and jade, carved plaques
+
+His: *"Another detail pass?"*
+- HUT ROOFS: the snow cap now stops higher up the dome (t0 .07 -> .17), so a thick band of the painted thatch shows under it as in the concept, and its
+  tongues are chunkier (lobe amplitudes x1.4); the icicles follow the new lip.
+- GOLD is the painted hammered, engraved gold (`temple_gold`, bumped) on every fitting, band, cap, keystone and finial; JADE is the carved, veined jade
+  (`temple_jade` as a glowing emissive map, not tone-mapped) on every gem, crystal, inlay and finial. `?paint=0` keeps the flat colours.
+- `vilPlaque`: a CARVED PLAQUE (a bevelled gold frame, a dark recess, a faceted jade gem, four gold studs) replaces the flat gold-and-green boxes on the
+  hut porch, the roof beams, both gable ends, the gate (both faces) and every arch span's keystone.
+- Rendered (hut, gate, aqueduct) before pushing; jade brightened after the first look (it read dull by day). 25 draws. Shipped unverified.
+
 ## m2068 -- THE GREAT WATERFALL: splash PLUMES at the foot, big ice SLABS in the pool, thinner snow lips
 
 His: "keep going". From his reference: white plumes boil up where the water lands, and big flat ice slabs float in the pool.
