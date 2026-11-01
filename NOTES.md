@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+
+## m15MM -- the mammoth mount: a ring round HIM, an arrow over the saddle, the pad pulses; land on him from a jump; no crate sound (Nov 1 2026)
+His words: *"I don't want a circle on the ground -- within radius of the mammoth, an arrow above the saddle pointing down, maybe a ring around the mammoth
+once you're within radius, and the right stick highlights and pulses; tap and he jumps up and lands on it. Or jump and fall in the vicinity of the saddle --
+it orients you so you land on it. And it still plays that wood block breaking noise -- getting on the mammoth, the attack -- it defaults to that."*
+- `mamNear`: within `(K.r) + MAMR.near` (2.6 m) of his body. Then (and only then) the ring encircles him, the arrow bobs over the seat, and `#padR.mount`
+  pulses mint. `mamTap` mounts from anywhere in the ring (was a 2.6 m spot at his flank).
+- `mamFrame(dt)`: falling (vel.y < 0) within `catchR` 2.8 m of the seat and above it, he is steered onto it (xz eased, sideways speed damped); at the
+  seat (< .45 m above, < 1.1 m across) the ride starts at `land` -- he is on.
+- SOUND: `thud` is `box_break_01` (a crate). 65 calls outside break functions (stomps, landings, mounts, gates, bodies, the snow) now play `bump` = his
+  six `hit_sounds/thud_a/b`; 48 inside `*Break / *Fell / *Hit / smash / chunk` functions keep the crate. Shipped unverified.
+
 ## m2060 -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
 
 - A `rope` material; ROPE LASHINGS where the hut's gable beams cross (two coils) and two coils under every fence post's top rail.
