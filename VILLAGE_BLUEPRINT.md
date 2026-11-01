@@ -30,7 +30,7 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | **drafted** |
 | 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | **drafted** |
 | 9 | **THE GAME** | the quest givers (THE STOLEN ONES), the shop, the healer, the way out to the valley / temple, the secrets | **drafted** |
-| 10 | **THE REVIEW** | one top-down plan + one side elevation drawn from passes 1-9, checked against every pass; his sign-off -> then the blockout, one district at a time | |
+| 10 | **THE REVIEW** | one top-down plan + one side elevation drawn from passes 1-9, checked against every pass; his sign-off -> then the blockout, one district at a time | **drawn -- waiting on his sign-off** |
 
 Each pass is short, specific, and gets his yes / change before the next. If a later pass breaks an earlier one, the earlier one is fixed on paper.
 
@@ -392,3 +392,27 @@ TEMPLE STAIR. Every quest comes back to the hamlet, so the hamlet is crossed aga
 more than anywhere else's.
 
 Next: **pass 10 -- THE REVIEW**: one clean top-down plan + one side elevation drawn from passes 1-9, checked against each, for his sign-off.
+
+## PASS 10 -- THE REVIEW (for his sign-off)
+Drawings: `images/concepts/snow_village/blueprint_final_plan.png` (top-down: terraces + heights, every building, the road, the lanes, the high
+route, the gorge path, the aqueduct, the bridges) and `blueprint_final_elevation.png` (the side view up the gorge, both banks, the aqueduct deck).
+
+**Checked against every pass:**
+- [x] 1 WHY -- the hot spring feeds the aqueduct, the bath and the creek; every building has a reason (pass 3 table)
+- [x] 2 SITE -- the horseshoe cliff, the gorge through the middle, the two banks offset ~1.5 m, 4 terrace levels each side; placed on the region
+      map between the VILLAGE and HOT SPRING places
+- [x] 3 ZONES -- low = gate / trade / market / bath, middle = homes, high = stores / elder, top = the shrine; the stable outside
+- [x] 4 CIRCULATION -- the road (4.5 m, the mammoth to the bath yard), lanes to every door, the gorge path, dead ends that pay
+- [x] 5 SIGHTLINES -- the reveal from the pass top (measured), the aqueduct seen from everywhere, the temple in the ridge notch from the tower
+- [x] 6 HIGH ROUTE -- 10 moves, all inside comfy, a ladder ending in a chimney climb and a zip line
+- [x] 7 BUILDINGS -- 18 + 7 works, real kit pieces; 6 (+1) new pieces listed for the kit session
+- [x] 8 LIFE -- 8 people on beats, the moving things, smoke and night
+- [x] 9 GAME -- Q0-Q3 + a side quest from THE STOLEN ONES; the shop, the healer, the smith; the secrets
+- [ ] **his sign-off on these two drawings** (and R4: what is behind the third fall)
+
+**When signed, the build order (one district per build, each looked at on the phone before the next):**
+1. the region heightmap edited for the site (the spring raised, the horseshoe, the ridge notch) + the TERRACE bodies + the gorge -- grey, walkable
+2. the ROAD, the bridges, the stairs, the ramp, the tunnel -- the hamlet walkable end to end
+3. the AQUEDUCT + the high route's surfaces (roofs that can be stood on) -- the parkour line playable
+4. the BUILDINGS, district by district (gate + trade -> market -> bath -> homes -> stores + tower -> shrine)
+5. the new pieces (wheel, winch, pool, geyser), the people, smoke, night -- the life
