@@ -7,7 +7,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15ED -- the Snowfield's see-through corners filled (Nov 1 2026)
+## m2062 -- the Snowfield's see-through corners filled (Nov 1 2026)
 His words: *"the snow world is built on a square plane and the things around it make a circle -- the negative space between the edge of the square and the
 circle is just left, see-through."* The far white plain was `RingGeometry(size * .7, 900)` = from 112 m out, while the snowfield square ends at 80 m: along
 each side a 32 m strip showed the sky through the ground. Now a `ShapeGeometry` disc (r 900) with a square hole exactly the snowfield minus .3 m, at the
