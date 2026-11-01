@@ -39,6 +39,15 @@ His: *"I don't want the ring around the meditating guy -- I want him floating, b
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
 .7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
 
+## m2137 -- THE WILLOW SHRINE, pass 5 of 6: the jade waterfalls and pools, crystal clusters, snowy boulders (Nov 1 2026)
+`willowWaters`, from `WILLOW.falls` [id, degrees], `crystals` [id, x, z, size] and `boulders` [id, degrees, r, size]: each fall (front-left and
+front-right, at +-42 deg between the pillars) is two RIBBONS of glowing jade water (a streaked texture, emissive, scrolled in `willowStep`) -- over the
+terrace's lip through a gold spout into a stone BASIN on the plinth, and over the plinth's edge into a second basin on the ground. **The basins are
+RAISED (.3 m on the plinth, .34 m on the ground)**: the first render had the ground pool at y .05 and the Snowfield's snow (~.3 deep round the shrine;
+only the tiers are swept) buried it whole. Each basin is a box collider (walkable risers). Nine jade CRYSTAL clusters (prisms + points on a rock) by
+the falls, the stair foot, the back and the terrace; sixteen snow-capped BOULDERS (lumpy icosahedra, flat-shaded `rock` material) round the base,
+each a box. New draws: water, pool, rock. Open: the detail pass against the sheet. Shipped unverified.
+
 ## m2135 -- THE WILLOW SHRINE, pass 4 of 6: the arch, the bronze bell, the crystal at the trunk's foot, the stair lanterns (Nov 1 2026)
 `willowArch`, from `WILLOW.arch` [z, half-span, post height], `crystal` [x, z, size] and `stairLamps` [id, x, z]: at the stair's head two stone POSTS
 (gold collars, jade glyphs to the front, snow) carry a stone half-ring (a half lathe) faced round its outside in the gold MEANDER, gold beads on both
