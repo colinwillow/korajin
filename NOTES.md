@@ -25,6 +25,16 @@ out of that ... scattered around the level." `RSHRINE` (SC_RISESHRINE) + `wfrsMa
 Not yet: it reads ~6 m tall (his concept's proportions, but small beside a 90 m cliff -- `s` scales it); no hand-made glyph texture (flat jade
 panels); the dormant ring has no prompt. Shipped unverified on the phone.
 
+## m15RG -- THE REGION, rough: the picked map as walkable ground (REGION_METHOD.md stage 3) (Nov 1 2026)
+His: *"build the terrain first, make it really interesting, make a bunch of paths; then set waypoints for the areas"* -> seed 6 picked (region_pick.png).
+- KORAJIN menu > **The Region (rough terrain)** = `?w=forge&zone=region`. `tools/regionpick.py` writes `levels/region_6.bin` (241 x 241 at 2 m,
+  uint16 = m x 400, 116 KB) + `levels/region_6.json` (the 16 places in world metres; world x/z = map px - 240).
+- `rgnStage`: one heightfield mesh (240 x 240 quads, vertex colours: flat = snow, steep = rock, high = snow-capped), a far ring, a mint pole + name
+  at each place; he starts at SPAWN facing the ICE TEMPLE. `groundAt` stands him on `rgnH`; `rgnWall` (in the player's sub-step loop) makes any
+  slope steeper than `RGN.maxSlope` 1.05 a wall he slides along (jumping up a face still works).
+- Checked headless once that the zone loads (poles + ground on screen). Shipped unverified otherwise. Open: the camera can dip into a mountain
+  (no terrain camera clamp yet); nothing is dressed; bodies / mammoth / dragon not placed here yet.
+
 ## m2068 -- THE GREAT WATERFALL: splash PLUMES at the foot, big ice SLABS in the pool, thinner snow lips
 
 His: "keep going". From his reference: white plumes boil up where the water lands, and big flat ice slabs float in the pool.

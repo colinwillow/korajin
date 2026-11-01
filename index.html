@@ -12034,6 +12034,44 @@ const CELLS = {
     spawn: { x: -12, z: 6 } } };
 const TCELL = { want: 0, id: (() => { try { const m = /[?&]cell=([A-Za-z0-9]+)/.exec(location.search); return m ? m[1].toUpperCase() : 'C1'; } catch (e) { return 'C1'; } })(), stat: null };
 try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {}
+// m15RG: THE REGION (REGION_METHOD.md stage 3) -- the picked region map (seed 6, `tools/regionpick.py`) as walkable ground: a 480 m heightfield whose
+// valleys ARE the paths, mountains too steep to walk, a marker at each place. Rough terrain only -- nothing dressed. `?w=forge&zone=region`.
+// The grid is `levels/region_6.bin` (241 x 241 at 2 m, uint16 = metres x 400); `rgnH` samples it bilinearly; `groundAt` stands him on it and
+// `rgnWall` stops him walking up anything steeper than `maxSlope` (rise per metre) -- he can still JUMP up a face; the slope is the wall.
+const RGN = { want: 0, live: 0, file: 'levels/region_6.bin', meta: 'levels/region_6.json', n: 241, cell: 2, half: 240, scale: 400, H: null, maxSlope: 1.05, places: [], stat: null };
+try { if (/[?&]zone=region\b/.test(location.search)) RGN.want = 1; } catch (e) {}
+function rgnH(x, z) { const H = RGN.H; if (!H) return 0; const n = RGN.n, fx = Math.min(n - 1.001, Math.max(0, (x + RGN.half) / RGN.cell)), fz = Math.min(n - 1.001, Math.max(0, (z + RGN.half) / RGN.cell)),
+    i = fx | 0, j = fz | 0, u = fx - i, v = fz - j, a = H[j * n + i], b = H[j * n + i + 1], c = H[(j + 1) * n + i], d = H[(j + 1) * n + i + 1];
+  return ((a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v) / RGN.scale; }
+function rgnWall(P, x0, z0) { const h1 = rgnH(P.x, P.z); const gx = (rgnH(P.x + .5, P.z) - rgnH(P.x - .5, P.z)), gz = (rgnH(P.x, P.z + .5) - rgnH(P.x, P.z - .5)), sl = Math.hypot(gx, gz);
+  const blocked = h1 > P.y + MOVE.step || (sl > RGN.maxSlope && h1 > rgnH(x0, z0) + .001 && P.y < h1 + .25); if (!blocked) return 0;
+  const nx = gx / (sl || 1), nz = gz / (sl || 1), dx = P.x - x0, dz = P.z - z0, dot = dx * nx + dz * nz;     // slide along the contour: drop the uphill part
+  if (dot > 0) { P.x = x0 + dx - nx * dot; P.z = z0 + dz - nz * dot; } if (rgnH(P.x, P.z) > P.y + MOVE.step) { P.x = x0; P.z = z0; } return 1; }
+function rgnLabel(text) { const cv = document.createElement('canvas'); cv.width = 512; cv.height = 96; const c = cv.getContext('2d'); c.font = 'bold 54px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.lineWidth = 10; c.strokeStyle = 'rgba(10,20,40,.85)'; c.strokeText(text, 256, 48); c.fillStyle = '#ffffff'; c.fillText(text, 256, 48); const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false, transparent: true })); sp.scale.set(16, 3, 1); sp.renderOrder = 9; return sp; }
+function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.fog) { scene.fog.color.setHex(0xc9d6e6); scene.fog.near = 70; scene.fog.far = 520; }
+  hemi.color.setHex(0xdfe9ff); hemi.groundColor.setHex(0xb8c4d8); camera.far = Math.max(camera.far, 1200); camera.updateProjectionMatrix();
+  RGN.stat = 'loading'; ARENA.youAt = [0, 0];
+  Promise.all([fetch(A(RGN.file)).then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }), fetch(A(RGN.meta)).then(r => r.json())]).then(([buf, meta]) => {
+    RGN.H = new Uint16Array(buf); RGN.n = meta.n; RGN.cell = meta.cell; RGN.half = meta.half; RGN.scale = meta.scale; RGN.places = meta.places;
+    const N = RGN.n - 1, geo = new THREE.PlaneGeometry(RGN.half * 2, RGN.half * 2, N, N).rotateX(-Math.PI / 2), P = geo.attributes.position;
+    for (let i = 0; i < P.count; i++) P.setY(i, rgnH(P.getX(i), P.getZ(i)));
+    geo.computeVertexNormals(); const Nn = geo.attributes.normal, col = new Float32Array(P.count * 3);
+    for (let i = 0; i < P.count; i++) { const up = Nn.getY(i), y = P.getY(i), k = Math.min(1, Math.max(0, (up - .62) / .2)), hi = Math.min(1, Math.max(0, (y - 70) / 50));     // flat = snow, steep = rock; the highest rock snow-capped
+      const r = .46 + (.95 - .46) * k, gg = .48 + (.97 - .48) * k, b = .54 + (1 - .54) * k; col[i * 3] = r + (1 - r) * hi * .6; col[i * 3 + 1] = gg + (1 - gg) * hi * .6; col[i * 3 + 2] = b + (1 - b) * hi * .6; }
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .92 })); m.receiveShadow = true; g.add(m);
+    // a far ring of peaks past the edge, so the map does not end in a drop
+    { const far = new THREE.Mesh(new THREE.RingGeometry(RGN.half * 1.1, 1100, 48, 1).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xe9eef6, roughness: .95 })); far.position.y = 60; g.add(far); }
+    // the places: a mint pole + its name
+    const pm = new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false }), pg = new THREE.CylinderGeometry(.35, .35, 10, 8).translate(0, 5, 0);
+    for (const Q of RGN.places) { const y = rgnH(Q.x, Q.z), pole = new THREE.Mesh(pg, pm); pole.position.set(Q.x, y, Q.z); g.add(pole); const lb = rgnLabel(Q.name); lb.position.set(Q.x, y + 12, Q.z); g.add(lb); }
+    RGN.live = 1; RGN.stat = 'ok'; const S = RGN.places.find(q => q.id === 'spawn') || { x: 0, z: 0 }, toT = RGN.places.find(q => q.id === 'ice_temple');
+    const put = () => { player.pos.set(S.x, rgnH(S.x, S.z) + .3, S.z); player.vel.set(0, 0, 0); if (toT) { const h = Math.atan2(toT.x - S.x, toT.z - S.z); player.faceH = player.heading = h; cam.az = h; } };
+    for (const ms of [0, 300, 1200]) setTimeout(() => { try { put(); } catch (e) {} }, ms);
+    setTimeout(() => tipShow('THE REGION (rough): the valleys are the paths. Mint poles mark the places -- follow the valleys to the ICE TEMPLE.', 6), 1500);
+  }).catch(e => { RGN.stat = 'fail'; note('NO REGION ' + e.message); }); }
 // m2047: THE BLOCKOUT IMPORTER (his: "I'll design blockouts in Cinema 4D -- one room of a temple -- export them to you, you rebuild them with our stuff so I
 // can play it"). `?w=forge&zone=blockout&file=levels/<name>.glb` (KORAJIN > Blockout: the sample). His GLB's objects become playable pieces BY NAME
 // (BLOCKOUT_IMPORT.md, TEMPLE_KIT section 6): any MESH is solid -- its collider an exact TURNED box from its own bounds and yaw (`obox`), drawn grey and
@@ -14197,6 +14235,7 @@ function arenaStage() {
   // m1117: THE BUILDING FORGE -- a clean white floor under the arena's sky, nothing else: the buildings are spawned into it (SPAWN > BUILDINGS)
   if (inForge() && DRAGZ.want) { dragStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1610: THE DRAGON RIDE's island instead of the white floor
   if (inForge() && BLOCKIN.want) { try { blockStage(g); } catch (e) { note('BLOCKOUT THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2047: his Cinema 4D blockouts
+  if (inForge() && RGN.want) { try { rgnStage(g); } catch (e) { note('REGION THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m15RG
   if (inForge() && TCELL.want) { try { cellStage(g); } catch (e) { note('CELL THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2040: one designed cell at a time
   if (inForge() && TLAY.want) { try { tlayStage(g); } catch (e) { note('TLAY THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2030: the temple layout generator
   if (inForge() && SNOWZ.want) { snowStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1384: THE SNOWFIELD instead of the white floor
@@ -17985,6 +18024,7 @@ function groundAt(x, z, y, step) {
   // `UNDER.box` only, so no caller above ground sees a change.
   if (UNDER.box && best > y + step && x > UNDER.box[0] && x < UNDER.box[1] && z > UNDER.box[2] && z < UNDER.box[3] && y < UNDER.box[4]) best = -1e9;
   if (TRI.on) { const t = triGround(x, z, y, step); if (t > best) best = t; }
+  if (RGN.live) { const t = rgnH(x, z); if (t > best && t <= y + step) best = t; }     // m15RG: the region's heightfield
   if (ROPEB.on) { const r = ropeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }
   if (RSPAN.list.length) { const r = rspDeck(x, z, y + step); if (r !== null && r > best) best = r; }     // m1974: the Rope Course's bridge, as spans out in the world
   if (LB.rbs && LB.rbs.length) { const r = lbRopeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }     // m1904: the builder's live rope bridges     // m1800: the rope bridge's deck
@@ -36736,7 +36776,7 @@ function integrate(dt, wantX, wantZ, wantSp, ctl) {
   const sub = Math.min(MOVE.subMax, Math.max(1, Math.ceil(move / MOVE.sub)));
   let solid = 0;
   for (let k = 0, h = dt / sub; k < sub; k++) {
-    const y0 = p.pos.y;
+    const y0 = p.pos.y, rx0 = p.pos.x, rz0 = p.pos.z;
     p.pos.x += p.vel.x * h; p.pos.z += p.vel.z * h; p.pos.y += p.vel.y * h;
     // **A FLOOR ABOVE IS A CEILING (m179).** *"You can jump through the floor of the second story --
     // you should have to go up the stairs."* The walkable store keeps only what faces UP, so the
@@ -36748,6 +36788,7 @@ function integrate(dt, wantX, wantZ, wantSp, ctl) {
       p.pos.y = Math.min(p.pos.y, _ceilH.y - p.hh - .03); p.vel.y = 0;
     }
     solid |= resolveBoxes(p.pos, p.r, p.hh, 1) | pushBodies(p.pos, p.r) | pushCars(p.pos, p.r, p.hh);
+    if (RGN.live) solid |= rgnWall(p.pos, rx0, rz0);     // m15RG: a slope too steep to walk is a wall
     if (rbVert < 0 && p.vel.y > 0) p.vel.y = 0;           // a ceiling stops the rise
     if (rbVert > 0 && p.vel.y < 0) p.vel.y = 0;           // a top caught the fall
   }
@@ -66368,6 +66409,7 @@ function startGate() {
       btn(el, 'The Sky Temple', 'A sandstone temple on a floating island above the clouds -- climb it. (Being built, step by step.)', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=temple'); });
       btn(el, 'The Proving Ground', 'How far and how high he can really go: gap lanes from 6 to 39 m, pillars from 3 to 24 m, and a meter that reports every jump. (Measure, then design.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=prove'); });
       btn(el, 'The Rope Course', 'A rope bridge between two towers that sags and sways under you. (The rope sandbox: the tightrope, the swing rope and the ladders come next.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=rope'); });
+      btn(el, 'The Region (rough terrain)', 'REGION_METHOD stage 3: the picked region map as walkable snow ground -- the valleys are the paths, a pole marks each place (village, big wall, dragon gate, ice temple...). Rough, nothing dressed.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=region'); });
       btn(el, 'Reflection (shield puzzle)', 'A white sandbox for the beam turret, target, mirror and gate: raise the ice shield in the beam and bounce it into the crystal; then via a mirror.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=cell&cell=RF'); });
       btn(el, 'Blockout (C4D import)', 'His Cinema 4D blockouts, playable: objects become pieces by NAME (wall_, ledge_, bar_, zip_<id>_a/_b, spawn ...). Opens the sample; add &file=levels/<yours>.glb for his. See BLOCKOUT_IMPORT.md.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=blockout'); });
       btn(el, 'Climb Tower (C1-C3)', 'LEVEL_METHOD: the ice temple\'s Climb Tower as one tube -- C1 run up two faces, C2 a chimney to 16 m, C3 a side wall run, a high bar and a zip line back down. Grey blockout to play.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=cell&cell=CT'); });
