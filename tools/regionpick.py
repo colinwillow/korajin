@@ -51,7 +51,7 @@ SITE = CLIFF + [(10,50),(14,30),(12,12),(-30,10),(-70,12)]
 CREEK = [(-30,67),(-31,60),(-33,54),(-31,48),(-28,43),(-27,37),(-24,30),(-26,24),(-20,18),(-6,16),(10,20)]
 FALLS = [(0, 9.6)]     # creek floor by distance from the spring: three ~3 m falls
 cl = [0]; [cl.append(cl[-1] + math.hypot(b[0] - a[0], b[1] - a[1])) for a, b in zip(CREEK, CREEK[1:])]
-def creek_floor(s): return 9.6 if s < 9 else 6.6 if s < 24 else 3.6 if s < 38 else 0.6 if s < 46 else 0.0
+def creek_floor_z(hz): return 6.0 if hz > 60 else 3.0 if hz > 46 else 0.6 if hz > 33 else 0.0     # district 2 fix: the gorge floor is always BELOW the lower bank beside it (E4/W3, E3/W2, E2/W1, then out)
 gx = lambda x: (x + 240) / 2
 Hg = H.copy()
 def Hs(x, z): return float(Hg[min(240, max(0, int(round((z + 240) / 2)))), min(240, max(0, int(round((x + 240) / 2))))])
@@ -83,7 +83,7 @@ for j in range(nz):
             if _pip(hx, hz, poly): y = lv; break
         if y is None:
             d, s = _segd(hx, hz, CREEK)
-            if d < 6.5: y = creek_floor(s)
+            if d < 6.5: y = creek_floor_z(hz)
             elif hz > 50:     # the slivers at the cliff foot take the nearest terrace's height (no pits behind the houses)
                 best = (1e9, 0)
                 for nm, lv, poly in TERR:
@@ -92,12 +92,48 @@ for j in range(nz):
                 y = best[1] if best[0] < 8 else 0.0
             else: y = 0.0
         D[j, i] = BASE + y
+# ---- DISTRICT 2 (VILLAGE_BLUEPRINT pass 4 + 10 build step 2): the ramps and stairs are slopes IN the grid; the bridges are boxes (over the gorge
+# path, which passes under them); the road and the lanes are painted. Heights are the blueprint's levels above BASE.
+RAMPS = [  # id, A, B (hamlet frame), width, h0 -> h1, kind
+    ('r_gate', (-16, 20), (-15, 24.5), 4.5, 0.0, 1.2, 'road'),       # outside -> E1 at the gate
+    ('r_market', (-50, 35.5), (-57, 46.5), 4.5, 2.4, 5.4, 'road'),   # the MAMMOTH RAMP, market -> W2 (13 m, 1 : 4.3)
+    ('s_w2w3', (-65, 47.5), (-68, 54.5), 2.2, 5.4, 8.4, 'lane'),     # timber stair W2 -> W3
+    ('s_e2e3', (-15, 44.5), (-15, 52.0), 2.2, 4.2, 7.2, 'lane'),     # stairs beside the bathhouse, E2 -> E3
+    ('s_tunnel', (-21, 57.5), (-21, 66.0), 2.0, 7.2, 10.8, 'lane'),  # U2: the tunnel stair, E3 -> E4 (roofed where it runs inside E4)
+    ('s_gorge', (-19, 32.5), (-23.5, 32.5), 2.0, 1.2, 0.0, 'lane'),  # E1 -> down to the gorge path by the wheel
+]
+for rid, A, B, w, h0, h1, kd in RAMPS:
+    A, B = np.array(A, float), np.array(B, float); L = np.linalg.norm(B - A); u = (B - A) / L; nrm = np.array([-u[1], u[0]])
+    for j in range(nz):
+        for i in range(nx):
+            hx, hz = w2h((x0 + i * R, z0 + j * R)); q = np.array([hx, hz]) - A; t = q @ u; s2 = abs(q @ nrm)
+            if -0.5 <= t <= L + 0.5 and s2 <= w / 2: D[j, i] = BASE + h0 + (h1 - h0) * min(1, max(0, t / L))
 np.round(np.clip(D, 0, 163) * 400).astype('<u2').tofile('levels/hamlet_d1.bin')
+def seg_box(A, B, w, top, th=.45, ext=1.0):     # a flat deck box from A to B (hamlet), in WORLD: centre, half sizes, yaw
+    A, B = np.array(A, float), np.array(B, float); u = (B - A) / np.linalg.norm(B - A); A2, B2 = A - u * ext, B + u * ext
+    wa, wb = h2w(A2), h2w(B2); c = (wa + wb) / 2; d = wb - wa; L = np.linalg.norm(d)
+    return {'cx': round(float(c[0]), 2), 'cz': round(float(c[1]), 2), 'hx': round(float(L / 2), 2), 'hz': round(w / 2, 2), 'yaw': round(float(math.atan2(d[1], d[0])), 4), 'y0': round(BASE + top - th, 2), 'y1': round(BASE + top, 2)}
+def stepped(A, B, w, h0, h1, kind, ext=1.0):     # a bridge that climbs in .3 m flat steps (each a walkable riser)
+    n = max(1, int(round(abs(h1 - h0) / .3))); A, B = np.array(A, float), np.array(B, float); out = []
+    for k in range(n + 1):
+        a = A + (B - A) * k / (n + 1); b = A + (B - A) * (k + 1) / (n + 1); top = h0 + (h1 - h0) * k / n if n else h0
+        bx = seg_box(a, b, w, top, ext=ext if k in (0, n) else .02); bx['kind'] = kind; out.append(bx)
+    return out
+BRIDGES = [('B1', stepped((-10, 15), (-18, 21), 4.5, 0.3, 0.3, 'timber')), ('B2', stepped((-19.5, 31.5), (-30.5, 32.5), 4.5, 1.2, 2.4, 'stone')),
+           ('B3', stepped((-33.5, 48.5), (-22, 45.5), 4.5, 5.4, 4.2, 'stone')), ('U3', stepped((-66, 50), (-62, 39), 2.2, 8.4, 8.2, 'timber'))]
+# the tunnel's ROOF: E4 continues over the stair where it runs inside the terrace (from the E3/E4 wall at hz 62 to 65.5), at E4's top
+ROOF = [dict(seg_box((-21, 62.2), (-21, 65.2), 2.6, 10.8, th=1.2, ext=0), kind='stone')]
+ROAD = [(6, 15), (-8, 14), (-16, 19), (-15, 24), (-10, 28), (-16, 33), (-24, 30), (-34, 31), (-44, 33), (-52, 37), (-56, 44), (-48, 50), (-36, 49), (-25, 47), (-16, 44)]
+LANES = [[(-56, 44), (-66, 46)], [(-48, 50), (-50, 48)], [(-36, 49), (-36, 53.5)], [(-66, 47), (-68, 54), (-60, 58), (-44, 60), (-52, 61)], [(-16, 44), (-15, 52), (-12, 57), (-21, 58), (-21, 66), (-24, 66)],
+         [(-12, 57), (-7, 61)], [(-15, 52), (-20, 55)], [(-19, 32.5), (-24, 32.5), (-26, 24), (-24, 30), (-27, 37), (-28, 43), (-31, 48), (-33, 54)]]
 meta = json.load(open('levels/region_6.json'))
 meta['hamlet'] = {'base': BASE, 'x0': float(x0), 'z0': float(z0), 'nx': nx, 'nz': nz, 'res': R, 'file': 'levels/hamlet_d1.bin',
     'labels': [{'name': nm, 'x': round(float(h2w(np.mean(p, 0))[0]), 1), 'z': round(float(h2w(np.mean(p, 0))[1]), 1), 'y': round(BASE + lv, 1)} for nm, lv, p in TERR],
-    'creek': [[round(float(h2w(p)[0]), 1), round(float(h2w(p)[1]), 1), round(BASE + creek_floor(s) + .05, 2)] for p, s in zip(CREEK, cl)],
-    'gate': [round(float(v), 1) for v in h2w((-12, 18))]}
+    'creek': [[round(float(h2w(p)[0]), 1), round(float(h2w(p)[1]), 1), round(BASE + creek_floor_z(p[1]) + .05, 2)] for p in CREEK],
+    'gate': [round(float(v), 1) for v in h2w((-12, 18))],
+    'boxes': [dict(b, id=bid) for bid, L in BRIDGES for b in L] + [dict(b, id='U2roof') for b in ROOF],
+    'paint': [{'w': 4.5, 'col': 'road', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in ROAD]}] + [{'w': 2.0, 'col': 'lane', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in L]} for L in LANES],
+    'bridgeLabels': [{'name': bid, 'x': L[len(L) // 2]['cx'], 'z': L[len(L) // 2]['cz'], 'y': L[len(L) // 2]['y1']} for bid, L in BRIDGES]}
 for q in meta['places']:
     if q['id'] == 'village': q['x'], q['z'] = meta['hamlet']['gate']
 json.dump(meta, open('levels/region_6.json', 'w'), indent=1)

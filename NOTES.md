@@ -28,6 +28,41 @@ Asked by the village session for VILLAGE_BLUEPRINT.md pass 7 (Colin approved sen
 - Rendered all seven before pushing (the wheel's paddle snow and the bridge deck's snow patches came off after the look). 32 draws in the showroom
   (+3 mover groups and the geyser column). Shipped unverified -- riding the wheel and the basket, and the geyser launch, are untested on the phone.
 
+## m2079 -- THE FLORA, SIX HYBRIDS: organic primitives, bigger, no floating pieces
+
+His: "they look primitive -- circles and cylinders, floating pieces, banged together; hybridize them into a solid six if twelve costs too
+much; bigger and bolder, a big part of the scene." Species count does not cost draws (all share flesh / glow / snow / ice); TRIANGLES do --
+so six good ones. Rebuilt on three organic primitives in `wfMake`:
+- `sweep(pts, radius(t), opts)`: ONE continuous swept tube along a Catmull-Rom spline (radius profile, twisting BARK ridges darkening the
+  grooves, colour along the length). Trunks, branches, stems, pipes, cords, the shimenawa rope. Every branch STARTS on its parent's curve
+  (`ptOn`), so nothing floats; flared ROOTS run out into the ground.
+- `lathe(profile, segs, opts)`: turned profiles with lobed / wavy rims -- caps with curled rims, glowing gill skirts, foliage pads,
+  wisteria racemes, lanterns, snow lids (with icicles), mounds, toro lanterns.
+- `leaf(L, W, bend, cup)`: a shaped blade (wide base, pointed tip, bent along its length, cupped, a pale midrib) -- agave blades, petals,
+  bamboo leaves. Flesh and glow are DOUBLE-SIDED now.
+The six: FROSTCAP (canopy + frostlight mushroom), JADE PIPES (tube coral + spirit bamboo), WEEPING WISTERIA (vine tree + wisteria), GLOW AGAVE
+(agave + plume grass), SPIRIT BLOSSOM (crystal bud + blossom), LANTERN MAPLE (lantern tree + maple). s = 1 is a 5-8 m plant.
+TRIANGLES, measured headless on the whole waterfall scene: first build 483k (flora flesh 195k); trimmed to 289k (flesh 84k, glow 43k,
+rock 79k). The pipes and the maple are the heaviest species. Rendered: the agave lay flat (stood up as a vase), the blossom was small
+(enlarged). `?wfflora=1`: the six in a row. Shipped unverified on the phone; no textures yet.
+
+## m2081 -- THE VILLAGE, district 2: the road, the bridges, the stairs, the mammoth ramp, the tunnel stair (Nov 1 2026)
+His: *"start district 2."* (and the kit's 7 missing pieces were sent to the kit session, which keeps refining the kit in parallel -- the village calls
+`snowKitPiece` by name at load, so its passes flow in.)
+- `tools/regionpick.py`: the RAMPS / STAIRS are slopes in the 0.5 m detail grid (`RAMPS`: the gate ramp 0 -> 1.2, the MAMMOTH RAMP market -> W2
+  2.4 -> 5.4 over 13 m, the W2 -> W3 stair, the E2 -> E3 stair, the TUNNEL stair E3 -> E4 7.2 -> 10.8, the step down to the gorge path). The BRIDGES
+  are turned boxes in `region_6.json` `hamlet.boxes` (B1 timber over the creek mouth; B2 and B3 stone across the gorge, climbing in .3 m flat steps;
+  U3 the high timber bridge W3 -> the knoll), and the tunnel's ROOF is a box where the stair runs inside E4. The ROAD (4.5 m) and the LANES (2 m)
+  are polylines painted onto the mesh (tan / pale).
+- FIX: the gorge floor now steps by where it is (6.0 / 3.0 / 0.6 / 0), always BELOW the lower bank beside it -- m2077's floor by distance put it
+  above W2 at B3.
+- FIX: `rgnWall` let nobody step off a bridge onto a bank at the deck's level (it treated the bank edge as a slope to climb); now it only blocks
+  when he is below the ground he is moving onto.
+- FIX (and m2070's too): the region START never stuck -- the forge re-places him at `ARENA.youAt` when his model loads, long after the stage, so he
+  was at 0, 0, 0 (measured headless). `ARENA.youAt` is set to the start now, and he is re-placed while still at the origin / under the ground.
+  Headless after the fix: he stands on B1 at (17, 9.3, -157), the gate, B2's steps and the creek in view.
+- Not walked end to end. Next: district 3 -- the aqueduct and the high route's standable surfaces.
+
 ## m2078 -- the snow kit SILHOUETTE PASS 2: staves, bellied walls, balusters, finials, capstones
 
 His: *"Sounds good."* (the second silhouette list)
