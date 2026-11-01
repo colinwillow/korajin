@@ -11548,10 +11548,10 @@ try { if (/[?&]zone=tlayout\b/.test(location.search)) TLAY.want = 1; } catch (e)
 //   chimney) at 6.2 m. Chevrons mark both faces. A miss drops you to the floor -- no damage, a quick retry.
 const CELLS = {
   C1: { title: 'C1 -- Wall run UP: introduce, develop', R: 10, H: 16, wallT: 1,
-    doors: [{ id: 'in', a0: 80, a1: 100, y0: 0, y1: 3.2 }, { id: 'out', a0: 252, a1: 272, y0: 6.2, y1: 9.4 }],
-    shelves: [{ id: 's1', a0: 300, a1: 350, dep: 3.5, y: 2.6, col: 0xb8c2d0 }, { id: 'lane', a0: 350, a1: 482, dep: 3.5, y: 2.6, col: 0xa8b2c0 }, { id: 's3', a0: 482, a1: 535, dep: 4, y: 6.2, col: 0xc8d0dc }],
-    arrows: [{ at: 'face', shelf: 's1', a: 325 }, { at: 'end', shelf: 's3' }, { at: 'lane', shelf: 'lane', a: 400 }, { at: 'lane', shelf: 'lane', a: 440 }],
-    spawn: { a: 90, r: 7, y: 0 } } };
+    doors: [{ id: 'in', a0: 200, a1: 220, y0: 0, y1: 3.2 }, { id: 'out', a0: 68, a1: 88, y0: 6.2, y1: 9.4 }],     /* in order round the tube: door 210 -> s1 240-285 -> lane 285-400 -> s3 400-450 (exit above it at 78); measured m2040: the old angles wrapped the lane over the door */
+    shelves: [{ id: 's1', a0: 240, a1: 285, dep: 3.5, y: 2.6, col: 0xb8c2d0 }, { id: 'lane', a0: 285, a1: 400, dep: 3.5, y: 2.6, col: 0xa8b2c0 }, { id: 's3', a0: 400, a1: 450, dep: 4, y: 6.2, col: 0xc8d0dc }],
+    arrows: [{ at: 'face', shelf: 's1', a: 262 }, { at: 'end', shelf: 's3' }, { at: 'lane', shelf: 'lane', a: 320 }, { at: 'lane', shelf: 'lane', a: 360 }],
+    spawn: { a: 210, r: 7, y: 0 } } };
 const TCELL = { want: 0, id: (() => { try { const m = /[?&]cell=([A-Za-z0-9]+)/.exec(location.search); return m ? m[1].toUpperCase() : 'C1'; } catch (e) { return 'C1'; } })(), stat: null };
 try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {}
 function obox(cx, cz, hx, hz, yaw, y0, y1) { const cs = Math.cos(yaw), sn = Math.sin(yaw), ex = Math.abs(cs) * hx + Math.abs(sn) * hz, ez = Math.abs(sn) * hx + Math.abs(cs) * hz;
@@ -11582,7 +11582,7 @@ function cellStage(g) { const C = CELLS[TCELL.id] || CELLS.C1, d2r = Math.PI / 1
     else { const am = A.a * d2r, r = C.R - sh.dep / 2; chev(Math.cos(am) * r, sh.y + .02, Math.sin(am) * r, Math.atan2(-Math.sin(am), Math.cos(am)), 0); } }
   for (const col in geo) { if (!geo[col].length) continue; const m = new THREE.Mesh(mergeGeometries(geo[col].map(q => q.index ? q.toNonIndexed() : q)), new THREE.MeshStandardMaterial({ color: +col, roughness: .85 })); m.castShadow = m.receiveShadow = true; g.add(m); }
   for (const b of boxes) BOXES.push(b);
-  const sp = C.spawn, sa = sp.a * d2r; setTimeout(() => { player.pos.set(Math.cos(sa) * sp.r, sp.y + .1, Math.sin(sa) * sp.r); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.atan2(-Math.cos(sa), -Math.sin(sa)); }, 0);
+  const sp = C.spawn, sa = sp.a * d2r, put = () => { player.pos.set(Math.cos(sa) * sp.r, sp.y + .1, Math.sin(sa) * sp.r); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.atan2(-Math.cos(sa), -Math.sin(sa)); if (typeof cam !== 'undefined') cam.az = player.faceH; }; ARENA.youAt = [Math.cos(sa) * sp.r, Math.sin(sa) * sp.r]; for (const ms of [0, 400, 1200]) setTimeout(put, ms);     /* measured: the forge puts him at ARENA.youAt after the stage -- so that IS the spawn now */
   TCELL.stat = { id: TCELL.id, boxes: boxes.length }; setTimeout(() => tipShow(C.title + '. Run at the marked face and run UP it; then sprint the lane into the taller face. Exit door at the top.', 7), 1500); }
 function tlayGen(seed) { const T = TLAY, R = plantRnd(seed * 7919 + 13), nodes = [], edges = []; let th = R() * 6.28, ring = 'o', y = 0;
   const rr = () => (ring === 'o' ? T.Ro : T.Ri), at = (t, r) => [Math.cos(t) * r, Math.sin(t) * r];
@@ -11626,7 +11626,7 @@ function tlayStage(g) { const T = TLAY, G = T.graph = tlayGen(T.seed), byId = {}
   // the CHAMBER: a dark cylinder round it all, open at the top
   { const w = new THREE.Mesh(new THREE.CylinderGeometry(T.Ro + 8, T.Ro + 8, T.H + 10, 40, 1, true), new THREE.MeshStandardMaterial({ color: 0x2a303c, roughness: 1, side: THREE.BackSide })); w.position.y = T.H / 2 - 4; g.add(w);
     const f = new THREE.Mesh(new THREE.CircleGeometry(T.Ro + 8, 40).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x1c2028, roughness: 1 })); f.position.y = -6; g.add(f); box(-60, 60, -8, -6, -60, 60); }
-  const n0 = G.nodes[0]; setTimeout(() => { player.pos.set(n0.x, n0.y + .1, n0.z); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.atan2(-n0.x, -n0.z); }, 0);     /* the stage builds at module scope, before `player` exists (measured: it threw) */
+  const n0 = G.nodes[0]; ARENA.youAt = [n0.x, n0.z]; setTimeout(() => { player.pos.set(n0.x, n0.y + .1, n0.z); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.atan2(-n0.x, -n0.z); }, 0);     /* the stage builds at module scope, before `player` exists (measured: it threw) */
   T.stat = { seed: T.seed, nodes: G.nodes.length, climb: climb.toFixed(0), top: Math.max(...G.nodes.map(n => n.y)).toFixed(1), moves: Object.entries(T0).filter(e => e[1]).map(e => e[0] + ' ' + e[1]).join(', ') };
   setTimeout(() => tipShow('LAYOUT seed ' + T.stat.seed + ': ' + T.stat.nodes + ' platforms, climbs ' + T.stat.climb + ' m to ' + T.stat.top + ' -- ' + T.stat.moves + '. TOOLS > LAYOUT: NEW SEED.', 9), 1500);
   console.log('[melee] layout', JSON.stringify(T.stat)); }
