@@ -10110,7 +10110,10 @@ function beastStep(d, dt, t) {
     return true;
   }
   if (fly) return beastFly(d, dt, t, dd, toP);
-  { const gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0; d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m2012: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
+  { let gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0;
+    if (d.home && d.st !== 'cFly' && d.floorY != null && gy < d.floorY - 1.5 && d.safe) { P.x = d.safe[0]; P.z = d.safe[1]; gy = d.floorY; }     // m15EG (his: "he flies over the edge and gets stuck down there"): a homed beast does not WALK off a drop -- he is put back on his last safe footing
+    else if (d.home && d.floorY != null && Math.abs(gy - d.floorY) < .5) d.safe = [P.x, P.z];
+    d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m2012: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
   if (d.st !== 'cFire' && d.st !== 'cFly') d.beam = null;     // m2006: a hit ends the beam
   if (d.home && !d.sleep && d.st !== 'cFly' && d.floorY < d.home[1] - 2 && iceBeamOn(d)) { d.fly = { ph: 'up', t: 0, a: 0, back: 1 }; beastGo(d, 'cFly', C.clips.fire); return true; }     // m2024 (his: "the dragon fell off the cliff and was stuck trying to get back up"): off his cliff, he FLIES home
   if (d.sleep) { const C2 = beastC(d), wk = 'wake_up'; if (d.actions[wk]) { t[wk] = 1; setSkinScale(d, wk, 0); } else t[C2.clips.idle] = 1; if (dd < LAIR.wakeR || d.hitT) { d.sleep = 0; d.waking = 0; snd('creature', { g: 1, r: .5, x: P.x, z: P.z }); camShake(.4); if (SNOWZ.air) snowBlast(P.x, P.y, P.z, 5, 1.4); if (d.actions[wk]) { setSkinScale(d, wk, 1); skinPlay(d, wk, 1); } tipShow('The dragon wakes!', 2.5); } return true; }
