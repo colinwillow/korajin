@@ -188,7 +188,7 @@ the market?), the gorge path, and which walls are climbable shortcuts.
 
 ## PASS 3 -- his note
 - The MAMMOTH may come in (*"I don't really mind being able to have the mammoth come in, why not"*; Zelda keeps the horse between areas). And he
-  should be FAST (*"riding it is way slower than running"*) -- m15MS: top speed 15.5 m/s (he runs 7.2, sprints 9).
+  should be FAST (*"riding it is way slower than running"*) -- m2071: top speed 15.5 m/s (he runs 7.2, sprints 9).
 
 ## PASS 4 -- CIRCULATION (drafted)
 Three networks, each with its own rule, so the village reads at a glance: **the ROAD** (everyone, the mammoth too, low), **the LANES** (on foot,

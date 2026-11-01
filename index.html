@@ -14011,7 +14011,7 @@ const dragHas = n => !!(n && rig.actions[n]);
 // RIGHT tap or flick: his STOMP -- he rears and slams (Attack_F_IP), a crater and a blast in front, enemies in reach knocked down. Double-tap LEFT: off.
 // The camera pulls back and up while you ride; the snow carving (m2010) is his for free -- a trench and footprints behind him.
 const MAMR = { seatK: -.35, seatR: .45, seatH: .78,     /* measured off the render: .5 / .7 sat him behind the saddle and sunk in */
-  at: [16, 22], yaw: 2.4, d: null, reach: 2.6, walkV: 3.2, trotV: 8, runV: 15.5,     /* m15MS (his: "riding it is way slower than running -- what's the point"): he runs 7.2, sprints 9; the mammoth now tops out at 15.5 */ ref: { Walk_F_IP: 2.4, Trot_F_IP: 5.2, Run_F_IP: 8.5 }, turn: 1.5, turnStill: 2.4, accHL: .5, brakeHL: .45,
+  at: [16, 22], yaw: 2.4, d: null, reach: 2.6, walkV: 3.2, trotV: 8, runV: 15.5,     /* m2071 (his: "riding it is way slower than running -- what's the point"): he runs 7.2, sprints 9; the mammoth now tops out at 15.5 */ ref: { Walk_F_IP: 2.4, Trot_F_IP: 5.2, Run_F_IP: 8.5 }, turn: 1.5, turnStill: 2.4, accHL: .5, brakeHL: .45,
   offTap: .45, camPull: 6.5, camLift: 2.4, stompR: 4.5, stompAt: .42, ring: null, saddle: null, stat: { rides: 0, stomps: 0 },
   near: 2.6, catchR: 2.8, catchK: 7, arrowUp: 1.5 };     // m2061: `near` m outside his body = in reach (ring, arrow, pad pulse, tap mounts); `catchR` round the seat steers a fall onto it
 function mamSeat(d, out) { const b = d.spB || (d.spB = d.model.getObjectByName('Spine_03') || d.model.getObjectByName('Spine_02')); if (!b) return out.copy(d.root.position).setY(3);
@@ -14073,7 +14073,7 @@ function mamTameStep(d, dt, t) { const P = d.root.position, R = d.ride || (d.rid
   const S = stickWorld(), want = S.mag * MAMR.runV; if (S.mag > 0) { const th = Math.atan2(S.x, S.z), tr = lerp(MAMR.turnStill, MAMR.turn, clamp(R.v / MAMR.runV, 0, 1)); d.h += clamp(wrapAngle(th - d.h), -tr * dt, tr * dt); }
   R.v += (want * (S.mag > 0 ? clamp(1 - Math.abs(wrapAngle(Math.atan2(S.x, S.z) - d.h)) / 2.2, .35, 1) : 0) - R.v) * (1 - Math.exp(-dt * Math.LN2 / (want > R.v ? MAMR.accHL : MAMR.brakeHL)));
   if (R.v > .05) foeMove(d, d.h, R.v, dt);
-  const clip = R.v < .35 ? 'Idle_1' : R.v < MAMR.walkV * 1.25 ? 'Walk_F_IP' : R.v < MAMR.trotV * 1.25 ? 'Trot_F_IP' : 'Run_F_IP'; t[clip] = 1; if (MAMR.ref[clip]) setSkinScale(d, clip, clamp(R.v / MAMR.ref[clip], .6, 1.9));     // m15MS: the run clip plays up to 1.9x so the legs keep up at 15.5
+  const clip = R.v < .35 ? 'Idle_1' : R.v < MAMR.walkV * 1.25 ? 'Walk_F_IP' : R.v < MAMR.trotV * 1.25 ? 'Trot_F_IP' : 'Run_F_IP'; t[clip] = 1; if (MAMR.ref[clip]) setSkinScale(d, clip, clamp(R.v / MAMR.ref[clip], .6, 1.9));     // m2071: the run clip plays up to 1.9x so the legs keep up at 15.5
   return true; }
 // m2022: THE HERD (the snow list: "snow creatures -- a herd of mini mammoths wandering the field"). `HERD.n` calves (the mammoth on the cow rig at
 // 1.9 m, kind CALF) live round `HERD.at`: they GRAZE (Eat_loop) a few seconds, AMBLE to a new spot near the herd (Walk_F_IP), look up (Idle_*), and
