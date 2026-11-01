@@ -80,6 +80,13 @@ Lots of characters are welcome (*"I don't mind spending a dollar or two on chara
 6. **THE GROUND.** A crater in the GREEN/TAN RUINS (the first element) under red haze. Stone people frozen mid-gesture (a basket, a door, a
    parent shielding a child). The creature turned to stone; a Jinra stone makes it flicker -- restoration is possible. He walks to the
    mountains. Title.
+**OPTION (his, Nov 1 2026, not decided): THE SHIP DOWN.** When it all falls, he leaps onto his FLYING SHIP (the Ship, already built). The
+Hollow drains its Jinra, it drops out of the sky; he rides it down (the playable fall = keeping a falling ship upright / dodging wreckage,
+sails catching the wind), it slams into WATER and from then on it's an ordinary sailing ship -- he sails it to shore = Chapter One's opening.
+Fits the rules already set: floating needs Jinra (the Hollow drinks it), and the lost FLIGHT is earned back late -- the ship flying again
+replaces "the glider returns". Story hook: the creature is turned to stone ON THE DECK by a Hollow bolt during the fall; he sails in with his
+stone friend at the bow. Would replace beat 5's banner parachute and move beat 6's crater to a shore.
+
 **Cut from ChatGPT's draft:** the separate caretaker (the creature nags, and village elders can be in the festival), the double bell (it is
 rung once, as the warning, which is also the festival bell he was late for). **The creature rides his shoulder** while you play.
 **Build order:** P1 garden (in progress) -> P1b THE SKY VILLAGE island (a new, bigger island in the cluster: streets, river, windmills, lake,
