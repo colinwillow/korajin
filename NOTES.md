@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15OR -- the far mountains painted; the platforms made organic (Nov 1 2026)
+*"Textures for the back grey rock mountains and anything else that isn't painted; the cubic, rectangular platforms look non-organic."*
+- the PEAKS (`snowPeakMat`, Snowfield only): painted granite on the slopes, painted snow where a face turns up or climbs high (slope + height blend),
+  triplanar at a 38 m scale, their vertex colour kept as a broad tint; still unfogged; the storm fade / night darkening still work on them
+- the PLATFORMS (`rough` in `snowCliffs`): the plan is rounder (superellipse 4 -> `pe` 2.6), the outline WAVES (`wave` .7 m, two lobed sines per block),
+  the walls step in LEDGES (`strata` .35 m sawtooth bands) and tuck UNDER the lip (`under` .45 m) -- every cliff block, the lair floor, and now the ice
+  shelves too; the snow patches follow the rounder edge. All live on `SNOWCLIFF`. Colliders unchanged (boxes). Rendered: the climb from three views.
+
 ## m2017 -- THE ICE TEMPLE: the GREY BLOCKOUT (step 2 of 3), every beat, in the snow zone
 
 His answers (ICE_TEMPLE_BLUEPRINT.md): the valley north-east is fine, keep everything rearrangeable; enemies are markers, kind swappable; the temple
