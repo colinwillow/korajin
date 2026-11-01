@@ -25,7 +25,7 @@ out of that ... scattered around the level." `RSHRINE` (SC_RISESHRINE) + `wfrsMa
 Not yet: it reads ~6 m tall (his concept's proportions, but small beside a 90 m cliff -- `s` scales it); no hand-made glyph texture (flat jade
 panels); the dormant ring has no prompt. Shipped unverified on the phone.
 
-## m15RG -- THE REGION, rough: the picked map as walkable ground (REGION_METHOD.md stage 3) (Nov 1 2026)
+## m2070 -- THE REGION, rough: the picked map as walkable ground (REGION_METHOD.md stage 3) (Nov 1 2026)
 His: *"build the terrain first, make it really interesting, make a bunch of paths; then set waypoints for the areas"* -> seed 6 picked (region_pick.png).
 - KORAJIN menu > **The Region (rough terrain)** = `?w=forge&zone=region`. `tools/regionpick.py` writes `levels/region_6.bin` (241 x 241 at 2 m,
   uint16 = m x 400, 116 KB) + `levels/region_6.json` (the 16 places in world metres; world x/z = map px - 240).

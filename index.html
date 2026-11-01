@@ -12034,7 +12034,7 @@ const CELLS = {
     spawn: { x: -12, z: 6 } } };
 const TCELL = { want: 0, id: (() => { try { const m = /[?&]cell=([A-Za-z0-9]+)/.exec(location.search); return m ? m[1].toUpperCase() : 'C1'; } catch (e) { return 'C1'; } })(), stat: null };
 try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {}
-// m15RG: THE REGION (REGION_METHOD.md stage 3) -- the picked region map (seed 6, `tools/regionpick.py`) as walkable ground: a 480 m heightfield whose
+// m2070: THE REGION (REGION_METHOD.md stage 3) -- the picked region map (seed 6, `tools/regionpick.py`) as walkable ground: a 480 m heightfield whose
 // valleys ARE the paths, mountains too steep to walk, a marker at each place. Rough terrain only -- nothing dressed. `?w=forge&zone=region`.
 // The grid is `levels/region_6.bin` (241 x 241 at 2 m, uint16 = metres x 400); `rgnH` samples it bilinearly; `groundAt` stands him on it and
 // `rgnWall` stops him walking up anything steeper than `maxSlope` (rise per metre) -- he can still JUMP up a face; the slope is the wall.
@@ -14235,7 +14235,7 @@ function arenaStage() {
   // m1117: THE BUILDING FORGE -- a clean white floor under the arena's sky, nothing else: the buildings are spawned into it (SPAWN > BUILDINGS)
   if (inForge() && DRAGZ.want) { dragStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1610: THE DRAGON RIDE's island instead of the white floor
   if (inForge() && BLOCKIN.want) { try { blockStage(g); } catch (e) { note('BLOCKOUT THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2047: his Cinema 4D blockouts
-  if (inForge() && RGN.want) { try { rgnStage(g); } catch (e) { note('REGION THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m15RG
+  if (inForge() && RGN.want) { try { rgnStage(g); } catch (e) { note('REGION THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2070
   if (inForge() && TCELL.want) { try { cellStage(g); } catch (e) { note('CELL THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2040: one designed cell at a time
   if (inForge() && TLAY.want) { try { tlayStage(g); } catch (e) { note('TLAY THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2030: the temple layout generator
   if (inForge() && SNOWZ.want) { snowStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1384: THE SNOWFIELD instead of the white floor
@@ -18024,7 +18024,7 @@ function groundAt(x, z, y, step) {
   // `UNDER.box` only, so no caller above ground sees a change.
   if (UNDER.box && best > y + step && x > UNDER.box[0] && x < UNDER.box[1] && z > UNDER.box[2] && z < UNDER.box[3] && y < UNDER.box[4]) best = -1e9;
   if (TRI.on) { const t = triGround(x, z, y, step); if (t > best) best = t; }
-  if (RGN.live) { const t = rgnH(x, z); if (t > best && t <= y + step) best = t; }     // m15RG: the region's heightfield
+  if (RGN.live) { const t = rgnH(x, z); if (t > best && t <= y + step) best = t; }     // m2070: the region's heightfield
   if (ROPEB.on) { const r = ropeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }
   if (RSPAN.list.length) { const r = rspDeck(x, z, y + step); if (r !== null && r > best) best = r; }     // m1974: the Rope Course's bridge, as spans out in the world
   if (LB.rbs && LB.rbs.length) { const r = lbRopeDeck(x, z); if (r !== null && r <= y + step && r > best) best = r; }     // m1904: the builder's live rope bridges     // m1800: the rope bridge's deck
@@ -36788,7 +36788,7 @@ function integrate(dt, wantX, wantZ, wantSp, ctl) {
       p.pos.y = Math.min(p.pos.y, _ceilH.y - p.hh - .03); p.vel.y = 0;
     }
     solid |= resolveBoxes(p.pos, p.r, p.hh, 1) | pushBodies(p.pos, p.r) | pushCars(p.pos, p.r, p.hh);
-    if (RGN.live) solid |= rgnWall(p.pos, rx0, rz0);     // m15RG: a slope too steep to walk is a wall
+    if (RGN.live) solid |= rgnWall(p.pos, rx0, rz0);     // m2070: a slope too steep to walk is a wall
     if (rbVert < 0 && p.vel.y > 0) p.vel.y = 0;           // a ceiling stops the rise
     if (rbVert > 0 && p.vel.y < 0) p.vel.y = 0;           // a top caught the fall
   }
