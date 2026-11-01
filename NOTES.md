@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- the snow kit's full STYLE SHEET saved (`images/concepts/snow_village/ref_kit_sheet.webp`)
+## m2121 -- the snow kit's full STYLE SHEET saved (`images/concepts/snow_village/ref_kit_sheet.webp`)
 
 His whole sheet: three hut variations (ribbed dome with horns round it, a spiral-twisted roof, a dome under a halo), three longhouses (barrel-vault ribbed,
 ribbed gable -- built at m2116 -- and a tiered pagoda hall), the shrine tower at three scales, the watchtower (built at m2120), three gates (towers + arch
