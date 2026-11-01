@@ -12412,7 +12412,7 @@ try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {
 // valleys ARE the paths, mountains too steep to walk, a marker at each place. Rough terrain only -- nothing dressed. `?w=forge&zone=region`.
 // The grid is `levels/region_6.bin` (241 x 241 at 2 m, uint16 = metres x 400); `rgnH` samples it bilinearly; `groundAt` stands him on it and
 // `rgnWall` stops him walking up anything steeper than `maxSlope` (rise per metre) -- he can still JUMP up a face; the slope is the wall.
-const RGN = { want: 0, live: 0, file: 'levels/region_6.bin', meta: 'levels/region_6.json', n: 241, cell: 2, half: 240, scale: 400, H: null, maxSlope: 1.05, places: [], stat: null, D: null, hm: null, at: (() => { try { const m = /[?&]at=([a-z_]+)/.exec(location.search); return m ? m[1] : 'spawn'; } catch (e) { return 'spawn'; } })() };     // m2077: `D` = the hamlet's 0.5 m detail grid; `at` = where he starts
+const RGN = { lakeR: 21, want: 0, live: 0, file: 'levels/region_6.bin', meta: 'levels/region_6.json', n: 241, cell: 2, half: 240, scale: 400, H: null, maxSlope: 1.05, places: [], stat: null, D: null, hm: null, at: (() => { try { const m = /[?&]at=([a-z_]+)/.exec(location.search); return m ? m[1] : 'spawn'; } catch (e) { return 'spawn'; } })() };     // m2077: `D` = the hamlet's 0.5 m detail grid; `at` = where he starts
 try { if (/[?&]zone=region\b/.test(location.search)) RGN.want = 1; } catch (e) {}
 function rgnH(x, z) { const H = RGN.H; if (!H) return 0; const n = RGN.n, fx = Math.min(n - 1.001, Math.max(0, (x + RGN.half) / RGN.cell)), fz = Math.min(n - 1.001, Math.max(0, (z + RGN.half) / RGN.cell)),
     i = fx | 0, j = fz | 0, u = fx - i, v = fz - j, a = H[j * n + i], b = H[j * n + i + 1], c = H[(j + 1) * n + i], d = H[(j + 1) * n + i + 1];
@@ -12459,7 +12459,10 @@ function rgnHamlet(g) { const M = RGN.hm, nx = M.nx, nz = M.nz, D = RGN.D, sc = 
   for (const L of (M.bridgeLabels || [])) { const lb = rgnLabel(L.name); lb.position.set(L.x, L.y + 2.2, L.z); lb.scale.set(4, .8, 1); g.add(lb); }
   RGN.stat = 'hamlet ok'; }
 // m2085: the region's own per-frame step (the Snowfield's `snowStep` assumes its 160 m field): the sky held, his snow footsteps, the snowfall
-function rgnStep(dt) { try { snowSkyHold(); } catch (e) {} if (RGN.willow) { try { willowStep(dt); } catch (e) { RGN.willow = 0; note('WILLOW STEP THREW ' + e.message); } }
+function rgnStep(dt) { try { snowSkyHold(); } catch (e) {}
+  { const p = player; if (RGN.lake && p.grounded && Math.abs(p.pos.y - RGN.lakeY) < .4 && pondIn(p.pos.x, p.pos.z) && !p.dragon && !p.wing) {     // m15LK: on the lake's ice he slides (the pond's own rule)
+      if (!RGN.iceV) RGN.iceV = new THREE.Vector2(p.vel.x, p.vel.z); const V = RGN.iceV, k = 1 - Math.exp(-POND.grip * dt), wx = p.vel.x, wz = p.vel.z;
+      V.x += (wx - V.x) * k; V.y += (wz - V.y) * k; p.pos.x += (V.x - wx) * dt; p.pos.z += (V.y - wz) * dt; p.vel.x = V.x; p.vel.z = V.y; } else RGN.iceV = null; } if (RGN.willow) { try { willowStep(dt); } catch (e) { RGN.willow = 0; note('WILLOW STEP THREW ' + e.message); } }
   if (SFX.buf.foot_SNOW && SFX.buf.foot_SNOW.filter(Boolean).length >= 2 && STEP.set !== 'SNOW') STEP.set = 'SNOW';
   const F = RGN.fall; if (F) { const c = camera.position, P = F.P; for (let i = 0; i < F.N; i++) { let y = P[i * 3 + 1] - dt * (1.1 + (i % 7) * .12); P[i * 3] += Math.sin(i + performance.now() * .0004) * dt * .3;
       if (y < -2) y += 32; P[i * 3 + 1] = y; } F.pts.position.set(c.x, c.y - 14, c.z); F.pts.geometry.attributes.position.needsUpdate = true; }
@@ -12497,6 +12500,13 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
     // m2090: THE MOVE-IN, step 3 -- the WILLOW SHRINE at its map place (a level dell at y 0 is cut for it in the region grid, so the willow's own
     // y-0 terrace, vines and boxes work unchanged); `willowStep` runs from `rgnStep`
     { const W = RGN.places.find(q => q.id === 'willow_shrine'); if (W && typeof willowBuild === 'function') { try { WILLOW.at = [W.x, W.z]; willowBuild(g); RGN.willow = 1; } catch (e) { note('WILLOW THREW ' + e.message); console.error(e); } } }
+    // m15LK: THE MOVE-IN, step 4 -- the frozen POND becomes the LAKE: the same painted ice (`snow_ice`) and the same slide, at the LAKE place on its
+    // flat basin, its radius 11 -> `RGN.lakeR` (the basin is 30 m round)
+    { const Lk = RGN.places.find(q => q.id === 'lake'); if (Lk) { POND.at = [Lk.x, Lk.z]; POND.r = RGN.lakeR; RGN.lakeY = rgnH(Lk.x, Lk.z); const sh = new THREE.Shape();
+        for (let k = 0; k <= 64; k++) { const a = k / 64 * Math.PI * 2, r = pondR(a); k ? sh.lineTo(Math.cos(a) * r, -Math.sin(a) * r) : sh.moveTo(Math.cos(a) * r, -Math.sin(a) * r); }
+        const t = texGet('snow_ice').clone(); t.needsUpdate = true; t.repeat.set(1 / POND.tex, 1 / POND.tex);
+        const ice = new THREE.Mesh(new THREE.ShapeGeometry(sh, 12).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: t, color: 0xdff4ff, roughness: .1, metalness: .15, emissive: 0x0c3a48, emissiveIntensity: .35 }));
+        ice.position.set(Lk.x, RGN.lakeY + .04, Lk.z); ice.receiveShadow = true; g.add(ice); RGN.lake = 1; } }
     if (meta.hamlet) { RGN.hm = meta.hamlet; fetch(A(meta.hamlet.file)).then(r => r.arrayBuffer()).then(b2 => { RGN.D = new Uint16Array(b2); rgnHamlet(g); }).catch(e => note('NO HAMLET ' + e.message)); }
     RGN.live = 1; RGN.stat = 'ok'; const S = (RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] - 4, z: meta.hamlet.gate[1] } : null) || RGN.places.find(q => q.id === RGN.at) || RGN.places.find(q => q.id === 'spawn') || { x: 0, z: 0 }, toT = RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] + 40, z: meta.hamlet.gate[1] } : RGN.places.find(q => q.id === 'ice_temple');
     const put = () => { player.pos.set(S.x, rgnH(S.x, S.z) + .3, S.z); player.vel.set(0, 0, 0); if (toT) { const h = Math.atan2(toT.x - S.x, toT.z - S.z); player.faceH = player.heading = h; cam.az = h; } };
