@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2154 -- THE GARDEN becomes a CLUSTER: big / medium / small islands at three heights, joined by the Rope Course's bridges (Nov 1 2026)
+His (relayed by the main Korajin session): the garden *"looks really good now"* but is too small to do anything up there -- grow it into a cluster of
+three floating islands, BIG, MEDIUM, SMALL, at clearly different heights, routes that climb, rope bridges as connective tissue; REUSE the existing
+verlet bridge (DOCKET 18a, the Rope Course) -- do not build a new one. Blockout now; refine when his references arrive.
+- **THE ISLANDS** (data, SC_GARDEN: `GARDEN.isles`): the garden is the BIG one (lawn 0); MEDIUM `isle_med` at (68, +11, -34), 16 x 13 m -- two willows
+  (lanterns, bells), a ring of eight standing stones on a paved disc, a pond, two stone lanterns, crystals, a cairn, two falls off the rim; SMALL
+  `isle_small` at (42, +21, -66), 8 x 7 m -- a willow, a little bell gate (two red posts, a jade-tile roof, a bronze bell), a lantern, a crystal, a
+  cairn, a fall. Each is its own piece (`GARDEN.pieces.isle_med` / `isle_small`), built by the same kit as the big one (`gdnTreeAt` and `gdnLamps`
+  are now functions of a row, so a willow on any island is one line).
+- **THE ROUTE CLIMBS**: big lawn (0) -> stepping stones (+1.2 / 2.4 / 3.6) -> the lookout islet (+4.8) -> BRIDGE 17 m up to MEDIUM (+11) -> BRIDGE 21.8 m
+  up to SMALL (+21). `GARDEN.bridges` = [{ id, a, b, w }]; `gdnBridges` anchors each on the rim point facing the other island, 0.9 m in, and strings
+  `rspAdd` (m1974's spans: four verlet ropes, a deck that dips and bounces under him, sways, carries him, hand ropes) -- hang 1.62 / 2.21 m. A pair
+  of lantern posts at each end (colliders). `rspStep` runs in `gdnStep`; the deck answers `groundAt` through the existing `rspDeck`.
+- **THE FALL CATCH** now puts him back a step in toward the middle of the island he fell off (any of the four), and remembers footing up to +40.
+- Cost: the wide cluster view is ~210 draws / 470k tris headless (each new island is ~12 material draws + its plant cells); single-island views
+  100-150. If the phone warms again, merging the two new islands into one piece is the first cut. Shipped unverified.
+
 ## m2153 -- THE GARDEN: he starts beside the hammock; the hammock is data a body can be fitted to (Nov 1 2026)
 Direction from the main Korajin session (Colin's hammock question): no sleep / lying clip exists, so NO procedural fake pose.
 - **SPAWN**: STANDING beside the hammock (-9.8, 4.6), facing out over the garden toward the zen circle -- the opening frame is the willow curtain
