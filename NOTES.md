@@ -5,6 +5,30 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2041 -- THE GREAT WATERFALL, pass 1 (the panorama's falls, built for real)
+
+His: the huge waterfall in his snow-sky panorama (`images/snow_sky.webp`), built in 3D. Measured off the image: its biggest falls sit at u ~ .06
+(and a second at .94), which under three's equirect mapping (u = atan2(z, x) / 2pi + .5) is the WEST, a little north. So it stands beyond the
+Snowfield's west edge, clear of the cliffs/lair (x -26..40), the snow kit places, the village and the ice temple.
+- `WFALL` (SC_WFALL markers) -- ONE placement row: `at` [-122, 0, -46], `yaw` pi/2 (quarter turns, so the colliders stay exact boxes). Everything
+  else is LOCAL (+z = the cliff's face, toward the field). `wfMake(T)` is a pure builder; `wfallBuild` / `wfallStep` hook into the snow build and step.
+- A curved CLIFF WALL (200 m wide, ~80-90 m tall, its arms bent forward round the pool, strata + noise, the top folded BACK into a snowy brow; vertex
+  colour = snow on up-facing rock, dark and WET behind the water), a gorge NOTCH with the lip at 72 m.
+- THE FALL: three layered curtain strips (22 / 19 / 15 m wide) falling OUT along lip + 1.3 * sqrt(drop), spreading 25 %; a scrolling three-octave
+  noise shader (white streaks over teal, whiter near the foot), wobbling, double-sided (seen from behind too). One draw.
+- THE PLUNGE POOL (28 x 16 m ellipse): a shader of churning foam at the impact line and rings spreading out over dark teal; its FRONT half FROZEN
+  (14 ice plates round the rim, 12 floes). A floor box at .6 over the field's far ring.
+- ICE: 16 fluted frozen columns down the RIGHT flank into the pool, hanging ice high on the LEFT, an icicle fringe along the whole lip, icicles off
+  every ledge.
+- MIST: one Points (240), moved entirely on the GPU from a seed and the clock -- rising, drifting out and growing off the impact; 15 % are spray off
+  the lip. Size in world metres (`uPx` from the framebuffer and the fov).
+- THE CLIMB (verticality): five rock ledges up the left flank, 2.7 / 4.9 / 7.1 / 9.3 / 11.5 m (2.2 m rises, under the 2.81 m jump apex), to a CAVE
+  LEDGE at 13.5 m BEHIND the falling water (the curtain passes ~3 m in front of it there), a crystal cluster at its back. The face itself is a run of
+  8 m collider boxes so he cannot walk into the rock.
+- Draws: rock, snow caps, ice, curtain, pool, mist = 6. `?wf=0` leaves it out; `mel.wfall()` puts him at the pool; `mel.WFALL` is the table.
+Still open: his example images (the look gets refined against them), a spray sound, the water's reflection of the sky, routes up past the cave.
+Shipped unverified.
+
 ## m2040 -- TEMPLE CELL C1: the first designed cell (Nov 1 2026)
 LEVEL_METHOD.md step 3. KORAJIN > Temple Cell C1 (`?w=forge&zone=cell&cell=C1`). The bottom of the ice temple's Climb Tower (ICE_TEMPLE_HEX.md): WALL RUN
 UP, introduce -> develop, inside a TUBE (r 10, 16 m). Enter at floor level (south door, cyan frame). Ahead a low curved SHELF with a 2.6 m face (the run's

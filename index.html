@@ -935,7 +935,7 @@ body.kit3 #wepRow text { font-size: 12px; }
   <div class="sub" id="bootSub"></div>
   <div class="msg" id="bootMsg">loading</div>
   <div class="bar"><i id="bootBar"></i></div>
-  <div class="bld">BUILD <span id="bootBuild">m2040</span></div>
+  <div class="bld">BUILD <span id="bootBuild">m2041</span></div>
 </div>
 <script>
 // m1320: THE BOOT CARD SAYS WHICH GAME IS LOADING. *"It still says Weirdport and we're not even on that game. We could stylize the loading
@@ -947,7 +947,7 @@ body.kit3 #wepRow text { font-size: 12px; }
     b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_01.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')'; } })();
 </script>
 
-<div class="chip" id="build"><b id="buildN">m2040</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
+<div class="chip" id="build"><b id="buildN">m2041</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
 <div id="splash" aria-label="tap to start"><img class="blur" alt=""><img class="main" alt="Zap and Clancy"><div class="glow"></div><div class="bn"></div></div>
 <script>
 // m879 (STEER 02:22): THE SPLASH, before the module (so it shows on the first paint, while the boot carries on behind it). The image's
@@ -1057,7 +1057,7 @@ import { KTX2Loader } from './vendor/KTX2Loader.js';
 import { clone as skeletonClone } from './vendor/SkeletonUtils.js';
 import { mergeGeometries as _mergeGeos } from './vendor/BufferGeometryUtils.js';
 
-const BUILD = 'm2040';
+const BUILD = 'm2041';
 /* ASSETS:START */
 const ASSETS = {"textures/bronze.webp":"bdb5b1c0","textures/hollows_cliff.webp":"afd42c1e","textures/hollows_cream.webp":"3e412dd3","textures/hollows_leaves.webp":"09c66339","textures/hollows_pebble.webp":"49006598","textures/hollows_rock.webp":"a6d17614","textures/hollows_sand.webp":"b977d1fc","textures/ice_banner.webp":"fe145f59","textures/ice_stone.webp":"c1889752","textures/jinra_adobe.webp":"c94ac8eb","textures/jinra_iron.webp":"d00651c1","textures/jinra_teal.webp":"4f1000b2","textures/marble.webp":"53c3d802","textures/red_cloth.webp":"82877ebd","textures/roof_tiles.webp":"bc0a6ac0","textures/sandstone.webp":"4d991588","textures/sky_sunset_01.webp":"db9645b5","textures/sky_sunset_02.webp":"385ca84e","textures/snow_bark.webp":"238a9743","textures/snow_ice.webp":"3b4e4405","textures/snow_needles.webp":"764b48a2","textures/snow_rock.webp":"71d1c6db","textures/snow_snow.webp":"fefa935b","textures/stone_blocks.webp":"419e5209","textures/temple_banner.webp":"f356ed38","textures/temple_bark.webp":"0b407ebe","textures/temple_carpet.webp":"9b3a2df9","textures/temple_frond.webp":"c4e424d9","textures/temple_glyph.webp":"2ff2a87e","textures/temple_gold.webp":"63c94d47","textures/temple_jade.webp":"338e5694","textures/temple_lacquer.webp":"d469819f","textures/temple_paving.webp":"baa24e2f","textures/temple_planks.webp":"046e23cf","textures/temple_rock.webp":"67d14316","textures/temple_rope.webp":"75b11f94","textures/temple_sky_dawn.webp":"459fafc8","textures/temple_sky_day.webp":"a5094225","textures/temple_sky_storm.webp":"fe1837cb","textures/temple_wall.webp":"ec010c84","textures/temple_weave.webp":"927b8a35","textures/wood_planks.webp":"c8b25167","textures/wood_timber.webp":"dc42d865","models/alien_lizard.glb":"faffcf4c","models/alien_lizard_ktx2.glb":"05da2a20","models/skate.glb":"0c612d5e","models/skateboard.glb":"5ba93796","models/characters/alien_antenna_game.glb":"f3ccf328","models/characters/alien_antenna_game_ktx2.glb":"28afac8c","models/characters/alien_female_purple.glb":"1c73eef1","models/characters/alien_female_purple_ktx2.glb":"fc914afb","models/characters/alien_goblin.glb":"3e91bffb","models/characters/alien_goblin_chains.glb":"e72d1550","models/characters/alien_goblin_game.glb":"cfabd926","models/characters/alien_grey_medium.glb":"5a779e8e","models/characters/alien_grey_medium_ktx2.glb":"61600c3e","models/characters/alien_rollerskate_blue.glb":"abf0917c","models/characters/alien_rollerskate_blue_ktx2.glb":"e9a7948a","models/characters/alien_warrior.glb":"f5cc9c49","models/characters/alien_warrior_ktx2.glb":"a13fb7b6","models/characters/beautiful_asian.glb":"910f6565","models/characters/beautiful_asian_ktx2.glb":"35281eef","models/characters/beautiful_blonde.glb":"edddc421","models/characters/beautiful_blonde_ktx2.glb":"89cf3899","models/characters/brute_warboss_armor.glb":"cc5c7936","models/characters/ceo_alien.glb":"844dc3a7","models/characters/ceo_human.glb":"ec289865","models/characters/clancy.glb":"4b9d271f","models/characters/clancy_ktx2.glb":"74edbc6e","models/characters/colin.glb":"99d38b7d","models/characters/colin_ktx2.glb":"35040f87","models/characters/contruction_worker.glb":"8bd3d7ce","models/characters/contruction_worker_ktx2.glb":"3df8c344","models/characters/dummy_officer.glb":"724965ac","models/characters/dummy_officer_ktx2.glb":"db640cda","models/characters/fat_activist_01.glb":"3c566fee","models/characters/fat_activist_01_ktx2.glb":"b9328df4","models/characters/fat_biker_01.glb":"576b7cf5","models/characters/fat_biker_01_ktx2.glb":"7142cfad","models/characters/fat_biker_02.glb":"ab5d7ec7","models/characters/fat_biker_02_ktx2.glb":"28cec6cc","models/characters/fat_hippie.glb":"f09a260d","models/characters/fat_hippie_ktx2.glb":"0be745a4","models/characters/fat_hipster.glb":"9cf45ffb","models/characters/fat_hipster_ktx2.glb":"18106ff3","models/characters/fat_secret_service.glb":"6d546fb0","models/characters/fat_secret_service_ktx2.glb":"a23a304e","models/characters/fat_trump.glb":"5de6bc56","models/characters/fat_trump_ktx2.glb":"a0ddaf4d","models/characters/firefighter.glb":"ebde005d","models/characters/firefighter_ktx2.glb":"ccf93c96","models/characters/goblin_game.glb":"db1cf0e0","models/characters/hick_skinny.glb":"1ebe78e8","models/characters/hick_skinny_ktx2.glb":"1e93f0ed","models/characters/hobo_01.glb":"34e80b1d","models/characters/hobo_01_ktx2.glb":"69497677","models/characters/jack.glb":"ab009b9b","models/characters/jack_ktx2.glb":"1f4c9f7f","models/characters/jackal_game.glb":"f8c9256d","models/characters/moussa.glb":"6d80b1cf","models/characters/moussa_ktx2.glb":"66e040f8","models/characters/orc_game.glb":"d9aa816d","models/characters/osari_bowman_game.glb":"2ee424af","models/characters/proxy_ceo.bin":"6eca0c34","models/characters/proxy_ceo.jpg":"fadc9d0a","models/characters/proxy_ceo.json":"e62a7975","models/characters/proxy_ceo_alien.bin":"be247ecc","models/characters/proxy_ceo_alien.jpg":"8f8bf8fc","models/characters/proxy_ceo_alien.json":"eb23e28f","models/characters/proxy_hick.bin":"4485560e","models/characters/proxy_hick.jpg":"8c331965","models/characters/proxy_hick.json":"d85a0d36","models/characters/proxy_zap.bin":"dd7b300e","models/characters/proxy_zap.jpg":"2e7330ae","models/characters/proxy_zap.json":"b3b42754","models/characters/proxy_zap2.bin":"51088f46","models/characters/proxy_zap2.jpg":"a954a815","models/characters/proxy_zap2.json":"5c50abb7","models/characters/rept_heavy_armor.glb":"934661c7","models/characters/samurai_game.glb":"c7940015","models/characters/toad_wanderer_game.glb":"2efc31c4","models/characters/xray_skeleton.glb":"46480317","models/characters/zap.glb":"5e5cca54","models/characters/zap_02.glb":"4ff12de0","models/characters/zap_02_lib.glb":"e23d91da","models/characters/zap_ktx2.glb":"4b29d886","models/characters/zoar.glb":"423a9de9","models/characters/zoar_game.glb":"d20a3736","models/vehicles/dump_truck.glb":"d870dc18","models/vehicles/dump_truck_ktx2.glb":"21ee7059","models/vehicles/motorcycle_fatboy.glb":"9ed9be28","models/weapons/alien_antenna_blaster_game.glb":"54083b44","models/weapons/alien_antenna_hammer_game.glb":"707b8a27","models/weapons/alien_launcher.glb":"ba8ab96a","models/weapons/hammer.glb":"3335fdf2","models/weapons/shield_brute.glb":"c6e5593f","models/weapons/spikey_mace.glb":"dcd43acd","models/weapons/w_brute_cleaver.glb":"07a97580","models/weapons/w_rept_maul.glb":"84c3a1a4","models/buildings/alien_base_01.glb":"d9b9fd7f","models/buildings/alien_base_01_ktx2.glb":"6cbbfef2","models/buildings/korajin_bld_01.glb":"edf3178e","models/towers/alien_tower_01.glb":"98d23375","models/towers/alien_tower_01_ktx2.glb":"47597651","models/streets/modular_streets_kit.glb":"6a4bcaa5","models/toon_city/impact_marks.json":"2b616620","models/toon_city/impact_marks_atlas.ktx2":"efe0840e","models/toon_city/impact_marks_atlas.png":"490ed049","models/toon_city/toon_city_breakables.glb":"29bddbc8","models/toon_city/toon_city_collision.glb":"fb3a693f","models/toon_city/toon_city_obb.json":"81c18a47","models/toon_city/toon_city_visual.glb":"5df62285","models/toon_city/toon_city_visual_ktx2.glb":"cf080531","models/toon_city/weirdkit_tint.js":"f6e9d802","models/toon_city_kit/toon_city_collision.glb":"5540a364","models/toon_city_kit/toon_city_kit_buildings.glb":"590e53f0","models/toon_city_kit/toon_city_kit_buildings_ktx2.glb":"e6dff3a3","models/toon_city_kit/toon_city_kit_pieces.glb":"8232bd6f","models/toon_city_kit/toon_city_kit_twins.glb":"fcc9fdfc","models/toon_city_kit/toon_city_visual.glb":"45cf2957","models/toon_city_kit/toon_city_visual_ktx2.glb":"f26a6984","models/toon_city_kit/weirdkit_detile.js":"dd05bd70","models/characters/morph/shapes.bin":"4e680384","models/characters/morph/shapes.json":"abfc949d","models/characters/forged/alien_female_purple.glb":"0308860e","models/characters/forged/alien_goblin_game.glb":"11f44bc1","models/characters/forged/alien_rollerskate_blue.glb":"bcccc63f","models/characters/forged/alien_warrior.glb":"a067d5ab","models/characters/forged/beautiful_asian.glb":"f1c7baa5","models/characters/forged/beautiful_blonde.glb":"f83172bd","models/characters/forged/brute_warboss_armor.glb":"dc15dc94","models/characters/forged/ceo_alien.glb":"20659ac3","models/characters/forged/ceo_human.glb":"326d9e7e","models/characters/forged/clancy.glb":"19fabcce","models/characters/forged/contruction_worker.glb":"99fe1a17","models/characters/forged/dummy_officer.glb":"87a11843","models/characters/forged/fat_activist_01.glb":"6546645c","models/characters/forged/fat_biker_01.glb":"943f38ea","models/characters/forged/fat_biker_02.glb":"5d63a0cf","models/characters/forged/fat_hippie.glb":"ff0539ba","models/characters/forged/fat_hipster.glb":"792b92d8","models/characters/forged/fat_secret_service.glb":"7c29d1da","models/characters/forged/firefighter.glb":"20410689","models/characters/forged/goblin_game.glb":"3c813462","models/characters/forged/hick_skinny.glb":"d9232022","models/characters/forged/hobo_01.glb":"37d266c9","models/characters/forged/index.json":"7ac38412","models/characters/forged/jack.glb":"712b6241","models/characters/forged/moussa.glb":"74d19c70","models/characters/forged/orc_game.glb":"7bf3c227","models/characters/forged/osari_archer.glb":"bf2f27f5","models/characters/forged/rept_heavy_armor.glb":"01e631b0","models/characters/forged/samurai_archer.glb":"04db413e","models/characters/forged/samurai_game.glb":"a946c148","models/characters/forged/stone_guardian.glb":"8a9ff43d","models/characters/forged/stone_olmec.glb":"be0ae8f6","models/characters/forged/zap.glb":"10eda718","models/characters/forged/zap_02.glb":"fd513cea","models/characters/forged/zap_02_lib.glb":"fd513cea","models/characters/forged/zoar_game.glb":"b032a28e","models/characters/anims/wall_side.glb":"089d3dc7","levels/index.json":"2c8499e1","levels/sample_two_towers.json":"e2466683","images/crack_sprite_01.ktx2":"4aa55fde","images/crack_sprite_01.png":"16b52e8c","images/fire_sprites_01.ktx2":"922e1191","images/fire_sprites_01.png":"f87e2696","images/fire_sprites_02.ktx2":"e0cbfe1d","images/fire_sprites_02.png":"b373a6fd","images/fire_sprites_03.ktx2":"4fbbb985","images/fire_sprites_03.png":"7eece336","images/geyser_sprites_01.png":"b6325470","images/hdri_game.ktx2":"0feb5c79","images/hdri_game.png":"dac55f41","images/serpent_eye.webp":"b764e90d","images/serpent_fin.webp":"a592c818","images/serpent_skin.webp":"f7e0e45d","images/ship_lacquer.jpg":"51b8e6e5","images/ship_sail.jpg":"9d04714c","images/snow_sky.webp":"e0c34c2d","images/splash_zap_n_clancy.webp":"52a9d8a4","images/water_sprites_01.ktx2":"326924c5","images/water_sprites_01.png":"31e12659","audio/blaster_sound_01.mp3":"40d99583","audio/blaster_sound_02.mp3":"4bd7bb7c","audio/box_break_01.mp3":"e4127980","audio/electricity_beam_01.mp3":"986db8c9","audio/explosion_small.mp3":"f154a537","audio/metal_clang_01.mp3":"a333bd27","audio/metal_clang_02.mp3":"1e3ebbd6","audio/metal_clang_03.mp3":"afe44812","audio/metal_ping_01.mp3":"8ffca1a0","audio/plasma_canon.mp3":"e32c324d","audio/powerup_01.mp3":"48fbbe08","audio/swoosh_01.mp3":"193db185","audio/swoosh_02.mp3":"19145e70","audio/swoosh_03.mp3":"544fdffb","audio/swoosh_04.mp3":"843bee5d","audio/plasma_sounds/plasma_01.mp3":"e71c010f","audio/plasma_sounds/plasma_02.mp3":"ac3b1c75","audio/plasma_sounds/plasma_03.mp3":"eaa59355","audio/plasma_sounds/plasma_04.mp3":"bc7865e0","audio/plasma_sounds/plasma_05.mp3":"1d821cd0","audio/plasma_sounds/plasma_06.mp3":"cb979fbe","audio/plasma_sounds/plasma_hit.mp3":"30e5af5c","audio/alien_orc_grunt_sounds/alien_orc_grunt_01.mp3":"d6f4b343","audio/alien_orc_grunt_sounds/alien_orc_grunt_02.mp3":"78afc603","audio/alien_orc_grunt_sounds/alien_orc_grunt_03.mp3":"972c524a","audio/alien_orc_grunt_sounds/alien_orc_grunt_04.mp3":"b0ce76eb","audio/alien_orc_grunt_sounds/alien_orc_grunt_05.mp3":"1f0ba1f4","audio/alien_orc_grunt_sounds/alien_orc_grunt_06.mp3":"4f749866","audio/alien_orc_grunt_sounds/alien_orc_grunt_07.mp3":"dcf75925","audio/hit_sounds/hit_sound_01.mp3":"befaa2be","audio/hit_sounds/hit_sound_02.mp3":"73bc4433","audio/hit_sounds/hit_sound_03.mp3":"24b181e4","audio/hit_sounds/hit_sound_gound_01.mp3":"86ee2674","audio/hit_sounds/hit_sound_ground_02.mp3":"8a7cac73","audio/hit_sounds/hit_sound_plasma_01.mp3":"9abc0202","audio/hit_sounds/hit_sound_plasma_02.mp3":"6aaf0fe5","audio/hit_sounds/thud_a_1.mp3":"3e526f73","audio/hit_sounds/thud_a_2.mp3":"e99874e5","audio/hit_sounds/thud_a_3.mp3":"7aaaea7d","audio/hit_sounds/thud_b_1.mp3":"c6e4c4f4","audio/hit_sounds/thud_b_2.mp3":"db6b7fbb","audio/hit_sounds/thud_b_3.mp3":"5c7909e3","audio/creature_noises/creature_noise_01.mp3":"cbcc6ee7","audio/creature_noises/creature_noise_02.mp3":"201a8247","audio/creature_noises/creature_noise_03.mp3":"97680811","audio/creature_noises/creature_noise_04.mp3":"6f734df2","audio/creature_noises/creature_noise_05.mp3":"6f736441","audio/creature_noises/creature_noise_06.mp3":"992712e9","audio/creature_noises/creature_noise_07.mp3":"d9ad04b3","audio/footsteps/footstep_2_l.mp3":"abeabfbe","audio/footsteps/footstep_2_r.mp3":"7dd16046","audio/footsteps/footstep_3_L.mp3":"bc044ed9","audio/footsteps/footstep_3_R.mp3":"49c6f23d","audio/footsteps/footstep_l.mp3":"b66e579b","audio/footsteps/footstep_r.mp3":"96e13433","audio/footsteps/footsteps.mp3":"8ee73ccb","audio/footsteps/step3_1_l.mp3":"a855262e","audio/footsteps/step3_1_r.mp3":"1ea0a2b4","audio/footsteps/step3_2_l.mp3":"43ef40dd","audio/footsteps/step3_2_r.mp3":"91cfe687","audio/footsteps/step3_3_l.mp3":"56ff6eb2","audio/footsteps/step3_3_r.mp3":"0e73e8e3","audio/footsteps/step3_4_l.mp3":"26c965fd","audio/footsteps/step3_4_r.mp3":"c3110fbb","audio/footsteps/step_1_l.mp3":"f7efc3d9","audio/footsteps/step_1_r.mp3":"b236bde4","audio/footsteps/step_2_l.mp3":"0e397d22","audio/footsteps/step_2_r.mp3":"2392717c","audio/footsteps/step_3_l.mp3":"364d26a3","audio/footsteps/step_3_r.mp3":"8434aa01","audio/footsteps/step_4_l.mp3":"1fb763a6","audio/footsteps/step_4_r.mp3":"74f5aff2","audio/footsteps/step_5_l.mp3":"8619ec0e","audio/footsteps/step_5_r.mp3":"eff2c01e","audio/footsteps/step_6_l.mp3":"553ba89d","audio/footsteps/step_6_r.mp3":"f2fec766","audio/footsteps_snow/cut/snow_1_l.mp3":"aa3d5f06","audio/footsteps_snow/cut/snow_1_r.mp3":"8cf29d4b","audio/footsteps_snow/cut/snow_2_l.mp3":"2e2d5197","audio/footsteps_snow/cut/snow_2_r.mp3":"51ab8c34","audio/footsteps_snow/cut/snow_3_l.mp3":"4a16321c","audio/footsteps_snow/cut/snow_3_r.mp3":"2a77bf77","audio/footsteps_snow/cut/snow_4_l.mp3":"984d75e0","audio/footsteps_snow/cut/snow_4_r.mp3":"c9998642","models/props/prop_hydrant.glb":"f157fee9","models/props/prop_hydrant_collision.glb":"0bbfc4d2","models/creatures/3_headed_dog.glb":"9263480a","models/creatures/blue_dragon.glb":"d72f4da7","models/creatures/mammoth.glb":"0bd2b2d8","models/creatures/mech_lightning_dragon.glb":"5935bb67","models/creatures/osari_spider.glb":"6c38e031","models/creatures/stone_guardian.glb":"ad47ade1","models/creatures/stone_olmec.glb":"da3e8cbd"};
 /* ASSETS:END */
@@ -11243,6 +11243,143 @@ function snowVillStep(dt) { const V = SNOWVIL; if (!V.g) return; if (!V.mel && w
     if (Math.hypot(F.x - p.x, F.z - p.z) < 60) { F.t -= dt; if (F.t <= 0) { F.t = .5 + Math.random() * .4; smokeAt(F.x, F.y + 1.3, F.z, 2.0, 1.4, [.7, .7, .72], .3); } } } }
 // SNOW_VILLAGE:END
 function snowKitIce() { return SNOWKIT.iceM || (SNOWKIT.iceM = new THREE.MeshStandardMaterial({ map: texGet('snow_ice'), color: 0xd6f2ff, roughness: .12, metalness: .1, emissive: 0x1a6a80, emissiveIntensity: .45 })); }
+// m2041: THE GREAT WATERFALL, pass 1 (his: the huge falls in his snow-sky panorama, built for real). A curved CLIFF WALL ~90 m tall beyond the
+// Snowfield's WEST edge (where the panorama's biggest falls sit), a 22 m-wide fall out of a gorge notch at 72 m into a half-frozen PLUNGE POOL;
+// frozen ICE CURTAINS (fluted columns) down its right flank and hanging ice on its left, an icicle fringe along the lip, MIST rising off the impact.
+// A CLIMB (VERTICALITY): five rock ledges up the left flank, 2.2 m each, to a CAVE LEDGE at 13.5 m BEHIND the falling water.
+// ONE placement row (`WFALL.at` / `yaw`, quarter turns so the colliders stay exact boxes); every row below is LOCAL (+z = the cliff's face, toward
+// the field; x across it; y = metres). Six draws: rock (vertex-coloured), snow caps, ice, the water curtains (scrolling-noise shader, both sides),
+// the pool (shader), the mist (one Points, moved entirely on the GPU). `?wf=0` leaves it out; `mel.wfall()` puts him at the pool.
+// SC_WFALL:START
+const WFALL = { want: 1, on: null, at: [-122, 0, -46], yaw: Math.PI / 2, seed: 2040,
+  wall: { w: 200, y0: -3, top: 80, bend: 45, back: -24, notch: 9, notchW: 13, lip: 72, lean: .03, noise: 2.6 },
+  fall: { w: [22, 19, 15], dz: [0, .7, 1.4], out: 1.3, spread: .25, speed: 2.4 },
+  pool: { at: [0, -10], r: [28, 16], y: .52, floor: .6, ice: .64 },
+  mist: { n: 240, rise: [8, 26], out: [5, 18] },
+  place: [
+    { id: 'wf_ledge_01', kind: 'ledge', x: -34, w: 6, top: 2.7, d: 6 },
+    { id: 'wf_ledge_02', kind: 'ledge', x: -27, w: 6, top: 4.9, d: 5 },
+    { id: 'wf_ledge_03', kind: 'ledge', x: -21, w: 5, top: 7.1, d: 4.5 },
+    { id: 'wf_ledge_04', kind: 'ledge', x: -16, w: 4.5, top: 9.3, d: 4 },
+    { id: 'wf_ledge_05', kind: 'ledge', x: -12.5, w: 4, top: 11.5, d: 4 },
+    { id: 'wf_cave', kind: 'cave', b: [-11, 11, 12.5, 13.5, -36, -27.5] },     // behind the curtain (it falls past at z ~ -24.3 here)
+    { id: 'wf_crystal', kind: 'crystal', at: [0, 13.5, -32], s: 2.4 },
+  ] };
+// SC_WFALL:END
+try { if (/[?&]wf=0\b/.test(location.search)) WFALL.want = 0; } catch (e) {}
+function wfZ(W, x) { return W.back + W.bend * (x / 100) ** 2 - W.notch * Math.exp(-((x / W.notchW) ** 2)); }     // the face's plan line (no noise)
+function wfW(T, x, y, z) { const c = Math.cos(T.yaw), s = Math.sin(T.yaw); return [T.at[0] + x * c + z * s, T.at[1] + y, T.at[2] - x * s + z * c]; }
+function wfBox(T, b) { const A = wfW(T, b[0], b[2], b[4]), B = wfW(T, b[1], b[3], b[5]); return { minx: Math.min(A[0], B[0]), maxx: Math.max(A[0], B[0]), miny: A[1], maxy: B[1], minz: Math.min(A[2], B[2]), maxz: Math.max(A[2], B[2]) }; }
+// THE BUILDER -- a pure function of its table: { geo: { rock, cap, ice }, curtain, pool, mist, boxes (world) }
+function wfMake(T) { const W = T.wall, R = plantRnd(T.seed), O = { rock: [], cap: [], ice: [], boxes: [] };
+  const nz = (x, y, z) => Math.sin(x * .9 + z * .6 + y * .3) * .45 + Math.sin(z * 1.9 - y * 1.4 + x * .5) * .3 + Math.sin(x * 3.3 + y * 2.7 - z * 1.1) * .17 + Math.sin(y * 5.1 + z * 4.3) * .08;
+  const tint = (geo, f) => { const P = geo.attributes.position, N = geo.attributes.normal, C = new Float32Array(P.count * 3); for (let i = 0; i < P.count; i++) { const c = f(P.getX(i), P.getY(i), P.getZ(i), N.getY(i)); C[i * 3] = c[0]; C[i * 3 + 1] = c[1]; C[i * 3 + 2] = c[2]; } geo.setAttribute('color', new THREE.BufferAttribute(C, 3)); return geo; };
+  const rockC = (x, y, z, ny) => { const s = Math.max(0, Math.min(1, (ny - .55) / .25)), d = .82 + nz(x * .2, y * .2, z * .2) * .1; return [d + (1.25 - d) * s, d + (1.28 - d) * s, d * 1.05 + (1.35 - d * 1.05) * s]; };     // rock grey; up-facing = snow-white
+  // 1. THE WALL: one curved sheet, arms bent forward round the pool, a gorge NOTCH where the water leaves, strata and noise, the top folded back
+  { const g = new THREE.PlaneGeometry(W.w, W.top - W.y0 + 14, 90, 46).translate(0, (W.top + 14 + W.y0) / 2, 0), P = g.attributes.position;
+    for (let i = 0; i < P.count; i++) { const x = P.getX(i); let y = P.getY(i); const nw = Math.exp(-((x / W.notchW) ** 2)), nl = Math.exp(-((x / (W.notchW * .9)) ** 4));
+      const top = W.top + Math.sin(x * .05 + 1) * 9 + Math.sin(x * .13) * 4, tY = top + (W.lip - top) * nl;
+      let z = wfZ(W, x) - y * W.lean, over = 0; if (y > tY) { over = y - tY; y = tY + over * .1; z -= over * 1.6; }     // the top folds BACK into a snowy brow
+      const quiet = 1 - .8 * nw, strata = (Math.abs((((y * .22) % 1) + 1) % 1 - .5) * 2 - .5) * 1.1;
+      z += (nz(x * .07, y * .07, 0) * W.noise * 1.5 + nz(x * .25, y * .25, 3) * W.noise * .45 + strata) * quiet * (over ? .3 : 1);
+      P.setXYZ(i, x, y, z); }
+    g.computeVertexNormals(); O.rock.push(tint(g, (x, y, z, ny) => { const c = rockC(x, y, z, ny), wet = Math.exp(-((x / 12) ** 2)) * (y < W.lip ? .45 : 0); return c.map(v => v * (1 - wet)); }));     // dark and WET behind the water
+    for (let x = -W.w / 2; x < W.w / 2; x += 8) { let m = 1e9; for (let k = 0; k <= 8; k++) m = Math.min(m, wfZ(W, x + k)); O.boxes.push(wfBox(T, [x, x + 8, W.y0, 90, -70, m - W.lean * 2 + .5])); } }     // the face stops him
+  // 2. ROCK BLOCKS (ledges, the cave), each a noisy box with a snow cap; their tops are colliders
+  const block = (x0, x1, y0, y1, z0, z1, id) => { const w = x1 - x0, h = y1 - y0, d = z1 - z0, g = new THREE.BoxGeometry(w, h, d, Math.max(3, Math.round(w)), Math.max(2, Math.round(h / 1.2)), Math.max(3, Math.round(d))).translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2), P = g.attributes.position;
+    for (let i = 0; i < P.count; i++) { const px = P.getX(i), py = P.getY(i), pz = P.getZ(i); if (py > y1 - .01) continue; const n = nz(px * .5, py * .5, pz * .5) * .45, t = (y1 - py) / (h || 1);
+      P.setXYZ(i, px + Math.sign(px - (x0 + x1) / 2) * (n + t * .4), py, pz + Math.sign(pz - (z0 + z1) / 2) * (n + t * .4)); }
+    g.computeVertexNormals(); O.rock.push(tint(g, rockC));
+    O.cap.push(new THREE.BoxGeometry(w + .3, .3, d + .3, 2, 1, 2).translate((x0 + x1) / 2, y1 + .1, (z0 + z1) / 2));
+    O.boxes.push(Object.assign(wfBox(T, [x0, x1, y0, y1, z0, z1]), { id }));
+    for (let k = 0; k < w * 1.2; k++) { const L = .3 + R() * 1.1; O.ice.push(new THREE.ConeGeometry(.07 + R() * .08, L, 5).rotateX(Math.PI).translate(x0 + R() * w, y1 - L / 2 - .05, z1 + .15)); } };     // icicles off each lip
+  const crystal = (x, y, z, s) => { for (let k = 0; k < 6; k++) { const h = s * (.6 + R() * .9), a = R() * 6.28, t = .2 + R() * .5; O.ice.push(new THREE.ConeGeometry(h * .13, h, 6).translate(0, h / 2, 0).rotateZ(Math.cos(a) * t).rotateX(Math.sin(a) * t).translate(x + Math.cos(a) * .4, y, z + Math.sin(a) * .4)); } };
+  for (const P of T.place) {
+    if (P.kind === 'ledge') { const zf = wfZ(W, P.x); block(P.x - P.w / 2, P.x + P.w / 2, -1, P.top, zf - 6, zf + P.d, P.id); }
+    else if (P.kind === 'cave') block(P.b[0], P.b[1], P.b[2], P.b[3], P.b[4], P.b[5], P.id);
+    else if (P.kind === 'crystal') crystal(P.at[0], P.at[1], P.at[2], P.s); }
+  // scree boulders along the foot (look only)
+  for (let k = 0; k < 34; k++) { const x = (R() - .5) * W.w * .9; if (Math.abs(x) < 30) continue; const r = 1.2 + R() * 3.2, g = new THREE.SphereGeometry(r, 8, 6), P = g.attributes.position;
+    for (let i = 0; i < P.count; i++) { const f = 1 + nz(P.getX(i) * .8 + k, P.getY(i) * .8, P.getZ(i) * .8) * .35; P.setXYZ(i, P.getX(i) * f, P.getY(i) * f * .7, P.getZ(i) * f); }
+    g.translate(x, r * .3, wfZ(W, x) + r * .6 + R() * 3); g.computeVertexNormals(); O.rock.push(tint(g, rockC)); }
+  // 3. ICE: fluted frozen columns down the RIGHT flank (to the pool), hanging ice high on the LEFT, an icicle fringe along the lip
+  const column = (x, yTop, yBot, k) => { const L = yTop - yBot, r = .6 + R() * .7, g = new THREE.CylinderGeometry(r * .8, r * 1.5, L, 8, Math.max(4, Math.round(L / 3))), P = g.attributes.position;
+    for (let i = 0; i < P.count; i++) { const t = P.getY(i) / L + .5, bul = Math.sin(t * Math.PI * 3.1 + k) * .2 + (1 - t) * .4; P.setXYZ(i, P.getX(i) * (1 + bul * .6), P.getY(i), P.getZ(i) * (1 + bul * .6) + bul * .8); }
+    g.computeVertexNormals(); O.ice.push(g.translate(x, (yTop + yBot) / 2, wfZ(W, x) - (yTop + yBot) / 2 * W.lean + 1.4)); };
+  for (let k = 0; k < 16; k++) { const x = 12.5 + k * 1.05 + (R() - .5) * .4; column(x, 34 + R() * 26 - k * .8, .5, k); }
+  for (let k = 0; k < 9; k++) { const x = -40 + k * 1.3 + (R() - .5) * .5; column(x, 30 + R() * 18, 16 + R() * 8, k + 3); O.ice.push(new THREE.ConeGeometry(.6, 3 + R() * 3, 6).rotateX(Math.PI).translate(x, 15, wfZ(W, x) - 15 * W.lean + 1.4)); }
+  for (let x = -60; x < 60; x += .9) { if (Math.abs(x) < 11) continue; const top = W.top + Math.sin(x * .05 + 1) * 9 + Math.sin(x * .13) * 4, nl = Math.exp(-((x / (W.notchW * .9)) ** 4)), y = top + (W.lip - top) * nl, L = .8 + R() * 3.5;
+    O.ice.push(new THREE.ConeGeometry(.12 + R() * .25, L, 5).rotateX(Math.PI).translate(x, y - L / 2 - .3, wfZ(W, x) - y * W.lean + .6)); }
+  // the pool's FROZEN half: plates round the front and the sides, floes in the open water
+  { const Q = T.pool; for (let k = 0; k < 14; k++) { const a = Math.PI * (.05 + .9 * k / 13), r = 4 + R() * 4; O.ice.push(new THREE.CylinderGeometry(r, r * 1.05, .14, 9).scale(1, 1, .7 + R() * .5).rotateY(R() * 3).translate(Q.at[0] + Math.cos(a) * (Q.r[0] - r * .6), Q.ice - .07, Q.at[1] + Math.sin(a) * (Q.r[1] - r * .5))); }
+    for (let k = 0; k < 12; k++) { const r = .8 + R() * 1.8; O.ice.push(new THREE.CylinderGeometry(r, r, .3, 7).rotateY(R() * 3).translate(Q.at[0] + (R() - .5) * Q.r[0] * 1.3, Q.y + .05, Q.at[1] + (R() - .3) * Q.r[1] * .9)); }
+    O.boxes.push(wfBox(T, [Q.at[0] - Q.r[0] - 4, Q.at[0] + Q.r[0] + 4, -1, Q.floor, Q.at[1] - Q.r[1] - 2, Q.at[1] + Q.r[1] + 4])); }     // the pool's floor (over the field's far ring)
+  // 4. THE CURTAIN: three layers, each a strip that leaves the lip and falls out along z = lip + out * sqrt(drop), spreading as it goes
+  { const F = T.fall, zl = wfZ(W, 0) - W.lip * W.lean + 1, pos = [], fu = [], idx = []; const nu = 14, nv = 36;
+    F.w.forEach((w, L) => { const b = pos.length / 3; for (let j = 0; j <= nv; j++) { const v = j / nv, y = W.lip - v * (W.lip - T.pool.y); for (let i = 0; i <= nu; i++) { const u = i / nu;
+        pos.push((u - .5) * w * (1 + v * F.spread), y, zl + F.dz[L] + F.out * Math.sqrt(W.lip - y) + Math.sin(u * Math.PI) * .8); fu.push(u, v, (u - .5) * w / 3 + L * 7.3, (W.lip - y) / 6); } }
+      for (let j = 0; j < nv; j++) for (let i = 0; i < nu; i++) { const a = b + j * (nu + 1) + i; idx.push(a, a + nu + 1, a + 1, a + 1, a + nu + 1, a + nu + 2); } });
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aF', new THREE.Float32BufferAttribute(fu, 4)); g.setIndex(idx); O.curtain = g; }
+  { const Q = T.pool, g = new THREE.CircleGeometry(1, 48).rotateX(-Math.PI / 2).scale(Q.r[0], 1, Q.r[1]).translate(Q.at[0], Q.y, Q.at[1]); O.pool = g; }
+  { const n = T.mist.n, s = new Float32Array(n * 4); for (let i = 0; i < n * 4; i++) s[i] = R(); const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(n * 3), 3)); g.setAttribute('aS', new THREE.BufferAttribute(s, 4)); O.mist = g; }
+  return O; }
+const WF_NOISE = `float wfH(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float wfN(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(wfH(i), wfH(i + vec2(1, 0)), f.x), mix(wfH(i + vec2(0, 1)), wfH(i + vec2(1, 1)), f.x), f.y); }`;
+function wfShader(vs, fs, extra, o) { return new THREE.ShaderMaterial(Object.assign({ uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, Object.assign({ uT: { value: 0 } }, extra)]), fog: true,
+  vertexShader: '#include <fog_pars_vertex>\nuniform float uT;\n' + WF_NOISE + '\n' + vs, fragmentShader: '#include <fog_pars_fragment>\nuniform float uT;\n' + WF_NOISE + '\n' + fs }, o)); }
+function wfallBuild(g) { const T = WFALL; if (!T.want) return; const O = wfMake(T), G = new THREE.Group(); G.name = 'wfall'; G.position.set(T.at[0], T.at[1], T.at[2]); G.rotation.y = T.yaw;
+  const add = (geo, mat, o) => { const m = new THREE.Mesh(geo, mat); Object.assign(m, o || {}); G.add(m); return m; };
+  add(mergeGeometries(O.rock), snowTriMat('snow_rock', 3, 0xffffff, .95, 1), { receiveShadow: true });
+  add(mergeGeometries(O.cap), snowTriMat('snow_snow', 2.5, 0xffffff, .85), { receiveShadow: true });
+  add(mergeGeometries(O.ice), snowKitIce(), { castShadow: true });
+  const cur = wfShader(`attribute vec4 aF; varying vec4 vF;
+    void main() { vF = aF; vec3 p = position; p.x += sin(p.y * .15 + uT * 1.3 + aF.z) * .25 * aF.y; p.z += sin(p.y * .4 - uT * 3.0 + aF.x * 6.0) * .15;
+      vec4 mvPosition = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mvPosition;
+      #include <fog_vertex>
+    }`, `uniform float uSp; varying vec4 vF;
+    void main() { float u = vF.x, v = vF.y; vec2 q = vF.zw;
+      float s = wfN(vec2(q.x * 2.0, q.y * .5 - uT * uSp)) * .55 + wfN(vec2(q.x * 6.0, q.y * 1.4 - uT * uSp * 1.6)) * .3 + wfN(vec2(q.x * 15.0, q.y * 3.0 - uT * uSp * 2.3)) * .15;
+      vec3 col = mix(vec3(.30, .52, .62), vec3(.92, .97, 1.0), smoothstep(.35, .75, s)); col = mix(col, vec3(.95, .98, 1.0), smoothstep(.7, 1.0, v));
+      float a = (.35 + .65 * smoothstep(.25, .7, s)) * smoothstep(0.0, .12, u) * smoothstep(1.0, .88, u) * smoothstep(0.0, .03, v);
+      gl_FragColor = vec4(col, a * .92);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+      #include <fog_fragment>
+    }`, { uSp: { value: T.fall.speed } }, { transparent: true, depthWrite: false, side: THREE.DoubleSide });
+  add(O.curtain, cur, { frustumCulled: false, renderOrder: 2 });
+  const Q = T.pool, pool = wfShader(`varying vec3 vP;
+    void main() { vP = position; vec4 mvPosition = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mvPosition;
+      #include <fog_vertex>
+    }`, `uniform vec3 uHit; varying vec3 vP;
+    void main() { vec2 d = vP.xz - uHit.xy; d.x = max(0.0, abs(d.x) - uHit.z); float r = length(d);
+      float foam = smoothstep(9.0, 0.0, r) * (.55 + .45 * wfN(vP.xz * .6 + vec2(0.0, uT * 1.5))) + smoothstep(.75, 1.0, sin(r * 1.8 - uT * 3.0) * .5 + .5) * smoothstep(20.0, 3.0, r) * .35;
+      vec3 col = mix(vec3(.02, .14, .19), vec3(.07, .32, .38), wfN(vP.xz * .15 + uT * .05)); col = mix(col, vec3(.9, .96, 1.0), clamp(foam, 0.0, 1.0));
+      gl_FragColor = vec4(col, 1.0);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+      #include <fog_fragment>
+    }`, { uHit: { value: new THREE.Vector3(0, wfZ(T.wall, 0) - T.wall.lip * T.wall.lean + 1 + T.fall.out * Math.sqrt(T.wall.lip - Q.y), T.fall.w[0] * .5) } });
+  add(O.pool, pool, { receiveShadow: false });
+  const M = T.mist, hz = pool.uniforms.uHit.value.y, mist = wfShader(`attribute vec4 aS; uniform float uPx; varying float vA;
+    void main() { float life = fract(uT * (.05 + aS.w * .06) + aS.x), top = step(.85, aS.y);
+      vec3 p = vec3((aS.y / .85 - .5) * ${(T.fall.w[0] * 1.3).toFixed(1)}, ${Q.y.toFixed(2)} + life * mix(${M.rise[0].toFixed(1)}, ${M.rise[1].toFixed(1)}, aS.z), ${hz.toFixed(2)} + life * mix(${M.out[0].toFixed(1)}, ${M.out[1].toFixed(1)}, aS.w));
+      p.x += sin(uT * .3 + aS.z * 9.0) * 3.0 * life;
+      if (top > .5) p = vec3((aS.z - .5) * ${T.fall.w[0].toFixed(1)}, ${(T.wall.lip - 2).toFixed(1)} - life * 14.0, ${(hz - T.fall.out * Math.sqrt(T.wall.lip - Q.y) + 2).toFixed(2)} + life * 4.0);     // spray off the lip
+      vec4 mvPosition = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mvPosition;
+      gl_PointSize = (3.0 + life * 11.0) * (.6 + aS.z * .8) * (top > .5 ? .5 : 1.0) * uPx / max(.5, -mvPosition.z); vA = sin(life * 3.14159) * (top > .5 ? .25 : .32);
+      #include <fog_vertex>
+    }`, `varying float vA;
+    void main() { vec2 c = gl_PointCoord - .5; float a = smoothstep(.5, .0, length(c)) * vA; gl_FragColor = vec4(.93, .97, 1.0, a);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+      #include <fog_fragment>
+    }`, { uPx: { value: 600 } }, { transparent: true, depthWrite: false });
+  const mp = new THREE.Points(O.mist, mist); mp.frustumCulled = false; mp.renderOrder = 3; G.add(mp);
+  g.add(G); for (const b of O.boxes) BOXES.push(b);
+  T.on = { G, mats: [cur, pool, mist], mist, boxes: O.boxes };
+  try { window.mel.WFALL = T; window.mel.wfall = () => { const P = wfW(T, -30, T.pool.floor + .1, T.pool.at[1] + T.pool.r[1] + 8); player.pos.set(P[0], P[1], P[2]); player.vel.set(0, 0, 0); }; } catch (e) {} }
+function wfallStep(dt) { const O = WFALL.on; if (!O) return; for (const m of O.mats) m.uniforms.uT.value += dt;
+  O.mist.uniforms.uPx.value = renderer.domElement.height / (2 * Math.tan(camera.fov * Math.PI / 360)); }
 // m2018: NIGHT AND THE AURORA (the snow list: "a night mode -- aurora ribbons, and the crystals, glow bulbs and runes lighting the dark"). TOOLS > SNOW >
 // TIME: DAY / NIGHT (remembered; `?time=night`). Night: a deep blue-black sky and fog, cold blue MOONLIGHT (the sun dimmed to `sun`, tinted), the hemi
 // low, the far peaks darkened, a dome of STARS (one Points), and the AURORA -- four great curtains far to the north, each a bent ribbon whose additive
@@ -11728,6 +11865,7 @@ function snowStage(g) {
   }
   try { willowBuild(g); } catch (e) { console.error('[melee] willow', e); note('WILLOW THREW ' + e.message); }     // m1740
   try { snowCliffs(g); } catch (e) { console.error('[melee] cliffs', e); note('CLIFFS THREW ' + e.message); }     // m2000
+  try { wfallBuild(g); } catch (e) { console.error('[melee] wfall', e); note('WFALL THREW ' + e.message); }     // m2041: the great waterfall
   try { snowKit(g); } catch (e) { console.error('[melee] snowkit', e); note('SNOWKIT THREW ' + e.message); }     // m2004
   try { snowVillage(g); } catch (e) { console.error('[melee] village', e); note('VILLAGE THREW ' + e.message); }
   if (SVK.show) try { svkShowroom(g); } catch (e) { console.error('[melee] snowkit', e); note('SNOWKIT THREW ' + e.message); }     // m2033: the kit showroom (?zone=snowkit)     // m2032: the snow village (SNOW_VILLAGE.md)
@@ -11897,7 +12035,7 @@ function snowPuff(x, y, z, n, up, sp) { const A = SNOWZ.air; if (!A) return; con
     A.P[i * 3] = x; A.P[i * 3 + 1] = y; A.P[i * 3 + 2] = z; F.vx[i] = Math.cos(a) * s; F.vz[i] = Math.sin(a) * s; F.vy[i] = up * (.5 + Math.random() * .7); F.life[i] = .8 + Math.random() * .6; A.S[i] = .05 + Math.random() * .07; A.A[i] = .9; } }
 const _snF = new THREE.Vector3();
 const _snBp = new THREE.Vector3(), _snCw = new THREE.Color(), _snC2w = new THREE.Color();
-function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; Z.t += dt; const t = Z.t; willowStep(dt); snowVillStep(dt); svkStep(dt);
+function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; Z.t += dt; const t = Z.t; willowStep(dt); snowVillStep(dt); svkStep(dt); wfallStep(dt);
   // the PACK: feet, the plough, the drag, the refill
   const under = snowAt(p.pos.x, p.pos.z), sp = Math.hypot(p.vel.x, p.vel.z), inField = Math.abs(p.pos.x) < Z.size / 2 && Math.abs(p.pos.z) < Z.size / 2;
   if (inField && p.pos.y < Z.depth + .2) {
