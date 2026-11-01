@@ -5,6 +5,11 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2050 -- THE GREAT WATERFALL: `mel.WFALL` / `mel.wfall()` / `mel.wfcave()` never existed (same cause as m2049)
+
+The second render timed out waiting for `mel.WFALL`: `wfallBuild` set them on `window.mel` inside a try, and at module scope `window.mel` is not
+there yet -- swallowed, so every build since m2041 shipped without its warps. They are set on the first step now, with the ladders. Shipped unverified.
+
 ## m2049 -- THE GREAT WATERFALL: m2046 left the WHOLE waterfall out (a TDZ read), found by its first render
 
 His: "send me a render after every pass." The first render (headless SwiftShader at `?w=forge&zone=snow`) never got a waterfall: the page logged
