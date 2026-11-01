@@ -5,6 +5,25 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- THE SNOW-VILLAGE KIT, pass 1: pieces on a grid with snap ports, and the KIT SHOWROOM (`?w=forge&zone=snowkit`)
+
+Direction change (SNOW_VILLAGE.md UPDATE, relayed from the main session): a MODULAR KIT, not a village layout; placement is another context's.
+- The m2032 village layout is now OFF by default (`?vil=1` brings it back); its hut is folded into the kit as the first whole building.
+- `svkPiece(kind, opts)` -- every piece a pure builder in a local frame (y 0 = what it stands on, front +Z), 2 m grid, .3 m rises, returning
+  `{ L, cols, patches, ports, smoke, fire }`; `svkEmit(dst, piece, at, yaw)` composes pieces (the corner wall is two walls; scenes place the same
+  way); `snowKitPiece(kind, opts)` is the public door -> `{ group (one mesh per material), boxes (local AABBs), patches, ports }` (also on `mel`).
+  `vilHut` grew `base` / `roof` flags so the hut splits into `hut_base` and `roof_round`.
+- PIECES (38 with variants): STRUCTURE wall straight / corner / window / door, post + beam, hut base, round roof, gable roof, roof beams + plaque,
+  chimney, stairs (5 and 3 risers), platform (and low), arch, pillar (and short). ACCESSORIES fence straight / corner / gate, banner post, flag pole,
+  lantern post, jade lamp, fire pit, well, barrels, crates, pots, market stall, forge station, sled, firewood, snowman. BUILDINGS hut, small, big,
+  longhouse. Each: painted materials, box colliders, a pushable snow patch on standable tops (walls, beam, platform, arch, pillar), icicles on lips,
+  warm/jade glow where the art glows; ports on walls (a/b/top), stairs (foot/head), platform (n/s/e/w), arch, pillar, chimney, roofs (seat), doors.
+- THE SHOWROOM: a snow plaza south of the field (z 89..159, top .6 over the far plain), rows by category, a name plate under every piece (one
+  canvas atlas, one draw), small jade diamonds marking each port, the player put at its front facing the rows. Headless: 38 pieces, 49 ports,
+  108 colliders, the whole room 20 draws. Rendered from six views before pushing.
+Still to come: the BRIDGE / AQUEDUCT pieces (aqueduct_sheet: piers, arch span, deck + balustrade, shrine towers, end ramp), the watchtower and the
+gate, and the demo assembly that chains them by ports. Shipped unverified.
+
 ## m2032 -- THE SNOW VILLAGE, pass 1: the hut as a code-built kit piece, eight of them on three tiers at the Snowfield's entry end
 
 His brief: SNOW_VILLAGE.md (concept `images/concepts/snow_village/hut_sheet.webp`). All in the `SNOW_VILLAGE:START/END` block, data in `SC_SNOWVIL`;
