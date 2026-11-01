@@ -11,6 +11,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15V2 -- THE VILLAGE, pass 2: the HORSESHOE CLIFF behind it + the HOT SPRING at its foot (Nov 1 2026)
+His: *"go ahead, do pass 2."* `SNOWVIL.cliff`: 8 lumpy painted-rock segments along a horseshoe behind the village (8-10 m on the arms, 15 m at the
+back), each a turned box (`obox`) with a snow cap -- the field's edge is hidden and the village is sheltered (VILLAGE_BLUEPRINT pass 2). `SNOWVIL.spring`:
+the kit's `spring_geyser` (pool, steam, a timed geyser that launches you) at its foot behind the crag (-7, 73), placed + `.live()` (stepped by `svkStep`).
+The STANDING STONES moved from (-44, 52) to (-64, 50): the cliff's west arm stood in their ring. Shipped unverified (render in progress).
+
 ## m2104 -- THE VILLAGE, pass 1: the kit session's hand-placed village is ON in the Snowfield (Nov 1 2026)
 His: *"we're ready to go"* (after the plant swap). The kit session had already placed a village (`SNOWVIL.place`: 8 huts + a longhouse on the ground,
 a 1.5 m terrace, a 3.3 m terrace and a 4.5 m crag; the gate, the square with its fire pit, the well, jade lamp posts, fences, banners, barrels, paved

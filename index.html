@@ -10891,7 +10891,7 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
 //   SPIRE       a crystal spire 15 m tall on a rock mound, the mound climbable in two steps (2.2, 4.0)
 //   PLANTS      snow shrubs (lumpy blobs under white caps), frost ferns (fans of curled fronds), alien GLOW BULBS (teal orbs on stalks) -- on the ground,
 //               on the bridge, the spire's mound and the cliff ledges (VERTICALITY)
-const SNOWKIT = { places: [{ id: 'grotto', x: 60, z: -14, r: 10 }, { id: 'bridge', x: -46, z: 22, r: 10 }, { id: 'stones', x: -44, z: 52, r: 12 }, { id: 'spire', x: 56, z: 48, r: 8 }],
+const SNOWKIT = { places: [{ id: 'grotto', x: 60, z: -14, r: 10 }, { id: 'bridge', x: -46, z: 22, r: 10 }, { id: 'stones', x: -64, z: 50, r: 12 }, { id: 'spire', x: 56, z: 48, r: 8 }],
   shrubs: 70, ferns: 50, bulbs: 26, spin: null };
 function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { rock: [], cap: [], ice: [], glow: [], plant: [], dark: [] }, box = (x0, x1, y0, y1, z0, z1) => BOXES.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1 });
   const nz = (x, y, z) => Math.sin(x * 1.1 + z * .7 + y * .4) * .45 + Math.sin(z * 2.3 - y * 1.6 + x * .6) * .3 + Math.sin(x * 4.1 + y * 3.3 - z * 1.3) * .15;
@@ -11002,6 +11002,10 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
     { id: 'vil_crag_01', r: [-13, -2, 59, 69], top: 4.5, base: 3.3, crag: 1, stairs: [[61, 2.4, '-x']] } ],
   paths: [ [[0, 12], [-6, 19], [-12, 25], [-18, 31]], [[-18, 31], [-21.5, 36], [-21.5, 41]], [[-18, 31], [-14, 38], [-14, 40]] ],     // the hut doors join these by themselves
   square: [-18, 32, 6.5],
+  // m15V2 (VILLAGE pass 2, VILLAGE_BLUEPRINT pass 2's "horseshoe cliff"): a HORSESHOE of rock behind the village -- low on the arms (8-10 m), 15 m at the
+  // back -- so the field's edge is hidden, the village is sheltered, and the HOT SPRING rises at its foot behind the crag (the kit's spring_geyser)
+  cliff: { pts: [[-45, 38], [-46, 54], [-43, 68], [-34, 77], [-20, 79.2], [-6, 78.6], [4, 74], [8.5, 62], [9.5, 48]], h: [8, 10, 12.5, 14.5, 15, 15, 13, 10.5, 8.5], d: 7.5 },
+  spring: { at: [-7, 0, 73.2], r: 2 },
   place: [
     { id: 'vil_hut_01', kind: 'hut', at: [-28, 0, 27], face: [-18, 31], p: { R: 2.7, seed: 11, chimA: 2.4 } },
     { id: 'vil_hut_02', kind: 'hut', at: [-8.5, 0, 35], face: [-18, 31], p: { R: 2.5, seed: 12, banner: 0, barrels: 3 } },
@@ -11308,6 +11312,17 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
       for (let k = 0; k < n; k++) for (const s of [-1, 1]) { const top = base + (k + 1) * .3 + .35, m = edge + sg * (n - k - .5) * tr, ex = ax ? m : c + s * (sw / 2 + .2), ez = ax ? c + s * (sw / 2 + .2) : m;     // the stair's cheeks, stepping with it
         L.stone.push(vilBox(ax ? tr : .4, top, ax ? .4 : tr, 1).translate(ex, top / 2, ez)); if (k === n - 1 || k === 0) L.snow.push(vilPillow(.42, .1, tr).translate(ex, top, ez)); }
       if (!base) { const ex = ax ? edge + sg * (n * tr + .5) : c, ez = ax ? c : edge + sg * (n * tr + .5); circ(ex, ez, sw * .7); } } }
+  // m15V2: THE HORSESHOE CLIFF -- lumpy painted rock segments along `V.cliff.pts`, each a turned box collider (`obox`), a snow cap on top
+  if (V.cliff) { const C = V.cliff; L.rock = L.rock || [];
+    for (let k = 0; k + 1 < C.pts.length; k++) { const [ax, az] = C.pts[k], [bx, bz] = C.pts[k + 1], len = Math.hypot(bx - ax, bz - az) + 2.2, h = (C.h[k] + C.h[k + 1]) / 2, yaw = Math.atan2(bz - az, bx - ax), cx = (ax + bx) / 2, cz = (az + bz) / 2;
+      const geo = new THREE.BoxGeometry(len, h, C.d, 12, 6, 4), P = geo.attributes.position;
+      for (let i = 0; i < P.count; i++) { const x = P.getX(i), y = P.getY(i), z = P.getZ(i), top = y > h / 2 - .01, n = Math.sin(x * .9 + k) * .55 + Math.sin(y * 1.7 + x * .4) * .35 + Math.sin(z * 2.1 + y) * .25, taper = 1 - .18 * (y / h + .5);
+        P.setXYZ(i, x, top ? y + Math.sin(x * .6 + k * 2) * .6 : y, z * taper + (Math.abs(z) > C.d / 2 - .01 ? n * Math.sign(z) : 0)); }
+      geo.computeVertexNormals(); geo.rotateY(-yaw).translate(cx, h / 2, cz); L.rock.push(geo);
+      BOXES.push(obox(cx, cz, len / 2, C.d / 2 * .9, yaw, 0, h)); L.snow.push(vilPillow(len * .96, .35, C.d * .7).rotateY(-yaw).translate(cx, h + .1, cz)); } }
+  if (V.spring && typeof snowKitPiece === 'function') { try { const S = V.spring, K = snowKitPiece('spring_geyser', { r: S.r }); K.group.position.set(S.at[0], S.at[1], S.at[2]); g.add(K.group);
+      for (const b of K.boxes) BOXES.push({ minx: b.minx + S.at[0], maxx: b.maxx + S.at[0], miny: b.miny + S.at[1], maxy: b.maxy + S.at[1], minz: b.minz + S.at[2], maxz: b.maxz + S.at[2] });
+      K.live(S.at, 0, g); circ(S.at[0], S.at[2], S.r + 2); } catch (e) { note('VILLAGE SPRING THREW ' + e.message); console.error(e); } }
   // THE PLACEMENTS
   const emit = (P, built) => { const yaw = P.yaw != null ? P.yaw : P.face ? Math.atan2(P.face[0] - P.at[0], P.face[1] - P.at[2]) : 0, c = Math.cos(yaw), s = Math.sin(yaw), [px, py, pz] = P.at, w = (x, z) => [px + x * c + z * s, pz - x * s + z * c];
     m4.makeRotationY(yaw).setPosition(px, py, pz); for (const k in built.L) for (const geo of built.L[k]) (L[k] || (L[k] = [])).push(geo.applyMatrix4(m4));
