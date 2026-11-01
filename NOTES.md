@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2038 -- THE ICE TEMPLE: detail pass D5 -- the silhouette (horns, ring arcs, crown, roundel)
+
+The part seen from the whole valley. The HORNS: snow riding their top along every segment, icicles under their curve, dark rune plates and jade
+gems on the gold bands. The RING ARCS: six gold RUNE BLOCKS round each with a jade gem in each (the concept's segmented rings), a big jade crystal at
+each tip. The CROWN: a second gold collar studded with ten jade gems and a ring of nine smaller crystals round the great one. The ROUNDEL: sixteen
+gold rune segments round its rim. Shipped unverified.
+
 ## m2037 -- THE ICE TEMPLE: detail pass D4 -- the back and sides (great banner, jade windows, back towers, side falls, base rocks)
 
 Compared against `big_back.webp`, the back was the plainest side. Now: the BACK's great Korajin banner (8 x 15 m) over the descent; the glyph plates
