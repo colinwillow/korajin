@@ -6,6 +6,24 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## m2079 -- THE FLORA, SIX HYBRIDS: organic primitives, bigger, no floating pieces
+
+His: "they look primitive -- circles and cylinders, floating pieces, banged together; hybridize them into a solid six if twelve costs too
+much; bigger and bolder, a big part of the scene." Species count does not cost draws (all share flesh / glow / snow / ice); TRIANGLES do --
+so six good ones. Rebuilt on three organic primitives in `wfMake`:
+- `sweep(pts, radius(t), opts)`: ONE continuous swept tube along a Catmull-Rom spline (radius profile, twisting BARK ridges darkening the
+  grooves, colour along the length). Trunks, branches, stems, pipes, cords, the shimenawa rope. Every branch STARTS on its parent's curve
+  (`ptOn`), so nothing floats; flared ROOTS run out into the ground.
+- `lathe(profile, segs, opts)`: turned profiles with lobed / wavy rims -- caps with curled rims, glowing gill skirts, foliage pads,
+  wisteria racemes, lanterns, snow lids (with icicles), mounds, toro lanterns.
+- `leaf(L, W, bend, cup)`: a shaped blade (wide base, pointed tip, bent along its length, cupped, a pale midrib) -- agave blades, petals,
+  bamboo leaves. Flesh and glow are DOUBLE-SIDED now.
+The six: FROSTCAP (canopy + frostlight mushroom), JADE PIPES (tube coral + spirit bamboo), WEEPING WISTERIA (vine tree + wisteria), GLOW AGAVE
+(agave + plume grass), SPIRIT BLOSSOM (crystal bud + blossom), LANTERN MAPLE (lantern tree + maple). s = 1 is a 5-8 m plant.
+TRIANGLES, measured headless on the whole waterfall scene: first build 483k (flora flesh 195k); trimmed to 289k (flesh 84k, glow 43k,
+rock 79k). The pipes and the maple are the heaviest species. Rendered: the agave lay flat (stood up as a vase), the blossom was small
+(enlarged). `?wfflora=1`: the six in a row. Shipped unverified on the phone; no textures yet.
+
 ## m2078 -- the snow kit SILHOUETTE PASS 2: staves, bellied walls, balusters, finials, capstones
 
 His: *"Sounds good."* (the second silhouette list)
