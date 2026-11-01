@@ -16,6 +16,7 @@ PROMPTS = {
   'sand': "Top-down fine pale cream ZEN GARDEN SAND, soft warm ivory with tiny grains and a few minute pebbles, very subtle, smooth and clean, sunlit.",
   'water': "Top-down shallow glowing magical JINRA water: luminous mint and turquoise water with bright caustic light ripples, soft swirls and sparkles, a few pale pebbles visible below, stylised hand-painted.",
   'blossom': "Dense canopy of PINK CHERRY BLOSSOMS seen close up, countless small five-petal sakura flowers in soft pink, rose and white with a few tiny green leaves and dark twig hints, sunlit, filling the whole square.",
+  'jinra_crystal': "Close-up of a luminous magical BLUE power crystal surface: sharp faceted planes in deep sapphire, electric cyan and pale ice-white, glowing from within, fine light veins and inner sparkles, mystical energy.",
   'wood': "Weathered warm brown carved WOOD planks running vertically with soft grain, slightly worn, with faint red lacquer remains in the grain, temple timber.",
 }
 SINGLES = {
@@ -41,6 +42,10 @@ ALPHA = {
            "hanging straight down from the top edge, different lengths, dense at the top thinning toward the tips, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1536", (512, 768)),
   'blossom_card': ("A round fluffy CLUMP of pink cherry blossoms (a sakura branch-end cluster seen from the side), many small pink and white five-petal flowers, irregular airy silhouette, "
                    "stylised hand-painted fantasy game art, isolated on a fully transparent background, no stem, no shadow, no text.", "1024x1024", (512, 512)),
+  'jinra_swirl': ("A glowing magical energy VORTEX seen straight on from above: luminous electric-blue and cyan spiral arms swirling into a bright white-blue core, wispy streaks and sparkles, "
+                  "on a fully transparent background, circular, centred, no text.", "1024x1024", (512, 512)),
+  'jinra_flame': ("A single tall stylised magical BLUE FLAME, wispy licking tongues of cyan, sapphire and white fire rising from the bottom edge, painterly fantasy game VFX, "
+                  "isolated on a fully transparent background, no text.", "1024x1536", (256, 512)),
   'fern': ("A lush green FERN plant seen from the side, many arching fronds spreading from the base, bright and deep greens, stylised hand-painted fantasy game art, isolated on a fully transparent background, no pot, no shadow, no text.", "1024x1024", (512, 512)),
   'flowers': ("A small clump of wildflowers seen from the side: pink, white and lavender blossoms on green stems with leaves, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1024", (512, 512)),
 }
