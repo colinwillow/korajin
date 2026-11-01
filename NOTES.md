@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15TL -- THE TEMPLE LAYOUT GENERATOR, v1 (Nov 1 2026)
+## m2030 -- THE TEMPLE LAYOUT GENERATOR, v1 (Nov 1 2026)
 *"Ok now start the temple layout tool."* KORAJIN > Temple Layout (`?w=forge&zone=tlayout`). From a SEED and a list of BEATS, `tlayGen` grows a route
 graph up the inside of a cylindrical chamber (outer ring r 31, inner r 19, height ~46): platforms sized by beat, edges = moves from the TEMPLE_KIT
 table drawn inside their COMFY ranges (walk / stairs / jump / double jump / drop / wall run / chimney / high bar), spiralling up and cutting across

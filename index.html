@@ -11005,7 +11005,7 @@ function snowNightStep(dt) { const N = SNOWNIGHT; if (!N.g) return; if (!(scene.
 const SNOWZ = { paint: (() => { try { return !/[?&]paint=0\b/.test(location.search); } catch (e) { return true; } })() ? 1 : 0, bump: 7, want: 0, on: null, size: 160, res: 640, depth: 1.1, base: .5, drift: .42, pines: 46,     /* m1632: depth 1.1 m with a base fill of .5 (= the old .55 m) so DRIFTS can rise over it */ refill: .012, foot: .17, plough: .32, rim: .2, rimAdd: .14, drag: 2.6,
   flakes: 5000, box: 34, puffs: 1400,     /* m2003: 600 -> 1400 for the blasts */ fall: [.55, 1.2], flutter: .5, wind: [1.2, 0, .4], gust: 1.6 };
 try { if (/[?&]zone=snow\b/.test(location.search)) SNOWZ.want = 1; } catch (e) {}
-// m15TL: THE TEMPLE LAYOUT GENERATOR, v1 (his: "temples are mostly interior and underground -- massive chambers; a parkour obstacle course whose logic is
+// m2030: THE TEMPLE LAYOUT GENERATOR, v1 (his: "temples are mostly interior and underground -- massive chambers; a parkour obstacle course whose logic is
 // amazing, blocked out so it's fun to run; a giant statue on a mesa in the middle that comes alive at the end; bridges over bridges; gates that spawn
 // enemies; puzzles; a 3D maze builder we can get a blueprint from"). `?w=forge&zone=tlayout` (KORAJIN menu: Temple Layout). From a SEED and a list of
 // BEATS it grows a ROUTE GRAPH up the inside of a cylindrical chamber: every node a platform (an arena, a puzzle, a ledge), every edge a MOVE from the
@@ -13064,7 +13064,7 @@ function arenaStage() {
   const R = ARENA.r, g = new THREE.Group(), L = ARENA.look; world.add(g);
   // m1117: THE BUILDING FORGE -- a clean white floor under the arena's sky, nothing else: the buildings are spawned into it (SPAWN > BUILDINGS)
   if (inForge() && DRAGZ.want) { dragStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1610: THE DRAGON RIDE's island instead of the white floor
-  if (inForge() && TLAY.want) { try { tlayStage(g); } catch (e) { note('TLAY THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m15TL: the temple layout generator
+  if (inForge() && TLAY.want) { try { tlayStage(g); } catch (e) { note('TLAY THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2030: the temple layout generator
   if (inForge() && SNOWZ.want) { snowStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1384: THE SNOWFIELD instead of the white floor
   if (inForge() && SHIPZ.want) { shipSea(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1373: THE SHIP's sea instead of the white floor
   if (inForge()) { const cv = document.createElement('canvas'); cv.width = cv.height = 512; const c = cv.getContext('2d'); c.fillStyle = '#f2f3f5'; c.fillRect(0, 0, 512, 512);
@@ -16352,7 +16352,7 @@ function arenaUi() {
       else if (a === 'kcslow') { const T = KATANA.chargeSlows; KATANA.chargeSlow = T[(T.indexOf(KATANA.chargeSlow) + 1) % T.length]; try { localStorage.setItem('mel.kat.cslow', KATANA.chargeSlow); } catch (err) {} }
       else if (a === 'rhold') { CROUCH.mode = CROUCH.modes[(CROUCH.modes.indexOf(CROUCH.mode) + 1) % CROUCH.modes.length]; try { localStorage.setItem('mel.rhold2', CROUCH.mode); } catch (err) {} }     // m1093
       else if (a === 'shield') { SHIELD.on = SHIELD.on ? 0 : 1; try { localStorage.setItem('mel.shield', SHIELD.on ? '1' : '0'); } catch (err) {} }     // m2009
-      else if (a === 'tlayseed') { try { localStorage.setItem('mel.tlayseed', String(1 + Math.floor(Math.random() * 9999))); } catch (err) {} location.reload(); }     // m15TL
+      else if (a === 'tlayseed') { try { localStorage.setItem('mel.tlayseed', String(1 + Math.floor(Math.random() * 9999))); } catch (err) {} location.reload(); }     // m2030
       else if (a === 'snowsky') { try { localStorage.setItem('mel.snowsky', SNOWSKY.on ? 'PEAKS' : 'IMAGE'); } catch (err) {} location.reload(); }     // m2028
       else if (a === 'snowtime') { try { localStorage.setItem('mel.snowtime', SNOWNIGHT.on ? 'DAY' : 'NIGHT'); } catch (err) {} location.reload(); }     // m2018
       else if (a === 'storm') { const L = ['AUTO', 'CLEAR', 'BLIZZARD']; SNOWSTORM.weather = L[(L.indexOf(SNOWSTORM.weather) + 1) % 3]; try { localStorage.setItem('mel.storm', SNOWSTORM.weather); } catch (err) {} }     // m1996
