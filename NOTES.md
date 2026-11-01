@@ -13,6 +13,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- THE WATCHTOWER (his reference image, both variants)
+
+His reference (`images/concepts/snow_village/ref_watchtower.webp`, two towers). Deck height and size, the stair, the landing and the rail gap are unchanged.
+- Default (left): knee braces under the eaves, a curled PAGODA roof in timber shingle (`svkPagoda` takes a material now) with a small upper tier and a
+  jade plaque, two crescent stone HORNS off it, a gold finial + HALO + crystal, four LANTERNS hanging from the curled eave corners, gold-capped footings,
+  a lantern post at the stair foot. Replaces the gable roof and spire.
+- `legs: 'stone'` (right): the deck stands on four SPLAYED, gold-banded STONE legs (`deck_posts` option `stone`), and a round railed BALCONY juts off the
+  east side through a gap in the deck rail (`gapE`): plank floor, struts, a pushable snow patch, rail colliders, a HALO POST at its rim with a lantern on a
+  chain below. Both in the showroom's towers row (now 4 across).
+- Rendered both before pushing. Shipped unverified.
+
 ## m2119 -- THE HORNED AQUEDUCT (his reference image): horns along the bridge, a chained halo, timber rails, plank deck
 
 His reference (`images/concepts/snow_village/ref_aqueduct_horned.webp`). Footprints, pier heights, deck height and every collider are unchanged
