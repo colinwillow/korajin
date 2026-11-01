@@ -82,7 +82,7 @@ passes and was dressed with finished pieces before it looked like anything -- th
 `?rgnmenu`; the code and the zone (`?w=forge&zone=region`) are untouched. The Snowfield never changed. Next: the village, small and hand-made, with
 the kit and the plants, many passes (VILLAGE_BLUEPRINT.md's design stands; the region site does not).
 
-## mNEXT -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
+## m2110 -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
 
 His reference (`images/concepts/snow_village/ref_hut_horned.webp`), from the prompt pack m2096 sent. The hut keeps the classic materials and its footprint,
 plinth tiers and colliders (so the village's measured routes still fit); only its silhouette changed. `?hut=round` brings back m2096's hut; `horned: 0`
