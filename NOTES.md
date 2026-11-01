@@ -12,7 +12,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15V2 -- THE VILLAGE, pass 2: the HORSESHOE CLIFF behind it + the HOT SPRING at its foot (Nov 1 2026)
+## m2105 -- THE VILLAGE, pass 2: the HORSESHOE CLIFF behind it + the HOT SPRING at its foot (Nov 1 2026)
 His: *"go ahead, do pass 2."* `SNOWVIL.cliff`: 8 lumpy painted-rock segments along a horseshoe behind the village (8-10 m on the arms, 15 m at the
 back), each a turned box (`obox`) with a snow cap -- the field's edge is hidden and the village is sheltered (VILLAGE_BLUEPRINT pass 2). `SNOWVIL.spring`:
 the kit's `spring_geyser` (pool, steam, a timed geyser that launches you) at its foot behind the crag (-7, 73), placed + `.live()` (stepped by `svkStep`).
