@@ -13,6 +13,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- THE ARCH GATE (his reference image): a stone arch between two pagoda towers, horns and a halo
+
+His reference (`images/concepts/snow_village/ref_gate_arch.webp`). `gate` is now `svkGateArch`; `arch: 0` (or `?hut=round`) = the m2096 gate. KEPT for the
+village's measured routes: the opening `w` (4.4), the 5.1 m height, the collider over the top (y 4.5..5.6), `wings`, the a/b/through ports. The towers
+are 1.4 m wide (the old pillars 1.1), so the wings sit .3 m further out.
+- Two tapered stone TOWERS (gold bands, a cornice, banners on gold rods, gold-framed jade windows on their outer faces, boulders at the feet), each with a
+  curled PAGODA roof (`svkPagoda`, now with an x/z offset), a small banded tier with jade, a second curled roof and a gold SPIKE.
+- The ARCH: jambs to a springing at 3 m, a round ring (bevelled, ashlar), gold voussoir bands and springers, a gold-and-jade DIAMOND keystone both faces,
+  snow on the crown, icicles; three LANTERNS hanging inside it on chains, warm light below.
+- A curled roof over the arch, two great crescent HORNS rising behind it (gold-banded, snow), and the gold HALO with its crystal over the middle.
+- Rendered twice: the towers' own roofs had landed in the middle (the pagoda builder had no offset) -- fixed; bands moved off the banners.
+  Shipped unverified.
+
 ## m2117 -- THE SHRINE TOWER (his reference image): a pagoda tower with curled roofs, horns and a halo
 
 His reference (`images/concepts/snow_village/ref_shrine_tower.webp`). `aq_shrine` is now `svkShrine` (same base footprint w = 1.1 s, same collider and
