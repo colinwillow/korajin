@@ -23,6 +23,36 @@ make the general shapes and silhouettes more interesting without adding too many
 - Caught in the render, not in `npm run check`: the icicle regex rewrote the helper's own cone into itself (infinite recursion) and every wall piece threw
   -- check:boot does not build the showroom. Fixed; rendered the hut, aqueduct, well/shrine and towers after. 25 draws. Shipped unverified.
 
+## m2074 -- THE GREAT WATERFALL: his SNOW-BIOME ALIEN FLORA sheet, six species
+
+His concept sheet (KORAJIN -- SNOW BIOME -- ALIEN FLORA). `flora(x, y, z, s, kind)` in `wfMake` now grows one of his six, picked by
+`WFALL.flora.mix`; each stands on a snow mound with 2-3 snowy rocks; still NO new draws (wood / petals / tubes in 'flesh', light in 'glow',
+snow in the snow draw, icicles in the ice draw):
+1 CANOPY TREE -- a twisted trunk splitting into 2-3 flat umbrella caps with glowing gills under them, icicle fringes, little ones at the foot.
+2 TUBE CORAL -- 5-8 lavender-to-teal tubes, open mouths with a snow ring and icicles, glowing holes down their sides.
+3 WEEPING VINE TREE -- a trunk arcing up and over, a snow-laden crown, twelve curtains of glowing fern-vine leaves.
+4 GLOW-BUD AGAVE -- 7-9 wide purple blades curling out at the tip, snow along each, 3-5 thin stalks lit by orbs.
+5 CRYSTAL BUD -- a gnarled stem holding four rings of petals round a glowing core, two small buds beside.
+6 LANTERN TREE -- twin twisting trunks under umbrella caps, glowing lantern pods in four-petal shells hanging on cords.
+Glowing KNOTS in the wood throughout. `?wfflora=1` puts one of each in a row in front of the pool (the render's specimen row).
+Rendered twice: the first pass was washed out (tubes white, the bud a pale blob, agave blades like grass) -- palette darkened and saturated,
+blades widened, vine leaves smaller and denser, the bud's petals tightened. Headless: ladders and colliders unchanged.
+Not yet: no bark / petal texture (flat vertex colour); the field's own pines and bamboo are other code. Shipped unverified on the phone.
+
+## m2073 -- THE GREAT WATERFALL: ALIEN FLORA instead of pine trees
+
+His: "this game is supposed to be an alien world, not earth -- why the hell are there pine trees? Is there any way to make cooler alien plants?"
+The waterfall's pines (stacked cones in `snow_needles`) are gone. `flora(x, y, z, s)` in `wfMake` grows one of three species, all in TWO draws
+(a lit 'flesh' material with vertex colours, an unlit 'glow'), palette in `WFALL.flora`:
+- LANTERN STALK: a tapered violet stem (a chain of cylinders with a ball at each joint) curling over like a question mark, a glowing bulb
+  hanging off the tip (teal or magenta), blade leaves fanned at the foot.
+- SPIRAL FRONDS: 3-5 teal fiddlehead coils rising and curling inward, a glowing bead on each tip.
+- BELL TREE: a thick stalk with 3-4 stacked translucent glowing caps (pink or teal), tendrils hanging under each.
+Sizes went up after the first render (they were specks beside 60 m pillars): pillar tops 1.6-2.9x, the pool's rim 1.1-2x, and a new GROVE of
+30 along the cliff's foot and the pool's banks (clear of the pool, the ledges and any rising shrine). Rendered; the shrine on the rim stands
+clear of them. (The first render's "sunk" rim shrine was the shot script reading it before a frame had posed it -- not the game.)
+The Snowfield's own trees and bamboo are other code (SNOWZ.pines, the willow garden) and are untouched. Shipped unverified on the phone.
+
 ## m2072 -- the snow kit DETAIL PASS 5: thatch shows, painted gold and jade, carved plaques
 
 His: *"Another detail pass?"*

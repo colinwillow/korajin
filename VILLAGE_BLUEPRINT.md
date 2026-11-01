@@ -25,10 +25,10 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | **approved** (gorge, horseshoe cliff, ~12 buildings) -- its PLACE on the region map waits on REGION_METHOD stage 1-2 |
 | 3 | **ZONES** -- what goes where, and why | a zoning map: each district placed by its reason (water, road, defence, status) | **drafted** (blueprint_pass3.png) |
 | 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | **drafted** |
-| 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | |
-| 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | |
-| 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | |
-| 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | |
+| 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | **drafted** (measured) |
+| 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | **drafted** |
+| 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | **drafted** |
+| 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | **drafted** |
 | 9 | **THE GAME** | the quest givers (THE STOLEN ONES), the shop, the healer, the way out to the valley / temple, the secrets | |
 | 10 | **THE REVIEW** | one top-down plan + one side elevation drawn from passes 1-9, checked against every pass; his sign-off -> then the blockout, one district at a time | |
 
@@ -243,3 +243,121 @@ up to the spring; 5 the WATCHTOWER top; 6 the SHRINE, the reward view: every roo
 - **The temple cannot be seen from the village as the map stands.** Even from the watchtower (16 m) a 60 m crown on the temple is hidden by one
   ridge point (22, -118, ground 54 m). So at blockout **a NOTCH is cut in that ridge (~10 m)**: from the watchtower top the temple's crown sits in the
   notch -- the first sight of where the game is going. (From the TEMPLE STAIR it is in plain view.)
+Drawing: `images/concepts/snow_village/blueprint_pass5.png` (the six views as arrows).
+
+## PASS 6 -- THE HIGH ROUTE (drafted; every gap from the MOVE TABLE in TEMPLE_KIT.md, at COMFY, never max)
+Drawing: `images/concepts/snow_village/blueprint_pass6.png` (purple, numbered as below).
+
+One continuous line over the hamlet from the gate to the watchtower, built as a LADDER (introduce -> develop -> twist -> combine), ending in a
+ride down. Heights: roofs = their terrace + the building (huts eave ~2.4, gable ridges ~4); the aqueduct deck +11; the watchtower top +16.
+
+| # | from -> to | rise / gap | move | comfy limit | ladder step |
+|---|---|---|---|---|---|
+| 1 | crates (0.9) -> the watch house eave (2.4) | +1.5 / 1 m | jump | 2.2 / 5.9 | INTRODUCE: up onto a roof |
+| 2 | eave -> the GATE top (4.5) | +2.1 / 2.5 m | run + jump | 2.2 / 5.9 | introduce: roof to wall |
+| 3 | gate top -> the SMITHY ridge (5.2) | +0.7 / 4.5 m gap | run + jump | 5.9 | DEVELOP: a real gap, over the road |
+| 4 | smithy -> the WATER WHEEL's paddle | -2 / 3 m | drop + jump | -- | develop: onto something MOVING |
+| 5 | ride the wheel: 2 m -> 6 m | (it lifts you) | stand, time the jump | -- | TWIST: timing |
+| 6 | wheel top (6.0) -> the BATHHOUSE roof (6.6, ridge 8.6) | +0.6 / 3.5 m | run + jump | 5.9 | develop |
+| 7 | bathhouse ridge (8.6) -> the AQUEDUCT deck (11) up a pier face | +2.4 | wall-run UP, run | lip 2.7 | DEVELOP: the first wall-up |
+| 8 | the deck across the gorge (11, over the road) -> the STOREHOUSE roof (11.4) | 6 m along the cliff | SIDE wall-run on the cliff | 5.5 (run) / 6.5 (sprint) | TWIST: a sprint, and the drop is 11 m |
+| 9 | storehouse -> U3 the high bridge (10) -> the watchtower foot | -1.4 / walk | -- | -- | a breather, the view |
+| 10 | up the WATCHTOWER (+6 to 16): the tower face and the knoll rock 4.6 m apart | +6 | CHIMNEY wall-jumps (4 kicks) | +1.7 a kick | COMBINE: everything learned, up high |
+| -> | the top: a ZIP LINE down to the market square | -10 | zip | -- | the reward ride, back to the start of the loop |
+
+**What is up there (each dead end pays):** R1 the gate top -- the gate banner, and the first look down the gorge; R2 the storehouse roof -- a coin
+stash by the winch head; R3 the watchtower top -- the temple's crown in the ridge notch (pass 5) + the zip; R4 behind the third fall (the gorge
+path, not the high route) -- a hidden alcove for something better (a piece of gear, his call).
+
+**Shortcuts off the road (the same moves, used to save time):** every terrace wall ~3 m = a SPRINT wall-up (lip 3.6), not a run (2.7) -- so a
+shortcut needs speed; the gorge, higher bank to lower: run + jump 5.9 (the banks are ~4-6 m apart at the bridges); the third fall's side, 3 m, a
+sprint wall-up = the back way to the shrine instead of the tunnel stair.
+
+**Rules checked:** no gap over its comfy distance; no ledge over its comfy height; the one hard move (8, the side run with an 11 m drop) has a soft
+fail -- you land on the W2 roofs, not in a pit (there is no fall damage; a hard landing costs 1.15 s).
+
+**Next: pass 7 -- the buildings, one row each** (kit piece + options, terrace, door facing, who lives there) -- the table the blockout is built from.
+
+## PASS 7 -- THE BUILDINGS, one row each (drafted)
+Coordinates are the hamlet's own frame (the pass 2/3 drawings, metres; turned onto the region valley at blockout). Kit names and options are the
+real ones (`snowKitPiece(kind, opts)`; hut defaults R 2.7, wallH 2.3, roofH 2.8). Doors face the road or their lane. Ids are stable (SCENE_COMPANION).
+
+| id | building | at (x, z) | terrace | kit + options | door faces | who / what |
+|---|---|---|---|---|---|---|
+| v_gate | the GATE | -12, 22.5 | E1 +1.2 | `gate` { w 4.4 } (5.1 tall) | NE, to the spawn | the watch; the mammoth passes under (CHECK his height at blockout -- widen if he does not fit) |
+| v_watch | the watch platform | -18, 26.5 | E1 | `deck_posts` { h 3, w 4, d 4 } + `crates` at its foot | the gate | the gate guard; high route 1-2 |
+| v_smithy | the SMITHY (open forge shed) | -10, 30 | E1 | 4 x `post_beam` + `roof_gable` (ridge +4) + `forge_station` + `firewood` | the road | the SMITH; high route 3 (the ridge) |
+| v_wheel | the WATER WHEEL | -24.6, 32 | the first fall | **NEW piece** (a turning wheel, paddles you can ride) | -- | drives the smith's bellows; high route 4-5 |
+| v_merch | the merchant's house | -53, 32.5 | W1 +2.4 | `hut` { banner 1, porch 1, seed 2 } | E, onto the square | the MERCHANT |
+| v_market | the MARKET SQUARE | -43, 36 | W1 | 3 x `market_stall`, `well`, `fire_pit`, 4 x `lantern_post`, `barrels`, `crates` | -- | the shop, the well, the square |
+| v_hut_w1 | hut | -62, 44 | W2 +5.4 | `hut` { seed 3 } | S, the lane | a family |
+| v_hut_w2 | hut | -50, 48 | W2 | `hut` { R 2.4, seed 5 } | S | a family |
+| v_hut_w3 | hut | -36, 53.5 | W2 | `hut` { R 2.2, porch 0, seed 9 } | W | a family (under the aqueduct) |
+| v_store | the STOREHOUSE (flat stone roof) | -44, 60 | W3 +8.4 | `wall_straight` / `wall_corner` ring + `platform` roof (top +11.4) | the lane | goods from the winch; high route 8 lands here; R2 coins |
+| v_winch | the WINCH LIFT | -46, 40 -> 58 | W1 -> W3 | **NEW piece** (a basket on a counterweight, a timber gantry on the storehouse) | -- | hauls goods; a moving platform |
+| v_hut_w4 | hut | -64, 55 | W3 +8.4 | `hut` { R 2.6, seed 11 } | E | herders (they keep the stable) |
+| v_hut_w5 | hut | -52, 61 | W3 | `hut` { R 2.4, chimney 1, seed 13 } | N | a family |
+| v_tower | the WATCHTOWER | -57, 28 | the knoll +8 | `watchtower` { h 6.5 } (top ~+16) | the high bridge | the lookout; R3 the temple notch view; the zip starts here |
+| v_hbridge | U3 the high bridge | W3 -> knoll | +10 | `aq_deck` spans on `deck_posts`, or the rope bridge (`RSPAN`) | -- | high route 9 |
+| v_bath | the BATHHOUSE (timber hall) | -15, 41.5 | E2 +4.2 | `wall_straight` / `wall_window` ring 9 x 5 + `roof_gable` (ridge +8.6) | W, the road / B3 | the BATHKEEPER (healer); the aqueduct ends on its roof |
+| v_pool | the HOT POOL | -9, 45.5 | E2 | **NEW piece** (a stone-rimmed steaming pool; heals) | -- | healing |
+| v_hut_e1 | hut | -20, 55 | E3 +7.2 | `hut` { seed 4 } | S, the stairs | a family |
+| v_hut_e2 | hut | -12, 52 | E3 | `hut` { R 2.2, seed 6 } | W | the smith's family |
+| v_elder | the ELDER'S HOUSE | -7, 61 | E3 | `hut` { R 3, roofH 3.4, wallH 2.6, banner 1, seed 7 } | W | the ELDER (the temple's lore, the first quest) |
+| v_shrine | the SHRINE | -22, 66 | E4 +10.8 | `aq_shrine` { s 1.4 } + `jade_lamp` x2 + `banner_post` x2 | NE, over the hamlet | the shrine keeper |
+| v_spring | the SPRING + GEYSER | -30, 68 | E4 | **NEW piece** (a steaming spring pool; a geyser on a timer that launches you) | -- | the source |
+| v_stable | the STABLE + paddock | 6, 26 | outside (field) | `longhouse` { R 3.4, sx 2, chimney 0, banner 0 } + `fence_straight` x 8 + `fence_gate` | the road | the MAMMOTH's home; the herders' work |
+
+### The works (not buildings, but built)
+| id | what | kit | notes |
+|---|---|---|---|
+| v_aq | the AQUEDUCT, spring -> bath roof | `aq_section` (piers 6 / 9 / 12 by the ground under them), deck +11 | the spine; walkable; high route 6-8 |
+| v_b1 | B1, the creek mouth | **NEW**: a timber road bridge 4.5 m wide | the mammoth crosses |
+| v_b2 / v_b3 | B2 (low) / B3 (high) over the gorge | `arch` + `aq_deck` (4.5 m) | stone; the gorge path passes under both |
+| v_terr | the TERRACES (8 bodies) | **NEW**: a terrace body = rough rock + `wall_straight` retaining walls (~3 m) + snow top (`patchAdd`) | built as RAISED bodies on the ground |
+| v_stairs | the stairs + the mammoth ramp | `stairs` { n 10 } (risers .30), `aq_ramp` { rise 3 } for the ramp | the ramp is the mammoth's |
+| v_tunnel | U2, the tunnel stair inside the E3/E4 wall | **NEW**: an `arch` opening + an inside stair | the only foot way to the shrine |
+| v_zip | the zip line tower -> market | the existing `ZIPS` | the reward ride |
+
+**A correction from this pass:** the kit's gate is 5.1 m tall, not 4.5, so high route 1-2 changes: crates (0.9) -> the WATCH PLATFORM (3.0, +2.1)
+-> the gate top (5.1, +2.1). Both still inside run + jump's comfy 2.2.
+
+**NEW pieces the kit still needs (6):** the water wheel, the winch lift, the hot pool, the spring + geyser, the timber road bridge, the terrace body
+(+ the tunnel stair). These go to the kit session as one list before the blockout.
+
+**Count:** 18 buildings / structures (12 lived-in) + 7 works. Next: **pass 8 -- LIFE** (who walks where, smoke, lights at night, the animals).
+
+## PASS 8 -- LIFE (drafted)
+What makes it a place and not a set: people on routes with reasons, things that move, smoke, light. Budget for a phone: **~8 bodies** in the hamlet
+at once (each is a skinned draw), the rest is particles and emissive (nearly free).
+
+### The people (8), each with a beat -- a loop between two or three spots, not a random wander
+| who | body (what exists) | the loop | where you find them |
+|---|---|---|---|
+| the SMITH | the toad wanderer (`TOADK`, his village NPC) | forge -> the water wheel (checks it) -> forge; hammering clip at the anvil | E1, the smithy |
+| the MERCHANT | toad wanderer (tint) | behind the middle stall; to the storehouse by the WINCH and back | W1, the market |
+| the BATHKEEPER (healer) | toad wanderer (tint) | the bath door -> the hot pool -> the bath door | E2 |
+| the ELDER | toad wanderer (slow, a stick) | her porch -> the shrine stairs (the tunnel) -> the shrine -> back; she is at the shrine at NIGHT | E3 / E4 |
+| a HERDER | toad wanderer | the stable -> the paddock gate -> out to the meadow herd and back (a long loop, outside) | outside |
+| the GATE GUARD | the samurai body (calm, spear/katana sheathed) | the watch platform <-> the gate | E1 |
+| 2 CHILDREN | toad wanderer, small (scale .7) | chase each other round the market well, the snowman, the W2 lane; scatter when you run at them | W1 / W2 |
+
+- They are the **quest givers** (pass 9): the elder, the smith, the herder, a child. Each one's beat passes the road at least once, so you meet them.
+- The **mammoth** waits at the stable (he is the herder's charge); the **calf herd** grazes the meadow beyond, inside sight of the stable.
+
+### Things that move (and are played with)
+the WATER WHEEL (always turning; you can ride it), the WINCH basket (up and down on a slow loop; ride it), the GEYSER (puffs every ~12 s, a launch),
+the creek (flowing, steaming), banners and washing lines (the willow's verlet, a few links), smoke from every chimney, the zip line.
+
+### Smoke, steam, light
+- **Chimneys:** every hut and the smithy smoke (the existing `puffPool` / `SMOKE`), thicker at the smithy; the smoke leans with the wind (NW).
+- **Steam:** the creek all the way down, the bath roof, the hot pool, the spring -- the steam is the hamlet's silhouette from the pass (pass 5).
+- **Day:** warm window glow faint; the square busy.
+- **Night (`SNOWNIGHT`):** every window and lantern warm (the kit's light pools), the shrine's jade lamps the brightest thing (the beacon from the
+  market and B3), the forge glowing orange in its open shed, the children gone, the elder at the shrine, the guard with a lantern on the gate.
+
+### Sound (later, his recordings)
+the forge hammer (a rhythm you hear from the gate), the creek and the falls (louder in the gorge), the wheel creak, the market murmur, the wind
+on the high route (louder up there -- height you can hear).
+
+Next: **pass 9 -- THE GAME** (the quests from THE STOLEN ONES, the shop, the healer, the secrets, the way on to the temple).
