@@ -10902,7 +10902,7 @@ function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { ro
   const crystal = (x, y, z, s, tilt, mat) => { const n = 3 + Math.floor(R() * 3); for (let k = 0; k < n; k++) { const h = s * (.6 + R() * .8), r = h * .12, a = R() * 6.28, t = tilt + R() * .45;
       for (const q of [new THREE.CylinderGeometry(r, r, h, 6).translate(0, h / 2, 0), new THREE.ConeGeometry(r, r * 2.2, 6).translate(0, h + r * 1.1, 0)]) { q.rotateZ(t * Math.cos(a)).rotateX(t * Math.sin(a)).translate(x, y, z); (mat || L.ice).push(q); } } };
   const icicles = (x0, x1, y, z, n) => { for (let k = 0; k < n; k++) { const l = .3 + R() * 1.1; L.ice.push(new THREE.ConeGeometry(.07 + R() * .08, l, 5).rotateX(Math.PI).translate(x0 + R() * (x1 - x0), y - l / 2, z + (R() - .5) * .6)); } };
-  const P = {}; for (const q of K.places) P[q.id] = q; const only = K.only;     // m15IC: `only` builds one piece (the region places them one by one, `rgnPlaceBuild`)
+  const P = {}; for (const q of K.places) P[q.id] = q; const only = K.only;     // m2097: `only` builds one piece (the region places them one by one, `rgnPlaceBuild`)
   // GROTTO: a half-dome shell (open to the west), its wall a ring of colliders
   if (!only || only === 'grotto') { const G = P.grotto, Rr = 7, H = 5.6, open = 0, half = 1.05;     // three's sphere puts phi at x = -cos(phi), z = sin(phi): the gap round phi 0 faces -X (west, toward the field)
     const sh = new THREE.SphereGeometry(Rr, 28, 12, open + half, Math.PI * 2 - half * 2, 0, Math.PI / 2); sh.scale(1, H / Rr, 1); { const Pp = sh.attributes.position; for (let i = 0; i < Pp.count; i++) { const x = Pp.getX(i), y = Pp.getY(i), z = Pp.getZ(i), n = nz(x * .8, y, z * .8); const k = 1 + n * .14; Pp.setXYZ(i, x * k, y * (1 + n * .08), z * k); } sh.computeVertexNormals(); }
@@ -12542,7 +12542,7 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
     // m2095: THE MOVE-IN, step 5 -- the DRAGON'S LAIR: the Snowfield's whole cliff climb (ledges 2.0 / 3.8, the ice shelf, the 9.5 m cliff, the
     // frozen fall, the lair dome and its nest) in a level bay cut north of the DRAGON'S GATE junction, its ledges facing the junction
     if (meta.hamlet && meta.hamlet.lair && typeof snowCliffs === 'function') { const Lr = meta.hamlet.lair; try { rgnPlaceBuild(snowCliffs, g, Lr.ox, Lr.oy, Lr.oz); if (SNOWCLIFF.nestAt) RGN.nest = [SNOWCLIFF.nestAt[0] + Lr.ox, SNOWCLIFF.nestAt[1] + Lr.oy, SNOWCLIFF.nestAt[2] + Lr.oz]; } catch (e) { note('LAIR THREW ' + e.message); console.error(e); } }
-    // m15IC: THE MOVE-IN, step 6 -- the GROTTO is the ICE CAVES' mouth and the STONE RING is the STANDING STONES, each built alone (`SNOWKIT.only`)
+    // m2097: THE MOVE-IN, step 6 -- the GROTTO is the ICE CAVES' mouth and the STONE RING is the STANDING STONES, each built alone (`SNOWKIT.only`)
     // and shifted from its Snowfield spot onto its place, on the terrain there
     if (typeof snowKit === 'function') for (const [kid, pid] of [['grotto', 'ice_caves'], ['stones', 'standing_stones']]) { const Q = RGN.places.find(q => q.id === pid), K0 = SNOWKIT.places.find(q => q.id === kid); if (!Q || !K0) continue;
       try { SNOWKIT.only = kid; rgnPlaceBuild(snowKit, g, Q.x - K0.x, rgnH(Q.x, Q.z) - .05, Q.z - K0.z); } catch (e) { note('KIT ' + kid + ' THREW ' + e.message); console.error(e); } finally { SNOWKIT.only = null; } }

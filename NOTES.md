@@ -21,6 +21,7 @@ Checked in the real browser: two renders at clock 0 and 2.2 differ in 11k pixels
 Shipped unverified on the phone (whether .55 m reads as wind or as wobble is his to say -- the numbers are in `wfSway`).
 
 ## m15IC -- THE MOVE-IN, step 6: the GROTTO is the ICE CAVES' mouth; the STONE RING is the STANDING STONES (Nov 1 2026)
+## m2097 -- THE MOVE-IN, step 6: the GROTTO is the ICE CAVES' mouth; the STONE RING is the STANDING STONES (Nov 1 2026)
 - `snowKit` takes `SNOWKIT.only` ('grotto' / 'bridge' / 'stones' / 'spire'): one piece, and no field-wide plants (they were scattered by the
   Snowfield's own coordinates). The region builds the grotto (the half-dome open to the west, its crystals, icicles and the shrine stone with its
   glowing ring) at the ICE CAVES place (-34, 159) and the ring of seven stones + its floating crystal at the STANDING STONES (-129, -1), each through
