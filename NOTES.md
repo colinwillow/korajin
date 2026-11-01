@@ -16,6 +16,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2115 -- THE ARMILLARY FORGE, pass 2: from his four views -- a MOUNTAIN, not a box
+
+His four views (front, back, both sides) show the whole thing is a mountain of stacked bulbous rock with the masonry and the wood growing out
+of it. Added to `fhMake`:
+- ROCK MASSES (`blob`): 18 bulbous lumps of his masonry (squashed, noised spheres with flattened snowy tops and icicle fringes) hugging the
+  keep's flanks and back, skirting both towers, ridging between them, two rock PILLARS framing the forge door, a long foot along the back.
+  Each is solid (a box at 62 % of its size) -- checked clear of the stairs, the walk, the balcony and the tier decks.
+- WOODEN TIERS on brackets: a deck along the keep's back at 17 (walkable, lanterns at its ends), a ring round the right tower at 11.
+- CRYSTAL WINDOWS: 11 faceted green crystals in gold diamond frames on the towers, the flanks and the back. The GEAR PORTHOLE (an orange-lit
+  round window with spokes) on the right flank.
+- THE BACK: three bronze PIPE OUTLETS pouring glowing water into a back POOL; two curved IVORY PIPES with gold bands down from the top.
+- THE ARMILLARY: now a gold CAGE (four meridians, three latitudes, an axle) turning round a FACETED crystal orb with a light inside. The
+  front ivory arches are thicker. A mushroom-capped chimney TURRET and four gold-tipped SPIRES on the roofs.
+- Crystals are faceted and lit now (their own flat-shaded emissive material, +1 draw). 15 draws, 41k tris; every route measured as before.
+Rendered from his four angles. Next: blockier masonry on the rock masses (they read smooth from afar), more balcony tiers and lanterns,
+the forge interior. Shipped unverified on the phone.
+
 ## m2114 -- THE ARMILLARY FORGE, pass 1: his snowy workshop-forge, built as a kit piece
 
 His: "a new mission -- build this house so we can insert it into a level somewhere" (his concept: a purple-stone forge on a rock mound).
