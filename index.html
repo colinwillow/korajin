@@ -12378,11 +12378,11 @@ function rgnHamlet(g) { const M = RGN.hm, nx = M.nx, nz = M.nz, D = RGN.D, sc = 
   // m2081: DISTRICT 2 -- the bridges (B1 timber over the creek mouth, B2 / B3 stone across the gorge in .3 m steps, U3 the high timber bridge to the
   // knoll) and the tunnel stair's ROOF are turned boxes (`obox`): stood on by `groundAt`, the gorge path passes UNDER them (their underside is a ceiling).
   if (M.boxes) { const mat = { timber: new THREE.MeshStandardMaterial({ color: 0x9a7350, roughness: .85 }), stone: new THREE.MeshStandardMaterial({ color: 0x9aa2ae, roughness: .9 }),
-      wood: new THREE.MeshStandardMaterial({ color: 0xa47a52, roughness: .85 }), block: new THREE.MeshStandardMaterial({ color: 0xd9dde4, roughness: .9 }), rock: new THREE.MeshStandardMaterial({ color: 0x7d7a76, roughness: .95 }), aq: new THREE.MeshStandardMaterial({ color: 0xc9b9a0, roughness: .9 }) };     // m15D3: the high route's stand-in blocks + the aqueduct
+      wood: new THREE.MeshStandardMaterial({ color: 0xa47a52, roughness: .85 }), block: new THREE.MeshStandardMaterial({ color: 0xd9dde4, roughness: .9 }), rock: new THREE.MeshStandardMaterial({ color: 0x7d7a76, roughness: .95 }), aq: new THREE.MeshStandardMaterial({ color: 0xc9b9a0, roughness: .9 }) };     // m2084: the high route's stand-in blocks + the aqueduct
     for (const b of M.boxes) { const bx = obox(b.cx, b.cz, b.hx, b.hz, b.yaw, b.y0, b.y1); BOXES.push(bx);
       const m2 = new THREE.Mesh(new THREE.BoxGeometry(b.hx * 2, b.y1 - b.y0, b.hz * 2), mat[b.kind] || mat.stone); m2.position.set(b.cx, (b.y0 + b.y1) / 2, b.cz); m2.rotation.y = -b.yaw; m2.castShadow = m2.receiveShadow = true; g.add(m2); }
     if (typeof boxGrid === 'function') boxGrid(); }
-  // m15D3: the ZIP LINE, watchtower top -> the market square (pass 6's reward ride)
+  // m2084: the ZIP LINE, watchtower top -> the market square (pass 6's reward ride)
   for (const Z of (M.zips || [])) { const zip = { A: Z[0], B: Z[1] }; ZIPS.push(zip); g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...zip.A), new THREE.Vector3(...zip.B)]), new THREE.LineBasicMaterial({ color: 0x3a3a3a }))); }
   for (const L of (M.bridgeLabels || [])) { const lb = rgnLabel(L.name); lb.position.set(L.x, L.y + 2.2, L.z); lb.scale.set(4, .8, 1); g.add(lb); }
   RGN.stat = 'hamlet ok'; }

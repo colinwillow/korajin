@@ -28,7 +28,7 @@ Asked by the village session for VILLAGE_BLUEPRINT.md pass 7 (Colin approved sen
 - Rendered all seven before pushing (the wheel's paddle snow and the bridge deck's snow patches came off after the look). 32 draws in the showroom
   (+3 mover groups and the geyser column). Shipped unverified -- riding the wheel and the basket, and the geyser launch, are untested on the phone.
 
-## m15D3 -- THE VILLAGE, district 3: the aqueduct + the high route's standable surfaces (Nov 1 2026)
+## m2084 -- THE VILLAGE, district 3: the aqueduct + the high route's standable surfaces (Nov 1 2026)
 His: *"start district 3."* (SNOW VILLAGE on the KORAJIN menu, top button.)
 - `tools/regionpick.py` `BLOCKS`: grey / wood stand-in blocks at pass 6's heights, so the high route is playable before the buildings (district 4
   replaces each with the real building, same top): crates (E1 + .9) -> the watch platform deck (+3.0, on a post) -> the GATE (two pillars + the top
