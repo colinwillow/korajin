@@ -5,6 +5,25 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2021 -- THE ICE TEMPLE: the LOOK pass on the entrance (the concept art over the blockout)
+
+His: *"Now do a look pass on the entrance to match the concept"* (`images/concepts/ice_temple/big_*`). `iceDress(R, g)` dresses the SAME rows the
+blockout built -- the colliders are the blockout's either way; `?iceskin=block` brings the role colours back. `ICELOOK` holds the numbers.
+- STONE: every raised box rounded and chipped (`templeEro`; ground slabs plain) in a generated frosted grey-violet rune-carved ashlar
+  (`textures/ice_stone.webp`, triplanar via `templeTriMat`, tinted greyer); the valley in the snowfield's own painted snow and rock (rock at 22 m
+  and greyed: at 9 m it read as blue scales). The courts and landings under a snow skin (2 cm over the collider).
+- SNOW PILLOWS on every raised top (5 cm over the collider), ICICLES (seeded cones) off every lip of anything over 2.5 m, a GOLD band under each lip,
+  gold-framed GLYPH plates with jade slits on the big fronts.
+- The CRYSTAL BRAZIERS: gold bowls and jade crystal clusters; the hittable crystals themselves stretched tall.
+- The DOOR: a gold pointed frame round a glowing jade door (the gate's own mesh); the outer gate gold; the lower door stone.
+- The EMBLEM ROUNDEL over the door: a dark stone disc, a gold rim, a jade ring, the cream compass star.
+- The two black KORAJIN BANNERS (generated `textures/ice_banner.webp`: black cloth, gold border, the compass-star emblem), cut to the concept's
+  pointed tail, swaying on `LB.flutter`; the left one hangs on the chimney pillar's face (behind it, the facade's was hidden).
+- The SILHOUETTE: two tapering curved HORNS with gold bands, the two RING arcs framing the crown, the gold crown drum and its jade crystal cluster;
+  crystal FINIALS on the towers; frozen WATERFALLS off the towers' fronts into the moat. The horn blockout rows are now `deco` (drawn in the
+  blockout skin, NO collider): stepped boxes under curved horns would have been invisible walls.
+Still flat: the valley's walls (cliffs, the aqueduct arches, pines -- the concept's background) are the next pass. Shipped unverified.
+
 ## m2020 -- THE ICE TEMPLE: rescoped to the ENTRANCE, 1.5 km out, a descent to the temple below
 
 His (after m2017): *"The inside of the temple will be underground -- massive, the iceberg; we're building the ENTRANCE, the tip of it. And the
