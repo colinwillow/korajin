@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## mNEXT -- the snow kit DETAIL PASS 1: painted maps (his: "another detail pass on everything -- make it way more interesting")
+## m2058 -- the snow kit DETAIL PASS 1: painted maps (his: "another detail pass on everything -- make it way more interesting")
 
 Planned as three passes: (1) painted surfaces, (2) shape (chipped/rounded stone, lumpier snow, proud stones), (3) dressing (rope lashings, gold
 fittings, hanging lanterns, moss/frost, variety). This is (1).
