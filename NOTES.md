@@ -9,6 +9,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2099 -- THE FLORA: painted-in-code detail maps on the soft parts
+
+His: "do one and two" (1 = textures for the petals / caps / pipes, 2 = distance versions). No image files from him for the soft parts, so
+`wfFloraTex(kind)` paints two tiling 256 px canvases once at load: 'soft' (organic CELLS -- lighter hearts, darker rims -- over fine FIBRES
+along the grain and speckle) on the flesh material (petals, caps, pipes, blades, pads), and 'glow' (fibrous STREAKS, mottling) on the glow
+material (gills, racemes, orbs, lanterns). Grey ~.9, multiplying the vertex colours. The bark keeps his painted `temple_bark`. No draws added.
+Rendered in close-up: the gills show streaks, the blades and pipes a grain. When he paints real maps, they replace these two textures.
+
 ## m2098 -- THE FLORA SWAYS in the wind
 
 His: "keep going" (next on the list: wind sway). Every flesh and glow vertex carries `aSway` (0 = fixed, 1 = free end); `wfSway(m)` chains
