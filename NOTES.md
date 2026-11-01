@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2049 -- THE GREAT WATERFALL: m2046 left the WHOLE waterfall out (a TDZ read), found by its first render
+
+His: "send me a render after every pass." The first render (headless SwiftShader at `?w=forge&zone=snow`) never got a waterfall: the page logged
+`WFALL THREW Cannot access 'KCLIMB' before initialization`. The snow stage builds at MODULE SCOPE, above `const KCLIMB` and `ZIPS` (snowCliffs'
+own comment says the same of BGRID), and m2046's ladder/zip registration read them inside `wfallBuild` -- caught, so no blank page and no
+`check` failure, just no waterfall at all on m2046. Fix: `wfallBuild` keeps a `reg` closure and `wfallStep` runs it once on the first frame.
+The node harness could not see it (it stubs KCLIMB as a plain const above the block): the landmine "a const read above its declaration" again,
+inside a try. Shipped; the renders follow in chat.
+
 ## m2048 -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
 
 His: *"Keep going"* -- the brief's remaining whole buildings.
