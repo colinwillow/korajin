@@ -17,6 +17,38 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2149 -- PROLOGUE P1, THE GARDEN, pass 1: the floating Zen garden he wakes in (Nov 1 2026)
+His brief (PROLOGUE.md, refs `images/concepts/prologue/garden_01.webp`, `garden_02.webp`): Grumbo wakes by a HAMMOCK between two willows on a floating
+island over a sea of cloud, a garden untroubled for centuries. Beat 1 ONLY -- no story, no Hollow, no falling (P2 onwards).
+- **ZONE**: KORAJIN > *Prologue -- the Garden* (top of the menu) = `?w=forge&zone=garden` (`GARDEN.want`); stage hook `gdnStage(g)` in arenaStage's forge
+  branch, `gdnStep(dt)` beside dmtStep. **The build waits a tick** (`gdnMake` on setTimeout 0): it uses `templeRock`, whose `TROCKS` and
+  `TEMPLEGLSL_N` are declared ~18k lines BELOW the module-scope arenaStage call -- reading them there is the blank page. The island is at `GARDEN.top`
+  120 (the forge's invisible floor is at 0); falling past `top - fallY` puts him back where he last stood, a step in from the edge.
+- **DATA-FIRST** (SC_GARDEN markers): `GARDEN` lists every piece -- isle, terrace, stair, shrine, four willows, hammock, path + 2 branches, stair-foot
+  apron, zen circle (+ monolith), 4 pools, 3 streams (each falls off the rim where it meets it), 2 terrace spouts, 4 fence arcs, 9 stone lanterns,
+  5 cairns, 8 crystal clusters, 5 banners, 3 stepping stones, the lookout islet, 9 far islands (one with a pagoda), 34 drifting rocks, 9 snow peaks, 7
+  sun shafts. `gdnBuild(G)` is a pure function of it and fills `GARDEN.parts` (72 ids).
+- **THE PLACE**: a lawn on a ragged rock (`templeRock`, 23 x 27 m, tapering 30 m below) with a moss lip and hanging ivy round the rim; a flagstone path
+  from the spawn to the shrine stair (branches east to the stepping stones and south to a fenced overlook); the raked-sand circle (procedural rake
+  rings round the centre and each stone) with a jade-veined monolith; glowing mint Jinra pools and streams (`M.water`, flowing) spilling off the
+  rim as falls into the clouds (`M.fall`); the 2.4 m mossy cyclopean terrace, EIGHT .30 risers (his step is .357), and THE BELL SHRINE -- his
+  version 1 (red lacquer columns, a two-tier curved jade-tile roof swept up at the corners, gold trim, jade gems, a jade orb finial) with
+  version 2's moss on it and a great bronze bell that RINGS (and swings) when he walks in under it; red banners either side of the bell.
+- **THE WILLOWS**: twisted grooved trunks (`gdnTube`) with root flares, jade veins spiralling the grooves, seven boughs, a leaf umbrella, strands
+  of willow hanging round its rim (alpha cards, swaying in a vertex shader), lanterns and little bronze bells off the boughs. THE HAMMOCK: red-
+  and-white woven cloth (his-ref palette) on spreader bars and ropes round both trunks, its own group, still rocking from him getting out.
+- **VERTICALITY**: the terrace (+2.4), three floating stepping stones each 1.2 m higher off the east rim to a LOOKOUT islet at +4.8 (its own willow,
+  lantern, cairn, crystals, a fall), far islands above and below (-34 .. +92), drifting rocks, snow peaks rising out of the cloud sea at -70.
+- **SKY**: `templeSkyMat` / `templeCloudMat` (three cloud layers), soft cumulus heaps, warm morning sun from the left, blue haze, sun shafts.
+- **TEXTURES** (`tools/garden_textures.py`, gpt-image-2 / 1.5, seamless): garden_flag, rock, lawn, roof (jade glazed tiles), wood, hammock,
+  banner_red, banner_teal, and alpha cards vine (willow strands), fern, flowers. Reused: dome_* (bark, leaves, moss, cyclo, stone, gold, ivy, clump),
+  temple_lacquer, bronze.
+- **COST** (headless): 110-155 draw calls, 240-360k tris depending on the view (the plant library's cells are most of the calls).
+- **P2 HOOKS**: `GARDEN.state = 'calm'`, `GARDEN.U.uGlow` (1 = full Jinra in water + falls), `GARDEN.light` (the calm sun/hemi), `GARDEN.pieces`
+  (main / terrace / shrine / stones / lookout / far / bell / hammock -- separate groups so they can crack off). Plants are on the stage group, world y.
+- **OPEN** (not ticked; his sign-off on the phone is the last box): no lying-in-the-hammock pose (he spawns standing beside it -- no sleep / get-up
+  clip on Grumbo); props + plants pass, sky + light pass and a detail pass against the refs still to come. Shipped unverified.
+
 ## m2148 -- FOREST TEMPLE detail pass 1: the greenery made of GEOMETRY, not a flatter texture; the sheet's carving (Nov 1 2026)
 His: *"keep going with the detail passes against the sheet ... the leaves on the ground, the greenery -- do we need a displacement map or a normals
 map? They look so unbelievably flat, on the roof, on the ground, everywhere."*
