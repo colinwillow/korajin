@@ -15908,7 +15908,8 @@ function dmtStep(dt) { const Z = DOMET, O = Z.on; if (!O) return; O.t += dt;
 // SC_GARDEN:START
 const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 1851,
   sky: { zen: [.13, .38, .88], mid: [.4, .66, .98], hor: [.96, .92, .84], sun: [-.6, .48, -.25], fog: 0xeae2d2, fogNear: 180, fogFar: 1900, pano: 'garden_sky', panoSunU: .824 },
-  cards: { n: 70, seed: 404 },                                                         // his painted cloud, billboarded: drifting banks BELOW and round the island
+  cards: { n: 90, far: 34, seed: 404 },
+  farGen: { n: 26, seed: 5150, r0: 260, r1: 1350, kinds: ['mesa', 'spire', 'twin', 'arch', 'tilted', 'cluster', 'roots', 'spire', 'mesa'] },                                                         // his painted cloud, billboarded: drifting banks BELOW and round the island
   clouds: { y: -150, layers: [{ dy: 0, cover: .97, k: .011, sp: 1.2 }, { dy: 8, cover: .55, k: .017, sp: 2.0 }, { dy: 17, cover: .3, k: .023, sp: 2.8 }] },
   isle: { id: 'isle_main', rx: 23, rz: 27, depth: 30, sides: 56 },
   spawn: { at: [-9.8, 4.6], face: [6.6, 3.0] },                                    // STANDING beside the hammock, facing out over the garden (no sleep clip yet)
@@ -16663,6 +16664,29 @@ function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clou
     for (const deg of F.falls || []) { const p = rk.rim[Math.round(rk.rim.length * deg / 360) % rk.rim.length], L = Math.hypot(p[0] - x, p[2] - z); falls.push(gdnFall(p[0], y + .1, p[2], (p[0] - x) / L, (p[2] - z) / L, Math.max(1.5, F.r * .12), Math.min(220, y + 160), 2)); }
     Z.parts.push({ id: F.id, kind: 'far_isle', x, y, z, r: F.r }); }
   function part0(id) { Z.parts.push({ id, kind: 'far_pagoda' }); }
+  // m2166 THE FAR ISLES, VARIED (his: "a variety of floating islands -- their silhouettes ... much larger in the background"): `farGen` adds islands
+  // of SEVEN shapes round the horizon, each turned and tilted its own way -- a flat MESA, a tall SPIRE, TWINS, an ARCH, a TILTED slab, a CLUSTER,
+  // and a rock trailing long ROOTS -- some huge and far. Built at the origin, then moved and turned with one matrix, so a tilt is free.
+  { const FG = Z.farGen, RG = gdnRnd(FG.seed), MX = new THREE.Matrix4(), Q = new THREE.Quaternion(), E = new THREE.Euler(), V = new THREE.Vector3(), S1 = new THREE.Vector3(1, 1, 1);
+    const rock2 = (x, y, z, r, r2, d, n, seed) => { const k = templeRock(x, y, z, r, r2, d, n, seed); k.cap.deleteAttribute('color'); return k; };
+    const lay = (parts, m) => { for (const [L, q] of parts) { q.applyMatrix4(m); L.push(q); } };
+    for (let i = 0; i < FG.n; i++) { const a = i / FG.n * Math.PI * 2 + RG() * .25, d = FG.r0 + Math.pow(RG(), .8) * (FG.r1 - FG.r0), x = Math.sin(a) * d, z = Math.cos(a) * d, y = -70 + RG() * 200, big = d / 600, kind = FG.kinds[Math.floor(RG() * FG.kinds.length)];
+      if (gdnReserved(x, y, z, 80 * big)) continue; const P = [], sd = 1200 + i * 17, s = (14 + RG() * 22) * big;
+      if (kind === 'mesa') { const k = rock2(0, 0, 0, s * 1.6, s * (1.1 + RG() * .4), s * .55, 26, sd); P.push([rock, k.side], [cap, k.cap]); for (let t = 0; t < 5; t++) { const tx = (RG() - .5) * s * 1.6, tz = (RG() - .5) * s, h = s * .22; P.push([bark, new THREE.CylinderGeometry(h * .06, h * .1, h, 5).translate(tx, h / 2, tz)], [leaf, gdnBlob(RG, tx, h, tz, h * .5, .55, 0)]); } }
+      else if (kind === 'spire') { const k = rock2(0, 0, 0, s * .45, s * .4, s * 2.6, 16, sd); P.push([rock, k.side], [cap, k.cap]); const h = s * .3; P.push([bark, new THREE.CylinderGeometry(h * .06, h * .1, h, 5).translate(0, h / 2, 0)], [leaf, gdnBlob(RG, 0, h, 0, h * .55, .6, 0)]); }
+      else if (kind === 'twin') { for (const sx of [-1, 1]) { const k = rock2(sx * s * .75, sx * s * .15, 0, s * .8, s * .7, s * (1.1 + RG() * .6), 18, sd + sx); P.push([rock, k.side], [cap, k.cap]); } }
+      else if (kind === 'arch') { for (const sx of [-1, 1]) { const k = rock2(sx * s * 1.1, -s * .2, 0, s * .45, s * .4, s * 1.8, 14, sd + sx); P.push([rock, k.side], [cap, k.cap]); }
+        const top = rock2(0, s * .25, 0, s * 1.7, s * .45, s * .5, 20, sd + 7); P.push([rock, top.side], [cap, top.cap]); }
+      else if (kind === 'cluster') { const k = rock2(0, 0, 0, s * .8, s * .7, s * 1.3, 18, sd); P.push([rock, k.side], [cap, k.cap]); for (let t = 0; t < 4; t++) { const aa = RG() * 6.3, rr = s * (1.3 + RG() * .8), ss = s * (.18 + RG() * .25); const k2 = rock2(Math.cos(aa) * rr, (RG() - .5) * s, Math.sin(aa) * rr, ss, ss, ss * 1.8, 10, sd + t * 3); P.push([rock, k2.side], [cap, k2.cap]); } }
+      else if (kind === 'roots') { const k = rock2(0, 0, 0, s, s * .85, s * .8, 22, sd); P.push([rock, k.side], [cap, k.cap]); for (let t = 0; t < 6; t++) { const aa = t / 6 * 6.3, rr = s * .5, L = s * (1.2 + RG() * 1.4), pts = [];
+          for (let j = 0; j <= 6; j++) { const u = j / 6; pts.push(new THREE.Vector3(Math.cos(aa) * rr * (1 - u * .4) + Math.sin(u * 5 + t) * s * .08, -s * .3 - u * L, Math.sin(aa) * rr * (1 - u * .4))); }
+          P.push([bark, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 10, s * .045, 5, false)]); } P.push([leaf, gdnBlob(RG, 0, s * .3, 0, s * .6, .45, 1)]); }
+      else { const k = rock2(0, 0, 0, s * 1.2, s * .6, s * .9, 22, sd); P.push([rock, k.side], [cap, k.cap]); }     // 'tilted': a slab, the tilt below does it
+      const tilt = kind === 'tilted' ? .3 + RG() * .25 : (RG() - .5) * .16; Q.setFromEuler(E.set((RG() - .5) * tilt * 2, RG() * 6.3, tilt * (RG() < .5 ? -1 : 1)));
+      MX.compose(V.set(x, y, z), Q, S1); lay(P, MX);
+      if (RG() < .45) { const h = s * (kind === 'spire' ? 2.6 : 1.2) + 90; const fg = gdnFall(s * .6, 0, 0, 1, 0, Math.max(2, s * .08), Math.min(240, h), 2).applyMatrix4(MX); falls.push(fg); }
+      Z.parts.push({ id: 'far_gen_' + i, kind: 'far_' + kind, x, y, z, r: s }); } }
+
   const RK = Z.rocks; for (let k = 0; k < RK.n; k++) { const a = R() * Math.PI * 2, d = RK.r0 + R() * (RK.r1 - RK.r0), s = RK.s0 + R() * (RK.s1 - RK.s0), x = Math.sin(a) * d, z = Math.cos(a) * d; if (Math.abs(x - 10) < 30 && z > 0 && z < 60 || d < 80) continue; const yr = RK.y0 + R() * (RK.y1 - RK.y0); if (gdnReserved(x, yr, z, s * 2)) continue;
     const rk = templeRock(x, yr, z, s, s * (.7 + R() * .5), s * (1.4 + R()), 9, 900 + k); rock.push(rk.side); rk.cap.deleteAttribute('color'); cap.push(rk.cap); }
   // heaps of cumulus on the cloud sea (far below now: the panorama's sea is behind them)
@@ -16685,19 +16709,27 @@ function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clou
   { const sd = U.uSun.value, q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), sd), rm = dmtRayMat(0xfff0c8, .13), geos = [];
     for (const [x, z, w] of Z.shafts) geos.push(new THREE.CylinderGeometry(w * 1.3, w * .7, 26, 12, 1, true).translate(0, 13, 0).applyQuaternion(q).translate(x, 0, z));
     const sm = new THREE.Mesh(mergeGeometries(geos), rm); sm.renderOrder = 3; sm.position.y = Z.top; sm.frustumCulled = false; sm.name = 'garden_shafts'; g.add(sm); Z.shaftM = sm; } }
-// DRIFTING CLOUD BANKS: his painted cumulus (textures/garden_cloud.webp) as camera-facing cards, ONE draw (an instanced quad), set below and round the
-// island at many heights so looking off the edge you look DOWN through them -- the read that you are up in the air. Drawn far-to-near from the island.
-function gdnCards(g) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.cards.seed), L = [];
-  for (let i = 0; i < Z.cards.n; i++) { const a = R() * Math.PI * 2, d = 45 + Math.pow(R(), .7) * 650, w = 30 + R() * 70 + d * .12, y = i % 9 === 0 ? 30 + R() * 90 : -18 - Math.pow(R(), .8) * 150;
-    if (gdnReserved(Math.sin(a) * d, y, Math.cos(a) * d, w * .4)) continue; L.push([Math.sin(a) * d, y, Math.cos(a) * d, w, w * (.5 + R() * .18), R() * 6.3, .75 + R() * .25]); }
+// DRIFTING CLOUD BANKS (m2166, his: "a lot of the clouds have a similar shape ... and rotation direction, same with the distant islands -- we need
+// variety, their silhouettes ... much larger clouds and islands in the background"): FOUR of his painted clouds in one atlas (textures/garden_clouds.webp,
+// 2 x 2 -- cumulus, a long low bank, a towering cumulonimbus, wispy streamers), each card picking its cell, flipped or not, its own aspect, a slight
+// roll and its own drift; three layers -- banks and puffs BELOW and round the island, wisps HIGH, and a far ring of HUGE towers and banks on the
+// horizon. ONE draw (an instanced quad), drawn far-to-near from the island.
+function gdnCards(g) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.cards.seed), L = [], C = Z.cards;
+  const card = (x, y, z, w, kind) => { if (gdnReserved(x, y, z, w * .3)) return; const asp = [.6, .3, 1.45, .33][kind] * (.85 + R() * .3), flip = R() < .5 ? -1 : 1; L.push([x, y, z, w * flip, w * asp, R() * 6.3, .7 + R() * .3, kind, (R() - .5) * .22]); };
+  for (let i = 0; i < C.n; i++) { const a = R() * Math.PI * 2, d = 45 + Math.pow(R(), .7) * 650, k = R(), x = Math.sin(a) * d, z = Math.cos(a) * d;     // around and below
+    if (k < .12) card(x, 40 + R() * 120, z, 60 + R() * 120, 3); else if (k < .22) card(x, -90 - R() * 50, z, 50 + R() * 60, 2); else card(x, -18 - Math.pow(R(), .8) * 150, z, 30 + R() * 80 + d * .12, k < .55 ? 1 : 0); }
+  for (let i = 0; i < C.far; i++) { const a = i / C.far * Math.PI * 2 + R() * .3, d = 950 + R() * 750, k = R(), x = Math.sin(a) * d, z = Math.cos(a) * d;     // the horizon ring: huge
+    if (k < .35) card(x, -60 + R() * 60, z, 260 + R() * 260, 2); else if (k < .7) card(x, -120 + R() * 80, z, 600 + R() * 700, 1); else card(x, -40 + R() * 140, z, 300 + R() * 350, 0); }
   L.sort((p, q) => Math.hypot(q[0], q[2], q[1] * 2) - Math.hypot(p[0], p[2], p[1] * 2));
   const base = new THREE.PlaneGeometry(1, 1), geo = new THREE.InstancedBufferGeometry(); geo.index = base.index; geo.setAttribute('position', base.attributes.position); geo.setAttribute('uv', base.attributes.uv);
   geo.setAttribute('iP', new THREE.InstancedBufferAttribute(new Float32Array(L.flatMap(c => [c[0], c[1] + Z.top, c[2]])), 3)); geo.setAttribute('iS', new THREE.InstancedBufferAttribute(new Float32Array(L.flatMap(c => [c[3], c[4]])), 2));
-  geo.setAttribute('iA', new THREE.InstancedBufferAttribute(new Float32Array(L.flatMap(c => [c[5], c[6]])), 2)); geo.instanceCount = L.length;
-  const m = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, fog: false, uniforms: { uTime: U.uTime, uMap: { value: texGet('garden_cloud') }, uHaze: { value: new THREE.Color(Z.sky.fog) } },
-    vertexShader: `attribute vec3 iP; attribute vec2 iS, iA; uniform float uTime; varying vec2 vU; varying float vA, vD; void main() { vU = uv; vec3 c = iP + vec3(sin(uTime * .012 + iA.x) * 25.0 + uTime * .8, 0.0, cos(uTime * .01 + iA.x) * 18.0);
-      vec4 mv = viewMatrix * vec4(c, 1.0); mv.xy += position.xy * iS; vD = -mv.z; vA = iA.y * smoothstep(25.0, 90.0, vD); gl_Position = projectionMatrix * mv; }`,
-    fragmentShader: `uniform sampler2D uMap; uniform vec3 uHaze; varying vec2 vU; varying float vA, vD; void main() { vec4 t = texture2D(uMap, vU); vec3 c = mix(t.rgb, uHaze, smoothstep(300.0, 1500.0, vD) * .6);
+  geo.setAttribute('iA', new THREE.InstancedBufferAttribute(new Float32Array(L.flatMap(c => [c[5], c[6], c[7], c[8]])), 4)); geo.instanceCount = L.length;
+  const m = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, fog: false, uniforms: { uTime: U.uTime, uMap: { value: texGet('garden_clouds') }, uHaze: { value: new THREE.Color(Z.sky.fog) } },
+    vertexShader: `attribute vec3 iP; attribute vec2 iS; attribute vec4 iA; uniform float uTime; varying vec2 vU; varying float vA, vD; void main() { float k = iA.z, cx = mod(k, 2.0), cy = floor(k / 2.0);
+      vU = vec2((cx + uv.x) * .5, (uv.y + 1.0 - cy) * .5);     /* atlas: top row cumulus | bank, bottom row tower | wisp */
+      float sp = .4 + fract(iA.x * 7.31) * 1.2, dir = fract(iA.x * 3.7) < .5 ? -1.0 : 1.0; vec3 c = iP + vec3(sin(uTime * .012 + iA.x) * 25.0 + uTime * .8 * sp * dir, sin(uTime * .05 + iA.x * 2.0) * 2.0, cos(uTime * .01 + iA.x) * 18.0);
+      vec4 mv = viewMatrix * vec4(c, 1.0); vec2 q = position.xy * iS, r = vec2(q.x * cos(iA.w) - q.y * sin(iA.w), q.x * sin(iA.w) + q.y * cos(iA.w)); mv.xy += r; vD = -mv.z; vA = iA.y * smoothstep(25.0, 90.0, vD); gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform sampler2D uMap; uniform vec3 uHaze; varying vec2 vU; varying float vA, vD; void main() { vec4 t = texture2D(uMap, vU); vec3 c = mix(t.rgb, uHaze, smoothstep(300.0, 1700.0, vD) * .55);
       gl_FragColor = vec4(c, t.a * vA);
       #include <colorspace_fragment>
     }` });

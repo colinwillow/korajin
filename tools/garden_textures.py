@@ -40,6 +40,12 @@ ALPHA = {
             "isolated on a fully transparent background, soft edges, no text.", "1536x1024", (768, 512)),
   'vine': ("A CURTAIN of six long hanging WEEPING WILLOW strands side by side filling the image width, each a trailing stem densely hung with small slender bright green leaves, a few glowing pale-mint tips, "
            "hanging straight down from the top edge, different lengths, dense at the top thinning toward the tips, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1536", (512, 768)),
+  'cloud_tower': ("A single huge towering CUMULONIMBUS cloud, tall billowing column of sunlit warm-white puffs with peach highlights, soft blue-violet shadows on its sides and base, "
+                  "painterly stylised fantasy game art, isolated on a fully transparent background, soft edges, no text.", "1024x1536", (512, 768)),
+  'cloud_bank': ("A long low flat BANK of soft cloud, a wide horizontal band of overlapping sunlit cream-white puffs with a flat blue-violet shadowed underside, "
+                 "painterly stylised fantasy game art, isolated on a fully transparent background, soft edges, no text.", "1536x1024", (768, 512)),
+  'cloud_wisp': ("Wispy streaky high CIRRUS-like cloud streamers, thin soft feathery white and pale peach strands drifting sideways, delicate and airy, "
+                 "painterly stylised fantasy game art, isolated on a fully transparent background, no text.", "1536x1024", (768, 512)),
   'blossom_card': ("A round fluffy CLUMP of pink cherry blossoms (a sakura branch-end cluster seen from the side), many small pink and white five-petal flowers, irregular airy silhouette, "
                    "stylised hand-painted fantasy game art, isolated on a fully transparent background, no stem, no shadow, no text.", "1024x1024", (512, 512)),
   'jinra_swirl': ("A glowing magical energy VORTEX seen straight on from above: luminous electric-blue and cyan spiral arms swirling into a bright white-blue core, wispy streaks and sparkles, "
