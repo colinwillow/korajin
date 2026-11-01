@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m2061 -- THE GREAT WATERFALL: the face as stacked COLUMNS; thinner ice; less haze at the foot
+## m2063 -- THE GREAT WATERFALL: the face as stacked COLUMNS; thinner ice; less haze at the foot
 
 His: "all good, next pass". From the m2056 renders: the cliff was one smooth sheet (his reference is stacked columns), the frozen columns were
 fat regular slabs, the foot of the fall was a white haze, the gold bands stuck out as frames.
@@ -20,6 +20,24 @@ fat regular slabs, the foot of the fall was a white haze, the gold bands stuck o
 - Caught on the way (headless, the shipped text): a comment placed mid-line swallowed the pier ladder's `else if` (NaN box) -- fixed before push.
   Ladders: every foot on its pillar / the brow, bodies clear, marks on top of R3, R1, the brow, the deck; the pool -> hall walk meets only the shrine.
 Rendered BEFORE the push this time (renders in chat). Still: the gold band's back corners show where the face is recessed behind a pillar.
+
+
+## m2062 -- the Snowfield's see-through corners filled (Nov 1 2026)
+His words: *"the snow world is built on a square plane and the things around it make a circle -- the negative space between the edge of the square and the
+circle is just left, see-through."* The far white plain was `RingGeometry(size * .7, 900)` = from 112 m out, while the snowfield square ends at 80 m: along
+each side a 32 m strip showed the sky through the ground. Now a `ShapeGeometry` disc (r 900) with a square hole exactly the snowfield minus .3 m, at the
+same height as before. Shipped unverified.
+
+## m2061 -- the mammoth mount: a ring round HIM, an arrow over the saddle, the pad pulses; land on him from a jump; no crate sound (Nov 1 2026)
+His words: *"I don't want a circle on the ground -- within radius of the mammoth, an arrow above the saddle pointing down, maybe a ring around the mammoth
+once you're within radius, and the right stick highlights and pulses; tap and he jumps up and lands on it. Or jump and fall in the vicinity of the saddle --
+it orients you so you land on it. And it still plays that wood block breaking noise -- getting on the mammoth, the attack -- it defaults to that."*
+- `mamNear`: within `(K.r) + MAMR.near` (2.6 m) of his body. Then (and only then) the ring encircles him, the arrow bobs over the seat, and `#padR.mount`
+  pulses mint. `mamTap` mounts from anywhere in the ring (was a 2.6 m spot at his flank).
+- `mamFrame(dt)`: falling (vel.y < 0) within `catchR` 2.8 m of the seat and above it, he is steered onto it (xz eased, sideways speed damped); at the
+  seat (< .45 m above, < 1.1 m across) the ride starts at `land` -- he is on.
+- SOUND: `thud` is `box_break_01` (a crate). 65 calls outside break functions (stomps, landings, mounts, gates, bodies, the snow) now play `bump` = his
+  six `hit_sounds/thud_a/b`; 48 inside `*Break / *Fell / *Hit / smash / chunk` functions keep the crate. Shipped unverified.
 
 ## m2060 -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
 
