@@ -28,6 +28,63 @@ old elliptical longhouse.
 - Colliders: the plinth tiers, the walls, the gable's stepped roof, the porch posts and the rib boulders. Rendered twice: the first ribs stood straight up
   through the roof like columns -- re-routed to follow the slope. Shipped unverified.
 
+
+
+
+## m2115 -- THE ARMILLARY FORGE, pass 2: from his four views -- a MOUNTAIN, not a box
+
+His four views (front, back, both sides) show the whole thing is a mountain of stacked bulbous rock with the masonry and the wood growing out
+of it. Added to `fhMake`:
+- ROCK MASSES (`blob`): 18 bulbous lumps of his masonry (squashed, noised spheres with flattened snowy tops and icicle fringes) hugging the
+  keep's flanks and back, skirting both towers, ridging between them, two rock PILLARS framing the forge door, a long foot along the back.
+  Each is solid (a box at 62 % of its size) -- checked clear of the stairs, the walk, the balcony and the tier decks.
+- WOODEN TIERS on brackets: a deck along the keep's back at 17 (walkable, lanterns at its ends), a ring round the right tower at 11.
+- CRYSTAL WINDOWS: 11 faceted green crystals in gold diamond frames on the towers, the flanks and the back. The GEAR PORTHOLE (an orange-lit
+  round window with spokes) on the right flank.
+- THE BACK: three bronze PIPE OUTLETS pouring glowing water into a back POOL; two curved IVORY PIPES with gold bands down from the top.
+- THE ARMILLARY: now a gold CAGE (four meridians, three latitudes, an axle) turning round a FACETED crystal orb with a light inside. The
+  front ivory arches are thicker. A mushroom-capped chimney TURRET and four gold-tipped SPIRES on the roofs.
+- Crystals are faceted and lit now (their own flat-shaded emissive material, +1 draw). 15 draws, 41k tris; every route measured as before.
+Rendered from his four angles. Next: blockier masonry on the rock masses (they read smooth from afar), more balcony tiers and lanterns,
+the forge interior. Shipped unverified on the phone.
+
+## m2114 -- THE ARMILLARY FORGE, pass 1: his snowy workshop-forge, built as a kit piece
+
+His: "a new mission -- build this house so we can insert it into a level somewhere" (his concept: a purple-stone forge on a rock mound).
+`FORGEHOUSE` (SC_FORGEHOUSE) + `fhMake(T)` (pure) / `forgeHouseBuild` / `forgeHouseStep` -- ONE placement row (`at` / `yaw`, quarter turns so
+the colliders stay exact boxes); everything else is in its local frame (+z = the front). Placed for now past the Snowfield's EAST edge
+(world 125, 20) facing west into the field -- the snow village (now on by default) fills the south, where pass 0 first stood.
+- THE MOUND: a stone podium in a skirt of snowy boulders. THE KEEP (his purple masonry: `ice_stone`, triplanar), gold bands, merlons, an
+  upper tier; the FORGE DOOR (an arched dark opening, gold voussoirs, a fire inside), the SHIP'S WHEEL over it, two red COMPASS BANNERS.
+- Two IVORY ARCHES (tapered tubes) over the terrace. A cone TOWER left (gold spire), a tall TOWER right (crystal PORTHOLES, a wooden
+  balcony ring, a crystal finial) and a balcony off it with a banner.
+- The ARMILLARY: a green crystal ORB on a pedestal, three gold rings that TURN, a wide equator; two curling stone HORNS (blocks with gold bands).
+- The WATER WHEEL (turns) under a chute off the keep, glowing green WATER (a scrolling shader) falling over it into a POOL; a cascade down
+  the keep's face. A two-arch stone BRIDGE over the pool (voussoir arches, snowy parapets).
+- A wooden upper-left BALCONY (an awning, lanterns, a crystal), a walk along the keep; a red / white striped MARKET STALL (scalloped hem,
+  barrels with gold hoops, glowing potions). Lanterns, crystals, snow caps and icicles throughout.
+- WALKABLE, measured headless: the grand stair (20 x .3 m) to the terrace (6), the bridge level with it, the stair to the balcony (20 x .3 to
+  12), the walk to a ladder up the keep's face to its roof (17), a ladder up the tier to the armillary deck (23). Ladders register on the
+  first frame (the snow stage builds above `KCLIMB`).
+- 14 draws, 24k tris. `?fh=0` leaves it out; `mel.forgehouse()` puts him at its foot.
+Next passes: rocky organic masses instead of boxes (his keep sits ON rock), thicker tusks, more lanterns and gold detail, maybe an interior.
+Shipped unverified on the phone.
+
+## m2113 -- THE VILLAGE, pass 5: THE MARKET round the square (Nov 1 2026)
+`SNOWVIL.pieces`: three kit `market_stall`s on the square's open west / south-west / south sides, each turned to face the fire pit, with kit `crates`
+and `barrels` between them; the paths (to the gate, the north stair, the bath lane) are left clear. Shipped unverified (render after the push).
+
+## m2112 -- THE VILLAGE, pass 4: HEIGHT -- the crag to 7.5 m, the WATCHTOWER on it, a plank deck out to the aqueduct (Nov 1 2026)
+`vil_crag_01` top 4.5 -> 7.5 (its stair from the longhouse terrace grows to 14 risers); `SNOWVIL.pieces` places the kit's `watchtower` on the crag's
+east edge and a `deck_posts` plank deck (top 7.2) from the crag out to the aqueduct (deck 6.0) -- the high route's first link: crag -> deck -> drop to
+the aqueduct walkway. The crag's hut, lamp and fence moved up / over. The kit's new horned huts (m2110) come in by themselves. Shipped unverified.
+
+## m2111 -- village pass 3 fixes, found in the renders (Nov 1 2026)
+- The creek's water at y .07 sat UNDER the swept snow (the sweep leaves .08 x depth) -> raised to .16, with a dark bed strip under it so it reads.
+- The strip was wound facing DOWN, so it was culled from above -> invisible however high; re-wound (m2109).
+- The entry bridge was turned along the creek, not across it -> turned 90 deg.
+Renders: the creek runs from the spring past the bathhouse and out under the bridge at the entry; the aqueduct reads well.
+
 ## m2110 -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
 
 His reference (`images/concepts/snow_village/ref_hut_horned.webp`), from the prompt pack m2096 sent. The hut keeps the classic materials and its footprint,
