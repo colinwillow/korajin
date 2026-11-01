@@ -75,6 +75,23 @@ passes and was dressed with finished pieces before it looked like anything -- th
 `?rgnmenu`; the code and the zone (`?w=forge&zone=region`) are untouched. The Snowfield never changed. Next: the village, small and hand-made, with
 the kit and the plants, many passes (VILLAGE_BLUEPRINT.md's design stands; the region site does not).
 
+## mNEXT -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
+
+His reference (`images/concepts/snow_village/ref_hut_horned.webp`), from the prompt pack m2096 sent. The hut keeps the classic materials and its footprint,
+plinth tiers and colliders (so the village's measured routes still fit); only its silhouette changed. `?hut=round` brings back m2096's hut; `horned: 0`
+per hut too. Built in four helpers beside `vilHut` (`svkHutTiers`, `svkHutHorns`, `svkHutDoor`, `svkHutBoulders`):
+- ROOF: two stacked thatch TIERS (a wide skirt, then a smaller dome set back on it), each with its own drippy, lobed snow and icicles; much more thatch shows.
+- HORNS: two great banded stone horns (`willowTube`, root .85 m to tip .16): one from the back-left foot up the side, over the roof and hooking down at the
+  front with TWO LANTERNS hanging off it on chains; one from the back-right rising behind, its tip up. Gold bands (aligned to the curve), snow on top,
+  icicles under.
+- The HALO: a gold ring floating over the roof, studded, a long jade crystal above it and one below.
+- WINDOWS: a WHEEL porthole -- jade glass, a timber wheel rim, a cross of spokes, a gold outer ring, a jade boss, gold studs.
+- DOOR: round-arched plank door with gold handles in a thick bevelled STONE ARCH, snow on its crown, icicles, a gold-and-jade DIAMOND over it, lanterns on
+  brackets either side; the BANNER hangs from the eave on a gold rod beside the door. No timber posts, ring beam or gable porch any more.
+- BASE: chunky BOULDERS round the foot (some gold-strapped, snow on each), a crystal cluster at the side. The step blocks and the jade lamp stay.
+- Rendered (hut, small, big, longhouse) twice: the first horns were thin and ran through the upper tier, and the snow hid the thatch -- horns fattened and
+  lifted clear, snow cut back. +1 draw (`jglass`). Shipped unverified.
+
 ## m2099 -- THE FLORA: painted-in-code detail maps on the soft parts
 
 His: "do one and two" (1 = textures for the petals / caps / pipes, 2 = distance versions). No image files from him for the soft parts, so
