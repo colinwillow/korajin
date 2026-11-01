@@ -24,7 +24,7 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | 1 | **WHY is there a village here, and what does it DO?** | the settlement's reason, its people, its jobs, what it gives the player | **approved** (hot spring + aqueduct; a HAMLET; near the spawn) |
 | 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | **approved** (gorge, horseshoe cliff, ~12 buildings) -- its PLACE on the region map waits on REGION_METHOD stage 1-2 |
 | 3 | **ZONES** -- what goes where, and why | a zoning map: each district placed by its reason (water, road, defence, status) | **drafted** (blueprint_pass3.png) |
-| 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | |
+| 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | **drafted** |
 | 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | |
 | 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | |
 | 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | |
@@ -185,3 +185,46 @@ some small) **+ 3 moving things** (water wheel, winch lift, geyser). Every one h
 
 **Next: pass 4 -- CIRCULATION**: the lanes off the road to every door, the dead ends, where the mammoth fits (outside only, or through the gate to
 the market?), the gorge path, and which walls are climbable shortcuts.
+
+## PASS 3 -- his note
+- The MAMMOTH may come in (*"I don't really mind being able to have the mammoth come in, why not"*; Zelda keeps the horse between areas). And he
+  should be FAST (*"riding it is way slower than running"*) -- m2071: top speed 15.5 m/s (he runs 7.2, sprints 9).
+
+## PASS 4 -- CIRCULATION (drafted)
+Three networks, each with its own rule, so the village reads at a glance: **the ROAD** (everyone, the mammoth too, low), **the LANES** (on foot,
+to the doors), **the HIGH ROUTE** (parkour, pass 6). Plus the gorge path under everything.
+
+### The ROAD -- wide, the mammoth's (4.5 m wide; ramps, not stairs, where the mammoth goes)
+- SPAWN side -> **B1** (a wide timber bridge over the creek mouth) -> the **GATE** (a 4 m opening: the mammoth fits under) -> E1 -> **B2** (stone,
+  4.5 m wide) -> the **MARKET** square -> a **ramp** (1 : 6, along the market's south wall) up to W2 -> under the **AQUEDUCT** (6 m clear, the
+  mammoth fits) -> **B3** across the gorge to E2's BATHHOUSE yard.
+- **The mammoth's reach ends at the bath yard**: gate, smithy, market, the lower homes' lane mouth, the bath. Above that the way up is STAIRS
+  (E3, the tunnel U2, E4) -- foot only. So riding in, you can reach the market and the hot pool; the homes, the stores, the watch and the shrine
+  are on foot. The STABLE outside the gate is where he waits otherwise.
+- Every road turn is at a landmark (the gate, the well, the aqueduct pier, the bath door), so the way on is always in view.
+
+### The LANES -- on foot, 2 m, stairs at .30
+| from | to | how |
+|---|---|---|
+| the market | W2's 3 huts | a lane off the ramp's top, stepping along the terrace, ending at the cliff (a dead end with a view) |
+| W2 | W3 (upper homes + storehouse) | a timber stair up the W2/W3 wall at its west end, and the WINCH LIFT from the market (ride the basket) |
+| W3 | the WATCHTOWER | U3, the high timber bridge from W3 to the knoll (on foot, the only way except climbing) |
+| the bath yard | E3 (huts, elder) | stairs up beside the bathhouse |
+| E3 | E4 (the shrine) | U2, the tunnel stair inside the E3/E4 wall -- the only foot way up to the shrine |
+| E1 | the gorge path | steps down beside the smithy's water wheel to the gorge floor |
+
+### The GORGE PATH -- the underpass layer
+Along the creek's floor from the smithy's wheel to the first fall, under B2 and B3, past the bath's outfall, ending at the foot of the third fall
+under the spring ledge: a dead end that is a secret (behind the fall -- pass 6 decides what is there). Stepping stones over the creek; the falls
+are climbable at the sides (3 m = a sprint wall-up).
+
+### Dead ends on purpose (each one pays off)
+- the W2 lane's end at the cliff: a view down the gorge to the gate
+- the gorge path behind the third fall: a secret
+- the watchtower top: the whole region in view (the temple mountain on the skyline)
+- the storehouse roof: the winch's top, a coin stash (pass 6)
+
+### Shortcuts (walls you can climb instead of walking round)
+Every terrace wall is ~3 m: the road and the lanes go round, a SPRINT wall-up (lip 3.6) goes straight over. The two banks are offset ~1.5 m, so
+across the gorge a RUN + JUMP (2.2 high, 5.9 far) reaches the lower side from the higher one, never the other way: down-and-across is free, up
+is the long way. Pass 6 sizes every one of these against the move table.
