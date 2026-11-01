@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2034 -- THE ICE TEMPLE: detail pass D1 -- ARCHITECTURE on every raised stone box, the door's porch
+
+His: *"Two square, two straight -- the lines look like boxes. Detail, detail, detail; keep pounding away and make it interesting."* `iceArch`
+(numbers in `ICEARCH`) dresses every raised stone box over 3 m: a wider BASE course; an overhanging CORNICE (.55 m) with a gold lip under it, and
+the snow pillow and the icicles moved out onto its lip; STRING courses every 6 m with gold strips; PILASTERS at every corner and every 7 m along
+the long faces -- .25 m proud where he walks by, .6 m above (a gold collar where they step out, gold strips up each face, a big gold capital, a
+jade gem on each face); crystal-topped corner POSTS on the bigger tops. The DOOR got the concept's PORCH: two pillars with gold capitals, a
+snow-loaded peaked roof, a jade gem at its apex, stone in the door's top corners so the glow reads pointed. The ROUNDEL rose 5 m clear of the
+porch and the CROWN (now a stone drum, the gold drum, the crystal cluster) and the ring arcs rose 6 m over it.
+Two `//` comments landed mid-line during this pass and cut off the code after them (a parse failure, and the roundel's disc vanishing) --
+block comments now; a scan of the ICE block for `//` followed by code came back clean. Look only: no collider moved. Shipped unverified.
+
 ## m2033 -- THE SNOW-VILLAGE KIT, pass 1: pieces on a grid with snap ports, and the KIT SHOWROOM (`?w=forge&zone=snowkit`)
 
 Direction change (SNOW_VILLAGE.md UPDATE, relayed from the main session): a MODULAR KIT, not a village layout; placement is another context's.
