@@ -5,7 +5,6 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-<<<<<<< HEAD
 ## m2048 -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
 
 His: *"Keep going"* -- the brief's remaining whole buildings.
@@ -19,7 +18,7 @@ His: *"Keep going"* -- the brief's remaining whole buildings.
 - `hut_base` (roof off) now has a plank lid, so it is no longer see-through from above.
 - The showroom moved further south (`SVK.at` z 150 -> 230) so its longer rows stay off the Snowfield. Headless: 55 pieces, 90 ports, 554 colliders,
   22 draws. Rendered before pushing: the watchtower, the outpost from above, the rows. Shipped unverified.
-=======
+
 ## m2046 -- THE GREAT WATERFALL: THE ASCENT (grotto -> pillars -> cliff -> aqueduct -> a zip ride down across the falls)
 
 His: "keep going". VERTICALITY ("routes climb"): the falls had a climb to 13.5 m and nothing above it. Now (all `place` rows, local):
@@ -56,7 +55,6 @@ His "keep going on your own -- I'll make Cinema 4D blockouts in parallel; whiche
 New piece kinds in `cellStage`: `slabs` (free-standing curved walls), `runwalls`, `bars` (hbarMake), `zips` (ZIPS + a cable). High shelves are 1.2 m
 slabs on the wall (open beneath). Bars and zips are added a tick later (HBAR / ZIPS are declared further down the module: measured TDZ throw). Boot-
 checked (71 colliders, spawn at the door). Status: blockout, waiting on play notes. C1 alone is still KORAJIN > Temple Cell C1.
->>>>>>> 6056f68c0fffb02b346668f1aa532d19a90b840b
 
 ## m2044 -- THE GREAT WATERFALL: the HIDDEN CAVE under the falls
 
