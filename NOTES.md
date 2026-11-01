@@ -6,6 +6,23 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## mNEXT -- the snow kit SILHOUETTE PASS 1: shapes, not surfaces
+
+His: *"Why are they squares? Why aren't they more hexagonal, why don't the edges of a box have ridges, why is one solid shape not cut into two or three --
+make the general shapes and silhouettes more interesting without adding too many calls."* Same materials (so the same draws); only the shapes changed.
+- `vilWood`: timber by PROPORTION, used by every kit `P.box('wood'|'door')` and every village builder's timber: a POST (tall, square-ish) is OCTAGONAL with
+  a flared foot, a carved collar a third of the way up and a chamfered top; a BEAM (long) is chamfered with its ends CUT BACK underneath at an angle; any
+  other block is chamfered. Fence posts have POINTED tops.
+- `vilLantern`: every lantern (hut doors, lantern post, door walls, gate, watchtower) is a HEX lantern -- a six-sided glow, rims, six slats, a flared
+  six-sided roof, a gold finial and a gold drop.
+- `vilArchDoor`: the hut door and the wall door are ARCHED (a segmental top).
+- AQUEDUCT PIERS are stacked DRUMS (one per ~2.2 m), each set back 2% and a proud stone BAND between them; PILLARS are octagonal, tapering, with a meander
+  band two-thirds up; CHIMNEYS taper (kit and hut); the kit WALL batters (leans in 20% at the top); the SHRINE TOWERS' two slabs are flared, four-sided
+  roofs with upturned eaves.
+- `vilIcicle`: every icicle is a fat root and a long thin tip, a little crooked, instead of one straight cone.
+- Caught in the render, not in `npm run check`: the icicle regex rewrote the helper's own cone into itself (infinite recursion) and every wall piece threw
+  -- check:boot does not build the showroom. Fixed; rendered the hut, aqueduct, well/shrine and towers after. 25 draws. Shipped unverified.
+
 ## m2072 -- the snow kit DETAIL PASS 5: thatch shows, painted gold and jade, carved plaques
 
 His: *"Another detail pass?"*
