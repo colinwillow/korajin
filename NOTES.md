@@ -9,6 +9,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2098 -- THE FLORA SWAYS in the wind
+
+His: "keep going" (next on the list: wind sway). Every flesh and glow vertex carries `aSway` (0 = fixed, 1 = free end); `wfSway(m)` chains
+an `onBeforeCompile` onto the flesh and glow materials that moves a vertex by aSway times a slow GUST (a sine drifting across x/z, .55 m)
+plus a FLUTTER (.12 m) -- all on the GPU, one shared clock (`WFALL.swayU`), no new draws, nothing per frame but a uniform.
+What sways: every wisteria RACEME (weight rising from its top to its tip -- the hero's 90 and the species'), the Great Frostcap's crown
+TENDRILS, the agave's orb STALKS / cups / orbs and its PLUMES, the lantern maple's CORDS and LANTERNS. Wood, caps, pads and blades stay put.
+Pieces that do not sway get a zero attribute (`swayW0`) so the merge has one attribute set.
+Checked in the real browser: two renders at clock 0 and 2.2 differ in 11k pixels, all on the racemes and stalks; the shader compiles.
+Shipped unverified on the phone (whether .55 m reads as wind or as wobble is his to say -- the numbers are in `wfSway`).
+
 ## m15IC -- THE MOVE-IN, step 6: the GROTTO is the ICE CAVES' mouth; the STONE RING is the STANDING STONES (Nov 1 2026)
 - `snowKit` takes `SNOWKIT.only` ('grotto' / 'bridge' / 'stones' / 'spire'): one piece, and no field-wide plants (they were scattered by the
   Snowfield's own coordinates). The region builds the grotto (the half-dome open to the west, its crystals, icicles and the shrine stone with its
