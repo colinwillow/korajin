@@ -14,6 +14,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15V4 -- THE VILLAGE, pass 4: HEIGHT -- the crag to 7.5 m, the WATCHTOWER on it, a plank deck out to the aqueduct (Nov 1 2026)
+`vil_crag_01` top 4.5 -> 7.5 (its stair from the longhouse terrace grows to 14 risers); `SNOWVIL.pieces` places the kit's `watchtower` on the crag's
+east edge and a `deck_posts` plank deck (top 7.2) from the crag out to the aqueduct (deck 6.0) -- the high route's first link: crag -> deck -> drop to
+the aqueduct walkway. The crag's hut, lamp and fence moved up / over. The kit's new horned huts (m2110) come in by themselves. Shipped unverified.
+
 ## m2111 -- village pass 3 fixes, found in the renders (Nov 1 2026)
 - The creek's water at y .07 sat UNDER the swept snow (the sweep leaves .08 x depth) -> raised to .16, with a dark bed strip under it so it reads.
 - The strip was wound facing DOWN, so it was culled from above -> invisible however high; re-wound (m2109).

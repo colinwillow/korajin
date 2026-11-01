@@ -10999,7 +10999,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   terr: [     // x0 x1 z0 z1, top, the tier it stands on (base), stairs [centre, width, side] climb to it from that tier at .3 m risers
     { id: 'vil_terr_01', r: [-35, -11, 44, 58], top: 1.5, base: 0, stairs: [[-21.5, 3, '-z']] },
     { id: 'vil_terr_02', r: [-32, -13, 58, 72], top: 3.3, base: 1.5, stairs: [[-21.5, 3, '-z']] },
-    { id: 'vil_crag_01', r: [-13, -2, 59, 69], top: 4.5, base: 3.3, crag: 1, stairs: [[61, 2.4, '-x']] } ],
+    { id: 'vil_crag_01', r: [-13, -2, 59, 69], top: 7.5,     /* m15V4: 4.5 -> 7.5, the village's high point (a 14-step stair up from the longhouse terrace) */ base: 3.3, crag: 1, stairs: [[61, 2.4, '-x']] } ],
   paths: [ [[0, 12], [-6, 19], [-12, 25], [-18, 31]], [[-18, 31], [-21.5, 36], [-21.5, 41]], [[-18, 31], [-14, 38], [-14, 40]] ],     // the hut doors join these by themselves
   square: [-18, 32, 6.5],
   // m2105 (VILLAGE pass 2, VILLAGE_BLUEPRINT pass 2's "horseshoe cliff"): a HORSESHOE of rock behind the village -- low on the arms (8-10 m), 15 m at the
@@ -11011,6 +11011,9 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   // under a timber BRIDGE (the kit's `bridge_timber`) where the path comes in from the field.
   aq: [{ at: [5, 0, 59], yaw: Math.PI / 2, h: 6 }, { at: [5, 0, 51], yaw: Math.PI / 2, h: 6 }],
   creek: [[7.5, 66], [10.5, 57], [11.5, 46], [10, 36], [6, 26], [2.5, 17], [-1.5, 10], [-6, 3], [-12, -5]], creekW: 2.6,
+  // m15V4 (VILLAGE pass 4: HEIGHT): the kit's WATCHTOWER on the raised crag, and a plank DECK on posts from the crag's edge out to the AQUEDUCT -- the
+  // first piece of the high route: up the crag stair, onto the deck, drop to the aqueduct's walkway (6 m) and along it toward the bathhouse
+  pieces: [{ kind: 'watchtower', o: { h: 4.5 }, at: [-4.5, 7.5, 61.5], yaw: Math.PI }, { kind: 'deck_posts', o: { w: 6.6, d: 2.2, h: 7.2 }, at: [0.9, 0, 60.2], yaw: 0 }],
   bridges: [{ at: [0.6, 0, 13.2], yaw: Math.atan2(7, -6), span: 8 }],     /* pass 3d: turned 90 deg -- it ran ALONG the creek; now it spans it */     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
   place: [
     { id: 'vil_hut_01', kind: 'hut', at: [-28, 0, 27], face: [-18, 31], p: { R: 2.7, seed: 11, chimA: 2.4 } },
@@ -11021,7 +11024,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
     { id: 'vil_hut_04', kind: 'hut', at: [-29, 1.5, 50.5], yaw: Math.PI, p: { R: 2.6, seed: 14 } },
     { id: 'vil_hut_05', kind: 'hut', at: [-15.5, 1.5, 50], yaw: Math.PI, p: { R: 2.4, seed: 15, chimA: 2.2, lamp: 0 } },
     { id: 'vil_long_01', kind: 'hut', at: [-23, 3.3, 66], yaw: Math.PI, p: { R: 3, sx: 1.6, roofH: 3.2, wallH: 2.5, seed: 16, chimA: -1.6, win: [.75, -.75, 1.6, -1.6, 2.5, -2.5], barrels: 4 } },
-    { id: 'vil_hut_07', kind: 'hut', at: [-7, 4.5, 64], yaw: -Math.PI / 2, p: { R: 2.4, seed: 17, roofH: 3.0 } },
+    { id: 'vil_hut_07', kind: 'hut', at: [-9.3, 7.5, 65.4], yaw: -Math.PI / 2, p: { R: 2.2, seed: 17, roofH: 3.0 } },     // m15V4: moved over for the watchtower
     { id: 'vil_gate_01', kind: 'gate', at: [-6, 0, 19], face: [0, 12], p: { w: 3.6, h: 4.2 } },
     { id: 'vil_banner_01', kind: 'banner', at: [-24.2, 0, 42.6], yaw: 0 },
     { id: 'vil_banner_02', kind: 'banner', at: [-18.8, 0, 42.6], yaw: 0 },
@@ -11034,12 +11037,12 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
     { id: 'vil_lamp_04', kind: 'lamp', at: [-12.8, 0, 32.2] },
     { id: 'vil_lamp_05', kind: 'lamp', at: [-34, 1.5, 45] },
     { id: 'vil_lamp_06', kind: 'lamp', at: [-18.6, 3.3, 59.2] },
-    { id: 'vil_lamp_07', kind: 'lamp', at: [-3, 4.5, 60] },
+    { id: 'vil_lamp_07', kind: 'lamp', at: [-11.6, 7.5, 60.2] },
     { id: 'vil_fence_01', kind: 'fence', at: [0, 1.5, 0], p: { pts: [[-35, 44.25], [-23.2, 44.25]] } },
     { id: 'vil_fence_02', kind: 'fence', at: [0, 1.5, 0], p: { pts: [[-19.8, 44.25], [-11.25, 44.25], [-11.25, 57.5]] } },
     { id: 'vil_fence_03', kind: 'fence', at: [0, 3.3, 0], p: { pts: [[-32, 58.25], [-23.2, 58.25]] } },
     { id: 'vil_fence_04', kind: 'fence', at: [0, 3.3, 0], p: { pts: [[-19.8, 58.25], [-15.4, 58.25]] } },
-    { id: 'vil_fence_05', kind: 'fence', at: [0, 4.5, 0], p: { pts: [[-12.75, 62.6], [-12.75, 68.75], [-2.25, 68.75], [-2.25, 59.25], [-12.75, 59.25], [-12.75, 59.6]] } },
+    { id: 'vil_fence_05', kind: 'fence', at: [0, 7.5, 0], p: { pts: [[-12.75, 62.6], [-12.75, 68.75], [-2.25, 68.75], [-2.25, 59.25], [-12.75, 59.25], [-12.75, 59.6]] } },
     { id: 'vil_fence_06', kind: 'fence', at: [0, 0, 0], p: { pts: [[-36.5, 21], [-36.5, 43.5]] } },
     { id: 'vil_fence_07', kind: 'fence', at: [0, 0, 0], p: { pts: [[-33, 20], [-22, 20]] } },
     { id: 'vil_barrels_01', kind: 'barrels', at: [-21.5, 0, 26], p: { n: 3, seed: 5 } },
@@ -11376,6 +11379,7 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
     for (const b of K.boxes) { const lx = (b.minx + b.maxx) / 2, lz = (b.minz + b.maxz) / 2, wx = at[0] + lx * c + lz * sn, wz = at[2] - lx * sn + lz * c; BOXES.push(obox(wx, wz, (b.maxx - b.minx) / 2, (b.maxz - b.minz) / 2, -yaw, b.miny + at[1], b.maxy + at[1])); }
     return K; };
   for (const A of V.aq || []) { try { svkAt('aq_section', { h: A.h }, A.at, A.yaw); } catch (e) { note('VILLAGE AQUEDUCT THREW ' + e.message); console.error(e); } }
+  for (const Pc of V.pieces || []) { try { svkAt(Pc.kind, Pc.o, Pc.at, Pc.yaw); } catch (e) { note('VILLAGE ' + Pc.kind + ' THREW ' + e.message); console.error(e); } }
   for (const B of V.bridges || []) { try { svkAt('bridge_timber', { span: B.span }, B.at, B.yaw); } catch (e) { note('VILLAGE BRIDGE THREW ' + e.message); console.error(e); } }
   if (V.creek) { const C = V.creek, w = V.creekW || 2.4, pos = [], idx = [];     // the warm CREEK: swept out of the snow, a water ribbon, stones along its banks, steam (snowVillStep)
     for (let k = 0; k + 1 < C.length; k++) seg(C[k][0], C[k][1], C[k + 1][0], C[k + 1][1], w * .9);
