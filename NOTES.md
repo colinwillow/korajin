@@ -5,6 +5,22 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2061 -- THE GREAT WATERFALL: the face as stacked COLUMNS; thinner ice; less haze at the foot
+
+His: "all good, next pass". From the m2056 renders: the cliff was one smooth sheet (his reference is stacked columns), the frozen columns were
+fat regular slabs, the foot of the fall was a white haze, the gold bands stuck out as frames.
+- `wfCol` / `wfRel` / `wfH1` (global, one place): the face is split into ~7 m COLUMNS (wobbled widths), each set back 0..3.5 m by its own hash,
+  rounded at the front and grooved between; `wfTop` steps each column's top down 0..6 m (not in the notch), so the skyline is stepped. The sheet
+  is 160 columns of triangles (was 110). The ladders' `face` and the brow read the same functions.
+- COLLIDERS FOLLOW: each 8 m run of the face stops him at its most PROTRUDING column (never inside rock, never at the old plan line in front of a
+  recessed one). The chain ladder sits clear of both the rock and that collider (`frontAt`), its gold brackets reaching back to the real rock;
+  the pier ladder's foot is on the brow (`y: ['brow', ...]`).
+- ICE: frozen columns r .22-.6 (was .5-1.2), less bulge, more of them, mostly SHORT with a few long. GOLD bands .27 m proud (were .55). The
+  curtain whitens only in its last 18 % and the mist is .3 (was .45).
+- Caught on the way (headless, the shipped text): a comment placed mid-line swallowed the pier ladder's `else if` (NaN box) -- fixed before push.
+  Ladders: every foot on its pillar / the brow, bodies clear, marks on top of R3, R1, the brow, the deck; the pool -> hall walk meets only the shrine.
+Rendered BEFORE the push this time (renders in chat). Still: the gold band's back corners show where the face is recessed behind a pillar.
+
 ## m2060 -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
 
 - A `rope` material; ROPE LASHINGS where the hut's gable beams cross (two coils) and two coils under every fence post's top rail.
