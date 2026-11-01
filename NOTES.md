@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2037 -- THE ICE TEMPLE: detail pass D4 -- the back and sides (great banner, jade windows, back towers, side falls, base rocks)
+
+Compared against `big_back.webp`, the back was the plainest side. Now: the BACK's great Korajin banner (8 x 15 m) over the descent; the glyph plates
+became tall gold-framed JADE WINDOWS (a dark recess, the glow slit proud of it, a gem over each) every 7 m on ALL four faces of every big block,
+not just the front; two slim BACK TOWERS (rows, solid) with lanterns at the body's back corners; four frozen FALLS down the towers' and body's
+outer sides with ice pooled at their feet; 34 dark ROCKS heaped with snow round the base. Shipped unverified.
+
 ## m2036 -- THE ICE TEMPLE: detail pass D3 -- merlons, balustrades, ice curtains, crystal growths, moat rocks, the rune circle
 
 Still "detail, detail". Look only, all in `iceDress`: snow-capped MERLONS along every curtain wall and turret top; stone BALUSTRADE posts with
