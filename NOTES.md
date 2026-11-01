@@ -13,6 +13,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- THE HORNED AQUEDUCT (his reference image): horns along the bridge, a chained halo, timber rails, plank deck
+
+His reference (`images/concepts/snow_village/ref_aqueduct_horned.webp`). Footprints, pier heights, deck height and every collider are unchanged
+(`aq_pier`, `aq_span`, `aq_deck`, `aq_section`, `aq_bridge`, `aq_ramp` keep their names, options and ports). `?hut=round` = m2096's.
+- PIER TOPS (with `horns`): a peaked stone CAP each side of the walkway (a pyramid top, a gold band, a gold-framed jade diamond on the outer face, snow),
+  and ONE great banded stone HORN rising from the -Z cap and CURVING ALONG the bridge (`hdir` +1/-1, 0 = straight up with a crystal): the end piers' horns
+  hook inward with a LANTERN hanging from the tip; where two horns face each other (the middle of a bridge, both piers of a section) a gold HALO hangs
+  between their tips on chains, a jade crystal through it (`svkHalo`, from new `horntip` ports). Replaces m2096's double horn arch.
+- DECK: TIMBER railings (posts every metre, two rails, a cap rail, gold collars, snow) instead of the stone balusters and their jade studs; a PLANK walkway
+  with the snow drifted to a strip down the middle (the pushable patch follows it). The rail colliders are the same.
+- The pier-top shrine towers are left off sections and bridges in this look (the caps and horns stand where they were); `aq_shrine` itself is unchanged.
+- Rendered (the demo bridge side-on, a section) before pushing; horns fattened after the look. Shipped unverified.
+
 ## m2118 -- THE ARCH GATE (his reference image): a stone arch between two pagoda towers, horns and a halo
 
 His reference (`images/concepts/snow_village/ref_gate_arch.webp`). `gate` is now `svkGateArch`; `arch: 0` (or `?hut=round`) = the m2096 gate. KEPT for the
