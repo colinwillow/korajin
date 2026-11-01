@@ -70,6 +70,13 @@ for j in range(n):
     for i in range(n):
         wx, wz = i * 2 - 240, j * 2 - 240; d = math.hypot(wx - 22, wz + 118)
         if d < 12: G2[j, i] -= 11 * (1 - d / 12) ** .7     # the NOTCH: the temple's crown from the watchtower (pass 5)
+# the WILLOW SHRINE's hollow (the move-in, step 3): the willow is built at y 0 (its terrace, vines and boxes all assume it), so its place gets a level
+# floor AT 0 -- a hollow 14 m round, its rim easing back up to the valley over 12 m. (Its place sits ~5 m up the valley; it reads as a sheltered dell.)
+WX, WZ = PP['willow_shrine']
+for j in range(n):
+    for i in range(n):
+        wx, wz = i * 2 - 240, j * 2 - 240; d = math.hypot(wx - WX, wz - WZ)
+        if d < 26: k = 0 if d < 14 else ((d - 14) / 12) ** 1.5; G2[j, i] = min(G2[j, i], G2[j, i] * k) if d >= 14 else 0.0
 np.round(np.clip(G2, 0, 163) * 400).astype('<u2').tofile('levels/region_6.bin')
 # the DETAIL grid (0.5 m) over the site's world bounds
 corners = np.array([h2w(p) for p in SITE]); x0, z0 = np.floor(corners.min(0)) - 2; x1, z1 = np.ceil(corners.max(0)) + 2

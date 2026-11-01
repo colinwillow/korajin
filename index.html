@@ -12431,7 +12431,7 @@ function rgnHamlet(g) { const M = RGN.hm, nx = M.nx, nz = M.nz, D = RGN.D, sc = 
   for (const L of (M.bridgeLabels || [])) { const lb = rgnLabel(L.name); lb.position.set(L.x, L.y + 2.2, L.z); lb.scale.set(4, .8, 1); g.add(lb); }
   RGN.stat = 'hamlet ok'; }
 // m2085: the region's own per-frame step (the Snowfield's `snowStep` assumes its 160 m field): the sky held, his snow footsteps, the snowfall
-function rgnStep(dt) { try { snowSkyHold(); } catch (e) {}
+function rgnStep(dt) { try { snowSkyHold(); } catch (e) {} if (RGN.willow) { try { willowStep(dt); } catch (e) { RGN.willow = 0; note('WILLOW STEP THREW ' + e.message); } }
   if (SFX.buf.foot_SNOW && SFX.buf.foot_SNOW.filter(Boolean).length >= 2 && STEP.set !== 'SNOW') STEP.set = 'SNOW';
   const F = RGN.fall; if (F) { const c = camera.position, P = F.P; for (let i = 0; i < F.N; i++) { let y = P[i * 3 + 1] - dt * (1.1 + (i % 7) * .12); P[i * 3] += Math.sin(i + performance.now() * .0004) * dt * .3;
       if (y < -2) y += 32; P[i * 3 + 1] = y; } F.pts.position.set(c.x, c.y - 14, c.z); F.pts.geometry.attributes.position.needsUpdate = true; }
@@ -12466,6 +12466,9 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
     // the places: a mint pole + its name
     const pm = new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false }), pg = new THREE.CylinderGeometry(.35, .35, 10, 8).translate(0, 5, 0);
     for (const Q of RGN.places) { const y = rgnH(Q.x, Q.z), pole = new THREE.Mesh(pg, pm); pole.position.set(Q.x, y, Q.z); g.add(pole); const lb = rgnLabel(Q.name); lb.position.set(Q.x, y + 12, Q.z); g.add(lb); }
+    // m15WL: THE MOVE-IN, step 3 -- the WILLOW SHRINE at its map place (a level dell at y 0 is cut for it in the region grid, so the willow's own
+    // y-0 terrace, vines and boxes work unchanged); `willowStep` runs from `rgnStep`
+    { const W = RGN.places.find(q => q.id === 'willow_shrine'); if (W && typeof willowBuild === 'function') { try { WILLOW.at = [W.x, W.z]; willowBuild(g); RGN.willow = 1; } catch (e) { note('WILLOW THREW ' + e.message); console.error(e); } } }
     if (meta.hamlet) { RGN.hm = meta.hamlet; fetch(A(meta.hamlet.file)).then(r => r.arrayBuffer()).then(b2 => { RGN.D = new Uint16Array(b2); rgnHamlet(g); }).catch(e => note('NO HAMLET ' + e.message)); }
     RGN.live = 1; RGN.stat = 'ok'; const S = (RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] - 4, z: meta.hamlet.gate[1] } : null) || RGN.places.find(q => q.id === RGN.at) || RGN.places.find(q => q.id === 'spawn') || { x: 0, z: 0 }, toT = RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] + 40, z: meta.hamlet.gate[1] } : RGN.places.find(q => q.id === 'ice_temple');
     const put = () => { player.pos.set(S.x, rgnH(S.x, S.z) + .3, S.z); player.vel.set(0, 0, 0); if (toT) { const h = Math.atan2(toT.x - S.x, toT.z - S.z); player.faceH = player.heading = h; cam.az = h; } };
