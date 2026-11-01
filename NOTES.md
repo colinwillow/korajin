@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2065 -- THE GREAT WATERFALL: snow lips on the column tops; gold bands stop at the rock; the fringe on the real face
+
+His: "keep going". From the m2063 renders: the column tops were bare cut-offs, the gold bands' back corners showed where the face is recessed
+behind a pillar, and (found reading the code) the lip's icicle fringe still hung off the old PLAN line -- in mid-air in front of a recessed column.
+- A rolled SNOW LIP along every column's top outside the notch (one flattened cylinder per column, `wfCol` groups them; in the snow draw), set on
+  the face's real front at that height (`face`).
+- Each gold band is now a front plate and two side plates, the sides running back only to the rock (`face` at the pillar's edges), not a ring.
+- The icicle fringe hangs off `face(x, y - .8)`.
+Headless: ladders and marks unchanged and clear. Rendered before the push (renders in chat). Shipped unverified on the phone.
+
 ## m2064 -- the snow kit DETAIL PASS 4: painted banners and meander, paved walkways, LIGHT POOLS
 
 His: *"Go"* (the three offered: painted banners/band, paving, warm light on the snow).
