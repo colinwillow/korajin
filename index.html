@@ -11004,8 +11004,8 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   square: [-18, 32, 6.5],
   // m2105 (VILLAGE pass 2, VILLAGE_BLUEPRINT pass 2's "horseshoe cliff"): a HORSESHOE of rock behind the village -- low on the arms (8-10 m), 15 m at the
   // back -- so the field's edge is hidden, the village is sheltered, and the HOT SPRING rises at its foot behind the crag (the kit's spring_geyser)
-  cliff: { pts: [[-45, 38], [-46, 54], [-43, 68], [-34, 77], [-20, 79.2], [-6, 78.6], [4, 74], [8.5, 62], [9.5, 48]], h: [8, 10, 12.5, 14.5, 15, 15, 13, 10.5, 8.5], d: 7.5 },
-  spring: { at: [-7, 0, 73.2], r: 2 },
+  cliff: { pts: [[-47, 36], [-48, 54], [-45.5, 70], [-36, 81], [-20, 83.5], [-4, 83], [8.5, 78], [14, 64], [14.5, 48]], h: [8, 10, 12.5, 14.5, 15, 15, 13, 10.5, 8.5], d: 7.5 },
+  spring: { at: [5, 0, 67.5], r: 2 },     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
   place: [
     { id: 'vil_hut_01', kind: 'hut', at: [-28, 0, 27], face: [-18, 31], p: { R: 2.7, seed: 11, chimA: 2.4 } },
     { id: 'vil_hut_02', kind: 'hut', at: [-8.5, 0, 35], face: [-18, 31], p: { R: 2.5, seed: 12, banner: 0, barrels: 3 } },
@@ -11319,7 +11319,7 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
       for (let i = 0; i < P.count; i++) { const x = P.getX(i), y = P.getY(i), z = P.getZ(i), top = y > h / 2 - .01, n = Math.sin(x * .9 + k) * .55 + Math.sin(y * 1.7 + x * .4) * .35 + Math.sin(z * 2.1 + y) * .25, taper = 1 - .18 * (y / h + .5);
         P.setXYZ(i, x, top ? y + Math.sin(x * .6 + k * 2) * .6 : y, z * taper + (Math.abs(z) > C.d / 2 - .01 ? n * Math.sign(z) : 0)); }
       geo.computeVertexNormals(); geo.rotateY(-yaw).translate(cx, h / 2, cz); L.rock.push(geo);
-      BOXES.push(obox(cx, cz, len / 2, C.d / 2 * .9, yaw, 0, h)); L.snow.push(vilPillow(len * .96, .35, C.d * .7).rotateY(-yaw).translate(cx, h + .1, cz)); } }
+      BOXES.push(obox(cx, cz, len / 2, C.d / 2 * .9, yaw, 0, h)); L.snow.push(vilPillow(len * .7, .16, C.d * .38).rotateY(-yaw).translate(cx, h + .05, cz)); } }     // pass 2b: a thin snow line along the top, not a white blob
   if (V.spring && typeof snowKitPiece === 'function') { try { const S = V.spring, K = snowKitPiece('spring_geyser', { r: S.r }); K.group.position.set(S.at[0], S.at[1], S.at[2]); g.add(K.group);
       for (const b of K.boxes) BOXES.push({ minx: b.minx + S.at[0], maxx: b.maxx + S.at[0], miny: b.miny + S.at[1], maxy: b.maxy + S.at[1], minz: b.minz + S.at[2], maxz: b.maxz + S.at[2] });
       K.live(S.at, 0, g); circ(S.at[0], S.at[2], S.r + 2); } catch (e) { note('VILLAGE SPRING THREW ' + e.message); console.error(e); } }
