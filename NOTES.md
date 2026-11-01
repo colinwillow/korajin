@@ -16,7 +16,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15V5 -- THE VILLAGE, pass 5: THE MARKET round the square (Nov 1 2026)
+## m2113 -- THE VILLAGE, pass 5: THE MARKET round the square (Nov 1 2026)
 `SNOWVIL.pieces`: three kit `market_stall`s on the square's open west / south-west / south sides, each turned to face the fire pit, with kit `crates`
 and `barrels` between them; the paths (to the gate, the north stair, the bath lane) are left clear. Shipped unverified (render after the push).
 
