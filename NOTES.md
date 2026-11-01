@@ -7,7 +7,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- the snow kit goes OFF-WORLD: the Jin-builders' style (`?svkstyle=classic` for the old look)
+## m2089 -- the snow kit goes OFF-WORLD: the Jin-builders' style (`?svkstyle=classic` for the old look)
 
 His: *"Can we make this architecture more off-world? It's supposed to be mythical, mystical -- an alternate reality, planet, species -- and it feels kind
 of human."* Read against KORAJIN.md (an ancient ALIEN civilisation, technology so old it is tradition, bronze machinery, floating lanterns, Jinra mint
