@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15TL -- THE TEMPLE LAYOUT GENERATOR, v1 (Nov 1 2026)
+*"Ok now start the temple layout tool."* KORAJIN > Temple Layout (`?w=forge&zone=tlayout`). From a SEED and a list of BEATS, `tlayGen` grows a route
+graph up the inside of a cylindrical chamber (outer ring r 31, inner r 19, height ~46): platforms sized by beat, edges = moves from the TEMPLE_KIT
+table drawn inside their COMFY ranges (walk / stairs / jump / double jump / drop / wall run / chimney / high bar), spiralling up and cutting across
+between the rings so bridges pass over bridges; crowded nodes are rejected. A mesa in the middle holds the dormant giant (stand-in); the route ends on a
+bridge to it. `tlayStage` builds it as grey boxes with real colliders (wall runs and chimneys are real walls, bars real high bars), colour by beat,
+the route drawn as a line, the player at the entry. TOOLS > LAYOUT: NEW SEED. The tip reports seed / platforms / climb / move counts. Design +
+roadmap: TEMPLE_LAYOUT.md. Shipped unverified (boot check only -- the zone is not in check:boot; its build is try/catch'd: `TLAY THREW` in the chip).
+
 ## m2029 -- the dragon cannot walk off his cliff (Nov 1 2026)
 His screenshot (m2023): the dragon below the cliff, half in the wall, trying to run home. m2024 already makes a fallen homed dragon FLY home; this adds
 the guard that stops the fall: a homed beast whose next step would drop him more than 1.5 m (and who is not flying) is put back on his last safe footing
