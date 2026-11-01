@@ -12181,12 +12181,12 @@ try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {
 // valleys ARE the paths, mountains too steep to walk, a marker at each place. Rough terrain only -- nothing dressed. `?w=forge&zone=region`.
 // The grid is `levels/region_6.bin` (241 x 241 at 2 m, uint16 = metres x 400); `rgnH` samples it bilinearly; `groundAt` stands him on it and
 // `rgnWall` stops him walking up anything steeper than `maxSlope` (rise per metre) -- he can still JUMP up a face; the slope is the wall.
-const RGN = { want: 0, live: 0, file: 'levels/region_6.bin', meta: 'levels/region_6.json', n: 241, cell: 2, half: 240, scale: 400, H: null, maxSlope: 1.05, places: [], stat: null, D: null, hm: null, at: (() => { try { const m = /[?&]at=([a-z_]+)/.exec(location.search); return m ? m[1] : 'spawn'; } catch (e) { return 'spawn'; } })() };     // m15D1: `D` = the hamlet's 0.5 m detail grid; `at` = where he starts
+const RGN = { want: 0, live: 0, file: 'levels/region_6.bin', meta: 'levels/region_6.json', n: 241, cell: 2, half: 240, scale: 400, H: null, maxSlope: 1.05, places: [], stat: null, D: null, hm: null, at: (() => { try { const m = /[?&]at=([a-z_]+)/.exec(location.search); return m ? m[1] : 'spawn'; } catch (e) { return 'spawn'; } })() };     // m2077: `D` = the hamlet's 0.5 m detail grid; `at` = where he starts
 try { if (/[?&]zone=region\b/.test(location.search)) RGN.want = 1; } catch (e) {}
 function rgnH(x, z) { const H = RGN.H; if (!H) return 0; const n = RGN.n, fx = Math.min(n - 1.001, Math.max(0, (x + RGN.half) / RGN.cell)), fz = Math.min(n - 1.001, Math.max(0, (z + RGN.half) / RGN.cell)),
     i = fx | 0, j = fz | 0, u = fx - i, v = fz - j, a = H[j * n + i], b = H[j * n + i + 1], c = H[(j + 1) * n + i], d = H[(j + 1) * n + i + 1];
   const r = ((a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v) / RGN.scale;
-  if (RGN.D) { const M = RGN.hm, di = Math.round((x - M.x0) / M.res), dj = Math.round((z - M.z0) / M.res); if (di >= 0 && dj >= 0 && di < M.nx && dj < M.nz) { const q = RGN.D[dj * M.nx + di]; if (q) return Math.max(r, q / RGN.scale); } }     // m15D1: the hamlet's terraces + gorge, crisp
+  if (RGN.D) { const M = RGN.hm, di = Math.round((x - M.x0) / M.res), dj = Math.round((z - M.z0) / M.res); if (di >= 0 && dj >= 0 && di < M.nx && dj < M.nz) { const q = RGN.D[dj * M.nx + di]; if (q) return Math.max(r, q / RGN.scale); } }     // m2077: the hamlet's terraces + gorge, crisp
   return r; }
 function rgnWall(P, x0, z0) { const h1 = rgnH(P.x, P.z); const gx = (rgnH(P.x + .5, P.z) - rgnH(P.x - .5, P.z)), gz = (rgnH(P.x, P.z + .5) - rgnH(P.x, P.z - .5)), sl = Math.hypot(gx, gz);
   const blocked = h1 > P.y + MOVE.step || (sl > RGN.maxSlope && h1 > rgnH(x0, z0) + .001 && P.y < h1 + .25); if (!blocked) return 0;
@@ -12195,7 +12195,7 @@ function rgnWall(P, x0, z0) { const h1 = rgnH(P.x, P.z); const gx = (rgnH(P.x + 
 function rgnLabel(text) { const cv = document.createElement('canvas'); cv.width = 512; cv.height = 96; const c = cv.getContext('2d'); c.font = 'bold 54px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
   c.lineWidth = 10; c.strokeStyle = 'rgba(10,20,40,.85)'; c.strokeText(text, 256, 48); c.fillStyle = '#ffffff'; c.fillText(text, 256, 48); const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace;
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false, transparent: true })); sp.scale.set(16, 3, 1); sp.renderOrder = 9; return sp; }
-// m15D1: VILLAGE DISTRICT 1 (VILLAGE_BLUEPRINT.md, pass 10 build order 1) -- the hamlet's ground, grey and walkable: the 8 terraces at their heights
+// m2077: VILLAGE DISTRICT 1 (VILLAGE_BLUEPRINT.md, pass 10 build order 1) -- the hamlet's ground, grey and walkable: the 8 terraces at their heights
 // (E1 +1.2 ... E4 +10.8, the knoll +8), the gorge between the banks stepping down in three falls, the horseshoe cliff behind (in the region grid).
 // One mesh from the 0.5 m detail grid (`levels/hamlet_d1.bin`, `tools/regionpick.py`); its walls are what `rgnWall` stops him at (~3 m = a sprint
 // wall-up). A label on each terrace, the creek as a blue ribbon. No buildings yet (district 4).

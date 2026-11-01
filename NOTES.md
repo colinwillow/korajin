@@ -20,7 +20,7 @@ alien sheet, 6-11 this one), still in the same draws:
 `?wfflora=1` shows all twelve in two rows in front of the pool. Rendered; the maple's single-blob pads became many small clumps, the
 blossom's flowers were enlarged. The plumes do not sway yet. Shipped unverified on the phone.
 
-## m15D1 -- THE VILLAGE, district 1: the hamlet's ground in the region (VILLAGE_BLUEPRINT pass 10 build step 1) (Nov 1 2026)
+## m2077 -- THE VILLAGE, district 1: the hamlet's ground in the region (VILLAGE_BLUEPRINT pass 10 build step 1) (Nov 1 2026)
 His sign-off on the pass 10 plan + elevation: *"Signed off, start building district 1."*
 - KORAJIN menu > **The Village (district 1)** = `?w=forge&zone=region&at=village` (starts at the hamlet's gate, facing up the gorge).
 - `tools/regionpick.py` now hand-edits the region after generating it: the blueprint frame is MIRRORED + turned (`h2w` / `w2h`) so the gate faces west
