@@ -13,6 +13,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- THE RIBBED LONGHALL (his reference image): the longhouse redesigned
+
+His reference (`images/concepts/snow_village/ref_longhouse_ribbed.webp`). The `longhouse` piece is now `svkLonghall`: a long gabled hall on the OLD
+footprint (2R*sx x 2R = 9.6 x 6 m, door still at +Z, the same `door` port), so the village's placements still fit; `hall: 0` (or `?hut=round`) is the
+old elliptical longhouse.
+- Rectangular stone walls on two .3 m plinth tiers (walk up anywhere); the kit's thatch GABLE along X (pitch .78) with its finials and plaques; two gold
+  spike SPIRES on the ridge.
+- RIBS every bay on both long sides (6 a side, kept clear of the porch): banded stone ribs from a boulder at the foot, up the wall, out over the eave, ALONG
+  the roof slope, the tips lifting toward the ridge; a gold-framed jade diamond on each, snow on them.
+- Great crescent HORNS on both gable ends (two each, gold-banded, jade, snow, icicles) and the gold HALO with its two jade crystals over the west end.
+- The PORCH: a small cross gable over the door on two timber posts; the door is the horned hut's (round-arched, a thick stone arch, a jade diamond,
+  lanterns), a step in front. Warm WHEEL portholes between the ribs, red BANNERS on gold rods from the eaves, barrels at the ends.
+- Colliders: the plinth tiers, the walls, the gable's stepped roof, the porch posts and the rib boulders. Rendered twice: the first ribs stood straight up
+  through the roof like columns -- re-routed to follow the slope. Shipped unverified.
+
 ## m2110 -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
 
 His reference (`images/concepts/snow_village/ref_hut_horned.webp`), from the prompt pack m2096 sent. The hut keeps the classic materials and its footprint,
