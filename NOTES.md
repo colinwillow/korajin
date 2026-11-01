@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2055 -- THE GREAT WATERFALL: why the rock was WHITE (the third render)
+
+m2054's render: the water turquoise, the gold gold -- and the cliff and pillars still pale lavender even from the pool, while the boulders (same
+rock colouring) were blue-grey. Read out of the live page: the wall's vertex colours averaged 1.10 (snow). The cause was the STRATA: a sawtooth of
+amplitude 1.1 m every 4.5 m tilts half the face ~45 deg UP (ny ~ .7), and the snow test started at ny .72 -- the whole face was snow-coloured
+stripes. Now strata .55 and snow only from ny .86 (near-flat ledges). The chain ladder follows (it reads the same `face`). Shipped; renders follow.
+
 ## m2054 -- THE GREAT WATERFALL: its own FOG SCALE (the second render: the dark rock still read white)
 
 m2052 made the rock dark and the render still showed a white slope. Measured in the page: the snow zone's fog is LINEAR, near 40, far 340, colour
