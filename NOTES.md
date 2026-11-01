@@ -5,6 +5,12 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2056 -- THE GREAT WATERFALL: darker rock with columnar JOINTS (the fourth render)
+
+m2055's render: the face no longer snow-striped, but still pale -- the boulders now match it, so the colours were right and the LIGHT is the
+reason: the face looks east into the zone's low sun and is fully lit. Rock base .4 -> .2, and dark vertical JOINTS (a sharpened sine across
+x + z, wobbled by noise) take up to 55 % off, so the faces read as stacked columns like his reference. Look only. Shipped; renders follow.
+
 ## m2055 -- THE GREAT WATERFALL: why the rock was WHITE (the third render)
 
 m2054's render: the water turquoise, the gold gold -- and the cliff and pillars still pale lavender even from the pool, while the boulders (same
