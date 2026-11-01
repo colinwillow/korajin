@@ -14,7 +14,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15WX -- the Snowfield's weather is CLEAR by default (Nov 1 2026)
+## m2124 -- the Snowfield's weather is CLEAR by default (Nov 1 2026)
 His: *"half the time it's just a white blizzard in the sky -- you can't see the HDR at all, and sometimes you can see the beautiful HDR; is that a glitch
 or weather changing?"* It was the m-era blizzard cycle (`SNOWSTORM.weather` AUTO: 70-110 s calm, 40-65 s storm; while the storm is past .55 the sky
 panorama gives way to flat fog). Default is now CLEAR under a new storage key (`mel.storm2`), so his saved AUTO does not linger; AUTO / BLIZZARD are
