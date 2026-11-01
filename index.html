@@ -10999,7 +10999,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   terr: [     // x0 x1 z0 z1, top, the tier it stands on (base), stairs [centre, width, side] climb to it from that tier at .3 m risers
     { id: 'vil_terr_01', r: [-35, -11, 44, 58], top: 1.5, base: 0, stairs: [[-21.5, 3, '-z']] },
     { id: 'vil_terr_02', r: [-32, -13, 58, 72], top: 3.3, base: 1.5, stairs: [[-21.5, 3, '-z']] },
-    { id: 'vil_crag_01', r: [-13, -2, 59, 69], top: 7.5,     /* m15V4: 4.5 -> 7.5, the village's high point (a 14-step stair up from the longhouse terrace) */ base: 3.3, crag: 1, stairs: [[61, 2.4, '-x']] } ],
+    { id: 'vil_crag_01', r: [-13, -2, 59, 69], top: 7.5,     /* m2112: 4.5 -> 7.5, the village's high point (a 14-step stair up from the longhouse terrace) */ base: 3.3, crag: 1, stairs: [[61, 2.4, '-x']] } ],
   paths: [ [[0, 12], [-6, 19], [-12, 25], [-18, 31]], [[-18, 31], [-21.5, 36], [-21.5, 41]], [[-18, 31], [-14, 38], [-14, 40]] ],     // the hut doors join these by themselves
   square: [-18, 32, 6.5],
   // m2105 (VILLAGE pass 2, VILLAGE_BLUEPRINT pass 2's "horseshoe cliff"): a HORSESHOE of rock behind the village -- low on the arms (8-10 m), 15 m at the
@@ -11011,7 +11011,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   // under a timber BRIDGE (the kit's `bridge_timber`) where the path comes in from the field.
   aq: [{ at: [5, 0, 59], yaw: Math.PI / 2, h: 6 }, { at: [5, 0, 51], yaw: Math.PI / 2, h: 6 }],
   creek: [[7.5, 66], [10.5, 57], [11.5, 46], [10, 36], [6, 26], [2.5, 17], [-1.5, 10], [-6, 3], [-12, -5]], creekW: 2.6,
-  // m15V4 (VILLAGE pass 4: HEIGHT): the kit's WATCHTOWER on the raised crag, and a plank DECK on posts from the crag's edge out to the AQUEDUCT -- the
+  // m2112 (VILLAGE pass 4: HEIGHT): the kit's WATCHTOWER on the raised crag, and a plank DECK on posts from the crag's edge out to the AQUEDUCT -- the
   // first piece of the high route: up the crag stair, onto the deck, drop to the aqueduct's walkway (6 m) and along it toward the bathhouse
   pieces: [{ kind: 'watchtower', o: { h: 4.5 }, at: [-4.5, 7.5, 61.5], yaw: Math.PI }, { kind: 'deck_posts', o: { w: 6.6, d: 2.2, h: 7.2 }, at: [0.9, 0, 60.2], yaw: 0 }],
   bridges: [{ at: [0.6, 0, 13.2], yaw: Math.atan2(7, -6), span: 8 }],     /* pass 3d: turned 90 deg -- it ran ALONG the creek; now it spans it */     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
@@ -11024,7 +11024,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
     { id: 'vil_hut_04', kind: 'hut', at: [-29, 1.5, 50.5], yaw: Math.PI, p: { R: 2.6, seed: 14 } },
     { id: 'vil_hut_05', kind: 'hut', at: [-15.5, 1.5, 50], yaw: Math.PI, p: { R: 2.4, seed: 15, chimA: 2.2, lamp: 0 } },
     { id: 'vil_long_01', kind: 'hut', at: [-23, 3.3, 66], yaw: Math.PI, p: { R: 3, sx: 1.6, roofH: 3.2, wallH: 2.5, seed: 16, chimA: -1.6, win: [.75, -.75, 1.6, -1.6, 2.5, -2.5], barrels: 4 } },
-    { id: 'vil_hut_07', kind: 'hut', at: [-9.3, 7.5, 65.4], yaw: -Math.PI / 2, p: { R: 2.2, seed: 17, roofH: 3.0 } },     // m15V4: moved over for the watchtower
+    { id: 'vil_hut_07', kind: 'hut', at: [-9.3, 7.5, 65.4], yaw: -Math.PI / 2, p: { R: 2.2, seed: 17, roofH: 3.0 } },     // m2112: moved over for the watchtower
     { id: 'vil_gate_01', kind: 'gate', at: [-6, 0, 19], face: [0, 12], p: { w: 3.6, h: 4.2 } },
     { id: 'vil_banner_01', kind: 'banner', at: [-24.2, 0, 42.6], yaw: 0 },
     { id: 'vil_banner_02', kind: 'banner', at: [-18.8, 0, 42.6], yaw: 0 },
