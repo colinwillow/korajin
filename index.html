@@ -9862,7 +9862,7 @@ function beastSlam(d, k) {
   if (Math.hypot(px, pz) < 4 && !player.roll) playerHurt(d.K.hitDmg * .3, Math.atan2(px, pz), d.K.push * 1.3, d.K.pushUp * 1.2, .5, 1);
 }
 function beastHurt(d, dirH, power) {
-  if (d.tame) return;     // m15MR: the ridden mammoth is a friend
+  if (d.tame) return;     // m2011: the ridden mammoth is a friend
   const C = beastC(d), P = d.root.position;
   snd('creature', { g: .5 + .4 * power, r: C.pitch * (.9 + Math.random() * .2), x: P.x, z: P.z });
   if (d.entering) return;
@@ -10070,7 +10070,7 @@ function beastFxStep(dt) {
     if (u >= 1.25) { scene.remove(b.ring); if (b.line) scene.remove(b.line); if (b.col) { scene.remove(b.col); scene.remove(b.glow); } B.bolts.splice(i, 1); } }
 }
 function beastStep(d, dt, t) {
-  if (d.tame) return mamTameStep(d, dt, t);     // m15MR
+  if (d.tame) return mamTameStep(d, dt, t);     // m2011
   const K = d.K, C = beastC(d), L = d.root, P = L.position, fly = K.creature === 'mech';
   const px = player.pos.x - P.x, pz = player.pos.z - P.z, dd = Math.hypot(px, pz), toP = Math.atan2(px, pz), Lv = arenaLvl();
   if (d.bar && (d.entering || d.st === 'cDeath')) d.bar.g.visible = false;
@@ -11208,8 +11208,8 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     const was = d.snowY == null ? P.y : d.snowY; if (was > .6 && P.y <= .15) snowBlast(P.x, P.y, P.z, 1.5 + r * 1.4, Math.min(1.6, .6 + was * .3)); d.snowY = P.y; }
   if (SFX.ctx && !SFX.buf.foot_SNOW) { try { SFX.buf.foot_SNOW = snowCrunchBufs(); } catch (e) {} } if (SFX.buf.foot_SNOW && STEP.set !== 'SNOW') { Z.stepSet0 = STEP.set; STEP.set = 'SNOW'; }     // m2008: snow crunch footsteps
   iceSpikeStep(dt);     // m2006
-  mamFrame();     // m15MR
-  if (!Z.mamSpawned && ARENA.kinds.MAMMOTH && typeof arenaSpawn === 'function') { Z.mamSpawned = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'mammoth') return; d.entering = 0; d.tame = 1; d.st = 'cIdle'; d.ride = { v: 0 }; d.h = MAMR.yaw; d.root.position.set(MAMR.at[0], 0, MAMR.at[1]); d.root.rotation.y = d.h + (d.faceOff || 0); if (d.bar) d.bar.g.visible = false; MAMR.d = d; mamSaddle(d); }).catch(e => note('MAMMOTH THREW ' + e.message)); }     // m15MR: the tame mammoth waits, saddled
+  mamFrame();     // m2011
+  if (!Z.mamSpawned && ARENA.kinds.MAMMOTH && typeof arenaSpawn === 'function') { Z.mamSpawned = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'mammoth') return; d.entering = 0; d.tame = 1; d.st = 'cIdle'; d.ride = { v: 0 }; d.h = MAMR.yaw; d.root.position.set(MAMR.at[0], 0, MAMR.at[1]); d.root.rotation.y = d.h + (d.faceOff || 0); if (d.bar) d.bar.g.visible = false; MAMR.d = d; mamSaddle(d); }).catch(e => note('MAMMOTH THREW ' + e.message)); }     // m2011: the tame mammoth waits, saddled
   iceFreezeStep(dt); iceFrostStep(dt);     // m2007
   if (!Z.dragonWoke && p.pos.z < -30 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON) { Z.dragonWoke = 1; try { arenaSpawn('DRAGON'); tipShow('Something stirs by the cliffs...', 3); } catch (e) {} }     // m2006: the blue dragon lives up here
   if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
@@ -12665,7 +12665,7 @@ function dragWild(B, dt) { const Z = DRAGZ, p = player, P = B.root.position, dx 
 // `ride_on` (Entering_Car 1.6-3.4 s, in place, x1.4: the swing in and the sit), `ride_off` (Exiting_Car 1.3-3.6 s, in place, x2: the swing out
 // and the stand), `ride_gun` (Sitting_Gun_Motion, while the gun is held). Each falls back to his own `driving` / `in_air` if the bake is absent.
 const dragHas = n => !!(n && rig.actions[n]);
-// m15MR: THE MAMMOTH RIDE (his: "this could be like his horse"; "go -- the mammoth ride"). A TAME mammoth waits in the Snowfield at `MAMR.at`, saddled
+// m2011: THE MAMMOTH RIDE (his: "this could be like his horse"; "go -- the mammoth ride"). A TAME mammoth waits in the Snowfield at `MAMR.at`, saddled
 // (his model's own saddle; the seat height measured off his skinned vertices over the saddle). A ring on the snow at his flank: tap the RIGHT pad in it and he LEAP-MOUNTS (the dragon's m1994 leap: crouch, a high
 // arc, a front flip, a drop into the seat). Riding: the LEFT stick is where he goes (camera-relative, like walking): he turns toward it (faster when
 // slow), and how far you push is how fast -- Walk_F_IP -> Trot_F_IP -> Run_F_IP, each clip's rate matched to his speed; let go and he slows to a stand.
@@ -34011,7 +34011,7 @@ PADS.L = bindStick(padL, stick.L,
   // left wheel (`kitPick`).
   // tap: jump -- flying, a double tap is her BOOST (m266); on her skates on the ground, her SWIVEL (m268)
   () => {     // m1327: the left tap is the jump again in 3D AIM too (m1282's left-tap trigger is gone)
-    if (player.mamRide) { mamTapL(); return; }     /* m15MR: a double tap gets off */
+    if (player.mamRide) { mamTapL(); return; }     /* m2011: a double tap gets off */
     if (player.dragon) { dragTapL(); return; }     /* m1614: no jump from the saddle; m1619: a wing beat (on the ground, the take-off) */ if (wingTapL()) return; if (fakieSwivel()) return; if (player.wall && player.wallLow && player.wallSt === 'hold') { wallDrop(0); return; } if (coverTap()) return; if (LTAP.jump) player.jump = 1; },     /* m1836: the left tap no longer jumps unless TOOLS > LEFT TAP JUMP */     // m1009: in cover, a left tap stands him up out of it; m1012: near a half block, takes it
   // flick: a BODY FLIP on the board, otherwise the dodge roll in the flicked direction. The
   // board takes it first and says so, because a dodge roll on a moving deck is nothing.
@@ -36157,7 +36157,7 @@ function stepPlayer(dt) {
   if (RESTORE.list.length) restoreStep(dt);     // m1505     // m1105; m1119; m1120: each building's own life
   const p = player;
   swapTick(dt);     // m1836: ONE swap clock for every state -- the ledge, the dragon, the bar, the rope never ticked it, so a swap begun there hung for ever and kitPick refused every pick after
-  if (p.mamRide) { mamRide(dt); return; }     // m15MR: on the mammoth
+  if (p.mamRide) { mamRide(dt); return; }     // m2011: on the mammoth
   if (p.dragon) { dragRide(dt); return; }     // m1614: on his dragon, the dragon owns the body
   stepFeet(dt);
   const hadLock = p.lock;
@@ -37764,7 +37764,7 @@ function rigAnim(dt) {
   if (p.wing && p.wTrick && p.wTrick.k === 'tuck' && rig.actions.tuck) { setWeights({ tuck: 1 }, dt, .07); return; }     // m1998: the flip is TUCKED (no hip hold: the tuck curls the spine)
   if (p.wing && WING.clip && rig.actions[WING.clip]) { setWeights({ [WING.clip]: 1 }, dt, .12); WING.holdHips = 1; return; }     // m1977: his own flight pose (it fell through to the wiggly in-air fall)
   if (p.hdrop) { const nm = p.hdrop.st === 'fall' ? HDROP.fall : HDROP.land; if (rig.actions[nm]) { setWeights({ [nm]: 1 }, dt, .04); return; } }     // m1953
-  if (p.mamRide) { mamAnim(dt, t); return; }     // m15MR
+  if (p.mamRide) { mamAnim(dt, t); return; }     // m2011
   if (p.dragon && (!p.mphK || rig.borrowed || rig.actions.driving)) { dragAnim(dt, t); return; }     // m1614: climbing on, seated, climbing off (m1624: ahead of a worn form, when the skin has the seat)
   if (p.mphK && !rig.borrowed) { morphAnim(dt); return; }
 

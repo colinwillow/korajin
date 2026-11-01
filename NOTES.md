@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15MR -- THE MAMMOTH RIDE (Nov 1 2026)
+## m2011 -- THE MAMMOTH RIDE (Nov 1 2026)
 *"Go -- the mammoth ride, then the lair."* (`MAMR`) A TAME mammoth waits in the Snowfield at (16, 22) -- the cow-rig mammoth spawned through the beast
 system with `d.tame` (no brain, no damage, its own `mamTameStep`), wearing his model's OWN saddle. A ring glows on the snow at his left flank:
 - MOUNT: tap the RIGHT pad in the ring -> the m1994 LEAP (crouch, high arc, front flip, drop into the seat, a dip and a thud)
