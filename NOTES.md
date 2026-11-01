@@ -6,6 +6,18 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## mNEXT -- the snow kit SILHOUETTE PASS 2: staves, bellied walls, balusters, finials, capstones
+
+His: *"Sounds good."* (the second silhouette list)
+- BARRELS: 20 staves (a sunk groove between each), a bellied profile, a rim and a sunk lid -- every barrel in the kit and the village.
+- HUT WALLS are no longer perfect drums: each bellies unevenly (three sines, seeded per hut), and the posts and windows ride the same bulge so nothing sinks
+  into the wall or floats off it.
+- The aqueduct DECK's solid balustrade is now a low plinth with TURNED BALUSTERS (~.38 m apart) and a square pier every quarter, under the same cap rail
+  (the collider is unchanged, still a rail he cannot step over).
+- GABLE ROOFS get carved, CURLED RIDGE FINIALS at both ends with gold tips (the kit gable, so the watchtower, gate and the gable piece).
+- PLATFORM corner piers get pyramid CAPSTONES with a gold knob.
+- Rendered (hut, aqueduct deck, platform, towers, barrels) before pushing. Same draws (25); about +35k triangles across the showroom. Shipped unverified.
+
 ## m2075 -- the snow kit SILHOUETTE PASS 1: shapes, not surfaces
 
 His: *"Why are they squares? Why aren't they more hexagonal, why don't the edges of a box have ridges, why is one solid shape not cut into two or three --
