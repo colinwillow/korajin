@@ -5,6 +5,22 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2020 -- THE ICE TEMPLE: rescoped to the ENTRANCE, 1.5 km out, a descent to the temple below
+
+His (after m2017): *"The inside of the temple will be underground -- massive, the iceberg; we're building the ENTRANCE, the tip of it. And the
+temple is two feet from the rest of the ice world -- I pictured it five times farther away, if not more."*
+- `ICET.at` [80, 0, -300] -> [80, 0, -1500]: the valley is ~1.4 km now (local z 85..1455), the three terraces spread along it (faces at 1100, 700,
+  350), its own floor box at .6 (over the snowfield's far ground ring at .53 -- at 0 he would stand sunk in it), the peak clearing stretched to
+  match, the camera far 2200.
+- ABOVE GROUND IS THE ENTRANCE ONLY: the moat + braziers -> outer gate, the forecourt, the towers, the grand stair, the emblem door with its two
+  shoulder seals (chimney left, step blocks + high bar right), a body behind the facade, and the CROWN and the two HORNS as silhouette on top
+  (the concept's outline). The acrobatic hall, the ring chamber, the three crystal routes, the crown terrace, the chalice and the zip are REMOVED
+  from above ground -- they are the underground temple's, to be blueprinted when it comes.
+- THE DESCENT: through the emblem door, a corridor at 33 and a grand stair of 110 steps DOWN (33 -> 0) cut into the ground, to the sealed LOWER
+  DOOR (red; a toast "THE TEMPLE BELOW -- sealed"). Two jackal markers guard the door, two statue markers line the corridor.
+- The warp key: VALLEY MOUTH > TERRACE 1 > TERRACE 2 > MOAT > FORECOURT > THE DOOR TOP > THE DESCENT > THE LOWER DOOR.
+Headless: warped to the moat 1.5 km out, he stands on it (y 24.06) -- nothing out there clamps or kills him. Shipped unverified.
+
 ## m2019 -- the far mountains painted; the platforms made organic (Nov 1 2026)
 *"Textures for the back grey rock mountains and anything else that isn't painted; the cubic, rectangular platforms look non-organic."*
 - the PEAKS (`snowPeakMat`, Snowfield only): painted granite on the slopes, painted snow where a face turns up or climbs high (slope + height blend),

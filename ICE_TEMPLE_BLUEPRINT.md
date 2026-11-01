@@ -1,5 +1,12 @@
 # ICE TEMPLE -- THE BLUEPRINT (step 1 of 3: blueprint -> grey blockout -> look)
 
+> **RESCOPED (his, Nov 1, after the m2017 blockout):** *"The inside of the temple will be UNDERGROUND -- massive. We're building the ENTRANCE to the
+> temple, not the temple itself: the tip of the iceberg. And it's two feet from the rest of the ice world -- I pictured it five times farther away,
+> if not more."* So: what stands above ground is the ENTRANCE only (the concept art: moat, braziers, forecourt, towers, the stair, the emblem door,
+> the crown and horns as silhouette), 1.5 km out at the head of a ~1.4 km valley; behind the emblem door a grand stair DESCENDS to a sealed LOWER
+> DOOR. Beats 4-9 below (the hall, the ring, the three crystals, the crown, the chalice, the boss) belong to the UNDERGROUND temple -- a blueprint of
+> their own when that comes; nothing of them is built above ground any more.
+
 His brief: `ICE_TEMPLE.md`. The rules and the move table: `TEMPLE_KIT.md` (comfy = 80% of the measured max; a gap is never wider than its move's
 COMFY distance, a ledge never higher than its COMFY height, unless it is a skill check on purpose and marked **SKILL**). Concept: `images/concepts/
 ice_temple/big_*` (his pick). **Nothing here is built yet. Mark it up; the blockout follows his changes.**
@@ -116,7 +123,7 @@ placement row, a pure builder, its own `ICE_TEMPLE:START/END` block**; the snowf
    state hook (`ICET.state`) for what it becomes after you beat it -- "transformed into a different zone", to be determined.
 
 ## Built
-- (m2016) the GREY BLOCKOUT of every beat above, wired to the real systems (chimneys are plain faces, `HBAR`, `MBAR`, `ZIPS`, `smashAdd` for the
+- (m2017) the GREY BLOCKOUT of every beat above, wired to the real systems (chimneys are plain faces, `HBAR`, `MBAR`, `ZIPS`, `smashAdd` for the
   braziers, seals, crystals and chalice; the gates open when their group is broken). Enemy markers only. The ICE TEMPLE key (top centre in the snow
   zone) warps VALLEY > MOAT > FORECOURT > HALL > RING > CROWN. `?ice=0` leaves it out. Unplayed.
 ## (Asked, answered above)
