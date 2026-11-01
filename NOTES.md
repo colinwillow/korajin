@@ -23,6 +23,28 @@ Greek key, timber posts, straw thatch, lattice windows, rectangular doors, cross
 - `SVKSTYLE` ('jin' default / 'classic' via `?svkstyle=classic`); footprints, colliders, piece and option names unchanged, so the village layout and its
   measured routes still fit. Rendered (hut, aqueduct, gate, deck) before pushing; the glyph band's glow toned down after the first look. Shipped unverified.
 
+## m2087 -- THE FLORA: painted BARK on the wood, veins in every leaf and petal
+
+His: "sounds good" (the next passes: surface detail, texture maps). The first real texture on the plants:
+- Every bark-ridged sweep (trunks, branches, boughs, the hero's trunk and cap branches, the shimenawa) and every root goes into a NEW wood
+  draw: `snowTriMat('temple_bark', 1.4, ...)` -- his painted grey-brown bark, triplanar, multiplied by the vertex colours (so a frostcap stem
+  stays pale and a maple trunk dark) at x1.6 (2.2 read gold). The neutral `temple_bark` was picked over `snow_bark` (orange pine) so the
+  palette tints it. +1 draw for the whole waterfall.
+- `leaf()` paints chevron VEINS off the pale midrib and darkens the last fifth toward the tip -- vertex colour only, no geometry.
+Rendered: the six and the Great Frostcap -- the wood reads as bark; the snow caps (double-sided since the last build) read on every plant.
+Shipped unverified on the phone.
+
+## m2088 -- THE MOVE-IN, step 2: the tame MAMMOTH by the hamlet's stable, the calf HERD on the MAMMOTH MEADOW (Nov 1 2026)
+- `rgnStep` spawns them like `snowStep` does (by kind, one after the other): the tame mammoth at `hamlet.stable` (the blueprint's stable spot,
+  facing the gate), saddled (`mamSaddle`); the 5 calves round the MAMMOTH MEADOW place (`HERD.at` set to it). `mamFrame` (the ring / arrow / pulse,
+  the land-on-the-saddle catch) runs from `rgnStep` here.
+- They stand on the terrain: `rgnGnd` (the region's height, else 0) replaces `mamTameStep`'s `P.y = 0`, `herdStep` reads `rgnH`, the dismount lands
+  on the ground, the ring sits on it. `rgnFoeMove` / the ride's move pass through `rgnWall`, so neither the mammoth nor a calf climbs a mountain
+  (he slows against a steep face).
+- `mel.RGN`, `mel.MAMR`, `mel.DUMMIES` exposed for checks.
+- NOT verified: headless swiftshader runs the region at a few frames a minute (0.2 s of game time in 50 s), so the spawn could not be watched. Same
+  spawn code as the Snowfield's. Shipped unverified.
+
 ## m2086 -- THE GREAT FROSTCAP: the hero plant (a climb), and every plant's snow was invisible from above
 
 His: "like the willow -- a giant hero plant, the equivalent of the smaller ones but more complex." Place row `wf_herocap` (kind 'herocap',
