@@ -16,12 +16,12 @@ backwards (the same `RESTORE` kit, run in reverse here).
 1. **THE GARDEN (calm, ~1-2 min).** He wakes in a HAMMOCK between two trees. Morning in the floating Zen garden: islands, a temple, sun rays, mint Jinra in the streams, monks/villagers,
    a bell. Grumbo wakes / arrives. The player learns to MOVE and JUMP here, with nothing at stake. Small, beautiful, dense -- one courtyard's worth.
 2. **THE OMEN.** Something is wrong: the light dims, the Jinra in the streams drains toward one point, a deep hum. Everyone looks up.
-3. **THE STRIKE.** The thing arrives -- a giant falling STONE PILLAR (the villagers' "pillar stone" later), or a Kūkyo construct ripping the Jinra
-   out. It hits; the islands crack; the floating stops.
+3. **THE STRIKE.** THE HOLLOW opens in the sky -- a swirling purple-black void. It sucks rocks and pieces up into it, shoots purple bolts, cracks
+   the islands and drains their Jinra; the floating stops.
 4. **THE FALL (the first real level).** The garden breaks apart and drops. You run and jump DOWN through falling pieces -- rock to rock, temple roof
    to roof -- the camera wide, the sky turning red. Short, intense, hard to fail badly (a miss lands on a lower piece, never a death pit).
-5. **THE ESCAPE.** The last piece is going to hit: one big leap off, and a brief glide / ride (a wingsuit-like glide here only, taken away at the
-   bottom; or caught by the dragon) to the ground. A cinematic beat.
+5. **THE ESCAPE.** The last piece is going to hit: one big leap off onto a GLIDER; near the ground a Hollow bolt shatters it and he drops the last
+   bit. The glider is lost (earned back late). A cinematic beat.
 6. **THE FALLEN GROUND.** Silence, red haze, dust settling on the wreck. People turned to STONE where they stood (THE STOLEN ONES). A frightened
    village nearby -- "the pillar came down" -- and the first person who talks to you. The title card. Chapter One begins.
 
