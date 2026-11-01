@@ -15,6 +15,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- the horns were INSIDE-OUT (his: "a weird see-through thing -- you can see into the horn and the backs of the gold rings")
+
+`svkTube` (m2126) wound its triangles (a, b, a+1): with the ring running N -> B, the face normal is T x B = -N, INWARD -- so back-face culling drew the
+inside of the far wall, the horns read hollow and the straps showed through them. Now (a, a+1, b): outward. (`svkTubeSnow` was checked the same way and
+is outward.) Rendered the same hut close-up: solid, shaded, the straps flush. Lesson: a hand-built tube's winding is a cross product to CHECK, not to copy.
+Shipped unverified.
+
 ## m2130 -- the sage: no ring; a swirl of glowing motes and rising sparks (Nov 1 2026)
 His: *"I don't want the ring around the meditating guy -- I want him floating, bobbing, with cool particle effects around him."* The jade torus is gone.
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
