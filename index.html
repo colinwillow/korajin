@@ -16029,7 +16029,20 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
       { vec4 wq = modelMatrix * vec4(position, 1.0); float ph = wq.x * .37 + wq.z * .29; float s = aSw * aSw;
         transformed.x += s * ${amp.toFixed(3)} * (sin(uT * ${freq.toFixed(3)} + ph) + .4 * sin(uT * ${(freq * 2.3).toFixed(3)} + ph * 1.7));
         transformed.z += s * ${(amp * .7).toFixed(3)} * sin(uT * ${(freq * .8).toFixed(3)} + ph * 1.3); }`); }; m.customProgramCacheKey = () => 'gdnSway' + key; return m; };
-  const M = { lawn: triMat('garden_lawn', { scale: 5.5, rough: 1, bump: .5, color: 0xe2efc8 }), rock: triMat('garden_rock', { scale: 7, rough: .95, bump: 1.4 }),
+  // m2168 (his: "this green texture looks kind of janky ... the texture itself or the way it's applied"): it was the way -- one scale of the rock map
+  // repeating across long flat faces. The cliff rock samples the map at TWO scales (7 m and 19 m) and lets world-space noise pick between them, then
+  // shifts the colour in big soft patches (dry stone / damp moss / shadowed), so no stretch of cliff repeats and the faces read as one rock.
+  const rockMat = (vc, sc) => { const m = triMat('garden_rock', { scale: sc || 7, rough: .95, bump: 1.4 }), base = m.onBeforeCompile; m.vertexColors = !!vc;
+    m.onBeforeCompile = sh => { base(sh); sh.fragmentShader = TEMPLEGLSL_N + '\n' + sh.fragmentShader.replace('vec4 sampledDiffuseColor = texture2D(map, vTriW.zy * uTS) * tbw.x + texture2D(map, vTriW.xz * uTS) * tbw.y + texture2D(map, vTriW.xy * uTS) * tbw.z;',
+      `vec2 o2 = vec2(.37, .61); float s2 = uTS * .37;
+      vec4 cA = texture2D(map, vTriW.zy * uTS) * tbw.x + texture2D(map, vTriW.xz * uTS) * tbw.y + texture2D(map, vTriW.xy * uTS) * tbw.z;
+      vec4 cB = texture2D(map, vTriW.zy * s2 + o2) * tbw.x + texture2D(map, vTriW.xz * s2 + o2) * tbw.y + texture2D(map, vTriW.xy * s2 + o2) * tbw.z;
+      float rn = tF(vTriW.xz * .045 + vTriW.y * .03), rn2 = tF(vTriW.zx * .021 + vec2(4.1, vTriW.y * .017));
+      vec4 sampledDiffuseColor = mix(cA, cB, smoothstep(.38, .62, rn));
+      sampledDiffuseColor.rgb *= mix(vec3(.92, .9, .84), vec3(1.06, 1.04, .98), smoothstep(.3, .7, rn2));
+      sampledDiffuseColor.rgb = mix(sampledDiffuseColor.rgb, vec3(dot(sampledDiffuseColor.rgb, vec3(.33))) * vec3(1.05, 1.0, .9), .22 * smoothstep(.55, .75, rn2));`); };
+    m.customProgramCacheKey = () => 'gdnRock' + (vc ? 'V' : '') + (sc || 7); return m; };
+  const M = { lawn: triMat('garden_lawn', { scale: 5.5, rough: 1, bump: .5, color: 0xe2efc8 }), rock: rockMat(1), cliff: rockMat(0, 6),
     pebble: triMat('garden_rock', { scale: 2.6, rough: .92, bump: 1.3, color: 0xeee8dc }), flag: triMat('garden_flag', { scale: 3.2, rough: .9, bump: 1.1 }), cyclo: triMat('dome_cyclo', { scale: 3.4, rough: .95, bump: 1.6 }),
     stone: triMat('dome_stone', { scale: 2.4, rough: .88, bump: .9, color: 0xfff6e8 }), white: triMat('dome_stone', { scale: 12, rough: .82, bump: .4, color: 0xf6efe2 }),
     moss: triMat('dome_moss', { scale: 3, rough: 1, bump: 1.1, color: 0xeaffd6 }), bark: triMat('dome_bark', { scale: 2.2, rough: .95, bump: 1.6, color: 0xe6e0d6 }),
@@ -16565,7 +16578,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     for (let i = 0; i < poly.length; i++) { const [x0, , z0] = poly[i], [x2, , z2] = poly[(i + 1) % poly.length], L = Math.hypot(x2 - x0, z2 - z0), a = Math.atan2(z2 - z0, x2 - x0), n = Math.max(1, Math.round(L / 1.7));
       for (let k = 0; k < n; k++) { const u = (k + .5) / n, x = x0 + (x2 - x0) * u, z = z0 + (z2 - z0) * u; put(gdnBlob(RC, x, H - .22, z, .75 + RC() * .35, .4, 0), M.moss, into);
         if (RC() < .55) { const len = 1.8 + RC() * 4, q = new THREE.PlaneGeometry(1.4, len, 1, 4).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(-a); put(q.translate(x, H - .15, z), M.ivy, into); }
-        if (RC() < .45) { const w = 1.4 + RC() * 1.4, h = 2 + RC() * 6; put(new THREE.BoxGeometry(w, h, w * .85).rotateY(-a).translate(cx + (x - cx) * .97, H - .5 - h / 2, cz + (z - cz) * .97), M.pebble, into); } } }
+      } }     /* m2168: no lumps hung on the face (smooth ovals on a textured cliff read as bubbles) -- the fractured geometry carries it */
     // water: pools, streams that run to the edge and FALL (into a crack or off the outer face), cut where they leave the rock
     const lines = [], wet = []; for (const P2 of (C.pools || []).concat(C.pond ? [C.pond] : [])) { const [px, pz] = P2.at, yy = (P2.y || 0) + H; (Z.isleWater = Z.isleWater || []).push(gdnBlobDisc(px, pz, P2.r, yy + .07, RC, 22, 0)); put(gdnBlobDisc(px, pz, P2.r + .5, yy + .03, RC, 22), M.pebble, into);
       for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283, rr = P2.r + .4; put(gdnBlob(RC, px + Math.cos(a) * rr, yy + .05, pz + Math.sin(a) * rr, .22 + RC() * .2, .55, 0), RC() < .4 ? M.moss : M.pebble, into); } wet.push([px, pz, P2.r + 1]); }
@@ -16888,9 +16901,10 @@ function gdnPulse(t) { const p = (t * .72) % 1; return Math.max(Math.exp(-Math.p
 // A CHUNK OF THE MOUNTAIN: any outline (island-local [x, y, z] points) as a flat top at `y0` and a rock that drops SHEER for the first eighth of its
 // `depth` (the fractured face of a crack) and then tapers to a point below, toward (cx, cz). Returns { side (vertex-coloured, like templeRock's), cap, tris }.
 function gdnChunkGeo(poly0, y0, depth, seed, cx, cz) { let poly = poly0.slice(); let area = 0; for (let i = 0; i < poly.length; i++) { const a = poly[i], b = poly[(i + 1) % poly.length]; area += a[0] * b[2] - b[0] * a[2]; } if (area > 0) poly = poly.reverse();
-  const N = poly.length, J = 14, Pp = [], Cc = [], I = [], R = gdnRnd(seed * 3 + 1), ph = R() * 6.3;
-  for (let j = 0; j <= J; j++) { const t = j / J, k = t < .12 ? 1 - t * .3 : Math.pow(1 - (t - .12) / .88, .85) * .965;
-    for (let i = 0; i <= N; i++) { const p = poly[i % N], n = 1 + (j && t >= .12 ? (Math.sin(i * .9 + ph + t * 7) * .07 + Math.sin(i * 2.3 + t * 13) * .04) : 0), kk = Math.max(.03, k * n);
+  const N = poly.length, J = 24, Pp = [], Cc = [], I = [], R = gdnRnd(seed * 3 + 1), ph = R() * 6.3;     // m2168: 24 rings; the sheer face lumpy, stepped in strata
+  for (let j = 0; j <= J; j++) { const t = j / J, k = t < .14 ? 1 - t * .25 : Math.pow(1 - (t - .14) / .86, .85) * .965, strata = j && t < .5 ? .018 * Math.sin(t * 60 + ph) : 0;
+    for (let i = 0; i <= N; i++) { const p = poly[i % N], lump = j ? (Math.sin(i * 1.27 + ph + t * 19) * .025 + Math.sin(i * 3.7 - t * 31 + ph) * .015 + Math.sin(i * .41 + t * 7) * .02) * (t < .14 ? 1 : 1.6) : 0,
+      n = 1 + lump + strata + (j && t >= .14 ? (Math.sin(i * .9 + ph + t * 7) * .07 + Math.sin(i * 2.3 + t * 13) * .04) : 0), kk = Math.max(.03, k * n);
       const y = y0 - t * depth + (j ? (Math.sin(i * 1.7 + ph) * .5) * t * depth * .06 : 0); Pp.push(cx + (p[0] - cx) * kk, y, cz + (p[2] - cz) * kk); const sh = Math.min(1, t); Cc.push(1 - sh * .3, .96 - sh * .32, .92 - sh * .32); } }
   const ti = Pp.length / 3; Pp.push(cx, y0 - depth * 1.03, cz); Cc.push(.58, .46, .34);
   for (let j = 0; j < J; j++) for (let i = 0; i < N; i++) { const a = j * (N + 1) + i, b = a + 1, c = a + N + 1, d = c + 1; I.push(a, c, b, b, c, d); }
