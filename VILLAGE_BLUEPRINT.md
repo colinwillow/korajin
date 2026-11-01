@@ -27,7 +27,7 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | **drafted** |
 | 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | **drafted** (measured) |
 | 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | **drafted** |
-| 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | |
+| 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | **drafted** |
 | 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | |
 | 9 | **THE GAME** | the quest givers (THE STOLEN ONES), the shop, the healer, the way out to the valley / temple, the secrets | |
 | 10 | **THE REVIEW** | one top-down plan + one side elevation drawn from passes 1-9, checked against every pass; his sign-off -> then the blockout, one district at a time | |
@@ -277,3 +277,52 @@ sprint wall-up = the back way to the shrine instead of the tunnel stair.
 fail -- you land on the W2 roofs, not in a pit (there is no fall damage; a hard landing costs 1.15 s).
 
 **Next: pass 7 -- the buildings, one row each** (kit piece + options, terrace, door facing, who lives there) -- the table the blockout is built from.
+
+## PASS 7 -- THE BUILDINGS, one row each (drafted)
+Coordinates are the hamlet's own frame (the pass 2/3 drawings, metres; turned onto the region valley at blockout). Kit names and options are the
+real ones (`snowKitPiece(kind, opts)`; hut defaults R 2.7, wallH 2.3, roofH 2.8). Doors face the road or their lane. Ids are stable (SCENE_COMPANION).
+
+| id | building | at (x, z) | terrace | kit + options | door faces | who / what |
+|---|---|---|---|---|---|---|
+| v_gate | the GATE | -12, 22.5 | E1 +1.2 | `gate` { w 4.4 } (5.1 tall) | NE, to the spawn | the watch; the mammoth passes under (CHECK his height at blockout -- widen if he does not fit) |
+| v_watch | the watch platform | -18, 26.5 | E1 | `deck_posts` { h 3, w 4, d 4 } + `crates` at its foot | the gate | the gate guard; high route 1-2 |
+| v_smithy | the SMITHY (open forge shed) | -10, 30 | E1 | 4 x `post_beam` + `roof_gable` (ridge +4) + `forge_station` + `firewood` | the road | the SMITH; high route 3 (the ridge) |
+| v_wheel | the WATER WHEEL | -24.6, 32 | the first fall | **NEW piece** (a turning wheel, paddles you can ride) | -- | drives the smith's bellows; high route 4-5 |
+| v_merch | the merchant's house | -53, 32.5 | W1 +2.4 | `hut` { banner 1, porch 1, seed 2 } | E, onto the square | the MERCHANT |
+| v_market | the MARKET SQUARE | -43, 36 | W1 | 3 x `market_stall`, `well`, `fire_pit`, 4 x `lantern_post`, `barrels`, `crates` | -- | the shop, the well, the square |
+| v_hut_w1 | hut | -62, 44 | W2 +5.4 | `hut` { seed 3 } | S, the lane | a family |
+| v_hut_w2 | hut | -50, 48 | W2 | `hut` { R 2.4, seed 5 } | S | a family |
+| v_hut_w3 | hut | -36, 53.5 | W2 | `hut` { R 2.2, porch 0, seed 9 } | W | a family (under the aqueduct) |
+| v_store | the STOREHOUSE (flat stone roof) | -44, 60 | W3 +8.4 | `wall_straight` / `wall_corner` ring + `platform` roof (top +11.4) | the lane | goods from the winch; high route 8 lands here; R2 coins |
+| v_winch | the WINCH LIFT | -46, 40 -> 58 | W1 -> W3 | **NEW piece** (a basket on a counterweight, a timber gantry on the storehouse) | -- | hauls goods; a moving platform |
+| v_hut_w4 | hut | -64, 55 | W3 +8.4 | `hut` { R 2.6, seed 11 } | E | herders (they keep the stable) |
+| v_hut_w5 | hut | -52, 61 | W3 | `hut` { R 2.4, chimney 1, seed 13 } | N | a family |
+| v_tower | the WATCHTOWER | -57, 28 | the knoll +8 | `watchtower` { h 6.5 } (top ~+16) | the high bridge | the lookout; R3 the temple notch view; the zip starts here |
+| v_hbridge | U3 the high bridge | W3 -> knoll | +10 | `aq_deck` spans on `deck_posts`, or the rope bridge (`RSPAN`) | -- | high route 9 |
+| v_bath | the BATHHOUSE (timber hall) | -15, 41.5 | E2 +4.2 | `wall_straight` / `wall_window` ring 9 x 5 + `roof_gable` (ridge +8.6) | W, the road / B3 | the BATHKEEPER (healer); the aqueduct ends on its roof |
+| v_pool | the HOT POOL | -9, 45.5 | E2 | **NEW piece** (a stone-rimmed steaming pool; heals) | -- | healing |
+| v_hut_e1 | hut | -20, 55 | E3 +7.2 | `hut` { seed 4 } | S, the stairs | a family |
+| v_hut_e2 | hut | -12, 52 | E3 | `hut` { R 2.2, seed 6 } | W | the smith's family |
+| v_elder | the ELDER'S HOUSE | -7, 61 | E3 | `hut` { R 3, roofH 3.4, wallH 2.6, banner 1, seed 7 } | W | the ELDER (the temple's lore, the first quest) |
+| v_shrine | the SHRINE | -22, 66 | E4 +10.8 | `aq_shrine` { s 1.4 } + `jade_lamp` x2 + `banner_post` x2 | NE, over the hamlet | the shrine keeper |
+| v_spring | the SPRING + GEYSER | -30, 68 | E4 | **NEW piece** (a steaming spring pool; a geyser on a timer that launches you) | -- | the source |
+| v_stable | the STABLE + paddock | 6, 26 | outside (field) | `longhouse` { R 3.4, sx 2, chimney 0, banner 0 } + `fence_straight` x 8 + `fence_gate` | the road | the MAMMOTH's home; the herders' work |
+
+### The works (not buildings, but built)
+| id | what | kit | notes |
+|---|---|---|---|
+| v_aq | the AQUEDUCT, spring -> bath roof | `aq_section` (piers 6 / 9 / 12 by the ground under them), deck +11 | the spine; walkable; high route 6-8 |
+| v_b1 | B1, the creek mouth | **NEW**: a timber road bridge 4.5 m wide | the mammoth crosses |
+| v_b2 / v_b3 | B2 (low) / B3 (high) over the gorge | `arch` + `aq_deck` (4.5 m) | stone; the gorge path passes under both |
+| v_terr | the TERRACES (8 bodies) | **NEW**: a terrace body = rough rock + `wall_straight` retaining walls (~3 m) + snow top (`patchAdd`) | built as RAISED bodies on the ground |
+| v_stairs | the stairs + the mammoth ramp | `stairs` { n 10 } (risers .30), `aq_ramp` { rise 3 } for the ramp | the ramp is the mammoth's |
+| v_tunnel | U2, the tunnel stair inside the E3/E4 wall | **NEW**: an `arch` opening + an inside stair | the only foot way to the shrine |
+| v_zip | the zip line tower -> market | the existing `ZIPS` | the reward ride |
+
+**A correction from this pass:** the kit's gate is 5.1 m tall, not 4.5, so high route 1-2 changes: crates (0.9) -> the WATCH PLATFORM (3.0, +2.1)
+-> the gate top (5.1, +2.1). Both still inside run + jump's comfy 2.2.
+
+**NEW pieces the kit still needs (6):** the water wheel, the winch lift, the hot pool, the spring + geyser, the timber road bridge, the terrace body
+(+ the tunnel stair). These go to the kit session as one list before the blockout.
+
+**Count:** 18 buildings / structures (12 lived-in) + 7 works. Next: **pass 8 -- LIFE** (who walks where, smoke, lights at night, the animals).
