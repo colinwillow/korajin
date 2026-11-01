@@ -12,6 +12,9 @@ PROMPTS = {
   'rock': "Cliff face of a floating sky island: weathered layered grey-beige stone with soft rounded ledges and cracks, patches of bright green moss and tiny ferns hanging off ledges, warm sunlit tones.",
   'lawn': "Top-down lush garden lawn: soft short bright green grass with clover, tiny white and pink flowers, moss patches, sunlit morning. Saturated fresh greens.",
   'roof': "Rows of curved glazed JADE-GREEN Chinese temple roof tiles seen straight on, the tiles in neat vertical ridges with round end caps, glossy teal-green glaze with gold trim highlights and a little moss.",
+  'crystal': "Close-up of faceted glowing PURPLE amethyst crystal surface: violet and magenta facets with bright lavender highlights, inner glow, fine internal fractures and sparkle, magical.",
+  'sand': "Top-down fine pale cream ZEN GARDEN SAND, soft warm ivory with tiny grains and a few minute pebbles, very subtle, smooth and clean, sunlit.",
+  'water': "Top-down shallow glowing magical JINRA water: luminous mint and turquoise water with bright caustic light ripples, soft swirls and sparkles, a few pale pebbles visible below, stylised hand-painted.",
   'wood': "Weathered warm brown carved WOOD planks running vertically with soft grain, slightly worn, with faint red lacquer remains in the grain, temple timber.",
 }
 SINGLES = {
@@ -22,7 +25,15 @@ SINGLES = {
   'banner_teal': ("Flat front orthographic view of a long hanging temple BANNER filling the ENTIRE image edge to edge (no background, no pole): deep teal-green woven cloth, "
                   "a gold embroidered border, and a large gold embroidered stylised diamond and leaf emblem in the middle. Even lighting, no folds, no text.", "1024x1536"),
 }
+PANO = {
+  'sky': ("A seamless 360 degree EQUIRECTANGULAR panorama sky for a fantasy game, viewed from a floating island HIGH in the sky: the upper half a luminous mystical morning sky, "
+          "deep azure at the top fading to soft gold and pale turquoise near the horizon, wisps of glowing cirrus, a warm radiant sun glow with soft god rays on one side, a few faint "
+          "distant floating islands with tiny waterfalls on the horizon; the lower half a vast endless sea of big soft billowing white and peach cumulus clouds FAR BELOW, sunlit tops, "
+          "blue-violet shadows, layered into the hazy distance. Ethereal, magical, Ghibli / Zelda palette, no ground, no mountains touching the ground, no text.", "1536x1024"),
+}
 ALPHA = {
+  'cloud': ("A single big soft fluffy billowing white CUMULUS cloud, sunlit warm white top, soft blue-violet shadowed underside, painterly stylised fantasy game art, "
+            "isolated on a fully transparent background, soft edges, no text.", "1536x1024", (768, 512)),
   'vine': ("A CURTAIN of six long hanging WEEPING WILLOW strands side by side filling the image width, each a trailing stem densely hung with small slender bright green leaves, a few glowing pale-mint tips, "
            "hanging straight down from the top edge, different lengths, dense at the top thinning toward the tips, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1536", (512, 768)),
   'fern': ("A lush green FERN plant seen from the side, many arching fronds spreading from the base, bright and deep greens, stylised hand-painted fantasy game art, isolated on a fully transparent background, no pot, no shadow, no text.", "1024x1024", (512, 512)),
@@ -44,6 +55,11 @@ def seamless(im, band=110):
   return Image.fromarray((a * (1 - m) + b * m).clip(0, 255).astype(np.uint8))
 for n in (sys.argv[1:] or list(PROMPTS) + list(SINGLES) + list(ALPHA)):
   try:
+    if n in PANO:     # 2:1 equirect; the side seam blended so it wraps
+      p, sz = PANO[n]; im = gen(p, sz).convert('RGB').resize((2048, 1024), Image.LANCZOS)
+      a = np.asarray(im).astype(np.float32); W = a.shape[1]; b = np.roll(a, W // 2, 1); dx = np.minimum(np.arange(W), W - 1 - np.arange(W))[None, :]
+      m = 1 - np.clip(dx / 160, 0, 1); m = (m * m * (3 - 2 * m))[..., None]
+      Image.fromarray((a * (1 - m) + b * m).clip(0, 255).astype(np.uint8)).save(f'textures/garden_{n}.webp', quality=88, method=6); print('wrote', n, flush=True); continue
     if n in ALPHA:
       p, sz, out = ALPHA[n]; im = req({"model": "gpt-image-1.5", "prompt": p, "size": sz, "n": 1, "background": "transparent", "output_format": "png"}).convert('RGBA').resize(out, Image.LANCZOS)
       im.save(f'textures/garden_{n}.webp', quality=88, method=6); print('wrote', n, flush=True); continue

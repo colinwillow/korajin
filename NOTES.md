@@ -17,6 +17,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2152 -- THE GARDEN, pass 4: the stair walks, a sky you are UP in, water that reads, painted crystals/sand/water, a cooler phone (Nov 1 2026)
+His (after m2151, ~57-60 fps on the phone, "getting kind of warm"): *"Walking upstairs doesn't work. It's just like a ledge ... it doesn't really read
+like a waterfall ... we should put an HDR ... it doesn't necessarily read that you're in the sky ... it looks like mountains in the background, but
+they should be floating ... some things aren't painted, the purple crystals, the sand, water."*
+- **THE STAIR WAS A LEDGE, AND THE COLLIDER WAS WHY.** The terrace's footprint was `dmtDisc`'s four turned squares (0 / 22.5 / 45 / 67.5 deg). Their
+  UNION does not have radius r -- each square's CORNER reaches r x 1.41, and the 45-degree square's corner pointed straight down the stair: a 2.4 m
+  box from z -7.6 to -4.1, i.e. over every step. `gdnDisc` is now axis-aligned strips INSIDE the circle (the stepping stones too, whose corners stuck
+  out into the air). **`dmtDisc` (the Forest Temple) has the same corners** -- its plinth tiers reach 1.41 r on the diagonals; not touched here.
+- **THE SKY IS HIS PANORAMA**: `textures/garden_sky.webp`, a generated 360 equirect (gpt-image, seam blended so it wraps): a mystical morning sky over an
+  endless sea of cloud FAR below, with floating islands on the horizon. Sampled by direction, turned (`sky.panoSunU`) so its sun glow sits on the
+  scene's sun (now lower, a morning sun from the left); the fog is its warm horizon.
+- **UP IN THE AIR**: 70 of his painted cumulus (`garden_cloud`, alpha) as camera-facing cards in ONE instanced draw (`gdnCards`), drifting at
+  -18 .. -170 m below and round the island (a few above, far off) -- looking off the edge you look DOWN through cloud. The snow peaks FLOAT now:
+  each massif stands on a rock that tapers into the sky (`peaks` rows carry a base height). The flat sphere heaps are gone.
+- **THE PHONE**: the three full-screen fbm cloud planes (`templeCloudMat` -- ten noise octaves per pixel, three layers deep, over most of the
+  screen) are gone; the panorama is one texture read. That was the most expensive fill in the zone.
+- **WATER**: his painted `garden_water` flowing down each stream (two scrolling samples), sun GLINTS that twinkle, RIPPLE RINGS where the two terrace
+  cascades land (`U.uRip`), white-foam bank edges; the falls have a white foaming lip, sharper streaks, bright edges and a foam skirt where a short
+  cascade lands; SPRAY particles (in the one glow draw) at the cascade landings and at every lip where a stream goes over the edge.
+- **PAINTED**: `garden_crystal` (amethyst, triplanar + violet glow), `garden_sand` (under the procedural rake rings). `tools/garden_textures.py`
+  now also makes `sky` (PANO) and `cloud`.
+- Cost (headless): 120-157 draws, 370-430k tris. Shipped unverified.
+
 ## m2151 -- THE GARDEN, pass 3: the sky and the refs' last details (Nov 1 2026)
 - **SKY**: a deeper blue overhead; ~70 cumulus heaps on the cloud sea (bigger with distance, a raised crown on each, less self-glow so the sun
   shades them) -- the refs' billowing sea instead of a flat white plane.
