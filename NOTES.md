@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2026 -- THE ICE TEMPLE: the valley's pines and boulders are SOLID
+
+The second of the three passes. m2023's pines and boulders were look only (he could run through them). The look layer, which places them from its
+own seed, now hands back a collider for each: a pine's TRUNK (.9 m square, 80% of its height, `_sc` so it is never a ledge to grab) and a
+boulder's BODY (1.5 r square, top at .9 r -- a rock he can stand on). Pushed to `BOXES` before `iceBuild`'s `boxGrid()`. The blockout skin
+(`?iceskin=block`) has no pines and so no invisible trunks. Headless: 141 pine and 60 boulder colliders registered. Shipped unverified.
+
 ## m2025 -- THE ICE TEMPLE: the concept's missing details -- arcaded wings, corner turrets, lamps
 
 His: *"Go!"* (the three suggested passes; this is the first). From `big_front` / `big_sheet`:
