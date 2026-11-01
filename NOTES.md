@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2015 -- THE ICE TEMPLE: the BLUEPRINT (step 1 of 3), no code
+
+His brief (relayed from the main session; `ICE_TEMPLE.md`): the Ice Temple at the head of a snow VALLEY, reached only after exploring; ONE movable
+placement; blueprint -> grey blockout -> look. This build is the blueprint only: `ICE_TEMPLE_BLUEPRINT.md` -- where the valley goes (north-east
+of the snowfield, up past the cliffs, the dragon's lair on its west flank, 255 m from the valley mouth to the temple at (80, 24, -300)), the ten
+beats of TEMPLE_KIT's template filled with sized moves (every gap and lip from the move table, the one SKILL gap marked), the side-on height
+profile, the top-down in the temple's local frame, where the guardians stand and what wakes them (events, never proximity), and three open
+questions for him (the valley's side, the boss, whether it starts FALLEN). Nothing in index.html changes.
+
 ## m2014 -- the mammoth's trunk swings (Nov 1 2026)
 The snow list (his "keep going"). The four `trunk_*` bones `mammoth_cow.py` added under the head carry no clip keys, so the trunk was rigid. `trunkStep`
 springs them per body exactly as `springsStep` springs his hair and cape: verlet tips with inertia from the head's motion, a pull back to rest

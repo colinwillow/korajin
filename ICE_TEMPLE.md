@@ -8,6 +8,8 @@
 Concept art: `images/concepts/ice_temple/` -- `big_*` (the ENEMY VARIANT: horns, ring arches, banners, waterfalls, crystal braziers -- his pick) and
 `small_*` (VARIANT A: the glowing door, the arch with a hanging crystal). Each: a sheet + front / right / back / left.
 
+**BLUEPRINT DRAFTED (Nov 1): `ICE_TEMPLE_BLUEPRINT.md`** -- the beats, the height profile, the top-down, the placement row; open questions at its end.
+
 ## The order (TEMPLE_KIT.md, always)
 1. **BLUEPRINT** -- the temple's beats on paper (approach, initiation, guards, door, acrobatic hall, mini boss, puzzle, more guys, chalice, boss).
    Sized from TEMPLE_KIT's move table. The look does NOT come first.
