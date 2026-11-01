@@ -641,13 +641,13 @@ body.dyn.desk .zone { display: none; }
 #qdDial .arc { fill: none; stroke: var(--sky); stroke-width: 3; stroke-dasharray: 34 470.7; stroke-dashoffset: 17; transform: rotate(-90deg); transform-origin: 116px 116px; }
 #qdDial .ndl { fill: var(--sky); transform-origin: 116px 116px; transition: transform .32s cubic-bezier(.3,1.6,.5,1); filter: drop-shadow(0 0 3px var(--sky)); }
 /* m2057: the BACKPACK panel -- opens over the left stick from its ring button; equip / unequip what he has collected (a list that grows, scrolls) */
-#packPanel { position: fixed; z-index: 31; display: none; left: calc(14px + env(safe-area-inset-left)); bottom: calc(26px + var(--padr) + 196px + env(safe-area-inset-bottom));
-  width: 210px; max-height: 42vh; overflow-y: auto; -webkit-overflow-scrolling: touch; background: rgba(9,12,20,.82); border: 2px solid #ffcc33; border-radius: 12px; padding: 8px; pointer-events: auto; }
+#packPanel { --pk: var(--hot); position: fixed; z-index: 31; display: none; left: calc(14px + env(safe-area-inset-left)); bottom: calc(26px + var(--padr) + 168px + env(safe-area-inset-bottom));
+  width: 210px; max-height: 42vh; overflow-y: auto; -webkit-overflow-scrolling: touch; background: rgba(9,12,20,.82); border: 2px solid var(--pk); border-radius: 12px; padding: 8px; pointer-events: auto; }
 #packPanel.on { display: block; }
-#packPanel .hd { font-family: var(--ui); font-size: 12px; font-weight: 800; letter-spacing: .16em; color: #ffcc33; margin: 2px 4px 8px; }
-#packPanel button { display: flex; width: 100%; justify-content: space-between; align-items: center; margin: 0 0 6px; padding: 11px 12px; border-radius: 9px; border: 1.6px solid #ffcc33;
-  background: rgba(9,12,20,.5); color: #ffcc33; font-family: var(--ui); font-size: 14px; font-weight: 800; letter-spacing: .1em; }
-#packPanel button.sel { background: #ffcc33; color: #201400; }
+#packPanel .hd { font-family: var(--ui); font-size: 12px; font-weight: 800; letter-spacing: .16em; color: var(--pk); margin: 2px 4px 8px; }
+#packPanel button { display: flex; width: 100%; justify-content: space-between; align-items: center; margin: 0 0 6px; padding: 11px 12px; border-radius: 9px; border: 1.6px solid var(--pk);
+  background: rgba(9,12,20,.5); color: var(--pk); font-family: var(--ui); font-size: 14px; font-weight: 800; letter-spacing: .1em; }
+#packPanel button.sel { background: var(--pk); color: #1a0810; }
 #packPanel button small { font-size: 11px; opacity: .8; }
 #qdRow.on, #qdTop.on { display: block; }
 #qdRow path, #qdTop path, #qdSub2 path { fill: rgba(9,12,20,.5); stroke: var(--rc); stroke-width: 1.6; pointer-events: all; cursor: pointer; }
@@ -699,9 +699,10 @@ body.qd #wepRow path.sel { fill-opacity: .82; }
   width: calc(var(--mr) * 2); height: calc(var(--mr) * 2);
 }
 #formRow.on { display: block; }
-#formRow path { fill: rgba(11,13,18,.35); stroke: var(--rc); stroke-width: 2; pointer-events: all; cursor: pointer; }
-#formRow path.sel { fill: var(--rc); }
-#formRow text { font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: .12em;
+#formRow path { fill: rgba(9,12,20,.5); stroke: var(--rc); stroke-width: 1.6; pointer-events: all; cursor: pointer; }
+#formRow .deco path { fill: none; pointer-events: none; }     /* m15MC: styled like the quick-draw rings */
+#formRow path.sel { fill: var(--rc); fill-opacity: .82; }
+#formRow text { font-family: var(--ui); font-size: 13px; font-weight: 700; letter-spacing: .12em;
   fill: var(--rc); text-anchor: middle; dominant-baseline: central; pointer-events: none; user-select: none; }
 #formRow text.sel { fill: var(--ink); }
 /* and the picker it opens: round buttons on a circle over the middle of the screen */
@@ -24722,7 +24723,7 @@ function paintArcRow(el, on, sel) {
 // camera), and from then its offset IS the aim -- across turns it up to `yaw` either side of the lens, up/down tilts it up to `pitch` -- and
 // lifting it fires (the blaster's charged ball, or a ROCKET). The lens comes in over his shoulder (`cam`) and tips with the aim.
 const AIM3 = { on: 0, holdT: 0, far: 9, yaw: 85 * Math.PI / 180, pitch: 65 * Math.PI / 180, rate: 1.7, dead: .12, ease: .05, absYaw: 42 * Math.PI / 180, absPit: 32 * Math.PI / 180, absEase: .025, pMax: 35 * Math.PI / 180, pRate: 1.2, pSpan: .3, pBack: .25, pCam: .85, minT: .12, cam: { dist: 1, side: 0, el: 0, lift: 0 } };     // m1293: ABSOLUTE, no zoom     // m1276: armed on touch, the thumb DRIVES the cursor
-try { AIM3.on = localStorage.getItem('mel.aim3b') === '1' ? 1 : 0; } catch (e) {}     // m1367: a new key -- his saved 3D AIM ON is reset to the regular aim
+AIM3.on = 0;     // m15MC: 3D AIM retired (his: "that was a fail")     // m1367: a new key -- his saved 3D AIM ON is reset to the regular aim
 const aimRow = (() => { const d = document.createElement('div'); d.id = 'aimRow'; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); return d; })();
 const AIMROW = { mid: MODES.mid, r0: MODES.r1 + 6, r1: MODES.r1 + 40, span: 44 };
 document.body.classList.toggle('kit3', !!KIT3.on);
@@ -24779,17 +24780,21 @@ function qdBuild() { const pj = qdProj(), lab = pj >= 0 ? (WEAP.slots[pj].key ==
 function aim3Toggle() { AIM3.on = AIM3.on ? 0 : 1; try { localStorage.setItem('mel.aim3b', AIM3.on ? '1' : '0'); } catch (e) {} triggerStop(); paintKit(); }
 function qdProjPick(k) { if (!gearHas(k)) return; QD.proj = k; try { localStorage.setItem('mel.qdProj', k); } catch (e) {} kitPick(qdIx(k)); qdBuild(); }
 const ARROWK = ['normal', 'fire', 'blast'];
-function qdSub() { const s = slotNow(), bow = s.key === 'bow', proj = bow || s.key === 'launcher', sw = !!s.blade, sig = bow ? 'bow' : proj ? 'proj' : sw ? 'sword' : '';
+// m15MC (his: "clean up the menus -- take away the 3D aim, that was a fail; the gun and the bow as two buttons, not three"): with a projectile out the
+// left inner ring is BOW | GUN, two halves like the right side's SWORD | GUN. The arrow TYPE is the BOW half tapped again while the bow is out
+// (ARROW -> FIRE -> BLAST -> ARROW; the half reads its type: BOW, FIRE BOW, BLAST BOW). The second row (`qdSub2`) is retired; 3D AIM is off for good.
+const ARROWLAB = { normal: 'BOW', fire: 'FIRE BOW', blast: 'BLAST BOW' };
+function qdSub() { const s = slotNow(), bow = s.key === 'bow', proj = bow || s.key === 'launcher', sw = !!s.blade, sig = proj ? 'proj' + (QD.arrow || 'normal') : sw ? 'sword' : '';
   if (wepRow._qd !== sig) { wepRow._qd = sig; wepRow._ix = null;
-    if (bow) { buildArcRow(wepRow, [{ label: 'ARROW' }, { label: 'FIRE' }, { label: 'BLAST' }], WEPROW.mid, i => { QD.arrow = ARROWK[i]; try { localStorage.setItem('mel.qdArrow', QD.arrow); } catch (e) {} snd('clang', { g: .2, r: 1.8 }); paintKit(); }, QD.sub);
-      buildArcRow(qdSub2, [{ label: 'GUN' }, { label: '3D AIM' }], WEPROW.mid, i => i ? aim3Toggle() : qdProjPick('launcher'), QD.sub2); }
-    else if (proj) buildArcRow(wepRow, [{ label: 'BOW' }, { label: 'GUN' }, { label: '3D AIM' }], WEPROW.mid, i => i === 2 ? aim3Toggle() : qdProjPick(i ? 'launcher' : 'bow'), QD.sub);
+    if (proj) buildArcRow(wepRow, [{ label: ARROWLAB[QD.arrow] || 'BOW' }, { label: 'GUN' }], WEPROW.mid, i => {
+        if (i) { qdProjPick('launcher'); return; }
+        if (slotNow().key === 'bow') { QD.arrow = ARROWK[(Math.max(0, ARROWK.indexOf(QD.arrow)) + 1) % ARROWK.length]; try { localStorage.setItem('mel.qdArrow', QD.arrow); } catch (e) {} snd('clang', { g: .2, r: 1.8 }); paintKit(); }
+        else qdProjPick('bow'); }, QD.sub);
     else if (sw) buildArcRow(wepRow, [{ label: 'STEEL' }, { label: 'FIRE' }, { label: 'JIN' }], WEPROW.mid, i => { BFIRE.on = i; try { localStorage.setItem('mel.bfire', String(i)); } catch (e) {} snd(i ? 'swoosh' : 'clang', { g: .4, r: i ? .6 : 1.6 }); paintKit(); }, QD.sub); }
-  paintArcRow(qdSub2, bow, -1); { const k2 = qdSub2.firstChild ? qdSub2.firstChild.childNodes : []; for (const j of [2, 3]) if (k2[j]) k2[j].classList.toggle('sel', !!AIM3.on); }
+  paintArcRow(qdSub2, 0, -1);
   if (sw) { paintArcRow(wepRow, 1, BFIRE.on || 0); return; }
   if (!proj) { paintArcRow(wepRow, 0, -1); return; }
-  if (bow) { paintArcRow(wepRow, 1, Math.max(0, ARROWK.indexOf(QD.arrow))); return; }
-  paintArcRow(wepRow, 1, 1); const kids = wepRow.firstChild ? wepRow.firstChild.childNodes : []; for (const j of [4, 5]) if (kids[j]) kids[j].classList.toggle('sel', !!AIM3.on); }
+  paintArcRow(wepRow, 1, bow ? 0 : 1); }
 // m2057 (his: "the right side is almost a little dial -- whatever you have selected, there's a thing that shows which, and when you click one of the
 // other buttons it spins, because you can only ever have one: sword, hands or ballistic"). A ring inside the quick-draw buttons with one needle that
 // turns (CSS transition, a little overshoot) to point at what is out: SWORD (left), the projectile (right), HANDS (straight up, the outer button).
@@ -52949,13 +52954,13 @@ function formStep() {
     // segment is WINGS now -- tap to mount / unmount the wing-pack (`WING.pack`); filled while mounted. The form wheel is not reachable from here any more.
     buildArcRow(form.row, [{ label: 'BACKPACK' }], FORMROW.mid, () => { packOpen(!BAG.open); form.wsel = null; }, FORMROW);     // m2057: the WINGS segment became the BACKPACK (the wing suit is inside it)
     form.pick.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); formClose(); });
-    form.row.style.setProperty('--rc', '#ffcc33');
+    form.row.style.setProperty('--rc', 'var(--hot)');     // m15MC: the left pad's colour (it was gold)
   }
   const on = 1, sel = BAG.open ? 0 : -1;
   if (on !== form.rowOn || sel !== form.wsel) { form.rowOn = on; form.wsel = sel; paintArcRow(form.row, on, sel); }
 }
 // a third ring, one segment, straight up -- see the block above for the geometry
-const FORMROW = { mid: 90, r0: 156, r1: 184, span: 42 };     // m2057: wider for BACKPACK
+const FORMROW = { mid: 90, r0: 131, r1: 158, span: 44, gap: 0, deco: 1 };     // m15MC: the same ring as the right pad's HANDS (it sat a ring higher)     // m2057: wider for BACKPACK
 // m2057: THE BACKPACK (his: "the left side, something you click -- this is where you equip your shield; later boots, the glider, the wing suit... it
 // turns into a sub-panel above it where you select and deselect things, and the list grows as you collect things, so scrollable"). Data-first: one row
 // per item (`has` = collected, `on` / `set` = worn). The floating WINGS button and the WINGS ring segment are gone; the wing suit lives in here.

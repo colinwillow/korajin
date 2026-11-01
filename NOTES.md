@@ -16,6 +16,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15MC -- the menus cleaned up: 3D AIM gone, BOW | GUN as two halves, the BACKPACK on the HANDS ring in the left pad's colour (Nov 1 2026)
+His: *"clean up the menus; take away the 3D aim -- that was a fail; the gun and the bow buttons, three there -> two; the backpack should be like the
+right stick's in orientation -- it's too high up -- and the colour is weird, it should match."*
+- `qdSub`: with a projectile out, the left inner ring is BOW | GUN (two halves). The arrow type is the BOW half tapped again while the bow is out
+  (ARROW -> FIRE -> BLAST; the half reads BOW / FIRE BOW / BLAST BOW). The second row `qdSub2` is retired. `AIM3.on = 0` for good.
+- BACKPACK: `FORMROW` now the right pad's HANDS ring (r 131-158, was 156-184), with the quick-draw rings' look (dark fill, 1.6 stroke, the drawn neon
+  deco, 13 px labels) in the left pad's colour (`--hot`, was gold); the panel matches and sits lower. Shipped unverified.
+
 ## m2139 -- the ROCKET LAUNCHER aims like the BOW: raise up, settle and lock level, thumb down aims down, lift fires (Nov 1 2026)
 His: *"make it similar to how the bow works -- you hold up and it starts aiming up, then comes down and locks straight forward; once it's locked, push
 down on the right stick and it aims down; basically the same way the bow works."*
