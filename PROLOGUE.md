@@ -13,7 +13,7 @@ fall is that arc's opening chord -- the player has seen what was lost before the
 backwards (the same `RESTORE` kit, run in reverse here).
 
 ## The beats (one line each; each beat is ONE thing to get right)
-1. **THE GARDEN (calm, ~1-2 min).** Morning in the floating Zen garden: islands, a temple, sun rays, mint Jinra in the streams, monks/villagers,
+1. **THE GARDEN (calm, ~1-2 min).** He wakes in a HAMMOCK between two trees. Morning in the floating Zen garden: islands, a temple, sun rays, mint Jinra in the streams, monks/villagers,
    a bell. Grumbo wakes / arrives. The player learns to MOVE and JUMP here, with nothing at stake. Small, beautiful, dense -- one courtyard's worth.
 2. **THE OMEN.** Something is wrong: the light dims, the Jinra in the streams drains toward one point, a deep hum. Everyone looks up.
 3. **THE STRIKE.** The thing arrives -- a giant falling STONE PILLAR (the villagers' "pillar stone" later), or a Kūkyo construct ripping the Jinra
@@ -24,6 +24,23 @@ backwards (the same `RESTORE` kit, run in reverse here).
    bottom; or caught by the dragon) to the ground. A cinematic beat.
 6. **THE FALLEN GROUND.** Silence, red haze, dust settling on the wreck. People turned to STONE where they stood (THE STOLEN ONES). A frightened
    village nearby -- "the pillar came down" -- and the first person who talks to you. The title card. Chapter One begins.
+
+## HIS ANSWERS (Nov 1 2026, draft 2)
+> *"The Hollow -- an empty void of power that's sucking the life force, turning inanimate objects into enemy objects, people into stone, taking power
+> away. Like a whirling black hole in the sky that shoots out evil stuff and sucks stuff into it."* Reference: images/concepts/prologue/the_hollow_vortex.png
+> (a giant swirling purple-black vortex over a ruined stone plaza, rocks lifting into it, purple crystals).
+- **THE ENEMY = THE HOLLOW:** a swirling purple-black VOID in the sky. It drinks Jinra; whatever it drains STOPS FLOATING and falls; it shoots out
+  purple tendrils/bolts that turn stone and objects into enemy constructs and people into statues. Behind it, eventually, a SORCERER (a Ganondorf) --
+  NOT seen in the prologue; only his power's emanations (the purple).
+- **GRUMBO UP THERE:** nobody special -- lounging in a HAMMOCK between two trees in the floating garden, unbothered; nothing has troubled the sky
+  world in centuries. (The prologue opens on him asleep in the hammock.)
+- **THE STRIKE:** the Hollow opens over the garden, sucks things in, cracks the islands, drains their Jinra -> they fall.
+- **THE WAY DOWN (recommended, his two ideas in sequence):** the FALL level (jumping piece to piece as the garden breaks up) -> a GLIDER escape off
+  the last piece -> near the ground a Hollow bolt hits the glider, it shatters, he drops the last bit. The glider is LOST and earned back late in the
+  game (it agrees with his rule that the wingsuit comes late). (The dragon version would need it to throw him and flee -- kept as the alternative.)
+- **THE GROUND (recommended):** the RED HOLLOWS -- already the best-looking place, his homeland in the lore, and it needs expanding anyway; the crash
+  site goes at its edge. Undecided; the LIBRARY (being built) is where he'll compare places.
+- **A NAME CLASH to settle:** "the Hollow" (the void) vs "the Red Hollows" (his homeland) vs "the Hollowed" (a faction in KORAJIN.md).
 
 ## The order we'd build it (one step at a time; each step done and signed off before the next)
 - [ ] **P0 -- this page, agreed.** The beats, the open questions below answered.
