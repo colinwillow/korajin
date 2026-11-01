@@ -28,6 +28,17 @@ Asked by the village session for VILLAGE_BLUEPRINT.md pass 7 (Colin approved sen
 - Rendered all seven before pushing (the wheel's paddle snow and the bridge deck's snow patches came off after the look). 32 draws in the showroom
   (+3 mover groups and the geyser column). Shipped unverified -- riding the wheel and the basket, and the geyser launch, are untested on the phone.
 
+## m15D3 -- THE VILLAGE, district 3: the aqueduct + the high route's standable surfaces (Nov 1 2026)
+His: *"start district 3."* (SNOW VILLAGE on the KORAJIN menu, top button.)
+- `tools/regionpick.py` `BLOCKS`: grey / wood stand-in blocks at pass 6's heights, so the high route is playable before the buildings (district 4
+  replaces each with the real building, same top): crates (E1 + .9) -> the watch platform deck (+3.0, on a post) -> the GATE (two pillars + the top
+  beam at +5.1) -> the smithy (a block + a ridge at +4.0) -> the WATER WHEEL (a static stand-in, top +5.0 over the gorge floor; it turns in district
+  5) -> the bathhouse (eave +6.6, ridge +8.6) -> the AQUEDUCT (deck +11, 3.4 m wide, 4 runs spring -> the bath ridge, piers every ~8 m down to
+  the terrace under them) -> the storehouse's flat roof (W3 + 3.0) -> U3 -> the WATCHTOWER block (to +16) with a rock face 4.6 m off its face (the
+  CHIMNEY) -> a ZIP LINE from the tower top to the market square (`ZIPS`).
+- All are turned boxes in `hamlet.boxes` (squared to the hamlet: `HYAW`), drawn by kind (wood / block / rock / aq).
+- Checked headless: loads, the gate pillars + beam in view at the start. Not climbed: the route's gaps are pass 6's numbers, unplayed.
+
 ## m2079 -- THE FLORA, SIX HYBRIDS: organic primitives, bigger, no floating pieces
 
 His: "they look primitive -- circles and cylinders, floating pieces, banged together; hybridize them into a solid six if twelve costs too

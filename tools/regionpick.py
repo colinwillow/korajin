@@ -123,6 +123,40 @@ BRIDGES = [('B1', stepped((-10, 15), (-18, 21), 4.5, 0.3, 0.3, 'timber')), ('B2'
            ('B3', stepped((-33.5, 48.5), (-22, 45.5), 4.5, 5.4, 4.2, 'stone')), ('U3', stepped((-66, 50), (-62, 39), 2.2, 8.4, 8.2, 'timber'))]
 # the tunnel's ROOF: E4 continues over the stair where it runs inside the terrace (from the E3/E4 wall at hz 62 to 65.5), at E4's top
 ROOF = [dict(seg_box((-21, 62.2), (-21, 65.2), 2.6, 10.8, th=1.2, ext=0), kind='stone')]
+# ---- DISTRICT 3 (pass 6 + 10 build step 3): the AQUEDUCT and the HIGH ROUTE's standable surfaces, as grey stand-in blocks at the blueprint's heights
+# (the buildings replace them in district 4 with the same tops). Heights are above BASE; the route numbers are pass 6's.
+HX = h2w((1, 0)) - h2w((0, 0)); HYAW = math.atan2(HX[1], HX[0])     # the hamlet's +x axis in the world (for blocks squared to the hamlet)
+def hbox(c, w, d, y0, y1, kind, yaw=0.0):
+    wc = h2w(c); return {'cx': round(float(wc[0]), 2), 'cz': round(float(wc[1]), 2), 'hx': round(w / 2, 2), 'hz': round(d / 2, 2), 'yaw': round(float(HYAW + yaw), 4), 'y0': round(BASE + y0, 2), 'y1': round(BASE + y1, 2), 'kind': kind}
+BLOCKS = [
+    ('h1_crates', hbox((-20.5, 29.5), 1.4, 1.4, 1.2, 2.1, 'wood')),                 # 1: crates (E1 +0.9)
+    ('h2_watch', hbox((-18, 26.5), 4, 4, 3.8, 4.2, 'wood')),                         # 1-2: the watch platform deck (E1 + 3.0)
+    ('h2_watch_post', hbox((-18, 26.5), 1.2, 1.2, 1.2, 3.8, 'wood')),
+    ('h2_gate_l', hbox((-14.6, 22.0), .9, 1.2, 1.2, 6.3, 'wood')), ('h2_gate_r', hbox((-9.4, 23.4), .9, 1.2, 1.2, 6.3, 'wood')),
+    ('h2_gate_top', dict(seg_box((-14.6, 22.0), (-9.4, 23.4), 1.4, 6.3, th=.6, ext=.45), kind='wood')),     # 2: the gate top (E1 + 5.1), pillar to pillar
+    ('h3_smithy', hbox((-10, 30), 6, 5, 1.2, 4.3, 'block')), ('h3_smithy_ridge', hbox((-10, 30), 6, 1.2, 4.3, 5.2, 'block')),     # 3: the smithy ridge (E1 + 4.0)
+    ('h4_wheel', hbox((-24.6, 32), 1.0, 5.0, 0.6, 5.0, 'wood')), ('h5_wheel_top', hbox((-24.6, 32), 1.6, 1.6, 5.0, 5.6, 'wood')),     # 4-5: the WHEEL (static stand-in; it turns in district 5)
+    ('h6_bath', hbox((-15, 41.5), 9, 5, 4.2, 6.6, 'block')), ('h6_bath_ridge', hbox((-15, 41.5), 9, 1.6, 6.6, 8.6, 'block')),     # 6: the bathhouse eave (+6.6) and ridge (+8.6)
+    ('h8_store', hbox((-44, 60), 5, 4, 8.4, 11.4, 'block')),                         # 8: the storehouse's flat roof (W3 + 3.0)
+    ('h10_tower', hbox((-57, 28), 4.4, 4.4, 8.0, 16.0, 'block')),                    # 10: the watchtower (knoll + 8 = +16)
+    ('h10_chimney_rock', hbox((-57, 22.4), 5, 1.4, 8.0, 15.0, 'rock')),              # 10: the rock face 4.6 m off the tower's face: the CHIMNEY
+]
+# the aqueduct: deck +11 on piers, spring -> the bath ridge; piers stand on whatever is under them
+AQ = [(-30, 68), (-44, 62), (-42, 52), (-34, 46), (-17, 41.8)]
+AQB = []
+for a, b in zip(AQ, AQ[1:]):
+    bx = seg_box(a, b, 3.4, 11.0, th=.6, ext=.9); bx['kind'] = 'aq'; AQB.append(bx)
+def ground_at_h(hx, hz):
+    for nm, lv, poly in TERR:
+        if _pip(hx, hz, poly): return lv
+    return 0.0
+for a, b in zip(AQ, AQ[1:]):
+    L = math.hypot(b[0] - a[0], b[1] - a[1]); n = max(1, int(L // 8))
+    for k in range(n + 1):
+        if k == n and b != AQ[-1]: continue
+        t = k / n; c = (a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)
+        AQB.append(hbox(c, 1.8, 1.8, ground_at_h(*c), 10.4, 'aq'))
+ZIP = [[round(float(h2w((-57, 28))[0]), 2), round(BASE + 17.2, 2), round(float(h2w((-57, 28))[1]), 2)], [round(float(h2w((-43, 36))[0]), 2), round(BASE + 3.4, 2), round(float(h2w((-43, 36))[1]), 2)]]
 ROAD = [(6, 15), (-8, 14), (-16, 19), (-15, 24), (-10, 28), (-16, 33), (-24, 30), (-34, 31), (-44, 33), (-52, 37), (-56, 44), (-48, 50), (-36, 49), (-25, 47), (-16, 44)]
 LANES = [[(-56, 44), (-66, 46)], [(-48, 50), (-50, 48)], [(-36, 49), (-36, 53.5)], [(-66, 47), (-68, 54), (-60, 58), (-44, 60), (-52, 61)], [(-16, 44), (-15, 52), (-12, 57), (-21, 58), (-21, 66), (-24, 66)],
          [(-12, 57), (-7, 61)], [(-15, 52), (-20, 55)], [(-19, 32.5), (-24, 32.5), (-26, 24), (-24, 30), (-27, 37), (-28, 43), (-31, 48), (-33, 54)]]
@@ -131,7 +165,8 @@ meta['hamlet'] = {'base': BASE, 'x0': float(x0), 'z0': float(z0), 'nx': nx, 'nz'
     'labels': [{'name': nm, 'x': round(float(h2w(np.mean(p, 0))[0]), 1), 'z': round(float(h2w(np.mean(p, 0))[1]), 1), 'y': round(BASE + lv, 1)} for nm, lv, p in TERR],
     'creek': [[round(float(h2w(p)[0]), 1), round(float(h2w(p)[1]), 1), round(BASE + creek_floor_z(p[1]) + .05, 2)] for p in CREEK],
     'gate': [round(float(v), 1) for v in h2w((-12, 18))],
-    'boxes': [dict(b, id=bid) for bid, L in BRIDGES for b in L] + [dict(b, id='U2roof') for b in ROOF],
+    'boxes': [dict(b, id=bid) for bid, L in BRIDGES for b in L] + [dict(b, id='U2roof') for b in ROOF] + [dict(b, id=bid) for bid, b in BLOCKS] + [dict(b, id='aq') for b in AQB],
+    'zips': [ZIP],
     'paint': [{'w': 4.5, 'col': 'road', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in ROAD]}] + [{'w': 2.0, 'col': 'lane', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in L]} for L in LANES],
     'bridgeLabels': [{'name': bid, 'x': L[len(L) // 2]['cx'], 'z': L[len(L) // 2]['cz'], 'y': L[len(L) // 2]['y1']} for bid, L in BRIDGES]}
 for q in meta['places']:
