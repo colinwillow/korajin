@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2027 -- THE ICE TEMPLE: the valley's SHAPE -- pinches, bays, four caches
+
+The third pass ("one long straight corridor; a bend or two, side pockets"). A true bend wants diagonal walls (turned boxes) -- this does the
+width first: each valley wall is a list of SEGMENTS `[z hi, z lo, inner x]` (`k: 'vwall'`) that step IN (pinches, ~55-60 m wide) and OUT (BAYS
+30-35 m deep), with a CONNECTOR box closing every step. All of it clear of the terrace faces (1100 / 700 / 350 / 85) and the east stairs; the
+terraces and the valley floor widened to x -82..87 so every bay has a floor.
+- Four bays, a CACHE in each (`grp: 'cache'`): a jade crystal on a gold-lidded chest; break it -> "CACHE n / 4 -- (the reward is to come)". The
+  reward is a slot for his inventory/loot design, not invented here.
+- The look follows the wall line: the crags take each segment (a connector's crag faces whichever side is farther out), the frozen falls stand at
+  the wall wherever it is, the pines and boulders keep 3-14 m off it, and the aqueduct leaves a gap wherever a bay opens (no pier on the path).
+Shipped unverified.
+
 ## m2026 -- THE ICE TEMPLE: the valley's pines and boulders are SOLID
 
 The second of the three passes. m2023's pines and boulders were look only (he could run through them). The look layer, which places them from its
