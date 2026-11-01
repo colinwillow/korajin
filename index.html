@@ -11067,7 +11067,7 @@ function tlayStage(g) { const T = TLAY, G = T.graph = tlayGen(T.seed), byId = {}
   // the CHAMBER: a dark cylinder round it all, open at the top
   { const w = new THREE.Mesh(new THREE.CylinderGeometry(T.Ro + 8, T.Ro + 8, T.H + 10, 40, 1, true), new THREE.MeshStandardMaterial({ color: 0x2a303c, roughness: 1, side: THREE.BackSide })); w.position.y = T.H / 2 - 4; g.add(w);
     const f = new THREE.Mesh(new THREE.CircleGeometry(T.Ro + 8, 40).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x1c2028, roughness: 1 })); f.position.y = -6; g.add(f); box(-60, 60, -8, -6, -60, 60); }
-  const n0 = G.nodes[0]; player.pos.set(n0.x, n0.y + .1, n0.z); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.atan2(-n0.x, -n0.z);
+  const n0 = G.nodes[0]; setTimeout(() => { player.pos.set(n0.x, n0.y + .1, n0.z); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.atan2(-n0.x, -n0.z); }, 0);     /* the stage builds at module scope, before `player` exists (measured: it threw) */
   T.stat = { seed: T.seed, nodes: G.nodes.length, climb: climb.toFixed(0), top: Math.max(...G.nodes.map(n => n.y)).toFixed(1), moves: Object.entries(T0).filter(e => e[1]).map(e => e[0] + ' ' + e[1]).join(', ') };
   setTimeout(() => tipShow('LAYOUT seed ' + T.stat.seed + ': ' + T.stat.nodes + ' platforms, climbs ' + T.stat.climb + ' m to ' + T.stat.top + ' -- ' + T.stat.moves + '. TOOLS > LAYOUT: NEW SEED.', 9), 1500);
   console.log('[melee] layout', JSON.stringify(T.stat)); }
