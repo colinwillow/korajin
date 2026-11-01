@@ -6,6 +6,16 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## m2068 -- THE GREAT WATERFALL: splash PLUMES at the foot, big ice SLABS in the pool, thinner snow lips
+
+His: "keep going". From his reference: white plumes boil up where the water lands, and big flat ice slabs float in the pool.
+- PLUMES: 26 % of the mist's points (640 now) are a second branch of the same shader -- fast (life ~2-3 s), launched off the impact line across
+  78 m, decelerating to 10-28 m, big (7-25 m), bright, fading as they rise. Same single draw, still all on the GPU.
+- SLABS: 10 flat hexagonal ice slabs (r 2.2-4.4 m, .9-1.5 m thick, a slight tilt) across the front half of the pool, in the ice draw.
+- The column-top snow lips thinner (r .65) and tucked in (-.6).
+Rendered twice: the first plumes (3-13 m) were invisible from the pool; at double size the foot reads as a white boil. Headless: unchanged
+colliders, ladders clear.
+
 ## m2067 -- THE GREAT WATERFALL: tidy -- snow lips closer, gold bands flush
 
 His: "yeah tidy". The snow lips stood out a metre past the face (a shelf); now ~.5 m (centre at the face's front -.55). The pillars' top 5.5 m
