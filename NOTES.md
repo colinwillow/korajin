@@ -5,6 +5,20 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
+
+His: *"Keep going"* -- the brief's remaining whole buildings.
+- New pieces: `stairs_wood` (open timber stairs, .3 m risers, stringers and handrail, solid riser colliders) and `deck_posts` (a braced plank deck on
+  four posts, railed on three sides with a gap where the stair lands, a pushable snow patch on top; ports `deck` and `entry`).
+- `watchtower`: deck_posts at 4.5 m + a timber stair snapped onto its entry, a gable roof on four posts, a jade brazier, lanterns, a banner. Walk up it.
+- `gate`: two pillars (snapped by their top ports), a timber lintel under a gable roof, the jade plaque both faces, banners, lanterns, the doors swung
+  open; stone wall WINGS snapped onto the pillars (ports a/b at their far ends; `wings: 0` for none).
+- `outpost`: a 24 m fenced compound -- the gate in front, fence runs chained 4 m port to port round three sides, the watchtower in a back corner, a
+  hut, a fire pit, crates, firewood, jade lamps.
+- `hut_base` (roof off) now has a plank lid, so it is no longer see-through from above.
+- The showroom moved further south (`SVK.at` z 150 -> 230) so its longer rows stay off the Snowfield. Headless: 55 pieces, 90 ports, 554 colliders,
+  22 draws. Rendered before pushing: the watchtower, the outpost from above, the rows. Shipped unverified.
+
 ## m2044 -- THE GREAT WATERFALL: the HIDDEN CAVE under the falls
 
 His: *"Maybe there's a hidden cave under the waterfall."* At water level, straight in BEHIND the curtain (only found by walking into the falling

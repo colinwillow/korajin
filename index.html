@@ -11097,6 +11097,7 @@ function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.see
   for (let k = 0; k < 10; k++) { const a = (k + .5) / 10 * Math.PI * 2; if (open.some(b => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b))) < .42)) continue; const [x, z] = at(a, R + .07);
     put('wood', vilBox(.24, o.wallH + .15, .2, 1), x, yb + (o.wallH + .15) / 2, z, yaw(a)); }
   lat('wood', [[R - .05, ye - .06], [R + .2, ye - .06], [R + .2, ye + .2], [R - .05, ye + .2]], null, 1);
+  if (!RF) lat('door', [[R, ye + .2], [0, ye + .2]], null, 1.2);     // m2040: a plank lid when the roof is left off (the kit's hut_base), so it is not see-through from above
   part = RF;
   // ROOF: thatch -- a tucked underside, the lip, then the dome to the apex
   const prof = [[R - .1, ye + .1], [Re - .1, ye - .1], [Re + .05, ye + .05]]; for (let k = 0; k <= 9; k++) prof.push(dome(k / 9)); prof[prof.length - 1][0] = 0;
@@ -11506,7 +11507,7 @@ try { if (/[?&]zone=snow\b/.test(location.search)) SNOWZ.want = 1; } catch (e) {
 // THE SHOWROOM: `?w=forge&zone=snowkit` -- every piece and variant on a snow plaza south of the Snowfield, in labelled rows, its ports marked by
 // small jade diamonds. (The m2032 village layout is off by default now -- placement is another context's; `?vil=1` brings it back.)
 // SC_SVK:START
-const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 150], cell: 7.5, perRow: 9, rowGap: 13,
+const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 230], cell: 7.5, perRow: 9, rowGap: 13,
   rows: [
     { title: 'STRUCTURE', items: [['wall_straight'], ['wall_corner'], ['wall_window'], ['wall_door'], ['post_beam'], ['hut_base'], ['roof_round'], ['roof_gable'], ['roof_beams'],
       ['chimney'], ['stairs'], ['stairs', { n: 3 }, 'stairs x3'], ['platform'], ['platform', { h: .9, w: 4, d: 2 }, 'platform low'], ['arch'], ['pillar'], ['pillar', { h: 2.4 }, 'pillar short']] },
@@ -11514,7 +11515,9 @@ const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 150], cell: 7.5, perRow: 9
       ['barrels'], ['crates'], ['pots'], ['market_stall'], ['forge_station'], ['sled'], ['firewood'], ['snowman']] },
     { title: 'BRIDGE / AQUEDUCT', cell: 11, per: 7, gap: 17, items: [['aq_pier', { h: 6 }, 'pier 6 m'], ['aq_pier', { h: 9 }, 'pier 9 m'], ['aq_pier', { h: 12 }, 'pier 12 m'], ['aq_span', { h: 6 }, 'arch span'], ['aq_deck', {}, 'deck + balustrade'], ['aq_shrine', {}, 'shrine tower'], ['aq_shrine', { s: 1.4 }, 'shrine tower big'],
       ['aq_ramp', { rise: 3 }, 'end ramp 3 m'], ['aq_section', { h: 6 }, 'section (snapped)'], ['aq_section', { h: 9, big: 1 }, 'section tall']] },
-    { title: 'BUILDINGS', items: [['hut'], ['hut', { R: 2.2, roofH: 2.4, banner: 0, chimney: 0, porch: 0, seed: 3 }, 'hut small'], ['hut', { R: 3, roofH: 3.4, wallH: 2.6, seed: 7, chimA: 2.2 }, 'hut big'], ['longhouse']] } ] };
+    { title: 'BUILDINGS', items: [['hut'], ['hut', { R: 2.2, roofH: 2.4, banner: 0, chimney: 0, porch: 0, seed: 3 }, 'hut small'], ['hut', { R: 3, roofH: 3.4, wallH: 2.6, seed: 7, chimA: 2.2 }, 'hut big'], ['longhouse'], ['stairs_wood', { n: 6 }, 'timber stairs'], ['deck_posts', { h: 2.4 }, 'deck on posts']] },
+    { title: 'TOWERS / GATES', cell: 13, per: 3, gap: 30, items: [['watchtower'], ['gate'], ['gate', { wings: 0 }, 'gate (no wings)']] },
+    { title: 'OUTPOST', cell: 30, per: 1, gap: 18, items: [['outpost']] } ] };
 // SC_SVK:END
 try { if (/[?&]zone=snowkit\b/.test(location.search)) { SNOWZ.want = 1; SVK.show = 1; SNOWVIL.want = 0; } } catch (e) {}
 function svkNew() { const P = { L: {}, cols: [], patches: [], ports: [], smoke: [], fire: [] }; P.add = (k, g) => { (P.L[k] || (P.L[k] = [])).push(g); return g; };
@@ -11680,6 +11683,51 @@ Object.assign(SVKP, {
     svkSnap(P, svkPiece('aq_ramp', { rise: h + dT }), 'head', at, Math.PI); P.ports = P.ports.filter(q => q.id === 'foot' && q.at[1] < .01 && Math.abs(q.at[2]) < .01 && (q.dir[0] < -.5 || q.dir[0] > .5)); return P; } });
 // shrine towers on a deck's two end corners (over the piers), a big pair when `big`
 function svkShrines(P, dk, big) { const A = SVKAQ, a = portOf(dk, 'a'), b = portOf(dk, 'b'); for (const e of [a, b]) for (const sz of [-1, 1]) if (e === a || big) svkSnap(P, svkPiece('aq_shrine', { s: big && e === b ? 1.25 : .85 }), 'seat', [e[0], e[1] + A.rail * 0, e[2] + sz * (A.deckW / 2 - .3)]); }
+// m2040: the kit's WATCHTOWER, GATE and OUTPOST -- whole buildings assembled from kit pieces by snapping (svkSnap), plus the timber stair they use.
+Object.assign(SVKP, {
+  // open timber stairs: stringers, plank treads, a handrail; climbs toward -Z at .3 m risers (solid riser colliders)
+  stairs_wood: o => { const P = svkNew(), n = o.n || 10, w = o.w || 1.3, tr = .5, L = n * tr, H = n * .3, sl = Math.atan2(H, L), len = Math.hypot(H, L);
+    for (let k = 0; k < n; k++) { const top = (k + 1) * .3, z1 = L / 2 - k * tr, z0 = z1 - tr; P.box('door', w, .08, tr + .04, 0, top - .04, (z0 + z1) / 2, 1); P.col(-w / 2, w / 2, 0, top, z0, z1); }
+    for (const s of [-1, 1]) { P.add('wood', vilBox(.12, .3, len + .3, 1).rotateX(sl).translate(s * (w / 2 + .06), H / 2 - .12, 0)); const hr = vilBox(.08, .08, len + .2, 1); hr.rotateX(sl).translate(s * (w / 2 + .1), H / 2 + .95, 0); P.add('wood', hr); P.add('snow', vilBox(.1, .04, len, 2).rotateX(sl).translate(s * (w / 2 + .1), H / 2 + 1.0, 0));
+      for (let k = 0; k <= n; k += Math.max(2, n / 4 | 0)) { const z = L / 2 - k * tr, y = k * .3; P.box('wood', .08, 1.0, .08, s * (w / 2 + .1), y + .45, z, 1); } }
+    P.port('foot', 0, 0, L / 2, 0, 0, 1); P.port('head', 0, H, -L / 2, 0, 0, -1); return P; },
+  // a plank deck on posts at `h`, braced, railed on three sides (the open side is `open`: 'w' by default), its top a snow patch
+  deck_posts: o => { const P = svkNew(), w = o.w || 4.4, d = o.d || 4.4, h = o.h || 4.5, t = .3; for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { const px = x * (w / 2 - .2), pz = z * (d / 2 - .2); P.box('stoneD', .6, .45, .6, px, .22, pz, .7); P.box('wood', .32, h, .32, px, h / 2, pz, 1); P.col(px - .2, px + .2, 0, h, pz - .2, pz + .2); }
+    for (const [ax, sgn] of [['x', -1], ['x', 1], ['z', -1], ['z', 1]]) for (const dir of [-1, 1]) { const span = ax === 'x' ? d : w, b = vilBox(.14, Math.hypot(span - .4, h - 1.2), .14, 1); b.rotateX(dir * Math.atan2(span - .4, h - 1.2)); if (ax === 'x') P.add('wood', b.translate(sgn * (w / 2 - .2), h / 2 + .1, 0)); else P.add('wood', b.rotateY(Math.PI / 2).translate(0, h / 2 + .1, sgn * (d / 2 - .2))); }
+    P.box('door', w + .3, t, d + .3, 0, h - t / 2, 0, 1.2); P.box('wood', w + .4, .22, d + .4, 0, h - t - .1, 0, 1); P.add('snow', vilPillow(w, .1, d).translate(0, h, 0)); P.col(-w / 2 - .15, w / 2 + .15, h - t, h, -d / 2 - .15, d / 2 + .15); P.patches.push({ x: 0, z: 0, w: w - .2, d: d - .2, top: h + .01, round: 0 });
+    const open = o.open || 'w', rail = (x0, z0, x1, z1) => { const L = Math.hypot(x1 - x0, z1 - z0), ry = Math.atan2(x1 - x0, z1 - z0), cx = (x0 + x1) / 2, cz = (z0 + z1) / 2; for (const y of [.5, 1.0]) P.add('wood', vilBox(.08, .1, L, 1).rotateY(ry).translate(cx, h + y, cz)); P.add('snow', vilBox(.1, .05, L * .95, 2).rotateY(ry).translate(cx, h + 1.08, cz));
+      const n = Math.max(1, Math.round(L / 1.1)); for (let k = 0; k <= n; k++) P.box('wood', .1, 1.05, .1, x0 + (x1 - x0) * k / n, h + .52, z0 + (z1 - z0) * k / n, 1); P.cols.push({ pts: [[Math.min(x0, x1) - .07, Math.min(z0, z1) - .07], [Math.max(x0, x1) + .07, Math.min(z0, z1) - .07], [Math.max(x0, x1) + .07, Math.max(z0, z1) + .07], [Math.min(x0, x1) - .07, Math.max(z0, z1) + .07]], y0: h, y1: h + 1.05 }); };
+    const X = w / 2 + .1, Z = d / 2 + .1; if (open !== 'n') rail(-X, -Z, X, -Z); if (open !== 's') rail(-X, Z, X, Z); if (open !== 'e') rail(X, -Z, X, Z); if (open !== 'w') rail(-X, -Z, -X, Z); else rail(-X, -Z + 1.6, -X, Z);
+    P.ice(-w / 2, w / 2, h - t - .2, d / 2 + .2, Math.round(w * 2), plantRnd(h * 9 | 0)); P.ice(-w / 2, w / 2, h - t - .2, -d / 2 - .2, Math.round(w * 2), plantRnd(h * 7 | 0));
+    P.port('deck', 0, h, 0, 0, 1, 0); P.port('entry', -w / 2 - .15, h, -d / 2 + .8, -1, 0, 0); return P; },
+  // THE WATCHTOWER: a stone footing, a braced timber deck at 4.5 m reached by a timber stair up its west side, a gable roof on four posts, a lookout
+  // brazier (jade), lanterns and a banner -- assembled by snapping the stair's head onto the deck's entry port
+  watchtower: o => { const P = svkNew(), h = o.h || 4.5, w = 4.4; const dk = svkSnap(P, svkPiece('deck_posts', { h, w, d: w, open: 'w' }), 'foot', [0, 0, 0]); const en = portOf(dk, 'entry');
+    const n = Math.round(h / .3), hz = -w / 2 + .1; svkSnap(P, svkPiece('stairs_wood', { n, w: 1.3 }), 'head', [en[0] - .75, en[1], hz]);
+    const rh = h + 2.5; for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) P.box('wood', .22, rh - h, .22, x * (w / 2 - .05), h + (rh - h) / 2, z * (w / 2 - .05), 1);
+    svkSnap(P, svkPiece('roof_gable', { w: w - .2, d: w - .2, pitch: .7, seed: 4 }), 'seat', [0, rh, 0]);
+    P.box('stoneD', .9, .4, .9, .8, h + .2, .8, .7); vilJade(P.add, .8, h + .4, .8, 1.1); P.col(.35, 1.25, h, h + .9, .35, 1.25);
+    for (const s of [-1, 1]) { const x = s * (w / 2 - .05), z = w / 2 + .15, y = rh - .7; P.box('warm', .2, .28, .2, x, y, z, 1); P.add('wood', new THREE.ConeGeometry(.18, .14, 4).rotateY(Math.PI / 4).translate(x, y + .2, z)); P.box('iron', .02, .25, .02, x, y + .35, z, 1); }
+    P.add('ban', vilBanner(1.0, 2.2, .35).translate(0, h - .45, w / 2 + .32)); P.port('foot', 0, 0, 0, 0, -1, 0); P.port('stair', en[0] - .75, 0, hz + n * .5 + .3, 0, 0, 1); return P; },
+  // THE GATE: two stone pillars, a timber lintel under a little gable roof, the jade plaque, two banners, lanterns, the doors swung open; stone wall
+  // wings snapped onto the pillars (ports a/b at the wings' far ends)
+  gate: o => { const P = svkNew(), w = o.w || 4.4, ph = 5.1, wings = o.wings == null ? 1 : o.wings;
+    for (const s of [-1, 1]) { svkSnap(P, svkPiece('pillar', { h: ph }), 'top', [s * (w / 2 + .55), ph, 0]); const x = s * (w / 2 + .55), y = 3.3; P.box('wood', .5, .08, .08, x - s * .6, y + .4, .75, 1); P.box('warm', .22, .3, .22, x - s * .82, y, .75, 1); P.add('wood', new THREE.ConeGeometry(.2, .16, 4).rotateY(Math.PI / 4).translate(x - s * .82, y + .22, .75));
+      const leaf = vilBox(w / 2 - .1, 3.4, .16, 1); leaf.translate(-s * (w / 4 - .05), 1.7, 0).rotateY(s * 1.25).translate(s * (w / 2 - .05), 0, -.1); P.add('door', leaf); const band = vilBox(w / 2 - .15, .1, .2, 1); for (const by of [.8, 2.6]) P.add('iron', band.clone().translate(-s * (w / 4 - .05), by, 0).rotateY(s * 1.25).translate(s * (w / 2 - .05), 0, -.1));
+      if (wings) svkSnap(P, svkPiece('wall_straight', { len: 4, h: 3.3 }), 'a', [s * (w / 2 + 1.1), 0, 0], s > 0 ? 0 : Math.PI); }
+    P.box('wood', w + 3.4, .45, .5, 0, ph + .25, 0, 1); P.box('wood', w + 1.6, .25, .36, 0, ph - .45, 0, 1); for (const s of [-1, 1]) P.box('gold', .4, .4, .56, s * (w / 2 + 1.75), ph + .25, 0, 1);
+    svkSnap(P, svkPiece('roof_gable', { w: 2.0, d: w + 3, pitch: .95, seed: 8 }), 'seat', [0, ph + .48, 0], Math.PI / 2);
+    for (const sz of [-1, 1]) { P.box('gold', .9, .7, .1, 0, ph - .05, sz * .3, 1); P.box('jade', .5, .4, .08, 0, ph - .05, sz * .36, 1); P.add('ban', vilBanner(.8, 1.7, .25).rotateY(sz > 0 ? 0 : Math.PI).translate(sz * 1.2 * 0 + (sz > 0 ? 1.3 : -1.3), ph - .6, sz * .28)); }
+    P.col(-w / 2 - 1, w / 2 + 1, ph - .6, ph + .5, -.25, .25); P.ports = P.ports.filter(q => (q.id === 'b' && Math.abs(q.at[0]) > w / 2 + 3)); P.ports.forEach((q, i) => q.id = q.at[0] < 0 ? 'a' : 'b'); P.port('through', 0, 0, 2, 0, 0, 1); return P; },
+  // THE OUTPOST: a fenced compound -- the gate in its front, fence runs chained port to port round the other three sides, the watchtower in a back
+  // corner, a hut, a fire pit, crates, a jade lamp
+  outpost: o => { const P = svkNew(), S = o.size || 24, h = S / 2;     /* fences are 4 m: S and h - 4 must be multiples of 4 */ const G = svkSnap(P, svkPiece('gate', { wings: 0 }), 'through', [0, 0, h + 2]); let at = [3.3, 0, h];
+    const run = (from, to) => { const dx = Math.sign(to[0] - from[0]), dz = Math.sign(to[2] - from[2]), n = Math.round(Math.hypot(to[0] - from[0], to[2] - from[2]) / 4), yaw = Math.atan2(dx, dz) - Math.PI / 2; let p = from; for (let k = 0; k < n; k++) p = portOf(svkSnap(P, svkPiece('fence_straight'), 'a', p, yaw), 'b'); return p; };
+    for (const s of [-1, 1]) { P.box('stoneD', .7, .9, .4, s * 3.7, .45, h, .7); P.add('snow', vilPillow(.7, .1, .4).translate(s * 3.7, .9, h)); P.col(s * 3.7 - .35, s * 3.7 + .35, 0, .9, h - .2, h + .2); }
+    at = run([4, 0, h], [h, 0, h]); at = run([h, 0, h], [h, 0, -h]); at = run([h, 0, -h], [-h, 0, -h]); at = run([-h, 0, -h], [-h, 0, h]); run([-h, 0, h], [-4, 0, h]);
+    svkSnap(P, svkPiece('watchtower', {}), 'foot', [-h + 4.6, 0, -h + 3.5]); svkSnap(P, svkPiece('hut', { R: 2.4, seed: 31, chimA: 2.3 }), 'door', [h - 4.5 - 4, 0, -3], -Math.PI / 2);
+    svkSnap(P, svkPiece('fire_pit'), 'foot', [-1.5, 0, 3]); svkSnap(P, svkPiece('crates'), 'foot', [h - 2, 0, h - 3]); svkSnap(P, svkPiece('firewood'), 'foot', [-h + 2, 0, 4], Math.PI / 2); svkSnap(P, svkPiece('jade_lamp'), 'foot', [2.6, 0, h - 1.2]); svkSnap(P, svkPiece('jade_lamp'), 'foot', [-2.6, 0, h - 1.2]);
+    P.ports = []; P.port('gate', 0, 0, h + 2, 0, 0, 1); return P; } });
 function svkPiece(kind, o) { const f = SVKP[kind]; if (!f) throw new Error('no snow-kit piece ' + kind); return f(o || {}); }
 // the merged meshes of an accumulated piece (one per material)
 function svkMesh(P) { const M = vilMats(), G = new THREE.Group(); for (const k in P.L) { const M2 = M[k]; if (!M2 || !P.L[k].length) continue;
