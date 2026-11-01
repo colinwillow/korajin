@@ -15,6 +15,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15RK -- the ROCKET LAUNCHER aims like the BOW: raise up, settle and lock level, thumb down aims down, lift fires (Nov 1 2026)
+His: *"make it similar to how the bow works -- you hold up and it starts aiming up, then comes down and locks straight forward; once it's locked, push
+down on the right stick and it aims down; basically the same way the bow works."*
+- The trigger: once raised (`padUp`), the launcher stays raised while the thumb is anywhere on the pad and FIRES ONLY ON THE LIFT (the drawn bow's
+  m1854 rule) -- before, rolling the thumb back below `keepAt` fired it.
+- `aimVert`: with the launcher, the aim pitch starts `ROCKET.raise` (40 deg) UP and eases to level over `raiseT` .38 s (a 'lock' click at the end);
+  then `bowDownA` (the bow's own map: level at the pad's top, `down0` at the centre, `downMax` 50 deg at the bottom) tilts it down; the release keeps
+  the last angle held. It rides the existing pitch plumbing (`p.gPit` -> `p.gDir` -> `aimPoint`), so the shot, the reticle and the height assist agree.
+- Hint: 'hold up . thumb down aims down . lift fires'. Shipped unverified.
+
 ## m2136 -- the horns were INSIDE-OUT (his: "a weird see-through thing -- you can see into the horn and the backs of the gold rings")
 
 `svkTube` (m2126) wound its triangles (a, b, a+1): with the ring running N -> B, the face normal is T x B = -N, INWARD -- so back-face culling drew the
