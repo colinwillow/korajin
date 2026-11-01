@@ -518,7 +518,7 @@ body.dyn.desk .zone { display: none; }
 #padR.act::after { opacity: 1; border-color: #3dff6e; box-shadow: 0 0 14px #3dff6e99; animation: pickPulse .9s ease-in-out infinite; }
 /* PICK (m950): something in reach can be picked up -- a white ring that breathes, and a hand on the knob. Small on purpose: m96's
    pick-up had a big button of its own and he called it horrible. */
-#padR.mount::after { opacity: 1; border-color: #7affd8; box-shadow: 0 0 16px #7affd8aa; animation: pickPulse .8s ease-in-out infinite; }     /* m15MM: in reach of the mammoth */
+#padR.mount::after { opacity: 1; border-color: #7affd8; box-shadow: 0 0 16px #7affd8aa; animation: pickPulse .8s ease-in-out infinite; }     /* m2061: in reach of the mammoth */
 #padR.pick::after { opacity: 1; border-color: #fff; animation: pickPulse 1.1s ease-in-out infinite; }
 @keyframes pickPulse { 50% { transform: scale(1.08); opacity: .55; } }
 #padR .pkico { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; display: none; pointer-events: none; z-index: 2; }
@@ -5664,7 +5664,7 @@ const SFX = {
     // THE PLAYER TAKING A BLOW, and nothing else since m55 -- a box coming apart is the wrong
     // sound for a man being hit, which is what it was doing on the melee.
     thud: ['audio/box_break_01.mp3'],
-    // m15MM (his: "it still plays that wood block breaking noise that annoyed me -- getting on the mammoth, the mammoth attack -- it seems to default to that"):
+    // m2061 (his: "it still plays that wood block breaking noise that annoyed me -- getting on the mammoth, the mammoth attack -- it seems to default to that"):
     // `thud` (the crate) is kept only where something BREAKS (functions named *Break / *Fell / *Hit / smash...); every other heavy beat -- landings, stomps,
     // mounts, gates, falling bodies -- is `bump`, his own ground thuds.
     bump: ['audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_a_3.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_b_2.mp3', 'audio/hit_sounds/thud_b_3.mp3'],
@@ -13865,7 +13865,7 @@ const dragHas = n => !!(n && rig.actions[n]);
 const MAMR = { seatK: -.35, seatR: .45, seatH: .78,     /* measured off the render: .5 / .7 sat him behind the saddle and sunk in */
   at: [16, 22], yaw: 2.4, d: null, reach: 2.6, walkV: 2.4, trotV: 5.4, runV: 9.5, ref: { Walk_F_IP: 2.4, Trot_F_IP: 5.2, Run_F_IP: 8.5 }, turn: 1.4, turnStill: 2.4, accHL: .55, brakeHL: .4,
   offTap: .45, camPull: 6.5, camLift: 2.4, stompR: 4.5, stompAt: .42, ring: null, saddle: null, stat: { rides: 0, stomps: 0 },
-  near: 2.6, catchR: 2.8, catchK: 7, arrowUp: 1.5 };     // m15MM: `near` m outside his body = in reach (ring, arrow, pad pulse, tap mounts); `catchR` round the seat steers a fall onto it
+  near: 2.6, catchR: 2.8, catchK: 7, arrowUp: 1.5 };     // m2061: `near` m outside his body = in reach (ring, arrow, pad pulse, tap mounts); `catchR` round the seat steers a fall onto it
 function mamSeat(d, out) { const b = d.spB || (d.spB = d.model.getObjectByName('Spine_03') || d.model.getObjectByName('Spine_02')); if (!b) return out.copy(d.root.position).setY(3);
   b.getWorldPosition(out); const y = out.y + (d.seatOff || 0); if (d.seatLoc) { const c = Math.cos(d.h), s2 = Math.sin(d.h); out.set(d.root.position.x + d.seatLoc[0] * c + d.seatLoc[1] * s2, y, d.root.position.z - d.seatLoc[0] * s2 + d.seatLoc[1] * c); } else out.y = y; return out; }
 function mamSaddle(d) {     // his model carries its OWN saddle (Tripo): the seat is the top of his back over it, measured off the SKINNED vertices (a raycast misses a skin)
@@ -13875,7 +13875,7 @@ function mamSaddle(d) {     // his model carries its OWN saddle (Tripo): the sea
   const sb = d.spB || (d.spB = b3 || b2), sp = sb ? sb.getWorldPosition(new THREE.Vector3()) : c; d.seatOff = (isFinite(top) && top > sp.y ? top - .05 : d.root.position.y + d.K.h * MAMR.seatH) - sp.y;     /* measured headless: the skinned-vertex top came out BELOW the spine (a skin's bone matrices lag at spawn), so the fallback is his height x seatH */ d.seatXZ = [c.x - sp.x, c.z - sp.z];
   const loc = new THREE.Vector3(c.x - d.root.position.x, 0, c.z - d.root.position.z).applyAxisAngle(_ibUp, -d.h); d.seatLoc = [loc.x, loc.z];     // the seat in his own frame
   console.log('[melee] mammoth seat +' + d.seatOff.toFixed(2) + ' m over the spine');
-  // m15MM (his: "not a circle on the ground -- within radius of the mammoth an arrow pops up above the saddle pointing down, maybe a ring on the ground
+  // m2061 (his: "not a circle on the ground -- within radius of the mammoth an arrow pops up above the saddle pointing down, maybe a ring on the ground
   // AROUND the mammoth that shows once you're within radius; before that, nothing"): the ring encircles HIM at `near` m outside his body; the arrow bobs over the seat
   const rr = (d.K.r || 2) + MAMR.near, mat = new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false, transparent: true, opacity: .7, depthWrite: false });
   const ring = new THREE.Mesh(new THREE.TorusGeometry(rr, .07, 6, 64).rotateX(Math.PI / 2), mat); ring.visible = false; ring.renderOrder = 5; scene.add(ring);
@@ -13889,12 +13889,12 @@ function mamFrame(dt) { const d = MAMR.d, p = player; if (!d || !MAMR.ring) retu
   MAMR.ring.visible = near; if (near) { MAMR.ring.position.set(P.x, (snowSurfY(P.x, 0, P.z) || 0) + .06, P.z); MAMR.ring.material.opacity = .45 + .25 * Math.sin(tm * 5); }
   const s = mamSeat(d, _mrV); MAMR.arrow.visible = near; if (near) { MAMR.arrow.position.set(s.x, s.y + MAMR.arrowUp + .18 * Math.sin(tm * 4), s.z); MAMR.arrow.rotation.y = tm * 1.5; }
   padR.classList.toggle('mount', near && p.grounded);     // the right pad pulses: a tap mounts
-  // m15MM (his: "if you're running and jumping and fall in the vicinity of the saddle it should orient you so you land on it -- fall from above, land on it, you're on")
+  // m2061 (his: "if you're running and jumping and fall in the vicinity of the saddle it should orient you so you land on it -- fall from above, land on it, you're on")
   if (free && !p.grounded && p.vel.y < 0 && dt > 0) { const hip = (rig.hipY || .6) * .6, sy = s.y - hip, dx = s.x - p.pos.x, dz = s.z - p.pos.z, hd = Math.hypot(dx, dz), dy = p.pos.y - sy;
     if (hd < MAMR.catchR && dy > -.5 && dy < 10) { const k = 1 - Math.exp(-dt * MAMR.catchK); p.pos.x += dx * k; p.pos.z += dz * k; const kv = Math.exp(-8 * dt); p.vel.x *= kv; p.vel.z *= kv;
       if (dy < .45 && hd < 1.1) { p.mamRide = { st: 'land', t: 0, from: p.pos.clone(), h0: p.faceH, hip }; p.vel.set(0, 0, 0); if (p.wing && typeof wingEnd === "function") wingEnd(); MAMR.stat.rides++; camShake(.15); snd('bump', { g: .5, r: .9, x: s.x, z: s.z }); } } } }
 const _mrV = new THREE.Vector3(), _mrV2 = new THREE.Vector3();
-function mamTap() { const d = MAMR.d, p = player; if (!d || !MAMR.rr || p.mamRide || p.dragon || !p.grounded) return false; if (!mamNear(d, p)) return false;     // m15MM: anywhere in his ring, not a spot at his flank
+function mamTap() { const d = MAMR.d, p = player; if (!d || !MAMR.rr || p.mamRide || p.dragon || !p.grounded) return false; if (!mamNear(d, p)) return false;     // m2061: anywhere in his ring, not a spot at his flank
   p.mamRide = { st: 'on', t: 0, from: p.pos.clone(), h0: p.faceH, hip: (rig.hipY || .6) * .6 }; p.vel.set(0, 0, 0); MAMR.stat.rides++; return true; }
 function mamTapL() { const R = player.mamRide; if (!R || R.st !== 'sit') return; const now = performance.now() / 1000; if (!(now - (R.tap1 || -9) < MAMR.offTap)) { R.tap1 = now; tipShow('Tap the left pad again to get off.', 1.2); return; }
   R.tap1 = -9; R.st = 'off'; R.t = 0; R.from = player.pos.clone(); if (MAMR.d) MAMR.d.ride.on = 0; snd('swoosh', { g: .5, r: 1 }); }

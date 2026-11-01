@@ -6,7 +6,7 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
-## m15MM -- the mammoth mount: a ring round HIM, an arrow over the saddle, the pad pulses; land on him from a jump; no crate sound (Nov 1 2026)
+## m2061 -- the mammoth mount: a ring round HIM, an arrow over the saddle, the pad pulses; land on him from a jump; no crate sound (Nov 1 2026)
 His words: *"I don't want a circle on the ground -- within radius of the mammoth, an arrow above the saddle pointing down, maybe a ring around the mammoth
 once you're within radius, and the right stick highlights and pulses; tap and he jumps up and lands on it. Or jump and fall in the vicinity of the saddle --
 it orients you so you land on it. And it still plays that wood block breaking noise -- getting on the mammoth, the attack -- it defaults to that."*
