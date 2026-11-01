@@ -6,6 +6,25 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## m2069 -- THE RISING SHRINE: a kit piece that ASSEMBLES out of the ground (his concept)
+
+His (a concept of a temple shrine: carved stone base, buttresses, jade glyph panels, a neck, a gold bowl, a great glowing crystal): "build it
+in pieces so it comes up through the ground: pieces fold out, a new piece comes up, the top piece, pieces come out of that, then the stone comes
+out of that ... scattered around the level." `RSHRINE` (SC_RISESHRINE) + `wfrsMake(T)` (pure) / `wfrsBuild` / `wfrsStep` / `wfrsPose`:
+- DORMANT it is only a glowing RUNE RING on the ground. When he comes within `wake` (9 m) it ASSEMBLES over 5.6 s (`steps`, data): the CORE rises
+  (a thud, camera shake, dust), four BUTTRESSES slide out of it, the CAP slab rises, the NECK, eight bowl PETALS rise closed like a bud and FOLD
+  OPEN (overshoot), and the CRYSTAL rises out of the bowl, growing and lighting, then bobs and turns. The jade inlays brighten through it.
+- TWO DRAWS per shrine: every stone / gold / jade piece is one merged geometry whose vertices carry a PART index (16 parts); each part's
+  transform is a matrix in a uniform array that the vertex shader applies (normals too) -- nothing is rebuilt per frame; jade glows through a
+  per-vertex `aGlow` into the emissive. The crystal is its own mesh. No shadow cast (the depth pass would not follow the parts).
+- Solid (a box) once risen; `mel.rshrine(id, 1 | -1)` raises / sinks one (the timeline runs backwards).
+- Placed (kind 'riseshrine'): `wf_shrine` in the hidden hall (replaces the static one) and `wf_shrine_rim` on the pool's rim under the right-hand
+  pillars; the rim's pines / boulders keep 9 m clear of any rising shrine.
+- Caught: the syntax gate -- `rsEase` already exists elsewhere in index.html; everything here is `wfrs*`. Rendered at six moments of the rise
+  (ring / core+buttresses / neck / bud / open + crystal / the hall): the crystal and petals were enlarged after the first set.
+Not yet: it reads ~6 m tall (his concept's proportions, but small beside a 90 m cliff -- `s` scales it); no hand-made glyph texture (flat jade
+panels); the dormant ring has no prompt. Shipped unverified on the phone.
+
 ## m2068 -- THE GREAT WATERFALL: splash PLUMES at the foot, big ice SLABS in the pool, thinner snow lips
 
 His: "keep going". From his reference: white plumes boil up where the water lands, and big flat ice slabs float in the pool.
