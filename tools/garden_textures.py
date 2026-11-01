@@ -52,6 +52,8 @@ ALPHA = {
                   "on a fully transparent background, circular, centred, no text.", "1024x1024", (512, 512)),
   'jinra_flame': ("A single tall stylised magical BLUE FLAME, wispy licking tongues of cyan, sapphire and white fire rising from the bottom edge, painterly fantasy game VFX, "
                   "isolated on a fully transparent background, no text.", "1024x1536", (256, 512)),
+  'jinra_runes': ("A glowing magical RUNE CIRCLE seen straight on from above: a perfect thin circular band of luminous cyan and white ancient glyphs and geometric symbols "
+                  "between two fine concentric rings, with small diamond marks, the centre EMPTY, glowing like light, isolated on a fully transparent background, no text, no letters.", "1024x1024", (1024, 1024)),
   'fern': ("A lush green FERN plant seen from the side, many arching fronds spreading from the base, bright and deep greens, stylised hand-painted fantasy game art, isolated on a fully transparent background, no pot, no shadow, no text.", "1024x1024", (512, 512)),
   'flowers': ("A small clump of wildflowers seen from the side: pink, white and lavender blossoms on green stems with leaves, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1024", (512, 512)),
 }
