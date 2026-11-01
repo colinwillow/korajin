@@ -6,6 +6,13 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+
+## m15MS -- the MAMMOTH is fast now (Nov 1 2026)
+His words: *"we should think about making the mammoth fast, because right now riding it is way slower than running, so what's the point."*
+`MAMR`: walkV 2.4 -> 3.2, trotV 5.4 -> 8, runV 9.5 -> 15.5 m/s (he runs 7.2, sprints 9); the run clip may play up to 1.9x (was 1.5) so the legs keep
+up; accel half-life .55 -> .5, turning a touch quicker. Also VILLAGE_BLUEPRINT pass 4 (circulation): the mammoth may ride in as far as the bath
+yard (the road is 4.5 m wide with ramps; above it is stairs, foot only). Shipped unverified.
+
 ## m2069 -- THE RISING SHRINE: a kit piece that ASSEMBLES out of the ground (his concept)
 
 His (a concept of a temple shrine: carved stone base, buttresses, jade glyph panels, a neck, a gold bowl, a great glowing crystal): "build it
