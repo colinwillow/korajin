@@ -15,7 +15,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- the horns were INSIDE-OUT (his: "a weird see-through thing -- you can see into the horn and the backs of the gold rings")
+## m2136 -- the horns were INSIDE-OUT (his: "a weird see-through thing -- you can see into the horn and the backs of the gold rings")
 
 `svkTube` (m2126) wound its triangles (a, b, a+1): with the ring running N -> B, the face normal is T x B = -N, INWARD -- so back-face culling drew the
 inside of the far wall, the horns read hollow and the straps showed through them. Now (a, a+1, b): outward. (`svkTubeSnow` was checked the same way and
