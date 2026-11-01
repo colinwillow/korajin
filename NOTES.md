@@ -15,7 +15,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15SP -- the sage: no ring; a swirl of glowing motes and rising sparks (Nov 1 2026)
+## m2130 -- the sage: no ring; a swirl of glowing motes and rising sparks (Nov 1 2026)
 His: *"I don't want the ring around the meditating guy -- I want him floating, bobbing, with cool particle effects around him."* The jade torus is gone.
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
 .7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
