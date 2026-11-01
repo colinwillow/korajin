@@ -9,7 +9,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15IC -- THE MOVE-IN, step 6: the GROTTO is the ICE CAVES' mouth; the STONE RING is the STANDING STONES (Nov 1 2026)
+## m2097 -- THE MOVE-IN, step 6: the GROTTO is the ICE CAVES' mouth; the STONE RING is the STANDING STONES (Nov 1 2026)
 - `snowKit` takes `SNOWKIT.only` ('grotto' / 'bridge' / 'stones' / 'spire'): one piece, and no field-wide plants (they were scattered by the
   Snowfield's own coordinates). The region builds the grotto (the half-dome open to the west, its crystals, icicles and the shrine stone with its
   glowing ring) at the ICE CAVES place (-34, 159) and the ring of seven stones + its floating crystal at the STANDING STONES (-129, -1), each through
