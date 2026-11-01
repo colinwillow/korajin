@@ -6,7 +6,7 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
-## mNEXT -- the snow kit SILHOUETTE PASS 1: shapes, not surfaces
+## m2075 -- the snow kit SILHOUETTE PASS 1: shapes, not surfaces
 
 His: *"Why are they squares? Why aren't they more hexagonal, why don't the edges of a box have ridges, why is one solid shape not cut into two or three --
 make the general shapes and silhouettes more interesting without adding too many calls."* Same materials (so the same draws); only the shapes changed.
