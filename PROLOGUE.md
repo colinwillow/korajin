@@ -42,7 +42,14 @@ backwards (the same `RESTORE` kit, run in reverse here).
   site goes at its edge. Undecided; the LIBRARY (being built) is where he'll compare places.
 - **NAMES (his, settled):** THE HOLLOW is the void AND what it makes -- "empty stone men". THE HOLLOWED are the Hollow's creatures, a sub-faction of
   it (the hollow men, the hollow monsters) -- one family, not two. "The Red Hollows" was never his name: Grumbo's homeland gets RENAMED (his pick;
-  suggestions: AKATANI 'red valley', the RUST REACH, BENIKAWA 'crimson river', the EMBER CANYON).
+  his picks: AKATANI ('red valley') for the homeland, with THE EMBER CANYON as its canyon -- both liked).
+
+## THE GARDEN's references (his, Nov 1 2026): images/concepts/prologue/garden_01.webp, garden_02.webp
+A FLOATING ISLAND above a sea of clouds, other islands and a pagoda-topped island in the distance, snow peaks beyond, sun rays: two big twisted
+willow-like trees hung with green vines and glowing jade veins, a red-and-white HAMMOCK slung between them, hanging lanterns and little bells; a
+flagstone path; a raked Zen-sand circle with stones; glowing mint Jinra streams and pools that spill off the island's edges as glowing WATERFALLS;
+stone lanterns, cairns, purple crystals, ferns and flowers; wooden rail fences with jade-gem posts; red / teal banners; and at the back, up a stair, a
+BELL SHRINE -- (1) a pagoda roof on columns with a great bronze bell, or (2) a moss-domed round temple (like the forest temple) with the bell hanging inside.
 
 ## The order we'd build it (one step at a time; each step done and signed off before the next)
 - [ ] **P0 -- this page, agreed.** The beats, the open questions below answered.

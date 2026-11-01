@@ -24,7 +24,7 @@ out of weirdport. Do it when Korajin stops needing Zap's code, or the day he ask
 - **The Hollow** is the enemy: a swirling purple-black VOID in the sky that drinks Jinra (what it drains stops floating and falls) and empties things
   out -- it makes "empty stone men", turns objects into constructs and people into statues. A SORCERER stands behind it (not seen early).
 - **The Hollowed** (listed under factions below) ARE the Hollow's creatures -- a sub-faction of it, not a separate people.
-- **"The Red Hollows" is a placeholder name** for Grumbo's homeland (never his) and will be renamed, so "Hollow" means only the enemy.
+- **Grumbo's homeland is AKATANI ('red valley'), with THE EMBER CANYON** (his picks, Nov 1) -- "the Red Hollows" was a placeholder; the code still says RW / 'The Red Hollows' until it is renamed.
 
 ## The mythology so far
 
