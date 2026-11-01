@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2154 -- THE GARDEN becomes a CLUSTER: big / medium / small islands at three heights, joined by the Rope Course's bridges (Nov 1 2026)
+## m2156 -- THE GARDEN becomes a CLUSTER: big / medium / small islands at three heights, joined by the Rope Course's bridges (Nov 1 2026)
 His (relayed by the main Korajin session): the garden *"looks really good now"* but is too small to do anything up there -- grow it into a cluster of
 three floating islands, BIG, MEDIUM, SMALL, at clearly different heights, routes that climb, rope bridges as connective tissue; REUSE the existing
 verlet bridge (DOCKET 18a, the Rope Course) -- do not build a new one. Blockout now; refine when his references arrive.
