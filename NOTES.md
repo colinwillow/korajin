@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15SH -- THE ICE SHIELD, level 1: on his forearm, raised by the guard, it stops the ice beam (Nov 1 2026)
+*"A proper shield -- a blue ice shield -- so you can deflect the ice beam; on the left forearm, the katana two-handed, and the parry a new pose with the
+shield front and centre."* (`SHIELD`, TOOLS > GEAR > ICE SHIELD, default ON)
+- the SHIELD: a kite shield built in code -- extruded painted-ice face, a crystal rim tube, three crystal points, a glowing jade-teal boss -- placed every
+  frame on his LEFT FOREARM (between the forearm and hand joints), its face turned out from his left side and swung forward as the guard comes up
+- the GUARD: Mixamo's Sword And Shield Block Idle (and Block) Forge-baked onto Grumbo (`shield_guard`, `shield_block`, `tools/agoblin_forge_prof.json`);
+  the guard lays his LEFT arm into the Block Idle's mid-clip pose (shoulder / arm / forearm / hand only), eased in, so the shield comes up in front
+  while the right hand keeps the katana. Every swing is unchanged.
+- vs the ICE BEAM (`shieldBeam`): guard up and facing it (within ~70 deg), the beam STOPS on the shield (no hurt, no spikes behind you) and GLANCES off
+  along its reflection (a second beam, 9 m); frost sprays off the face; the shield FROSTS over `holdMax` 2.6 s (it whitens and glows) and then CRACKS:
+  spikes, a shove, and no shield for 3 s. Raise it inside `perfect` .3 s of the beam reaching you: a PERFECT PARRY -- the beam goes straight back up its
+  line, he staggers (`beastHurt` + stun) and the beam ends.
+Measured headless with the guard held (`mel.SHIELD.force = 1`): the beam blocked (hp 100, frost .30 after ~0.9 s of beam), the guard pose and the
+glare rendered. Level 2 (a one-handed shield stance on the full Mixamo Sword And Shield set) only if he likes this.
+
 ## m2008 -- snow footsteps, the ice beam's sound, a brush-ink START button (Oct 31 2026)
 - *"Can you source a snow footsteps sound? The current footsteps sound ridiculous in the snow."* No sample library is reachable from here, so it is
   SYNTHESISED: `snowCrunchBufs` builds eight crunch buffers in code (a dense spray of 140-220 tiny noise grains front-loaded into ~.2 s, band-limited

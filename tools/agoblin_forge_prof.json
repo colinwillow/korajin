@@ -323,6 +323,22 @@
    "edit": {
     "inPlace": 1
    }
+  },
+  {
+   "role": "shield_guard",
+   "stem": "Sword_And_Shield_Block_Idle",
+   "name": "Sword_And_Shield_Block_Idle",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "shield_block",
+   "stem": "Sword_And_Shield_Block",
+   "name": "Sword_And_Shield_Block",
+   "edit": {
+    "inPlace": 1
+   }
   }
  ]
 }
