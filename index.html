@@ -51558,7 +51558,7 @@ function packPaint() { const P = BAG.el; if (!P) return; P.innerHTML = '<div cla
 function packOpen(v) { if (!BAG.el) { const P = BAG.el = document.createElement('div'); P.id = 'packPanel';
     for (const t of ['pointerdown', 'touchstart', 'touchmove']) P.addEventListener(t, e => e.stopPropagation(), { passive: true });
     document.body.appendChild(P);
-    // m15BG: a tap anywhere else closes it (capture phase, so the pads' own handlers cannot swallow it; the BACKPACK button itself toggles)
+    // m2066: a tap anywhere else closes it (capture phase, so the pads' own handlers cannot swallow it; the BACKPACK button itself toggles)
     window.addEventListener('pointerdown', e => { if (!BAG.open) return; const t = e.target; if (P.contains(t) || (form.row && form.row.contains(t))) return; packOpen(0); }, true); }
   BAG.open = v ? 1 : 0; if (BAG.open) packPaint(); BAG.el.classList.toggle('on', !!BAG.open); snd('swoosh', { r: BAG.open ? 1.4 : 1.1, g: .2 }); }     // m1729: up a ring, over the quick-draw sub-menu's outer row
 
