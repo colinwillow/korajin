@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-##  -- THE GARDEN: the rusty sword by the hammock; room kept for the Sky Village (Nov 1 2026)
+## m2159 -- THE GARDEN: the rusty sword by the hammock; room kept for the Sky Village (Nov 1 2026)
 From the main Korajin session (PROLOGUE.md DRAFT 4 -- THE LAST BELL): Grumbo's island is the quiet OUTSKIRTS, he is a dozy guardian.
 - **THE RUSTY SWORD** (`GARDEN.sword`, part `rusty_sword`, piece `GARDEN.pieces.sword`): a short rusted blade, guard, wrapped grip and pommel hung
   by a cord from a peg in willow_a, on the trunk side facing the spawn, blade down. A simple prop (its own small group, ~6 draws) until the real one.
