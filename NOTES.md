@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- the snow kit DETAIL PASS 2: shape -- chamfered, chipped stone; lumpy snow; drifts; proud stones on the piers
+
+- `vilRBox`: every STONE box the kit's builders make (`P.box` with stone / stoneD) is now chamfered -- the box's second vertex row moved out to r from
+  each edge, all vertices pulled onto the rounded box, edge vertices nudged by a seeded noise so the chips differ block to block (r = min(.13, 16% of
+  the thinnest side); thin pieces stay plain boxes). Walls, plinths, stairs, platforms, piers, capitals, decks, shrines, ramps, chimneys, pillars.
+- `vilPillow` (every snow pillow: caps, sills, tops, the hut plinth's ring) is lumpy now and its rim curls a little over the edge.
+- SNOW DRIFTS (`svkDrift`) piled against both feet of every wall and round every aqueduct pier.
+- PROUD STONES (`svkProud`) on the aqueduct piers' four faces (kept off the jade inlays). Tried on the rough dry-stone walls too and taken off: against
+  the painted chunky stones they read as little bricks glued on.
+- Rendered (aqueduct, walls) before pushing. Same draws (22); ~+100k triangles in the whole showroom. Shipped unverified.
+
 ## m2058 -- the snow kit DETAIL PASS 1: painted maps (his: "another detail pass on everything -- make it way more interesting")
 
 Planned as three passes: (1) painted surfaces, (2) shape (chipped/rounded stone, lumpier snow, proud stones), (3) dressing (rope lashings, gold
