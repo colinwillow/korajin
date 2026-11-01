@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- the snow kit QUALITY PASS: smooth horns, flush straps, snow that follows the curve, timber grain along the wood, banner proportions
+## m2126 -- the snow kit QUALITY PASS: smooth horns, flush straps, snow that follows the curve, timber grain along the wood, banner proportions
 
 His (phone screenshots): *"Interpolate the curves so the jagged lines between control points look nicer; floating geometry (white caps) and things roughly
 placed; the grain of the wood and the star look off; the straight edges look computer-generated -- make it look way nicer or go back."*
