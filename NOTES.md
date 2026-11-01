@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2023 -- THE ICE TEMPLE: the VALLEY's look -- crags, aqueducts, frozen falls, pines, boulders
+
+His: *"Okay keep going"* -- the next pass after the entrance: the concept's BACKGROUND (`big_front`, `big_sheet`: cliffs, aqueduct arches on them,
+frozen falls, pines). Look only; the colliders stay the blockout's slabs. `ICEVAL` holds the numbers.
+- CRAGS (`iceCliff`): each valley wall becomes 24-40 m segments of stepped rock -- a first tier 30-46 m, often a second set back 5 m, sometimes a
+  third -- subdivided (9 m cells) and pushed by `iceNz` (3.2 m), snow on every tier top. The VALLEY face of every block starts `inset` .9 m behind
+  the slab's face and is only ever pushed AWAY from the valley (and leans back as it rises), so no rock pokes into where he walks; the wall
+  direction and its valley side are worked out from the placement, so a quarter-turned temple turns them too.
+- AQUEDUCTS on the cliff tops: east along 1.2 km at 58 m, west near the temple at 52 m -- piers every 16 m, a stone arch between each pair (its
+  crown just under the deck), a gold band, a snowy deck.
+- FROZEN FALLS: five ice sheets down the crag faces (behind the slabs too), a mound of ice at each foot.
+- 150 PINES (bark trunk, four needle tiers, snow on each) and 60 snowy BOULDERS along both edges, on whichever terrace is under them, clear of the
+  middle and the terrace faces; the terraces themselves rock faces under snow. No colliders on any of it.
+Cost: ~+90k triangles in the valley views (cells at 6 m were +200k; 9 m now). Shipped unverified.
+
 ## m2021 -- THE ICE TEMPLE: the LOOK pass on the entrance (the concept art over the blockout)
 
 His: *"Now do a look pass on the entrance to match the concept"* (`images/concepts/ice_temple/big_*`). `iceDress(R, g)` dresses the SAME rows the
