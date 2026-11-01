@@ -6,6 +6,20 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## m2076 -- THE GREAT WATERFALL: his MYSTICAL FLORA sheet, six more species (12 in all)
+
+His second sheet (KORAJIN -- SNOW BIOME -- MYSTICAL FLORA). `flora(.., kind)` now picks from TWELVE by weight (`WFALL.flora.w`: 0-5 the
+alien sheet, 6-11 this one), still in the same draws:
+7 SNOW MAPLE (yukaemomi) -- a gnarled trunk, four branches of red leaf CLUMPS under snow and icicles, a SHIMENAWA rope sagging between two
+  branches with paper charms, two stone TORO lanterns lit warm.   8 SPIRIT BAMBOO (seiryodake) -- 4-6 culms whose internodes glow green
+  between dark node rings, leaf sprays with snow.   9 FROSTLIGHT MUSHROOM (hokotake) -- a big bent mushroom and two smaller ones, violet
+  caps over glowing teal gills, icicles, a ring of little ones.   10 SPIRIT BLOSSOM (reikabana) -- a twisted shrub, big glowing five-petal
+  flowers with gold hearts, red berry clusters, leaves.   11 WIND PLUME GRASS (kazenoho) -- a clump of red-brown blades, tall stalks with
+  pale feathered plumes all bent one way.   12 SNOW WISTERIA (yuki-fuji) -- a thick twisting trunk, a snowy crown, fourteen purple racemes
+  hanging (lit, fading to pale at the tips), a carved stone shrine box with a warm glyph.
+`?wfflora=1` shows all twelve in two rows in front of the pool. Rendered; the maple's single-blob pads became many small clumps, the
+blossom's flowers were enlarged. The plumes do not sway yet. Shipped unverified on the phone.
+
 ## m2075 -- the snow kit SILHOUETTE PASS 1: shapes, not surfaces
 
 His: *"Why are they squares? Why aren't they more hexagonal, why don't the edges of a box have ridges, why is one solid shape not cut into two or three --
