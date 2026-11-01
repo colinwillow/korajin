@@ -5,6 +5,25 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2017 -- THE ICE TEMPLE: the GREY BLOCKOUT (step 2 of 3), every beat, in the snow zone
+
+His answers (ICE_TEMPLE_BLUEPRINT.md): the valley north-east is fine, keep everything rearrangeable; enemies are markers, kind swappable; the temple
+is the enemy's stronghold, built INTACT (a `state` hook for what it becomes). Built in its own `ICE_TEMPLE:START/END` block, data in
+`SC_ICETEMPLE`, one hook line beside `templeTick` (`if (ICET.want && inForge() && SNOWZ.on) iceTick(dt);`):
+- ONE placement (`ICET.at` [80, 0, -300], `yaw` in quarter turns) and a pure builder `iceMake(T)` of the rows; every row is local (+z the front).
+- Grey floors/walls, ORANGE climb pieces, BLUE ice, RED gates, JADE hittables, coloured enemy MARKER posts (not spawned).
+- The valley (three 6 m terraces, each two 3 m lips + an east stair; the first run wall), the moat + floes + three braziers (one up a 4.6 m chimney)
+  -> the OUTER gate; the forecourt (plinths 1/2/4); the door: a 22 m chimney (left), step blocks + a HIGH BAR (right), two seals -> the EMBLEM
+  gate; the hall (chasm + a fin back up, a 5.5 m floor gap, a high bar to gallery 1, MONKEY BARS to gallery 2, a chimney to gallery 3); the ring
+  chamber (tiers, four pillars); three crystals by three routes (horn chimney, aqueduct with a 7 m SKILL gap, waterfall-cave ledge column) -> the
+  CROWN gate; the crown (62/64/66), horn perches, the chalice, the zip down onto tower R. Gates open when their whole group is broken.
+- The snowfield's distant peaks are ONE merged mesh (`forgePeaks`); the two cones standing in the valley/hall are collapsed at build time from
+  this block (their code untouched). The kit's 'block' material washed out to white in the snow light: solid role colours instead.
+- The monkey bars and the zip are drawn here (their systems only hold data). MBAR runs along world x, so a quarter-turned temple would need its
+  monkey bars turned too -- noted, not done.
+- The ICE TEMPLE key (top centre) warps VALLEY > MOAT > FORECOURT > HALL > RING > CROWN; `?ice=0` leaves it out.
+Booted headless in the snow zone and rendered (valley mouth, top, hall); every gap and lip is the blueprint's, none play-tested. Shipped unverified.
+
 ## m2015 -- THE ICE TEMPLE: the BLUEPRINT (step 1 of 3), no code
 
 His brief (relayed from the main session; `ICE_TEMPLE.md`): the Ice Temple at the head of a snow VALLEY, reached only after exploring; ONE movable

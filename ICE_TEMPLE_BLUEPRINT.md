@@ -108,7 +108,18 @@ Grey boxes only, at these numbers: the valley terraces, the moat + floes, the fo
 (`kitClimbAdd` never; chimneys, `HBAR`, `MBAR`, ropes, `ZIPS`, `smashAdd` for the braziers and seals). No enemies until the spaces play. **One
 placement row, a pure builder, its own `ICE_TEMPLE:START/END` block**; the snowfield's own code untouched (the valley joins it at the mouth).
 
-## Open questions for him
+## His answers (Nov 1)
+1. **The valley north-east: fine.** Build it so anything can be rearranged later -- every piece is a ROW in the temple's local frame (`ICET.parts`),
+   the whole temple one placement (`ICET.at` / `yaw`).
+2. **Enemies are not final.** Place them anywhere as MARKERS whose `kind` is one field to swap; the real temples get a strategised layout later.
+3. **Story:** the temples are the EVIL force's strongholds (it drained the good world into ruin), so the temple is built INTACT, not fallen. Keep a
+   state hook (`ICET.state`) for what it becomes after you beat it -- "transformed into a different zone", to be determined.
+
+## Built
+- (m2016) the GREY BLOCKOUT of every beat above, wired to the real systems (chimneys are plain faces, `HBAR`, `MBAR`, `ZIPS`, `smashAdd` for the
+  braziers, seals, crystals and chalice; the gates open when their group is broken). Enemy markers only. The ICE TEMPLE key (top centre in the snow
+  zone) warps VALLEY > MOAT > FORECOURT > HALL > RING > CROWN. `?ice=0` leaves it out. Unplayed.
+## (Asked, answered above)
 1. **The valley's direction**: north-east past the cliffs (this sheet) -- or does he want it off another side?
 2. **The boss**: the four-armed Guardian rising from the moat -- or the lair DRAGON (it is already in the region) coming down to the temple?
 3. **Fallen / restored** (his Nov 1 theme): should the Ice Temple start FALLEN (half-collapsed, the hall's chasm a ruin) and restore when the chalice
