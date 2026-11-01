@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- THE HORNED AQUEDUCT (his reference image): horns along the bridge, a chained halo, timber rails, plank deck
+## m2119 -- THE HORNED AQUEDUCT (his reference image): horns along the bridge, a chained halo, timber rails, plank deck
 
 His reference (`images/concepts/snow_village/ref_aqueduct_horned.webp`). Footprints, pier heights, deck height and every collider are unchanged
 (`aq_pier`, `aq_span`, `aq_deck`, `aq_section`, `aq_bridge`, `aq_ramp` keep their names, options and ports). `?hut=round` = m2096's.
