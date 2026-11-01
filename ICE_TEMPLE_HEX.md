@@ -11,7 +11,7 @@ Three sub-chambers (not six): each one technique's ladder, so each feels authore
 | A1 | 1 | traversal | ICE SLIDE -> introduce (a frozen chute: slide, jump the gap at its lip) | -20 | K5, A2 | (was GLIDE: the wing suit is LATE GAME, his Nov 1 call) | sketched |
 | A2 | 1 | traversal | ICE SLIDE -> develop (chutes + wall runs off the chute walls up to a high ledge) | -20 -> -8 | A1, A3 | | sketched |
 | A3 | 1 | reward | ICE SLIDE -> twist (slide under archer fire, ice bridges collapse behind you) | -8 | A2 | SHARD A | sketched |
-| B1 | 1 | puzzle | REFLECT -> introduce (raise the shield, bounce a beam into one target) | -20 | K7, B2 | BEAM TURRET + TARGET + MIRROR + GATE built as a white sandbox (m15RF, `?w=forge&zone=cell&cell=RF`) | sandbox |
+| B1 | 1 | puzzle | REFLECT -> introduce (raise the shield, bounce a beam into one target) | -20 | K7, B2 | BEAM TURRET + TARGET + MIRROR + GATE built as a white sandbox (m2051, `?w=forge&zone=cell&cell=RF`) | sandbox |
 | B2 | 1 | puzzle | REFLECT -> develop (two bounces, a crystal mirror) | -20 | B1, B3 | | sketched |
 | B3 | 1 | combat | REFLECT -> twist (a moving turret + guards) | -20 | B2 | SHARD B + "mirror guard" (a perfect parry reflects anything) | sketched |
 | C1 | 1 | traversal | WALL RUN UP -> introduce (a 2.6 m face) then develop (a 3.6 m face from a 16 m sprint lane) | -20 -> -14 | K8, C2 | inside a TUBE (curved walls); KORAJIN > Temple Cell C1 | BLOCKOUT (m2040) |
@@ -28,4 +28,4 @@ each in a white sandbox -> then C1 (it uses only existing pieces) as the first c
 
 ## His calls (Nov 1 2026)
 - **The wing suit is LATE GAME** -- having it early makes the platforming pointless. Hall A is an ice-slide hall now, not a glide hall. Updraft columns may be built but are low priority.
-- **The shield is likely needed before the DRAGON** (its ice beam), not guaranteed for this temple. The reflection hall (B) can teach it; the sandbox pieces exist (m15RF).
+- **The shield is likely needed before the DRAGON** (its ice beam), not guaranteed for this temple. The reflection hall (B) can teach it; the sandbox pieces exist (m2051).

@@ -19,7 +19,7 @@ own comment says the same of BGRID), and m2046's ladder/zip registration read th
 The node harness could not see it (it stubs KCLIMB as a plain const above the block): the landmine "a const read above its declaration" again,
 inside a try. Shipped; the renders follow in chat.
 
-## m15RF -- REFLECTION sandbox: beam turret, target, mirror, gate (Nov 1 2026)
+## m2051 -- REFLECTION sandbox: beam turret, target, mirror, gate (Nov 1 2026)
 His words: *"the beam direction shield... you might as well build those things... doesn't hurt to build it."* Also: the wing suit is LATE GAME, the shield is likely
 gained before the dragon (ICE_TEMPLE_HEX.md updated; Hall A is now an ice-slide hall).
 - KORAJIN menu > **Reflection (shield puzzle)** = `?w=forge&zone=cell&cell=RF`. `CELLS.RF` is a ROOM cell (`room:[34,22]`); `cellStage` hands it to `cellRoomStage`.

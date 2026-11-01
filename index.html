@@ -11858,7 +11858,7 @@ const CELLS = {
     zips: [{ A: [650, 7.4, 18.6], B: [216, 5.2, 1.8] }],     // from the top back down to the door
     arrows: [{ at: 'face', shelf: 's1', a: 262 }, { at: 'end', shelf: 's3' }, { at: 'lane', shelf: 'lane', a: 320 }, { at: 'lane', shelf: 'lane', a: 360 }, { at: 'lane', shelf: 's4', a: 470 }],
     spawn: { a: 216, r: 7, y: 0 } },
-  // m15RF: REFLECTION -- the beam turret, the target, the mirror and the gate, in a WHITE SANDBOX (LEVEL_METHOD: a new piece is proven alone first).
+  // m2051: REFLECTION -- the beam turret, the target, the mirror and the gate, in a WHITE SANDBOX (LEVEL_METHOD: a new piece is proven alone first).
   //   station 1 INTRODUCE: a turret pulses an ice beam across the room; raise the SHIELD in it, turn so the bounce hits the crystal TARGET -> GATE 1 opens
   //   station 2 DEVELOP:   the turret's beam misses the target -- bounce it off your shield into a crystal MIRROR, which sends it on into the target -> GATE 2
   RF: { title: 'Reflection -- shield the beam into the target (1), then via a mirror (2)', room: [34, 22], H: 8,
@@ -11895,7 +11895,7 @@ function blockStage(g) { scene.background = new THREE.Color(0xdfe3ea); if (scene
         g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...hi), new THREE.Vector3(...lo)]), new THREE.LineBasicMaterial({ color: 0x3a3a3a }))); }
       if (typeof boxGrid === 'function') boxGrid(); BLOCKIN.stat = st; tipShow('BLOCKOUT ' + BLOCKIN.file.split('/').pop() + ': ' + st.solid + ' solids, ' + st.bars + ' bars, ' + st.zips + ' zips, ' + st.marks + ' markers', 6);
     }, undefined, err => note('NO BLOCKOUT ' + BLOCKIN.file)), 0); }
-// m15RF: a ROOM cell (a white box of `room` [w, d] m) with the REFLECTION pieces. Turret: a crystal on a pedestal that pulses an ice beam along its yaw;
+// m2051: a ROOM cell (a white box of `room` [w, d] m) with the REFLECTION pieces. Turret: a crystal on a pedestal that pulses an ice beam along its yaw;
 // the beam is traced each frame -- it stops on the first SOLID, on the player (a hit, unless...) or on his raised SHIELD, which REFLECTS it about the
 // shield's facing (`shieldUp`, his heading); a crystal MIRROR reflects it again about its own normal; a TARGET crystal touched by any segment for
 // `TGT.hold` s lights and opens its GATE (a wall that sinks away). Up to `bounces` segments, each drawn as a thin glowing beam.
@@ -37654,7 +37654,7 @@ function stepPlayer(dt) {
   try { slamRingStep(dt); } catch (e) { for (const S of SLAMRINGS) { S.m.removeFromParent(); if (S.w) S.w.removeFromParent(); } SLAMRINGS = []; note('SLAMRING THREW ' + e.message); }     // m1969: every world, every frame (it lived in arenaStep: frozen rings everywhere else)
   if (HDROP.want && rig.actions && rig.actions[HDROP.land]) { HDROP.want = 0; heroDrop(player.pos.x, player.pos.y, player.pos.z, player.faceH); }     // m1953
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
-  if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (DRAGZ.on) dragStep(dt); }     // m15RF roomStep
+  if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (DRAGZ.on) dragStep(dt); }     // m2051 roomStep
   if (PLANT.list.length) plantStep(dt);     // m1424
   if (ROCK.loose.length || ROCK.broken.length) rockStep(dt);     // m1745
   if (RESTORE.list.length) restoreStep(dt);     // m1505     // m1105; m1119; m1120: each building's own life
