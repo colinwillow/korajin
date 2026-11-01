@@ -19,6 +19,8 @@ PROMPTS = {
   'timber': "Rough hewn timber beam surface: warm reddish-brown wood with strong vertical grain running top to bottom, a few knots, cracks along the grain, "
             "painterly highlights on the grain ridges, weathered. Rich warm brown palette.",
   'planks': "Old wooden door planks: vertical dark brown boards with deep grain, dark gaps between the planks, worn edges, a few iron nail heads, weathered. Dark warm brown palette.",
+  'band': "A carved stone FRIEZE band: a continuous Greek-key MEANDER pattern carved in relief into grey-violet stone, repeated in two neat rows across the "
+          "whole square, the raised key lines inlaid with worn gold, darker recessed grooves, thin gold-trimmed borders between the rows. Grey-lavender and gold palette.",
   'paving': "Top-down worn flagstone paving of a snowy village: irregular flat grey-violet stone slabs with dark joints, a little snow and frost packed in the joints, chipped edges.",
 }
 def gen(name):
@@ -31,7 +33,16 @@ def seamless(im, band=110):
   dy = np.minimum(np.arange(H), H - 1 - np.arange(H))[:, None]; dx = np.minimum(np.arange(W), W - 1 - np.arange(W))[None, :]
   m = 1 - np.clip(np.minimum(dx, dy) / band, 0, 1); m = (m * m * (3 - 2 * m))[..., None]
   return Image.fromarray((a * (1 - m) + b * m).clip(0, 255).astype(np.uint8))
+BANNER = ("Flat front orthographic view of a hanging village BANNER that fills the ENTIRE image edge to edge (no background, no pole, no rope): deep crimson-red "
+  "woven cloth with visible weave and slight wear, a gold embroidered border running round all four edges, and in the upper-middle a large cream-white emblem: a ring "
+  "with a dot in its centre and four long pointed diamond rays (up, down, left, right) like a compass star. Painterly stylised fantasy game art, even diffuse light, no folds, no text.")
+def banner():
+  req = urllib.request.Request('https://api.openai.com/v1/images/generations', data=json.dumps({"model": "gpt-image-2", "prompt": BANNER, "size": "1024x1536", "n": 1}).encode(), headers={"Content-Type": "application/json", "Authorization": "Bearer sk-dummy"})
+  d = json.load(urllib.request.urlopen(req, timeout=400))['data'][0]; Image.open(io.BytesIO(base64.b64decode(d['b64_json']))).convert('RGB').resize((512, 1024)).save('textures/svk_banner.webp', quality=86, method=6); return 'wrote textures/svk_banner.webp'
 def one(n):
+  if n == 'banner':
+    try: return banner()
+    except Exception as e: return 'FAILED banner: %s' % e
   try: seamless(gen(n)).save(f'textures/svk_{n}.webp', quality=86, method=6); return 'wrote textures/svk_%s.webp' % n
   except Exception as e: return 'FAILED %s: %s' % (n, e)
 with ThreadPoolExecutor(6) as ex:

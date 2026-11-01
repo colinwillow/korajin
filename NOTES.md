@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- the snow kit DETAIL PASS 4: painted banners and meander, paved walkways, LIGHT POOLS
+
+His: *"Go"* (the three offered: painted banners/band, paving, warm light on the snow).
+- `tools/snowvil_textures.py` grew `band` (a gold-inlaid Greek-key frieze in grey-violet stone, two rows) and `banner` (1024x1536 -> 512x1024, crimson
+  cloth, gold border, the cream compass-star emblem). The banner material (`ban`, still swaying) and the meander band use them; `?paint=0` keeps the
+  canvas ones. The showroom walkways are 2.4 m strips of the painted PAVING (`pave`).
+- LIGHT POOLS (`svkPools`): every piece can drop `P.pool(x, y, z, r, colour, strength)`; they follow svkEmit like smoke and become ONE additive mesh
+  (vertex colours, a radial canvas, polygon offset): hut windows and door lanterns, the window/door walls, lantern posts, jade lamps, the fire pit,
+  the forge, the market stall, the gate, the watchtower deck. Little in daylight on white snow; at night (`&time=night`) they pool on the snow.
+  (Tried on the bridge shrines and taken off: they sit on the rail line, so half the pool hung in the air past the deck edge as a jade streak.)
+- Rendered by day (hut) and night (rows, aqueduct) before pushing. 25 draws. Shipped unverified.
+
 ## m2060 -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
 
 - A `rope` material; ROPE LASHINGS where the hut's gable beams cross (two coils) and two coils under every fence post's top rail.

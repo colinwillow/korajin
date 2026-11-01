@@ -11067,15 +11067,15 @@ function vilTex(name) { const V = SNOWVIL, T = V.tex || (V.tex = {}); if (T[name
     return fin(0); }
   return null; }
 function vilMats() { const V = SNOWVIL; if (V.M) return V.M; const paint = SNOWZ.paint, std = (o) => new THREE.MeshStandardMaterial(o);
-  const ban = std({ map: vilTex('banner'), roughness: .85, side: THREE.DoubleSide }); V.U = { uT: { value: 0 } };
+  const ban = std({ map: paint ? (() => { const t = texGet('svk_banner'); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return t; })() : vilTex('banner'), roughness: .85, side: THREE.DoubleSide });     /* detail pass 4: the painted banner */ V.U = { uT: { value: 0 } };
   ban.customProgramCacheKey = () => 'vilban'; ban.onBeforeCompile = sh => { sh.uniforms.uT = V.U.uT; sh.vertexShader = 'uniform float uT;\n' + sh.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
     { vec4 wp = modelMatrix * vec4(position, 1.0); float k = 1.0 - uv.y; transformed += objectNormal * k * k * (.16 * sin(uT * 2.3 + wp.x * .7 + wp.z * .5 + uv.y * 4.0) + .06 * sin(uT * 5.1 + wp.x * 1.3)); }`); };
   const win = std({ map: vilTex('win'), emissiveMap: vilTex('win'), emissive: 0xffffff, emissiveIntensity: 1.35, roughness: .6 });
   // m2054 (his: "another detail pass -- make it way more interesting"): the PAINTED maps (tools/snowvil_textures.py, textures/svk_*.webp, seamless), each
   // its own scale over the metre uvs and its own luminance as a bump; `?paint=0` keeps the canvas look for an A/B
   const pm = (n, rep, o) => { const t = texGet('svk_' + n); t.repeat.set(rep, rep); return std(Object.assign({ map: t, bumpMap: t, bumpScale: 1.6 }, o)); };
-  const P0 = !paint ? null : { stone: pm('stone', .55, { roughness: .9 }), stoneD: pm('ashlar', .6, { color: 0xe4e0ec, roughness: .9 }), wood: pm('timber', .7, { roughness: .82 }), door: pm('planks', .8, { roughness: .85 }), thatch: pm('thatch', .75, { color: 0xf2e6d2, roughness: .95, bumpScale: 2.4 }) };
-  return (V.M = { stone: P0 ? P0.stone : std({ map: vilTex('stone'), color: 0xc9c4d4, roughness: .92 }), stoneD: P0 ? P0.stoneD : std({ map: vilTex('stone'), color: 0x9a94a8, roughness: .94 }), band: std({ map: vilTex('band'), roughness: .7, metalness: .1 }),
+  const P0 = !paint ? null : { stone: pm('stone', .55, { roughness: .9 }), stoneD: pm('ashlar', .6, { color: 0xe4e0ec, roughness: .9 }), wood: pm('timber', .7, { roughness: .82 }), door: pm('planks', .8, { roughness: .85 }), thatch: pm('thatch', .75, { color: 0xf2e6d2, roughness: .95, bumpScale: 2.4 }), band: (() => { const t = texGet('svk_band'); t.repeat.set(1, 2.1); return std({ map: t, bumpMap: t, bumpScale: 1.2, roughness: .6, metalness: .15 }); })(), pave: pm('paving', .45, { roughness: .9 }) };
+  return (V.M = { stone: P0 ? P0.stone : std({ map: vilTex('stone'), color: 0xc9c4d4, roughness: .92 }), stoneD: P0 ? P0.stoneD : std({ map: vilTex('stone'), color: 0x9a94a8, roughness: .94 }), band: P0 ? P0.band : std({ map: vilTex('band'), roughness: .7, metalness: .1 }), pave: P0 ? P0.pave : std({ map: vilTex('stone'), color: 0x9a94a8, roughness: .94 }),
     wood: P0 ? P0.wood : std({ map: vilTex('wood'), color: 0xd8b090, roughness: .85 }), door: P0 ? P0.door : std({ map: vilTex('wood'), color: 0x8a6048, roughness: .85 }), thatch: P0 ? P0.thatch : std({ map: vilTex('thatch'), roughness: .95 }),
     snow: paint ? snowTriMat('snow_snow', 2.5, 0xffffff, .85) : std({ color: 0xf6f9ff, roughness: .85 }), gold: std({ color: 0xd9a441, roughness: .38, metalness: .55, emissive: 0x3a2400, emissiveIntensity: .4 }),
     jade: new THREE.MeshBasicMaterial({ color: 0x6cffc8, toneMapped: false }), warm: new THREE.MeshBasicMaterial({ color: 0xffc46a, toneMapped: false }), win, ban, ice: snowKitIce(),
@@ -11107,7 +11107,7 @@ function vilRBox(w, h, d, tile = 1.5, r) { const m = Math.min(w, h, d); r = r !=
 // a pointed banner (the tip at the bottom middle), hanging from y 0 down; faces +Z
 function vilBanner(w, h, tip) { const g = new THREE.PlaneGeometry(w, h, 2, 6).translate(0, -h / 2, 0), P = g.attributes.position; for (let i = 0; i < P.count; i++) if (P.getY(i) < -h + .001 && Math.abs(P.getX(i)) < .001) P.setY(i, -h - tip); g.computeVertexNormals(); return g; }
 // THE HUT. o = SNOWVIL.hut overridden by a row's p. Local frame: plinth on y 0, the door facing +Z. Returns { L: {mat: [geo]}, cols: [{ pts, y0, y1 }], smoke: [[x,y,z]] }
-function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.seed | 0) * 97), L = {}, cols = [], smoke = [], B = o.base !== 0, RF = o.roof !== 0; let part = B; const add = (k, g) => { if (part) (L[k] || (L[k] = [])).push(g); return g; }, colA = (...c) => { if (part) cols.push(...c); };     /* m2033: base / roof flags -- the kit's hut_base and roof_round */
+function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.seed | 0) * 97), L = {}, cols = [], smoke = [], pools = [], B = o.base !== 0, RF = o.roof !== 0; let part = B; const add = (k, g) => { if (part) (L[k] || (L[k] = [])).push(g); return g; }, colA = (...c) => { if (part) cols.push(...c); };     /* m2033: base / roof flags -- the kit's hut_base and roof_round */
   const yb = .6, ye = yb + o.wallH, Re = R + o.eave, H = o.roofH, segs = sx > 1 ? 40 : 30;
   const at = (a, r) => [Math.sin(a) * r * sx, Math.cos(a) * r], yaw = a => Math.atan2(Math.sin(a) / sx, Math.cos(a));     // a point on the (elliptical) plan, and the outward facing there
   const ell = (r, n = 20) => { const p = []; for (let k = 0; k < n; k++) p.push(at(k / n * Math.PI * 2, r)); return p; };
@@ -11162,11 +11162,11 @@ function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.see
     if (o.lanterns) for (const s of [-1, 1]) { const x = s * 1.12, y = yb + 1.85, z = dz + .4; put('wood', vilBox(.42, .06, .06, 1), s * .92, y + .28, dz + .26); put('iron', vilBox(.03, .2, .03, 1), x, y + .16, z);
       put('warm', vilBox(.2, .3, .2, 1), x, y - .09, z); for (const [ex, ez] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) put('wood', vilBox(.04, .34, .04, 1), x + ex * .11, y - .09, z + ez * .11);
       put('wood', new THREE.ConeGeometry(.2, .16, 4).rotateY(Math.PI / 4), x, y + .14, z); put('wood', vilBox(.26, .05, .26, 1), x, y - .26, z); put('snow', vilPillow(.18, .05, .18), x, y + .2, z); }
-    if (o.banner) put('ban', vilBanner(.95, 1.25, .3), 0, yb + 2.25, dz + .34); }
+    if (o.banner) put('ban', vilBanner(.95, 1.25, .3), 0, yb + 2.25, dz + .34); if (o.lanterns) pools.push([0, .6, dz + 1.0, 2.2, 0xffc070, .45]); }
   // WINDOWS: glowing lattice, a timber frame, a sill with snow on it
   for (const a of o.win || []) { const [x, z] = at(a, R + .06), ry = yaw(a), y = yb + 1.3, W = .92, Hh = .82, f = (g, lx, ly, lz) => { g.translate(lx, ly, lz).rotateY(ry).translate(x, y, z); return g; };
     add('win', f(new THREE.PlaneGeometry(W, Hh), 0, 0, .03)); add('wood', f(vilBox(W + .24, .12, .16, 1), 0, Hh / 2 + .06, .05)); add('wood', f(vilBox(.12, Hh, .16, 1), -W / 2 - .06, 0, .05)); add('wood', f(vilBox(.12, Hh, .16, 1), W / 2 + .06, 0, .05));
-    add('wood', f(vilBox(W + .34, .1, .3, 1), 0, -Hh / 2 - .05, .1)); add('snow', f(vilPillow(W + .2, .09, .24), 0, -Hh / 2, .12)); add('snow', f(vilPillow(W + .1, .07, .14), 0, Hh / 2 + .12, .06));
+    add('wood', f(vilBox(W + .34, .1, .3, 1), 0, -Hh / 2 - .05, .1)); add('snow', f(vilPillow(W + .2, .09, .24), 0, -Hh / 2, .12)); add('snow', f(vilPillow(W + .1, .07, .14), 0, Hh / 2 + .12, .06)); if (part) { const [px, pz] = at(a, R + 1.2); pools.push([px, .3, pz, 1.5, 0xffb060, .38]); }
     if (o.awning !== 0 && a === o.win[0]) { const aw = vilBox(W + .5, .05, .8, 1); aw.rotateX(.42); add('cloth', f(aw, 0, Hh / 2 + .42, .4)); add('snow', f(vilBox(W + .3, .06, .62, 2).rotateX(.42), 0, Hh / 2 + .48, .38));     // detail pass 3: the concept's red side awning
       for (let k = 0; k < 5; k++) add('cloth', f(new THREE.CircleGeometry(.13, 6, Math.PI, Math.PI), -W / 2 - .15 + (k + .5) / 5 * (W + .3), Hh / 2 + .2, .78)); for (const sx of [-1, 1]) add('wood', f(vilBox(.05, .05, .75, 1).rotateX(-.6), sx * (W / 2 + .15), Hh / 2 + .15, .36)); } }
   part = RF;
@@ -11181,7 +11181,7 @@ function vilHut(o) { const R = o.R, sx = o.sx || 1, rnd = plantRnd(1000 + (o.see
   // BARRELS and POTS round the plinth
   for (let k = 0; k < (o.barrels | 0); k++) { const a = (k % 2 ? 1 : -1) * (.9 + rnd() * 1.6), [x, z] = at(a, R + .45 + rnd() * .2); vilBarrel(add, x, .3, z, rnd); }
   for (let k = 0; k < (o.pots | 0); k++) { const a = (k % 2 ? -1 : 1) * (.75 + rnd() * 1.9), [x, z] = at(a, R + .5 + rnd() * .2), s = .7 + rnd() * .5; const g = vilLathe([[0, 0], [.18 * s, 0], [.27 * s, .2 * s], [.22 * s, .42 * s], [.13 * s, .5 * s], [.16 * s, .56 * s], [.12 * s, .56 * s], [0, .52 * s]], 10, null, .5); add('clay', g.translate(x, .3, z)); add('snow', vilPillow(.24 * s, .04, .24 * s).translate(x, .3 + .55 * s, z)); }
-  return { L, cols, smoke }; }
+  return { L, cols, smoke, pools }; }
 function vilBarrel(add, x, y, z, rnd) { const s = .85 + rnd() * .3; add('wood', vilLathe([[0, 0], [.26 * s, 0], [.31 * s, .36 * s], [.26 * s, .72 * s], [0, .72 * s]], 12, null, .5).translate(x, y, z));
   for (const b of [.12, .6]) add('iron', vilLathe([[.285 * s, b * s], [.3 * s, (b + .06) * s]], 12, null, .5).translate(x, y, z)); add('snow', vilPillow(.5 * s, .1, .5 * s).translate(x, y + .72 * s, z)); }
 // a jade crystal lamp: a gold cup, a tall jade crystal glowing in it
@@ -11196,14 +11196,14 @@ const VILKIND = {
   banner: (o, add, cols) => { const h = 4.2; add('wood', vilBox(.3, h, .3, 1).translate(0, h / 2, 0)); add('stoneD', vilBox(.62, .45, .62, .7).translate(0, .22, 0)); add('wood', vilBox(1.6, .18, .2, 1).translate(.6, h - .4, 0));
     add('wood', vilBox(.12, .7, .12, 1).rotateZ(.8).translate(.28, h - .75, 0)); add('gold', vilBox(.36, .12, .36, 1).translate(0, h - .1, 0)); add('snow', vilPillow(.36, .1, .36).translate(0, h, 0)); add('snow', vilBox(1.5, .07, .18, 2).translate(.62, h - .27, 0));
     add('ban', vilBanner(.95, 1.7, .28).translate(.75, h - .5, .12)); add('ban', vilBanner(.95, 1.7, .28).rotateY(Math.PI).translate(.75, h - .5, -.12)); cols.push({ pts: [[-.3, -.3], [.3, -.3], [.3, .3], [-.3, .3]], y0: 0, y1: h }); },
-  lamp: (o, add, cols) => { add('stoneD', vilBox(.6, .5, .6, .6).translate(0, .25, 0)); add('band', vilBox(.62, .12, .62, .6).translate(0, .46, 0)); add('wood', vilBox(.2, 1.7, .2, 1).translate(0, 1.35, 0)); add('wood', vilBox(.5, .1, .5, 1).translate(0, 2.2, 0));
+  lamp: (o, add, cols, X) => { if (X && X.pools) X.pools.push([0, 0, 0, 2.2, 0x60ffc0, .4]); add('stoneD', vilBox(.6, .5, .6, .6).translate(0, .25, 0)); add('band', vilBox(.62, .12, .62, .6).translate(0, .46, 0)); add('wood', vilBox(.2, 1.7, .2, 1).translate(0, 1.35, 0)); add('wood', vilBox(.5, .1, .5, 1).translate(0, 2.2, 0));
     vilJade(add, 0, 2.25, 0, .85); add('snow', vilPillow(.3, .05, .3).translate(0, 2.25, 0)); add('snow', vilPillow(.5, .08, .5).translate(0, .52, 0)); cols.push({ pts: [[-.3, -.3], [.3, -.3], [.3, .3], [-.3, .3]], y0: 0, y1: 2.3 }); },
   barrels: (o, add, cols) => { const rnd = plantRnd(300 + (o.seed | 0) * 13), n = o.n || 3; for (let k = 0; k < n; k++) { const a = k / n * 6.28 + rnd(), d = k ? .55 + rnd() * .3 : 0; vilBarrel(add, Math.cos(a) * d, 0, Math.sin(a) * d, rnd); }
     if (n > 2) vilBarrel(add, .2, .78, .1, rnd); cols.push({ pts: [[-.8, -.8], [.8, -.8], [.8, .8], [-.8, .8]], y0: 0, y1: .7 }); },
   firepit: (o, add, cols, X) => { const rnd = plantRnd(77); for (let k = 0; k < 11; k++) { const a = k / 11 * 6.28, s = .32 + rnd() * .12; add('stoneD', new THREE.DodecahedronGeometry(s, 0).scale(1, .7, 1).translate(Math.cos(a) * 1.15, s * .45, Math.sin(a) * 1.15)); add('snow', vilPillow(s * 1.3, .07, s * 1.3).translate(Math.cos(a) * 1.15, s * .8, Math.sin(a) * 1.15)); }
     add('dark', new THREE.CircleGeometry(1.0, 16).rotateX(-Math.PI / 2).translate(0, .06, 0)); for (let k = 0; k < 5; k++) add('wood', new THREE.CylinderGeometry(.08, .1, 1.3, 6).rotateZ(1.1).rotateY(k / 5 * 6.28).translate(0, .32, 0));
     for (let k = 0; k < 4; k++) { const a = k / 4 * 6.28 + .4; add('wood', vilBox(1.6, .3, .4, 1).rotateY(a).translate(Math.cos(a) * 2.9, .15, Math.sin(a) * 2.9)); add('snow', vilBox(1.5, .06, .36, 2).rotateY(a).translate(Math.cos(a) * 2.9, .32, Math.sin(a) * 2.9)); }     // log benches round it
-    X.fire.push([0, .2, 0]); },
+    X.fire.push([0, .2, 0]); if (X.pools) X.pools.push([0, 0, 0, 5, 0xff9a40, .6]); },
   well: (o, add, cols) => { add('stone', vilLathe([[1.05, -.2], [1.05, .85], [.78, .85], [.78, .1]], 18, null, 1)); add('band', vilLathe([[1.07, .62], [1.07, .82]], 18, null, .5)); add('snow', vilLathe([[1.1, .84], [.92, .93], [.75, .84]], 18, (a, t, k) => [0, k === 1 ? .04 * Math.sin(a * 4) : 0]));
     add('dark', new THREE.CircleGeometry(.8, 16).rotateX(-Math.PI / 2).translate(0, .3, 0)); for (const s of [-1, 1]) add('wood', vilBox(.18, 2.3, .18, 1).translate(s * .92, 1.15, 0));
     add('wood', new THREE.CylinderGeometry(.09, .09, 2.0, 8).rotateZ(Math.PI / 2).translate(0, 1.75, 0)); add('iron', vilBox(.02, .7, .02, 1).translate(.2, 1.35, 0)); vilBarrel(add, .2, .78, 0, () => .1);
@@ -11592,7 +11592,7 @@ const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 230], cell: 7.5, perRow: 9
     { title: 'OUTPOST', cell: 30, per: 1, gap: 18, items: [['outpost']] } ] };
 // SC_SVK:END
 try { if (/[?&]zone=snowkit\b/.test(location.search)) { SNOWZ.want = 1; SVK.show = 1; SNOWVIL.want = 0; } } catch (e) {}
-function svkNew() { const P = { L: {}, cols: [], patches: [], ports: [], smoke: [], fire: [] }; P.add = (k, g) => { (P.L[k] || (P.L[k] = [])).push(g); return g; };
+function svkNew() { const P = { L: {}, cols: [], patches: [], ports: [], smoke: [], fire: [], pools: [] }; P.pool = (x, y, z, r, col, k) => P.pools.push([x, y, z, r, col, k]); P.add = (k, g) => { (P.L[k] || (P.L[k] = [])).push(g); return g; };
   P.box = (k, w, h, d, x, y, z, tile = 1.5, ry = 0) => { const g = (k === 'stone' || k === 'stoneD') ? vilRBox(w, h, d, tile) : vilBox(w, h, d, tile);     /* detail pass 2: stone is chamfered and chipped */ if (ry) g.rotateY(ry); return P.add(k, g.translate(x, y, z)); };
   P.col = (x0, x1, y0, y1, z0, z1) => P.cols.push({ pts: [[x0, z0], [x1, z0], [x1, z1], [x0, z1]], y0, y1 });
   P.port = (id, x, y, z, dx = 0, dy = 0, dz = 0) => P.ports.push({ id, at: [x, y, z], dir: [dx, dy, dz] });
@@ -11609,18 +11609,19 @@ function svkEmit(D, S, at, yaw = 0) { const c = Math.cos(yaw), s = Math.sin(yaw)
   for (const C of S.cols) D.cols.push({ pts: C.pts.map(q => w(q[0], q[1])), y0: C.y0 + py, y1: C.y1 + py });
   const q4 = Math.round(yaw / (Math.PI / 2)), quarter = Math.abs(yaw - q4 * Math.PI / 2) < 1e-3; if (quarter) for (const T of S.patches) { const [x, z] = w(T.x, T.z), sw = q4 % 2 !== 0; D.patches.push({ x, z, w: sw ? T.d : T.w, d: sw ? T.w : T.d, top: T.top + py, round: T.round }); }
   for (const p of S.ports) { const [x, z] = w(p.at[0], p.at[2]); D.ports.push({ id: p.id, at: [x, p.at[1] + py, z], dir: [p.dir[0] * c + p.dir[2] * s, p.dir[1], -p.dir[0] * s + p.dir[2] * c] }); }
-  for (const key of ['smoke', 'fire']) for (const q of S[key]) { const [x, z] = w(q[0], q[2]); D[key].push([x, q[1] + py, z]); } return D; }
+  for (const key of ['smoke', 'fire']) for (const q of S[key]) { const [x, z] = w(q[0], q[2]); D[key].push([x, q[1] + py, z]); }
+  for (const q of S.pools || []) { const [x, z] = w(q[0], q[2]); D.pools.push([x, q[1] + py, z, q[3], q[4], q[5]]); } return D; }
 // the VILKIND accessories (m2032) as kit pieces
-function svkFromVil(kind, o) { const P = svkNew(), X = { fire: [] }; VILKIND[kind](o || {}, P.add, P.cols, X); for (const q of X.fire) P.fire.push(q); return P; }
+function svkFromVil(kind, o) { const P = svkNew(), X = { fire: [], pools: P.pools }; VILKIND[kind](o || {}, P.add, P.cols, X); for (const q of X.fire) P.fire.push(q); return P; }
 // a stone wall run along X (len, h, t), an optional opening { w, y0, y1, kind: 'window' | 'door' } in its middle
 function svkWall(o) { const P = svkNew(), len = o.len || 4, h = o.h || 3, t = o.t || .5, rnd = plantRnd(40 + (o.seed | 0)), O = o.open, top = h - .25;
   P.box('stoneD', len, .4, t + .2, 0, .2, 0, 1.2); P.box('band', len + .02, .14, t + .22, 0, .33, 0, .6);
   if (!O) P.box('stone', len, top - .4, t, 0, (top + .4) / 2, 0, 1.6);
   else { const sw = (len - O.w) / 2; for (const sx of [-1, 1]) P.box('stone', sw, top - .4, t, sx * (len - sw) / 2, (top + .4) / 2, 0, 1.6); if (O.y0 > .4) P.box('stone', O.w, O.y0 - .4, t, 0, (O.y0 + .4) / 2, 0, 1.6); P.box('stone', O.w, top - O.y1, t, 0, (top + O.y1) / 2, 0, 1.6);
     const ow = O.w, oh = O.y1 - O.y0, oy = (O.y0 + O.y1) / 2; for (const sx of [-1, 1]) P.box('wood', .16, oh + .2, t + .12, sx * (ow / 2 + .02), oy, 0, 1); P.box('wood', ow + .5, .2, t + .16, 0, O.y1 + .08, 0, 1);
-    if (O.kind === 'window') { for (const sz of [-1, 1]) P.add('win', new THREE.PlaneGeometry(ow, oh).rotateY(sz < 0 ? Math.PI : 0).translate(0, oy, sz * t * .1)); P.box('wood', ow + .4, .1, t + .36, 0, O.y0 - .05, 0, 1); for (const sz of [-1, 1]) P.add('snow', vilPillow(ow + .2, .08, .16).translate(0, O.y0, sz * (t / 2 + .1))); }
+    if (O.kind === 'window') { for (const sz of [-1, 1]) P.pool(0, 0, sz * (t / 2 + 1.0), 1.5, 0xffb060, .38); for (const sz of [-1, 1]) P.add('win', new THREE.PlaneGeometry(ow, oh).rotateY(sz < 0 ? Math.PI : 0).translate(0, oy, sz * t * .1)); P.box('wood', ow + .4, .1, t + .36, 0, O.y0 - .05, 0, 1); for (const sz of [-1, 1]) P.add('snow', vilPillow(ow + .2, .08, .16).translate(0, O.y0, sz * (t / 2 + .1))); }
     else { P.box('door', ow - .06, oh, .2, 0, oy, 0, 1); for (let k = -2; k <= 2; k++) P.box('iron', .03, oh - .1, .03, k * ow / 5.5, oy, .12, 1); P.box('iron', ow - .1, .07, .04, 0, O.y0 + .5, .13, 1); P.box('iron', ow - .1, .07, .04, 0, O.y1 - .5, .13, 1);
-      for (const sx of [-1, 1]) { const x = sx * (ow / 2 + .45), y = O.y1 - .3, z = t / 2 + .25; P.box('wood', .06, .06, .3, x, y + .3, t / 2 + .12, 1); P.box('warm', .18, .26, .18, x, y, z, 1); P.add('wood', new THREE.ConeGeometry(.17, .14, 4).rotateY(Math.PI / 4).translate(x, y + .2, z)); P.add('snow', vilPillow(.14, .04, .14).translate(x, y + .27, z)); } } }
+      for (const sx of [-1, 1]) { const x = sx * (ow / 2 + .45), y = O.y1 - .3, z = t / 2 + .25; P.pool(x, 0, t / 2 + 1.0, 1.6, 0xffc070, .42); P.box('wood', .06, .06, .3, x, y + .3, t / 2 + .12, 1); P.box('warm', .18, .26, .18, x, y, z, 1); P.add('wood', new THREE.ConeGeometry(.17, .14, 4).rotateY(Math.PI / 4).translate(x, y + .2, z)); P.add('snow', vilPillow(.14, .04, .14).translate(x, y + .27, z)); } } }
   for (const sx of [-1, 1]) P.box('wood', .3, h - .05, t + .14, sx * (len / 2 - .15), (h - .05) / 2, 0, 1);
   P.box('wood', len + .1, .25, t + .12, 0, h - .125, 0, 1); P.add('snow', vilBox(len, .1, t + .1, 2).translate(0, h + .05, 0)); P.add('snow', vilPillow(len * .95, .1, t + .12).translate(0, h + .08, 0));
   for (const sz of [-1, 1]) P.ice(-len / 2 + .2, len / 2 - .2, h - .25, sz * (t / 2 + .07), Math.round(len * 2.2), rnd);
@@ -11679,7 +11680,7 @@ const SVKP = {
   banner_post: o => svkFromVil('banner', o), jade_lamp: o => svkFromVil('lamp', o), fire_pit: o => svkFromVil('firepit', o), well: o => svkFromVil('well', o), barrels: o => svkFromVil('barrels', Object.assign({ n: 4, seed: 2 }, o)),
   flag_pole: o => { const P = svkNew(), h = o.h || 6.5; P.box('stoneD', .8, .45, .8, 0, .22, 0, .7); P.box('band', .82, .14, .82, 0, .4, 0, .6); P.add('wood', new THREE.CylinderGeometry(.07, .11, h, 8).translate(0, h / 2 + .4, 0)); P.add('gold', new THREE.SphereGeometry(.14, 10, 6).translate(0, h + .48, 0));
     P.add('gold', new THREE.ConeGeometry(.08, .3, 6).translate(0, h + .7, 0)); P.add('ban', vilBanner(.9, 2.2, .45).rotateZ(Math.PI / 2).translate(.06, h + .2, 0)); P.add('snow', vilPillow(.7, .1, .7).translate(0, .47, 0)); P.col(-.4, .4, 0, h, -.4, .4); return P; },
-  lantern_post: o => { const P = svkNew(), h = 2.8; P.box('stoneD', .55, .4, .55, 0, .2, 0, .6); P.box('wood', .2, h, .2, 0, h / 2 + .3, 0, 1); P.box('wood', .9, .12, .12, .4, h + .1, 0, 1); P.add('wood', vilBox(.08, .7, .08, 1).rotateZ(.8).translate(.2, h - .2, 0));
+  lantern_post: o => { const P = svkNew(), h = 2.8; P.pool(.75, 0, 0, 2.4, 0xffc070, .5); P.box('stoneD', .55, .4, .55, 0, .2, 0, .6); P.box('wood', .2, h, .2, 0, h / 2 + .3, 0, 1); P.box('wood', .9, .12, .12, .4, h + .1, 0, 1); P.add('wood', vilBox(.08, .7, .08, 1).rotateZ(.8).translate(.2, h - .2, 0));
     const x = .75, y = h - .35; P.box('iron', .02, .3, .02, x, y + .3, 0, 1); P.box('warm', .24, .34, .24, x, y, 0, 1); for (const [ex, ez] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) P.box('wood', .045, .38, .045, x + ex * .13, y, ez * .13, 1); P.add('wood', new THREE.ConeGeometry(.24, .18, 4).rotateY(Math.PI / 4).translate(x, y + .26, 0));
     P.box('wood', .3, .05, .3, x, y - .2, 0, 1); P.add('snow', vilPillow(.2, .06, .2).translate(x, y + .34, 0)); P.add('snow', vilBox(.8, .05, .12, 2).translate(.4, h + .18, 0)); P.add('snow', vilPillow(.24, .08, .24).translate(0, h + .3, 0)); P.col(-.28, .28, 0, h + .3, -.28, .28); return P; },
   crates: o => { const P = svkNew(), rnd = plantRnd(21 + (o.seed | 0)), C = [[0, 0, 0, .8], [.85, 0, .1, .7], [.4, .8, .05, .65], [-.1, 0, .85, .6]];
@@ -11688,12 +11689,12 @@ const SVKP = {
     P.col(-.45, 1.25, 0, .8, -.45, 1.2); return P; },
   pots: o => { const P = svkNew(), rnd = plantRnd(31 + (o.seed | 0)); for (let k = 0; k < 5; k++) { const a = k * 1.3, d = k ? .45 + rnd() * .3 : 0, x = Math.cos(a) * d, z = Math.sin(a) * d, s = .7 + rnd() * .7;
       P.add('clay', vilLathe([[0, 0], [.18 * s, 0], [.27 * s, .2 * s], [.22 * s, .42 * s], [.13 * s, .5 * s], [.16 * s, .56 * s], [.12 * s, .56 * s], [0, .52 * s]], 10, null, .5).translate(x, 0, z)); P.add('gold', vilLathe([[.265 * s, .18 * s], [.262 * s, .24 * s]], 10, null, .5).translate(x, 0, z)); P.add('snow', vilPillow(.24 * s, .04, .24 * s).translate(x, .55 * s, z)); } return P; },
-  market_stall: o => { const P = svkNew(), w = 3, d = 1.8; for (const [x, z] of [[-w / 2, -d / 2], [w / 2, -d / 2], [-w / 2, d / 2], [w / 2, d / 2]]) { const h = z < 0 ? 2.7 : 2.3; P.box('wood', .16, h, .16, x, h / 2, z, 1); }
+  market_stall: o => { const P = svkNew(), w = 3, d = 1.8; P.pool(w / 2 - .2, 0, d / 2 + .5, 1.8, 0xffc070, .4); P.pool(.8, .96, d / 2 - .3, .6, 0x60ffc0, .3); for (const [x, z] of [[-w / 2, -d / 2], [w / 2, -d / 2], [-w / 2, d / 2], [w / 2, d / 2]]) { const h = z < 0 ? 2.7 : 2.3; P.box('wood', .16, h, .16, x, h / 2, z, 1); }
     P.box('wood', w, .9, .6, 0, .45, d / 2 - .3, 1); P.box('door', w + .1, .08, .7, 0, .92, d / 2 - .3, 1); P.box('wood', w, .08, d, 0, .2, 0, 1);
     { const ang = Math.atan2(.45, d + .4), g = vilBox(w + .5, .08, Math.hypot(d + .4, .45), 1); g.rotateX(ang).translate(0, 2.55, 0); P.add('cloth', g); const sn = vilBox(w + .3, .08, d + .2, 2); sn.rotateX(ang).translate(0, 2.63, 0); P.add('snow', sn); for (let k = 0; k < 7; k++) P.add('cloth', new THREE.CircleGeometry(.22, 8, Math.PI, Math.PI).translate(-w / 2 - .25 + (k + .5) / 7 * (w + .5), 2.35, d / 2 + .21)); P.ice(-w / 2, w / 2, 2.32, d / 2 + .25, 8, plantRnd(4)); }
     for (let k = 0; k < 3; k++) P.add('clay', vilLathe([[0, 0], [.14, 0], [.2, .15], [.12, .32], [.14, .36], [0, .36]], 8, null, .5).translate(-1 + k * .5, .96, d / 2 - .3)); P.add('jade', new THREE.OctahedronGeometry(.12, 0).scale(1, 2, 1).translate(.8, 1.16, d / 2 - .3)); P.add('gold', vilBox(.3, .08, .3, 1).translate(.8, .99, d / 2 - .3));
     P.add('warm', vilBox(.16, .24, .16, 1).translate(w / 2 - .2, 2.0, d / 2 + .05)); P.col(-w / 2, w / 2, 0, .95, d / 2 - .6, d / 2); P.port('front', 0, 0, d / 2 + .6, 0, 0, 1); return P; },
-  forge_station: o => { const P = svkNew(); P.box('stoneD', 1.8, .9, 1.3, -.6, .45, -.3, 1); P.box('band', 1.82, .14, 1.32, -.6, .82, -.3, .6); P.add('fire', vilBox(1.2, .06, .8, 1).translate(-.6, .92, -.3)); P.add('warm', vilBox(1.0, .04, .6, 1).translate(-.6, .91, -.3));
+  forge_station: o => { const P = svkNew(); P.pool(-.6, 0, .9, 2.8, 0xff7a30, .55); P.box('stoneD', 1.8, .9, 1.3, -.6, .45, -.3, 1); P.box('band', 1.82, .14, 1.32, -.6, .82, -.3, .6); P.add('fire', vilBox(1.2, .06, .8, 1).translate(-.6, .92, -.3)); P.add('warm', vilBox(1.0, .04, .6, 1).translate(-.6, .91, -.3));
     P.box('stone', 1.6, .9, 1.1, -.6, 2.2, -.45, 1); P.add('stone', new THREE.CylinderGeometry(.32, .9, .8, 4, 1).rotateY(Math.PI / 4).scale(1.2, 1, .9).translate(-.6, 1.4, -.4)); P.box('stone', .6, 1.4, .6, -.6, 3.3, -.45, 1); P.add('snow', vilPillow(.7, .12, .7).translate(-.6, 4.0, -.45)); P.smoke.push([-.6, 4.2, -.45]);
     P.add('wood', new THREE.CylinderGeometry(.32, .36, .55, 10).translate(1.0, .27, .3)); P.box('iron', .7, .26, .3, 1.0, .68, .3, 1); P.box('iron', .3, .2, .22, 1.0, .5, .3, 1); P.add('iron', new THREE.ConeGeometry(.12, .4, 6).rotateZ(Math.PI / 2).translate(1.53, .72, .3)); P.add('snow', vilPillow(.6, .06, .26).translate(1.0, .81, .3));
     P.box('wood', .1, 1.4, .1, 1.7, .7, -.6, 1); P.box('wood', 1.0, .1, .1, 1.3, 1.35, -.6, 1); for (let k = 0; k < 3; k++) P.box('iron', .04, .6, .04, 1.0 + k * .25, 1.0, -.55, 1); vilBarrel(P.add, -1.9, 0, .5, plantRnd(3));
@@ -11705,7 +11706,7 @@ const SVKP = {
   snowman: o => { const P = svkNew(); for (const [r, y] of [[.55, .45], [.4, 1.2], [.28, 1.72]]) P.add('snow', new THREE.SphereGeometry(r, 14, 10).translate(0, y, 0)); for (const s of [-1, 1]) { P.add('iron', new THREE.SphereGeometry(.035, 6, 4).translate(s * .1, 1.8, .25)); P.add('wood', new THREE.CylinderGeometry(.025, .03, .9, 5).rotateZ(s * 1.1).translate(s * .65, 1.38, 0)); }
     for (const y of [1.05, 1.25, 1.45]) P.add('iron', new THREE.SphereGeometry(.04, 6, 4).translate(0, y, .38 - Math.abs(y - 1.25) * .2)); P.add('clay', new THREE.ConeGeometry(.045, .3, 6).rotateX(Math.PI / 2).translate(0, 1.72, .4)); P.add('cloth', new THREE.TorusGeometry(.28, .07, 6, 14).rotateX(Math.PI / 2).translate(0, 1.5, 0));
     P.add('cloth', vilBox(.14, .45, .06, 1).translate(.16, 1.3, .3)); P.add('iron', new THREE.CylinderGeometry(.2, .2, .28, 10).translate(0, 2.06, 0)); P.add('iron', new THREE.CylinderGeometry(.3, .3, .03, 12).translate(0, 1.93, 0)); P.col(-.5, .5, 0, 1.9, -.5, .5); return P; },
-  hut: o => { const H = vilHut(Object.assign({}, SNOWVIL.hut, o)), P = Object.assign(svkNew(), { L: H.L, cols: H.cols, smoke: H.smoke }); P.port('door', 0, 0, (o.R || SNOWVIL.hut.R) + 1.6, 0, 0, 1); return P; },
+  hut: o => { const H = vilHut(Object.assign({}, SNOWVIL.hut, o)), P = Object.assign(svkNew(), { L: H.L, cols: H.cols, smoke: H.smoke, pools: H.pools }); P.port('door', 0, 0, (o.R || SNOWVIL.hut.R) + 1.6, 0, 0, 1); return P; },
   longhouse: o => SVKP.hut(Object.assign({ R: 3, sx: 1.6, roofH: 3.2, wallH: 2.5, seed: 16, chimA: -1.6, win: [.75, -.75, 1.6, -1.6, 2.5, -2.5], barrels: 4 }, o)) };
 // m2039: THE BRIDGE / AQUEDUCT (aqueduct_sheet.webp). Runs along X; piers 8 m apart (`SVKAQ.bay`), heights in .3 m steps; the deck sits ON the pier
 // tops. Pier (top port), span (the arch between two pier centres, ports a/b at the pier tops), deck + balustrade (walkway, a pushable snow patch,
@@ -11781,7 +11782,7 @@ Object.assign(SVKP, {
     P.port('deck', 0, h, 0, 0, 1, 0); P.port('entry', -w / 2 - .15, h, -d / 2 + .6, -1, 0, 0); return P; },
   // THE WATCHTOWER: a stone footing, a braced timber deck at 4.5 m reached by a timber stair up its west side, a gable roof on four posts, a lookout
   // brazier (jade), lanterns and a banner -- assembled by snapping the stair's head onto the deck's entry port
-  watchtower: o => { const P = svkNew(), h = o.h || 4.5, w = 4.4; const dk = svkSnap(P, svkPiece('deck_posts', { h, w, d: w, open: 'w' }), 'foot', [0, 0, 0]); const en = portOf(dk, 'entry');
+  watchtower: o => { const P = svkNew(), h = o.h || 4.5, w = 4.4; P.pool(.8, h, .8, 1.7, 0x60ffc0, .35); P.pool(0, h, w / 2 - .4, 2.2, 0xffc070, .35); P.pool(0, 0, w / 2 + 1.2, 2.4, 0xffc070, .25); const dk = svkSnap(P, svkPiece('deck_posts', { h, w, d: w, open: 'w' }), 'foot', [0, 0, 0]); const en = portOf(dk, 'entry');
     const n = Math.round(h / .3), LW = 1.5, lx = en[0] - LW / 2, lz0 = -w / 2 - .15, lz1 = lz0 + LW, hz = lz1;     /* m2053 (his: "a staircase to nowhere -- there is a little square platform at the top, a right angle, and a break in the tower's railing"): */
     // THE LANDING: a square at deck height off the deck's west edge, beside the gap in the deck's rail; the stair arrives at its south edge, he
     // steps onto it and turns RIGHT (east) onto the deck. Railed on its two outer sides, open to the stair (south) and to the deck (east).
@@ -11800,7 +11801,7 @@ Object.assign(SVKP, {
     P.add('ban', vilBanner(1.0, 2.2, .35).translate(0, h - .45, w / 2 + .32)); P.port('foot', 0, 0, 0, 0, -1, 0); P.port('stair', en[0] - .75, 0, hz + n * .5 + .3, 0, 0, 1); return P; },
   // THE GATE: two stone pillars, a timber lintel under a little gable roof, the jade plaque, two banners, lanterns, the doors swung open; stone wall
   // wings snapped onto the pillars (ports a/b at the wings' far ends)
-  gate: o => { const P = svkNew(), w = o.w || 4.4, ph = 5.1, wings = o.wings == null ? 1 : o.wings;
+  gate: o => { const P = svkNew(), w = o.w || 4.4, ph = 5.1, wings = o.wings == null ? 1 : o.wings; for (const s of [-1, 1]) P.pool(s * (w / 2 - .27), 0, 1.5, 2.2, 0xffc070, .45);
     for (const s of [-1, 1]) { svkSnap(P, svkPiece('pillar', { h: ph }), 'top', [s * (w / 2 + .55), ph, 0]); const x = s * (w / 2 + .55), y = 3.3; P.box('wood', .5, .08, .08, x - s * .6, y + .4, .75, 1); P.box('warm', .22, .3, .22, x - s * .82, y, .75, 1); P.add('wood', new THREE.ConeGeometry(.2, .16, 4).rotateY(Math.PI / 4).translate(x - s * .82, y + .22, .75));
       const leaf = vilBox(w / 2 - .1, 3.4, .16, 1); leaf.translate(-s * (w / 4 - .05), 1.7, 0).rotateY(s * 1.25).translate(s * (w / 2 - .05), 0, -.1); P.add('door', leaf); const band = vilBox(w / 2 - .15, .1, .2, 1); for (const by of [.8, 2.6]) P.add('iron', band.clone().translate(-s * (w / 4 - .05), by, 0).rotateY(s * 1.25).translate(s * (w / 2 - .05), 0, -.1));
       if (wings) svkSnap(P, svkPiece('wall_straight', { len: 4, h: 3.3 }), 'a', [s * (w / 2 + 1.1), 0, 0], s > 0 ? 0 : Math.PI); }
@@ -11821,7 +11822,15 @@ function svkPiece(kind, o) { const f = SVKP[kind]; if (!f) throw new Error('no s
 // the merged meshes of an accumulated piece (one per material)
 function svkMesh(P) { const M = vilMats(), G = new THREE.Group(); for (const k in P.L) { const M2 = M[k]; if (!M2 || !P.L[k].length) continue;
     const geo = mergeGeometries(P.L[k].map(q => { q = q.index ? q.toNonIndexed() : q; for (const a of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(a)) q.deleteAttribute(a); if (!q.attributes.normal) q.computeVertexNormals(); if (!q.attributes.uv) q.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(q.attributes.position.count * 2), 2)); return q; }));
-    if (!geo) continue; const m = new THREE.Mesh(geo, M2); m.castShadow = !['jade', 'warm', 'win', 'ice', 'fire'].includes(k); m.receiveShadow = true; m.userData.mat = k; G.add(m); } return G; }
+    if (!geo) continue; const m = new THREE.Mesh(geo, M2); m.castShadow = !['jade', 'warm', 'win', 'ice', 'fire'].includes(k); m.receiveShadow = true; m.userData.mat = k; G.add(m); }
+  if (P.pools && P.pools.length) G.add(svkPools(P.pools)); return G; }
+// LIGHT POOLS (detail pass 4, his "go"): a soft additive disc on the ground under every window, lantern, jade lamp, fire and forge -- one draw for them all,
+// [x, y, z, radius, colour, strength]; warm or jade. Little in daylight on white snow; it is the night that they are for.
+function svkPools(list) { const V = SNOWVIL, tex = V.poolTex || (V.poolTex = (() => { const cv = document.createElement('canvas'); cv.width = cv.height = 128; const q = cv.getContext('2d'), gr = q.createRadialGradient(64, 64, 0, 64, 64, 64);
+    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.35, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); q.fillStyle = gr; q.fillRect(0, 0, 128, 128); const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t; })());
+  const gs = list.map(([x, y, z, r, col, k]) => { const g = new THREE.PlaneGeometry(r * 2, r * 2).rotateX(-Math.PI / 2).translate(x, y + .03, z), c = new THREE.Color(col).multiplyScalar((k == null ? .4 : k) * 1.4), A = new Float32Array(g.attributes.position.count * 3); for (let i = 0; i < A.length; i += 3) { A[i] = c.r; A[i + 1] = c.g; A[i + 2] = c.b; } g.setAttribute('color', new THREE.BufferAttribute(A, 3)); g.deleteAttribute('normal'); return g; });
+  const m = new THREE.Mesh(mergeGeometries(gs), new THREE.MeshBasicMaterial({ map: tex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
+  m.renderOrder = 2; m.userData.mat = 'pool'; return m; }
 // THE PUBLIC DOOR: { group, boxes (local AABBs), patches, ports }
 function snowKitPiece(kind, opts) { const P = svkPiece(kind, opts), boxes = []; for (const C of P.cols) { let x0 = 1e9, x1 = -1e9, z0 = 1e9, z1 = -1e9; for (const [x, z] of C.pts) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, z); z1 = Math.max(z1, z); } boxes.push({ minx: x0, maxx: x1, miny: C.y0, maxy: C.y1, minz: z0, maxz: z1 }); }
   return { group: svkMesh(P), boxes, patches: P.patches, ports: P.ports, smoke: P.smoke, fire: P.fire }; }
@@ -11839,7 +11848,7 @@ function svkShowroom(g) { const S = SVK, [ox, oy, oz] = S.at, D = svkNew(), labe
       catch (e) { console.error('[melee] snowkit', kind, e); note('SNOWKIT ' + kind + ' THREW ' + e.message); }
       labels.push({ text: name || kind.replace(/_/g, ' ') }); plates.push({ i: labels.length - 1, x, z: z + 4.6, w: 3.2 }); }); lines.push(zc); zc -= gap; }
   const z1 = oz + 9, z0 = zc + 4; D.box('snow', W, oy, z1 - z0, ox, oy / 2, (z0 + z1) / 2, 4); D.col(ox - W / 2, ox + W / 2, 0, oy, z0, z1);
-  for (const lz of lines) D.box('stoneD', W - 4, .05, .7, ox, oy + .02, lz + 6.3, 1);
+  for (const lz of lines) D.add('pave', vilBox(W - 4, .05, 2.4, 2).translate(ox, oy + .02, lz + 6.3));     /* detail pass 4: paved walkways */
   // THE DEMO PLOT east of the rows: a short aqueduct, a hut, a fence run and a fire pit -- every one placed by SNAPPING to a port
   try { const dx0 = ox + W / 2 + 4, dw = 70, dz1 = oz + 9, dz0 = oz - 46, cx = dx0 + dw / 2, bz = oz - 22, B = svkNew();
     D.box('snow', dw, oy, dz1 - dz0, cx, oy / 2, (dz0 + dz1) / 2, 4); D.col(dx0, dx0 + dw, 0, oy, dz0, dz1); labels.push({ text: 'DEMO: SNAPPED BY PORTS', title: 1 }); plates.push({ i: labels.length - 1, x: cx, z: oz + 6.8, w: 6 });
