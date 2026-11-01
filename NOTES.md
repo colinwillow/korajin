@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2052 -- THE GREAT WATERFALL: the look, from the FIRST RENDERS (his: "send me a render after every pass")
+
+The renders (headless SwiftShader, `?w=forge&zone=snow`, five cameras: wide from the field, the pool, the ascent, the cave, the top) showed:
+the cliff read as a WHITE SNOW SLOPE (the rock tint was .74-1.25 and anything half up-facing turned white); the textured gold rendered as brown
+WOOD frames; the rainbow was a solid neon arc; the water too pale; the mist barely there; the cave lit evenly. So: rock dark blue-grey (.4) with
+faint strata bands, snow only on the clearly up-facing (ny > .72); the gold plain and bright (metal .85, warm emissive); the rainbow at ~40 %
+of its strength; the curtain's base a deeper turquoise with fewer white streaks; the mist half as strong again; the cave's vault and floor
+darker toward the edges. Look only. Renders follow in chat after the push.
+
 ## m2050 -- THE GREAT WATERFALL: `mel.WFALL` / `mel.wfall()` / `mel.wfcave()` never existed (same cause as m2049)
 
 The second render timed out waiting for `mel.WFALL`: `wfallBuild` set them on `window.mel` inside a try, and at module scope `window.mel` is not
