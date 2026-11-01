@@ -1,0 +1,105 @@
+{
+ "seed": 6,
+ "n": 241,
+ "cell": 2,
+ "half": 240,
+ "scale": 400,
+ "places": [
+  {
+   "id": "spawn",
+   "name": "SPAWN",
+   "x": -186.2,
+   "z": -120.5
+  },
+  {
+   "id": "willow_shrine",
+   "name": "WILLOW SHRINE",
+   "x": -107.9,
+   "z": -189.3
+  },
+  {
+   "id": "village",
+   "name": "VILLAGE (gate)",
+   "x": -16.1,
+   "z": -154.5
+  },
+  {
+   "id": "hot_spring",
+   "name": "HOT SPRING",
+   "x": 74.1,
+   "z": -155.3
+  },
+  {
+   "id": "mammoth_meadow",
+   "name": "MAMMOTH MEADOW",
+   "x": 15.7,
+   "z": -64.6
+  },
+  {
+   "id": "big_wall",
+   "name": "BIG WALL",
+   "x": -18.9,
+   "z": 16.2
+  },
+  {
+   "id": "pine_forest",
+   "name": "PINE FOREST",
+   "x": -88.5,
+   "z": 79.6
+  },
+  {
+   "id": "standing_stones",
+   "name": "STANDING STONES",
+   "x": -129.2,
+   "z": -1.1
+  },
+  {
+   "id": "cabin",
+   "name": "CABIN",
+   "x": -184.7,
+   "z": 144.3
+  },
+  {
+   "id": "ice_caves",
+   "name": "ICE CAVES (underpass)",
+   "x": -33.8,
+   "z": 159.4
+  },
+  {
+   "id": "dragons_gate",
+   "name": "DRAGON'S GATE",
+   "x": 63.4,
+   "z": 38.0
+  },
+  {
+   "id": "lake",
+   "name": "LAKE",
+   "x": 144.1,
+   "z": -27.8
+  },
+  {
+   "id": "great_waterfall",
+   "name": "GREAT WATERFALL",
+   "x": 200.6,
+   "z": -97.7
+  },
+  {
+   "id": "temple_stair",
+   "name": "TEMPLE STAIR",
+   "x": 134.7,
+   "z": 117.5
+  },
+  {
+   "id": "lookout",
+   "name": "LOOKOUT",
+   "x": 200.9,
+   "z": 168.6
+  },
+  {
+   "id": "ice_temple",
+   "name": "ICE TEMPLE",
+   "x": 200.8,
+   "z": 54.7
+  }
+ ]
+}

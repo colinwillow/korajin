@@ -17,6 +17,35 @@ His: *"Another detail pass?"*
   hut porch, the roof beams, both gable ends, the gate (both faces) and every arch span's keystone.
 - Rendered (hut, gate, aqueduct) before pushing; jade brightened after the first look (it read dull by day). 25 draws. Shipped unverified.
 
+## m2069 -- THE RISING SHRINE: a kit piece that ASSEMBLES out of the ground (his concept)
+
+His (a concept of a temple shrine: carved stone base, buttresses, jade glyph panels, a neck, a gold bowl, a great glowing crystal): "build it
+in pieces so it comes up through the ground: pieces fold out, a new piece comes up, the top piece, pieces come out of that, then the stone comes
+out of that ... scattered around the level." `RSHRINE` (SC_RISESHRINE) + `wfrsMake(T)` (pure) / `wfrsBuild` / `wfrsStep` / `wfrsPose`:
+- DORMANT it is only a glowing RUNE RING on the ground. When he comes within `wake` (9 m) it ASSEMBLES over 5.6 s (`steps`, data): the CORE rises
+  (a thud, camera shake, dust), four BUTTRESSES slide out of it, the CAP slab rises, the NECK, eight bowl PETALS rise closed like a bud and FOLD
+  OPEN (overshoot), and the CRYSTAL rises out of the bowl, growing and lighting, then bobs and turns. The jade inlays brighten through it.
+- TWO DRAWS per shrine: every stone / gold / jade piece is one merged geometry whose vertices carry a PART index (16 parts); each part's
+  transform is a matrix in a uniform array that the vertex shader applies (normals too) -- nothing is rebuilt per frame; jade glows through a
+  per-vertex `aGlow` into the emissive. The crystal is its own mesh. No shadow cast (the depth pass would not follow the parts).
+- Solid (a box) once risen; `mel.rshrine(id, 1 | -1)` raises / sinks one (the timeline runs backwards).
+- Placed (kind 'riseshrine'): `wf_shrine` in the hidden hall (replaces the static one) and `wf_shrine_rim` on the pool's rim under the right-hand
+  pillars; the rim's pines / boulders keep 9 m clear of any rising shrine.
+- Caught: the syntax gate -- `rsEase` already exists elsewhere in index.html; everything here is `wfrs*`. Rendered at six moments of the rise
+  (ring / core+buttresses / neck / bud / open + crystal / the hall): the crystal and petals were enlarged after the first set.
+Not yet: it reads ~6 m tall (his concept's proportions, but small beside a 90 m cliff -- `s` scales it); no hand-made glyph texture (flat jade
+panels); the dormant ring has no prompt. Shipped unverified on the phone.
+
+## m2070 -- THE REGION, rough: the picked map as walkable ground (REGION_METHOD.md stage 3) (Nov 1 2026)
+His: *"build the terrain first, make it really interesting, make a bunch of paths; then set waypoints for the areas"* -> seed 6 picked (region_pick.png).
+- KORAJIN menu > **The Region (rough terrain)** = `?w=forge&zone=region`. `tools/regionpick.py` writes `levels/region_6.bin` (241 x 241 at 2 m,
+  uint16 = m x 400, 116 KB) + `levels/region_6.json` (the 16 places in world metres; world x/z = map px - 240).
+- `rgnStage`: one heightfield mesh (240 x 240 quads, vertex colours: flat = snow, steep = rock, high = snow-capped), a far ring, a mint pole + name
+  at each place; he starts at SPAWN facing the ICE TEMPLE. `groundAt` stands him on `rgnH`; `rgnWall` (in the player's sub-step loop) makes any
+  slope steeper than `RGN.maxSlope` 1.05 a wall he slides along (jumping up a face still works).
+- Checked headless once that the zone loads (poles + ground on screen). Shipped unverified otherwise. Open: the camera can dip into a mountain
+  (no terrain camera clamp yet); nothing is dressed; bodies / mammoth / dragon not placed here yet.
+
 ## m2068 -- THE GREAT WATERFALL: splash PLUMES at the foot, big ice SLABS in the pool, thinner snow lips
 
 His: "keep going". From his reference: white plumes boil up where the water lands, and big flat ice slabs float in the pool.

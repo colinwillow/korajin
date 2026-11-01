@@ -23,7 +23,7 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 |---|---|---|---|
 | 1 | **WHY is there a village here, and what does it DO?** | the settlement's reason, its people, its jobs, what it gives the player | **approved** (hot spring + aqueduct; a HAMLET; near the spawn) |
 | 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | **approved** (gorge, horseshoe cliff, ~12 buildings) -- its PLACE on the region map waits on REGION_METHOD stage 1-2 |
-| 3 | **ZONES** -- what goes where, and why | a zoning map: each district placed by its reason (water, road, defence, status) | |
+| 3 | **ZONES** -- what goes where, and why | a zoning map: each district placed by its reason (water, road, defence, status) | **drafted** (blueprint_pass3.png) |
 | 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | |
 | 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | |
 | 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | |
@@ -156,3 +156,32 @@ road is the long way round, the wall is the shortcut (pass 6).
 - The GORGE through the middle (two offset banks, bridges back and forth) -- yes? Or the creek round the outside (one hill, one moat)?
 - The HORSESHOE CLIFF: a new cliff on the field's south-west corner, ~18 m. OK to move the rock bridge and standing stones?
 - Too big / too small? (~68 x 54 m, 4 storeys of terraces, ~12 buildings.)
+
+---
+
+## WHERE IT SITS NOW (REGION_METHOD.md, m2070)
+The hamlet moves off the field's corner onto the REGION map: its GATE is the VILLAGE place (world -16, -154, floor 14 m) and its SPRING is the HOT
+SPRING place (74, -155, floor 18 m) -- the valley between them is the hamlet's gorge, and the loop on to MAMMOTH MEADOW (16, -65) is the road out to
+the stable and the herd. Pass 2's layout is kept whole (the horseshoe cliff, the gorge, the offset banks); at blockout it is turned so its gorge runs
+up that valley, and the region heightmap is hand-edited there (the spring raised ~11 m over the gate, the horseshoe cut into the valley head).
+
+## PASS 3 -- ZONES (drafted; his go: "start the village")
+Drawing: `images/concepts/snow_village/blueprint_pass3.png` (same frame as pass 2).
+
+| zone | where | what is in it | WHY there |
+|---|---|---|---|
+| GATE + TRADE | E1, +1.2, inside the creek mouth | the GATE, a watch house, the SMITHY with its WATER WHEEL on the first fall | travellers arrive here; the smith needs running water (quench + the wheel drives the bellows) and sells to whoever comes in |
+| MARKET | W1, +2.4, across B2 | the MARKET SQUARE (3 stalls, the well), the merchant's house | the first flat ground inside, on the road, reachable with a cart; the well where the square is |
+| BATH + HEALING | E2, +4.2 | the BATHHOUSE (longhouse) and the hot pool | the aqueduct ends here -- the warm water arrives at the bath; the healer is the bathkeeper |
+| HOMES | W2, +5.4 | 3 huts | above the noise of the market, in the sun, off the road on lanes |
+| HOMES + ELDER | E3, +7.2 | 2 huts, the ELDER'S HOUSE (the big hut) | across from the homes; the elder lives nearest the shrine |
+| UPPER HOMES + STORES | W3, +8.4, under the cliff | 2 huts, the STOREHOUSE, the top of the WINCH LIFT | goods are hauled up from the market by the winch and stored dry and high, under the cliff's lee |
+| WATCH | the knoll, +8 | the WATCHTOWER | sees the gate, the field and the sky (the dragon) |
+| SACRED | E4, +10.8 | the SHRINE (the kit's shrine tower), the SPRING and its GEYSER | the source of the water is holy; highest, hardest to reach, last |
+| OUTSIDE | by the creek mouth, toward the meadow | the STABLE + paddock (the mammoth), the herd beyond | big animals stay outside the walls, by water, on the road to the meadow |
+
+**12 buildings** (gate, smithy, watch house, merchant's house, 3 + 2 + 2 huts, bathhouse, elder's house, storehouse, watchtower, shrine, stable --
+some small) **+ 3 moving things** (water wheel, winch lift, geyser). Every one has a WHY; none is filler.
+
+**Next: pass 4 -- CIRCULATION**: the lanes off the road to every door, the dead ends, where the mammoth fits (outside only, or through the gate to
+the market?), the gorge path, and which walls are climbable shortcuts.
