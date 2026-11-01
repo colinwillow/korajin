@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m2041 -- THE GREAT WATERFALL, pass 1 (the panorama's falls, built for real)
+## m2042 -- THE GREAT WATERFALL, pass 1 (the panorama's falls, built for real)
 
 His: the huge waterfall in his snow-sky panorama (`images/snow_sky.webp`), built in 3D. Measured off the image: its biggest falls sit at u ~ .06
 (and a second at .94), which under three's equirect mapping (u = atan2(z, x) / 2pi + .5) is the WEST, a little north. So it stands beyond the
@@ -28,6 +28,11 @@ Snowfield's west edge, clear of the cliffs/lair (x -26..40), the snow kit places
 - Draws: rock, snow caps, ice, curtain, pool, mist = 6. `?wf=0` leaves it out; `mel.wfall()` puts him at the pool; `mel.WFALL` is the table.
 Still open: his example images (the look gets refined against them), a spray sound, the water's reflection of the sky, routes up past the cave.
 Shipped unverified.
+## m2041 -- C1 fixes: the lane no longer wraps over the door; the spawn is at the door (Nov 1 2026)
+Measured right after m2040 went up: the sprint lane's angles (350..482) wrapped round the tube OVER the entry door and the spawn, and the forge put the
+player at `ARENA.youAt` (0, 8) after the stage, overriding the cell's spawn. Re-angled in order round the tube (door 210 -> shelf 240-285 -> lane
+285-400 -> tall shelf 400-450, exit above it at 78), and the cell sets `ARENA.youAt` to its spawn (the temple layout too). Measured: he starts at the
+door, (-6.1, -3.5).
 
 ## m2040 -- TEMPLE CELL C1: the first designed cell (Nov 1 2026)
 LEVEL_METHOD.md step 3. KORAJIN > Temple Cell C1 (`?w=forge&zone=cell&cell=C1`). The bottom of the ice temple's Climb Tower (ICE_TEMPLE_HEX.md): WALL RUN
