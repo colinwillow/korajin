@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2168 -- THE GARDEN's cliffs: one rock, not a tiled picture (Nov 1 2026)
+His (a phone screenshot of the summit's cliff from the shrine): *"this green texture looks kind of janky -- I don't know if it's the texture itself
+or the way it's applied."* The WAY: (1) one scale of `garden_rock` (7 m) repeated across long FLAT faces -- the same ledges every 7 m; (2) the
+"blocky stone columns" hung under the rims were flat boxes whose triplanar texture never lined up with the face behind them -- the vertical seams.
+- **THE MATERIAL** (`rockMat` -- every island underside, chunk, far isle): samples the map at TWO scales (7 m and ~19 m) and lets world-space noise
+  choose between them, then shifts the colour in big soft patches (drier stone / damper moss / a little desaturation) -- nothing repeats.
+- **THE GEOMETRY** (`gdnChunkGeo`): 24 rings (was 14); the sheer face lumpy in both directions and stepped in strata, so it catches the light as
+  fractured rock.
+- **THE COLUMNS ARE GONE** (tried smooth rock lumps in their place: smooth ovals on a textured cliff read as bubbles; the geometry carries it).
+  Shipped unverified.
+
 ## m2167 -- THE JINRA HEART, hero pass 2: rune rings, inner depth, lightning, fake bloom, a shockwave on the beat (Nov 1 2026)
 His: *"the Jinra heart looks great -- keep doing passes, make it phenomenal, mesmerizing, amazing."*
 - **THE CRYSTAL** shader: three parallax layers of his painted veins seen THROUGH the facets (depth), a rim that runs cyan into violet at the very
