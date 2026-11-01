@@ -16002,6 +16002,10 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   // and it crashes into the ocean"): the Ship (`shipModel`, the dojo's flying version: Jin engines, canvas wings) MOORED at a sky dock off the
   // homestead's outer edge, its deck level with the farm, a pier out to it. Not flown yet -- P4 rides it down. `at` = the homestead's outer edge at
   // that angle, `off` m out from it to the ship's centreline; it lies along the edge.
+  // THE JINRA BEAM (his, via the main session: "show the player hands-on that Jinra makes things float -- the rule the whole fall depends on"): a mint
+  // column rising from a stone spring basin; walk into it and he eases into a cross-legged meditation and FLOATS `lift` m, bobbing, motes rising
+  // round him; push the stick (after `hold` s) and he sinks gently back down. `clip` 'meditate' (Sitting_Idle) or 'sit_cross' (Male_Sitting_Pose_9).
+  beam: { id: 'jinra_beam', at: [-17.6, -9.4], r: 1.15, lift: 2.3, h: 10, clip: 'meditate', hold: .9, ease: 1.6, sink: 1.5 },
   ship: { id: 'flying_ship', chunk: 'chunk_home', a: 80, off: 21, bob: .12 },
   // (m2161: run DIAGONALLY across the cracks, so a 4 m and a 6 m climb stay a walkable 17-18 degrees)
   bridges: [{ id: 'bridge_garden_home', from: 'rim:78', to: 'inner:chunk_home:100', w: 1.5 }, { id: 'bridge_home_summit', from: [40.2, 4, -22.3], to: [24.65, 10, -32.13], w: 1.4 }],
@@ -16300,6 +16304,11 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     Z.hammockG = { g: hg, ax: ux, az: uz, sw: .35, t: 0 }; Z.pieces.hammock = hg; G.add(hg);
     HM.bed = { at: [mx, Y0 + y + .25 - HM.sag, mz], yaw: Math.atan2(ux, uz), sag: HM.sag, span: L, ends: [[ax, Y0 + y + .35, az], [bx, Y0 + y + .35, bz]] };
     BOXES.push(obox(mx, mz, (e1 - e0) / 2 - .2, HM.w * .4, Math.atan2(uz, ux), Y0 + y - HM.sag - .1, Y0 + y - HM.sag + .45)); part(HM.id, 'hammock', { x: mx, z: mz, y, span: L }); }
+  // ---- THE JINRA BEAM: a stone spring basin, its water, a mint column of light, motes rising (one additive mesh, one Points) ----
+  { const Bm = Z.beam, [bx2, bz2] = Bm.at; put(new THREE.LatheGeometry([[Bm.r - .1, 0], [Bm.r + .5, 0], [Bm.r + .55, .38], [Bm.r + .42, .46], [Bm.r + .05, .44], [Bm.r - .05, .14]].map(([a, b]) => new THREE.Vector2(a, b)), 28).translate(bx2, 0, bz2), M.stone);
+    put(new THREE.TorusGeometry(Bm.r + .3, .05, 6, 32).rotateX(Math.PI / 2).translate(bx2, .47, bz2), M.jade); (Z.isleWater = Z.isleWater || []).push(gdnBlobDisc(bx2, bz2, Bm.r, .32, R, 20, 0)); BOXES.push({ minx: bx2 - Bm.r - .55, maxx: bx2 + Bm.r + .55, miny: Y0 - 1, maxy: Y0 + .3, minz: bz2 - Bm.r - .55, maxz: bz2 + Bm.r + .55 });
+    for (let i = 0; i < 5; i++) { const a = i / 5 * 6.283 + .4; put(gdnBlob(R, bx2 + Math.cos(a) * (Bm.r + 1.1), .15, bz2 + Math.sin(a) * (Bm.r + 1.1), .32 + R() * .2, .6, 0), R() < .5 ? M.moss : M.pebble); }
+    part(Bm.id, 'jinra_beam', { x: bx2, z: bz2 }); }
   // ---- THE RUSTY SWORD (DRAFT 4: Grumbo the dozy guardian): hung by its cord from a peg in willow_a, blade down, on the side facing the spawn ----
   { const SW = Z.sword, T = Z.treeAt[SW.tree], c = T.curve.getPointAt(SW.t), dx = SW.face[0] - c.x, dz = SW.face[1] - c.z, L = Math.hypot(dx, dz), ux = dx / L, uz = dz / L, yaw = Math.atan2(ux, uz);
     const rr = .95, px = c.x + ux * rr, pz = c.z + uz * rr, py = c.y + .15, rust = new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .85, metalness: .45 }), grip = new THREE.MeshStandardMaterial({ color: 0x3a2618, roughness: .9 });
@@ -16848,6 +16857,28 @@ function gdnChunkGeo(poly0, y0, depth, seed, cx, cz) { let poly = poly0.slice();
     for (const v of [A, B, C]) CP.push(v[0], y0, v[2]); tris.push(A[0], y0 + Y0, A[2], B[0], y0 + Y0, B[2], C[0], y0 + Y0, C[2]); }
   const cap = new THREE.BufferGeometry(); cap.setAttribute('position', new THREE.Float32BufferAttribute(CP, 3)); cap.computeVertexNormals();
   return { side, cap, tris }; }
+// THE JINRA BEAM's light: a mint column (two nested open cylinders, light streaming up them) and ~90 motes spiralling up it -- 2 draws
+function gdnBeamFx(G) { const Z = GARDEN, Bm = Z.beam, U = Z.U, [bx, bz] = Bm.at, g = new THREE.Group(); g.position.set(bx, .35, bz); g.name = 'garden_jinra_beam'; G.add(g);
+  const geo = mergeGeometries([new THREE.CylinderGeometry(Bm.r * .95, Bm.r * 1.05, Bm.h, 24, 1, true).translate(0, Bm.h / 2, 0), new THREE.CylinderGeometry(Bm.r * .55, Bm.r * .65, Bm.h * .8, 18, 1, true).translate(0, Bm.h * .4, 0)].map(q => q.toNonIndexed()));
+  const col = new THREE.Mesh(geo, new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, uniforms: { uTime: U.uTime, uGlow: U.uGlow, uOn: { value: 0 } },
+    vertexShader: 'varying vec2 vU; varying vec3 vN; varying vec3 vV; void main() { vU = uv; vN = normalize(normalMatrix * normal); vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
+    fragmentShader: TEMPLEGLSL_N + `uniform float uTime, uGlow, uOn; varying vec2 vU; varying vec3 vN; varying vec3 vV; void main() { float e = 1.0 - abs(dot(normalize(vN), normalize(vV)));
+      float s = tN(vec2(vU.x * 12.0, vU.y * 4.0 - uTime * 1.6)) * .6 + tN(vec2(vU.x * 27.0, vU.y * 9.0 - uTime * 2.7)) * .4, fade = smoothstep(0.0, .06, vU.y) * pow(1.0 - vU.y, 1.4);
+      float a = (.25 + .75 * e) * (.35 + .65 * s) * fade * (.55 + .45 * uOn); gl_FragColor = vec4(mix(vec3(.25, 1.0, .75), vec3(.85, 1.0, .95), s) * a * .8 * uGlow, 1.0); }` }));
+  col.renderOrder = 3; col.frustumCulled = false; g.add(col);
+  const N = 90, P = new Float32Array(N * 3), A = []; const R = gdnRnd(77); for (let i = 0; i < N; i++) A.push(R() * 6.283, R(), .06 + R() * .07);
+  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(P, 3)); pg.setAttribute('aM', new THREE.Float32BufferAttribute(A, 3));
+  const pts = new THREE.Points(pg, new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uTime: U.uTime, uGlow: U.uGlow, uPx: U.uPx || (U.uPx = { value: 600 }), uOn: col.material.uniforms.uOn, uR: { value: Bm.r }, uH: { value: Bm.h * .6 } },
+    vertexShader: `attribute vec3 aM; uniform float uTime, uPx, uOn, uR, uH; varying float vA; void main() { float t = fract(uTime * (.08 + aM.y * .06) + aM.y), a = aM.x + t * 6.0 + uTime * (.4 + uOn * .8), r = uR * (.35 + .55 * aM.y) * (1.0 - uOn * .35);
+      vec3 p = vec3(cos(a) * r, t * uH * (1.0 + uOn * .4), sin(a) * r); vA = smoothstep(0.0, .1, t) * (1.0 - t) * (.6 + .4 * uOn); vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = aM.z * uPx / max(.5, -mv.z); }`,
+    fragmentShader: `uniform float uGlow; varying float vA; void main() { float d = length(gl_PointCoord - .5) * 2.0; gl_FragColor = vec4(vec3(.55, 1.0, .85) * pow(max(0.0, 1.0 - d), 1.8) * vA * 1.6 * uGlow, 1.0); }` }));
+  pts.frustumCulled = false; pts.renderOrder = 4; g.add(pts); Z.beamFx = { g, on: col.material.uniforms.uOn, cd: 0 }; }
+// he floats in the beam: eased up to `lift` over the water, drawn to its centre, bobbing; the stick (after `hold` s) sinks him gently back down.
+// The body is his for as long as `p.medit` is set (stepPlayer hands it over, like the hero drop); `rigAnim` plays GARDEN.beam.clip.
+function gdnMeditStep(dt, s) { const Z = GARDEN, Bm = Z.beam, p = player, M = p.medit, [bx, bz] = Bm.at; M.t += dt; p.vel.set(0, 0, 0);
+  if (!M.out && M.t > Bm.hold && s && s.mag > .35) M.out = 1;
+  if (M.out) { p.pos.y -= Bm.sink * dt; if (p.pos.y <= M.y0) { p.pos.y = M.y0; p.medit = null; if (Z.beamFx) Z.beamFx.cd = 1.8; p.grounded = true; } return; }
+  const ty = M.y0 + Bm.lift + Math.sin(M.t * 1.3) * .14, k = 1 - Math.exp(-Bm.ease * dt); p.pos.y += (ty - p.pos.y) * k; p.pos.x += (bx - p.pos.x) * k; p.pos.z += (bz - p.pos.z) * k; }
 // THE FLYING SHIP, moored: the Ship's model placed by GARDEN.ship, its deck boxes and ramps registered (turned into the garden's frame), a pier
 function gdnShip(G) { const Z = GARDEN, S = Z.ship, C = Z.isleAt && Z.isleAt[S.chunk]; if (!S || !C) return; const Ch = Z.chunks.find(c => c.id === S.chunk), Y0 = Z.top, a = S.a * Math.PI / 180;
   let ep = C.outer[0], bd = 9; for (const p of C.outer) { let d = Math.abs(Math.atan2(p[0], p[2]) - a); d = Math.min(d, 6.2832 - d); if (d < bd) { bd = d; ep = p; } }
@@ -16931,6 +16962,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   try { Z.plantMeshes = plantFlush(g, Z.plantRec); } catch (e) { note('GARDEN PLANTS ' + e.message); }
   try { gdnBridges(g); } catch (e) { note('GARDEN BRIDGES ' + e.message); console.error(e); }
   try { gdnShip(G); } catch (e) { note('GARDEN SHIP ' + e.message); console.error(e); }
+  try { gdnBeamFx(G); } catch (e) { note('GARDEN BEAM ' + e.message); console.error(e); }
   try { if (Z.isleRec) Z.plantMeshes = Z.plantMeshes.concat(plantFlush(g, Z.isleRec)); } catch (e) { note('GARDEN ISLE PLANTS ' + e.message); }
   PLANT.cell = cell0;
   try { gdnGlow(G); } catch (e) { note('GARDEN GLOW ' + e.message); }
@@ -16956,6 +16988,8 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
     Hh.spirals.rotation.y += dt * .9; Hh.rays.rotation.y -= dt * .12; Hh.rays.position.y = Hh.cg.position.y; }     // the homestead's waterwheel, turned by its cascade
   if (Z.U.uPx) Z.U.uPx.value = renderer.domElement.height * camera.projectionMatrix.elements[5] / 2;
   const p = player, ly = p.pos.y - Z.top;
+  if (Z.beamFx) { const F = Z.beamFx, Bm = Z.beam; F.cd -= dt; if (!p.medit && F.cd <= 0 && p.grounded && Math.hypot(p.pos.x - Bm.at[0], p.pos.z - Bm.at[1]) < Bm.r * .9 && Math.abs(ly) < 1.2) p.medit = { t: 0, y0: p.pos.y, out: 0 };     // into the Jinra beam: he floats
+    F.on.value += ((p.medit && !p.medit.out ? 1 : 0) - F.on.value) * (1 - Math.exp(-2.5 * dt)); }
   for (const Gt of Z.gates || []) { Gt.cd -= dt; if (Gt.cd <= 0 && Math.hypot(p.pos.x - Gt.x, p.pos.z - Gt.z) < 1.3 && Math.abs(ly - Gt.y) < 2) { Gt.cd = 4; try { snd('lock', { g: .3, r: .4, x: Gt.x, z: Gt.z }); setTimeout(() => snd('lock', { g: .14, r: .4, x: Gt.x, z: Gt.z }), 700); } catch (e) {} } }     // the summit's bell gate rings as he passes under it
   // the hammock: still rocking from him getting out of it, then the breeze
   if (Z.hammockG) { const H = Z.hammockG; H.sw *= Math.exp(-.25 * dt); const a = H.sw * Math.sin(O.t * 1.6) + .025 * Math.sin(O.t * .7); H.g.setRotationFromAxisAngle(_gdnAx.set(H.ax, 0, H.az), a); }
@@ -40661,6 +40695,7 @@ function stepPlayer(dt) {
   if (p.lock && p.lock !== hadLock) snd('lock', { g: .3, r: 1.5 });
   const s = p.lock ? stickLocked(p.lock) : stickWorld();
   if (p.hdrop) { hdropStep(dt, s); return; }     // m1953: the hero drop owns the body
+  if (p.medit) { gdnMeditStep(dt, s); return; }     // m2166: the Garden's Jinra beam -- he floats in it, meditating
 
   // **THE SLAM ENDS WHEN HE MEETS THE GROUND (m81)**, which is the opposite of every other
   // strike here -- they all end when he leaves it. That is why this is its own branch and not a
@@ -42424,6 +42459,7 @@ function rigAnim(dt) {
     if (sum < .01) t[CLIPS.idle] = 1;
     setWeights(t, dt); return;
   }
+  if (p.medit && rig.actions[GARDEN.beam.clip]) { t[GARDEN.beam.clip] = 1; setWeights(t, dt); return; }     // m2166: meditating in the Jinra beam
   if (p.bar) { t[hbarClip()] = 1; setWeights(t, dt); return; }
   if (p.zip) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1168: hanging from the zipline
   if (p.mbar) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1857: on the monkey bars
@@ -47903,10 +47939,11 @@ function forgedHero() {
 }
 // m1866: HIS OWN ANIMATIONS (models/characters/anims/<name>.glb, converted from his FBX by tools/fbx2glb.py) -- each REPLACES the clip of that
 // name on the hero, played as he authored it. Loaded once the hero's rig and mixer exist.
-const HANIM = { on: 1, hero: 'alien_goblin_game', list: [{ file: 'models/characters/anims/wall_side.glb', as: 'wall_side' }], got: {} };
+const HANIM = { on: 1, hero: 'alien_goblin_game', list: [{ file: 'models/characters/anims/wall_side.glb', as: 'wall_side' },
+  { file: 'models/characters/anims/agoblin_meditate.glb', as: 'meditate', clip: 'meditate' }, { file: 'models/characters/anims/agoblin_meditate.glb', as: 'sit_cross', clip: 'sit_cross' }], got: {} };     // m2166: the Forge's Sitting_Idle / Male_Sitting_Pose_9 baked onto Grumbo (the Jinra beam's float)
 function heroAnims() { if (!HANIM.on || !rig.mixer || forgedKey(RIG.file) !== HANIM.hero) return;
   for (const E of HANIM.list) { if (HANIM.got[E.as]) continue; HANIM.got[E.as] = 1;
-    loadGLB(E.file, 'his ' + E.as).then(g => { const src = g.animations && g.animations[0]; if (!src || !rig.mixer) return;
+    loadGLB(E.file, 'his ' + E.as).then(g => { const src = g.animations && (E.clip ? g.animations.find(c => c.name === E.clip) : g.animations[0]); if (!src || !rig.mixer) return;
       const tracks = src.tracks.filter(t => !/\.scale$/.test(t.name) && rig.bones[t.name.split('.')[0]]);
       const c = new THREE.AnimationClip(E.as, src.duration, tracks);
       for (const k of [E.as, E.as + MIRROR.suffix]) { const old = rig.actions[k]; if (old) { old.stop(); rig.mixer.uncacheAction(old.getClip()); delete rig.actions[k]; delete rig.clips[k]; } }
