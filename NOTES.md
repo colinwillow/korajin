@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2150 -- THE GARDEN, pass 2: props, plants and light against his refs (Nov 1 2026)
+Same zone (`?w=forge&zone=garden`). Looked at headless from the spawn, the zen circle, the bell, the trees, the rim and underneath, then fixed:
+- **NO MORE SHARDS**: `dmtBlob` jitters every vertex, which on a big blob reads as crumpled paper (the cloud heaps, the rim moss, the rocks). The
+  garden uses `gdnBlob` -- an indexed sphere pushed by smooth noise -- for every rock, moss cushion and leaf mass; cumulus heaps are flattened sphere
+  clusters. Natural stones (zen stones, cairns, banks, boulders, the monolith) are on his `garden_rock` map (`M.pebble`), not the dressed ashlar.
+- **NEW PIECES** (in the table): 22 mossy RIM BOULDERS heaped round the edge (seeded, kept clear of the falls, the overlook and the stepping-stone
+  exit) and three RUNE STONES with a glowing jade glyph (ref 1's green stone); `GARDEN.boulders`, `GARDEN.runes`.
+- **LIGHT IN THE AIR** (`gdnGlow`, ONE Points draw): a warm halo on every hanging lantern and stone lantern, a jade/violet glow on the bells,
+  crystals, runes and pools, and 260 Jinra MOTES rising off the water and drifting -- sized in metres (`uPx` from the drawing buffer each frame),
+  dimmed with `uGlow` (P2's drain).
+- **PLANTS**: the library's cattails, fronds and dark low-poly shrubs are out; his painted fern + flower cards are up to ~500 clumps (round the
+  water, the path, the terrace foot and the rim, a third scattered), library grass / flowers / stones under them.
+- **LIGHT**: a warmer, stronger morning sun from the left, the lawn toned down from lime; the snow peaks are massifs (a summit and two shoulders),
+  blue-grey rock under snow, out of the fog so they read as mountains; the shrine floor is flagstone (the ashlar shimmered at a grazing angle).
+- Cost (headless): 107-152 draws, 380-440k tris. Still OPEN: the sky/clouds could be bluer and deeper, no lying-in-the-hammock pose, his sign-off.
+  Shipped unverified.
+
 ## m2149 -- PROLOGUE P1, THE GARDEN, pass 1: the floating Zen garden he wakes in (Nov 1 2026)
 His brief (PROLOGUE.md, refs `images/concepts/prologue/garden_01.webp`, `garden_02.webp`): Grumbo wakes by a HAMMOCK between two willows on a floating
 island over a sea of cloud, a garden untroubled for centuries. Beat 1 ONLY -- no story, no Hollow, no falling (P2 onwards).
