@@ -5,6 +5,14 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2054 -- THE GREAT WATERFALL: its own FOG SCALE (the second render: the dark rock still read white)
+
+m2052 made the rock dark and the render still showed a white slope. Measured in the page: the snow zone's fog is LINEAR, near 40, far 340, colour
+c9d6e6 -- at the falls' 150-200 m that is 37-53 % fog on every colour, so ANY rock there reads as pale blue-white. The zone's fog is not this
+session's to change (and the blizzard's 6..60 m whiteout should still swallow it), so `WFALL.fogK` (.45) scales the fog DEPTH of the waterfall's
+own materials only: `wfFog(m)` chains an `onBeforeCompile` (and a cache key) onto rock, snow, ice (a clone -- the cliffs share the original),
+gold and pines; the four shaders get the same line in place of `fog_vertex`. It now hazes as if it stood 45 % as far. Shipped; renders follow.
+
 ## m2053 -- the watchtower's stair gets a LANDING (his: "a staircase to nowhere")
 
 His: *"There's a mini square platform at the top of the staircase, which then does the right angle and turns to the main tower, and a break in the
