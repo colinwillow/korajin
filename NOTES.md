@@ -5,6 +5,11 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+
+## m15BG -- the BACKPACK closes on a tap anywhere else (Nov 1 2026)
+m2057 left it open until the BACKPACK button was tapped again. A capture-phase `pointerdown` on the window now closes it for any tap outside the panel
+and the button (capture, so the sticks' own handlers cannot swallow it -- the tap that closes it still moves / jumps). Shipped unverified.
+
 ## m2065 -- THE GREAT WATERFALL: snow lips on the column tops; gold bands stop at the rock; the fringe on the real face
 
 His: "keep going". From the m2063 renders: the column tops were bare cut-offs, the gold bands' back corners showed where the face is recessed
