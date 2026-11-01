@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15SF -- HIS snow footsteps replace the synth crunch (Nov 1 2026)
+## m2013 -- HIS snow footsteps replace the synth crunch (Nov 1 2026)
 *"I added a folder called footsteps_snow -- four footsteps in the snow; the one you created kind of hurt my ears. Align, trim, speed up or slow down --
 do what you gotta do and use these instead."* Measured: the four files are ONE recording (4 min 55 s each, decoded envelopes correlate .99999 -- the
 same take saved four ways), 23 s of silence then ~134 steps: a run of fast steps, then mostly single steps 1-2 s apart. Cut by script: every ISOLATED
