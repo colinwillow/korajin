@@ -631,6 +631,23 @@ body.dyn.desk .zone { display: none; }
   width: calc(var(--mr) * 2); height: calc(var(--mr) * 2);
 }
 #qdTop { --mr: 152px; }
+/* m15MN: the quick-draw DIAL -- a ring inside the buttons and a needle that spins to what is out */
+#qdDial { position: fixed; z-index: 6; display: none; --mr: 116px; pointer-events: none;
+  right: calc(20px + var(--padr) - var(--mr) + env(safe-area-inset-right)); bottom: calc(26px + var(--padr) - var(--mr) + env(safe-area-inset-bottom));
+  width: calc(var(--mr) * 2); height: calc(var(--mr) * 2); }
+#qdDial.on { display: block; }
+#qdDial .ring { fill: none; stroke: var(--sky); stroke-opacity: .28; stroke-width: 1.4; }
+#qdDial .arc { fill: none; stroke: var(--sky); stroke-width: 3; stroke-dasharray: 34 470.7; stroke-dashoffset: 17; transform: rotate(-90deg); transform-origin: 116px 116px; }
+#qdDial .ndl { fill: var(--sky); transform-origin: 116px 116px; transition: transform .32s cubic-bezier(.3,1.6,.5,1); filter: drop-shadow(0 0 3px var(--sky)); }
+/* m15MN: the BACKPACK panel -- opens over the left stick from its ring button; equip / unequip what he has collected (a list that grows, scrolls) */
+#packPanel { position: fixed; z-index: 31; display: none; left: calc(14px + env(safe-area-inset-left)); bottom: calc(26px + var(--padr) + 196px + env(safe-area-inset-bottom));
+  width: 210px; max-height: 42vh; overflow-y: auto; -webkit-overflow-scrolling: touch; background: rgba(9,12,20,.82); border: 2px solid #ffcc33; border-radius: 12px; padding: 8px; pointer-events: auto; }
+#packPanel.on { display: block; }
+#packPanel .hd { font-family: var(--ui); font-size: 12px; font-weight: 800; letter-spacing: .16em; color: #ffcc33; margin: 2px 4px 8px; }
+#packPanel button { display: flex; width: 100%; justify-content: space-between; align-items: center; margin: 0 0 6px; padding: 11px 12px; border-radius: 9px; border: 1.6px solid #ffcc33;
+  background: rgba(9,12,20,.5); color: #ffcc33; font-family: var(--ui); font-size: 14px; font-weight: 800; letter-spacing: .1em; }
+#packPanel button.sel { background: #ffcc33; color: #201400; }
+#packPanel button small { font-size: 11px; opacity: .8; }
 #qdRow.on, #qdTop.on { display: block; }
 #qdRow path, #qdTop path, #qdSub2 path { fill: rgba(9,12,20,.5); stroke: var(--rc); stroke-width: 1.6; pointer-events: all; cursor: pointer; }
 #qdRow .deco path, #qdTop .deco path, #qdSub2 .deco path, body.qd #wepRow .deco path { fill: none; pointer-events: none; }
@@ -23284,7 +23301,7 @@ function gunRowBuild() {
 const qdIx = k => WEAP.slots.findIndex(q => k === 'sword' ? q.blade : q.key === k);
 function qdProj() { const k = gearHas(QD.proj) ? QD.proj : ['bow', 'launcher'].find(gearHas); return k ? qdIx(k) : -1; }
 function qdBuild() { const pj = qdProj(), lab = pj >= 0 ? (WEAP.slots[pj].key === 'launcher' ? 'GUN' : WEAP.slots[pj].short || WEAP.slots[pj].label) : 'BOW';
-  buildArcRow(qdRow, [{ label: 'SWORD' }, { label: lab }], 90, i => { const n = i ? qdProj() : qdIx('sword'); if (n >= 0) kitPick(n); }, QD);
+  buildArcRow(qdRow, [{ label: 'SWORD' }, { label: lab }], 90, i => { const n = i ? qdProj() : qdIx('sword'), cur = player.swap ? player.swapTo : player.slot; if (n >= 0) kitPick(n === cur ? 0 : n); }, QD);     // m15MN: tap the one already out = put it away (hands)
   buildArcRow(qdTop, [{ label: 'HANDS' }], 90, () => kitPick(0), QD.top); qdRow._lab = lab; }
 // the left wheel as the equipped weapon's sub-menu
 function aim3Toggle() { AIM3.on = AIM3.on ? 0 : 1; try { localStorage.setItem('mel.aim3b', AIM3.on ? '1' : '0'); } catch (e) {} triggerStop(); paintKit(); }
@@ -23301,11 +23318,22 @@ function qdSub() { const s = slotNow(), bow = s.key === 'bow', proj = bow || s.k
   if (!proj) { paintArcRow(wepRow, 0, -1); return; }
   if (bow) { paintArcRow(wepRow, 1, Math.max(0, ARROWK.indexOf(QD.arrow))); return; }
   paintArcRow(wepRow, 1, 1); const kids = wepRow.firstChild ? wepRow.firstChild.childNodes : []; for (const j of [4, 5]) if (kids[j]) kids[j].classList.toggle('sel', !!AIM3.on); }
+// m15MN (his: "the right side is almost a little dial -- whatever you have selected, there's a thing that shows which, and when you click one of the
+// other buttons it spins, because you can only ever have one: sword, hands or ballistic"). A ring inside the quick-draw buttons with one needle that
+// turns (CSS transition, a little overshoot) to point at what is out: SWORD (left), the projectile (right), HANDS (straight up, the outer button).
+const qdDial = (() => { const d = document.createElement('div'); d.id = 'qdDial'; d.setAttribute('aria-hidden', 'true');
+  d.innerHTML = '<svg viewBox="0 0 232 232" width="232" height="232"><circle cx="116" cy="116" r="80" class="ring"/><g class="ndl"><path d="M116 28 L108 44 L124 44 Z"/><circle cx="116" cy="116" r="80" class="arc"/></g></svg>';
+  document.body.appendChild(d); return d; })();
+function qdDialPaint(a) { qdDial.classList.add('on'); if (qdDial._a === a) return;
+  // the shortest way round from where the needle is (unwrapped degrees, so the transition never spins the long way)
+  const rot = 90 - a, was = qdDial._rot == null ? rot : qdDial._rot; let r = rot; while (r - was > 180) r -= 360; while (was - r > 180) r += 360;
+  qdDial._a = a; qdDial._rot = r; const g = qdDial.querySelector('.ndl'); if (g) g.style.transform = 'rotate(' + r + 'deg)'; }
 function qdPaint() { const show = QD.on && !player.mphSt && !player.riding;
-  if (!show) { qdRow.classList.remove('on'); qdTop.classList.remove('on'); qdSub2.classList.remove('on'); return false; }
+  if (!show) { qdRow.classList.remove('on'); qdTop.classList.remove('on'); qdSub2.classList.remove('on'); qdDial.classList.remove('on'); return false; }
   const pj = qdProj(), lab = pj >= 0 ? (WEAP.slots[pj].key === 'launcher' ? 'GUN' : 'BOW') : 'BOW'; if (!qdRow.firstChild || qdRow._lab !== lab) qdBuild();
   const n = player.swap ? player.swapTo : player.slot, k = WEAP.slots[n] && WEAP.slots[n].key;
   paintArcRow(qdRow, 1, WEAP.slots[n] && WEAP.slots[n].blade ? 0 : (k === 'bow' || k === 'launcher') ? 1 : -1); paintArcRow(qdTop, 1, n === 0 ? 0 : -1);
+  qdDialPaint(WEAP.slots[n] && WEAP.slots[n].blade ? 114 : (k === 'bow' || k === 'launcher') ? 66 : 90);
   qdSub(); paintArcRow(aimRow, 0, -1); return true; }
 function gunPick(i) {
   const gun = WEAP.slots.findIndex(q => q.aim && !q.rocket), rk = WEAP.slots.findIndex(q => q.rocket);
@@ -51440,15 +51468,29 @@ function formStep() {
     if (!form.row || !form.pick) return;
     // m1970 (his: "the old FORMS button is still there -- remove it and put the WINGS in its place, matching the style: a section of a ring"): this ring
     // segment is WINGS now -- tap to mount / unmount the wing-pack (`WING.pack`); filled while mounted. The form wheel is not reachable from here any more.
-    buildArcRow(form.row, [{ label: 'WINGS' }], FORMROW.mid, () => { WING.pack = !WING.pack; if (!WING.pack && player.wing) wingEnd(); try { localStorage.setItem('mel.wings', WING.pack ? '1' : '0'); } catch (err) {} snd('swoosh', { r: WING.pack ? .8 : 1.2, g: .3 }); form.wsel = null; }, FORMROW);
+    buildArcRow(form.row, [{ label: 'BACKPACK' }], FORMROW.mid, () => { packOpen(!BAG.open); form.wsel = null; }, FORMROW);     // m15MN: the WINGS segment became the BACKPACK (the wing suit is inside it)
     form.pick.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); formClose(); });
     form.row.style.setProperty('--rc', '#ffcc33');
   }
-  const on = 1, sel = WING.pack ? 0 : -1;
+  const on = 1, sel = BAG.open ? 0 : -1;
   if (on !== form.rowOn || sel !== form.wsel) { form.rowOn = on; form.wsel = sel; paintArcRow(form.row, on, sel); }
 }
 // a third ring, one segment, straight up -- see the block above for the geometry
-const FORMROW = { mid: 90, r0: 156, r1: 184, span: 30 };     // m1729: up a ring, over the quick-draw sub-menu's outer row
+const FORMROW = { mid: 90, r0: 156, r1: 184, span: 42 };     // m15MN: wider for BACKPACK
+// m15MN: THE BACKPACK (his: "the left side, something you click -- this is where you equip your shield; later boots, the glider, the wing suit... it
+// turns into a sub-panel above it where you select and deselect things, and the list grows as you collect things, so scrollable"). Data-first: one row
+// per item (`has` = collected, `on` / `set` = worn). The floating WINGS button and the WINGS ring segment are gone; the wing suit lives in here.
+const BAG = { open: 0, el: null, items: [
+  { key: 'shield', label: 'ICE SHIELD', has: () => true, on: () => !!SHIELD.on, set: v => { SHIELD.on = v ? 1 : 0; try { localStorage.setItem('mel.shield', v ? '1' : '0'); } catch (e) {} } },
+  { key: 'wings', label: 'WING SUIT', has: () => true, on: () => !!WING.pack, set: v => { WING.pack = !!v; if (!v && player.wing) wingEnd(); try { localStorage.setItem('mel.wings', v ? '1' : '0'); } catch (e) {} } } ] };
+function packPaint() { const P = BAG.el; if (!P) return; P.innerHTML = '<div class="hd">BACKPACK</div>';
+  for (const it of BAG.items) { if (!it.has()) continue; const b = document.createElement('button'), on = it.on(); b.className = on ? 'sel' : ''; b.innerHTML = it.label + '<small>' + (on ? 'ON' : 'OFF') + '</small>';
+    b.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); it.set(!it.on()); snd('swoosh', { r: it.on() ? .8 : 1.2, g: .3 }); packPaint(); });
+    P.appendChild(b); } }
+function packOpen(v) { if (!BAG.el) { const P = BAG.el = document.createElement('div'); P.id = 'packPanel';
+    for (const t of ['pointerdown', 'touchstart', 'touchmove']) P.addEventListener(t, e => e.stopPropagation(), { passive: true });
+    document.body.appendChild(P); }
+  BAG.open = v ? 1 : 0; if (BAG.open) packPaint(); BAG.el.classList.toggle('on', !!BAG.open); snd('swoosh', { r: BAG.open ? 1.4 : 1.1, g: .2 }); }     // m1729: up a ring, over the quick-draw sub-menu's outer row
 
 // ============================================================================================
 // JUICE (m284, ROADMAP A7b) -- a disguise is a resource, not a costume
