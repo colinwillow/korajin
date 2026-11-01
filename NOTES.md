@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m2038 -- THE SNOW-VILLAGE KIT, pass 2: the BRIDGE / AQUEDUCT, and the demo snapped together by ports
+## m2039 -- THE SNOW-VILLAGE KIT, pass 2: the BRIDGE / AQUEDUCT, and the demo snapped together by ports
 
 His: *"Did I mention that we need stuff like this for the village as well?"* (the aqueduct sheet) -- yes, it was in the UPDATE; this is it.
 - `SVKAQ` (bay 8 m, pier 2.2 m, deck 3.4 m wide): `aq_pier` (any height in .3 m steps; showroom shows 6 / 9 / 12 m) with the meander plinth, jade slits
