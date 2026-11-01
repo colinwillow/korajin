@@ -24,6 +24,23 @@ TRIANGLES, measured headless on the whole waterfall scene: first build 483k (flo
 rock 79k). The pipes and the maple are the heaviest species. Rendered: the agave lay flat (stood up as a vase), the blossom was small
 (enlarged). `?wfflora=1`: the six in a row. Shipped unverified on the phone; no textures yet.
 
+## m15D2 -- THE VILLAGE, district 2: the road, the bridges, the stairs, the mammoth ramp, the tunnel stair (Nov 1 2026)
+His: *"start district 2."* (and the kit's 7 missing pieces were sent to the kit session, which keeps refining the kit in parallel -- the village calls
+`snowKitPiece` by name at load, so its passes flow in.)
+- `tools/regionpick.py`: the RAMPS / STAIRS are slopes in the 0.5 m detail grid (`RAMPS`: the gate ramp 0 -> 1.2, the MAMMOTH RAMP market -> W2
+  2.4 -> 5.4 over 13 m, the W2 -> W3 stair, the E2 -> E3 stair, the TUNNEL stair E3 -> E4 7.2 -> 10.8, the step down to the gorge path). The BRIDGES
+  are turned boxes in `region_6.json` `hamlet.boxes` (B1 timber over the creek mouth; B2 and B3 stone across the gorge, climbing in .3 m flat steps;
+  U3 the high timber bridge W3 -> the knoll), and the tunnel's ROOF is a box where the stair runs inside E4. The ROAD (4.5 m) and the LANES (2 m)
+  are polylines painted onto the mesh (tan / pale).
+- FIX: the gorge floor now steps by where it is (6.0 / 3.0 / 0.6 / 0), always BELOW the lower bank beside it -- m2077's floor by distance put it
+  above W2 at B3.
+- FIX: `rgnWall` let nobody step off a bridge onto a bank at the deck's level (it treated the bank edge as a slope to climb); now it only blocks
+  when he is below the ground he is moving onto.
+- FIX (and m2070's too): the region START never stuck -- the forge re-places him at `ARENA.youAt` when his model loads, long after the stage, so he
+  was at 0, 0, 0 (measured headless). `ARENA.youAt` is set to the start now, and he is re-placed while still at the origin / under the ground.
+  Headless after the fix: he stands on B1 at (17, 9.3, -157), the gate, B2's steps and the creek in view.
+- Not walked end to end. Next: district 3 -- the aqueduct and the high route's standable surfaces.
+
 ## m2078 -- the snow kit SILHOUETTE PASS 2: staves, bellied walls, balusters, finials, capstones
 
 His: *"Sounds good."* (the second silhouette list)
