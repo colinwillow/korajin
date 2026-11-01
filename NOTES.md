@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15CT -- THE CLIMB TOWER: C1 -> C2 -> C3 in one tube (Nov 1 2026)
+His "keep going on your own -- I'll make Cinema 4D blockouts in parallel; whichever way builds fun levels wins." KORAJIN > Climb Tower (C1-C3)
+(`?w=forge&zone=cell&cell=CT`): the ice temple's Climb Tower (ICE_TEMPLE_HEX.md) as one continuous route in a tube (r 10, 24 m):
+- C1 wall run UP: the 2.6 m face, the 16 m sprint lane into the 3.6 m face (as C1)
+- C2 CHIMNEY: from the 6.2 m shelf into the slot between the tube wall and a free-standing slab 4.6 m in (the measured chimney gap); kick up to 16 m
+- C3 COMBINE: along a ledge, a SIDE WALL RUN across a ~5 m gap on a flat run-wall panel (a single chord box: side runs need a face longer than
+  `WRUN.minLen` 1.2 m -- the tube is cut into 12-degree segments for the same reason), a HIGH BAR over the next gap, and a ZIP LINE from the top
+  (gold shelf) back down across the tube to the floor by the door -- the loop closes
+New piece kinds in `cellStage`: `slabs` (free-standing curved walls), `runwalls`, `bars` (hbarMake), `zips` (ZIPS + a cable). High shelves are 1.2 m
+slabs on the wall (open beneath). Bars and zips are added a tick later (HBAR / ZIPS are declared further down the module: measured TDZ throw). Boot-
+checked (71 colliders, spawn at the door). Status: blockout, waiting on play notes. C1 alone is still KORAJIN > Temple Cell C1.
+
 ## m2044 -- THE GREAT WATERFALL: the HIDDEN CAVE under the falls
 
 His: *"Maybe there's a hidden cave under the waterfall."* At water level, straight in BEHIND the curtain (only found by walking into the falling

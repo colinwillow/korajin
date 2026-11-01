@@ -11759,7 +11759,22 @@ const CELLS = {
     doors: [{ id: 'in', a0: 200, a1: 220, y0: 0, y1: 3.2 }, { id: 'out', a0: 68, a1: 88, y0: 6.2, y1: 9.4 }],     /* in order round the tube: door 210 -> s1 240-285 -> lane 285-400 -> s3 400-450 (exit above it at 78); measured m2040: the old angles wrapped the lane over the door */
     shelves: [{ id: 's1', a0: 240, a1: 285, dep: 3.5, y: 2.6, col: 0xb8c2d0 }, { id: 'lane', a0: 285, a1: 400, dep: 3.5, y: 2.6, col: 0xa8b2c0 }, { id: 's3', a0: 400, a1: 450, dep: 4, y: 6.2, col: 0xc8d0dc }],
     arrows: [{ at: 'face', shelf: 's1', a: 262 }, { at: 'end', shelf: 's3' }, { at: 'lane', shelf: 'lane', a: 320 }, { at: 'lane', shelf: 'lane', a: 360 }],
-    spawn: { a: 210, r: 7, y: 0 } } };
+    spawn: { a: 210, r: 7, y: 0 } },
+  // m15CT: THE WHOLE CLIMB TOWER -- C1 -> C2 -> C3 stacked in one tube, so it plays as one route (ICE_TEMPLE_HEX.md):
+  //   C1  wall run UP: a 2.6 m face, then a 16 m sprint lane into a 3.6 m face (as C1)
+  //   C2  CHIMNEY: from the 6.2 m shelf, into the slot between the tube wall and a free-standing slab 4.6 m in (the measured chimney gap), kick up to 16 m
+  //   C3  COMBINE: off the chimney top along a ledge, a SIDE WALL RUN across a 5 m gap on a run-wall panel, a HIGH BAR swing over the next gap, and a ZIP
+  //       LINE from the top back down across the tube to the floor by the door -- the loop closes
+  CT: { title: 'Climb Tower -- C1 wall run up, C2 chimney, C3 wall run + bar + zip', R: 10, H: 24, wallT: 1, tubeStep: 12,
+    doors: [{ id: 'in', a0: 204, a1: 228, y0: 0, y1: 3.2 }],
+    shelves: [{ id: 's1', a0: 240, a1: 285, dep: 3.5, y: 2.6, col: 0xb8c2d0 }, { id: 'lane', a0: 285, a1: 400, dep: 3.5, y: 2.6, col: 0xa8b2c0 }, { id: 's3', a0: 400, a1: 450, dep: 4, y: 6.2, col: 0xc8d0dc },
+      { id: 's4', a0: 450, a1: 492, dep: 4.6, y: 6.2, col: 0xc0c8d4 }, { id: 's5', a0: 492, a1: 530, dep: 4, y: 16, col: 0xd0d8e2 }, { id: 's6', a0: 565, a1: 592, dep: 4, y: 16, col: 0xd0d8e2 }, { id: 's7', a0: 625, a1: 655, dep: 4, y: 16.4, col: 0xe0c070 }],
+    slabs: [{ a0: 452, a1: 488, rIn: 4.4, rOut: 5.4, y0: 6.2, y1: 16, col: 0x9a8a6a }],     // the chimney's inner face (tube wall = the outer face, 4.6 m apart)
+    runwalls: [{ a0: 528, a1: 567, r: 9.4, y0: 15, y1: 19.5, col: 0x9a8a6a }],     // C3's side-wall-run panel beside the 5 m gap
+    bars: [{ a: 608, r: 7.6, y: 16.2 }],     // the high bar over the second gap (s6 -> s7)
+    zips: [{ A: [650, 7.4, 18.6], B: [216, 5.2, 1.8] }],     // from the top back down to the door
+    arrows: [{ at: 'face', shelf: 's1', a: 262 }, { at: 'end', shelf: 's3' }, { at: 'lane', shelf: 'lane', a: 320 }, { at: 'lane', shelf: 'lane', a: 360 }, { at: 'lane', shelf: 's4', a: 470 }],
+    spawn: { a: 216, r: 7, y: 0 } } };
 const TCELL = { want: 0, id: (() => { try { const m = /[?&]cell=([A-Za-z0-9]+)/.exec(location.search); return m ? m[1].toUpperCase() : 'C1'; } catch (e) { return 'C1'; } })(), stat: null };
 try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {}
 function obox(cx, cz, hx, hz, yaw, y0, y1) { const cs = Math.cos(yaw), sn = Math.sin(yaw), ex = Math.abs(cs) * hx + Math.abs(sn) * hz, ez = Math.abs(sn) * hx + Math.abs(cs) * hz;
@@ -11773,14 +11788,21 @@ function cellStage(g) { const C = CELLS[TCELL.id] || CELLS.C1, d2r = Math.PI / 1
   // floor + tube (collider: arcs of turned boxes, broken at the doors; visual: the inside of a cylinder only)
   boxes.push({ minx: -C.R - 2, maxx: C.R + 2, miny: -1, maxy: 0, minz: -C.R - 2, maxz: C.R + 2 }); add(0xeef0f4, new THREE.CircleGeometry(C.R + .5, 48).rotateX(-Math.PI / 2));
   const inDoor = (a, y0, y1) => C.doors.find(D => { const aa = ((a % 360) + 360) % 360; return aa >= D.a0 && aa <= D.a1 && y0 < D.y1 && y1 > D.y0; });
-  for (let a = 0; a < 360; a += 6) { const a1 = a + 6, am = a + 3; const cuts = [0, C.H]; for (const D of C.doors) { const aa = am; if (aa >= D.a0 && aa <= D.a1) { cuts.push(D.y0, D.y1); } } cuts.sort((p, q) => p - q);
+  const ts = C.tubeStep || 6; for (let a = 0; a < 360; a += ts) { const a1 = a + ts, am = a + ts / 2; const cuts = [0, C.H]; for (const D of C.doors) { const aa = am; if (aa >= D.a0 && aa <= D.a1) { cuts.push(D.y0, D.y1); } } cuts.sort((p, q) => p - q);
     for (let k = 0; k + 1 < cuts.length; k++) { const y0 = cuts[k], y1 = cuts[k + 1]; if (y1 - y0 < .05 || inDoor(am, y0 + .01, y1 - .01)) continue; cellArc(C.R, C.R + C.wallT, a, a1, y0, y1, boxes, null, 9); } }
   { const tw = new THREE.Mesh(new THREE.CylinderGeometry(C.R, C.R, C.H, 64, 1, true).translate(0, C.H / 2, 0), new THREE.MeshStandardMaterial({ color: 0xc4cad4, roughness: .9, side: THREE.BackSide })); g.add(tw); }
   for (const D of C.doors) { const am = (D.a0 + D.a1) / 2 * d2r, x = Math.cos(am) * C.R, z = Math.sin(am) * C.R, w = (D.a1 - D.a0) * d2r * C.R, yaw = -Math.atan2(Math.cos(am), -Math.sin(am));
     const fr = new THREE.Group(); for (const sx of [-1, 1]) fr.add(new THREE.Mesh(new THREE.BoxGeometry(.3, D.y1 - D.y0, .5).translate(sx * w / 2, (D.y1 - D.y0) / 2, 0), new THREE.MeshBasicMaterial({ color: 0x5ee8ff, toneMapped: false })));
     fr.add(new THREE.Mesh(new THREE.BoxGeometry(w + .3, .3, .5).translate(0, D.y1 - D.y0, 0), new THREE.MeshBasicMaterial({ color: 0x5ee8ff, toneMapped: false }))); fr.position.set(x, D.y0, z); fr.rotation.y = yaw; g.add(fr);
     if (D.y0 > .5) { add(0xd0d6e0, new THREE.BoxGeometry(w, .3, 3).rotateY(yaw).translate(Math.cos(am) * (C.R + 1.5), D.y0 - .15, Math.sin(am) * (C.R + 1.5))); boxes.push(obox(Math.cos(am) * (C.R + 1.5), Math.sin(am) * (C.R + 1.5), w / 2, 1.5, -yaw, D.y0 - .3, D.y0)); } }     // a sill to stand in the exit door
-  const S = {}; for (const sh of C.shelves) { S[sh.id] = sh; cellArc(C.R - sh.dep, C.R, sh.a0, sh.a1, 0, sh.y, boxes, geo[sh.col] || (geo[sh.col] = [])); }
+  const S = {}; for (const sh of C.shelves) { S[sh.id] = sh; const y0 = sh.y > 8 ? sh.y - 1.2 : 0; cellArc(C.R - sh.dep, C.R, sh.a0, sh.a1, y0, sh.y, boxes, geo[sh.col] || (geo[sh.col] = [])); }     /* a high shelf is a 1.2 m slab on the wall, not a solid pillar to the floor */
+  for (const sl of C.slabs || []) cellArc(sl.rIn, sl.rOut, sl.a0, sl.a1, sl.y0, sl.y1, boxes, geo[sl.col] || (geo[sl.col] = []), 2.5);
+  for (const W of C.runwalls || []) { const a0 = W.a0 * d2r, a1 = W.a1 * d2r, x0 = Math.cos(a0) * W.r, z0 = Math.sin(a0) * W.r, x1 = Math.cos(a1) * W.r, z1 = Math.sin(a1) * W.r, L = Math.hypot(x1 - x0, z1 - z0), yaw = Math.atan2(z1 - z0, x1 - x0);     // ONE flat panel along the chord: a side wall run needs a face longer than WRUN.minLen
+    boxes.push(obox((x0 + x1) / 2, (z0 + z1) / 2, L / 2, .3, yaw, W.y0, W.y1)); (geo[W.col] = geo[W.col] || []).push(new THREE.BoxGeometry(L, W.y1 - W.y0, .6).rotateY(-yaw).translate((x0 + x1) / 2, (W.y0 + W.y1) / 2, (z0 + z1) / 2)); }
+  setTimeout(() => {     /* HBAR and ZIPS are declared further down the module than this stage runs (measured: TDZ throw) */
+  for (const Bb of C.bars || []) { const am = Bb.a * d2r; try { HBAR.list.push(hbarMake(Math.cos(am) * Bb.r, Math.sin(am) * Bb.r, -am, Bb.y - HBAR.h + 1.2, 0)); } catch (e) { note('CELL BAR ' + e.message); } }
+  for (const Zz of C.zips || []) { const P3 = q => [Math.cos(q[0] * d2r) * q[1], q[2], Math.sin(q[0] * d2r) * q[1]], zip = { A: P3(Zz.A), B: P3(Zz.B) }; ZIPS.push(zip);
+    g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...zip.A), new THREE.Vector3(...zip.B)]), new THREE.LineBasicMaterial({ color: 0x3a3a3a }))); } }, 0);
   // chevrons: on a shelf's inner FACE (run up here), on a shelf's END face (sprint into it), or on the lane floor (this way)
   const chev = (x, y, z, yaw, up) => { const m = new THREE.Group(); for (let k = 0; k < 3; k++) { const c = new THREE.Mesh(new THREE.BoxGeometry(1.1, .14, .04), new THREE.MeshBasicMaterial({ color: 0xff8a2a, toneMapped: false })); const c2 = c.clone(); c.position.set(-.38, k * .45, 0); c2.position.set(.38, k * .45, 0); c.rotation.z = .6; c2.rotation.z = -.6; m.add(c, c2); }
     m.position.set(x, y, z); m.rotation.y = yaw; if (!up) m.rotation.x = -Math.PI / 2; g.add(m); };
@@ -65978,6 +66000,7 @@ function startGate() {
       btn(el, 'The Sky Temple', 'A sandstone temple on a floating island above the clouds -- climb it. (Being built, step by step.)', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=temple'); });
       btn(el, 'The Proving Ground', 'How far and how high he can really go: gap lanes from 6 to 39 m, pillars from 3 to 24 m, and a meter that reports every jump. (Measure, then design.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=prove'); });
       btn(el, 'The Rope Course', 'A rope bridge between two towers that sags and sways under you. (The rope sandbox: the tightrope, the swing rope and the ladders come next.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=rope'); });
+      btn(el, 'Climb Tower (C1-C3)', 'LEVEL_METHOD: the ice temple\'s Climb Tower as one tube -- C1 run up two faces, C2 a chimney to 16 m, C3 a side wall run, a high bar and a zip line back down. Grey blockout to play.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=cell&cell=CT'); });
       btn(el, 'Temple Cell C1', 'LEVEL_METHOD: one designed cell at a time. C1 -- the bottom of the Climb Tower: a tube; a 2.6 m face to run up, then a sprint lane into a 3.6 m face, then the exit door. Play it and give notes.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=cell&cell=C1'); });
       btn(el, 'Temple Layout', 'The temple layout generator: a chamber grown from a seed -- a route of platforms up the walls, each jump sized from the move table, bridges over bridges, a sleeping giant on the mesa in the middle. (Grey boxes; TOOLS > LAYOUT: NEW SEED.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=tlayout'); });
       btn(el, 'The Snowfield', 'Deep snow under a falling sky: trudge, leave tracks, plough, dive -- the snow bounces off you. (An element sandbox.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=snow'); });
