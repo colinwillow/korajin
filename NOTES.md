@@ -6,6 +6,20 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## m2073 -- THE GREAT WATERFALL: ALIEN FLORA instead of pine trees
+
+His: "this game is supposed to be an alien world, not earth -- why the hell are there pine trees? Is there any way to make cooler alien plants?"
+The waterfall's pines (stacked cones in `snow_needles`) are gone. `flora(x, y, z, s)` in `wfMake` grows one of three species, all in TWO draws
+(a lit 'flesh' material with vertex colours, an unlit 'glow'), palette in `WFALL.flora`:
+- LANTERN STALK: a tapered violet stem (a chain of cylinders with a ball at each joint) curling over like a question mark, a glowing bulb
+  hanging off the tip (teal or magenta), blade leaves fanned at the foot.
+- SPIRAL FRONDS: 3-5 teal fiddlehead coils rising and curling inward, a glowing bead on each tip.
+- BELL TREE: a thick stalk with 3-4 stacked translucent glowing caps (pink or teal), tendrils hanging under each.
+Sizes went up after the first render (they were specks beside 60 m pillars): pillar tops 1.6-2.9x, the pool's rim 1.1-2x, and a new GROVE of
+30 along the cliff's foot and the pool's banks (clear of the pool, the ledges and any rising shrine). Rendered; the shrine on the rim stands
+clear of them. (The first render's "sunk" rim shrine was the shot script reading it before a frame had posed it -- not the game.)
+The Snowfield's own trees and bamboo are other code (SNOWZ.pines, the willow garden) and are untouched. Shipped unverified on the phone.
+
 ## m2072 -- the snow kit DETAIL PASS 5: thatch shows, painted gold and jade, carved plaques
 
 His: *"Another detail pass?"*
