@@ -13,6 +13,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15SG -- THE SAGE: the toad wanderer meditating, floating over the hot spring, a pagoda shrine behind (Nov 1 2026)
+His: *"the toad with the hat -- can we give him a pose from Mixamo? A floating meditating guy, a shrine for him, he's the guy you go to for wisdom,
+somewhere in the main village."* The Forge library (2,392 clips) has no lotus/meditation clip; baked three candidates onto `toad_wanderer_game.glb`
+(`tools/forge.cjs ... --lib retarget-anims/library/clips`, clips only) into `models/characters/anims/toad_sage.glb` (0.5 MB): `meditate`
+(Sitting_Idle, "sitting on the floor"), `pray` (Praying_4, kneeling) and `sit_cross` (Male_Sitting_Pose_9) -- rendered side by side: `meditate` reads
+as cross-legged meditation (legs folded, hands by the knees). `SNOWVIL.sage`: he floats at (5, 2.5, 67.5) over the spring pool facing the square,
+bobbing .18 m, a slow jade ring under him; the kit's `aq_shrine` pagoda stands behind the pool. Not yet: talking to him (the wisdom), and a true lotus
+pose (a Mixamo "meditating" clip into the library would replace `meditate` with no code change -- same role name). Shipped unverified.
+
 ## m2126 -- the snow kit QUALITY PASS: smooth horns, flush straps, snow that follows the curve, timber grain along the wood, banner proportions
 
 His (phone screenshots): *"Interpolate the curves so the jagged lines between control points look nicer; floating geometry (white caps) and things roughly
