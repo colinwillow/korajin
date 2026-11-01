@@ -228,3 +228,18 @@ are climbable at the sides (3 m = a sprint wall-up).
 Every terrace wall is ~3 m: the road and the lanes go round, a SPRINT wall-up (lip 3.6) goes straight over. The two banks are offset ~1.5 m, so
 across the gorge a RUN + JUMP (2.2 high, 5.9 far) reaches the lower side from the higher one, never the other way: down-and-across is free, up
 is the long way. Pass 6 sizes every one of these against the move table.
+
+## PASS 5 -- LANDMARKS + SIGHTLINES (drafted; measured on the region heightmap, not guessed)
+**The landmarks, by rank:** (1) the AQUEDUCT -- the spine, seen from everywhere inside the hamlet; (2) the STEAM plumes (bath, spring) and the
+WATCHTOWER -- what you see from outside; (3) the small ones you steer by: the well, the water wheel, the bath door, the shrine's jade glow (a night beacon).
+
+**The six views inside the hamlet:** 1 the GATE frames the aqueduct crossing high over the gorge; 2 from the MARKET, the bath steam across the gorge
+and the shrine above it; 3 UNDER THE AQUEDUCT the road turns and the three falls stack up to the shrine; 4 from B3, mid-gorge, down to the gate and
+up to the spring; 5 the WATCHTOWER top; 6 the SHRINE, the reward view: every roof below, the field beyond.
+
+**Measured on `levels/region_6.bin` (line of sight, eye 1.7 m):**
+- **The REVEAL is the top of the pass** from the willow shrine (26 m up, at -62, -163): the gate and a 25 m steam plume come into view 47 m away,
+  below you. Before that you see nothing of the village -- the valleys wind. That is the arrival moment.
+- **The temple cannot be seen from the village as the map stands.** Even from the watchtower (16 m) a 60 m crown on the temple is hidden by one
+  ridge point (22, -118, ground 54 m). So at blockout **a NOTCH is cut in that ridge (~10 m)**: from the watchtower top the temple's crown sits in the
+  notch -- the first sight of where the game is going. (From the TEMPLE STAIR it is in plain view.)
