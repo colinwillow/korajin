@@ -167,6 +167,7 @@ meta['hamlet'] = {'base': BASE, 'x0': float(x0), 'z0': float(z0), 'nx': nx, 'nz'
     'gate': [round(float(v), 1) for v in h2w((-12, 18))],
     'boxes': [dict(b, id=bid) for bid, L in BRIDGES for b in L] + [dict(b, id='U2roof') for b in ROOF] + [dict(b, id=bid) for bid, b in BLOCKS] + [dict(b, id='aq') for b in AQB],
     'zips': [ZIP],
+    'stable': [round(float(v), 1) for v in h2w((6, 26))], 'stableYaw': round(float(math.atan2(*(h2w((-12, 22.5)) - h2w((6, 26))))), 3),     # the tame mammoth waits here, facing the gate
     'paint': [{'w': 4.5, 'col': 'road', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in ROAD]}] + [{'w': 2.0, 'col': 'lane', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in L]} for L in LANES],
     'bridgeLabels': [{'name': bid, 'x': L[len(L) // 2]['cx'], 'z': L[len(L) // 2]['cz'], 'y': L[len(L) // 2]['y1']} for bid, L in BRIDGES]}
 for q in meta['places']:
