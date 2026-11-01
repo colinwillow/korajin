@@ -10,6 +10,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2103 -- THE FLORA: shake the snow off a plant (the pines' trick, back)
+
+His: "yeah add it" (m2102 lost the pine-shake). Every plant vertex now carries its plant's index (`aPI`); each plant set (the waterfall's
+and the Snowfield's) has a `snowU` -- one snow level per plant, four to a vec4 -- and `wfSnowShake` on its SNOW material discards the snow's
+fragments in ~30 cm cells (a hash of the world cell) above that level. `wfShakeStep`: when he runs fast (> 5 m/s), rolls or swings within
+2.4 x the plant's size and below its top, its snow drops at once -- three bursts of powder (`snowPuff`) and a thump -- and comes back in
+patches after 8 s, over 22 s (the pine's timing). Applies to all the species (the heroes' own snow is not in a plant set). No draws added.
+Rendered: a field view with the plants at full snow and at .35. Shipped unverified on the phone.
+
 ## m2102 -- THE SNOWFIELD'S FLORA: his alien plants in place of the pines and bamboo
 
 The main session stopped editing index.html at his request (its last push m2100) and relayed: "swap your plants in for what is already there".
