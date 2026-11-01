@@ -12370,7 +12370,7 @@ function rgnHamlet(g) { const M = RGN.hm, nx = M.nx, nz = M.nz, D = RGN.D, sc = 
     if (M.paint && k > .3) { const x = P.getX(i), z = P.getZ(i); for (const L of M.paint) { let hit = 0; for (let q = 0; q + 1 < L.pts.length && !hit; q++) { const [ax, az] = L.pts[q], [bx, bz] = L.pts[q + 1], dx = bx - ax, dz = bz - az, l2 = dx * dx + dz * dz || 1, tt = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / l2)); if (Math.hypot(x - ax - tt * dx, z - az - tt * dz) < L.w / 2) hit = 1; }
         if (hit) { const c = L.col === 'road' ? [.78, .66, .5] : [.86, .79, .68]; col[i * 3] = c[0]; col[i * 3 + 1] = c[1]; col[i * 3 + 2] = c[2]; break; } } } }
   geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .9 })); m.receiveShadow = true; m.castShadow = true; g.add(m);
+  const m = new THREE.Mesh(geo, snowTriMat('snow_snow', 4, 0xffffff, .9, true)); m.receiveShadow = true; m.castShadow = true; g.add(m);     // m15MV: painted snow
   for (const L of M.labels) { const lb = rgnLabel(L.name); lb.position.set(L.x, L.y + 3.2, L.z); lb.scale.set(9, 1.7, 1); g.add(lb); }
   { const C = M.creek, pts = C.map(c => new THREE.Vector3(c[0], c[2] + .1, c[1])), cur = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .2);
     const tg = new THREE.TubeGeometry(cur, 120, .55, 6, false); const cm = new THREE.Mesh(tg, new THREE.MeshStandardMaterial({ color: 0x5fc4ea, emissive: 0x1a6a8a, emissiveIntensity: .5, roughness: .2 }));
@@ -12386,9 +12386,19 @@ function rgnHamlet(g) { const M = RGN.hm, nx = M.nx, nz = M.nz, D = RGN.D, sc = 
   for (const Z of (M.zips || [])) { const zip = { A: Z[0], B: Z[1] }; ZIPS.push(zip); g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...zip.A), new THREE.Vector3(...zip.B)]), new THREE.LineBasicMaterial({ color: 0x3a3a3a }))); }
   for (const L of (M.bridgeLabels || [])) { const lb = rgnLabel(L.name); lb.position.set(L.x, L.y + 2.2, L.z); lb.scale.set(4, .8, 1); g.add(lb); }
   RGN.stat = 'hamlet ok'; }
+// m15MV: the region's own per-frame step (the Snowfield's `snowStep` assumes its 160 m field): the sky held, his snow footsteps, the snowfall
+function rgnStep(dt) { try { snowSkyHold(); } catch (e) {}
+  if (SFX.buf.foot_SNOW && SFX.buf.foot_SNOW.filter(Boolean).length >= 2 && STEP.set !== 'SNOW') STEP.set = 'SNOW';
+  const F = RGN.fall; if (F) { const c = camera.position, P = F.P; for (let i = 0; i < F.N; i++) { let y = P[i * 3 + 1] - dt * (1.1 + (i % 7) * .12); P[i * 3] += Math.sin(i + performance.now() * .0004) * dt * .3;
+      if (y < -2) y += 32; P[i * 3 + 1] = y; } F.pts.position.set(c.x, c.y - 14, c.z); F.pts.geometry.attributes.position.needsUpdate = true; }
+  if (typeof svkStep === 'function' && RGN.D) { try { svkStep(dt); } catch (e) {} } }     // the kit's moving pieces, when district 5 places them
 function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.fog) { scene.fog.color.setHex(0xc9d6e6); scene.fog.near = 70; scene.fog.far = 520; }
   hemi.color.setHex(0xdfe9ff); hemi.groundColor.setHex(0xb8c4d8); camera.far = Math.max(camera.far, 1200); camera.updateProjectionMatrix();
   RGN.stat = 'loading'; ARENA.youAt = [0, 0];
+  try { snowSkyLoad(); } catch (e) {}     // m15MV: the Snowfield's sky panorama (held each frame by rgnStep)
+  { const N = 900, P = new Float32Array(N * 3); for (let i = 0; i < N; i++) { P[i * 3] = (Math.random() - .5) * 60; P[i * 3 + 1] = Math.random() * 30; P[i * 3 + 2] = (Math.random() - .5) * 60; }     // m15MV: falling snow round the lens
+    const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(P, 3)); const pts = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xffffff, size: .09, transparent: true, opacity: .85, depthWrite: false }));
+    pts.frustumCulled = false; g.add(pts); RGN.fall = { pts, P, N }; }
   Promise.all([fetch(A(RGN.file)).then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }), fetch(A(RGN.meta)).then(r => r.json())]).then(([buf, meta]) => {
     RGN.H = new Uint16Array(buf); RGN.n = meta.n; RGN.cell = meta.cell; RGN.half = meta.half; RGN.scale = meta.scale; RGN.places = meta.places;
     const N = RGN.n - 1, geo = new THREE.PlaneGeometry(RGN.half * 2, RGN.half * 2, N, N).rotateX(-Math.PI / 2), P = geo.attributes.position;
@@ -12397,7 +12407,7 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
     for (let i = 0; i < P.count; i++) { const up = Nn.getY(i), y = P.getY(i), k = Math.min(1, Math.max(0, (up - .62) / .2)), hi = Math.min(1, Math.max(0, (y - 70) / 50));     // flat = snow, steep = rock; the highest rock snow-capped
       const r = .46 + (.95 - .46) * k, gg = .48 + (.97 - .48) * k, b = .54 + (1 - .54) * k; col[i * 3] = r + (1 - r) * hi * .6; col[i * 3 + 1] = gg + (1 - gg) * hi * .6; col[i * 3 + 2] = b + (1 - b) * hi * .6; }
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .92 })); m.receiveShadow = true; g.add(m);
+    const m = new THREE.Mesh(geo, snowTriMat('snow_snow', 5, 0xffffff, .92, true)); m.receiveShadow = true; g.add(m);     // m15MV: the Snowfield's painted snow (triplanar), the vertex colours still darken the rock faces
     // a far ring of peaks past the edge, so the map does not end in a drop
     { const far = new THREE.Mesh(new THREE.RingGeometry(RGN.half * 1.1, 1100, 48, 1).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xe9eef6, roughness: .95 })); far.position.y = 60; g.add(far); }
     // the places: a mint pole + its name
@@ -38229,7 +38239,7 @@ function stepPlayer(dt) {
   try { slamRingStep(dt); } catch (e) { for (const S of SLAMRINGS) { S.m.removeFromParent(); if (S.w) S.w.removeFromParent(); } SLAMRINGS = []; note('SLAMRING THREW ' + e.message); }     // m1969: every world, every frame (it lived in arenaStep: frozen rings everywhere else)
   if (HDROP.want && rig.actions && rig.actions[HDROP.land]) { HDROP.want = 0; heroDrop(player.pos.x, player.pos.y, player.pos.z, player.faceH); }     // m1953
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
-  if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (DRAGZ.on) dragStep(dt); }     // m2051 roomStep
+  if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (RGN.live) rgnStep(dt); if (DRAGZ.on) dragStep(dt); }     // m2051 roomStep
   if (PLANT.list.length) plantStep(dt);     // m1424
   if (ROCK.loose.length || ROCK.broken.length) rockStep(dt);     // m1745
   if (RESTORE.list.length) restoreStep(dt);     // m1505     // m1105; m1119; m1120: each building's own life

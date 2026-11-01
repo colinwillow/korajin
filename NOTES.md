@@ -6,6 +6,18 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+
+## m15MV -- THE MOVE-IN, step 1: the region gets the Snowfield's look (Nov 1 2026)
+His: *"are we expanding on what we've already made -- a lot of the other stuff is good"* -> yes: the existing snow pieces MOVE onto the region map
+(REGION_METHOD stage 2 table); the village is the one new place. *"Do whatever makes the most sense"* -> the move-in first, before the buildings.
+- The region terrain and the hamlet's ground use `snowTriMat('snow_snow', ...)` (the Snowfield's painted triplanar snow; the vertex colours still
+  darken the rock faces). The SKY PANORAMA (`snowSkyLoad` + `snowSkyHold`, his image) is loaded and held each frame by the new `rgnStep`.
+- `rgnStep` (called beside `snowStep` in stepPlayer): the sky, his recorded SNOW footsteps (`STEP.set = 'SNOW'`), a falling-snow field round the
+  lens (900 points, one draw), and `svkStep` for the kit's moving pieces once district 5 places them (the kit session's m2083 note).
+- Not yet moved in (next steps): the deformable snow pack + footprints (`snowStep` is tied to the 160 m field), blizzard / night / aurora, the pond's
+  sliding ice, and the PIECES at their map spots (willow, mammoth + herd, pond, dragon lair, waterfall, grotto, stones, pines).
+- Checked headless: loads, the painted snow and the sky picture on screen.
+
 ## m2083 -- the snow kit: SEVEN NEW PIECES for the village (water wheel, winch lift, hot pool, spring + geyser, timber bridge, terrace body, tunnel stair)
 
 Asked by the village session for VILLAGE_BLUEPRINT.md pass 7 (Colin approved sending it). Same conventions; a new showroom row WATER / MOVING / TERRAIN.
