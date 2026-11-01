@@ -15997,6 +15997,11 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
         clear: [[13.5, -40, 2.2], [22.6, -45.6, 2.6], [-.7, -36.9, 2.6]] } }],
   // the routes across the cracks: the Rope Course's bridges (verlet; they sag, sway and dip under him). `from` / `to` are island-local [x, y, z]
   // ('rim:<deg>' = the garden's rim at that angle; 'inner:<chunk>:<deg>' = that chunk's crack edge facing it)
+  // THE FLYING SHIP (his: "we have to bring in the flying ship ... after the Hollow comes everything starts falling and you ride your flying ship down
+  // and it crashes into the ocean"): the Ship (`shipModel`, the dojo's flying version: Jin engines, canvas wings) MOORED at a sky dock off the
+  // homestead's outer edge, its deck level with the farm, a pier out to it. Not flown yet -- P4 rides it down. `at` = the homestead's outer edge at
+  // that angle, `off` m out from it to the ship's centreline; it lies along the edge.
+  ship: { id: 'flying_ship', chunk: 'chunk_home', a: 80, off: 7.6, bob: .12 },
   // (m2161: run DIAGONALLY across the cracks, so a 4 m and a 6 m climb stay a walkable 17-18 degrees)
   bridges: [{ id: 'bridge_garden_home', from: 'rim:78', to: 'inner:chunk_home:100', w: 1.5 }, { id: 'bridge_home_summit', from: [40.2, 4, -22.3], to: [24.65, 10, -32.13], w: 1.4 }],
   far: [{ id: 'far_pagoda', at: [-140, 48, -300], r: 30, d: 70, pagoda: 1, trees: 4, falls: [160, 220] }, { id: 'far_e', at: [170, 14, -210], r: 20, d: 46, trees: 4, falls: [250] },
@@ -16811,6 +16816,25 @@ function gdnChunkGeo(poly0, y0, depth, seed, cx, cz) { let poly = poly0.slice();
     for (const v of [A, B, C]) CP.push(v[0], y0, v[2]); tris.push(A[0], y0 + Y0, A[2], B[0], y0 + Y0, B[2], C[0], y0 + Y0, C[2]); }
   const cap = new THREE.BufferGeometry(); cap.setAttribute('position', new THREE.Float32BufferAttribute(CP, 3)); cap.computeVertexNormals();
   return { side, cap, tris }; }
+// THE FLYING SHIP, moored: the Ship's model placed by GARDEN.ship, its deck boxes and ramps registered (turned into the garden's frame), a pier
+function gdnShip(G) { const Z = GARDEN, S = Z.ship, C = Z.isleAt && Z.isleAt[S.chunk]; if (!S || !C) return; const Ch = Z.chunks.find(c => c.id === S.chunk), Y0 = Z.top, a = S.a * Math.PI / 180;
+  let ep = C.outer[0], bd = 9; for (const p of C.outer) { let d = Math.abs(Math.atan2(p[0], p[2]) - a); d = Math.min(d, 6.2832 - d); if (d < bd) { bd = d; ep = p; } }
+  const ux = Math.sin(a), uz = Math.cos(a), er = Math.hypot(ep[0], ep[2]), tx = Math.cos(a), tz = -Math.sin(a), md = shipModel({ air: true }), B2 = SHIPZ.B / 2;
+  const cx = ux * (er + S.off), cz = uz * (er + S.off), yaw = Math.atan2(tx, tz), gy = Ch.H - md.deckY;     // the ship lies along the edge, its deck at the chunk's height
+  md.g.position.set(cx, gy, cz); md.g.rotation.y = yaw; md.g.name = 'garden_' + S.id; G.add(md.g); Z.shipM = md; Z.shipBase = { y: gy, yaw }; Z.pieces.ship = md.g;
+  const cs = Math.cos(yaw), sn = Math.sin(yaw), W = (x, z) => [cx + x * cs + z * sn, cz - x * sn + z * cs];     // ship-local -> garden (Ry(yaw))
+  for (const b of md.deck) { const [wx, wz] = W((b.minx + b.maxx) / 2, (b.minz + b.maxz) / 2); BOXES.push(obox(wx, wz, (b.maxx - b.minx) / 2, (b.maxz - b.minz) / 2, -yaw, Y0 + gy + b.miny, Y0 + gy + b.maxy)); }
+  const tr = []; for (let i = 0; i < md.tris.length; i += 3) { const [wx, wz] = W(md.tris[i], md.tris[i + 2]); tr.push(wx, Y0 + gy + md.tris[i + 1], wz); } try { bldTris(Z.shipTriO = Z.shipTriO || {}, tr); } catch (e) {}
+  // the pier: from a metre inside the edge out over the gap to the ship's side, planks on two timber stringers, posts and a rope rail
+  { const M = gdnMats(), x0 = er - 1.2, x1 = er + S.off - B2 + .4, L = x1 - x0, mid = (x0 + x1) / 2, py = Ch.H + .12, parts = [], rp = [];
+    for (let i = 0; i < Math.ceil(L / .32); i++) { const r = x0 + (i + .5) * L / Math.ceil(L / .32); parts.push(new THREE.BoxGeometry(.28, .08, 2.2).rotateY(yaw).translate(ux * r, py, uz * r)); }
+    for (const s2 of [-1, 1]) { parts.push(new THREE.BoxGeometry(L, .18, .16).rotateY(a - Math.PI / 2).translate(ux * mid + tx * s2 * .9, py - .14, uz * mid + tz * s2 * .9));
+      for (let k = 0; k <= 3; k++) { const r = x0 + k * L / 3, x = ux * r + tx * s2 * 1.15, z = uz * r + tz * s2 * 1.15; parts.push(new THREE.CylinderGeometry(.08, .1, 1.3, 6).translate(x, py + .55, z)); if (k) parts.push(new THREE.CylinderGeometry(.03, .03, L / 3, 4).rotateX(Math.PI / 2).rotateY(a).translate(x - ux * L / 6, py + 1.05, z - uz * L / 6)); }
+      BOXES.push(obox(ux * mid + tx * s2 * 1.15, uz * mid + tz * s2 * 1.15, L / 2, .1, -(a - Math.PI / 2), Y0 + py - .2, Y0 + py + 1.1)); }
+    BOXES.push(obox(ux * mid, uz * mid, L / 2, 1.1, -(a - Math.PI / 2), Y0 + py - 1.2, Y0 + py + .04));
+    const o = new THREE.Mesh(mergeGeometries(parts.map(q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; })), M.wood); o.castShadow = o.receiveShadow = true; o.name = 'garden_ship_pier'; G.add(o);
+    Z.lanterns.push(['ship_pier_l', ux * x0 + tx * 1.4, uz * x0 + tz * 1.4, Ch.H]); }
+  boxGrid(); Z.parts.push({ id: S.id, kind: 'ship', x: cx, z: cz, yaw, deck: Ch.H }); }
 // THE ROPE BRIDGES between the islands: the Rope Course's verlet bridge (`rspAdd` -- it sags, sways, dips under him, carries him), strung from the
 // rim of one island to the rim of the next at their own heights; a pair of lantern posts at each end. Anchors: the rim point facing the other island,
 // pulled `inset` m in. Runs after the build (rspAdd moves him away while the ropes settle).
@@ -16874,6 +16898,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   const cell0 = PLANT.cell; PLANT.cell = 72;     // m2161: fewer, bigger plant cells here (each kind x cell is a draw)
   try { Z.plantMeshes = plantFlush(g, Z.plantRec); } catch (e) { note('GARDEN PLANTS ' + e.message); }
   try { gdnBridges(g); } catch (e) { note('GARDEN BRIDGES ' + e.message); console.error(e); }
+  try { gdnShip(G); } catch (e) { note('GARDEN SHIP ' + e.message); console.error(e); }
   try { if (Z.isleRec) Z.plantMeshes = Z.plantMeshes.concat(plantFlush(g, Z.isleRec)); } catch (e) { note('GARDEN ISLE PLANTS ' + e.message); }
   PLANT.cell = cell0;
   try { gdnGlow(G); } catch (e) { note('GARDEN GLOW ' + e.message); }
@@ -16893,6 +16918,7 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
   if (Z.bridgeList && Z.bridgeList.length) rspStep(dt);
   for (const w of Z.wheels || []) w.children[0].rotation.x -= dt * 1.1;
+  if (Z.shipM) { const md = Z.shipM, t = O.t; md.step(dt, t); md.g.position.y = Z.shipBase.y + Math.sin(t * .7) * Z.ship.bob; md.g.rotation.z = Math.sin(t * .5) * .008; }     // the moored ship rides the air
   if (Z.heart) { const Hh = Z.heart, t = O.t, pu = gdnPulse(t); Z.U.uPulse.value = pu;     // the Jinra heart breathes: turns, bobs, its spirals wind up, its swirl and rays turn
     Hh.cg.rotation.y += dt * .35; Hh.cg.position.y = Hh.y + Math.sin(t * .8) * .16; Hh.core.scale.setScalar(1 + pu * .25); Hh.halo.scale.setScalar(1 + pu * .18);
     Hh.spirals.rotation.y += dt * .9; Hh.rays.rotation.y -= dt * .12; Hh.rays.position.y = Hh.cg.position.y; }     // the homestead's waterwheel, turned by its cascade
