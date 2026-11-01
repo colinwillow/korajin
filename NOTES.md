@@ -13,6 +13,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- the snow kit QUALITY PASS: smooth horns, flush straps, snow that follows the curve, timber grain along the wood, banner proportions
+
+His (phone screenshots): *"Interpolate the curves so the jagged lines between control points look nicer; floating geometry (white caps) and things roughly
+placed; the grain of the wood and the star look off; the straight edges look computer-generated -- make it look way nicer or go back."*
+- `svkTube` replaces `willowTube` for every horn and rib (hut, longhall ribs + gable horns, shrine, gate, aqueduct pier, watchtower, stone legs): 48 rings
+  of 14 along the Catmull-Rom spline, NO wobble (willowTube's +-18% bump was the jag), a true point at the tip, smooth analytic normals, uvs in metres.
+- `svkBand`: the gold bands are FLAT STRAPS hugging the tube (a torus squashed along the tangent, its inner face at the tube's own radius) instead of
+  loose round rings.
+- `svkTubeSnow`: a snow RIDGE along the top of each horn wherever it runs level, following the curve; the flat pillows that floated off the sloped horns
+  are gone (six sites).
+- `vilGrain` / `vilGrainBox`: timber uvs re-laid per face so the painted grain runs ALONG every beam, rail, plank and fence board (it ran across them).
+- `vilBanner` keeps the 1:2 texture's proportions (the emblem was squashed on short banners).
+- The gable roof's curled ridge finials are smooth tapered curls (they were cut-off torus arcs).
+- Rendered (hut, longhall, gate, watchtower close-ups) before pushing. `?hut=round` is still the whole pre-reference look. Shipped unverified.
+
 ## m2121 -- the snow kit's full STYLE SHEET saved (`images/concepts/snow_village/ref_kit_sheet.webp`)
 
 His whole sheet: three hut variations (ribbed dome with horns round it, a spiral-twisted roof, a dome under a halo), three longhouses (barrel-vault ribbed,
