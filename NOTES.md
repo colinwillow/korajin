@@ -17,6 +17,17 @@ fittings, hanging lanterns, moss/frost, variety). This is (1).
   rough stone on their plinths. `?paint=0` keeps the canvas look.
 - Rendered (hut close, aqueduct, platforms) before pushing. Same draws (22). Shipped unverified.
 
+
+## m2057 -- the menu: the right side is a DIAL, the left ring button is the BACKPACK (Nov 1 2026)
+His words: *"the right side is a quick select -- sword, hands, ballistic; if I have the sword selected and tap it again it should unselect it... a little dial,
+there's a thing that shows which is selected and it spins... the left side, something you click -- your backpack -- where you equip the shield, later
+boots, the glider, the wing suit; it opens a sub-panel above it; the list grows, so scrollable. The wing suit button sitting there needs to be buried in it."*
+- Quick draw: tapping the weapon already out puts it away (`kitPick(0)`, hands). `qdDial`: a faint ring inside the buttons and a needle + lit arc that spin
+  (CSS transition, overshoot, shortest way round) to SWORD (114 deg), the projectile (66) or HANDS (90, straight up).
+- The left outer ring segment (was WINGS, `formStep`) is BACKPACK; tap = `packOpen` toggles `#packPanel` above the left stick (max 42vh, scrolls). Rows come
+  from `BAG.items` (`has` / `on` / `set`): ICE SHIELD and WING SUIT now. A new item is one row. (`PACK` was taken, so the table is `BAG`.)
+- Shipped unverified. Open: `has` is always true (no collecting yet); the panel stays open until the button is tapped again.
+
 ## m2056 -- THE GREAT WATERFALL: darker rock with columnar JOINTS (the fourth render)
 
 m2055's render: the face no longer snow-striped, but still pale -- the boulders now match it, so the colours were right and the LIGHT is the
