@@ -13,6 +13,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2110 -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
+
+His reference (`images/concepts/snow_village/ref_hut_horned.webp`), from the prompt pack m2096 sent. The hut keeps the classic materials and its footprint,
+plinth tiers and colliders (so the village's measured routes still fit); only its silhouette changed. `?hut=round` brings back m2096's hut; `horned: 0`
+per hut too. Built in four helpers beside `vilHut` (`svkHutTiers`, `svkHutHorns`, `svkHutDoor`, `svkHutBoulders`):
+- ROOF: two stacked thatch TIERS (a wide skirt, then a smaller dome set back on it), each with its own drippy, lobed snow and icicles; much more thatch shows.
+- HORNS: two great banded stone horns (`willowTube`, root .85 m to tip .16): one from the back-left foot up the side, over the roof and hooking down at the
+  front with TWO LANTERNS hanging off it on chains; one from the back-right rising behind, its tip up. Gold bands (aligned to the curve), snow on top,
+  icicles under.
+- The HALO: a gold ring floating over the roof, studded, a long jade crystal above it and one below.
+- WINDOWS: a WHEEL porthole -- jade glass, a timber wheel rim, a cross of spokes, a gold outer ring, a jade boss, gold studs.
+- DOOR: round-arched plank door with gold handles in a thick bevelled STONE ARCH, snow on its crown, icicles, a gold-and-jade DIAMOND over it, lanterns on
+  brackets either side; the BANNER hangs from the eave on a gold rod beside the door. No timber posts, ring beam or gable porch any more.
+- BASE: chunky BOULDERS round the foot (some gold-strapped, snow on each), a crystal cluster at the side. The step blocks and the jade lamp stay.
+- Rendered (hut, small, big, longhouse) twice: the first horns were thin and ran through the upper tier, and the snow hid the thatch -- horns fattened and
+  lifted clear, snow cut back. +1 draw (`jglass`). Shipped unverified.
+
 ## m2107 -- THE VILLAGE, pass 3: the AQUEDUCT to the BATHHOUSE, the warm CREEK, the timber BRIDGE (Nov 1 2026)
 `SNOWVIL.aq` (two kit `aq_section` bays, deck 6 m, running north from the spring), `vil_bath_01` (a kit longhouse at (5, 41): the BATHHOUSE, where the
 aqueduct ends), `SNOWVIL.creek` (a warm creek from the spring past the bathhouse down the village's east side and out to the field: swept out of the
@@ -81,23 +98,6 @@ region. We need to build the village -- we have a fantastic kit and all the orig
 passes and was dressed with finished pieces before it looked like anything -- the scale-up-too-fast pattern. Its two menu buttons now only show with
 `?rgnmenu`; the code and the zone (`?w=forge&zone=region`) are untouched. The Snowfield never changed. Next: the village, small and hand-made, with
 the kit and the plants, many passes (VILLAGE_BLUEPRINT.md's design stands; the region site does not).
-
-## m2110 -- THE HORNED HUT (his reference image): the kit's hut redesigned by silhouette
-
-His reference (`images/concepts/snow_village/ref_hut_horned.webp`), from the prompt pack m2096 sent. The hut keeps the classic materials and its footprint,
-plinth tiers and colliders (so the village's measured routes still fit); only its silhouette changed. `?hut=round` brings back m2096's hut; `horned: 0`
-per hut too. Built in four helpers beside `vilHut` (`svkHutTiers`, `svkHutHorns`, `svkHutDoor`, `svkHutBoulders`):
-- ROOF: two stacked thatch TIERS (a wide skirt, then a smaller dome set back on it), each with its own drippy, lobed snow and icicles; much more thatch shows.
-- HORNS: two great banded stone horns (`willowTube`, root .85 m to tip .16): one from the back-left foot up the side, over the roof and hooking down at the
-  front with TWO LANTERNS hanging off it on chains; one from the back-right rising behind, its tip up. Gold bands (aligned to the curve), snow on top,
-  icicles under.
-- The HALO: a gold ring floating over the roof, studded, a long jade crystal above it and one below.
-- WINDOWS: a WHEEL porthole -- jade glass, a timber wheel rim, a cross of spokes, a gold outer ring, a jade boss, gold studs.
-- DOOR: round-arched plank door with gold handles in a thick bevelled STONE ARCH, snow on its crown, icicles, a gold-and-jade DIAMOND over it, lanterns on
-  brackets either side; the BANNER hangs from the eave on a gold rod beside the door. No timber posts, ring beam or gable porch any more.
-- BASE: chunky BOULDERS round the foot (some gold-strapped, snow on each), a crystal cluster at the side. The step blocks and the jade lamp stay.
-- Rendered (hut, small, big, longhouse) twice: the first horns were thin and ran through the upper tier, and the snow hid the thatch -- horns fattened and
-  lifted clear, snow cut back. +1 draw (`jglass`). Shipped unverified.
 
 ## m2099 -- THE FLORA: painted-in-code detail maps on the soft parts
 
