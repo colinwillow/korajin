@@ -15,6 +15,7 @@ PROMPTS = {
   'bark': "Old forest tree BARK close-up running vertically: deep vertical ridges and furrows, grey-brown with olive green moss and lichen patches, rich and detailed.",
   'leaves': "Dense canopy of bright green broad leaves seen close up, layered overlapping leaves in many shades of green with sunlight catching some, filling the whole square.",
   'relief': "A horizontal carved stone FRIEZE BAND in cream-white limestone: a continuous flowing scrolling acanthus leaf and vine relief deeply carved, running left to right, with a thin plain moulding along the top and bottom edges, some moss in the deep cuts. Must tile seamlessly left to right.",
+  'smooth': "Smooth carved cream-white limestone surface with NO blocks and NO joints: one continuous weathered face, very subtle soft mottling, faint pores and hairline weathering, a hint of grey-green grime. Soft ivory palette, low contrast.",
   'gold': "Ancient ornate GOLD metal surface: polished gilded gold with raised swirling Art-Nouveau scrollwork and leaf filigree in relief, warm rich gold highlights, dark brown tarnish in the recesses. Warm yellow gold.",
 }
 SINGLES = {

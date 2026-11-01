@@ -17,6 +17,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2148 -- FOREST TEMPLE detail pass 1: the greenery made of GEOMETRY, not a flatter texture; the sheet's carving (Nov 1 2026)
+His: *"keep going with the detail passes against the sheet ... the leaves on the ground, the greenery -- do we need a displacement map or a normals
+map? They look so unbelievably flat, on the roof, on the ground, everywhere."*
+- **THE ANSWER: a normal map would not have fixed it.** A normal map only changes how light falls across a surface; the OUTLINE stays a perfect
+  sphere and the ground stays a perfect plane, and that outline is most of what read as flat. `triMat` already does derivative bump. So the
+  fix is SHAPE: (1) the dome sphere is DISPLACED (`dmtLump`, cushions ~1 m proud, 120x50 segments) and 170 moss MOUNDS of the same moss are sunk
+  into it, so its edge is ragged; (2) the ground is a displaced ring mesh (flat by the temple and on the path, rolling up to 2 m into the forest)
+  and **5,200 GRASS TUFTS** (`dome_tuft`, three crossed alpha cards, instanced in 12 sectors so the lens culls them, swaying in the vertex
+  shader, lit with an UP normal so they shade like the ground and not like walls); (3) the triplanar bump is stronger on moss 2.4, leaves 2.0, grass 1.5.
+- **Tried and dropped:** alpha cards grown out of the dome along its normal (`dmtGrow`). Face-on they are seen end-on, as bright X / star streaks.
+  Leaned toward the sky they read as pale scattered shells. Real moss lumps beat both. `dmtGrow` stays (cards lit by the surface normal) for later use.
+- **The sheet's detail:** columns, capitals, newels, cornices and finials in a jointless smooth limestone (`dome_smooth`), so they are not
+  brick. Radial BEAMS over every column under the soffit, with a gold strip and a gold lozenge in each coffer. Inside, 12 gold RIBS up the inner
+  dome, gold rings at its foot and round the oculus, a carved RELIEF band round the top of the room. Outside the cella: a carved band at its top,
+  an impost moulding, and four BLIND ARCHES (carved panels in gold arches). A carved FRIEZE round the plinth's top (not across the stair).
+- **The forest edge:** a third ring of 44 giant trees at 74-100 m fades into the haze. The striped backdrop read as a FENCE and is now a plain
+  gradient behind them, at r 130.
+- **COST, headless:** 55-67 calls, ~330-360k tris (was ~200-230k): the deep trees ~70k, the grass ~31k, the dome ~12k. If the phone drops
+  frames, the deep tree ring and the tuft count (5,200) are the two dials. Shipped unverified.
+- **Still open against the sheet:** carved capitals (still primitive), the balustrade panels, the interior floor mosaic, dappled light on the
+  ground, and his sign-off.
+
 ## m2145 -- the LIBRARY's black hut thumbnails: drawn before their textures had loaded (Nov 1 2026)
 His: *"great fix them!"* (the three huts' tiles were black silhouettes). The kit's painted maps (`texGet`, async) draw BLACK until their image
 lands, and the huts are the first tiles the pump draws -- by the long hall the shared maps had arrived. `libReady(E)` walks the prototype's

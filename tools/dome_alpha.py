@@ -1,9 +1,13 @@
-# The Forest Temple alpha foliage cards (m2144): gpt-image-1.5 with a transparent background -> textures/dome_ivy.webp, dome_clump.webp.  python3 tools/dome_alpha.py ivy
+# The Forest Temple alpha foliage cards (m2144, tuft + cushion m2148): gpt-image-1.5 with a transparent background -> textures/dome_ivy.webp, dome_clump.webp.  python3 tools/dome_alpha.py ivy
 import json, sys, base64, urllib.request, io
 from PIL import Image
 P = {
  'ivy': ("A single long hanging strand of lush green IVY vine with many overlapping heart-shaped leaves in varied greens, hanging straight down from the top edge to near the bottom, "
          "dense at the top and thinning toward the tip, stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1536", (256, 768)),
+ 'tuft': ("A single lush TUFT of bright green grass blades with a few clover leaves and one or two tiny white flowers, seen from the side, blades fanning upward from a base at the bottom-centre, "
+          "stylised hand-painted fantasy game art (Ghibli / Zelda palette), isolated on a fully transparent background, no soil, no shadow, no text.", "1024x1024", (256, 256)),
+ 'cushion': ("A soft rounded CUSHION of thick green moss with tiny sprouting leaves and little fern fronds on top, seen from the side, a dome-shaped mound, "
+          "stylised hand-painted fantasy game art, isolated on a fully transparent background, no shadow, no text.", "1024x1024", (256, 256)),
  'clump': ("A dense round CLUMP of lush green leaves (a leafy bush crown seen from the side), many overlapping broad leaves in varied bright and deep greens, sunlit on top, "
            "with an irregular leafy silhouette edge, stylised hand-painted fantasy game art, isolated on a fully transparent background, no stem, no shadow, no text.", "1024x1024", (512, 512)),
 }
