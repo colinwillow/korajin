@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15DS -- the dragon (and every body) carves the snow (Nov 1 2026)
+## m2010 -- the dragon (and every body) carves the snow (Nov 1 2026)
 *"The dragon needs to affect the snow -- when he runs around and slams down, it's not affecting it."* In `snowStep`, every body in `DUMMIES` inside the
 field: its FEET (toe / foot / hoof-tip bones -- `Bip001_L_Foot`, `Toe0`, Mixamo `ToeBase` / `Foot`, the cow rig's `hoof_*_tip`; found once per model, max 6)
 print where they touch and puff while it moves; its BODY ploughs a trench scaled by its size and speed; coming DOWN from the ice-beam hop or any fall

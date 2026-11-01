@@ -10093,7 +10093,7 @@ function beastStep(d, dt, t) {
     if (u > C.hitAt - .12 && u < C.hitAt + .05) foeMove(d, d.h, C.lunge, dt);
     if (!d.hitDone && u >= C.hitAt) { d.hitDone = 1;
       if (dd < C.reach + .7 && Math.abs(wrapAngle(toP - d.h)) < 1 && !player.roll) { playerHurt(K.hitDmg * Lv.dmgK, d.h, K.push, K.pushUp, .5, 1); camShake(.25); ARENA.stop = Math.max(ARENA.stop, .06); }
-      snd('thud', { g: .8, r: .6, x: P.x, z: P.z }); if (SNOWZ.air) snowBlast(P.x + Math.sin(d.h) * C.reach * .7, .3, P.z + Math.cos(d.h) * C.reach * .7, 2 + (d.K.r || 1), 1.1); }     // m15DS: his blow lands in the snow
+      snd('thud', { g: .8, r: .6, x: P.x, z: P.z }); if (SNOWZ.air) snowBlast(P.x + Math.sin(d.h) * C.reach * .7, .3, P.z + Math.cos(d.h) * C.reach * .7, 2 + (d.K.r || 1), 1.1); }     // m2010: his blow lands in the snow
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
   if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m2006: in the snow, his ICE BEAM
@@ -11194,7 +11194,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     const skid = Math.hypot(wx - V.x, wz - V.y); if (skid > 2.5 && Math.random() < dt * 14) snowPuff(p.pos.x, .05, p.pos.z, 2, .8, .6); }
   else Z.iceV = null;
   patchStep(dt);     // m2005
-  // m15DS (his: "the dragon needs to affect the snow -- when he runs around and slams down"): EVERY body in the field carves it -- its FEET (toe / foot /
+  // m2010 (his: "the dragon needs to affect the snow -- when he runs around and slams down"): EVERY body in the field carves it -- its FEET (toe / foot /
   // hoof bones, found once per model) print and puff, its BODY ploughs a trench as it moves (radius from its size), and coming DOWN from a hop or a
   // fall blasts a crater; his attack's blow lands as a blast too (`beastStep`)
   for (const d of DUMMIES) { if (!d.root || !d.root.visible || d.st === 'gone' || !d.model) continue; const P = d.root.position, K = d.K || {}, r = (K.r || .4);
