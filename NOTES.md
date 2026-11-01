@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## mNEXT -- the snow kit DETAIL PASS 2: shape -- chamfered, chipped stone; lumpy snow; drifts; proud stones on the piers
+## m2059 -- the snow kit DETAIL PASS 2: shape -- chamfered, chipped stone; lumpy snow; drifts; proud stones on the piers
 
 - `vilRBox`: every STONE box the kit's builders make (`P.box` with stone / stoneD) is now chamfered -- the box's second vertex row moved out to r from
   each edge, all vertices pulled onto the rounded box, edge vertices nudged by a seeded noise so the chips differ block to block (r = min(.13, 16% of
