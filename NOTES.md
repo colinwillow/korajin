@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- THE RIBBED LONGHALL (his reference image): the longhouse redesigned
+## m2116 -- THE RIBBED LONGHALL (his reference image): the longhouse redesigned
 
 His reference (`images/concepts/snow_village/ref_longhouse_ribbed.webp`). The `longhouse` piece is now `svkLonghall`: a long gabled hall on the OLD
 footprint (2R*sx x 2R = 9.6 x 6 m, door still at +Z, the same `door` port), so the village's placements still fit; `hall: 0` (or `?hut=round`) is the
