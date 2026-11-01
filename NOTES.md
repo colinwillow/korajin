@@ -6,7 +6,7 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
-## m15MN -- the menu: the right side is a DIAL, the left ring button is the BACKPACK (Nov 1 2026)
+## m2057 -- the menu: the right side is a DIAL, the left ring button is the BACKPACK (Nov 1 2026)
 His words: *"the right side is a quick select -- sword, hands, ballistic; if I have the sword selected and tap it again it should unselect it... a little dial,
 there's a thing that shows which is selected and it spins... the left side, something you click -- your backpack -- where you equip the shield, later
 boots, the glider, the wing suit; it opens a sub-panel above it; the list grows, so scrollable. The wing suit button sitting there needs to be buried in it."*

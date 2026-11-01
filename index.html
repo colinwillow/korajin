@@ -631,7 +631,7 @@ body.dyn.desk .zone { display: none; }
   width: calc(var(--mr) * 2); height: calc(var(--mr) * 2);
 }
 #qdTop { --mr: 152px; }
-/* m15MN: the quick-draw DIAL -- a ring inside the buttons and a needle that spins to what is out */
+/* m2057: the quick-draw DIAL -- a ring inside the buttons and a needle that spins to what is out */
 #qdDial { position: fixed; z-index: 6; display: none; --mr: 116px; pointer-events: none;
   right: calc(20px + var(--padr) - var(--mr) + env(safe-area-inset-right)); bottom: calc(26px + var(--padr) - var(--mr) + env(safe-area-inset-bottom));
   width: calc(var(--mr) * 2); height: calc(var(--mr) * 2); }
@@ -639,7 +639,7 @@ body.dyn.desk .zone { display: none; }
 #qdDial .ring { fill: none; stroke: var(--sky); stroke-opacity: .28; stroke-width: 1.4; }
 #qdDial .arc { fill: none; stroke: var(--sky); stroke-width: 3; stroke-dasharray: 34 470.7; stroke-dashoffset: 17; transform: rotate(-90deg); transform-origin: 116px 116px; }
 #qdDial .ndl { fill: var(--sky); transform-origin: 116px 116px; transition: transform .32s cubic-bezier(.3,1.6,.5,1); filter: drop-shadow(0 0 3px var(--sky)); }
-/* m15MN: the BACKPACK panel -- opens over the left stick from its ring button; equip / unequip what he has collected (a list that grows, scrolls) */
+/* m2057: the BACKPACK panel -- opens over the left stick from its ring button; equip / unequip what he has collected (a list that grows, scrolls) */
 #packPanel { position: fixed; z-index: 31; display: none; left: calc(14px + env(safe-area-inset-left)); bottom: calc(26px + var(--padr) + 196px + env(safe-area-inset-bottom));
   width: 210px; max-height: 42vh; overflow-y: auto; -webkit-overflow-scrolling: touch; background: rgba(9,12,20,.82); border: 2px solid #ffcc33; border-radius: 12px; padding: 8px; pointer-events: auto; }
 #packPanel.on { display: block; }
@@ -23301,7 +23301,7 @@ function gunRowBuild() {
 const qdIx = k => WEAP.slots.findIndex(q => k === 'sword' ? q.blade : q.key === k);
 function qdProj() { const k = gearHas(QD.proj) ? QD.proj : ['bow', 'launcher'].find(gearHas); return k ? qdIx(k) : -1; }
 function qdBuild() { const pj = qdProj(), lab = pj >= 0 ? (WEAP.slots[pj].key === 'launcher' ? 'GUN' : WEAP.slots[pj].short || WEAP.slots[pj].label) : 'BOW';
-  buildArcRow(qdRow, [{ label: 'SWORD' }, { label: lab }], 90, i => { const n = i ? qdProj() : qdIx('sword'), cur = player.swap ? player.swapTo : player.slot; if (n >= 0) kitPick(n === cur ? 0 : n); }, QD);     // m15MN: tap the one already out = put it away (hands)
+  buildArcRow(qdRow, [{ label: 'SWORD' }, { label: lab }], 90, i => { const n = i ? qdProj() : qdIx('sword'), cur = player.swap ? player.swapTo : player.slot; if (n >= 0) kitPick(n === cur ? 0 : n); }, QD);     // m2057: tap the one already out = put it away (hands)
   buildArcRow(qdTop, [{ label: 'HANDS' }], 90, () => kitPick(0), QD.top); qdRow._lab = lab; }
 // the left wheel as the equipped weapon's sub-menu
 function aim3Toggle() { AIM3.on = AIM3.on ? 0 : 1; try { localStorage.setItem('mel.aim3b', AIM3.on ? '1' : '0'); } catch (e) {} triggerStop(); paintKit(); }
@@ -23318,7 +23318,7 @@ function qdSub() { const s = slotNow(), bow = s.key === 'bow', proj = bow || s.k
   if (!proj) { paintArcRow(wepRow, 0, -1); return; }
   if (bow) { paintArcRow(wepRow, 1, Math.max(0, ARROWK.indexOf(QD.arrow))); return; }
   paintArcRow(wepRow, 1, 1); const kids = wepRow.firstChild ? wepRow.firstChild.childNodes : []; for (const j of [4, 5]) if (kids[j]) kids[j].classList.toggle('sel', !!AIM3.on); }
-// m15MN (his: "the right side is almost a little dial -- whatever you have selected, there's a thing that shows which, and when you click one of the
+// m2057 (his: "the right side is almost a little dial -- whatever you have selected, there's a thing that shows which, and when you click one of the
 // other buttons it spins, because you can only ever have one: sword, hands or ballistic"). A ring inside the quick-draw buttons with one needle that
 // turns (CSS transition, a little overshoot) to point at what is out: SWORD (left), the projectile (right), HANDS (straight up, the outer button).
 const qdDial = (() => { const d = document.createElement('div'); d.id = 'qdDial'; d.setAttribute('aria-hidden', 'true');
@@ -51468,7 +51468,7 @@ function formStep() {
     if (!form.row || !form.pick) return;
     // m1970 (his: "the old FORMS button is still there -- remove it and put the WINGS in its place, matching the style: a section of a ring"): this ring
     // segment is WINGS now -- tap to mount / unmount the wing-pack (`WING.pack`); filled while mounted. The form wheel is not reachable from here any more.
-    buildArcRow(form.row, [{ label: 'BACKPACK' }], FORMROW.mid, () => { packOpen(!BAG.open); form.wsel = null; }, FORMROW);     // m15MN: the WINGS segment became the BACKPACK (the wing suit is inside it)
+    buildArcRow(form.row, [{ label: 'BACKPACK' }], FORMROW.mid, () => { packOpen(!BAG.open); form.wsel = null; }, FORMROW);     // m2057: the WINGS segment became the BACKPACK (the wing suit is inside it)
     form.pick.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); formClose(); });
     form.row.style.setProperty('--rc', '#ffcc33');
   }
@@ -51476,8 +51476,8 @@ function formStep() {
   if (on !== form.rowOn || sel !== form.wsel) { form.rowOn = on; form.wsel = sel; paintArcRow(form.row, on, sel); }
 }
 // a third ring, one segment, straight up -- see the block above for the geometry
-const FORMROW = { mid: 90, r0: 156, r1: 184, span: 42 };     // m15MN: wider for BACKPACK
-// m15MN: THE BACKPACK (his: "the left side, something you click -- this is where you equip your shield; later boots, the glider, the wing suit... it
+const FORMROW = { mid: 90, r0: 156, r1: 184, span: 42 };     // m2057: wider for BACKPACK
+// m2057: THE BACKPACK (his: "the left side, something you click -- this is where you equip your shield; later boots, the glider, the wing suit... it
 // turns into a sub-panel above it where you select and deselect things, and the list grows as you collect things, so scrollable"). Data-first: one row
 // per item (`has` = collected, `on` / `set` = worn). The floating WINGS button and the WINGS ring segment are gone; the wing suit lives in here.
 const BAG = { open: 0, el: null, items: [
