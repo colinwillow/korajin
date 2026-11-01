@@ -20,6 +20,12 @@ out of weirdport. Do it when Korajin stops needing Zap's code, or the day he ask
   weird merchants, grumpy villagers, absurd creatures, peculiar customs and comedy, alongside the mysteries. Grumbo's name and his
   exaggerated design carry that personality, and it has to be kept.
 
+## THE HOLLOW (his, Nov 1 2026 -- see PROLOGUE.md)
+- **The Hollow** is the enemy: a swirling purple-black VOID in the sky that drinks Jinra (what it drains stops floating and falls) and empties things
+  out -- it makes "empty stone men", turns objects into constructs and people into statues. A SORCERER stands behind it (not seen early).
+- **The Hollowed** (listed under factions below) ARE the Hollow's creatures -- a sub-faction of it, not a separate people.
+- **"The Red Hollows" is a placeholder name** for Grumbo's homeland (never his) and will be renamed, so "Hollow" means only the enemy.
+
 ## The mythology so far
 
 - **Technology so old it has become tradition.** Floating lanterns, gates that open to a palm, mechanical creatures in the

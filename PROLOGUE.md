@@ -40,7 +40,9 @@ backwards (the same `RESTORE` kit, run in reverse here).
   game (it agrees with his rule that the wingsuit comes late). (The dragon version would need it to throw him and flee -- kept as the alternative.)
 - **THE GROUND (recommended):** the RED HOLLOWS -- already the best-looking place, his homeland in the lore, and it needs expanding anyway; the crash
   site goes at its edge. Undecided; the LIBRARY (being built) is where he'll compare places.
-- **A NAME CLASH to settle:** "the Hollow" (the void) vs "the Red Hollows" (his homeland) vs "the Hollowed" (a faction in KORAJIN.md).
+- **NAMES (his, settled):** THE HOLLOW is the void AND what it makes -- "empty stone men". THE HOLLOWED are the Hollow's creatures, a sub-faction of
+  it (the hollow men, the hollow monsters) -- one family, not two. "The Red Hollows" was never his name: Grumbo's homeland gets RENAMED (his pick;
+  suggestions: AKATANI 'red valley', the RUST REACH, BENIKAWA 'crimson river', the EMBER CANYON).
 
 ## The order we'd build it (one step at a time; each step done and signed off before the next)
 - [ ] **P0 -- this page, agreed.** The beats, the open questions below answered.
