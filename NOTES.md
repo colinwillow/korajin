@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- the snow kit DETAIL PASS 1: painted maps (his: "another detail pass on everything -- make it way more interesting")
+
+Planned as three passes: (1) painted surfaces, (2) shape (chipped/rounded stone, lumpier snow, proud stones), (3) dressing (rope lashings, gold
+fittings, hanging lanterns, moss/frost, variety). This is (1).
+- `tools/snowvil_textures.py` (the temple tool's method: gpt-image-2, half-offset seamless blend, 1024 webp) wrote six hand-painted tiles in the concept's
+  palette: `svk_stone` (chunky dry-laid grey-violet stones), `svk_ashlar` (dressed blocks), `svk_thatch` (layered straw, fringes hanging), `svk_timber`,
+  `svk_planks` (door boards with nails), `svk_paving` (not used yet). 94-167 KB each.
+- `vilMats`: stone -> svk_stone, stoneD -> svk_ashlar, wood -> svk_timber, door -> svk_planks, thatch -> svk_thatch, each at its own repeat over the metre
+  uvs and bumped by its own luminance. The AQUEDUCT swapped its two stones: ashlar on the piers, spans, deck and shrines (the concept's dressed blocks),
+  rough stone on their plinths. `?paint=0` keeps the canvas look.
+- Rendered (hut close, aqueduct, platforms) before pushing. Same draws (22). Shipped unverified.
+
 ## m2056 -- THE GREAT WATERFALL: darker rock with columnar JOINTS (the fourth render)
 
 m2055's render: the face no longer snow-striped, but still pale -- the boulders now match it, so the colours were right and the LIGHT is the
