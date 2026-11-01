@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## mNEXT -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
+## m2060 -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
 
 - A `rope` material; ROPE LASHINGS where the hut's gable beams cross (two coils) and two coils under every fence post's top rail.
 - The hut's timber wall POSTS get two iron STRAPS and a gold CAP each.
