@@ -8,7 +8,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- the snow kit SHAPE PASS 3: spires, horn arches, floating stones (classic materials)
+## m2096 -- the snow kit SHAPE PASS 3: spires, horn arches, floating stones (classic materials)
 
 His: *"This is what I was talking about -- the SHAPE: tall tapering spires on the shrines and towers, curved horn-shaped arches on the bridge, and stones
 floating loose above the pillars."* Decoration only, no colliders: footprints, heights of standable tops and the village's measured routes are unchanged.
