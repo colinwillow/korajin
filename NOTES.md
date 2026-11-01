@@ -16,7 +16,7 @@ terraces and the valley floor widened to x -82..87 so every bay has a floor.
 - The look follows the wall line: the crags take each segment (a connector's crag faces whichever side is farther out), the frozen falls stand at
   the wall wherever it is, the pines and boulders keep 3-14 m off it, and the aqueduct leaves a gap wherever a bay opens (no pier on the path).
 Shipped unverified.
-## m15SK2 -- HIS SNOW SKY panorama (Nov 1 2026)
+## m2028 -- HIS SNOW SKY panorama (Nov 1 2026)
 *"Try this as an HDR for the snowy world -- I might make one without the ground, but try this first."* His equirect panorama (1774x887 -> 2048x1024
 webp, `images/snow_sky.webp`) is now the Snowfield's SKY and its LIGHT (`SNOWSKY`): the background plus a PMREM-prefiltered environment
 (`envK` .55). Held every frame (the forge's own sky loads late and would replace it, as at night). The code-built far PEAKS are hidden under it (the
