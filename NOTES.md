@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2165 -- THE GARDEN: the Jinra heart, hero pass 1; Grumbo's FLYING SHIP moored at a sky dock (Nov 1 2026)
+His: *"the heart is a hero object -- the particles fluid and detailed, the spirals, everything its own texture, the geometry, the shape, the movement,
+the glow, the god rays ... that fire, pulsing, moving, spiral, organic, geometric thing"*; and *"bring in the flying ship ... after the Hollow
+comes and everything starts falling you ride your flying ship down and it crashes into the ocean -- we've got to have the flying ship up here."*
+- **THE HEART** (`gdnHeart(hg, Hh, U)`, one group, ONE pulse `U.uPulse` = `gdnPulse(t)`, a breathing double beat): a CRYSTAL CLUSTER (a tall six-sided
+  hero crystal with a crown and a foot, five lesser crystals) on one shader -- his painted `garden_jinra_crystal` facets in object space, a fresnel
+  rim, bands of energy climbing it; a white-hot CORE and a soft HALO (camera-facing); three SPIRAL ribbons wound up round it with light streaming up
+  them; his painted `garden_jinra_swirl` in two layers turning opposite ways over the basin; his painted `garden_jinra_flame` on 18 cards in two
+  rings, each with its own flicker and heat-wobble; twelve RAYS radiating from the crystal, slowly turning; the beam into the sky; and ~430 MOTES
+  in ONE draw -- a vortex drawn in and up round the crystal, embers off the flames, sparks flung out on each beat. All dim with `uGlow` (P2's drain).
+- **THE FLYING SHIP** (`GARDEN.ship`, `gdnShip`): the Ship as the dojo flies it (`shipModel({ air: true })`: Jin engines, canvas wings, cloth),
+  MOORED off the homestead's outer edge (angle 80, 21 m out), its deck level with the farm, riding the air (a slow bob); its deck boxes and ramps
+  registered in the garden's frame (walkable), a timber PIER with rope rails out to its side and a lantern at the landing. Not flown: P4 rides it down.
+  Cost: the ship adds ~40 draws when it is in view (the wide shot ~285 headless) -- to be thinned with the next detail pass.
+- **QUEUED** (from the main session): a JINRA BEAM spot -- walk into a mint column of Jinra and he eases into a meditation pose and floats (shows that
+  Jinra makes things float). Needs a seated clip baked onto Grumbo; the Forge's library (retarget-anims) is not in this container. Shipped unverified.
+
 ## m2164 -- THE GARDEN is ONE MOUNTAIN CRACKED IN THREE: the trifecta -- the monks' garden, Grumbo's farm homestead, the Jinra-source summit (Nov 1 2026)
 His, on the m2156 cluster: *"I don't really like how these are spaced ... the new islands are very plain ... like a mountain with some cracks cut
 through it to separate it into three chunks -- one cohesive whole place"*; then *"each island should have a distinct purpose and theme ... a monk
