@@ -22,6 +22,13 @@ His: "keep going". VERTICALITY ("routes climb"): the falls had a climb to 13.5 m
 Not measured: whether the chain ladder's top reads right against the rock lip (the brow collider is the low point of its 8 m run, up to ~2 m under
 the visible rim there); the zip's steepness at 28 deg (ZIP.max caps the speed). (Its code commit went in as ": the great waterfall -- the ascent"
 -- the build number was lost in a pull race; this build carries it.) Shipped unverified.
+## m15BI -- THE BLOCKOUT IMPORTER: his Cinema 4D rooms, playable (Nov 1 2026)
+His plan: *"I'll design blockouts in Cinema 4D -- one room of a temple -- export them; you rebuild them with our stuff so I can play it; we work in
+parallel."* KORAJIN > Blockout (C4D import) (`?w=forge&zone=blockout&file=levels/<name>.glb`, default the sample). `blockStage` loads his GLB and turns
+objects into pieces BY NAME (BLOCKOUT_IMPORT.md): every mesh a SOLID with an exact TURNED-box collider from its own bounds and yaw (wall-runnable at any
+angle), tinted by prefix; `bar_*` a high bar along its long axis; `zip_<id>_a/_b` a zip line; `spawn` the start; `seal_ / gate_ / statue_ / beat_`
+markers. `levels/blockout_sample.glb` (made headless in Blender) has a start ledge, a side-wall-run panel over a gap, a 3.6 m run-up tower, a wall turned
+30 deg, a chimney pair 4.6 m apart, a high bar, a zip line, a seal and a gate marker -- the importer's proof. Shipped unverified (boot check).
 
 ## m2045 -- THE CLIMB TOWER: C1 -> C2 -> C3 in one tube (Nov 1 2026)
 His "keep going on your own -- I'll make Cinema 4D blockouts in parallel; whichever way builds fun levels wins." KORAJIN > Climb Tower (C1-C3)
