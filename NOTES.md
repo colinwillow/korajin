@@ -22,6 +22,27 @@ floating loose above the pillars."* Decoration only, no colliders: footprints, h
 - Rendered (sections, demo bridge, pillars, watchtower, gate) before pushing; the horns were thickened and given a flared root after the first look.
   Same draws. Shipped unverified.
 
+
+
+## m2095 -- THE MOVE-IN, step 5: the DRAGON'S LAIR at the DRAGON'S GATE (+ a height-sampling bug that sank the hamlet) (Nov 1 2026)
+- `rgnPlaceBuild(build, g, ox, oy, oz)`: builds a Snowfield piece written for flat ground at its own coordinates into a sub-group at the offset, and
+  moves every BOXES entry and snow patch it added by the same offset. `snowCliffs` (the whole climb: ledges 2.0 / 3.8, the ice shelf, the 9.5 m cliff,
+  the frozen fall, the lair dome and its nest) is built that way, its front ledges 20 m north of the DRAGON'S GATE junction (the mountain side);
+  `tools/regionpick.py` cuts a level bay for it at the junction's floor (37.4 m). The nest is at (60, 47, -30).
+- The DRAGON spawns asleep on the nest when he comes within 70 m (`rgnStep`); his wake / leash / flight / edge guard are the Snowfield's (a homed beast
+  stands on `groundAt`, which includes the terrain). `iceBeamOn` now also allows the region (it keyed off the Snowfield's particles) -- the beam the
+  shield turns.
+- BUG FIXED: `regionpick.py`'s `Hs` sampled heights from the 1 m generator grid with the 2 m grid's indexing -- the wrong place. So the hamlet's BASE
+  was 5.2 m when the valley at its gate is 16.3: the whole hamlet sat in an 11 m pit (and the lair bay first came out at 70 m). BASE is 16.3 now.
+- Headless (`?w=forge&zone=region&at=dragons_gate`): the cliff, the ice shelf and the crystals on screen, the nest where expected; and the MAMMOTH
+  confirmed spawned at the stable on the ground (21.9, 16.3, -137.1). The dragon's wake not waited for. Shipped unverified otherwise.
+
+## m2094 -- THE MOVE-IN, step 4: the frozen POND is the LAKE (Nov 1 2026)
+- `rgnStage` sets `POND.at` to the LAKE place (144, -28) and `POND.r` to `RGN.lakeR` 21 (the pond was 11; the lake's basin is 30 m round), and lays
+  the pond's own painted ice there at the basin's height. `rgnStep` runs the pond's slide (`POND.grip`, the velocity eased toward the stick) when he
+  is grounded on it. The waterfall session's GREAT WATERFALL place is up the dead end beside it (55 m) -- not placed yet.
+- Shipped unverified.
+
 ## m2093 -- the snow kit back to its CLASSIC look by default (the jin style kept behind `?svkstyle=jin`)
 
 His: *"No, I liked how it was before -- now it just feels chaotic. I was more talking about the SHAPES of the buildings ... the old textures were good."*
