@@ -5,6 +5,12 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15TR -- the mammoth's trunk swings (Nov 1 2026)
+The snow list (his "keep going"). The four `trunk_*` bones `mammoth_cow.py` added under the head carry no clip keys, so the trunk was rigid. `trunkStep`
+springs them per body exactly as `springsStep` springs his hair and cape: verlet tips with inertia from the head's motion, a pull back to rest
+(`TRUNK.stiff` 1.6), gravity (1.1), drag (.12), a bend limit (.9 rad), plus a slow breathing SWAY so it is never dead still. Runs for every mammoth in
+the Snowfield (the tame one and any spawned). `mel.TRUNK` is live. Shipped unverified (boot check).
+
 ## m2013 -- HIS snow footsteps replace the synth crunch (Nov 1 2026)
 *"I added a folder called footsteps_snow -- four footsteps in the snow; the one you created kind of hurt my ears. Align, trim, speed up or slow down --
 do what you gotta do and use these instead."* Measured: the four files are ONE recording (4 min 55 s each, decoded envelopes correlate .99999 -- the

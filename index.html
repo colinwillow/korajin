@@ -11224,6 +11224,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
   // hoof bones, found once per model) print and puff, its BODY ploughs a trench as it moves (radius from its size), and coming DOWN from a hop or a
   // fall blasts a crater; his attack's blow lands as a blast too (`beastStep`)
   for (const d of DUMMIES) { if (!d.root || !d.root.visible || d.st === 'gone' || !d.model) continue; const P = d.root.position, K = d.K || {}, r = (K.r || .4);
+    if (K.creature === 'mammoth') trunkStep(d, dt);     // m15TR
     if (Math.abs(P.x) > Z.size / 2 || Math.abs(P.z) > Z.size / 2) continue;
     if (!d.snowFeet || d.snowFeetM !== d.model) { d.snowFeetM = d.model; d.snowFeet = []; d.model.traverse(o => { if (o.isBone && /(^|_)(L|R|Left|Right)?_?(Toe0|ToeBase|Foot|hoof_.*_tip)$/i.test(o.name) && !/Toe01/.test(o.name)) d.snowFeet.push(o); }); d.snowFeet = d.snowFeet.slice(0, 6); }
     const px = d.snowPx == null ? P.x : d.snowPx, pz = d.snowPz == null ? P.z : d.snowPz, v = dt > 0 ? Math.hypot(P.x - px, P.z - pz) / dt : 0; d.snowPx = P.x; d.snowPz = P.z;
@@ -14194,6 +14195,22 @@ function springsStep(dt) {
     b.quaternion.copy(s.rest).multiply(_chSQ2.setFromUnitVectors(s.dir, want)); b.updateMatrixWorld(true);
   }
 }
+// m15TR: THE MAMMOTH'S TRUNK SWINGS (his: "very stiff, very robotic, not a lot of movement in any of the chains"). The four `trunk_*` bones the cow
+// rig gained in `mammoth_cow.py` carry no clip keys, so they spring like his hair and cape (`springsStep`'s verlet, per body): inertia from the head's
+// motion, a pull to rest, gravity, a bend limit, and a slow breathing sway so it is never dead still. `TRUNK` is live.
+const TRUNK = { on: 1, stiff: 1.6, drag: .12, grav: 1.1, maxBend: .9, sway: .35 };
+function trunkStep(d, dt) { if (!TRUNK.on || !d.model || !(dt > 0)) return;
+  if (d.trunkM !== d.model) { d.trunkM = d.model; d.trunk = []; const bs = [1, 2, 3, 4].map(k => d.model.getObjectByName('trunk_' + k)).filter(Boolean);
+    for (let j = 0; j + 1 < bs.length; j++) { const b = bs[j], c = bs[j + 1], len = b.getWorldPosition(_chSA).distanceTo(c.getWorldPosition(_chSB)); if (len < 1e-4) continue; d.trunk.push({ b, rest: b.quaternion.clone(), dir: c.position.clone().normalize(), len, cur: _chSB.clone(), prev: _chSB.clone() }); } }
+  const P = TRUNK, f = Math.min(dt, 1 / 30) * 60, dd = Math.min(dt, 1 / 30), t = performance.now() / 1000;
+  for (let i = 0; i < d.trunk.length; i++) { const s = d.trunk[i], b = s.b; b.parent.updateWorldMatrix(true, false); b.parent.getWorldQuaternion(_chSQ); _chSQ.multiply(s.rest);
+    const head = b.getWorldPosition(new THREE.Vector3()), restDir = _chSA.copy(s.dir).applyQuaternion(_chSQ), restTip = head.clone().addScaledVector(restDir, s.len);
+    if (s.cur.distanceTo(restTip) > 3) { s.cur.copy(restTip); s.prev.copy(restTip); }
+    const sw = _chSC.set(Math.sin(t * 1.3 + i * .7), 0, Math.cos(t * .9 + i * .5)).multiplyScalar(P.sway * s.len * dd);
+    const next = s.cur.clone().addScaledVector(_chSB.copy(s.cur).sub(s.prev), 1 - P.drag).addScaledVector(restDir, P.stiff * s.len * f * dd).addScaledVector(_chSG, P.grav * s.len * dd * f).add(sw);
+    next.sub(head).setLength(s.len).add(head); s.prev.copy(s.cur); s.cur.copy(next);
+    let want = next.clone().sub(head).applyQuaternion(_chSQ.clone().invert()).normalize(); const ang = want.angleTo(s.dir); if (ang > P.maxBend) want = s.dir.clone().lerp(want, P.maxBend / ang).normalize();
+    b.quaternion.copy(s.rest).multiply(_chSQ2.setFromUnitVectors(s.dir, want)); b.updateMatrixWorld(true); } }
 function hbarSpawn() {
   const [sx, sz] = ARENA.spawnAt, [yx, yz] = ARENA.youAt, n = HBAR.list.length;
   const x = sx * .4 + yx * .6 + n * 3.4, z = sz * .4 + yz * .6, yaw = Math.atan2(yx - sx, yz - sz) + Math.PI / 2;     // across the way he looks at the spawn
