@@ -6,7 +6,7 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
-## mNEXT -- the snow kit SILHOUETTE PASS 2: staves, bellied walls, balusters, finials, capstones
+## m2078 -- the snow kit SILHOUETTE PASS 2: staves, bellied walls, balusters, finials, capstones
 
 His: *"Sounds good."* (the second silhouette list)
 - BARRELS: 20 staves (a sunk groove between each), a bellied profile, a rim and a sunk lid -- every barrel in the kit and the village.
