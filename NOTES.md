@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## mNEXT -- the watchtower's stair gets a LANDING (his: "a staircase to nowhere")
+## m2053 -- the watchtower's stair gets a LANDING (his: "a staircase to nowhere")
 
 His: *"There's a mini square platform at the top of the staircase, which then does the right angle and turns to the main tower, and a break in the
 tower's railing."* The m2048 stair ran up beside the deck and stopped, its handrails on both sides, with nowhere to step off.
