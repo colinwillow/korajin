@@ -5,6 +5,18 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2044 -- THE GREAT WATERFALL: the HIDDEN CAVE under the falls
+
+His: *"Maybe there's a hidden cave under the waterfall."* At water level, straight in BEHIND the curtain (only found by walking into the falling
+water): `place` row `wf_hidden` (kind 'hollow') -- the MOUTH is cut out of the wall sheet itself (triangles whose pre-displacement x, y fall in it are
+dropped), a rough TUNNEL (r 4.5, local z -33 .. -57) and a domed HALL inside the cliff (32 x 28 m, 11 m vault, centre local z -64), both inside-out
+geometry (faces look in) in the rock draw, darkened. Inside: a still turquoise POOL (merged into the big pool's draw), nine crystal clusters round
+the back, forty icicles off the vault, and `wf_shrine` -- a pedestal with two gold bands, a great crystal, and two gold posts with crystals.
+Colliders: the face's boxes under the grotto now leave the tunnel (x +-2.6) and the hall (x +-16, z -78..-50) open; a floor, the vault, the tunnel
+roof. Still 9 draws. Headless: every box valid, and a walk down local x 0 from the pool (z -20) to the back (z -76) at knee height meets nothing
+but the shrine. `mel.wfcave()` puts him in the hall. Inside the cave there are no shadows (the cliff casts none), so it is darkened by vertex
+colour only. Shipped unverified.
+
 ## m2043 -- THE GREAT WATERFALL, pass 2: rebuilt against his reference image
 
 His reference: a huge turquoise fall WIDER than it is tall, framed by stacked stone pillars (snow pillows, gold-banded carved tops, crystal finials,
