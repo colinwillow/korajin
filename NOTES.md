@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15MC -- the menus cleaned up: 3D AIM gone, BOW | GUN as two halves, the BACKPACK on the HANDS ring in the left pad's colour (Nov 1 2026)
+## m2140 -- the menus cleaned up: 3D AIM gone, BOW | GUN as two halves, the BACKPACK on the HANDS ring in the left pad's colour (Nov 1 2026)
 His: *"clean up the menus; take away the 3D aim -- that was a fail; the gun and the bow buttons, three there -> two; the backpack should be like the
 right stick's in orientation -- it's too high up -- and the colour is weird, it should match."*
 - `qdSub`: with a projectile out, the left inner ring is BOW | GUN (two halves). The arrow type is the BOW half tapped again while the bow is out

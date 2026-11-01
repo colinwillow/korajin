@@ -700,7 +700,7 @@ body.qd #wepRow path.sel { fill-opacity: .82; }
 }
 #formRow.on { display: block; }
 #formRow path { fill: rgba(9,12,20,.5); stroke: var(--rc); stroke-width: 1.6; pointer-events: all; cursor: pointer; }
-#formRow .deco path { fill: none; pointer-events: none; }     /* m15MC: styled like the quick-draw rings */
+#formRow .deco path { fill: none; pointer-events: none; }     /* m2140: styled like the quick-draw rings */
 #formRow path.sel { fill: var(--rc); fill-opacity: .82; }
 #formRow text { font-family: var(--ui); font-size: 13px; font-weight: 700; letter-spacing: .12em;
   fill: var(--rc); text-anchor: middle; dominant-baseline: central; pointer-events: none; user-select: none; }
@@ -24723,7 +24723,7 @@ function paintArcRow(el, on, sel) {
 // camera), and from then its offset IS the aim -- across turns it up to `yaw` either side of the lens, up/down tilts it up to `pitch` -- and
 // lifting it fires (the blaster's charged ball, or a ROCKET). The lens comes in over his shoulder (`cam`) and tips with the aim.
 const AIM3 = { on: 0, holdT: 0, far: 9, yaw: 85 * Math.PI / 180, pitch: 65 * Math.PI / 180, rate: 1.7, dead: .12, ease: .05, absYaw: 42 * Math.PI / 180, absPit: 32 * Math.PI / 180, absEase: .025, pMax: 35 * Math.PI / 180, pRate: 1.2, pSpan: .3, pBack: .25, pCam: .85, minT: .12, cam: { dist: 1, side: 0, el: 0, lift: 0 } };     // m1293: ABSOLUTE, no zoom     // m1276: armed on touch, the thumb DRIVES the cursor
-AIM3.on = 0;     // m15MC: 3D AIM retired (his: "that was a fail")     // m1367: a new key -- his saved 3D AIM ON is reset to the regular aim
+AIM3.on = 0;     // m2140: 3D AIM retired (his: "that was a fail")     // m1367: a new key -- his saved 3D AIM ON is reset to the regular aim
 const aimRow = (() => { const d = document.createElement('div'); d.id = 'aimRow'; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); return d; })();
 const AIMROW = { mid: MODES.mid, r0: MODES.r1 + 6, r1: MODES.r1 + 40, span: 44 };
 document.body.classList.toggle('kit3', !!KIT3.on);
@@ -24780,7 +24780,7 @@ function qdBuild() { const pj = qdProj(), lab = pj >= 0 ? (WEAP.slots[pj].key ==
 function aim3Toggle() { AIM3.on = AIM3.on ? 0 : 1; try { localStorage.setItem('mel.aim3b', AIM3.on ? '1' : '0'); } catch (e) {} triggerStop(); paintKit(); }
 function qdProjPick(k) { if (!gearHas(k)) return; QD.proj = k; try { localStorage.setItem('mel.qdProj', k); } catch (e) {} kitPick(qdIx(k)); qdBuild(); }
 const ARROWK = ['normal', 'fire', 'blast'];
-// m15MC (his: "clean up the menus -- take away the 3D aim, that was a fail; the gun and the bow as two buttons, not three"): with a projectile out the
+// m2140 (his: "clean up the menus -- take away the 3D aim, that was a fail; the gun and the bow as two buttons, not three"): with a projectile out the
 // left inner ring is BOW | GUN, two halves like the right side's SWORD | GUN. The arrow TYPE is the BOW half tapped again while the bow is out
 // (ARROW -> FIRE -> BLAST -> ARROW; the half reads its type: BOW, FIRE BOW, BLAST BOW). The second row (`qdSub2`) is retired; 3D AIM is off for good.
 const ARROWLAB = { normal: 'BOW', fire: 'FIRE BOW', blast: 'BLAST BOW' };
@@ -52954,13 +52954,13 @@ function formStep() {
     // segment is WINGS now -- tap to mount / unmount the wing-pack (`WING.pack`); filled while mounted. The form wheel is not reachable from here any more.
     buildArcRow(form.row, [{ label: 'BACKPACK' }], FORMROW.mid, () => { packOpen(!BAG.open); form.wsel = null; }, FORMROW);     // m2057: the WINGS segment became the BACKPACK (the wing suit is inside it)
     form.pick.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); formClose(); });
-    form.row.style.setProperty('--rc', 'var(--hot)');     // m15MC: the left pad's colour (it was gold)
+    form.row.style.setProperty('--rc', 'var(--hot)');     // m2140: the left pad's colour (it was gold)
   }
   const on = 1, sel = BAG.open ? 0 : -1;
   if (on !== form.rowOn || sel !== form.wsel) { form.rowOn = on; form.wsel = sel; paintArcRow(form.row, on, sel); }
 }
 // a third ring, one segment, straight up -- see the block above for the geometry
-const FORMROW = { mid: 90, r0: 131, r1: 158, span: 44, gap: 0, deco: 1 };     // m15MC: the same ring as the right pad's HANDS (it sat a ring higher)     // m2057: wider for BACKPACK
+const FORMROW = { mid: 90, r0: 131, r1: 158, span: 44, gap: 0, deco: 1 };     // m2140: the same ring as the right pad's HANDS (it sat a ring higher)     // m2057: wider for BACKPACK
 // m2057: THE BACKPACK (his: "the left side, something you click -- this is where you equip your shield; later boots, the glider, the wing suit... it
 // turns into a sub-panel above it where you select and deselect things, and the list grows as you collect things, so scrollable"). Data-first: one row
 // per item (`has` = collected, `on` / `set` = worn). The floating WINGS button and the WINGS ring segment are gone; the wing suit lives in here.
