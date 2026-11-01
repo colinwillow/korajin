@@ -20,6 +20,19 @@ alien sheet, 6-11 this one), still in the same draws:
 `?wfflora=1` shows all twelve in two rows in front of the pool. Rendered; the maple's single-blob pads became many small clumps, the
 blossom's flowers were enlarged. The plumes do not sway yet. Shipped unverified on the phone.
 
+## m15D1 -- THE VILLAGE, district 1: the hamlet's ground in the region (VILLAGE_BLUEPRINT pass 10 build step 1) (Nov 1 2026)
+His sign-off on the pass 10 plan + elevation: *"Signed off, start building district 1."*
+- KORAJIN menu > **The Village (district 1)** = `?w=forge&zone=region&at=village` (starts at the hamlet's gate, facing up the gorge).
+- `tools/regionpick.py` now hand-edits the region after generating it: the blueprint frame is MIRRORED + turned (`h2w` / `w2h`) so the gate faces west
+  down the valley, the spring sits on the HOT SPRING place, the stable side toward the meadow. In `levels/region_6.bin`: the SITE (inside the
+  horseshoe) flattened to BASE - .3 (BASE = 9.0 m, the valley floor at the gate), a cliff band behind the horseshoe to BASE + 18, and the ridge
+  NOTCH (11 m deep at 22, -118) for the temple view from the watchtower (pass 5). The VILLAGE place moves to the gate.
+- `levels/hamlet_d1.bin`: a 0.5 m DETAIL grid (169 x 205) -- the 8 terraces at BASE + their level (E1 1.2, W1 2.4, E2 4.2, W2 5.4, E3 7.2, the knoll
+  8, W3 8.4, E4 10.8), the gorge floor stepping down by the creek's distance from the spring (9.6 / 6.6 / 3.6 / 0.6 -- three ~3 m falls), the cliff-
+  foot slivers filled to the nearest terrace. `rgnH` takes the max of the region and the detail; `rgnHamlet` builds one mesh from it (snow tops,
+  grey walls), a label per terrace, the creek as a blue tube. The ~3 m terrace walls are walls to `rgnWall` (a sprint wall-up climbs them).
+- Checked headless once: it loads, the labels and the creek are on screen. Not walked. Not yet: the road, bridges, stairs, ramp, tunnel (district 2).
+
 ## m2075 -- the snow kit SILHOUETTE PASS 1: shapes, not surfaces
 
 His: *"Why are they squares? Why aren't they more hexagonal, why don't the edges of a box have ridges, why is one solid shape not cut into two or three --

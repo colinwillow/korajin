@@ -12181,11 +12181,13 @@ try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {
 // valleys ARE the paths, mountains too steep to walk, a marker at each place. Rough terrain only -- nothing dressed. `?w=forge&zone=region`.
 // The grid is `levels/region_6.bin` (241 x 241 at 2 m, uint16 = metres x 400); `rgnH` samples it bilinearly; `groundAt` stands him on it and
 // `rgnWall` stops him walking up anything steeper than `maxSlope` (rise per metre) -- he can still JUMP up a face; the slope is the wall.
-const RGN = { want: 0, live: 0, file: 'levels/region_6.bin', meta: 'levels/region_6.json', n: 241, cell: 2, half: 240, scale: 400, H: null, maxSlope: 1.05, places: [], stat: null };
+const RGN = { want: 0, live: 0, file: 'levels/region_6.bin', meta: 'levels/region_6.json', n: 241, cell: 2, half: 240, scale: 400, H: null, maxSlope: 1.05, places: [], stat: null, D: null, hm: null, at: (() => { try { const m = /[?&]at=([a-z_]+)/.exec(location.search); return m ? m[1] : 'spawn'; } catch (e) { return 'spawn'; } })() };     // m15D1: `D` = the hamlet's 0.5 m detail grid; `at` = where he starts
 try { if (/[?&]zone=region\b/.test(location.search)) RGN.want = 1; } catch (e) {}
 function rgnH(x, z) { const H = RGN.H; if (!H) return 0; const n = RGN.n, fx = Math.min(n - 1.001, Math.max(0, (x + RGN.half) / RGN.cell)), fz = Math.min(n - 1.001, Math.max(0, (z + RGN.half) / RGN.cell)),
     i = fx | 0, j = fz | 0, u = fx - i, v = fz - j, a = H[j * n + i], b = H[j * n + i + 1], c = H[(j + 1) * n + i], d = H[(j + 1) * n + i + 1];
-  return ((a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v) / RGN.scale; }
+  const r = ((a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v) / RGN.scale;
+  if (RGN.D) { const M = RGN.hm, di = Math.round((x - M.x0) / M.res), dj = Math.round((z - M.z0) / M.res); if (di >= 0 && dj >= 0 && di < M.nx && dj < M.nz) { const q = RGN.D[dj * M.nx + di]; if (q) return Math.max(r, q / RGN.scale); } }     // m15D1: the hamlet's terraces + gorge, crisp
+  return r; }
 function rgnWall(P, x0, z0) { const h1 = rgnH(P.x, P.z); const gx = (rgnH(P.x + .5, P.z) - rgnH(P.x - .5, P.z)), gz = (rgnH(P.x, P.z + .5) - rgnH(P.x, P.z - .5)), sl = Math.hypot(gx, gz);
   const blocked = h1 > P.y + MOVE.step || (sl > RGN.maxSlope && h1 > rgnH(x0, z0) + .001 && P.y < h1 + .25); if (!blocked) return 0;
   const nx = gx / (sl || 1), nz = gz / (sl || 1), dx = P.x - x0, dz = P.z - z0, dot = dx * nx + dz * nz;     // slide along the contour: drop the uphill part
@@ -12193,6 +12195,25 @@ function rgnWall(P, x0, z0) { const h1 = rgnH(P.x, P.z); const gx = (rgnH(P.x + 
 function rgnLabel(text) { const cv = document.createElement('canvas'); cv.width = 512; cv.height = 96; const c = cv.getContext('2d'); c.font = 'bold 54px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
   c.lineWidth = 10; c.strokeStyle = 'rgba(10,20,40,.85)'; c.strokeText(text, 256, 48); c.fillStyle = '#ffffff'; c.fillText(text, 256, 48); const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace;
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false, transparent: true })); sp.scale.set(16, 3, 1); sp.renderOrder = 9; return sp; }
+// m15D1: VILLAGE DISTRICT 1 (VILLAGE_BLUEPRINT.md, pass 10 build order 1) -- the hamlet's ground, grey and walkable: the 8 terraces at their heights
+// (E1 +1.2 ... E4 +10.8, the knoll +8), the gorge between the banks stepping down in three falls, the horseshoe cliff behind (in the region grid).
+// One mesh from the 0.5 m detail grid (`levels/hamlet_d1.bin`, `tools/regionpick.py`); its walls are what `rgnWall` stops him at (~3 m = a sprint
+// wall-up). A label on each terrace, the creek as a blue ribbon. No buildings yet (district 4).
+function rgnHamlet(g) { const M = RGN.hm, nx = M.nx, nz = M.nz, D = RGN.D, sc = RGN.scale, geo = new THREE.PlaneGeometry((nx - 1) * M.res, (nz - 1) * M.res, nx - 1, nz - 1).rotateX(-Math.PI / 2), P = geo.attributes.position;
+  const cx = M.x0 + (nx - 1) * M.res / 2, cz = M.z0 + (nz - 1) * M.res / 2;
+  for (let i = 0; i < P.count; i++) { const x = P.getX(i) + cx, z = P.getZ(i) + cz, di = Math.round((x - M.x0) / M.res), dj = Math.round((z - M.z0) / M.res), q = D[dj * nx + di]; P.setX(i, x); P.setZ(i, z); P.setY(i, q ? q / sc + .02 : -50); }
+  // drop the triangles with any vertex outside the site (y -50)
+  const idx = geo.index.array, keep = []; for (let k = 0; k < idx.length; k += 3) { if (P.getY(idx[k]) > -40 && P.getY(idx[k + 1]) > -40 && P.getY(idx[k + 2]) > -40) keep.push(idx[k], idx[k + 1], idx[k + 2]); } geo.setIndex(keep);
+  geo.computeVertexNormals(); const N = geo.attributes.normal, col = new Float32Array(P.count * 3);
+  for (let i = 0; i < P.count; i++) { const up = N.getY(i), y = P.getY(i) - M.base, k = Math.min(1, Math.max(0, (up - .45) / .35)), t = Math.min(1, Math.max(0, y / 11));
+    col[i * 3] = .52 + (.93 - .52) * k - .06 * t * k; col[i * 3 + 1] = .54 + (.95 - .54) * k - .02 * t * k; col[i * 3 + 2] = .58 + (.99 - .58) * k; }     // tops snow (a touch cooler higher up), walls grey stone
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .9 })); m.receiveShadow = true; m.castShadow = true; g.add(m);
+  for (const L of M.labels) { const lb = rgnLabel(L.name); lb.position.set(L.x, L.y + 3.2, L.z); lb.scale.set(9, 1.7, 1); g.add(lb); }
+  { const C = M.creek, pts = C.map(c => new THREE.Vector3(c[0], c[2] + .1, c[1])), cur = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .2);
+    const tg = new THREE.TubeGeometry(cur, 120, .55, 6, false); const cm = new THREE.Mesh(tg, new THREE.MeshStandardMaterial({ color: 0x5fc4ea, emissive: 0x1a6a8a, emissiveIntensity: .5, roughness: .2 }));
+    g.add(cm); }     // a round tube half-sunk in the gorge floor
+  RGN.stat = 'hamlet ok'; }
 function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.fog) { scene.fog.color.setHex(0xc9d6e6); scene.fog.near = 70; scene.fog.far = 520; }
   hemi.color.setHex(0xdfe9ff); hemi.groundColor.setHex(0xb8c4d8); camera.far = Math.max(camera.far, 1200); camera.updateProjectionMatrix();
   RGN.stat = 'loading'; ARENA.youAt = [0, 0];
@@ -12210,7 +12231,8 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
     // the places: a mint pole + its name
     const pm = new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false }), pg = new THREE.CylinderGeometry(.35, .35, 10, 8).translate(0, 5, 0);
     for (const Q of RGN.places) { const y = rgnH(Q.x, Q.z), pole = new THREE.Mesh(pg, pm); pole.position.set(Q.x, y, Q.z); g.add(pole); const lb = rgnLabel(Q.name); lb.position.set(Q.x, y + 12, Q.z); g.add(lb); }
-    RGN.live = 1; RGN.stat = 'ok'; const S = RGN.places.find(q => q.id === 'spawn') || { x: 0, z: 0 }, toT = RGN.places.find(q => q.id === 'ice_temple');
+    if (meta.hamlet) { RGN.hm = meta.hamlet; fetch(A(meta.hamlet.file)).then(r => r.arrayBuffer()).then(b2 => { RGN.D = new Uint16Array(b2); rgnHamlet(g); }).catch(e => note('NO HAMLET ' + e.message)); }
+    RGN.live = 1; RGN.stat = 'ok'; const S = (RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] - 4, z: meta.hamlet.gate[1] } : null) || RGN.places.find(q => q.id === RGN.at) || RGN.places.find(q => q.id === 'spawn') || { x: 0, z: 0 }, toT = RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] + 40, z: meta.hamlet.gate[1] } : RGN.places.find(q => q.id === 'ice_temple');
     const put = () => { player.pos.set(S.x, rgnH(S.x, S.z) + .3, S.z); player.vel.set(0, 0, 0); if (toT) { const h = Math.atan2(toT.x - S.x, toT.z - S.z); player.faceH = player.heading = h; cam.az = h; } };
     for (const ms of [0, 300, 1200]) setTimeout(() => { try { put(); } catch (e) {} }, ms);
     setTimeout(() => tipShow('THE REGION (rough): the valleys are the paths. Mint poles mark the places -- follow the valleys to the ICE TEMPLE.', 6), 1500);
@@ -66553,6 +66575,7 @@ function startGate() {
       btn(el, 'The Proving Ground', 'How far and how high he can really go: gap lanes from 6 to 39 m, pillars from 3 to 24 m, and a meter that reports every jump. (Measure, then design.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=prove'); });
       btn(el, 'The Rope Course', 'A rope bridge between two towers that sags and sways under you. (The rope sandbox: the tightrope, the swing rope and the ladders come next.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=rope'); });
       btn(el, 'The Region (rough terrain)', 'REGION_METHOD stage 3: the picked region map as walkable snow ground -- the valleys are the paths, a pole marks each place (village, big wall, dragon gate, ice temple...). Rough, nothing dressed.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=region'); });
+      btn(el, 'The Village (district 1)', 'VILLAGE_BLUEPRINT build step 1: the hamlet ground in the region -- the 8 terraces at their heights, the gorge stepping down in three falls, the horseshoe cliff. Grey, walkable, no buildings yet. Starts at the gate.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=region&at=village'); });
       btn(el, 'Reflection (shield puzzle)', 'A white sandbox for the beam turret, target, mirror and gate: raise the ice shield in the beam and bounce it into the crystal; then via a mirror.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=cell&cell=RF'); });
       btn(el, 'Blockout (C4D import)', 'His Cinema 4D blockouts, playable: objects become pieces by NAME (wall_, ledge_, bar_, zip_<id>_a/_b, spawn ...). Opens the sample; add &file=levels/<yours>.glb for his. See BLOCKOUT_IMPORT.md.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=blockout'); });
       btn(el, 'Climb Tower (C1-C3)', 'LEVEL_METHOD: the ice temple\'s Climb Tower as one tube -- C1 run up two faces, C2 a chimney to 16 m, C3 a side wall run, a high bar and a zip line back down. Grey blockout to play.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=cell&cell=CT'); });
