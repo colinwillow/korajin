@@ -20,6 +20,15 @@ His: *"I don't want the ring around the meditating guy -- I want him floating, b
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
 .7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
 
+## m2131 -- THE WILLOW SHRINE, pass 2 of 6: the gold rings, hanging lanterns and red banners (Nov 1 2026)
+His sheet's carved gold HALO RINGS: `WILLOW.rings` ([id, x, y, z, r, tilt x, tilt z], tree units from its foot) -- four, at different heights and
+offsets, tilted (`wr_low` round the trunk, `wr_left` / `wr_right` small and out to the sides, `wr_crown` up in the boughs). `willowRingG` is a lathe of a
+rounded band whose uv tiles a painted MEANDER (Greek key) round it, gold beads top and bottom, a snow roll on top. `WILLOW.hangs` hangs nine
+lanterns (`willowLantern`: chain, pagoda cap, lit box in a gold frame, base, finial) and five red BANNERS with the gold emblem on a gold rod, facing
+out and SWAYING (a vertex shader on `aSw`; the clock runs in `willowStep`). Everything new goes through `willowBag` / `willowMats`: one merged draw per
+material (gold, meander, bronze, jade, warm, snow, banner) -- the pass-1 glow and crown snow too. Open: platform, stair, arch, water (passes 3-5).
+Shipped unverified.
+
 ## m2129 -- THE WILLOW SHRINE, pass 1 of 6: a bigger willow with a twisted, grooved trunk, jade veins and orbs, a snowed crown (Nov 1 2026)
 His: *"I also wanna make the Willow tree bigger and make the shrine more complex and interesting"* -- his sheet is
 `images/concepts/willow/willow_shrine_sheet.png`. Passes: 1 tree, 2 gold rings + lanterns + banners, 3 platform + pillars + fences, 4 stair + arch + bell,
