@@ -7,7 +7,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15MV -- THE MOVE-IN, step 1: the region gets the Snowfield's look (Nov 1 2026)
+## m2085 -- THE MOVE-IN, step 1: the region gets the Snowfield's look (Nov 1 2026)
 His: *"are we expanding on what we've already made -- a lot of the other stuff is good"* -> yes: the existing snow pieces MOVE onto the region map
 (REGION_METHOD stage 2 table); the village is the one new place. *"Do whatever makes the most sense"* -> the move-in first, before the buildings.
 - The region terrain and the hamlet's ground use `snowTriMat('snow_snow', ...)` (the Snowfield's painted triplanar snow; the vertex colours still
