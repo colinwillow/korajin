@@ -8,6 +8,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- the snow kit SHAPE PASS 3: spires, horn arches, floating stones (classic materials)
+
+His: *"This is what I was talking about -- the SHAPE: tall tapering spires on the shrines and towers, curved horn-shaped arches on the bridge, and stones
+floating loose above the pillars."* Decoration only, no colliders: footprints, heights of standable tops and the village's measured routes are unchanged.
+- `vilSpire`: a concave, tapering stone (or timber) spire with three gold rings and a floating jade tip. On every SHRINE TOWER (2.6 x its size, over the
+  flared roofs -- they now read as pagoda spires along the aqueduct), off the WATCHTOWER's ridge (2.2 m, timber) and on the GATE's roof (1.8 m).
+- `vilHorn`: a tapering horn along a curve (`willowTube`). Every PIER in an `aq_section` / `aq_bridge` (option `horns`, off for a lone pier) raises a
+  HORN ARCH over the walkway: two horns from stone sockets outside the rails, flaring out then sweeping in to meet 4.2 m over the deck, gold-banded,
+  a gold knob, a floating jade crystal and a hanging lantern at the crown, warm light on the deck.
+- PILLARS carry three chamfered stones FLOATING over the cap (the first with snow on it) and a jade crystal over those (`float: 0` for none) -- so the
+  gate's two pillars do too.
+- Rendered (sections, demo bridge, pillars, watchtower, gate) before pushing; the horns were thickened and given a flared root after the first look.
+  Same draws. Shipped unverified.
+
 ## m2093 -- the snow kit back to its CLASSIC look by default (the jin style kept behind `?svkstyle=jin`)
 
 His: *"No, I liked how it was before -- now it just feels chaotic. I was more talking about the SHAPES of the buildings ... the old textures were good."*
