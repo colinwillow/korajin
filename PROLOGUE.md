@@ -60,6 +60,22 @@ BELL SHRINE -- (1) a pagoda roof on columns with a great bronze bell, or (2) a m
 - [ ] **P4 -- THE ESCAPE** (the leap and the glide or the ride).
 - [ ] **P5 -- THE FALLEN GROUND** (the landing site, the statues, the first village voice) -> Chapter One.
 
+## HIS NOTES (Nov 1 2026, draft 3) -- the story is OPEN; the garden keeps being built
+- **Originality check:** draft 2's beats (sleep late on sky islands -> fetch the uniform -> knocked off a glider -> fall to the surface) are
+  Skyward Sword's opening almost beat for beat (he has never played it). Rule from here: every beat asks "what could only happen in Korajin, to Grumbo?"
+- **Leading idea (his, not settled):** Grumbo is a big, dozy, Totoro-like GUARDIAN whose duty up there is to keep the evil out -- a duty nobody has
+  needed in centuries -- so he snoozes, and the cracks start showing. Maybe it was written (a book, the floor) and he never read it. He may CAUSE it
+  by neglect.
+- **The way down (open):** riding the shards of the falling city, jumping falling rock to falling rock; OR a free-fall where you steer through the
+  air collecting sacred stones that hold Jinra; at the bottom a satchel PARACHUTE cloth opens, rips, and is lost (earned back later) -- replaces the glider.
+- **No toad sage in the prologue;** the snow village is much later.
+- **Clothes:** everyday clothes at the start (decision pending: an outfit earned piece by piece vs. a quest for it).
+- **THE GARDEN IS TOO SMALL:** build a cluster -- a BIG, a MEDIUM and a SMALL island at different heights, joined by rope bridges (connective
+  tissue). He may generate reference images.
+- **THE GAME'S SHAPE (his): four element temples + a final world.** 1 GREEN / earth (first: the floating garden falls -> ruined tan-and-green
+  temples on the ground), then in some order SNOW / ice, FIRE / rock-stone (Akatani), SAND or WATER, then the final boss world.
+- **He may write the story first** (possibly brainstorming with ChatGPT, then taper it). The garden build does not wait on it.
+
 ## Open questions (his)
 - **What strikes?** A falling stone PILLAR (from where? the Kūkyo?), a construct, a sorceress (KORAJIN.md's "evil force")?
 - **Who is Grumbo up there?** A monk-in-training? A visitor? Does he lose something in the fall (his powers -- "the Korajin forgot they were magical")?
