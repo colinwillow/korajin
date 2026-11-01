@@ -12416,7 +12416,7 @@ function rgnStep(dt) { try { snowSkyHold(); } catch (e) {}
   const F = RGN.fall; if (F) { const c = camera.position, P = F.P; for (let i = 0; i < F.N; i++) { let y = P[i * 3 + 1] - dt * (1.1 + (i % 7) * .12); P[i * 3] += Math.sin(i + performance.now() * .0004) * dt * .3;
       if (y < -2) y += 32; P[i * 3 + 1] = y; } F.pts.position.set(c.x, c.y - 14, c.z); F.pts.geometry.attributes.position.needsUpdate = true; }
   if (typeof svkStep === 'function' && RGN.D) { try { svkStep(dt); } catch (e) {} }     // the kit's moving pieces, when district 5 places them
-  // m15MM2: THE MOVE-IN, step 2 -- the tame MAMMOTH waits by the hamlet's stable (the herder's charge, VILLAGE_BLUEPRINT pass 8) and the calf HERD
+  // m2088: THE MOVE-IN, step 2 -- the tame MAMMOTH waits by the hamlet's stable (the herder's charge, VILLAGE_BLUEPRINT pass 8) and the calf HERD
   // grazes the MAMMOTH MEADOW, both standing on the terrain (`rgnGnd`); the mount ring / arrow / pulse and the ride are the Snowfield's own (mamFrame)
   const M = RGN.hm; if (M && M.stable && typeof arenaSpawn === 'function') { RGN.tt = (RGN.tt || 0) + dt;
     if (!RGN.mamSp && ARENA.kinds.MAMMOTH) { RGN.mamSp = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = [...DUMMIES].reverse().find(o => o.K && o.K.arena === 'MAMMOTH' && !o.tame && !o.critter); if (!d) return;
@@ -14446,8 +14446,8 @@ function mamAnim(dt, t) { const R = player.mamRide;
   let nm; if (R.st === 'on') { const u = (R.t - MOUNT.crouch) / MOUNT.T; nm = u < 0 ? (dragHas('land_hero') ? 'land_hero' : CLIPS.idle) : u > MOUNT.flipA - .05 && u < MOUNT.flipB + .04 && dragHas('tuck') ? 'tuck' : dragHas('fall_hero') ? 'fall_hero' : CLIPS.idle; }
   else if (R.st === 'off') nm = dragHas('in_air') ? 'in_air' : dragHas('fall_hero') ? 'fall_hero' : CLIPS.idle; else nm = dragHas('ride_seat') ? 'ride_seat' : CLIPS.idle;
   t[nm] = 1; setWeights(t, dt); }
-function rgnFoeMove(d, h, sp, dt) { const P = d.root.position, x0 = P.x, z0 = P.z; foeMove(d, h, sp, dt); if (RGN.live) { P.y = rgnH(x0, z0); rgnWall(P, x0, z0); P.y = rgnH(P.x, P.z); } }     // m15MM2: a calf does not climb a mountain
-function rgnGnd(x, z) { return RGN.live ? rgnH(x, z) : 0; }     // m15MM2: a creature's ground -- the region's terrain there, else the flat floor
+function rgnFoeMove(d, h, sp, dt) { const P = d.root.position, x0 = P.x, z0 = P.z; foeMove(d, h, sp, dt); if (RGN.live) { P.y = rgnH(x0, z0); rgnWall(P, x0, z0); P.y = rgnH(P.x, P.z); } }     // m2088: a calf does not climb a mountain
+function rgnGnd(x, z) { return RGN.live ? rgnH(x, z) : 0; }     // m2088: a creature's ground -- the region's terrain there, else the flat floor
 function mamTameStep(d, dt, t) { const P = d.root.position, R = d.ride || (d.ride = { v: 0 }); P.y = rgnGnd(P.x, P.z); d.hp = Math.max(d.hp || 0, 999);
   if (R.stomp != null) { R.stomp += dt; const len = skinLen(d, 'Attack_F_IP') || 1.4, u = R.stomp / len; t.Attack_F_IP = 1; R.v *= Math.exp(-4 * dt);
     if (!R.hit && u >= MAMR.stompAt) { R.hit = 1; const fx = P.x + Math.sin(d.h) * 3.2, fz = P.z + Math.cos(d.h) * 3.2; snowBlast(fx, .2, fz, 3.4, 1.6); camShake(.35); snd('bump', { g: 1, r: .5, x: fx, z: fz });
@@ -14456,7 +14456,7 @@ function mamTameStep(d, dt, t) { const P = d.root.position, R = d.ride || (d.rid
   if (!R.on) { t.Idle_1 = 1; return true; }
   const S = stickWorld(), want = S.mag * MAMR.runV; if (S.mag > 0) { const th = Math.atan2(S.x, S.z), tr = lerp(MAMR.turnStill, MAMR.turn, clamp(R.v / MAMR.runV, 0, 1)); d.h += clamp(wrapAngle(th - d.h), -tr * dt, tr * dt); }
   R.v += (want * (S.mag > 0 ? clamp(1 - Math.abs(wrapAngle(Math.atan2(S.x, S.z) - d.h)) / 2.2, .35, 1) : 0) - R.v) * (1 - Math.exp(-dt * Math.LN2 / (want > R.v ? MAMR.accHL : MAMR.brakeHL)));
-  if (R.v > .05) { const x0 = P.x, z0 = P.z; foeMove(d, d.h, R.v, dt); if (RGN.live) { P.y = rgnH(x0, z0); if (rgnWall(P, x0, z0)) R.v *= Math.exp(-6 * dt); P.y = rgnH(P.x, P.z); } }     // m15MM2: in the region a slope too steep is a wall to him too
+  if (R.v > .05) { const x0 = P.x, z0 = P.z; foeMove(d, d.h, R.v, dt); if (RGN.live) { P.y = rgnH(x0, z0); if (rgnWall(P, x0, z0)) R.v *= Math.exp(-6 * dt); P.y = rgnH(P.x, P.z); } }     // m2088: in the region a slope too steep is a wall to him too
   const clip = R.v < .35 ? 'Idle_1' : R.v < MAMR.walkV * 1.25 ? 'Walk_F_IP' : R.v < MAMR.trotV * 1.25 ? 'Trot_F_IP' : 'Run_F_IP'; t[clip] = 1; if (MAMR.ref[clip]) setSkinScale(d, clip, clamp(R.v / MAMR.ref[clip], .6, 1.9));     // m2071: the run clip plays up to 1.9x so the legs keep up at 15.5
   return true; }
 // m2022: THE HERD (the snow list: "snow creatures -- a herd of mini mammoths wandering the field"). `HERD.n` calves (the mammoth on the cow rig at

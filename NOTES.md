@@ -18,7 +18,7 @@ His: "sounds good" (the next passes: surface detail, texture maps). The first re
 Rendered: the six and the Great Frostcap -- the wood reads as bark; the snow caps (double-sided since the last build) read on every plant.
 Shipped unverified on the phone.
 
-## m15MM2 -- THE MOVE-IN, step 2: the tame MAMMOTH by the hamlet's stable, the calf HERD on the MAMMOTH MEADOW (Nov 1 2026)
+## m2088 -- THE MOVE-IN, step 2: the tame MAMMOTH by the hamlet's stable, the calf HERD on the MAMMOTH MEADOW (Nov 1 2026)
 - `rgnStep` spawns them like `snowStep` does (by kind, one after the other): the tame mammoth at `hamlet.stable` (the blueprint's stable spot,
   facing the gate), saddled (`mamSaddle`); the 5 calves round the MAMMOTH MEADOW place (`HERD.at` set to it). `mamFrame` (the ring / arrow / pulse,
   the land-on-the-saddle catch) runs from `rgnStep` here.
