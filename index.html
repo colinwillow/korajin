@@ -15921,7 +15921,7 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   stair: { id: 'shrine_stair', hw: 1.7, rise: .3, tread: .42, n: 8 },                // risers .30 (his step is .357)
   shrine: { id: 'bell_shrine', at: [0, -17.2], plat: 3.9, colH: 4.0, colR: .28, col: 2.75, bellH: 2.0, bellR: .95 },
   trees: [{ id: 'willow_a', at: [-15.2, .4], h: 9.5, k: 1.0, seed: 11, lean: [.4, .3] }, { id: 'willow_b', at: [-12.4, 8.0], h: 8.6, k: .92, seed: 23, lean: [.3, -.5] },
-    { id: 'willow_shrine', at: [11.5, -15.5], h: 8.8, k: .9, seed: 37, lean: [-.4, .2] }, { id: 'willow_look', at: [35.2, -20.5], h: 6.2, k: .62, seed: 51, lean: [-.3, .3], base: 4.8 }],
+    { id: 'willow_shrine', at: [11.5, -15.5], h: 8.8, k: .9, seed: 37, lean: [-.4, .2] }],
   // the sling as DATA: anchors on the two trunks (`a`, `b`), the ring height `y`, the `sag` of the bed below the spreader bars, its width `w`; the
   // builder writes `bed` = { at: [x, y, z] (the sling's lowest point, world), yaw (along the span), sag, span } so a body can be fitted by number
   hammock: { id: 'hammock', a: 'willow_a', b: 'willow_b', y: 1.75, sag: 1.05, w: 1.35, bed: null },
@@ -15936,40 +15936,58 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   cascades: [{ id: 'spout_l', at: [-5.2, -9.0], to: 'pool_spring_l' }, { id: 'spout_r', at: [5.6, -9.3], to: 'pool_spring_r' }],
   // fences: arcs of the rim [id, from deg, to deg] (deg: x = sin a, z = cos a; front = 0), posts every `step` m with a jade gem
   fence: { step: 2.7, inset: .92, arcs: [['fence_front', -24, 54], ['fence_east', 98, 154], ['fence_west', -92, -44], ['fence_nw', -150, -116]] },
-  lanterns: [['toro_path_1', -6.0, 8.6], ['toro_foot_l', -2.9, -2.6], ['toro_foot_r', 2.9, -2.6], ['toro_path_2', -1.8, 3.2], ['toro_east', 14.5, -4.6], ['toro_front_l', -1.9, 21], ['toro_front_r', 1.9, 21], ['toro_zen', 2.0, 7.4], ['toro_look', 32.5, -16.8, 4.8]],
-  cairns: [['cairn_e', 17.4, -11.2], ['cairn_w', -17.6, -13.8], ['cairn_look', 37.2, -17.0, 4.8], ['cairn_f', 9.5, 17.5], ['cairn_zen', 10.4, 1.2]],
-  crystals: [['crys_tl', -8.3, -12.4, 1.1], ['crys_tr', 8.7, -11.0, 1.0], ['crys_w', -19.4, -1.0, .9], ['crys_e', 17.2, 4.8, .8], ['crys_f', -4.6, 19.0, .7], ['crys_look', 31.2, -21.4, .9, 4.8], ['crys_zen', 3.3, 7.6, .6], ['crys_back', -3.6, -24.0, .8]],
+  lanterns: [['toro_path_1', -6.0, 8.6], ['toro_foot_l', -2.9, -2.6], ['toro_foot_r', 2.9, -2.6], ['toro_path_2', -1.8, 3.2], ['toro_east', 14.5, -4.6], ['toro_front_l', -1.9, 21], ['toro_front_r', 1.9, 21], ['toro_zen', 2.0, 7.4]],
+  cairns: [['cairn_e', 17.4, -11.2], ['cairn_w', -17.6, -13.8], ['cairn_f', 9.5, 17.5], ['cairn_zen', 10.4, 1.2]],
+  crystals: [['crys_tl', -8.3, -12.4, 1.1], ['crys_tr', 8.7, -11.0, 1.0], ['crys_w', -19.4, -1.0, .9], ['crys_e', 17.2, 4.8, .8], ['crys_f', -4.6, 19.0, .7], ['crys_zen', 3.3, 7.6, .6], ['crys_back', -3.6, -24.0, .8]],
   banners: [{ id: 'ban_teal_l', at: [-3.3, -5.0], c: 'teal', h: 5.0 }, { id: 'ban_teal_r', at: [3.3, -5.0], c: 'teal', h: 5.0 }, { id: 'ban_red_l', at: [-2.3, 22.0], c: 'red', h: 4.2 },
     { id: 'ban_red_r', at: [2.3, 22.0], c: 'red', h: 4.2 }, { id: 'ban_teal_e', at: [20.4, -3.2], c: 'teal', h: 4.4 }],
   // the way UP (verticality): floating stepping stones off the east rim, each a tier higher, to a lookout islet with its own willow and fall
   boulders: { n: 22, seed: 77 },                                                     // mossy boulders heaped round the rim (the refs' rocky edges)
   runes: [['rune_w', -21.0, 6.0, 1.0], ['rune_e', 19.6, -8.2, .85], ['rune_f', 7.5, 21.8, .8]],               // standing stones with a glowing jade glyph (ref 1)
   motes: { n: 260 },                                                                   // Jinra motes drifting up off the water and the veins
-  stones: [{ id: 'step_1', at: [26.4, 1.2, -1.2], r: 1.7 }, { id: 'step_2', at: [29.6, 2.4, -6.2], r: 1.6 }, { id: 'step_3', at: [31.0, 3.6, -11.6], r: 1.6 }],
-  lookout: { id: 'lookout', at: [34.4, 4.8, -18.6], r: 5.6, depth: 14, fall: 140 },
-  // m2154 THE CLUSTER (his: "too small to do anything up there" -> big / medium / small at clearly different heights, joined by rope bridges). The
-  // garden above is the BIG island (lawn at 0); the lookout islet (+4.8) is the waystation; MEDIUM floats at +11, SMALL at +21 -- each route climbs.
-  // isles: [x, y, z] of the lawn centre, radii, depth; their dressing as rows; `fall` [deg] waterfalls off the rim. Blockout pass: shapes, routes,
-  // a first dressing; refined when his references arrive.
-  // m2160 GRUMBO'S HOMESTEAD (his ref images/concepts/prologue/homestead_isle.png) replaces the medium blockout: his house -- the one he never sleeps in,
-  // because he naps in the hammock. Two tiers: the lower lawn (pond, waterwheel, arched footbridge, gazebo, vegetable beds) and a 2.4 m stone-walled
-  // upper terrace up a slab stair (the house, its deck under an awning, the cherry tree). `home` holds the homestead's own rows.
-  isles: [{ id: 'isle_home', at: [68, 11, -34], rx: 15, rz: 13, depth: 24, seed: 61, fall: [330, 75], blocks: 1,
-      trees: [{ id: 'cherry_home', at: [63.4, -42.6], h: 7.2, k: .85, seed: 73, lean: [.3, .3], blossom: 1, base2: 2.4 }],
-      pond: { at: [64.4, -30.9], r: 1.9 }, lanterns: [[66.6, -27.4], [73.4, -27.4], [56.8, -31.5]], crystals: [[80.5, -38, .8]], cairns: [],
-      home: { tier: { at: [70, -39.5], r: 8, h: 2.4 }, stair: { x: 70, hw: 1.0, tread: .5, n: 8 },
-        house: { at: [71, -42.4], w: 6.4, d: 5.0, h: 3.0 }, deck: { at: [76.6, -38.6], w: 3.4, d: 4.2 }, chimney: [73.2, -43.6],
-        gazebo: { at: [59.4, -36.4], r: 1.9 }, footbridge: { at: [63.6, -26.6], yaw: 1.45, L: 3.6 }, beds: { at: [75.5, -25.6], n: 3 },
-        banner: [78.6, -44.8], barrels: [[74.6, -40.6], [75.2, -41.4], [66.8, -40.2]], pots: [[67.6, -39.6], [68.3, -39.4], [58.4, -33.6], [77.8, -27.6]],
-        path: [[70, -27.3], [66.5, -26.6], [61, -26.6], [56.5, -28.2]], fence: [[-22, 62], [86, 150]],
-        clear: [[59.4, -36.4, 2.8], [75.5, -25.6, 2.6], [70, -27.5, 1.6]] } },
-    { id: 'isle_small', at: [42, 21, -66], rx: 8, rz: 7, depth: 18, seed: 97, fall: [300],
-      trees: [{ id: 'willow_small', at: [40, -69], h: 6.4, k: .65, seed: 91, lean: [.2, .3] }], lanterns: [[45.5, -62.5]], crystals: [[47, -68, 1.1]], cairns: [[37.5, -63]], bell: [44, -66] }],
-  bridges: [{ id: 'bridge_look_home', a: 'lookout', b: 'isle_home', w: 1.5 }, { id: 'bridge_home_small', a: 'isle_home', b: 'isle_small', w: 1.4 }],
+  stones: [], lookout: null, isles: [],
+  // m2160 ONE MOUNTAIN, CRACKED IN THREE (his, after the m2156 cluster: "much more intrigue and detail ... like a mountain with some cracks cut through it
+  // to separate it into three chunks -- one cohesive whole place, just space between them"). The garden is the first chunk. The other two are CRESCENTS
+  // cut from the same rock and wrapped round its rim across narrow cracks (`gap` m): their inner edge IS the garden's rim pushed out, so the three
+  // pieces fit back together; each has its own height and a sheer fractured face to the crack, tapering into the sky below (the cracks widen as they
+  // go down). `a0`..`a1` the arc they span (deg, x = sin a, z = cos a), `W` their depth, `H` their top. Rows below are their dressing.
+  chunks: [
+    // GRUMBO'S HOMESTEAD (his ref images/concepts/prologue/homestead_isle.png): his house -- the one he never sleeps in, he naps in the hammock. A
+    // lower lawn at +2 (pond, waterwheel, arched footbridge, gazebo, vegetable beds, a stream that falls into the crack) and a 2.4 m stone terrace up a
+    // slab stair (the house, its deck under an awning, the cherry tree)
+    { id: 'chunk_home', a0: 38, a1: 128, gap: 5, W: [24, 28], H: 2, depth: 30, seed: 61,
+      trees: [{ id: 'cherry_home', at: [36.2, -11.6], h: 7.2, k: .85, seed: 73, lean: [.3, .3], blossom: 1, base2: 2.4 }, { id: 'willow_home', at: [30.4, 8.8], h: 7.6, k: .8, seed: 79, lean: [-.4, .2] },
+        { id: 'willow_home_b', at: [45, 22], h: 6.8, k: .75, seed: 83, lean: [.2, -.3] }],
+      pond: { at: [35.3, .9], r: 1.9 }, streams: [{ pts: [[35.3, .9], [32.5, 2.2], [30, 3.4], [25, 5.5]], w: 1.0 }],
+      lanterns: [[29.6, 1.8], [39.6, 5.6], [43.2, 5.6], [33.2, 13.5], [31.2, -9.4], [44.5, 18]], crystals: [[48, 14, 1.2], [28.4, -18, .8], [51, -2, .9]], cairns: [[50, 6]], boulders: 14,
+      paths: [[[34.5, 5.6], [35, 12], [35.4, 16.2]], [[31.2, 2.9], [30.8, -4], [31.4, -10.4]]], fence: [[.06, .42], [.56, .94]],
+      home: { tier: { at: [41.4, -7.3], r: 8, h: 2.4 }, stair: { x: 41.4, hw: 1.0, tread: .5, n: 8 },
+        house: { at: [42.4, -10.2], w: 6.4, d: 5.0, h: 3.0 }, deck: { at: [48.2, -6.6], w: 3.4, d: 4.2 }, chimney: [44.6, -11.4],
+        gazebo: { at: [31.5, -12.9], r: 1.9 }, footbridge: { at: [31.2, 2.7], yaw: .46, L: 3.6 }, beds: { at: [35.5, 19.0], n: 3 },
+        banner: [45.5, -13], barrels: [[46.2, -9.4], [46.9, -10.2], [38.3, -9.2]], pots: [[39.4, -6.0], [40.1, -5.8], [30.6, -10.6], [38.4, 16.6]],
+        path: [[29.6, -.4], [31.2, 2.9], [34.5, 5.6], [38.5, 6.4], [41.4, 5.2]], fence: [],
+        clear: [[31.5, -12.9, 2.8], [35.5, 19, 2.8], [31.2, 2.7, 2.2], [48.2, -6.6, 2.8]] } },
+    // THE SUMMIT: the highest chunk, behind the shrine -- a ledge at +5 (the bridge lands here; a path of stone lanterns through a bell gate, a viewing
+    // deck over the clouds) and a 3 m stone terrace up a slab stair to a three-storey PAGODA; a spring on top cascades to a ledge pool, whose stream
+    // falls into the crack behind the garden's shrine
+    { id: 'chunk_summit', a0: 138, a1: 232, gap: 6, W: [23, 27], H: 5, depth: 38, seed: 97,
+      trees: [{ id: 'willow_ledge', at: [17.5, -46.5], h: 7.5, k: .8, seed: 101, lean: [.3, .3] }, { id: 'willow_summit', at: [-12.5, -37.5], h: 7.0, k: .75, seed: 107, lean: [.3, -.2], base2: 3 },
+        { id: 'willow_rim', at: [5, -52.5], h: 5.6, k: .62, seed: 113, lean: [-.2, .3] }],
+      pools: [{ at: [-.7, -36.9], r: 1.8 }], streams: [{ pts: [[-.7, -36.9], [.4, -34.6], [1.0, -28]], w: 1.0 }],
+      lanterns: [[22.3, -31.6], [17.6, -38.2], [10.8, -39.0], [6.3, -41.6], [3.6, -46.6], [3.6, -41.4]], crystals: [[12, -50, 1.6], [-19.5, -36.5, 1.0], [22, -41, .9]],
+      cairns: [[9.5, -49], [-21, -46]], boulders: 16, fence: [[.08, .4], [.6, .92]],
+      paths: [[[25.2, -31.2], [20, -36.3], [13.5, -40], [7.5, -43], [4.2, -44]]],
+      summit: { terrace: { at: [-9, -44], r: 8.5, h: 3 }, stair: { z: -44, hw: 1.1, tread: .45, n: 10 }, pagoda: { at: [-10.5, -45.5], w: 5.2 },
+        spring: { at: [-3.6, -41.6], r: 1.2 }, gate: { at: [13.5, -40], yaw: 1.08 }, deck: { at: [22.6, -45.6], w: 3.2, d: 2.6, yaw: 2.6 },
+        poles: [[4.9, -40.6], [4.9, -47.4], [18.4, -33.4], [9.4, -37.6]], flags: [[0, 1], [2, 3], [0, 'pagoda']],
+        clear: [[13.5, -40, 2.2], [22.6, -45.6, 2.6], [-.7, -36.9, 2.6]] } }],
+  // the routes across the cracks: the Rope Course's bridges (verlet; they sag, sway and dip under him). `from` / `to` are island-local [x, y, z]
+  // ('rim:<deg>' = the garden's rim at that angle; 'inner:<chunk>:<deg>' = that chunk's crack edge facing it)
+  bridges: [{ id: 'bridge_garden_home', from: 'rim:90', to: 'inner:chunk_home:90', w: 1.5 }, { id: 'bridge_home_summit', from: [32.1, 2, -23.8], to: [26.0, 5, -30.4], w: 1.4 }],
   far: [{ id: 'far_pagoda', at: [-140, 48, -300], r: 30, d: 70, pagoda: 1, trees: 4, falls: [160, 220] }, { id: 'far_e', at: [170, 14, -210], r: 20, d: 46, trees: 4, falls: [250] },
     { id: 'far_w', at: [-230, -6, -40], r: 34, d: 60, trees: 7, falls: [100] }, { id: 'far_ne', at: [250, 66, 40], r: 15, d: 34, trees: 2 },
     { id: 'far_back', at: [70, 92, -420], r: 24, d: 54, trees: 4, falls: [200] }, { id: 'far_below', at: [-62, -34, 92], r: 11, d: 26, trees: 1, falls: [40] },
-    { id: 'far_se', at: [96, -22, 130], r: 13, d: 30, trees: 2 }, { id: 'far_high_w', at: [-44, 16, -46], r: 6.5, d: 16, trees: 1, falls: [230] },
+    { id: 'far_se', at: [96, -22, 130], r: 13, d: 30, trees: 2 },
     { id: 'far_low_fl', at: [-36, -10, 34], r: 5, d: 12, trees: 1 }],
   rocks: { n: 34, r0: 50, r1: 320, s0: .8, s1: 6, y0: -40, y1: 80 },
   // FLOATING MOUNTAINS (m2152, his: "they should be floating"): [x, z, height, y of the base] -- a snow peak on a rock that tapers into the sky below
@@ -16298,7 +16316,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     box(x, z, .5 * s, .5 * s, -1, 2.6 * s); part(id, 'rune', { x, z }); }
   // ---- THE WAY UP: floating stepping stones, a tier higher each, to the lookout islet (its own willow, lantern, cairn and fall) ----
   for (const S3 of Z.stones) { const [x, y, z] = S3.at, rk = templeRock(x, y, z, S3.r, S3.r * .9, 3 + S3.r, 14, 300 + parts.length); put(rk.side, M.rock, 'stones'); rk.cap.deleteAttribute('color'); put(rk.cap, M.moss, 'stones'); disc(x, z, S3.r * .82, y - 1.5, y); part(S3.id, 'step', { x, y, z }); }
-  { const LK = Z.lookout, [x, y, z] = LK.at, rk = templeRock(x, y, z, LK.r, LK.r * .85, LK.depth, 28, 77); put(rk.side, M.rock, 'lookout'); rk.cap.deleteAttribute('color'); put(rk.cap, M.lawn, 'lookout');
+  if (Z.lookout) { const LK = Z.lookout, [x, y, z] = LK.at, rk = templeRock(x, y, z, LK.r, LK.r * .85, LK.depth, 28, 77); put(rk.side, M.rock, 'lookout'); rk.cap.deleteAttribute('color'); put(rk.cap, M.lawn, 'lookout');
     for (let i = 0; i < rk.tris.length; i += 3) tris.push(rk.tris[i], rk.tris[i + 1] + Y0, rk.tris[i + 2]);
     const lp = rk.rim[Math.round(rk.rim.length * (LK.fall / 360)) % rk.rim.length], L = Math.hypot(lp[0] - x, lp[2] - z); falls.length = 0;
     const lf = new THREE.Mesh(gdnFall(lp[0], y + .05, lp[2], (lp[0] - x) / L, (lp[2] - z) / L, 1.1, 120, 1.2), M.fall); lf.renderOrder = 2; lf.frustumCulled = false; Z.fallLook = lf;
@@ -16380,6 +16398,64 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     for (const [x, z] of H.barrels) { const yb = Math.hypot(x - tx, z - tz) < TT.r ? top : iy; P(new THREE.CylinderGeometry(.32, .3, .8, 12).translate(x, yb + .4, z), M.wood); for (const yy of [.15, .65]) P(new THREE.TorusGeometry(.32, .025, 4, 14).rotateX(Math.PI / 2).translate(x, yb + yy, z), M.dark); }
     for (const [x, z] of H.pots) { const yb = Math.hypot(x - tx, z - tz) < TT.r ? top : iy; P(new THREE.LatheGeometry([[0, 0], [.18, 0], [.26, .18], [.2, .4], [.24, .46], [.0, .46]].map(([a, b]) => new THREE.Vector2(a, b)), 12).translate(x, yb, z), M.clay); P(gdnBlob(RH, x, yb + .55, z, .26, .8, 0), RH() < .5 ? M.leaves : M.blossom); }
     part(IS.id + '_home', 'homestead', { x: ix, z: iz }); };
+  // ---- THE SUMMIT's own rows: the stone terrace and its stair, the three-storey pagoda, the spring and its cascade, the bell gate, the viewing deck,
+  // prayer flags strung between poles ----
+  const gdnSummit = (C, into, inPoly, poly) => { const S = C.summit, H = C.H, RS = gdnRnd(C.seed + 5), P = (g, m) => put(g, m, into), bx = (x, z, hx, hz, y0, y1) => box(x, z, hx, hz, H + y0, H + y1);
+    const T = S.terrace, [tx, tz] = T.at, TY = T.h, top = H + TY;
+    { const wall = new THREE.CylinderGeometry(T.r, T.r + .4, TY + .4, 30, 3), Pp = wall.attributes.position; for (let i = 0; i < Pp.count; i++) { const k = 1 + (RS() - .5) * .03; Pp.setX(i, Pp.getX(i) * k); Pp.setZ(i, Pp.getZ(i) * k); }
+      wall.computeVertexNormals(); P(wall.translate(tx, H + TY / 2 - .2, tz), M.cyclo); P(new THREE.CylinderGeometry(T.r + .12, T.r + .05, .26, 48).translate(tx, top - .1, tz), M.stone); P(gdnBlobDisc(tx, tz, T.r - .05, top + .03, RS, 40), M.flag);
+      for (let i = 0; i < 22; i++) { const a = i / 22 * 6.283; if (Math.abs(Math.cos(a)) > .97 && Math.cos(a) > 0) continue; P(gdnBlob(RS, tx + Math.cos(a) * T.r, top + .04, tz + Math.sin(a) * T.r, .45 + RS() * .3, .45, 0), M.moss);
+        if (RS() < .65) { const len = 1.2 + RS() * 1.8, q = new THREE.PlaneGeometry(1.0, len, 1, 3).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); P(q.translate(tx + Math.cos(a) * (T.r + .3), top, tz + Math.sin(a) * (T.r + .3)), M.ivy); } }
+      gdnDisc(tx, tz, T.r - .1, Y0 + H - 1, Y0 + top); part(C.id + '_terrace', 'terrace', { x: tx, z: tz, top: TY }); }
+    // the stair runs EAST (+x) off the terrace toward the ledge path: ten .30 risers, stone cheeks, lanterns at its foot
+    { const St = S.stair, x0 = tx + T.r - .15; for (let k = 1; k <= St.n; k++) { const y = TY - .3 * k, xa = x0 + St.tread * (k - 1) - .02, xb = x0 + St.tread * k;
+        P(new THREE.BoxGeometry(xb - xa, y + .25, St.hw * 2).translate((xa + xb) / 2, H + (y - .25) / 2, St.z), M.stone); bx((xa + xb) / 2, St.z, (xb - xa) / 2, St.hw, -1, y); }
+      const xe = x0 + St.tread * St.n; for (const sd of [-1, 1]) { const sh = new THREE.Shape([[x0 - 1, -.2], [xe + .3, -.2], [xe + .3, .7], [x0 + .2, TY + .75], [x0 - 1, TY + .75]].map(([a, b]) => new THREE.Vector2(a, b)));
+        P(new THREE.ExtrudeGeometry(sh, { depth: .5, bevelEnabled: false }).translate(0, H, St.z + sd * (St.hw + .3) - .25), M.stone);
+        for (let k = 0; k <= St.n; k++) { const xa = x0 + St.tread * (k - 1), xb2 = x0 + St.tread * k; bx((xa + xb2) / 2, St.z + sd * (St.hw + .3), St.tread / 2, .27, -1, TY - .3 * k + .8); } }
+      part(C.id + '_stair', 'stair', { n: St.n }); }
+    // THE PAGODA: a stone plinth, three red storeys each smaller, a curved jade roof on each, a gold spire and a jade orb; a door to the east
+    { const Pg = S.pagoda, [px, pz] = Pg.at; let y = top + .3, w = Pg.w; P(new THREE.BoxGeometry(w + 1.4, .3, w + 1.4).translate(px, top + .15, pz), M.stone);
+      for (let k = 0; k < 3; k++) { const h = [2.8, 2.2, 1.8][k]; P(new THREE.BoxGeometry(w, h, w).translate(px, y + h / 2, pz), M.lacquer);
+        for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) P(new THREE.BoxGeometry(.22, h, .22).translate(px + a * w / 2, y + h / 2, pz + b * w / 2), M.dark);
+        P(new THREE.BoxGeometry(w + .2, .18, w + .2).translate(px, y + h - .1, pz), M.gold); for (let s2 = -1; s2 <= 1; s2 += 2) P(new THREE.OctahedronGeometry(.16, 0).scale(.4, 1.3, 1).translate(px + w / 2 + .05, y + h * .62, pz + s2 * w * .25), M.jade);
+        if (k === 0) { P(new THREE.BoxGeometry(.08, 2.0, 1.3).translate(px + w / 2 + .03, y + 1.0, pz), M.wood); Z.lanterns.push([C.id + '_door', px + w / 2 + .5, pz + 1.2, y - .2]); }
+        const rf = gdnRoof(px, y + h + .02, pz, w / 2 + 1.25 - k * .1, w * .2, 1.2 - k * .1, .6); for (const f of rf.roof) P(f, M.roof); for (const t of rf.trim) P(t, M.gold);
+        Z.lamps.push({ x: px + (w / 2 + 1.1) * .93, y: y + h + .1, z: pz + (w / 2 + 1.1) * .93, k: 1, kind: k % 2 ? 'bell' : 'lantern', into }); Z.lamps.push({ x: px - (w / 2 + 1.1) * .93, y: y + h + .1, z: pz - (w / 2 + 1.1) * .93, k: 1, kind: 'bell', into });
+        y += h + 1.2 - k * .1; w *= .74; }
+      P(new THREE.CylinderGeometry(.1, .2, 1.2, 8).translate(px, y + .5, pz), M.gold); for (let k = 0; k < 4; k++) P(new THREE.TorusGeometry(.22 - k * .04, .05, 6, 14).rotateX(Math.PI / 2).translate(px, y + .8 + k * .25, pz), M.gold);
+      P(new THREE.SphereGeometry(.32, 16, 10).translate(px, y + 2.1, pz), M.jade); S.pagodaTop = [px, y + 1.6, pz];
+      bx(px, pz, Pg.w / 2 + .1, Pg.w / 2 + .1, TY, TY + 9); part(C.id + '_pagoda', 'pagoda', { x: px, z: pz, top: y + 2.4 }); }
+    // the SPRING on the terrace, its little run to the edge, the cascade down to the ledge pool (a ripple and spray where it lands)
+    { const [sx, sz] = S.spring.at, Lp = (C.pools || [])[0]; (Z.isleWater = Z.isleWater || []).push(gdnBlobDisc(sx, sz, S.spring.r, top + .08, RS, 18, 0)); P(gdnBlobDisc(sx, sz, S.spring.r + .4, top + .05, RS, 18), M.pebble);
+      if (Lp) { const ex = Lp.at[0] - tx, ez = Lp.at[1] - tz, L = Math.hypot(ex, ez), ux = ex / L, uz = ez / L, lx = tx + ux * (T.r + .1), lz = tz + uz * (T.r + .1);
+        Z.isleWater.push(gdnRibbon([[sx, sz], [lx - ux * .2, lz - uz * .2]], .7, top + .08, RS, .2, 1).geo); Z.isleFalls = (Z.isleFalls || []).concat([gdnFall(lx, top + .06, lz, ux, uz, .8, TY + .3, .3)]);
+        (Z.splash = Z.splash || []).push([lx + ux * .6, H + .1, lz + uz * .6]); } }
+    // THE BELL GATE across the ledge path: two red posts, a lintel, a little curved roof, a bronze bell that rings as he passes under it
+    { const [gx, gz] = S.gate.at, yw = S.gate.yaw, nx = Math.cos(yw), nz = -Math.sin(yw); for (const sd of [-1, 1]) { const x = gx + nx * sd * 1.35, z = gz + nz * sd * 1.35; P(new THREE.BoxGeometry(.32, 3.4, .32).translate(x, H + 1.7, z), M.lacquer); P(new THREE.BoxGeometry(.5, .3, .5).translate(x, H + .15, z), M.stone); bx(x, z, .2, .2, -1, 3.4); }
+      P(new THREE.BoxGeometry(3.6, .3, .42).rotateY(yw).translate(gx, H + 3.45, gz), M.lacquer); P(new THREE.BoxGeometry(3.1, .12, .3).rotateY(yw).translate(gx, H + 3.0, gz), M.gold);
+      const rf = gdnRoof(0, 0, 0, 1.9, .2, .85, .35); for (const f of rf.roof) P(f.scale(1, 1, .45).rotateY(yw).translate(gx, H + 3.6, gz), M.roof); for (const t of rf.trim) P(t.scale(1, 1, .45).rotateY(yw).translate(gx, H + 3.6, gz), M.gold);
+      P(new THREE.LatheGeometry([[0, .7], [.18, .68], [.26, .54], [.28, .24], [.34, .04], [.32, 0]].map(([a, b]) => new THREE.Vector2(a, b)), 16).translate(gx, H + 2.15, gz), M.bronze); P(new THREE.CylinderGeometry(.015, .015, .3, 4).translate(gx, H + 2.95, gz), M.rope);
+      (Z.gates = Z.gates || []).push({ x: gx, z: gz, y: H, cd: 0 }); part(C.id + '_gate', 'bell_gate', { x: gx, z: gz }); }
+    // THE VIEWING DECK at the outer edge: planks on posts, a rail on its three open sides, a bench and cushions, looking out over the clouds
+    { const D = S.deck, [dx, dz] = D.at, yw = D.yaw, cy = Math.cos(yw), sy = Math.sin(yw), at = (lx, lz) => [dx + lx * cy + lz * sy, dz - lx * sy + lz * cy];
+      P(new THREE.BoxGeometry(D.w, .2, D.d).rotateY(yw).translate(dx, H + .14, dz), M.wood); bx(dx, dz, Math.max(D.w, D.d) * .45, Math.max(D.w, D.d) * .45, -1, .24);
+      for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { const [x, z] = at(a * (D.w / 2 - .1), b * (D.d / 2 - .1)); P(new THREE.BoxGeometry(.14, 1.2, .14).translate(x, H + .6, z), M.dark); P(new THREE.BoxGeometry(.18, 1.6, .18).translate(x, H - .7, z), M.dark); }
+      for (const [x0, z0, x1, z1] of [[-1, 1, 1, 1], [-1, -1, -1, 1], [1, -1, 1, 1]]) { const [ax, az] = at(x0 * (D.w / 2 - .1), z0 * (D.d / 2 - .1)), [bx2, bz2] = at(x1 * (D.w / 2 - .1), z1 * (D.d / 2 - .1)), L = Math.hypot(bx2 - ax, bz2 - az), y2 = Math.atan2(bx2 - ax, bz2 - az);
+        P(new THREE.BoxGeometry(.07, .08, L).rotateY(y2).translate((ax + bx2) / 2, H + 1.15, (az + bz2) / 2), M.wood); BOXES.push(obox((ax + bx2) / 2, (az + bz2) / 2, L / 2, .1, Math.atan2(bz2 - az, bx2 - ax), Y0 + H, Y0 + H + 1.2)); }
+      { const [x, z] = at(0, -.3); P(new THREE.BoxGeometry(1.8, .12, .5).rotateY(yw).translate(x, H + .7, z), M.wood); for (const s2 of [-1, 1]) { const [lx, lz] = at(s2 * .75, -.3); P(new THREE.BoxGeometry(.12, .45, .45).rotateY(yw).translate(lx, H + .46, lz), M.wood); } }
+      for (const s2 of [-.5, .5]) { const [x, z] = at(s2, -.3); P(new THREE.BoxGeometry(.55, .12, .45).rotateY(yw).translate(x, H + .82, z), M.lacquer); } part(C.id + '_deck', 'deck', { x: dx, z: dz }); }
+    // PRAYER FLAGS: poles, and strings of small coloured flags sagging between them (one vertex-coloured draw)
+    { const poleTop = i => { const [x, z] = S.poles[i]; return [x, H + 4.4, z]; }; for (let i = 0; i < S.poles.length; i++) { const [x, z] = S.poles[i]; P(new THREE.CylinderGeometry(.06, .08, 4.6, 6).translate(x, H + 2.2, z), M.dark); bx(x, z, .1, .1, -1, 4.4); }
+      const cols = [[.86, .2, .2], [.95, .8, .25], [.25, .7, .45], [.2, .5, .9], [.95, .95, .92]], fv = [], fc = [], ln = [];
+      for (const [a, b] of S.flags) { const A = poleTop(a), B = b === 'pagoda' ? S.pagodaTop : poleTop(b), n = Math.max(6, Math.round(Math.hypot(B[0] - A[0], B[2] - A[2]) / .55)), sag = .45 + .03 * n, pts = [];
+        for (let i = 0; i <= n; i++) { const u = i / n; pts.push(new THREE.Vector3(A[0] + (B[0] - A[0]) * u, A[1] + (B[1] - A[1]) * u - sag * 4 * u * (1 - u), A[2] + (B[2] - A[2]) * u)); }
+        ln.push(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), n * 2, .012, 3, false));
+        for (let i = 1; i < n; i++) { const p = pts[i], d = pts[i + 1].clone().sub(pts[i - 1]).normalize(), c = cols[i % cols.length], w = .16; const q = [p.clone().addScaledVector(d, -w), p.clone().addScaledVector(d, w), p.clone().add(new THREE.Vector3(0, -.42, 0))];
+          for (const v of q) { fv.push(v.x, v.y, v.z); fc.push(...c); } } }
+      for (const q of ln) P(q, M.rope); const fg = new THREE.BufferGeometry(); fg.setAttribute('position', new THREE.Float32BufferAttribute(fv, 3)); fg.setAttribute('color', new THREE.Float32BufferAttribute(fc, 3)); fg.computeVertexNormals();
+      const fm = new THREE.Mesh(fg, new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: .9 })); fm.name = 'garden_flags'; (Z.flagMeshes = Z.flagMeshes || []).push(fm); }
+    part(C.id + '_summit', 'summit', {}); };
   // ---- THE CLUSTER: the medium and small islands (same kit as the big one), each its own piece ----
   Z.isleAt = { isle_main: { x: 0, y: 0, z: 0, rim }, lookout: Z.isleLook };
   for (const IS of Z.isles) { const [ix, iy, iz] = IS.at, into = IS.id, RI = gdnRnd(IS.seed), rk = templeRock(ix, iy, iz, IS.rx, IS.rz, IS.depth, 44, IS.seed); put(rk.side, M.rock, into); rk.cap.deleteAttribute('color'); put(rk.cap, M.lawn, into);
@@ -16411,7 +16487,63 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       if (IS.ring && Math.hypot(x - IS.ring.at[0], z - IS.ring.at[1]) < IS.ring.r + 1) continue; if (IS.pond && Math.hypot(x - IS.pond.at[0], z - IS.pond.at[1]) < IS.pond.r + .9) continue;
       if (IS.trees.some(T => Math.hypot(x - T.at[0], z - T.at[1]) < 1.6)) continue; if (IS.home && (Math.hypot(x - IS.home.tier.at[0], z - IS.home.tier.at[1]) < IS.home.tier.r + .3 || IS.home.clear.some(c => Math.hypot(x - c[0], z - c[1]) < c[2]) || Math.abs(x - IS.home.stair.x) < 1.6 && z > -32 && z < -26)) continue; const k = RI(); Z.isleRec = (Z.isleRec || []).concat([{ kind: k < .5 ? 'grass' : k < .62 ? 'fern' : k < .85 ? 'flowers' : 'stones', x, y: iy + Y0, z, s: .7 + RI() * .6, yaw: RI() * 6.3 }]); }
     part(IS.id, 'island', { x: ix, y: iy, z: iz, rx: IS.rx, rz: IS.rz }); }
+  // ---- THE CHUNKS: crescents of the same rock round the garden's rim (GARDEN.chunks), each its own piece ----
+  const rimRad = deg => { let a = deg * d2r; a = Math.atan2(Math.sin(a), Math.cos(a)); const N = rim.length; let best = 0, bd = 9; for (let i = 0; i < N; i++) { let d = Math.abs(Math.atan2(rim[i][0], rim[i][2]) - a); d = Math.min(d, 6.2832 - d); if (d < bd) { bd = d; best = i; } }
+    const p0 = rim[best], a0 = Math.atan2(p0[0], p0[2]); let da = a - a0; da = Math.atan2(Math.sin(da), Math.cos(da)); const p1 = rim[(best + (da > 0 ? 1 : N - 1)) % N], a1 = Math.atan2(p1[0], p1[2]); let span = a1 - a0; span = Math.atan2(Math.sin(span), Math.cos(span));
+    const u = Math.abs(span) > 1e-4 ? Math.max(0, Math.min(1, da / span)) : 0; return Math.hypot(p0[0], p0[2]) * (1 - u) + Math.hypot(p1[0], p1[2]) * u; };
+  const inPoly = (x, z, poly) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, , zi] = poly[i], [xj, , zj] = poly[j]; if ((zi > z) !== (zj > z) && x < (xj - xi) * (z - zi) / (zj - zi) + xi) c = !c; } return c; };
+  const nearLine = (x, z, pl, w) => { for (let i = 1; i < pl.length; i++) { const [ax, az] = pl[i - 1], [bx2, bz2] = pl[i], dx = bx2 - ax, dz = bz2 - az, l2 = dx * dx + dz * dz || 1e-6, t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / l2)); if (Math.hypot(x - ax - dx * t, z - az - dz * t) < w) return true; } return false; };
+  Z.chunkAt = {}; Z.rimRad = rimRad;
+  for (const C of Z.chunks || []) { const into = C.id, RC = gdnRnd(C.seed), H = C.H, inner = [], outer = [];
+    for (let a = C.a0; a <= C.a1 + .01; a += 2) { const r = rimRad(a) + C.gap + (a > C.a0 && a < C.a1 ? (RC() - .5) * .6 : 0); inner.push([Math.sin(a * d2r) * r, H, Math.cos(a * d2r) * r]); }
+    for (let a = C.a1; a >= C.a0 - .01; a -= 2) { const t = (a - C.a0) / (C.a1 - C.a0), w = (C.W[0] + (C.W[1] - C.W[0]) * (.5 + .5 * Math.sin(a * .09 + C.seed))) * (.78 + .22 * Math.sin(Math.PI * t)) + (a > C.a0 && a < C.a1 ? (RC() - .5) * 2.4 : 0), r = rimRad(a) + C.gap + w;
+      outer.push([Math.sin(a * d2r) * r, H, Math.cos(a * d2r) * r]); }
+    const poly = inner.concat(outer); let cx = 0, cz = 0; for (const p of poly) { cx += p[0]; cz += p[2]; } cx /= poly.length; cz /= poly.length;
+    const G2 = gdnChunkGeo(poly, H, C.depth, C.seed, cx, cz); put(G2.side, M.rock, into); put(G2.cap, M.lawn, into); for (const v of G2.tris) tris.push(v);
+    Z.isleAt[C.id] = { x: cx, y: H, z: cz, rim: poly, outer, inner }; Z.chunkAt[C.id] = Z.isleAt[C.id];
+    // the lip: moss along every edge, ivy hanging off it, stone columns hung under the rim (his ref's blocky underside)
+    for (let i = 0; i < poly.length; i++) { const [x, , z] = poly[i], [x2, , z2] = poly[(i + 1) % poly.length], L = Math.hypot(x2 - x, z2 - z), a = Math.atan2(z2 - z, x2 - x);
+      put(gdnBlob(RC, (x + x2) / 2, H - .25, (z + z2) / 2, Math.max(.5, L * .58), .35, 1), M.moss, into);
+      if (RC() < .8) { const len = 1.8 + RC() * 4, q = new THREE.PlaneGeometry(1.4, len, 1, 4).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(-a); put(q.translate((x + x2) / 2, H - .15, (z + z2) / 2), M.ivy, into); }
+      if (i % 2 === 0) { const w = 1.4 + RC() * 1.4, h = 2 + RC() * 6; put(new THREE.BoxGeometry(w, h, w * .85).rotateY(-a).translate(cx + (x - cx) * .97, H - .5 - h / 2, cz + (z - cz) * .97), M.pebble, into); } }
+    // water: pools, streams that run to the edge and FALL (into a crack or off the outer face), cut where they leave the rock
+    const lines = [], wet = []; for (const P2 of (C.pools || []).concat(C.pond ? [C.pond] : [])) { const [px, pz] = P2.at, yy = (P2.y || 0) + H; (Z.isleWater = Z.isleWater || []).push(gdnBlobDisc(px, pz, P2.r, yy + .07, RC, 22, 0)); put(gdnBlobDisc(px, pz, P2.r + .5, yy + .03, RC, 22), M.pebble, into);
+      for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283, rr = P2.r + .4; put(gdnBlob(RC, px + Math.cos(a) * rr, yy + .05, pz + Math.sin(a) * rr, .22 + RC() * .2, .55, 0), RC() < .4 ? M.moss : M.pebble, into); } wet.push([px, pz, P2.r + 1]); }
+    for (const S of C.streams || []) { const dense = []; for (let i = 1; i < S.pts.length; i++) { const [ax, az] = S.pts[i - 1], [bx2, bz2] = S.pts[i], n = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / .3); for (let k = 0; k < n; k++) dense.push([ax + (bx2 - ax) * k / n, az + (bz2 - az) * k / n]); }
+      let cut = dense.length - 1; for (let i = 1; i < dense.length; i++) if (!inPoly(dense[i][0], dense[i][1], poly)) { cut = i; break; }
+      const pts = dense.slice(0, cut + 1).filter((p, i, A) => i % 4 === 0 || i === A.length - 1); if (pts.length < 2) continue; const e = pts[pts.length - 1], f = pts[pts.length - 2], L = Math.hypot(e[0] - f[0], e[1] - f[1]) || 1, ux = (e[0] - f[0]) / L, uz = (e[1] - f[1]) / L;
+      (Z.isleWater = Z.isleWater || []).push(gdnRibbon(pts, S.w, H + .07, RC, .2, 1).geo); put(gdnRibbon(pts, S.w + .9, H + .035, RC, .3, 0).geo, M.pebble, into);
+      (Z.isleFalls = Z.isleFalls || []).push(gdnFall(e[0] + ux * .2, H + .06, e[1] + uz * .2, ux, uz, S.w * 1.5, 120, 1.2)); (Z.splash = Z.splash || []).push([e[0] + ux * 1.5, H - 1.2, e[1] + uz * 1.5]);
+      lines.push({ pl: pts, w: S.w / 2 + .6 }); part(C.id + '_stream', 'stream', { lip: e }); }
+    for (const pl of C.paths || []) { put(gdnRibbon(pl, 1.5, H + .045, RC, .3, 0).geo, M.flag, into); lines.push({ pl, w: 1.0 }); }
+    if (C.home) { const IS = { id: C.id, at: [cx, H, cz], seed: C.seed, pond: C.pond, home: C.home }; gdnHome(IS, into); lines.push({ pl: C.home.path, w: 1.0 }); }
+    if (C.summit) gdnSummit(C, into, inPoly, poly);
+    { const n0 = Z.lamps.length; for (const T of C.trees) gdnTreeAt(Object.assign({}, T, { base: H + (T.base2 || 0) }), into); gdnLamps(Z.lamps.slice(n0)); }
+    for (const [x, z, eh] of C.lanterns || []) { const by = H + (eh || 0); gdnToro((g, m) => put(g, m, into), M, x, z, by, 1.15); box(x, z, .32, .32, by - 1, by + 2.4); Z.lanterns.push(['toro_' + C.id + '_' + x, x, z, by]); }
+    for (const [x, z, sc] of C.crystals || []) { for (let i = 0; i < 7; i++) { const hh = (i ? .55 + RC() * .6 : 1.5) * sc, rr = (i ? .12 : .2) * sc, a = i * 1.17 + RC(), d = i ? (.22 + RC() * .12) * sc : 0;
+        const Mx = new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(i ? Math.cos(a) * .4 : 0, RC(), i ? Math.sin(a) * .4 : 0)).setPosition(x + Math.cos(a) * d, H, z + Math.sin(a) * d);
+        put(new THREE.CylinderGeometry(rr, rr * .85, hh, 6).translate(0, hh / 2, 0).applyMatrix4(Mx), M.crystal, into); put(new THREE.ConeGeometry(rr, rr * 2.2, 6).translate(0, hh + rr * 1.1, 0).applyMatrix4(Mx), M.crystal, into); }
+      put(gdnBlob(RC, x, H + .05, z, .55 * sc, .35, 0), M.pebble, into); box(x, z, .3 * sc, .3 * sc, H - 1, H + 1.2 * sc); Z.crystals.push(['crys_' + C.id + '_' + x, x, z, sc, H]); }
+    for (const [x, z, eh] of C.cairns || []) { let y = H + (eh || 0); for (let i = 0; i < 5; i++) { const r = .5 - i * .08, hh = r * .55; put(gdnBlob(RC, x + (RC() - .5) * .08, y + hh * .5, z + (RC() - .5) * .08, r, .55, 1), M.pebble, into); y += hh * .95; } box(x, z, .35, .35, H - 1, y); }
+    // boulders along the outer edge, a wooden rail along stretches of it
+    for (let i = 0; i < (C.boulders || 0); i++) { const p = outer[1 + Math.floor(RC() * (outer.length - 2))], k = .9 - RC() * .08, x = cx + (p[0] - cx) * k, z = cz + (p[2] - cz) * k, r = .6 + RC() * .9;
+      if (lines.some(Ln => nearLine(x, z, Ln.pl, Ln.w + 1.5))) continue; put(gdnBlob(RC, x, H + r * .2, z, r, .62, 1), M.pebble, into); put(gdnBlob(RC, x, H + r * .55, z, r * .7, .3, 0), M.moss, into); box(x, z, r * .6, r * .6, H - 1, H + r * .7); }
+    for (const [f0, f1] of C.fence || []) { const i0 = Math.round(f0 * (outer.length - 1)), i1 = Math.round(f1 * (outer.length - 1)), pts = [];
+      for (let i = i0; i <= i1; i++) { const p = outer[i], L = Math.hypot(p[0] - cx, p[2] - cz) || 1; pts.push([p[0] - (p[0] - cx) / L * 1.1, p[2] - (p[2] - cz) / L * 1.1]); }
+      const posts = [pts[0]]; let acc = 0; for (let i = 1; i < pts.length; i++) { acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if (acc > 2.4) { posts.push(pts[i]); acc = 0; } }
+      for (let i = 0; i < posts.length; i++) { const [x, z] = posts[i]; if (lines.some(Ln => nearLine(x, z, Ln.pl, Ln.w + .4))) { posts[i] = null; continue; } put(new THREE.BoxGeometry(.2, 1.1, .2).translate(x, H + .55, z), M.dark, into);
+        if (i && posts[i - 1]) { const [x0, z0] = posts[i - 1], L = Math.hypot(x - x0, z - z0), yaw = Math.atan2(x - x0, z - z0); for (const yy of [.5, .95]) put(new THREE.BoxGeometry(.07, .09, L).rotateY(yaw).translate((x + x0) / 2, H + yy, (z + z0) / 2), M.wood, into);
+          BOXES.push(obox((x + x0) / 2, (z + z0) / 2, L / 2 + .1, .12, Math.atan2(z - z0, x - x0), Y0 + H - 1, Y0 + H + 1.1)); } } }
+    // plants: over the rock top, clear of the paths, water, structures and trunks
+    const S0 = C.summit, H0 = C.home, clear = (H0 ? H0.clear : []).concat(S0 ? S0.clear : []).concat(wet);
+    for (let i = 0; i < 1400; i++) { const p = poly[Math.floor(RC() * poly.length)], q = poly[Math.floor(RC() * poly.length)], u = RC(), x = cx + ((p[0] + q[0]) / 2 - cx) * u * 1.6, z = cz + ((p[2] + q[2]) / 2 - cz) * u * 1.6;
+      if (!inPoly(x, z, poly)) continue; let ok = 1; for (const [ex, ez, er] of clear) if (Math.hypot(x - ex, z - ez) < er) { ok = 0; break; } if (!ok) continue;
+      if (H0 && Math.hypot(x - H0.tier.at[0], z - H0.tier.at[1]) < H0.tier.r + .3) continue; if (S0 && Math.hypot(x - S0.terrace.at[0], z - S0.terrace.at[1]) < S0.terrace.r + .3) continue;
+      if (lines.some(Ln => nearLine(x, z, Ln.pl, Ln.w)) || C.trees.some(T => Math.hypot(x - T.at[0], z - T.at[1]) < 1.6)) continue;
+      const k = RC(); (Z.isleRec = Z.isleRec || []).push({ kind: k < .45 ? 'grass' : k < .6 ? 'fern' : k < .84 ? 'flowers' : 'stones', x, y: H + Y0, z, s: .7 + RC() * .6, yaw: RC() * 6.3 }); }
+    part(C.id, 'chunk', { x: cx, z: cz, H, a0: C.a0, a1: C.a1 }); }
   for (const w of Z.wheels || []) G.add(w);
+  for (const fm of Z.flagMeshes || []) G.add(fm);
   if (Z.isleWater) { const wm = new THREE.Mesh(mergeGeometries(Z.isleWater.map(q => { for (const k of Object.keys(q.attributes)) if (!['position', 'normal', 'uv', 'aFl'].includes(k)) q.deleteAttribute(k); return q.index ? q.toNonIndexed() : q; })), M.water); wm.renderOrder = 1; G.add(wm); }
   if (Z.isleFalls) { const fm = new THREE.Mesh(mergeGeometries(Z.isleFalls), M.fall); fm.renderOrder = 2; fm.frustumCulled = false; G.add(fm); }
   // ---- merge each piece per material: one draw each ----
@@ -16434,7 +16566,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       const fl = R() < .4, s = fl ? .7 + R() * .4 : .9 + R() * .7; for (const q of dmtCards(R, x, s * .42, z, s * 1.25, s * .95, 2, 0)) cards.push([q, fl ? M.flowers : M.fern]); }
     { const byM = new Map(); for (const [q, m] of cards) { if (!byM.has(m)) byM.set(m, []); byM.get(m).push(q.index ? q.toNonIndexed() : q); } for (const [m, L] of byM) { const o = new THREE.Mesh(mergeGeometries(L.map(q => { for (const k of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(k)) q.deleteAttribute(k); return q; })), m); o.name = 'garden_cards'; Z.pieces.main.add(o); } }
     for (const S3 of Z.stones) for (let i = 0; i < 3; i++) plantPlant(rec, i ? 'grass' : 'fern', S3.at[0] + (R() - .5) * S3.r, S3.at[1], S3.at[2] + (R() - .5) * S3.r, .7, R() * 6);
-    { const [x, y, z] = Z.lookout.at; for (let i = 0; i < 40; i++) { const a = R() * 6.3, rr = 1.2 + R() * 3.6, px = x + Math.cos(a) * rr, pz = z + Math.sin(a) * rr; if (Math.hypot(px - 35.2, pz + 20.5) < 1.2) continue; plantPlant(rec, ['grass', 'fern', 'flowers', 'shrub'][i % 4], px, y, pz, .7 + R() * .5, R() * 6); } }
+    if (Z.lookout) { const [x, y, z] = Z.lookout.at; for (let i = 0; i < 40; i++) { const a = R() * 6.3, rr = 1.2 + R() * 3.6, px = x + Math.cos(a) * rr, pz = z + Math.sin(a) * rr; if (Math.hypot(px - 35.2, pz + 20.5) < 1.2) continue; plantPlant(rec, ['grass', 'fern', 'flowers', 'shrub'][i % 4], px, y, pz, .7 + R() * .5, R() * 6); } }
     for (const r of rec) r.y += Y0; Z.plantRec = rec; }
   return parts; }
 // THE SKY WORLD: the dome, the sea of cloud and its heaps, the far islands (one with a pagoda), drifting rocks, snow peaks, the sun shafts
@@ -16461,7 +16593,7 @@ function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clou
     for (const deg of F.falls || []) { const p = rk.rim[Math.round(rk.rim.length * deg / 360) % rk.rim.length], L = Math.hypot(p[0] - x, p[2] - z); falls.push(gdnFall(p[0], y + .1, p[2], (p[0] - x) / L, (p[2] - z) / L, Math.max(1.5, F.r * .12), Math.min(220, y + 160), 2)); }
     Z.parts.push({ id: F.id, kind: 'far_isle', x, y, z, r: F.r }); }
   function part0(id) { Z.parts.push({ id, kind: 'far_pagoda' }); }
-  const RK = Z.rocks; for (let k = 0; k < RK.n; k++) { const a = R() * Math.PI * 2, d = RK.r0 + R() * (RK.r1 - RK.r0), s = RK.s0 + R() * (RK.s1 - RK.s0), x = Math.sin(a) * d, z = Math.cos(a) * d; if (Math.abs(x - 10) < 30 && z > 0 && z < 60) continue; const yr = RK.y0 + R() * (RK.y1 - RK.y0); if (gdnReserved(x, yr, z, s * 2)) continue;
+  const RK = Z.rocks; for (let k = 0; k < RK.n; k++) { const a = R() * Math.PI * 2, d = RK.r0 + R() * (RK.r1 - RK.r0), s = RK.s0 + R() * (RK.s1 - RK.s0), x = Math.sin(a) * d, z = Math.cos(a) * d; if (Math.abs(x - 10) < 30 && z > 0 && z < 60 || d < 80) continue; const yr = RK.y0 + R() * (RK.y1 - RK.y0); if (gdnReserved(x, yr, z, s * 2)) continue;
     const rk = templeRock(x, yr, z, s, s * (.7 + R() * .5), s * (1.4 + R()), 9, 900 + k); rock.push(rk.side); rk.cap.deleteAttribute('color'); cap.push(rk.cap); }
   // heaps of cumulus on the cloud sea (far below now: the panorama's sea is behind them)
   for (let i = 0; i < 0; i++) { const a = R() * Math.PI * 2, d = 90 + R() * 1000, x = Math.sin(a) * d, z = Math.cos(a) * d, s = 20 + R() * 55 * (d / 1000 + .4); for (let j = 0; j < 4; j++) { const r2 = s * (1 - j * .18), ox = (j ? (R() - .5) * s * 1.6 : 0), oz = (j ? (R() - .5) * s * 1.2 : 0); heaps.push(new THREE.SphereGeometry(r2, 16, 10).scale(1, j ? .5 : .62, 1).translate(x + ox, Z.clouds.y + 2 + r2 * .14 + (j ? 0 : r2 * .1), z + oz)); } }
@@ -16501,13 +16633,31 @@ function gdnCards(g) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.cards.seed), L = 
     }` });
   const o = new THREE.Mesh(geo, m); o.frustumCulled = false; o.renderOrder = 1; o.name = 'garden_cards'; g.add(o); Z.cardM = o; }
 function gdnReserved(x, y, z, pad) { for (const V of Object.values(GARDEN.reserve || {})) if (Math.hypot(x - V.at[0], y - V.at[1], z - V.at[2]) < V.r + (pad || 0)) return true; return false; }
+// A CHUNK OF THE MOUNTAIN: any outline (island-local [x, y, z] points) as a flat top at `y0` and a rock that drops SHEER for the first eighth of its
+// `depth` (the fractured face of a crack) and then tapers to a point below, toward (cx, cz). Returns { side (vertex-coloured, like templeRock's), cap, tris }.
+function gdnChunkGeo(poly0, y0, depth, seed, cx, cz) { let poly = poly0.slice(); let area = 0; for (let i = 0; i < poly.length; i++) { const a = poly[i], b = poly[(i + 1) % poly.length]; area += a[0] * b[2] - b[0] * a[2]; } if (area > 0) poly = poly.reverse();
+  const N = poly.length, J = 14, Pp = [], Cc = [], I = [], R = gdnRnd(seed * 3 + 1), ph = R() * 6.3;
+  for (let j = 0; j <= J; j++) { const t = j / J, k = t < .12 ? 1 - t * .3 : Math.pow(1 - (t - .12) / .88, .85) * .965;
+    for (let i = 0; i <= N; i++) { const p = poly[i % N], n = 1 + (j && t >= .12 ? (Math.sin(i * .9 + ph + t * 7) * .07 + Math.sin(i * 2.3 + t * 13) * .04) : 0), kk = Math.max(.03, k * n);
+      const y = y0 - t * depth + (j ? (Math.sin(i * 1.7 + ph) * .5) * t * depth * .06 : 0); Pp.push(cx + (p[0] - cx) * kk, y, cz + (p[2] - cz) * kk); const sh = Math.min(1, t); Cc.push(1 - sh * .3, .96 - sh * .32, .92 - sh * .32); } }
+  const ti = Pp.length / 3; Pp.push(cx, y0 - depth * 1.03, cz); Cc.push(.58, .46, .34);
+  for (let j = 0; j < J; j++) for (let i = 0; i < N; i++) { const a = j * (N + 1) + i, b = a + 1, c = a + N + 1, d = c + 1; I.push(a, c, b, b, c, d); }
+  for (let i = 0; i < N; i++) { const a = J * (N + 1) + i; I.push(a, ti, a + 1); }
+  let side = new THREE.BufferGeometry(); side.setAttribute('position', new THREE.Float32BufferAttribute(Pp, 3)); side.setAttribute('color', new THREE.Float32BufferAttribute(Cc, 3)); side.setIndex(I); side.computeVertexNormals(); side = side.toNonIndexed();
+  const tri = THREE.ShapeUtils.triangulateShape(poly.map(p => new THREE.Vector2(p[0], p[2])), []), CP = [], tris = [], Y0 = GARDEN.top;
+  for (const [a, b, c] of tri) { let A = poly[a], B = poly[b], C = poly[c]; const ny = (B[2] - A[2]) * (C[0] - A[0]) - (B[0] - A[0]) * (C[2] - A[2]); if (ny < 0) { const t = B; B = C; C = t; }
+    for (const v of [A, B, C]) CP.push(v[0], y0, v[2]); tris.push(A[0], y0 + Y0, A[2], B[0], y0 + Y0, B[2], C[0], y0 + Y0, C[2]); }
+  const cap = new THREE.BufferGeometry(); cap.setAttribute('position', new THREE.Float32BufferAttribute(CP, 3)); cap.computeVertexNormals();
+  return { side, cap, tris }; }
 // THE ROPE BRIDGES between the islands: the Rope Course's verlet bridge (`rspAdd` -- it sags, sways, dips under him, carries him), strung from the
 // rim of one island to the rim of the next at their own heights; a pair of lantern posts at each end. Anchors: the rim point facing the other island,
 // pulled `inset` m in. Runs after the build (rspAdd moves him away while the ropes settle).
 function gdnBridges(g) { const Z = GARDEN, Y0 = Z.top, M = gdnMats(), posts = [], lamps = []; Z.bridgeList = [];
   const anchor = (I, J) => { const a = Math.atan2(J.x - I.x, J.z - I.z); let best = I.rim[0], bd = 9; for (const p of I.rim) { let d = Math.abs(Math.atan2(p[0] - I.x, p[2] - I.z) - a); d = Math.min(d, 6.2832 - d); if (d < bd) { bd = d; best = p; } }
     const L = Math.hypot(best[0] - I.x, best[2] - I.z), k = (L - .9) / L; return [I.x + (best[0] - I.x) * k, I.y, I.z + (best[2] - I.z) * k]; };
-  for (const B of Z.bridges) { const I = Z.isleAt[B.a], J = Z.isleAt[B.b]; if (!I || !J) continue; const A = anchor(I, J), C = anchor(J, I);
+  const pt = (q, other) => { if (Array.isArray(q)) return q; const f = q.split(':'); if (f[0] === 'rim') { const a = +f[1] * Math.PI / 180, r = Z.rimRad(+f[1]) - .9; return [Math.sin(a) * r, 0, Math.cos(a) * r]; }
+    if (f[0] === 'inner') { const Ch = Z.chunks.find(c => c.id === f[1]), a = +f[2] * Math.PI / 180, r = Z.rimRad(+f[2]) + Ch.gap + .9; return [Math.sin(a) * r, Ch.H, Math.cos(a) * r]; } return null; };
+  for (const B of Z.bridges) { let A, C; if (B.from) { A = pt(B.from); C = pt(B.to); } else { const I = Z.isleAt[B.a], J = Z.isleAt[B.b]; if (!I || !J) continue; A = anchor(I, J); C = anchor(J, I); } if (!A || !C) continue;
     const span = rspAdd([A[0], Y0 + A[1] + .05, A[2]], [C[0], Y0 + C[1] + .05, C[2]], { w: B.w }); Z.bridgeList.push(span);
     for (const [P, Q] of [[A, C], [C, A]]) { const dx = Q[0] - P[0], dz = Q[2] - P[2], L = Math.hypot(dx, dz), ux = dx / L, uz = dz / L, nx = -uz, nz = ux;
       for (const sd of [-1, 1]) { const x = P[0] + nx * sd * (B.w / 2 + .35) - ux * .3, z = P[2] + nz * sd * (B.w / 2 + .35) - uz * .3; posts.push(new THREE.CylinderGeometry(.13, .16, 1.9, 8).translate(x, P[1] + .95, z), new THREE.ConeGeometry(.2, .3, 8).translate(x, P[1] + 2.0, z));
@@ -16581,6 +16731,7 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
   for (const w of Z.wheels || []) w.children[0].rotation.x -= dt * 1.1;     // the homestead's waterwheel, turned by its cascade
   if (Z.U.uPx) Z.U.uPx.value = renderer.domElement.height * camera.projectionMatrix.elements[5] / 2;
   const p = player, ly = p.pos.y - Z.top;
+  for (const Gt of Z.gates || []) { Gt.cd -= dt; if (Gt.cd <= 0 && Math.hypot(p.pos.x - Gt.x, p.pos.z - Gt.z) < 1.3 && Math.abs(ly - Gt.y) < 2) { Gt.cd = 4; try { snd('lock', { g: .3, r: .4, x: Gt.x, z: Gt.z }); setTimeout(() => snd('lock', { g: .14, r: .4, x: Gt.x, z: Gt.z }), 700); } catch (e) {} } }     // the summit's bell gate rings as he passes under it
   // the hammock: still rocking from him getting out of it, then the breeze
   if (Z.hammockG) { const H = Z.hammockG; H.sw *= Math.exp(-.25 * dt); const a = H.sw * Math.sin(O.t * 1.6) + .025 * Math.sin(O.t * .7); H.g.setRotationFromAxisAngle(_gdnAx.set(H.ax, 0, H.az), a); }
   // the great bell: walk in under it and it rings (and swings); it sways in the wind otherwise
