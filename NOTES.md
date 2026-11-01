@@ -19,6 +19,17 @@ own comment says the same of BGRID), and m2046's ladder/zip registration read th
 The node harness could not see it (it stubs KCLIMB as a plain const above the block): the landmine "a const read above its declaration" again,
 inside a try. Shipped; the renders follow in chat.
 
+## m15RF -- REFLECTION sandbox: beam turret, target, mirror, gate (Nov 1 2026)
+His words: *"the beam direction shield... you might as well build those things... doesn't hurt to build it."* Also: the wing suit is LATE GAME, the shield is likely
+gained before the dragon (ICE_TEMPLE_HEX.md updated; Hall A is now an ice-slide hall).
+- KORAJIN menu > **Reflection (shield puzzle)** = `?w=forge&zone=cell&cell=RF`. `CELLS.RF` is a ROOM cell (`room:[34,22]`); `cellStage` hands it to `cellRoomStage`.
+- Turrets pulse an ice beam (`on`/`off` s). `roomStep` traces it each frame against BOXES (`rfRayBox`, AABB), the player (hit = hurt, unless `shieldUp()` and he
+  faces into it: then it REFLECTS about his heading), mirrors (reflect about their normal) and targets. A target lit `TGT.hold` s opens its gate (sinks, box removed).
+  Up to `TGT.bounces` segments drawn as glowing cylinders.
+- Station 1 INTRODUCE: shield-bounce turret t1 into target g1 -> gate 1. Station 2 DEVELOP: turret t2 -> your shield -> the mirror -> target g2 -> gate 2.
+- Bugs met on the way: `_rfP` already existed (REPFLY), and `cellStep` already existed (the draw culler) -- the step is `roomStep`. The stepPlayer hook first ate the
+  dragon's step into a comment. Shipped unverified; open: aiming feel (reflect about his heading, not the shield mesh), whether the beam reads from far.
+
 ## m2048 -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
 
 His: *"Keep going"* -- the brief's remaining whole buildings.
