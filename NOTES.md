@@ -9,7 +9,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15LK -- THE MOVE-IN, step 4: the frozen POND is the LAKE (Nov 1 2026)
+## m2094 -- THE MOVE-IN, step 4: the frozen POND is the LAKE (Nov 1 2026)
 - `rgnStage` sets `POND.at` to the LAKE place (144, -28) and `POND.r` to `RGN.lakeR` 21 (the pond was 11; the lake's basin is 30 m round), and lays
   the pond's own painted ice there at the basin's height. `rgnStep` runs the pond's slide (`POND.grip`, the velocity eased toward the stick) when he
   is grounded on it. The waterfall session's GREAT WATERFALL place is up the dead end beside it (55 m) -- not placed yet.
