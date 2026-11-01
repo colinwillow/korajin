@@ -12453,7 +12453,7 @@ Object.assign(SVKP, {
       P.ice(-L / 2 + .2, L / 2 - .2, 0, sz * (w / 2 + .12), Math.round(L * 2), rnd); P.col(-L / 2, L / 2, T, T + rh + .05, z - .14, z + .14); }
     P.add('snow', vilPillow(L - .2, .1, w - .7).translate(0, T, 0)); if (o.banner !== 0) for (const sz of [-1, 1]) { const bx = -L / 2 + 1.6; P.add('gold', new THREE.CylinderGeometry(.04, .04, 1.2, 6).rotateZ(Math.PI / 2).translate(bx, T + .15, sz * (w / 2 + .14))); P.add('ban', vilBanner(1.0, 2.3, .4).rotateY(sz > 0 ? 0 : Math.PI).translate(bx, T + .12, sz * (w / 2 + .17))); }     /* detail pass 3: the concept's banners */ P.col(-L / 2, L / 2, 0, T, -w / 2, w / 2); P.patches.push({ x: 0, z: 0, w: L - .1, d: w - .7, top: T + .01, round: 0 });
     P.port('a', -L / 2, T, 0, -1, 0, 0); P.port('b', L / 2, T, 0, 1, 0, 0); P.port('seat', 0, 0, 0, 0, -1, 0); return P; },
-  aq_shrine: o => { const P = svkNew(), s = o.s || 1, w = 1.1 * s, h = 1.3 * s, rnd = plantRnd(50 + s * 10 | 0);
+  aq_shrine: o => { if (SVKHUT && !SVKJ && o.pagoda !== 0) return svkShrine(o); const P = svkNew(), s = o.s || 1, w = 1.1 * s, h = 1.3 * s, rnd = plantRnd(50 + s * 10 | 0);
     P.box('stone', w, h, w, 0, h / 2, 0, 1); P.box('band', w + .02, .2 * s, w + .02, 0, .25 * s, 0, .6); for (const r of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) { P.add('gold', vilBox(.5 * s, .5 * s, .04, 1).translate(0, h * .6, w / 2 + .02).rotateY(r)); P.add('jade', new THREE.OctahedronGeometry(.16 * s, 0).scale(1, 1, .4).translate(0, h * .6, w / 2 + .06).rotateY(r)); }
     P.box('stoneD', w + .3, .18 * s, w + .3, 0, h + .09 * s, 0, 1); const y1 = h + .18 * s, ph = 1.1 * s; for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) P.box('stoneD', .26 * s, ph, .26 * s, x * (w / 2 - .1 * s), y1 + ph / 2, z * (w / 2 - .1 * s), 1);
     P.add('jade', new THREE.OctahedronGeometry(.28 * s, 0).scale(1, 1.6, 1).translate(0, y1 + ph * .5, 0)); P.box('warm', .3 * s, .1 * s, .3 * s, 0, y1 + .05, 0, 1);
@@ -12696,6 +12696,37 @@ function svkLonghall(o) { const P = svkNew(), L = 2 * o.R * o.sx, W = 2 * o.R, y
     P.add('stoneD', vilRBox(1.9, .3, .8, .8).translate(0, .15, dz + 1.25)); }
   for (let k = 0; k < 4; k++) vilBarrel(P.add, (k < 2 ? -1 : 1) * (L / 2 + .6), .3, (k % 2 ? 1 : -1) * 1.2, rnd);
   P.port('door', 0, 0, o.R + 1.6, 0, 0, 1); return P; }
+// a PAGODA ROOF: square in plan (half-width `a`), concave, its four CORNERS curling up (`curl`), a gold trim along the eave, snow, icicles under the lip
+function svkPagoda(add, y, a, rise, curl, sd = 1) { const sq = ang => 1 / Math.max(Math.abs(Math.cos(ang)), Math.abs(Math.sin(ang))), cp = ang => Math.pow(Math.abs(Math.sin(2 * ang)), 3);
+  const mod = (lift) => (ang, tag) => { const r = +tag; return [r * (sq(ang) - 1), r >= a * .95 ? curl * cp(ang) * lift : r >= a * .75 ? curl * cp(ang) * .35 * lift : 0]; };
+  const prof = [[a * .55, 0, a * .55], [a, rise * .12, a], [a * .93, rise * .2, a * .93], [a * .7, rise * .42, a * .7], [a * .42, rise * .72, a * .42], [a * .2, rise, a * .2]];
+  add('stoneD', vilLathe(prof.map(p => [p[0], p[1], String(p[2])]), 32, mod(1), .9).translate(0, y, 0));
+  add('gold', vilLathe([[a + .03, rise * .1, a + .03], [a + .03, rise * .17, a + .03], [a * .96, rise * .2, a * .96]].map(p => [p[0], p[1], String(p[2])]), 32, mod(1), .6).translate(0, y + .005, 0));
+  add('snow', vilLathe([[a * .9, rise * .24, a * .9], [a * .7, rise * .46, a * .7], [a * .45, rise * .74, a * .45], [0, rise * .9, 0]].map(p => [p[0], p[1], String(p[2] || .01)]), 32, (ang, tag) => { const r = +tag; return [r * (sq(ang) - 1), (r >= a * .85 ? curl * cp(ang) * .9 : r >= a * .65 ? curl * cp(ang) * .3 : 0) + .04]; }, 2).translate(0, y, 0));
+  const rr = plantRnd(sd * 77); for (let k = 0; k < 20; k++) { const ang = (k + .5) / 20 * Math.PI * 2, r = a * sq(ang), l = .12 + rr() * .3 + cp(ang) * .2; add('ice', vilIcicle(.035, l).translate(Math.sin(ang) * r * .97, y + rise * .1 + curl * cp(ang) - l / 2, Math.cos(ang) * r * .97)); }
+  return ang => y + rise * .12 + curl * cp(ang); }
+// THE SHRINE TOWER (his reference images/concepts/snow_village/ref_shrine_tower.webp): a tapered stone base (jade diamonds in gold, a meander
+// band at the foot, a corniced top), an open storey of four banded posts round a FLOATING jade crystal, a banner, a PAGODA roof whose corners curl up,
+// two crescent HORNS off it, lanterns hanging from two corners, a small drum and a second curled roof, a gold finial, a gold HALO and a crystal on top.
+// Same base footprint (w = 1.1 s) and collider; `pagoda: 0` (or ?hut=round) = the m2096 shrine.
+function svkShrine(o) { const P = svkNew(), s = o.s || 1, w = 1.1 * s, h = 1.3 * s, rnd = plantRnd(50 + s * 10 | 0), q = new THREE.Quaternion(), zA = new THREE.Vector3(0, 0, 1);
+  P.add('stoneD', vilTaper(vilRBox(w * 1.15, h, w * 1.15, .9), .82).translate(0, h / 2, 0)); P.add('band', vilBox(w * 1.17, .18 * s, w * 1.17, .6).translate(0, .2 * s, 0));
+  for (const r of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) { P.add('gold', new THREE.OctahedronGeometry(.26 * s, 0).scale(.8, 1.1, .2).translate(0, h * .55, w * .53).rotateY(r)); P.add('jade', new THREE.OctahedronGeometry(.17 * s, 0).scale(.8, 1.1, .3).translate(0, h * .55, w * .55).rotateY(r)); }
+  const y1 = h + .2 * s; P.add('stoneD', vilRBox(w * 1.25, .2 * s, w * 1.25, .8).translate(0, h + .1 * s, 0)); P.add('band', vilBox(w * 1.27, .1 * s, w * 1.27, .5).translate(0, h + .1 * s, 0)); P.add('snow', vilPillow(w * 1.2, .1 * s, w * 1.2).translate(0, y1, 0));
+  for (const sz of [-1, 1]) { P.ice(-w * .55, w * .55, h, sz * w * .63, 4, rnd); P.ice(-w * .55, w * .55, h, sz * w * .63, 4, rnd, 'z'); }
+  for (let k = 0; k < 5; k++) { const a = k / 5 * 6.283 + .3, d = w * .72, bs = (.3 + rnd() * .2) * s; P.add('stone', vilRBox(bs * 1.3, bs, bs * 1.1, .8).rotateY(a).translate(Math.cos(a) * d, bs / 2, Math.sin(a) * d)); P.add('snow', vilPillow(bs * 1.2, .07, bs).rotateY(a).translate(Math.cos(a) * d, bs, Math.sin(a) * d)); }
+  const ph = 1.15 * s, y2 = y1 + ph, c = w * .4; for (const [x, z] of [[-c, -c], [c, -c], [-c, c], [c, c]]) { P.add('stoneD', vilRBox(.22 * s, ph, .22 * s, .7).translate(x, y1 + ph / 2, z)); for (const yy of [y1 + .08 * s, y2 - .1 * s]) P.add('gold', vilBox(.27 * s, .09 * s, .27 * s, 1).translate(x, yy, z)); }
+  P.add('jade', new THREE.OctahedronGeometry(.24 * s, 0).scale(1, 2.2, 1).translate(0, y1 + ph * .5, 0)); P.add('gold', new THREE.CylinderGeometry(.16 * s, .2 * s, .08 * s, 8).translate(0, y1 + .04 * s, 0)); P.pool(0, y1, 0, w * .9, 0x60ffc0, .4);
+  P.add('gold', new THREE.CylinderGeometry(.025 * s, .025 * s, c * 2, 6).rotateX(Math.PI / 2).translate(c + .02, y2 - .18 * s, 0)); P.add('ban', vilBanner(c * 1.5, ph * .7, .14 * s).rotateY(Math.PI / 2).translate(c + .04, y2 - .2 * s, 0));     /* on the +X face, so the crystal shows from the front */
+  const eave = svkPagoda(P.add, y2 - .05 * s, w * .95, .55 * s, .5 * s, s * 10 | 0);
+  for (const sx of [-1, 1]) { const pts = [[sx * w * .5, y2 + .12 * s, 0], [sx * w * 1.0, y2 + .45 * s, 0], [sx * w * 1.12, y2 + .95 * s, 0], [sx * w * .85, y2 + 1.35 * s, 0]].map(p => new THREE.Vector3(p[0], p[1], p[2])), cv = new THREE.CatmullRomCurve3(pts);
+    P.add('stoneD', willowTube(cv, 16, 8, .26 * s, .05 * s, 0, [1, 1, 1], null)); for (const t of [.25, .55]) { const pp = cv.getPointAt(t), tg = cv.getTangentAt(t), r = (.26 + (.05 - .26) * Math.pow(t, .8)) * s; q.setFromUnitVectors(zA, tg); P.add('gold', new THREE.TorusGeometry(r + .02, .03 * s, 5, 10).applyQuaternion(q).translate(pp.x, pp.y, pp.z)); } }
+  for (const [x, z] of [[1, 1], [-1, -1]]) { const a = w * .95 * .97, ang = Math.atan2(x, z), yy = eave(ang); P.add('iron', vilBox(.025, .35 * s, .025, 1).translate(x * a, yy - .2 * s, z * a)); vilLantern(P.add, x * a, yy - .55 * s, z * a, .7 * s); P.pool(x * a, 0, z * a, 1.0 * s, 0xffc070, .3); }
+  const y3 = y2 + .3 * s; P.add('stoneD', vilRBox(w * .5, .45 * s, w * .5, .7).translate(0, y3 + .22 * s, 0)); for (const r of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) P.add('jade', new THREE.OctahedronGeometry(.07 * s, 0).scale(.7, 1.2, .3).translate(0, y3 + .22 * s, w * .26).rotateY(r));
+  svkPagoda(P.add, y3 + .42 * s, w * .52, .4 * s, .3 * s, s * 13 | 0); const yf = y3 + .82 * s;
+  P.add('gold', vilBox(.16 * s, .12 * s, .16 * s, 1).translate(0, yf, 0)); P.add('gold', new THREE.ConeGeometry(.07 * s, .3 * s, 6).translate(0, yf + .2 * s, 0)); P.add('gold', new THREE.TorusGeometry(.3 * s, .03 * s, 6, 20).rotateX(Math.PI / 2 - .15).translate(0, yf + .42 * s, 0));
+  P.add('jade', new THREE.OctahedronGeometry(.16 * s, 0).scale(1, 2.6, 1).translate(0, yf + .75 * s, 0));
+  P.col(-w / 2, w / 2, 0, y2 + .3 * s, -w / 2, w / 2); P.port('seat', 0, 0, 0, 0, -1, 0); P.port('top', 0, yf + 1.2 * s, 0, 0, 1, 0); return P; }
 function svkPiece(kind, o) { const f = SVKP[kind]; if (!f) throw new Error('no snow-kit piece ' + kind); return f(o || {}); }
 // the merged meshes of an accumulated piece (one per material)
 function svkMesh(P) { const M = vilMats(), G = new THREE.Group(); for (const k in P.L) { const M2 = M[k]; if (!M2 || !P.L[k].length) continue;

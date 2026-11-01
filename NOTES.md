@@ -13,6 +13,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- THE SHRINE TOWER (his reference image): a pagoda tower with curled roofs, horns and a halo
+
+His reference (`images/concepts/snow_village/ref_shrine_tower.webp`). `aq_shrine` is now `svkShrine` (same base footprint w = 1.1 s, same collider and
+ports, every `s` still works -- so the aqueduct's shrines all change); `pagoda: 0` (or `?hut=round`) = the m2096 shrine.
+- A tapered stone BASE (gold-framed jade diamonds on all four faces, a meander band at the foot, a corniced, banded top with snow and icicles), boulders.
+- An open storey of four stone POSTS with gold collars round a FLOATING jade crystal on a gold dish (a jade glow below), a red banner on a gold rod on the
+  +X face.
+- `svkPagoda`: a square, concave PAGODA ROOF whose four CORNERS curl up (a lathe squared in plan, the eave lifted by |sin 2a|^3), a gold trim along the
+  eave, snow, icicles under the lip -- used twice (the main roof and the small top one).
+- Two crescent stone HORNS off the main roof (gold-banded), LANTERNS hanging on chains from two corners, a small drum with jade, a gold finial, a gold HALO,
+  a long jade crystal on top.
+- Rendered (both sizes, the aqueduct) before pushing; horns fattened, corners curled harder and the banner moved off the front after the first look.
+  Shipped unverified.
+
 ## m2116 -- THE RIBBED LONGHALL (his reference image): the longhouse redesigned
 
 His reference (`images/concepts/snow_village/ref_longhouse_ribbed.webp`). The `longhouse` piece is now `svkLonghall`: a long gabled hall on the OLD
