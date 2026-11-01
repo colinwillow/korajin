@@ -6,7 +6,7 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
-## mNEXT -- the snow kit DETAIL PASS 5: thatch shows, painted gold and jade, carved plaques
+## m2071 -- the snow kit DETAIL PASS 5: thatch shows, painted gold and jade, carved plaques
 
 His: *"Another detail pass?"*
 - HUT ROOFS: the snow cap now stops higher up the dome (t0 .07 -> .17), so a thick band of the painted thatch shows under it as in the concept, and its
