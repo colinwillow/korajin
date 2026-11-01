@@ -6,6 +6,13 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+
+## m15ED -- the Snowfield's see-through corners filled (Nov 1 2026)
+His words: *"the snow world is built on a square plane and the things around it make a circle -- the negative space between the edge of the square and the
+circle is just left, see-through."* The far white plain was `RingGeometry(size * .7, 900)` = from 112 m out, while the snowfield square ends at 80 m: along
+each side a 32 m strip showed the sky through the ground. Now a `ShapeGeometry` disc (r 900) with a square hole exactly the snowfield minus .3 m, at the
+same height as before. Shipped unverified.
+
 ## m2061 -- the mammoth mount: a ring round HIM, an arrow over the saddle, the pad pulses; land on him from a jump; no crate sound (Nov 1 2026)
 His words: *"I don't want a circle on the ground -- within radius of the mammoth, an arrow above the saddle pointing down, maybe a ring around the mammoth
 once you're within radius, and the right stick highlights and pulses; tap and he jumps up and lands on it. Or jump and fall in the vicinity of the saddle --
