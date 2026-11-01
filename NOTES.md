@@ -7,6 +7,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- the snow kit goes OFF-WORLD: the Jin-builders' style (`?svkstyle=classic` for the old look)
+
+His: *"Can we make this architecture more off-world? It's supposed to be mythical, mystical -- an alternate reality, planet, species -- and it feels kind
+of human."* Read against KORAJIN.md (an ancient ALIEN civilisation, technology so old it is tradition, bronze machinery, floating lanterns, Jinra mint
+flowing through everything, buildings that float when restored) -- so not random weirdness: the JIN-BUILDERS' architecture. Human tells removed:
+Greek key, timber posts, straw thatch, lattice windows, rectangular doors, crossed gable beams, brick chimneys.
+- FIVE new painted maps (`tools/snowvil_textures.py`): `svk_jinstone` (flowing curvilinear carved stone, bronze inlay -- the walls), `svk_hexstone`
+  (interlocking HEXAGONAL glyph blocks with bronze seams -- plinths, piers, platforms, paving), `svk_shell` (curved shell scales, violet/teal, the
+  ROOFS), `svk_jinwood` (fibrous alien timber with bronze bands -- every post, beam, fence, deck), `svk_glyph` (bronze GLYPH CIRCUITRY with mint channels
+  -- every band that was a meander, faintly glowing).
+- The HUT: an onion-ish shell dome; four curved bronze RIBS over it to a crown ring with a jade crystal FLOATING above it (and three small shards); round
+  glyph PORTHOLES in bronze rings instead of lattice windows; an ALMOND (pointed) door under a bronze arc on two horn jambs; a SHELL CANOPY instead of the
+  gable porch; the chimney tapers to a horn-like vent. LANTERNS everywhere are floating ORBS in bronze gimbals.
+- `SVKSTYLE` ('jin' default / 'classic' via `?svkstyle=classic`); footprints, colliders, piece and option names unchanged, so the village layout and its
+  measured routes still fit. Rendered (hut, aqueduct, gate, deck) before pushing; the glyph band's glow toned down after the first look. Shipped unverified.
+
 ## m2086 -- THE GREAT FROSTCAP: the hero plant (a climb), and every plant's snow was invisible from above
 
 His: "like the willow -- a giant hero plant, the equivalent of the smaller ones but more complex." Place row `wf_herocap` (kind 'herocap',

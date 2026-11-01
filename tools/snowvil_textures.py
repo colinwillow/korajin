@@ -21,6 +21,16 @@ PROMPTS = {
   'planks': "Old wooden door planks: vertical dark brown boards with deep grain, dark gaps between the planks, worn edges, a few iron nail heads, weathered. Dark warm brown palette.",
   'band': "A carved stone FRIEZE band: a continuous Greek-key MEANDER pattern carved in relief into grey-violet stone, repeated in two neat rows across the "
           "whole square, the raised key lines inlaid with worn gold, darker recessed grooves, thin gold-trimmed borders between the rows. Grey-lavender and gold palette.",
+  'jinstone': "ALIEN carved stone wall of an ancient non-human civilisation: smooth weathered pale grey-violet stone with flowing curvilinear carved relief -- "
+              "organic sweeping grooves and swirls, no bricks, no rectangles -- thin worn bronze inlay lines following the curves, frost in the grooves. Mysterious, otherworldly.",
+  'hexstone': "ALIEN masonry: interlocking HEXAGONAL carved stone blocks of varied sizes like basalt columns seen face-on, grey-violet stone with bevelled painterly edges, "
+              "thin oxidised bronze seams between the hexagons, a few faint glyphs carved in some blocks, frost. Ancient, otherworldly, not human.",
+  'shell': "ALIEN ROOF covering seen front-on: overlapping rows of curved SHELL SCALES like a pangolin or a seed pod, each scale rounded and pointed at the tip, deep violet "
+           "and teal with iridescent pale edges, darker shadow under each row. Organic, otherworldly, rows hanging downward.",
+  'jinwood': "ALIEN timber: dark violet-brown fibrous wood like a giant fungus stalk or alien tree, long flowing vertical grain with twisting fibres, faint pale highlights, "
+             "and a few thin bronze bands. Otherworldly, not ordinary wood.",
+  'glyph': "A frieze band of ALIEN GLYPH CIRCUITRY: dark oxidised bronze metal filled with interlocking angular-and-curved glyph channels and nodes like an ancient circuit board, "
+           "the channels glowing bright mint-green, rows across the whole square. Ancient alien technology.",
   'paving': "Top-down worn flagstone paving of a snowy village: irregular flat grey-violet stone slabs with dark joints, a little snow and frost packed in the joints, chipped edges.",
 }
 def gen(name):
