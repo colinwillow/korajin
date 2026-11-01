@@ -9883,7 +9883,7 @@ function beastHurt(d, dirH, power) {
 // Where it hits: ICE SPIKES erupt (pooled, `spikes`), the snow is blasted out and dug, frost mist rises. Inside `r` of the beam you are frozen-hurt
 // every `tick` s (a roll goes through). Your first trip north of z -30 wakes him by the cliffs. `ICEB.on = 0` gives him his fireballs back.
 const LAIR = { wakeR: 13, leash: 26 };
-// m2015: THE LAIR FIGHT -- HE FLIES. Every `cool` s (the first after `first` s awake) he TAKES OFF (`attack_air` beating, rising to `h` m over his floor
+// m2016: THE LAIR FIGHT -- HE FLIES. Every `cool` s (the first after `first` s awake) he TAKES OFF (`attack_air` beating, rising to `h` m over his floor
 // in `upT` s), CIRCLES you at `r` m for `circT` s at `v` m/s, then from the air sweeps the ICE BEAM down at you (the same beam, spikes and frost -- the
 // shield blocks it), then flies HOME to his nest and settles (`downT` s). From the air his beam rakes the cliff tiers as you run.
 const DFLY = { first: 9, cool: 16, h: 8, upT: 1.1, r: 13, circT: 2.6, v: 11, downT: 1.2 };
@@ -10120,7 +10120,7 @@ function beastStep(d, dt, t) {
       snd('thud', { g: .8, r: .6, x: P.x, z: P.z }); if (SNOWZ.air) snowBlast(P.x + Math.sin(d.h) * C.reach * .7, .3, P.z + Math.cos(d.h) * C.reach * .7, 2 + (d.K.r || 1), 1.1); }     // m2010: his blow lands in the snow
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
-  if (d.st === 'cFly') return dragonFly(d, dt, t, toP);     // m2015: his flying strafe
+  if (d.st === 'cFly') return dragonFly(d, dt, t, toP);     // m2016: his flying strafe
   if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m2006: in the snow, his ICE BEAM
     const B = ICEB; d.lift = B.hopH * smooth(0, B.hopUp, d.t); P.y = (d.floorY || 0) + d.lift;
     if (!d.hitDone) iceCharge(d, u / C.fireAt, dt);     // m2007: frost gathers in his jaws first
@@ -10137,7 +10137,7 @@ function beastStep(d, dt, t) {
   if (d.st === 'cRecover') { t[C.clips.idle] = 1; if (d.t >= Lv.recover * .8) beastGo(d, 'cIdle'); return true; }
   d.fireT = Math.max(0, (d.fireT || 0) - dt);
   const canFire = C.clips.fire && d.fireT <= 0 && dd > C.fireMin;
-  if (d.home && iceBeamOn(d) && (d.flyCool = (d.flyCool == null ? DFLY.first : d.flyCool) - dt) <= 0 && dd > 5 && (d.st === 'cIdle' || d.st === 'cRun')) { d.flyCool = DFLY.cool; d.fly = { ph: 'up', t: 0, a: Math.atan2(P.x - player.pos.x, P.z - player.pos.z) }; beastGo(d, 'cFly', C.clips.fire); return true; }     // m2015
+  if (d.home && iceBeamOn(d) && (d.flyCool = (d.flyCool == null ? DFLY.first : d.flyCool) - dt) <= 0 && dd > 5 && (d.st === 'cIdle' || d.st === 'cRun')) { d.flyCool = DFLY.cool; d.fly = { ph: 'up', t: 0, a: Math.atan2(P.x - player.pos.x, P.z - player.pos.z) }; beastGo(d, 'cFly', C.clips.fire); return true; }     // m2016
   if (d.st === 'cRun') {
     const ref = arenaRef(d, C.clips.run), sp = ref ? Math.min(C.speed, ref * C.tsMax) : C.speed;
     t[C.clips.run] = 1; setSkinScale(d, C.clips.run, ref ? sp / ref : 1); arenaStomp(d, C.clips.run, C.stomp);
