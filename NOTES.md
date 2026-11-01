@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2025 -- THE ICE TEMPLE: the concept's missing details -- arcaded wings, corner turrets, lamps
+
+His: *"Go!"* (the three suggested passes; this is the first). From `big_front` / `big_sheet`:
+- ARCADED WINGS either side of the forecourt (`k: 'arcade'` rows: n arches = n+1 piers and a lintel at 34, all real colliders -- walk under the
+  arches, walk on the lintel); the look puts a stone arch and a gold keystone in each opening.
+- TURRETS on the forecourt's two front corners (rows, colliders), a gold drum and a jade crystal finial on each.
+- LAMPS (look only, `ICET.lamps` local points): a gold post, a cup and a warm emissive flame -- up both sides of the grand stair, flanking the door,
+  along the curtain-wall tops. The concept's only warm light against all the jade.
+Shipped unverified.
+
 ## m2023 -- THE ICE TEMPLE: the VALLEY's look -- crags, aqueducts, frozen falls, pines, boulders
 
 His: *"Okay keep going"* -- the next pass after the entrance: the concept's BACKGROUND (`big_front`, `big_sheet`: cliffs, aqueduct arches on them,
