@@ -5,6 +5,13 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2036 -- THE ICE TEMPLE: detail pass D3 -- merlons, balustrades, ice curtains, crystal growths, moat rocks, the rune circle
+
+Still "detail, detail". Look only, all in `iceDress`: snow-capped MERLONS along every curtain wall and turret top; stone BALUSTRADE posts with
+gold finials along the wings' walkable lintels; an ICE CURTAIN in every wing arch, ice pooled at its foot (the concept's falls out of the arches);
+jade CRYSTAL GROWTHS (4-6 tilted shards) at a corner of about half the walls; 26 snowy ROCKS along both edges of the moat, a third with crystals;
+a RUNE CIRCLE inlaid in the forecourt's snow (two gold rings, a jade ring, eight gold ticks). Shipped unverified.
+
 ## m2035 -- THE ICE TEMPLE: detail pass D2 -- stepped towers, lanterns, shoulders, pedestals, the portcullis, drifts
 
 Still his "detail, detail, detail". Rows (solid, so they climb): each tower STEPS UP off its outer back corner (two tiers, 39 -> 44 -> 48.5),
