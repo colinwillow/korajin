@@ -21,8 +21,8 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 
 | # | question | output | status |
 |---|---|---|---|
-| 1 | **WHY is there a village here, and what does it DO?** | the settlement's reason, its people, its jobs, what it gives the player | **drafted -- below, waiting on him** |
-| 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | |
+| 1 | **WHY is there a village here, and what does it DO?** | the settlement's reason, its people, its jobs, what it gives the player | **approved** (hot spring + aqueduct; a HAMLET; near the spawn) |
+| 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | **drafted -- below, waiting on him** |
 | 3 | **ZONES** -- what goes where, and why | a zoning map: each district placed by its reason (water, road, defence, status) | |
 | 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | |
 | 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | |
@@ -61,7 +61,7 @@ hang on: **a hot spring** rises at the foot of a cliff. Everything follows from 
 | the HERDERS | keep the mammoth calves; ride the big mammoth | the STABLE (longhouse) outside the gate by the channel, the paddock fence, hay / firewood | the herd's bull mammoth, taken to the ice temple |
 | the SMITH | forges, mends, sells | the FORGE (forge station) near the water (quenching) and the gate (travellers) | his apprentice |
 | the BATHKEEPER / healer | runs the bathhouse, heals | the BATHHOUSE where the aqueduct arrives | -- |
-| the MERCHANT (a Tall White? LORE.md) | trades; the shop | the MARKET on the first terrace inside the gate (stalls, crates) | -- |
+| the MERCHANT | trades; the shop | the MARKET on the first terrace inside the gate (stalls, crates) | -- |
 | the ELDER / shrine keeper | keeps the Jinra shrine, knows the temple | the SHRINE at the top terrace by the spring, under the cliff | her daughter? |
 | families | live | huts on the middle terraces, chimneys smoking, washing lines, snowmen | a little brother |
 | the WATCH | guards | the watchtower, the gate | -- |
@@ -80,9 +80,76 @@ hang on: **a hot spring** rises at the foot of a cliff. Everything follows from 
 4. One gate, low. One road up through the middle. Lanes branch off it to the terraces.
 5. Every building answers "who lives / works here, and why here".
 
-### Questions for him (pass 1)
+### His answers (pass 1)
+- *"The hot spring and duct is fine."* A **hamlet**, near the spawn. A mythical game: no aliens, nothing from Zap.
+- *"I want the terrain to be really interesting... the path people take obvious and interesting, lots of ups and downs and winding; bridges over
+  creeks; underpasses and overpasses in the walls; high-rise, low-rise, moving things."*
+
+### (old) Questions for him (pass 1)
 - Is **a hot spring + aqueduct** the right reason (it puts the aqueduct to work and gives the steam plume)? Or something else: a mine, a monastery, a trade crossing?
 - How **big**: a hamlet (8-10 buildings, ~60 m across) or a town (20+, ~120 m)? Small is easier to make beautiful; the field has room for ~100 m.
 - **Where**: the field's open south end near the spawn (SNOW_VILLAGE.md), or tucked against the cliffs by the lair climb (better shelter story,
   but crowded)? Pass 2 assumes the south end with a NEW cliff / slope built for it unless he says otherwise.
-- Are the **Tall Whites** the merchants here, or is the village all one people?
+
+---
+
+## PASS 2 -- THE SITE (drafted, for his notes)
+
+Drawing: `images/concepts/snow_village/blueprint_pass2.png` (top-down, north = up = toward the lair; grid 10 m).
+
+### Where
+The open south-west of the Snowfield, between the spawn (0, 8) and the field's south edge: **x -72..-4, z 18..72** (~68 x 54 m, a hamlet). The
+frozen pond (27, 30), the mammoth (16, 22) and the herd stay where they are -- they become the hamlet's OUTSKIRTS (the stable by the creek mouth).
+Moves out of the way: the rock bridge (-46, 22) and the standing stones (-44, 52) (showroom pieces, they can go elsewhere).
+
+### The ground: a HORSESHOE CLIFF with a GORGE down the middle
+- **A new cliff** (+18 m) wraps the site on the west and south like a horseshoe, open to the north-east (toward the spawn). It is the wind break:
+  the wind comes down the field from the NW, so the cliff's top and every north face carries the drifts; the hamlet's doors face east and south.
+- **The hot spring** rises at the cliff foot at the head of the horseshoe (-30, 68).
+- **The warm creek cuts a GORGE straight down through the middle of the hamlet** (spring -> NE -> out past the gate -> into the pond, which gets
+  a steaming unfrozen inlet). The gorge splits the hamlet into two BANKS that do not line up -- so every crossing is a bridge, and the heights on
+  the two sides are offset, never one flat band:
+
+| WEST bank | height | | EAST bank | height |
+|---|---|---|---|---|
+| | | | E1 GATE + SMITH | +1.2 |
+| W1 MARKET | +2.4 | | | |
+| | | | E2 BATHHOUSE (the aqueduct arrives) | +4.2 |
+| W2 HOMES | +5.4 | | | |
+| | | | E3 HOMES | +7.2 |
+| W3 UPPER HOMES | +8.4 | | | |
+| WATCH KNOLL (a rock spur, the watchtower to +16) | +8 | | E4 SPRING LEDGE (the shrine) | +10.8 |
+
+  Each step is ~3 m, but the two banks are offset by ~1.5 m: looking across the gorge you always see the other side a half-storey up or down.
+- **The gorge floor** steps down the same way in three small FALLS (~3 m each), so the creek is a staircase of pools and falls, with a low PATH
+  along the floor (the underpass layer: it runs under the bridges).
+
+### The verticality this gives (his list, each with a reason)
+- **Bridges over the creek**: B1 at the creek mouth (the way in from the spawn), B2 low (gorge 1.2 m deep), B3 high (gorge 4 m deep). The road
+  crosses the gorge back and forth as it climbs -- winding, never straight.
+- **Overpass**: the AQUEDUCT leaves the spring along the west bank's top and crosses the gorge HIGH to the bathhouse -- it is itself a bridge (its
+  deck walkable, the high route), and the road passes under it on W2 (U1).
+- **Underpasses**: the gorge path under B2 and B3; a TUNNEL stair through the E3/E4 retaining wall (U2) -- the road goes INTO the wall and comes
+  out a storey up.
+- **High-rise / low-rise**: the watchtower on its knoll (+16 at the top) against the low gate houses (+1.2); W3 houses under the cliff vs. the
+  smithy by the water.
+- **A high bridge** (U3) from W3 out to the watchtower, over the market lanes.
+- **Moving things**: a WATER WHEEL at a fall (drives the smith's bellows -- a turning platform he can ride), a WINCH BASKET (counterweight lift)
+  between the market and W3 hauling goods (a moving platform), the spring's GEYSER puff on a timer (a launch), the steam.
+
+### The main road (the walking route: stairs only, risers .30, everyone)
+SPAWN -> **B1** over the creek mouth -> the **GATE** (E1) -> **B2** across the gorge -> the MARKET (W1) -> stairs -> switchback onto W2 -> under
+the AQUEDUCT (U1) -> **B3** high across the gorge -> E3 -> stairs -> the TUNNEL (U2) up through the wall -> the SPRING LEDGE and the SHRINE (E4) ->
+the CLEFT in the cliff: the road on to the valley and the temple. Three gorge crossings, one underpass, one tunnel, ~120 m of road for a ~60 m
+climb... it winds.
+
+### Built how (so the terrain is real, not painted)
+The snow plane is a heightfield over y 0, so nothing is dug below it: the banks are RAISED terrace bodies sitting on the field (rough rock under
+kit stone retaining walls, snow-pillowed tops, `patchAdd` on every top), and the gorge is the gap left between them (its floor stepped with low
+rock sills under the falls). Each terrace wall is ~3 m: the stairs climb it in 10 risers; a sprint wall-run (lip 3.6) climbs it directly -- the
+road is the long way round, the wall is the shortcut (pass 6).
+
+### Questions for him (pass 2)
+- The GORGE through the middle (two offset banks, bridges back and forth) -- yes? Or the creek round the outside (one hill, one moat)?
+- The HORSESHOE CLIFF: a new cliff on the field's south-west corner, ~18 m. OK to move the rock bridge and standing stones?
+- Too big / too small? (~68 x 54 m, 4 storeys of terraces, ~12 buildings.)
