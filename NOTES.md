@@ -14,6 +14,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15SP -- the sage: no ring; a swirl of glowing motes and rising sparks (Nov 1 2026)
+His: *"I don't want the ring around the meditating guy -- I want him floating, bobbing, with cool particle effects around him."* The jade torus is gone.
+In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
+.7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
+
 ## m2129 -- THE WILLOW SHRINE, pass 1 of 6: a bigger willow with a twisted, grooved trunk, jade veins and orbs, a snowed crown (Nov 1 2026)
 His: *"I also wanna make the Willow tree bigger and make the shrine more complex and interesting"* -- his sheet is
 `images/concepts/willow/willow_shrine_sheet.png`. Passes: 1 tree, 2 gold rings + lanterns + banners, 3 platform + pillars + fences, 4 stair + arch + bell,
