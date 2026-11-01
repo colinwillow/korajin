@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- the snow kit DETAIL PASS 3: dressing -- rope, straps, awnings, banners, crystals
+
+- A `rope` material; ROPE LASHINGS where the hut's gable beams cross (two coils) and two coils under every fence post's top rail.
+- The hut's timber wall POSTS get two iron STRAPS and a gold CAP each.
+- The concept's red side AWNING over the hut's first window (`awning: 0` turns it off): a red cloth slab on two struts, a scalloped valance, snow on it.
+- The aqueduct DECK hangs the concept's red Korajin BANNERS over both faces near its 'a' end, on gold rods (`banner: 0` for none) -- so every bay of
+  a section or a bridge carries a pair.
+- ICE CRYSTAL clusters (one jade, three ice) at the foot of every aqueduct pier.
+- Rendered (hut, aqueduct deck, the side wall) before pushing. 23 draws (+1, rope). Shipped unverified.
+
 ## m2059 -- the snow kit DETAIL PASS 2: shape -- chamfered, chipped stone; lumpy snow; drifts; proud stones on the piers
 
 - `vilRBox`: every STONE box the kit's builders make (`P.box` with stone / stoneD) is now chamfered -- the box's second vertex row moved out to r from
