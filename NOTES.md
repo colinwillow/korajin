@@ -8,6 +8,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2092 -- THE GREAT WISTERIA: the second hero plant -- a room beneath it, a bough you walk up
+
+His: "Next!" (a second hero to balance the Great Frostcap). Place row `wf_herowis` (kind 'herowis', `wfHeroWis`), local (102, 48), right of
+the falls:
+- A huge S-twisting bark trunk (painted bark, flared roots) carrying a 13 m mossy CROWN mound under a snow lid -- a collider you can STAND on.
+- Seven BOUGHS arch out of the crown and down, ~90 glowing purple RACEMES hanging off them and the crown's rim in curtains (fuller lathed
+  clusters, deep violet fading to pale) round a GLOWING ROOM beneath, with a rising shrine in it.
+- The RAMP BOUGH: one bough starts on the ground 24 m out, sweeps a third of the way round the tree and climbs onto the crown -- walkable:
+  59 boxes along its curve, measured headless: every rise <= .331 m (his step is .357), no gaps, the last step level with the crown (.01 m).
+  Snow tufts along its back, small racemes under it.
+- Four plants round its foot (agaves, a blossom, a wisteria).
+Rendered: the first racemes tapered to pale spikes (read as icicles) and the crown was a flat table -- fuller, deeper purple clusters and a
+domed crown (its collider and the ramp's top raised together). Scene ~330k tris. Shipped unverified on the phone.
+
 ## m2091 -- THE REGION's valleys WIDENED: from crevices to valleys (Nov 1 2026)
 His first run of the region: *"it's ridiculous -- narrow, extremely narrow; more like a crevice. Some areas are so steep I can't run up them. A marker
 says village -- how are you gonna put a village in a 5 foot wide crevice?"* He was right: `tools/regionmap.py` carved a valley as a quadratic over w
