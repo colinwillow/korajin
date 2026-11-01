@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2035 -- THE ICE TEMPLE: detail pass D2 -- stepped towers, lanterns, shoulders, pedestals, the portcullis, drifts
+
+Still his "detail, detail, detail". Rows (solid, so they climb): each tower STEPS UP off its outer back corner (two tiers, 39 -> 44 -> 48.5),
+the facade's raised SHOULDERS (49 -> 54, the horns rise out of them), two PEDESTALS at the grand stair's foot (the two lowest lamps moved a step
+up off them). The look: an octagonal LANTERN on each tower's top tier (a jade glow band, a gold roof, snow, a crystal), crystal BRAZIERS on the
+pedestals, the outer gate an iron PORTCULLIS with gold bars, gold crossbars and a jade boss (children of the gate's mesh, so they go with it),
+SNOW DRIFTS banked against the foot of every raised wall (low half-domes, no step). All the new rows get D1's architecture for free.
+Seen from the front at this hour the temple is BACKLIT (the snow zone's sun sits behind it) -- the main session's sky, flagged, not touched.
+Shipped unverified.
+
 ## m2034 -- THE ICE TEMPLE: detail pass D1 -- ARCHITECTURE on every raised stone box, the door's porch
 
 His: *"Two square, two straight -- the lines look like boxes. Detail, detail, detail; keep pounding away and make it interesting."* `iceArch`
