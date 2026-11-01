@@ -16,7 +16,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15RK -- the ROCKET LAUNCHER aims like the BOW: raise up, settle and lock level, thumb down aims down, lift fires (Nov 1 2026)
+## m2139 -- the ROCKET LAUNCHER aims like the BOW: raise up, settle and lock level, thumb down aims down, lift fires (Nov 1 2026)
 His: *"make it similar to how the bow works -- you hold up and it starts aiming up, then comes down and locks straight forward; once it's locked, push
 down on the right stick and it aims down; basically the same way the bow works."*
 - The trigger: once raised (`padUp`), the launcher stays raised while the thumb is anywhere on the pad and FIRES ONLY ON THE LIFT (the drawn bow's

@@ -21921,7 +21921,7 @@ const ROCKET = {
   fire: [1, .62, .22], smokeCol: [.62, .60, .58],
   arm: [{ k: 'clang', g: .34, r: .52, dur: .18 }, { k: 'lock', g: .2, r: .85 }],
   home: 0,           // 1 = it curves onto bodies like the bolt does (m258: off -- see `boltHome`)
-  raise: 40 * Math.PI / 180, raiseT: .38,     // m15RK: raised, the aim starts this far UP and settles to level (locked) over raiseT s; then the thumb tilts it down (the bow's rule)
+  raise: 40 * Math.PI / 180, raiseT: .38,     // m2139: raised, the aim starts this far UP and settles to level (locked) over raiseT s; then the thumb tilts it down (the bow's rule)
   throwK: 1.6,       // m1670: x his rising speed added to the rocket's climb when it leaves during a jump (MOVE.jump 10.6 m/s at take-off -> ~30 deg up, less as he slows)
 };
 // m1077: THE ROCKET, RE-MODELLED to match the turret -- a red-lacquer LATHE body (nozzle bell, waist, ogive nose), two gold bands, a
@@ -37536,7 +37536,7 @@ function aimVert(dt) { const p = player, V = VAIM; let want = 0;
       const el = Math.atan2(y - m.y, d); if (Math.abs(el) > V.pitch) return; const sc = dh * 30 + d; if (sc < best) { best = sc; want = el; } };
     for (const d of DUMMIES) { if (!d || d.st === 'down' || d.st === 'up' || (d.K && d.K.pal) || !d.root || !d.root.parent) continue; const P = d.root.position; look(P.x, P.y + (d.K ? d.K.h : 1.7) * .55, P.z); }
     for (const T of TURRET.list) if (!T.dead) look(T.x, (T.y || 0) + TURRET.h * .6, T.z);
-    // m15RK (his: "the rocket launcher like the bow: hold up and it starts aiming UP, then comes down and LOCKS straight forward; once locked, push down
+    // m2139 (his: "the rocket launcher like the bow: hold up and it starts aiming UP, then comes down and LOCKS straight forward; once locked, push down
     // on the right stick and it aims down -- the same way the bow works"): raised, the launcher's aim starts `raise` up and settles to level over `raiseT`
     // s (the lock clunk at the end), and then the thumb below the pad's top tilts it DOWN exactly as the drawn bow does (`bowDownA`: level at the
     // top, `down0` at the centre, `downMax` at the bottom); the release keeps the last angle the thumb held
@@ -37817,7 +37817,7 @@ function stepKit(dt) {
   if (s.aim && !noTrig) {
     // THE SAME GATE THE HAMMER USES -- see `padUp`. Two copies of this is two places for
     // the trigger and the wind-up to start disagreeing about what a push up is.
-    if ((s.bow || s.rocket) && p.aim ? stick.R.down : padUp(p.aim)) {     /* m15RK: the LAUNCHER too -- once raised it stays up while the thumb is on the pad and fires only when it lifts */     /* m1854: a drawn bow looses ONLY when the thumb LIFTS (his: 'bringing the stick back to centre initiates the shot even though I haven't released') */     // m1729: a drawn bow stays drawn while the thumb steers the lens -- the arc test loosed (and re-drew) it on every turn
+    if ((s.bow || s.rocket) && p.aim ? stick.R.down : padUp(p.aim)) {     /* m2139: the LAUNCHER too -- once raised it stays up while the thumb is on the pad and fires only when it lifts */     /* m1854: a drawn bow looses ONLY when the thumb LIFTS (his: 'bringing the stick back to centre initiates the shot even though I haven't released') */     // m1729: a drawn bow stays drawn while the thumb steers the lens -- the arc test loosed (and re-drew) it on every turn
       p.armT += dt;
       if (p.armT >= WEAP.armT && !p.aim) {
           // **ONE SOUND FOR ONE EVENT.** `chargeStart` already spins up the synth hum -- the
