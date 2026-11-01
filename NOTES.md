@@ -20,6 +20,13 @@ His: *"Did I mention that we need stuff like this for the village as well?"* (th
   post and a jade lamp at the bridge feet. Headless: 49 pieces, 74 ports, 360 colliders, the whole room 21 draws.
 Still open: watchtower / outpost and gate as kit buildings. Shipped unverified.
 
+## m2038 -- THE ICE TEMPLE: detail pass D5 -- the silhouette (horns, ring arcs, crown, roundel)
+
+The part seen from the whole valley. The HORNS: snow riding their top along every segment, icicles under their curve, dark rune plates and jade
+gems on the gold bands. The RING ARCS: six gold RUNE BLOCKS round each with a jade gem in each (the concept's segmented rings), a big jade crystal at
+each tip. The CROWN: a second gold collar studded with ten jade gems and a ring of nine smaller crystals round the great one. The ROUNDEL: sixteen
+gold rune segments round its rim. Shipped unverified.
+
 ## m2037 -- THE ICE TEMPLE: detail pass D4 -- the back and sides (great banner, jade windows, back towers, side falls, base rocks)
 
 Compared against `big_back.webp`, the back was the plainest side. Now: the BACK's great Korajin banner (8 x 15 m) over the descent; the glyph plates
