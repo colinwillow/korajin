@@ -17,6 +17,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2143 -- THE LIBRARY: a catalogue in the Level Builder to look through and place buildings, pieces, props, plants, moving pieces (Nov 1 2026)
+His: *"Do we have a catalogue of our buildings? It would be super nice to have basically a library where I could look through and place buildings,
+and plants, and any other features."* TOOLS > LEVEL BUILDER > LIBRARY (also a LIBRARY button on the builder's top bar and its ADD panel).
+- ONE TABLE, `LIBRARY` (SC_LIBRARY markers): `{ id, tab, name, opts, build(opts) -> { group, boxes, live? } }`. 89 entries: the snow kit's
+  62 showroom items (`SVK.rows`, through `snowKitPiece` -- huts, long hall, watchtowers, gates, outpost, shrine towers, walls, stairs, roofs,
+  aqueduct, bridge, terrace, fences, lamps, stalls, well, fire pit, sled... the wheel, winch, hot pool, geyser), the six flora hybrids
+  (`wfMake` floraOnly, one plant) and 21 of the plant library (`PLANTK` via `plantFlush`, dropped from the bend list). No builder forked.
+- A placement is a CLONE of a per-id prototype (built once, shared geometry). Saved as `{ kind: 'lib:<id>', at, yaw, p: { s } }`; `lbPiece`
+  hands a `lib:` kind to `libPiece`. Colliders: each box as a turned box (`obox`, collider yaw -yaw), scaled by `s`, pushed on PLAY like every
+  piece. Moving pieces (`live`): `.live(at, yaw, scene)` per rebuild, taken out of `SVK.live` and stepped by `libStep` (play only; in the
+  editor the wheel is drawn, not run). SIZE is off for them (a mover's boxes cannot scale).
+- THUMBNAILS: rendered in the main canvas's bottom-left 128 px corner BEFORE the editor's frame (`libPump`, ~30 ms a frame, only while the panel
+  is open), copied straight out with `drawImage`, JPEG data URLs in localStorage `mel.libthumbs` keyed by BUILD (a new build re-renders).
+- Pass 4: a search box (every tab), favourites (the star on a tile; the FAVOURITES tab), RECENTLY USED (last 10 placed). Both in localStorage.
+- Ground snap: `libGround` = `groundAt` under the camera target (TO GROUND re-snaps). Headless render-check: the white forge (the snowfield is
+  too heavy for software GL to step frames). Still open: willow / forest temple builders, the Building Forge set pieces, the village's VILKIND
+  directly (the kit already wraps them). WHOLE-PIECE: moves Level Builder step 5; DONE WHEN still his phone. Shipped unverified.
+
 ## m2140 -- the menus cleaned up: 3D AIM gone, BOW | GUN as two halves, the BACKPACK on the HANDS ring in the left pad's colour (Nov 1 2026)
 His: *"clean up the menus; take away the 3D aim -- that was a fail; the gun and the bow buttons, three there -> two; the backpack should be like the
 right stick's in orientation -- it's too high up -- and the colour is weird, it should match."*
@@ -67,7 +85,7 @@ strand's own spacing. **The bell** is its own group pivoting at the keystone (`W
 the wind. `willowAir`: additive HALOS on every lantern, the bell and the crystal clusters (`WILLOW.glowPts`, filled by the builders; one Points draw,
 world-sized) and MIST off each fall's landing (`mistAt`, 14 motes each, cycled in `willowMist`). Arch snow slimmed (a white hood close up). Shipped unverified.
 
-## m2141 -- THE WILLOW SHRINE, pass 7: the crown is solid from ABOVE too (leaf clusters), snow in patches; the region build checked (Nov 1 2026)
+## m2143 -- THE WILLOW SHRINE, pass 7: the crown is solid from ABOVE too (leaf clusters), snow in patches; the region build checked (Nov 1 2026)
 A top-down render showed the crown as bare boughs with long white snow "sausages" along them: every leaf strip (live vines and the m2138 shell) hangs
 VERTICAL, so from the sky it is edge-on and vanishes -- and his sheet's TOP (PLAN) is a solid leafy disc. `willowLeafPads`: ~1300 tilted cards of a
 painted spray of willow leaves (`willowLeafPadTex`) laid over the dome along every bough, facing up-and-out (more outward toward the tips), mint glow

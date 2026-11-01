@@ -33,6 +33,14 @@ this style because I really like it, but going forward every temple will look di
 - [~] 3f. HIS CONCEPT (m1895, the floating sandstone temple): jade glow, gold trim, megalith towers with a stepped temple base + a gold HALO + jade braziers, tattered red diamond banners, vines, braziers at bridge ends, rope rails on planks. Next for it: the sky (floating islands, beams, clouds below). STYLES (m1894): a STYLE per piece (button cycles) -- BRICK (the Japanese towers), MEGALITH (sandstone slabs; walls, chimneys, platforms, blocks), ANCIENT TECH (basalt + glowing circuit glyphs; bowl, loop); megalith / tech pieces get hovering fragments. LOOK pass 3 (m1892): cyan glow INLAYS up tower corners + a ring; a swaying NOBORI banner off each deck (red, gold border, a glyph); alien CRYSTAL clusters at tower bases and wall ends (seeded per piece). LOOK pass 2 (m1891): towers get a floating two-tier HIP ROOF on red lacquer posts (upswept tile tips, gold finial, four glowing lanterns; ROOF toggles it), walls / L-walls / chimneys a tile COPING, a cyan glow line under it and a darker plinth; the GYM's blocks in the same masonry. LOOK pass 1 (m1886): stone masonry (tinted per piece, tiled per metre), red lacquer + cyan glow trims, Sonic chevrons on run surfaces. Still to come: Japanese roof forms, retro-futurist detail, alien accents; then a `look` per piece (scaffold now, his art later, no change to the function); breakable walls as a wall with `breakable: 1`.
 - [x] 4. (m1902) LEVELS AS PLACES: `levels/index.json` lists them, each `levels/<id>.json`; a KORAJIN menu button per entry opens `?w=forge&zone=level&lid=<id>`; the player starts on its SPAWN piece. Builder edits there save on the phone and win while their `rev` >= the file's. To add one: his SAVE FILE upload -> `levels/<id>.json` + an index line.
 
+- [x] 5. (m2143) THE LIBRARY: TOOLS > LEVEL BUILDER > LIBRARY (or the LIBRARY button in the builder). One table `LIBRARY` (SC_LIBRARY): each entry
+      names a builder that already exists (snow kit `snowKitPiece`, the flora `wfMake`, the plant library `PLANTK`) + its opts. Tabs BUILDINGS /
+      PIECES / PROPS / PLANTS / WATER-MOVING + FAVOURITES, a search box over everything, a RECENTLY USED row. Thumbnails rendered once (128 px
+      JPEG, localStorage `mel.libthumbs`, keyed by the build). A tile drops the item at the camera target on the ground as the selected piece:
+      TURN 90 / TURN 15 / SIZE / HEIGHT / TO GROUND / COPY / DELETE / OK. Saved as `{ kind: 'lib:<id>', at, yaw, p: { s } }`; colliders are
+      turned boxes; the wheel / lift / geyser / steam run through `.live()` on PLAY. Open: the willow and the forest temple (no piece builders
+      exposed yet), the Building Forge's set pieces (`BLDG.list` builds singletons at fixed spots, not placeable copies).
+
 ## DONE WHEN
 - [ ] he builds a two-tower level on the phone, plays it, saves the file, and it loads back as a place
 - [ ] his sign-off on his phone
