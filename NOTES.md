@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2167 -- THE JINRA HEART, hero pass 2: rune rings, inner depth, lightning, fake bloom, a shockwave on the beat (Nov 1 2026)
+His: *"the Jinra heart looks great -- keep doing passes, make it phenomenal, mesmerizing, amazing."*
+- **THE CRYSTAL** shader: three parallax layers of his painted veins seen THROUGH the facets (depth), a rim that runs cyan into violet at the very
+  edge, rare round facet GLINTS that twinkle; the energy bands and the pulse as before.
+- **RUNE RINGS**: his generated glyph circle (`textures/garden_jinra_runes.webp`, `tools/garden_textures.py jinra_runes`) three times -- flat over
+  the basin, tilted round the crystal, upright behind it -- each turning its own way, a bright sweep running round each, brighter on the beat.
+- **LIGHTNING**: seven arcs crackling from the crystal to the six braziers and the basin rim -- each lives .12-.42 s, flickers, then jumps elsewhere,
+  more on the beat; jagged, bowed, rebuilt ~14x a second into ONE dynamic mesh of crossed thin quads.
+- **FAKE BLOOM** (there is no post chain): an outer glow (16 m) behind the core and halo, and a horizontal lens STREAK through the crystal's heart.
+- **GROUND**: a radial glow on the terrace floor and a SHOCKWAVE ring that runs out across it on every beat.
+- **SPIRALS**: bright beads ride up the three ribbons. The sky beam is thinner (it read as a white slab). +6 draws. Shipped unverified.
+
 ## m2166 -- THE GARDEN: a varied sky (four painted clouds, seven island shapes); the JINRA BEAM -- he floats, meditating (Nov 1 2026)
 His: *"a lot of the clouds have a similar shape, maybe rotation direction, same with the distant islands ... variety, their silhouettes ... much
 larger clouds and islands in the background."* And from the main session: *"a JINRA BEAM spot -- walk into it and he eases into a cross-legged
