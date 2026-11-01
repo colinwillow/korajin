@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2153 -- THE GARDEN: he starts beside the hammock; the hammock is data a body can be fitted to (Nov 1 2026)
+Direction from the main Korajin session (Colin's hammock question): no sleep / lying clip exists, so NO procedural fake pose.
+- **SPAWN**: STANDING beside the hammock (-9.8, 4.6), facing out over the garden toward the zen circle -- the opening frame is the willow curtain
+  overhead, the hammock beside him, the garden and the floating peaks ahead.
+- **THE HAMMOCK AS DATA** (SC_GARDEN): `GARDEN.hammock` = anchors `a` / `b` (the two willows), ring height `y`, `sag`, width `w`; the builder writes
+  `GARDEN.hammock.bed = { at: [x, y, z] (the sling's lowest point, WORLD), yaw (along the span), sag, span, ends }` so a body can be laid in it by number.
+- **HOOK**: `GARDEN.wakeClip = ''`. When his hammock sleep + roll-out clip arrives (GLB on Grumbo's rig), the opening plays it with him placed at
+  `bed.at` / `bed.yaw`, then hands control over. No dialogue system yet (later: in-engine, Zelda-style babble + subtitles). Shipped unverified.
+
 ## m2152 -- THE GARDEN, pass 4: the stair walks, a sky you are UP in, water that reads, painted crystals/sand/water, a cooler phone (Nov 1 2026)
 His (after m2151, ~57-60 fps on the phone, "getting kind of warm"): *"Walking upstairs doesn't work. It's just like a ledge ... it doesn't really read
 like a waterfall ... we should put an HDR ... it doesn't necessarily read that you're in the sky ... it looks like mountains in the background, but
