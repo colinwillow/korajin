@@ -15,7 +15,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2132 -- THE ARMILLARY FORGE: no more cubes -- soft stone
+## m2134 -- THE ARMILLARY FORGE: no more cubes -- soft stone
 
 His (a screenshot of it): "all the straight edges -- the rocks, the corners of this building. Not irregular, but when everything looks like
 a giant cube it looks really low quality." Every stone box (`S`) over .8 m is now a `softBox`: each vertex pulled onto an inner box plus a
@@ -31,6 +31,18 @@ grid; the rounding grid coarsened to .75 m). Shipped unverified on the phone.
 His: *"I don't want the ring around the meditating guy -- I want him floating, bobbing, with cool particle effects around him."* The jade torus is gone.
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
 .7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
+
+## m2132 -- THE WILLOW SHRINE, pass 3 of 6: the round terraced platform, pillars with jade glyphs, gold-railed fences, the stair (Nov 1 2026)
+The m1764 tiers and raked rings are replaced by the sheet's platform, all from tables in `WILLOW`: `tiers` -- a .3 m PLINTH (r 11.6, walked straight
+onto), the TERRACE (r 9.6, 1.5 m wall, top 1.8) and the DAIS (r 4.4, top 2.1 = `terH`, the trunk's foot) -- block walls in the jin stone's purple-grey
+(the stone texture is repainted), coping lips, paving on top, a gold meander band round the terrace and the dais, snow drifted in arcs on the rims.
+`pillars` (10, [id, degrees from the front]) stand at `pillarR` 9.0: plinth block, shaft, gold collar, gold pyramid cap and finial, a snow pillow,
+a jade GLYPH panel in a gold frame on the outer face (`glyph` material, emissive map). `fences` (9, [id, pillar, pillar]) are a stone curb with two
+gold rails and balusters. The front STAIR (`stair` [half-width, tread]) climbs from a landing on the plinth in four .3 m risers to the terrace
+(his step is .357), with stepped cheek walls, snow on them, and gold handrails. Colliders: 18 strips per tier, a box per pillar, fences in .9 m
+chunks, each step and cheek. `ter` 11 -> 12.8 (the Snowfield's clearances read it; the region's dell is flat to 14 m). The stair came forward from
+pass 4 so the terrace is never unreachable. Still the m1764 torii and stone lanterns in front -- the arch, bell and stair lanterns replace them next.
+Shipped unverified.
 
 ## m2131 -- THE WILLOW SHRINE, pass 2 of 6: the gold rings, hanging lanterns and red banners (Nov 1 2026)
 His sheet's carved gold HALO RINGS: `WILLOW.rings` ([id, x, y, z, r, tilt x, tilt z], tree units from its foot) -- four, at different heights and
