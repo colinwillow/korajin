@@ -16453,27 +16453,8 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       for (let i = 0; i < Hh.n; i++) { const a = i / Hh.n * 6.283 + .3, x = hx + Math.cos(a) * Hh.ring, z = hz + Math.sin(a) * Hh.ring; P(new THREE.CylinderGeometry(.24, .3, 1.3, 8).translate(x, hy + .65, z), M.stone);
         P(new THREE.CylinderGeometry(.34, .18, .3, 8).translate(x, hy + 1.45, z), M.bronze); P(new THREE.SphereGeometry(.2, 10, 8).translate(x, hy + 1.62, z), M.jade); bx(x, z, .3, .3, TY - 1, TY + 1.6); Z.lanterns.push([C.id + '_brazier', x, z, hy - .1]); }
       const hg = new THREE.Group(); hg.position.set(hx, hy, hz); hg.name = 'garden_jinra_heart'; const U = Z.U;
-      const cr = new THREE.Mesh(new THREE.OctahedronGeometry(.85, 0).scale(1, 2.4, 1), M.heart); cr.position.y = 3.2; cr.castShadow = true; hg.add(cr);
-      const core = new THREE.Mesh(new THREE.OctahedronGeometry(.45, 0).scale(1, 2.2, 1), new THREE.MeshBasicMaterial({ color: 0xbff0ff, toneMapped: false })); core.position.y = 3.2; hg.add(core);
-      const shards = new THREE.Group(); for (let i = 0; i < 6; i++) { const a = i / 6 * 6.283, sh = new THREE.Mesh(new THREE.OctahedronGeometry(.18, 0).scale(1, 2, 1), M.heart); sh.position.set(Math.cos(a) * 1.7, 3.2 + Math.sin(a * 2) * .5, Math.sin(a) * 1.7); shards.add(sh); } hg.add(shards);
-      const swirlMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, uniforms: { uTime: U.uTime, uGlow: U.uGlow },
-        vertexShader: 'varying vec2 vU; void main() { vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-        fragmentShader: `uniform float uTime, uGlow; varying vec2 vU; void main() { vec2 q = vU * 2.0 - 1.0; float r = length(q), a = atan(q.y, q.x);
-          float sw = sin(a * 3.0 + r * 9.0 - uTime * 3.2) * .5 + .5, rim = smoothstep(1.0, .55, r) * smoothstep(.12, .35, r);
-          vec3 c = mix(vec3(.1, .35, 1.0), vec3(.55, .95, 1.0), sw) * rim * (.45 + .55 * sw) * uGlow; gl_FragColor = vec4(c, 1.0); }` });
-      const swirl = new THREE.Mesh(new THREE.CircleGeometry(2.6, 48).rotateX(-Math.PI / 2), swirlMat); swirl.position.y = .7; hg.add(swirl);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.9, .05, 6, 48), new THREE.MeshBasicMaterial({ color: 0x7fd8ff, toneMapped: false })); ring.position.y = 3.2; hg.add(ring);
-      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.3, .035, 6, 48), ring.material); ring2.position.y = 3.2; hg.add(ring2);
-      const flameMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, uniforms: { uTime: U.uTime, uGlow: U.uGlow },
-        vertexShader: 'attribute float aPh; varying vec2 vU; varying float vP; void main() { vU = uv; vP = aPh; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-        fragmentShader: TEMPLEGLSL_N + `uniform float uTime, uGlow; varying vec2 vU; varying float vP; void main() { float n = tN(vec2(vU.x * 6.0 + vP * 9.0, vU.y * 3.0 - uTime * 3.0));
-          float a = smoothstep(1.0, .1, vU.y + n * .45) * smoothstep(0.0, .25, vU.x) * smoothstep(1.0, .75, vU.x); gl_FragColor = vec4(mix(vec3(.2, .5, 1.0), vec3(.75, .95, 1.0), 1.0 - vU.y) * a * 1.4 * uGlow, 1.0); }` });
-      { const fl = []; for (let i = 0; i < 14; i++) { const a = i / 14 * 6.283, q = new THREE.PlaneGeometry(.9, 1.6 + (i % 3) * .3).translate(0, .8, 0).rotateY(-a + Math.PI / 2).translate(Math.cos(a) * (Hh.r + .05), .55, Math.sin(a) * (Hh.r + .05));
-          q.setAttribute('aPh', new THREE.Float32BufferAttribute(new Array(q.attributes.position.count).fill(i * .37), 1)); fl.push(q); }
-        const fm = new THREE.Mesh(mergeGeometries(fl), flameMat); fm.renderOrder = 3; hg.add(fm); }
-      { const bh = 160, bm = new THREE.Mesh(new THREE.CylinderGeometry(.55, .9, bh, 16, 1, true).translate(0, bh / 2 + 3.5, 0), templeBeamMat()); bm.material.uniforms.uTime = U.uTime;
-        bm.geometry.setAttribute('aF', new THREE.Float32BufferAttribute(new Array(bm.geometry.attributes.position.count).fill(1), 1)); bm.frustumCulled = false; bm.renderOrder = 3; hg.add(bm); }
-      Z.heart = { g: hg, cr, core, shards, ring, ring2, y: 3.2 }; Z.pieces.heart = hg; (Z.heartAdd = Z.heartAdd || []).push(hg);
+      Z.heart = gdnHeart(hg, Hh, U);
+      Z.pieces.heart = hg; (Z.heartAdd = Z.heartAdd || []).push(hg);
       (Z.splash = Z.splash || []).push([hx, hy + .7, hz]); part(C.id + '_jinra_heart', 'jinra_source', { x: hx, z: hz }); }
     // the SPRING on the terrace, its little run to the edge, the cascade down to the ledge pool (a ripple and spray where it lands)
     { const [sx, sz] = S.spring.at, Lp = (C.pools || [])[0]; (Z.isleWater = Z.isleWater || []).push(gdnBlobDisc(sx, sz, S.spring.r, top + .08, RS, 18, 0)); P(gdnBlobDisc(sx, sz, S.spring.r + .4, top + .05, RS, 18), M.pebble);
@@ -16717,6 +16698,103 @@ function gdnCards(g) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.cards.seed), L = 
     }` });
   const o = new THREE.Mesh(geo, m); o.frustumCulled = false; o.renderOrder = 1; o.name = 'garden_cards'; g.add(o); Z.cardM = o; }
 function gdnReserved(x, y, z, pad) { for (const V of Object.values(GARDEN.reserve || {})) if (Math.hypot(x - V.at[0], y - V.at[1], z - V.at[2]) < V.r + (pad || 0)) return true; return false; }
+// THE JINRA HEART (m2165, hero pass 1 -- his: "the particles fluid and detailed, the spirals, everything its own texture, the geometry, the shape, the
+// movement, the glow, the god rays ... that fire, pulsing, moving, spiral, organic, geometric thing"). Everything in the heart's group, origin on
+// the basin's rim plane; ONE pulse (`uPulse`, a breathing double-beat) drives the crystal, the flames, the swirl, the rays and the motes together.
+//   CRYSTAL CLUSTER  a tall six-sided hero crystal with a lean, five lesser ones round it, all on one shader: his painted facets (`garden_jinra_crystal`,
+//                    object-space triplanar), a fresnel rim, bands of energy climbing it, an inner core; the core a white-hot billboard inside
+//   SPIRALS          three flat ribbons wound up round the crystal from the basin, light streaming UP them (streaks scroll along their length)
+//   SWIRL            his painted vortex (`garden_jinra_swirl`) in two layers turning opposite ways over the basin
+//   FLAMES           his painted blue flame (`garden_jinra_flame`) on 18 cards round the rim, two rings, each with its own flicker and heat-wobble
+//   MOTES            ~420 points in ONE draw: a VORTEX drawn in and up round the crystal, EMBERS rising off the flames, SPARKS flung out at each beat
+//   RAYS + HALO      thin shafts radiating from the crystal (slowly turning), a soft halo, the beam into the sky -- all breathing with the pulse
+function gdnHeart(hg, Hh, U) { const cy = 3.4, uP = U.uPulse = U.uPulse || { value: 0 };
+  const add = (geo, mat, ro) => { const m = new THREE.Mesh(geo, mat); if (ro != null) m.renderOrder = ro; m.frustumCulled = false; hg.add(m); return m; };
+  const ADD = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide };
+  // ---- the crystals: a hexagonal prism with a pointed crown and foot, its facets a little irregular
+  const prism = (r, h, tip) => { const g = new THREE.CylinderGeometry(r, r * .92, h, 6, 4).translate(0, 0, 0), P = g.attributes.position; for (let i = 0; i < P.count; i++) P.setY(i, P.getY(i));
+    const crown = new THREE.ConeGeometry(r, tip, 6).translate(0, h / 2 + tip / 2, 0), foot = new THREE.ConeGeometry(r * .92, tip * .6, 6).rotateX(Math.PI).translate(0, -h / 2 - tip * .3, 0);
+    return mergeGeometries([g.toNonIndexed(), crown.toNonIndexed(), foot.toNonIndexed()].map(q => { for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; })); };
+  const cmat = new THREE.ShaderMaterial({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow, uMap: { value: texGet('garden_jinra_crystal') } }, side: THREE.FrontSide,
+    vertexShader: 'varying vec3 vO; varying vec3 vN; varying vec3 vV; void main() { vO = position; vN = normalize(normalMatrix * normal); vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
+    fragmentShader: `uniform float uTime, uPulse, uGlow; uniform sampler2D uMap; varying vec3 vO; varying vec3 vN; varying vec3 vV; void main() {
+      vec3 n = normalize(vN), b = pow(abs(n), vec3(4.0)); b /= b.x + b.y + b.z; vec3 o = vO * .9;
+      vec3 t = texture2D(uMap, o.zy + vec2(0.0, uTime * .04)).rgb * b.x + texture2D(uMap, o.xz).rgb * b.y + texture2D(uMap, o.xy + vec2(0.0, uTime * .04)).rgb * b.z;
+      float fr = pow(1.0 - abs(dot(n, normalize(vV))), 2.2), band = pow(.5 + .5 * sin(vO.y * 5.0 - uTime * 3.2 + sin(vO.x * 3.0) * 1.5), 6.0);
+      vec3 c = t * (.75 + .6 * uPulse) + vec3(.35, .8, 1.0) * fr * (1.2 + uPulse) + vec3(.6, .95, 1.0) * band * .55;
+      gl_FragColor = vec4(c * mix(.3, 1.0, uGlow), 1.0);
+      #include <colorspace_fragment>
+    }` });
+  const cg = new THREE.Group(); cg.position.y = cy; hg.add(cg);
+  { const m = new THREE.Mesh(prism(.55, 2.6, 1.1), cmat); m.rotation.z = .06; m.castShadow = true; cg.add(m); }
+  const lesser = [[.95, -.6, .32, 1.3, .55, .45], [-.8, -.75, .28, 1.1, -.5, .3], [.2, -.9, .26, 1.0, .25, -.6], [-.35, -.55, .22, .9, -.2, -.55], [.6, -.95, .2, .8, .55, -.25]];
+  for (const [x, y, r, h, rz, rx] of lesser) { const m = new THREE.Mesh(prism(r, h, r * 1.9), cmat); m.position.set(x, y, Math.sin(x * 3) * .5); m.rotation.set(rx, x * 2, rz); m.castShadow = true; cg.add(m); }
+  // the core: a white-hot glow inside, a soft halo round it (camera-facing quads)
+  const glowMat = (col, k, soft) => new THREE.ShaderMaterial(Object.assign({ uniforms: { uPulse: uP, uGlow: U.uGlow, uC: { value: new THREE.Color(col) } },
+    vertexShader: 'varying vec2 vU; void main() { vU = uv; vec4 mv = modelViewMatrix * vec4(0.0, 0.0, 0.0, 1.0); mv.xy += position.xy; gl_Position = projectionMatrix * mv; }',
+    fragmentShader: `uniform float uPulse, uGlow; uniform vec3 uC; varying vec2 vU; void main() { float d = length(vU - .5) * 2.0; float a = pow(max(0.0, 1.0 - d), ${soft.toFixed(2)}) * (${k.toFixed(2)} + .35 * uPulse) * uGlow; gl_FragColor = vec4(uC * a, 1.0); }` }, ADD));
+  const core = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 3.2), glowMat(0xd8f6ff, .9, 2.0)); core.renderOrder = 6; core.frustumCulled = false; cg.add(core);
+  const halo = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), glowMat(0x3aa8ff, .55, 2.6)); halo.renderOrder = 2; halo.frustumCulled = false; cg.add(halo);
+  // ---- the spirals: three flat ribbons wound up round the crystal, light streaming up them
+  const spiralMat = new THREE.ShaderMaterial(Object.assign({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow },
+    vertexShader: 'varying vec2 vU; void main() { vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform float uTime, uPulse, uGlow; varying vec2 vU; void main() { float s = pow(.5 + .5 * sin(vU.x * 38.0 - uTime * 7.0), 3.0) * .7 + pow(.5 + .5 * sin(vU.x * 11.0 - uTime * 3.5), 4.0) * .6;
+      float edge = smoothstep(0.0, .3, vU.y) * smoothstep(1.0, .7, vU.y), ends = smoothstep(0.0, .08, vU.x) * smoothstep(1.0, .8, vU.x);
+      vec3 c = mix(vec3(.15, .45, 1.0), vec3(.75, 1.0, 1.0), s) * (s * .9 + .25) * edge * ends * (.8 + .7 * uPulse) * uGlow; gl_FragColor = vec4(c, 1.0); }` }, ADD));
+  const spirals = new THREE.Group(); hg.add(spirals);
+  for (let k = 0; k < 3; k++) { const N = 90, P = [], UV = [], I = [], ph = k / 3 * Math.PI * 2;
+    for (let i = 0; i <= N; i++) { const u = i / N, a = ph + u * Math.PI * 4.2, r = 2.0 * (1 - u) + .75 * u + .25 * Math.sin(u * 9 + k), y = .4 + u * 6.2, w = .16 + .1 * Math.sin(u * Math.PI);
+      const nx = Math.cos(a), nz = Math.sin(a); P.push(nx * r, y - w, nz * r, nx * r, y + w, nz * r); UV.push(u, 0, u, 1); }
+    for (let i = 0; i < N; i++) { const a = i * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(UV, 2)); g.setIndex(I);
+    const m = new THREE.Mesh(g, spiralMat); m.renderOrder = 5; m.frustumCulled = false; spirals.add(m); }
+  // ---- the swirl: his painted vortex, two layers turning opposite ways
+  const swirlMat = (dir, sc, k) => new THREE.ShaderMaterial(Object.assign({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow, uMap: { value: texGet('garden_jinra_swirl') } },
+    vertexShader: 'varying vec2 vU; void main() { vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform float uTime, uPulse, uGlow; uniform sampler2D uMap; varying vec2 vU; void main() { vec2 q = vU - .5; float a = uTime * ${(dir * .6).toFixed(2)}, cs = cos(a), sn = sin(a);
+      q = mat2(cs, -sn, sn, cs) * q * ${sc.toFixed(2)} + .5; vec4 t = texture2D(uMap, q); float r = length(vU - .5) * 2.0;
+      gl_FragColor = vec4(t.rgb * t.a * smoothstep(1.0, .7, r) * (${k.toFixed(2)} + .5 * uPulse) * uGlow, 1.0); }` }, ADD));
+  const sw1 = add(new THREE.CircleGeometry(2.7, 48).rotateX(-Math.PI / 2).translate(0, .66, 0), swirlMat(1, 1, .8), 4), sw2 = add(new THREE.CircleGeometry(2.2, 48).rotateX(-Math.PI / 2).translate(0, .7, 0), swirlMat(-1.6, 1.25, .55), 4);
+  // ---- the flames: his painted blue flame on cards round the rim, each its own phase
+  const flameMat = new THREE.ShaderMaterial(Object.assign({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow, uMap: { value: texGet('garden_jinra_flame') } },
+    vertexShader: 'attribute float aPh; uniform float uTime, uPulse; varying vec2 vU; varying float vP; void main() { vU = uv; vP = aPh; vec3 p = position; float h = uv.y;' +
+      ' p.x += sin(uTime * 5.0 + aPh * 7.0 + h * 4.0) * .12 * h; p.z += cos(uTime * 4.3 + aPh * 5.0 + h * 3.0) * .1 * h; p.y *= .85 + .3 * uPulse * h + .1 * sin(uTime * 6.0 + aPh * 11.0);' +
+      ' gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }',
+    fragmentShader: `uniform float uTime, uGlow; uniform sampler2D uMap; varying vec2 vU; varying float vP; void main() { vec2 q = vU; q.x += sin(q.y * 9.0 - uTime * 6.0 + vP * 5.0) * .04 * q.y;
+      vec4 t = texture2D(uMap, q); float f = .75 + .25 * sin(uTime * 9.0 + vP * 13.0); gl_FragColor = vec4(t.rgb * t.a * f * 1.5 * uGlow, 1.0); }` }, ADD));
+  { const fl = []; for (let ring = 0; ring < 2; ring++) for (let i = 0; i < 9; i++) { const a = (i + ring * .5) / 9 * 6.283, rr = Hh.r + (ring ? -.35 : .1), h = ring ? 1.6 + (i % 3) * .3 : 1.1 + (i % 2) * .3;
+      const q = new THREE.PlaneGeometry(.95, h, 1, 4).translate(0, h / 2, 0); const Pq = q.attributes.position; for (let j = 0; j < Pq.count; j++) Pq.setY(j, Pq.getY(j)); q.rotateY(-a + Math.PI / 2).translate(Math.cos(a) * rr, .5, Math.sin(a) * rr);
+      q.setAttribute('aPh', new THREE.Float32BufferAttribute(new Array(q.attributes.position.count).fill(i * .37 + ring * 2.1), 1)); fl.push(q); }
+    add(mergeGeometries(fl), flameMat, 5); }
+  // ---- the rays: thin shafts radiating from the crystal, slowly turning, breathing with the pulse
+  const rayMat = new THREE.ShaderMaterial(Object.assign({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow },
+    vertexShader: 'attribute float aPh; varying vec2 vU; varying float vP; void main() { vU = uv; vP = aPh; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform float uTime, uPulse, uGlow; varying vec2 vU; varying float vP; void main() { float a = smoothstep(0.0, .06, vU.y) * pow(1.0 - vU.y, 2.2) * smoothstep(0.0, .5, vU.x) * smoothstep(1.0, .5, vU.x);
+      a *= .35 + .65 * (.5 + .5 * sin(uTime * 1.3 + vP * 4.0)); gl_FragColor = vec4(vec3(.45, .85, 1.0) * a * (.35 + .55 * uPulse) * uGlow, 1.0); }` }, ADD));
+  const rays = new THREE.Group(); rays.position.y = cy; hg.add(rays);
+  { const rr = []; for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283, el = -.15 + (i % 4) * .22, L = 7 + (i % 3) * 2.5, q = new THREE.PlaneGeometry(.9, L).translate(0, L / 2, 0);
+      q.rotateZ(-(Math.PI / 2 - el)).rotateY(-a); q.setAttribute('aPh', new THREE.Float32BufferAttribute(new Array(q.attributes.position.count).fill(i * 1.3), 1)); rr.push(q); }
+    const m = new THREE.Mesh(mergeGeometries(rr), rayMat); m.renderOrder = 3; m.frustumCulled = false; rays.add(m); }
+  // ---- the beam into the sky
+  { const bh = 160, bm = new THREE.Mesh(new THREE.CylinderGeometry(.5, .85, bh, 16, 1, true).translate(0, bh / 2 + 5, 0), templeBeamMat()); bm.material.uniforms.uTime = U.uTime;
+    bm.geometry.setAttribute('aF', new THREE.Float32BufferAttribute(new Array(bm.geometry.attributes.position.count).fill(1), 1)); bm.frustumCulled = false; bm.renderOrder = 3; hg.add(bm); }
+  // ---- the motes: a VORTEX drawn in and up round the crystal, EMBERS off the flames, SPARKS flung out on the beat -- one draw
+  { const N1 = 260, N2 = 110, N3 = 60, P = [], A = [], R = gdnRnd(915);
+    for (let i = 0; i < N1 + N2 + N3; i++) { const kind = i < N1 ? 0 : i < N1 + N2 ? 1 : 2; P.push(0, 0, 0); A.push(R() * 6.283, R(), kind, .07 + R() * .1); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('aM', new THREE.Float32BufferAttribute(A, 4));
+    const m = new THREE.Points(g, new THREE.ShaderMaterial(Object.assign({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow, uPx: U.uPx || (U.uPx = { value: 600 }), uR: { value: Hh.r } },
+      vertexShader: `attribute vec4 aM; uniform float uTime, uPulse, uPx, uR; varying vec3 vC; varying float vA; void main() { float ph = aM.x, sd = aM.y, k = aM.z, s = aM.w; vec3 p; float t;
+        if (k < .5) { t = fract(uTime * (.07 + sd * .05) + sd); float r = mix(uR + 1.6, .35, t * t), a = ph + t * 9.0 + uTime * 1.4; p = vec3(cos(a) * r, .6 + t * 5.6 + sin(a * 3.0) * .15, sin(a) * r);
+          vC = mix(vec3(.3, .7, 1.0), vec3(.9, 1.0, 1.0), t); vA = smoothstep(0.0, .15, t) * smoothstep(1.0, .8, t); }
+        else if (k < 1.5) { t = fract(uTime * (.25 + sd * .2) + sd * 3.0); float a = ph; p = vec3(cos(a) * uR * (1.0 + t * .3), .6 + t * 3.5, sin(a) * uR * (1.0 + t * .3)); p.x += sin(t * 9.0 + ph) * .25;
+          vC = vec3(.45, .85, 1.0); vA = (1.0 - t) * .9; }
+        else { t = fract(uTime * .45 + sd); float a = ph + t * .5, r = .6 + t * 6.0; p = vec3(cos(a) * r, ${cy.toFixed(1)} + sin(ph * 3.0) * 1.5 + t * 1.2 - t * t * 2.5, sin(a) * r); vC = vec3(.8, .95, 1.0); vA = (1.0 - t) * uPulse; }
+        vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = s * (1.0 + uPulse * .6) * uPx / max(.5, -mv.z); }`,
+      fragmentShader: `uniform float uGlow; varying vec3 vC; varying float vA; void main() { float d = length(gl_PointCoord - .5) * 2.0; gl_FragColor = vec4(vC * pow(max(0.0, 1.0 - d), 1.8) * vA * 1.6 * uGlow, 1.0); }` }, ADD)));
+    m.frustumCulled = false; m.renderOrder = 6; hg.add(m); }
+  return { g: hg, cg, core, halo, spirals, sw1, sw2, rays, y: cy }; }
+// a breathing double-beat, 0..1 (lub-dub, then rest)
+function gdnPulse(t) { const p = (t * .72) % 1; return Math.max(Math.exp(-Math.pow((p - .1) / .05, 2)), .65 * Math.exp(-Math.pow((p - .28) / .06, 2))) * .85 + .15 * (.5 + .5 * Math.sin(t * .9)); }
 // A CHUNK OF THE MOUNTAIN: any outline (island-local [x, y, z] points) as a flat top at `y0` and a rock that drops SHEER for the first eighth of its
 // `depth` (the fractured face of a crack) and then tapers to a point below, toward (cx, cz). Returns { side (vertex-coloured, like templeRock's), cap, tris }.
 function gdnChunkGeo(poly0, y0, depth, seed, cx, cz) { let poly = poly0.slice(); let area = 0; for (let i = 0; i < poly.length; i++) { const a = poly[i], b = poly[(i + 1) % poly.length]; area += a[0] * b[2] - b[0] * a[2]; } if (area > 0) poly = poly.reverse();
@@ -16815,9 +16893,9 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
   if (Z.bridgeList && Z.bridgeList.length) rspStep(dt);
   for (const w of Z.wheels || []) w.children[0].rotation.x -= dt * 1.1;
-  if (Z.heart) { const Hh = Z.heart, t = O.t; Hh.cr.rotation.y += dt * .5; Hh.core.rotation.y -= dt * .9; const by = Hh.y + Math.sin(t * .9) * .18; Hh.cr.position.y = Hh.core.position.y = by;     // the Jinra heart turns, bobs and breathes
-    Hh.shards.rotation.y -= dt * .8; Hh.ring.rotation.x = Math.PI / 2 + Math.sin(t * .7) * .35; Hh.ring.rotation.y += dt * 1.2; Hh.ring2.rotation.x = Math.PI / 2 - Math.sin(t * .6) * .4; Hh.ring2.rotation.z -= dt * .9;
-    Hh.ring.position.y = Hh.ring2.position.y = by; const pulse = 1 + Math.sin(t * 2.1) * .05; Hh.core.scale.setScalar(pulse); }     // the homestead's waterwheel, turned by its cascade
+  if (Z.heart) { const Hh = Z.heart, t = O.t, pu = gdnPulse(t); Z.U.uPulse.value = pu;     // the Jinra heart breathes: turns, bobs, its spirals wind up, its swirl and rays turn
+    Hh.cg.rotation.y += dt * .35; Hh.cg.position.y = Hh.y + Math.sin(t * .8) * .16; Hh.core.scale.setScalar(1 + pu * .25); Hh.halo.scale.setScalar(1 + pu * .18);
+    Hh.spirals.rotation.y += dt * .9; Hh.rays.rotation.y -= dt * .12; Hh.rays.position.y = Hh.cg.position.y; }     // the homestead's waterwheel, turned by its cascade
   if (Z.U.uPx) Z.U.uPx.value = renderer.domElement.height * camera.projectionMatrix.elements[5] / 2;
   const p = player, ly = p.pos.y - Z.top;
   for (const Gt of Z.gates || []) { Gt.cd -= dt; if (Gt.cd <= 0 && Math.hypot(p.pos.x - Gt.x, p.pos.z - Gt.z) < 1.3 && Math.abs(ly - Gt.y) < 2) { Gt.cd = 4; try { snd('lock', { g: .3, r: .4, x: Gt.x, z: Gt.z }); setTimeout(() => snd('lock', { g: .14, r: .4, x: Gt.x, z: Gt.z }), 700); } catch (e) {} } }     // the summit's bell gate rings as he passes under it
