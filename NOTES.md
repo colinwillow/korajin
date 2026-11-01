@@ -5,6 +5,24 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m2046 -- THE GREAT WATERFALL: THE ASCENT (grotto -> pillars -> cliff -> aqueduct -> a zip ride down across the falls)
+
+His: "keep going". VERTICALITY ("routes climb"): the falls had a climb to 13.5 m and nothing above it. Now (all `place` rows, local):
+- From the grotto's right end, four STEPS behind the right edge of the falling water (15.7 / 17.9 / 19 / 19, `wf_step_01..04`) onto pillar R7 (19).
+- `wf_ladder_01` up R3's flank (19 -> 30), `wf_ladder_02` up R1's face (30 -> 64), `wf_ladder_03` a CHAIN LADDER up the cliff face itself to the
+  brow (64 -> 87.6; `z: 'face'` puts it against the sheet's REAL noisy surface -- the same displacement its vertices get -- with gold brackets into
+  the rock), `wf_ladder_04` up an aqueduct pier onto the DECK (101). Ladders go through `kitClimbAdd` with a mark and `fg` (the side he climbs from),
+  gold stiles, ice rungs every .32.
+- The face's colliders now top out at the BROW (the lowest `wfTop` over each 8 m run) instead of 95 m, so the brow is walkable; the aqueduct
+  DECK is a collider (`wf_deck`, a box per 4 m piece).
+- `wf_zip`: from the deck's far end (103 m) a ZIP LINE (`ZIPS`) across the whole face of the falls down into the field at world (-30, 1.8, -5) --
+  about 186 m across, 100 m down. Posts with ice globes at both ends; the cable is in the gold draw.
+- Headless (shipped text in node): 9 draws (unchanged), 105 colliders all valid; every ladder's foot stands on its pillar / the brow, its body is
+  clear, and its exit mark is on a top (R3, R1, the brow, the deck) and not inside anything. Steps chain with .5-1 m gaps and rises <= 2.2.
+Not measured: whether the chain ladder's top reads right against the rock lip (the brow collider is the low point of its 8 m run, up to ~2 m under
+the visible rim there); the zip's steepness at 28 deg (ZIP.max caps the speed). (Its code commit went in as ": the great waterfall -- the ascent"
+-- the build number was lost in a pull race; this build carries it.) Shipped unverified.
+
 ## m2045 -- THE CLIMB TOWER: C1 -> C2 -> C3 in one tube (Nov 1 2026)
 His "keep going on your own -- I'll make Cinema 4D blockouts in parallel; whichever way builds fun levels wins." KORAJIN > Climb Tower (C1-C3)
 (`?w=forge&zone=cell&cell=CT`): the ice temple's Climb Tower (ICE_TEMPLE_HEX.md) as one continuous route in a tube (r 10, 24 m):
