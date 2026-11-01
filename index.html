@@ -9996,7 +9996,7 @@ function iceFrostStep(dt) { const B = ICEB; if (!B.frM) return; let any = 0;
   for (let i = 0; i < B.fr.length; i++) { const S = B.fr[i]; if (!S.a) continue; S.a += dt; any = 1; const k = S.a < .2 ? S.a / .2 : S.a > B.frostLife - 1.5 ? Math.max(0, (B.frostLife - S.a) / 1.5) : 1;
     if (S.a > B.frostLife) { S.a = 0; B.frM.setMatrixAt(i, _ibM.makeScale(0, 0, 0)); continue; } _ibM.compose(_ibV.set(S.x, S.y, S.z), _ibQ.setFromAxisAngle(_ibUp, S.rot), _ibS.set(S.r * k, 1, S.r * k * .8)); B.frM.setMatrixAt(i, _ibM); }
   if (any) B.frM.instanceMatrix.needsUpdate = true; }
-function iceBeamOn(d) { return ICEB.on && d.K.creature === 'dragon' && !!SNOWZ.air; }
+function iceBeamOn(d) { return ICEB.on && d.K.creature === 'dragon' && (!!SNOWZ.air || !!RGN.live); }     // m15DL: and in the region (the shield's reason)
 function iceBeamMesh() { if (ICEB.mesh) return ICEB.mesh; const g = new THREE.Group();
   const mk = (r, a) => new THREE.Mesh(new THREE.CylinderGeometry(r, r, 1, 14, 1, true).translate(0, .5, 0), new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uA: { value: a } }, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
     vertexShader: 'varying vec2 vUv; varying vec3 vN; varying vec3 vV; void main() { vUv = uv; vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
@@ -12430,6 +12430,13 @@ function rgnLabel(text) { const cv = document.createElement('canvas'); cv.width 
 // (E1 +1.2 ... E4 +10.8, the knoll +8), the gorge between the banks stepping down in three falls, the horseshoe cliff behind (in the region grid).
 // One mesh from the 0.5 m detail grid (`levels/hamlet_d1.bin`, `tools/regionpick.py`); its walls are what `rgnWall` stops him at (~3 m = a sprint
 // wall-up). A label on each terrace, the creek as a blue ribbon. No buildings yet (district 4).
+// m15DL: build a Snowfield piece (written for flat ground at its own coordinates) SHIFTED to (ox, oy, oz): its meshes go in a sub-group placed there,
+// and every BOXES entry and snow patch it adds is moved by the same offset afterwards. Returns the sub-group.
+function rgnPlaceBuild(build, g, ox, oy, oz) { const sg = new THREE.Group(); sg.position.set(ox, oy, oz); g.add(sg); const nb = BOXES.length, np = SNOWPATCH.list.length;
+  build(sg);
+  for (let i = nb; i < BOXES.length; i++) { const b = BOXES[i]; b.minx += ox; b.maxx += ox; b.miny += oy; b.maxy += oy; b.minz += oz; b.maxz += oz; if (b.cx !== undefined) { b.cx += ox; b.cz += oz; } }
+  for (let i = np; i < SNOWPATCH.list.length; i++) { const P = SNOWPATCH.list[i]; P.x += ox; P.z += oz; P.top += oy; }
+  if (typeof boxGrid === 'function') boxGrid(); return sg; }
 function rgnHamlet(g) { const M = RGN.hm, nx = M.nx, nz = M.nz, D = RGN.D, sc = RGN.scale, geo = new THREE.PlaneGeometry((nx - 1) * M.res, (nz - 1) * M.res, nx - 1, nz - 1).rotateX(-Math.PI / 2), P = geo.attributes.position;
   const cx = M.x0 + (nx - 1) * M.res / 2, cz = M.z0 + (nz - 1) * M.res / 2;
   for (let i = 0; i < P.count; i++) { const x = P.getX(i) + cx, z = P.getZ(i) + cz, di = Math.round((x - M.x0) / M.res), dj = Math.round((z - M.z0) / M.res), q = D[dj * nx + di]; P.setX(i, x); P.setZ(i, z); P.setY(i, q ? q / sc + .02 : -50); }
@@ -12475,7 +12482,10 @@ function rgnStep(dt) { try { snowSkyHold(); } catch (e) {}
     const MW = RGN.places.find(q => q.id === 'mammoth_meadow');
     if (!RGN.herdSp && MW && (MAMR.d || RGN.tt > 8) && ARENA.kinds.CALF) { RGN.herdSp = 1; HERD.at = [MW.x, MW.z]; (async () => { for (let i = 0; i < HERD.n; i++) { try { await arenaSpawn('CALF'); const d = [...DUMMIES].reverse().find(o => o.K && o.K.arena === 'CALF' && !o.critter); if (!d) continue;
         d.entering = 0; d.critter = 1; d.st = 'cIdle'; const a = i / HERD.n * 6.28, r = 3 + Math.random() * HERD.r * .6, x = HERD.at[0] + Math.cos(a) * r, z = HERD.at[1] + Math.sin(a) * r; d.root.position.set(x, rgnH(x, z), z); d.h = Math.random() * 6.28; if (d.bar) d.bar.g.visible = false; } catch (e) { note('HERD THREW ' + e.message); } } })(); }
-    if (MAMR.d) mamFrame(dt); if (HERD.panic > 0) HERD.panic -= dt; } }
+    if (MAMR.d) mamFrame(dt); if (HERD.panic > 0) HERD.panic -= dt; }
+  // m15DL: the DRAGON sleeps in his lair until you come within 70 m of it (the Snowfield's wake / leash / flight / edge guard are his own)
+  if (RGN.nest && !RGN.dragonWoke && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON && Math.hypot(player.pos.x - RGN.nest[0], player.pos.z - RGN.nest[2]) < 70) { RGN.dragonWoke = 1; const N = RGN.nest;
+    Promise.resolve(arenaSpawn('DRAGON')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'dragon') return; d.entering = 0; d.st = 'cIdle'; d.home = N; d.sleep = 1; d.root.position.set(N[0], N[1], N[2]); d.h = 0; d.root.rotation.y = d.h + (d.faceOff || 0); }).catch(e => note('DRAGON THREW ' + e.message)); } }
 function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.fog) { scene.fog.color.setHex(0xc9d6e6); scene.fog.near = 70; scene.fog.far = 520; }
   hemi.color.setHex(0xdfe9ff); hemi.groundColor.setHex(0xb8c4d8); camera.far = Math.max(camera.far, 1200); camera.updateProjectionMatrix();
   RGN.stat = 'loading'; ARENA.youAt = [0, 0]; setTimeout(() => { try { if (window.mel) { mel.RGN = RGN; mel.MAMR = MAMR; mel.DUMMIES = DUMMIES; } } catch (e) {} }, 0);
@@ -12507,6 +12517,9 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
         const t = texGet('snow_ice').clone(); t.needsUpdate = true; t.repeat.set(1 / POND.tex, 1 / POND.tex);
         const ice = new THREE.Mesh(new THREE.ShapeGeometry(sh, 12).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: t, color: 0xdff4ff, roughness: .1, metalness: .15, emissive: 0x0c3a48, emissiveIntensity: .35 }));
         ice.position.set(Lk.x, RGN.lakeY + .04, Lk.z); ice.receiveShadow = true; g.add(ice); RGN.lake = 1; } }
+    // m15DL: THE MOVE-IN, step 5 -- the DRAGON'S LAIR: the Snowfield's whole cliff climb (ledges 2.0 / 3.8, the ice shelf, the 9.5 m cliff, the
+    // frozen fall, the lair dome and its nest) in a level bay cut north of the DRAGON'S GATE junction, its ledges facing the junction
+    if (meta.hamlet && meta.hamlet.lair && typeof snowCliffs === 'function') { const Lr = meta.hamlet.lair; try { rgnPlaceBuild(snowCliffs, g, Lr.ox, Lr.oy, Lr.oz); if (SNOWCLIFF.nestAt) RGN.nest = [SNOWCLIFF.nestAt[0] + Lr.ox, SNOWCLIFF.nestAt[1] + Lr.oy, SNOWCLIFF.nestAt[2] + Lr.oz]; } catch (e) { note('LAIR THREW ' + e.message); console.error(e); } }
     if (meta.hamlet) { RGN.hm = meta.hamlet; fetch(A(meta.hamlet.file)).then(r => r.arrayBuffer()).then(b2 => { RGN.D = new Uint16Array(b2); rgnHamlet(g); }).catch(e => note('NO HAMLET ' + e.message)); }
     RGN.live = 1; RGN.stat = 'ok'; const S = (RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] - 4, z: meta.hamlet.gate[1] } : null) || RGN.places.find(q => q.id === RGN.at) || RGN.places.find(q => q.id === 'spawn') || { x: 0, z: 0 }, toT = RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] + 40, z: meta.hamlet.gate[1] } : RGN.places.find(q => q.id === 'ice_temple');
     const put = () => { player.pos.set(S.x, rgnH(S.x, S.z) + .3, S.z); player.vel.set(0, 0, 0); if (toT) { const h = Math.atan2(toT.x - S.x, toT.z - S.z); player.faceH = player.heading = h; cam.az = h; } };

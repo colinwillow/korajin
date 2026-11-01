@@ -54,7 +54,7 @@ cl = [0]; [cl.append(cl[-1] + math.hypot(b[0] - a[0], b[1] - a[1])) for a, b in 
 def creek_floor_z(hz): return 6.0 if hz > 60 else 3.0 if hz > 46 else 0.6 if hz > 33 else 0.0     # district 2 fix: the gorge floor is always BELOW the lower bank beside it (E4/W3, E3/W2, E2/W1, then out)
 gx = lambda x: (x + 240) / 2
 Hg = H.copy()
-def Hs(x, z): return float(Hg[min(240, max(0, int(round((z + 240) / 2)))), min(240, max(0, int(round((x + 240) / 2))))])
+def Hs(x, z): return float(G[min(240, max(0, int(round((z + 240) / 2)))), min(240, max(0, int(round((x + 240) / 2))))])
 BASE = round(Hs(*h2w((-12, 22.5))), 1)
 # the region grid, edited: flatten the site to BASE - .3 (the detail grid sits on it), raise a cliff band behind the horseshoe to BASE + 18, cut the ridge notch
 G2 = np.round(np.clip(G, 0, 163) * 400).astype(float) / 400
@@ -70,6 +70,14 @@ for j in range(n):
     for i in range(n):
         wx, wz = i * 2 - 240, j * 2 - 240; d = math.hypot(wx - 22, wz + 118)
         if d < 12: G2[j, i] -= 11 * (1 - d / 12) ** .7     # the NOTCH: the temple's crown from the watchtower (pass 5)
+# the DRAGON'S LAIR's bay (the move-in, step 5): the Snowfield's cliff + lair complex (local area x -26..40, z -98..-42, front = +z) is built
+# shifted so its front ledges face the DRAGON'S GATE junction from the north (the mountain side). A level bay is cut for it at the junction's floor.
+DG = PP['dragons_gate']; LAIR_OFF = (DG[0] - 7, DG[1] - 20 + 42)     # local (7, -42) -> 20 m north of the junction's centre
+LAIR_Y = float(Hs(*DG))
+for j in range(n):
+    for i in range(n):
+        wx, wz = i * 2 - 240, j * 2 - 240; lx, lz = wx - LAIR_OFF[0], wz - LAIR_OFF[1]
+        if -29 < lx < 43 and -101 < lz < -39: G2[j, i] = LAIR_Y - .2
 # the WILLOW SHRINE's hollow (the move-in, step 3): the willow is built at y 0 (its terrace, vines and boxes all assume it), so its place gets a level
 # floor AT 0 -- a hollow 14 m round, its rim easing back up to the valley over 12 m. (Its place sits ~5 m up the valley; it reads as a sheltered dell.)
 WX, WZ = PP['willow_shrine']
@@ -174,6 +182,7 @@ meta['hamlet'] = {'base': BASE, 'x0': float(x0), 'z0': float(z0), 'nx': nx, 'nz'
     'gate': [round(float(v), 1) for v in h2w((-12, 18))],
     'boxes': [dict(b, id=bid) for bid, L in BRIDGES for b in L] + [dict(b, id='U2roof') for b in ROOF] + [dict(b, id=bid) for bid, b in BLOCKS] + [dict(b, id='aq') for b in AQB],
     'zips': [ZIP],
+    'lair': {'ox': round(float(LAIR_OFF[0]), 2), 'oz': round(float(LAIR_OFF[1]), 2), 'oy': round(LAIR_Y, 2)},
     'stable': [round(float(v), 1) for v in h2w((6, 26))], 'stableYaw': round(float(math.atan2(*(h2w((-12, 22.5)) - h2w((6, 26))))), 3),     # the tame mammoth waits here, facing the gate
     'paint': [{'w': 4.5, 'col': 'road', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in ROAD]}] + [{'w': 2.0, 'col': 'lane', 'pts': [[round(float(h2w(p)[0]), 2), round(float(h2w(p)[1]), 2)] for p in L]} for L in LANES],
     'bridgeLabels': [{'name': bid, 'x': L[len(L) // 2]['cx'], 'z': L[len(L) // 2]['cz'], 'y': L[len(L) // 2]['y1']} for bid, L in BRIDGES]}
