@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m2031 -- THE SNOW VILLAGE, pass 1: the hut as a code-built kit piece, eight of them on three tiers at the Snowfield's entry end
+## m2032 -- THE SNOW VILLAGE, pass 1: the hut as a code-built kit piece, eight of them on three tiers at the Snowfield's entry end
 
 His brief: SNOW_VILLAGE.md (concept `images/concepts/snow_village/hut_sheet.webp`). All in the `SNOW_VILLAGE:START/END` block, data in `SC_SNOWVIL`;
 three hook lines only (snowStage builds it, snowStep steps it, `cliffIn` keeps pines/bamboo/rocks/plants off `SNOWVIL.keep`). `?vil=0` leaves it out.
