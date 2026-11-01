@@ -15,6 +15,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2132 -- THE ARMILLARY FORGE: no more cubes -- soft stone
+
+His (a screenshot of it): "all the straight edges -- the rocks, the corners of this building. Not irregular, but when everything looks like
+a giant cube it looks really low quality." Every stone box (`S`) over .8 m is now a `softBox`: each vertex pulled onto an inner box plus a
+RADIUS (a quarter of its smallest side, up to 1.4 m -- big round shoulders on the keep, a chamfer on a merlon), the walls BATTERED 3 % wider at
+the foot, a faint unevenness on the faces, and the normals SMOOTHED across the old edges (`fhSmooth`: average the normals of vertices that
+share a position) so the light rolls round a corner instead of snapping. Stair treads (under .8 m) stay crisp; the colliders are untouched.
+The towers are no longer perfect cones: 24 x 12 segments, a 7 % swell, a faint five-lobed unevenness. Caught in the close render and fixed:
+the crystal windows' gold DIAMOND frames were drawn crossed (bar angles and centres wrong), and the portholes and windows sat inside the
+swelling towers (moved out to its surface; the gear porthole is turned onto the right tower's face). 15 draws, 78k tris (106k at the first
+grid; the rounding grid coarsened to .75 m). Shipped unverified on the phone.
+
 ## m2130 -- the sage: no ring; a swirl of glowing motes and rising sparks (Nov 1 2026)
 His: *"I don't want the ring around the meditating guy -- I want him floating, bobbing, with cool particle effects around him."* The jade torus is gone.
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
