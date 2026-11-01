@@ -11537,6 +11537,53 @@ const TLAY = { want: 0, seed: (() => { try { const m = /[?&]seed=(\d+)/.exec(loc
   col: { entry: 0x8a8f99, path: 0x9aa0aa, gate: 0xc88a4a, puzzle: 0x4ab8c8, acro: 0x8fb070, miniboss: 0xc85a4a, chalice: 0xd8b44a, mesa: 0x7a7f8a },
   graph: null, stat: null };
 try { if (/[?&]zone=tlayout\b/.test(location.search)) TLAY.want = 1; } catch (e) {}
+// m15C1: THE TCELL SANDBOX (LEVEL_METHOD.md: one cell at a time, designed, played, refined, SIGNED). `?w=forge&zone=cell&cell=C1` (KORAJIN > Temple Cell
+// C1). A cell is DATA (`CELLS[id]`, pieces in the cell's own metres) built by `cellStage` from a few exact piece kinds -- `tube` (a cylinder's inside wall
+// with door gaps), `shelf` (a curved ledge band against the tube wall), `floor`, `door` (a glowing frame), `arrow` (painted chevrons saying "run up here")
+// -- every curved piece collides as TURNED boxes (`obox`: cx/cz/hx/hz/cs/sn, the kit city's format, which the wall run reads), never an axis box round a
+// turned shape. The tube's visual is its INSIDE only, so the camera outside sees through it.
+//   C1 (ICE_TEMPLE_HEX.md): WALL RUN UP -- INTRODUCE then DEVELOP, the bottom of the Climb Tower. A tube r 10 m, 16 m tall. You enter at floor level
+//   (south door). Ahead, a low curved SHELF whose face is 2.6 m (the run's comfy wall-run-up 2.7): run at it, run up, grab. Along the shelf a long curved
+//   SPRINT LANE (~16 m) ends head-on at a TALLER shelf's face, 3.6 m (the sprint's comfy 3.6): sprint, run up, grab. From there the EXIT door (to C2, the
+//   chimney) at 6.2 m. Chevrons mark both faces. A miss drops you to the floor -- no damage, a quick retry.
+const CELLS = {
+  C1: { title: 'C1 -- Wall run UP: introduce, develop', R: 10, H: 16, wallT: 1,
+    doors: [{ id: 'in', a0: 80, a1: 100, y0: 0, y1: 3.2 }, { id: 'out', a0: 252, a1: 272, y0: 6.2, y1: 9.4 }],
+    shelves: [{ id: 's1', a0: 300, a1: 350, dep: 3.5, y: 2.6, col: 0xb8c2d0 }, { id: 'lane', a0: 350, a1: 482, dep: 3.5, y: 2.6, col: 0xa8b2c0 }, { id: 's3', a0: 482, a1: 535, dep: 4, y: 6.2, col: 0xc8d0dc }],
+    arrows: [{ at: 'face', shelf: 's1', a: 325 }, { at: 'end', shelf: 's3' }, { at: 'lane', shelf: 'lane', a: 400 }, { at: 'lane', shelf: 'lane', a: 440 }],
+    spawn: { a: 90, r: 7, y: 0 } } };
+const TCELL = { want: 0, id: (() => { try { const m = /[?&]cell=([A-Za-z0-9]+)/.exec(location.search); return m ? m[1].toUpperCase() : 'C1'; } catch (e) { return 'C1'; } })(), stat: null };
+try { if (/[?&]zone=cell\b/.test(location.search)) TCELL.want = 1; } catch (e) {}
+function obox(cx, cz, hx, hz, yaw, y0, y1) { const cs = Math.cos(yaw), sn = Math.sin(yaw), ex = Math.abs(cs) * hx + Math.abs(sn) * hz, ez = Math.abs(sn) * hx + Math.abs(cs) * hz;
+  const b = { minx: cx - ex, maxx: cx + ex, miny: y0, maxy: y1, minz: cz - ez, maxz: cz + ez }; if (Math.abs(sn) > 1e-3 && Math.abs(cs) > 1e-3) { b.cx = cx; b.cz = cz; b.hx = hx; b.hz = hz; b.cs = cs; b.sn = sn; b.yaw = yaw; b.box8 = 1; } return b; }
+function cellArc(rIn, rOut, a0, a1, y0, y1, out, geos, segLen = 1.4) { const d2r = Math.PI / 180, rc = (rIn + rOut) / 2, n = Math.max(1, Math.ceil(((a1 - a0) * d2r * rc) / segLen));
+  for (let i = 0; i < n; i++) { const am = (a0 + (i + .5) * (a1 - a0) / n) * d2r, seg = (a1 - a0) * d2r * rc / n, x = Math.cos(am) * rc, z = Math.sin(am) * rc, yaw = Math.atan2(Math.cos(am), -Math.sin(am));
+    out.push(obox(x, z, seg / 2 + .06, (rOut - rIn) / 2, Math.atan2(Math.cos(am), -Math.sin(am)) === yaw ? Math.atan2(Math.cos(am), -Math.sin(am)) : yaw, y0, y1));
+    if (geos) geos.push(new THREE.BoxGeometry(seg + .08, y1 - y0, rOut - rIn).rotateY(-Math.atan2(Math.cos(am), -Math.sin(am))).translate(x, (y0 + y1) / 2, z)); } }
+function cellStage(g) { const C = CELLS[TCELL.id] || CELLS.C1, d2r = Math.PI / 180, boxes = [], geo = {}, add = (col, q) => (geo[col] = geo[col] || []).push(q);
+  scene.background = new THREE.Color(0xdfe3ea); if (scene.fog) { scene.fog.color.setHex(0xdfe3ea); scene.fog.near = 40; scene.fog.far = 160; }
+  // floor + tube (collider: arcs of turned boxes, broken at the doors; visual: the inside of a cylinder only)
+  boxes.push({ minx: -C.R - 2, maxx: C.R + 2, miny: -1, maxy: 0, minz: -C.R - 2, maxz: C.R + 2 }); add(0xeef0f4, new THREE.CircleGeometry(C.R + .5, 48).rotateX(-Math.PI / 2));
+  const inDoor = (a, y0, y1) => C.doors.find(D => { const aa = ((a % 360) + 360) % 360; return aa >= D.a0 && aa <= D.a1 && y0 < D.y1 && y1 > D.y0; });
+  for (let a = 0; a < 360; a += 6) { const a1 = a + 6, am = a + 3; const cuts = [0, C.H]; for (const D of C.doors) { const aa = am; if (aa >= D.a0 && aa <= D.a1) { cuts.push(D.y0, D.y1); } } cuts.sort((p, q) => p - q);
+    for (let k = 0; k + 1 < cuts.length; k++) { const y0 = cuts[k], y1 = cuts[k + 1]; if (y1 - y0 < .05 || inDoor(am, y0 + .01, y1 - .01)) continue; cellArc(C.R, C.R + C.wallT, a, a1, y0, y1, boxes, null, 9); } }
+  { const tw = new THREE.Mesh(new THREE.CylinderGeometry(C.R, C.R, C.H, 64, 1, true).translate(0, C.H / 2, 0), new THREE.MeshStandardMaterial({ color: 0xc4cad4, roughness: .9, side: THREE.BackSide })); g.add(tw); }
+  for (const D of C.doors) { const am = (D.a0 + D.a1) / 2 * d2r, x = Math.cos(am) * C.R, z = Math.sin(am) * C.R, w = (D.a1 - D.a0) * d2r * C.R, yaw = -Math.atan2(Math.cos(am), -Math.sin(am));
+    const fr = new THREE.Group(); for (const sx of [-1, 1]) fr.add(new THREE.Mesh(new THREE.BoxGeometry(.3, D.y1 - D.y0, .5).translate(sx * w / 2, (D.y1 - D.y0) / 2, 0), new THREE.MeshBasicMaterial({ color: 0x5ee8ff, toneMapped: false })));
+    fr.add(new THREE.Mesh(new THREE.BoxGeometry(w + .3, .3, .5).translate(0, D.y1 - D.y0, 0), new THREE.MeshBasicMaterial({ color: 0x5ee8ff, toneMapped: false }))); fr.position.set(x, D.y0, z); fr.rotation.y = yaw; g.add(fr);
+    if (D.y0 > .5) { add(0xd0d6e0, new THREE.BoxGeometry(w, .3, 3).rotateY(yaw).translate(Math.cos(am) * (C.R + 1.5), D.y0 - .15, Math.sin(am) * (C.R + 1.5))); boxes.push(obox(Math.cos(am) * (C.R + 1.5), Math.sin(am) * (C.R + 1.5), w / 2, 1.5, -yaw, D.y0 - .3, D.y0)); } }     // a sill to stand in the exit door
+  const S = {}; for (const sh of C.shelves) { S[sh.id] = sh; cellArc(C.R - sh.dep, C.R, sh.a0, sh.a1, 0, sh.y, boxes, geo[sh.col] || (geo[sh.col] = [])); }
+  // chevrons: on a shelf's inner FACE (run up here), on a shelf's END face (sprint into it), or on the lane floor (this way)
+  const chev = (x, y, z, yaw, up) => { const m = new THREE.Group(); for (let k = 0; k < 3; k++) { const c = new THREE.Mesh(new THREE.BoxGeometry(1.1, .14, .04), new THREE.MeshBasicMaterial({ color: 0xff8a2a, toneMapped: false })); const c2 = c.clone(); c.position.set(-.38, k * .45, 0); c2.position.set(.38, k * .45, 0); c.rotation.z = .6; c2.rotation.z = -.6; m.add(c, c2); }
+    m.position.set(x, y, z); m.rotation.y = yaw; if (!up) m.rotation.x = -Math.PI / 2; g.add(m); };
+  for (const A of C.arrows) { const sh = S[A.shelf]; if (!sh) continue;
+    if (A.at === 'face') { const am = A.a * d2r, r = C.R - sh.dep - .03; chev(Math.cos(am) * r, .5, Math.sin(am) * r, -Math.atan2(Math.cos(am), -Math.sin(am)) + Math.PI, 1); }
+    else if (A.at === 'end') { const am = sh.a0 * d2r, r = C.R - sh.dep / 2, tx = -Math.sin(am), tz = Math.cos(am); chev(Math.cos(am) * r - tx * .03, S.lane ? S.lane.y + .5 : .5, Math.sin(am) * r - tz * .03, Math.atan2(-tx, -tz), 1); }
+    else { const am = A.a * d2r, r = C.R - sh.dep / 2; chev(Math.cos(am) * r, sh.y + .02, Math.sin(am) * r, Math.atan2(-Math.sin(am), Math.cos(am)), 0); } }
+  for (const col in geo) { if (!geo[col].length) continue; const m = new THREE.Mesh(mergeGeometries(geo[col].map(q => q.index ? q.toNonIndexed() : q)), new THREE.MeshStandardMaterial({ color: +col, roughness: .85 })); m.castShadow = m.receiveShadow = true; g.add(m); }
+  for (const b of boxes) BOXES.push(b);
+  const sp = C.spawn, sa = sp.a * d2r; setTimeout(() => { player.pos.set(Math.cos(sa) * sp.r, sp.y + .1, Math.sin(sa) * sp.r); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.atan2(-Math.cos(sa), -Math.sin(sa)); }, 0);
+  TCELL.stat = { id: TCELL.id, boxes: boxes.length }; setTimeout(() => tipShow(C.title + '. Run at the marked face and run UP it; then sprint the lane into the taller face. Exit door at the top.', 7), 1500); }
 function tlayGen(seed) { const T = TLAY, R = plantRnd(seed * 7919 + 13), nodes = [], edges = []; let th = R() * 6.28, ring = 'o', y = 0;
   const rr = () => (ring === 'o' ? T.Ro : T.Ri), at = (t, r) => [Math.cos(t) * r, Math.sin(t) * r];
   const ok = (x, z, yy, w) => { if (Math.hypot(x, z) < T.mesaR + w / 2 + 3 || Math.hypot(x, z) > T.Ro + 5) return false; for (const n of nodes) { if (Math.abs(n.y - yy) < T.clearV && Math.hypot(n.x - x, n.z - z) < (n.w + w) / 2 + T.clearH) return false; } return true; };
@@ -13578,6 +13625,7 @@ function arenaStage() {
   const R = ARENA.r, g = new THREE.Group(), L = ARENA.look; world.add(g);
   // m1117: THE BUILDING FORGE -- a clean white floor under the arena's sky, nothing else: the buildings are spawned into it (SPAWN > BUILDINGS)
   if (inForge() && DRAGZ.want) { dragStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1610: THE DRAGON RIDE's island instead of the white floor
+  if (inForge() && TCELL.want) { try { cellStage(g); } catch (e) { note('CELL THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m15C1: one designed cell at a time
   if (inForge() && TLAY.want) { try { tlayStage(g); } catch (e) { note('TLAY THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2030: the temple layout generator
   if (inForge() && SNOWZ.want) { snowStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1384: THE SNOWFIELD instead of the white floor
   if (inForge() && SHIPZ.want) { shipSea(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1373: THE SHIP's sea instead of the white floor
@@ -65721,6 +65769,7 @@ function startGate() {
       btn(el, 'The Sky Temple', 'A sandstone temple on a floating island above the clouds -- climb it. (Being built, step by step.)', () => { try { localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=temple'); });
       btn(el, 'The Proving Ground', 'How far and how high he can really go: gap lanes from 6 to 39 m, pillars from 3 to 24 m, and a meter that reports every jump. (Measure, then design.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=prove'); });
       btn(el, 'The Rope Course', 'A rope bridge between two towers that sags and sways under you. (The rope sandbox: the tightrope, the swing rope and the ladders come next.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=rope'); });
+      btn(el, 'Temple Cell C1', 'LEVEL_METHOD: one designed cell at a time. C1 -- the bottom of the Climb Tower: a tube; a 2.6 m face to run up, then a sprint lane into a 3.6 m face, then the exit door. Play it and give notes.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=cell&cell=C1'); });
       btn(el, 'Temple Layout', 'The temple layout generator: a chamber grown from a seed -- a route of platforms up the walls, each jump sized from the move table, bridges over bridges, a sleeping giant on the mesa in the middle. (Grey boxes; TOOLS > LAYOUT: NEW SEED.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=tlayout'); });
       btn(el, 'The Snowfield', 'Deep snow under a falling sky: trudge, leave tracks, plough, dive -- the snow bounces off you. (An element sandbox.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=snow'); });
       btn(el, 'The Dragon Ride', 'His blue dragon on a sky island: armoured, the evil and captured looks (TOOLS > DRAGON). Mount, ride, fly, fireballs, taming -- being built.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=dragon'); });

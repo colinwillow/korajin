@@ -5,6 +5,15 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15C1 -- TEMPLE CELL C1: the first designed cell (Nov 1 2026)
+LEVEL_METHOD.md step 3. KORAJIN > Temple Cell C1 (`?w=forge&zone=cell&cell=C1`). The bottom of the ice temple's Climb Tower (ICE_TEMPLE_HEX.md): WALL RUN
+UP, introduce -> develop, inside a TUBE (r 10, 16 m). Enter at floor level (south door, cyan frame). Ahead a low curved SHELF with a 2.6 m face (the run's
+comfy 2.7) and orange chevrons: run at it, run up, grab. Along it a ~16 m curved SPRINT LANE (floor chevrons) that ends head-on at a 3.6 m face (the
+sprint's comfy 3.6): sprint, run up, grab. On top, the EXIT door (to C2) at 6.2 m with a sill. A miss drops you to the floor -- no damage, a quick retry.
+Built as DATA (`CELLS.C1`) by `cellStage`: every curved piece collides as TURNED boxes (`obox`, the kit city's cx/cz/hx/hz/cs/sn format that the wall run
+reads) -- the m2030 generator's axis boxes round turned shapes are what this replaces. The tube's visual is its inside only (the camera sees through it
+from outside). White sandbox, grey pieces, no dressing (LEVEL_METHOD: play first, look last). Waiting on his notes; status: blockout.
+
 ## m2039 -- THE SNOW-VILLAGE KIT, pass 2: the BRIDGE / AQUEDUCT, and the demo snapped together by ports
 
 His: *"Did I mention that we need stuff like this for the village as well?"* (the aqueduct sheet) -- yes, it was in the UPDATE; this is it.
