@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- THE ARCH GATE (his reference image): a stone arch between two pagoda towers, horns and a halo
+## m2118 -- THE ARCH GATE (his reference image): a stone arch between two pagoda towers, horns and a halo
 
 His reference (`images/concepts/snow_village/ref_gate_arch.webp`). `gate` is now `svkGateArch`; `arch: 0` (or `?hut=round`) = the m2096 gate. KEPT for the
 village's measured routes: the opening `w` (4.4), the 5.1 m height, the collider over the top (y 4.5..5.6), `wings`, the a/b/through ports. The towers
