@@ -11013,7 +11013,13 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   creek: [[7.5, 66], [10.5, 57], [11.5, 46], [10, 36], [6, 26], [2.5, 17], [-1.5, 10], [-6, 3], [-12, -5]], creekW: 2.6,
   // m2112 (VILLAGE pass 4: HEIGHT): the kit's WATCHTOWER on the raised crag, and a plank DECK on posts from the crag's edge out to the AQUEDUCT -- the
   // first piece of the high route: up the crag stair, onto the deck, drop to the aqueduct's walkway (6 m) and along it toward the bathhouse
-  pieces: [{ kind: 'watchtower', o: { h: 4.5 }, at: [-4.5, 7.5, 61.5], yaw: Math.PI }, { kind: 'deck_posts', o: { w: 6.6, d: 2.2, h: 7.2 }, at: [0.9, 0, 60.2], yaw: 0 }],
+  pieces: [
+    // m15V5 (VILLAGE pass 5: THE MARKET): three kit stalls on the square's open sides (west, south-west, south), each facing the fire pit, crates and
+    // barrels between them -- the paths to the gate, the north stair and the bath lane stay clear
+    { kind: 'market_stall', o: {}, at: [-24.3, 0, 32.4], yaw: Math.atan2(6.3, -.4) }, { kind: 'market_stall', o: {}, at: [-22.9, 0, 27.2], yaw: Math.atan2(4.9, 4.8) },
+    { kind: 'market_stall', o: {}, at: [-17.2, 0, 25.6], yaw: Math.atan2(-.8, 6.4) },
+    { kind: 'crates', o: {}, at: [-25.6, 0, 29.6], yaw: .5 }, { kind: 'crates', o: {}, at: [-19.8, 0, 24.6], yaw: -.3 }, { kind: 'barrels', o: {}, at: [-24.8, 0, 35.4], yaw: 1.1 },
+    { kind: 'watchtower', o: { h: 4.5 }, at: [-4.5, 7.5, 61.5], yaw: Math.PI }, { kind: 'deck_posts', o: { w: 6.6, d: 2.2, h: 7.2 }, at: [0.9, 0, 60.2], yaw: 0 }],
   bridges: [{ at: [0.6, 0, 13.2], yaw: Math.atan2(7, -6), span: 8 }],     /* pass 3d: turned 90 deg -- it ran ALONG the creek; now it spans it */     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
   place: [
     { id: 'vil_hut_01', kind: 'hut', at: [-28, 0, 27], face: [-18, 31], p: { R: 2.7, seed: 11, chimA: 2.4 } },
