@@ -28,6 +28,45 @@ placed; the grain of the wood and the star look off; the straight edges look com
 - The gable roof's curled ridge finials are smooth tapered curls (they were cut-off torus arcs).
 - Rendered (hut, longhall, gate, watchtower close-ups) before pushing. `?hut=round` is still the whole pre-reference look. Shipped unverified.
 
+
+
+## m2125 -- the Snowfield's PACK is 320 m now (it was 160): the snow reacts out to the waterfall (Nov 1 2026)
+His: *"a lot of parts of the map the snow doesn't react to me... if it's snowy the ground should react."* He picked the bigger pack (and said the right
+answer is "snow wherever I am"). `SNOWZ.size` 160 -> 320, `res` 640 -> 960 (texels .25 -> .33 m), the snow mesh 400 -> 560 quads a side (.4 -> .57 m).
+Footprints and trenches read a little softer; the texture upload when the pack changes is ~.9 MB (was .4); the pack's build at boot is ~2.25x. Watch
+for frame drops when walking in deep snow. The real answer if this is not enough: a PACK THAT FOLLOWS HIM (a 160 m window re-centred as he moves).
+
+## m2124 -- the Snowfield's weather is CLEAR by default (Nov 1 2026)
+His: *"half the time it's just a white blizzard in the sky -- you can't see the HDR at all, and sometimes you can see the beautiful HDR; is that a glitch
+or weather changing?"* It was the m-era blizzard cycle (`SNOWSTORM.weather` AUTO: 70-110 s calm, 40-65 s storm; while the storm is past .55 the sky
+panorama gives way to flat fog). Default is now CLEAR under a new storage key (`mel.storm2`), so his saved AUTO does not linger; AUTO / BLIZZARD are
+still on TOOLS > SNOW > WEATHER. (Also reported: parts of the map where the snow does not react -- the deformable pack is only the 160 m field; the
+waterfall area at x -140 and beyond are outside it. Asked him before changing it: a bigger pack costs detail and phone time.)
+
+## m2123 -- THE ARMILLARY FORGE: the wrong sheet's pieces out, his forge's in
+
+His: "sorry, that was wrong" -- the potion-shop sheet was sent by mistake; the target is his forge. So out came what only that sheet had:
+the GLYPH PILLARS at the stair, the CRANE and its crystal lantern, the CHEVRON flag, the gold HORN TIPS. KEPT (his forge has them too):
+the open forge-shop room (his door shows the fire and the shelves), the chunky masonry, the lanterns. ADDED from his forge sheet: BANNERS
+hung from wooden BEAMS off the keep and the right tower with a lantern at each beam's end; a torn red CLOTH (a sagging, ragged drape with a
+white star) between the keep and the right tower; one PORTHOLE holds a lantern (the other a crystal); LANTERNS under the bridge's arches; a
+second glowing cascade down the tier's face from the armillary's foot. 15 draws, 56k tris; routes unchanged. Shipped unverified on the phone.
+
+## m2122 -- THE ARMILLARY FORGE, pass 3: "we really need to push it" (his potion-shop sheet as the detail bar)
+
+His: "yeah we really need to push it", with a sheet of a horned potion shop in the same style. Taken as the bar for the forge's detail:
+- THE FORGE-SHOP: the door is a real OPENING -- the keep's mesh and colliders are cut round a room (x 1..7, y 6..12, z -6..2). Inside:
+  a planked floor, three SHELVES of glowing potions (five colours) and jars on the back wall, a stone HEARTH with a fire and a gold-lipped hood,
+  an ANVIL, a counter with bottles, a barrel, two hanging lanterns. Walk in from the terrace.
+- CHUNKY MASONRY on the rock masses: finer spheres with carved block COURSES (1.35 m) and staggered JOINTS (darkened in the vertex colour),
+  on their own big-block texture (ice_stone at 4.6 m) so they read as stone from across the field.
+- GLYPH PILLARS flanking the grand stair: tapered four-sided stone, three gold straps with rivets, a diamond glyph plate with a gold diamond
+  and a crystal, a snowy cap with icicles, a crystal at the foot, a lantern on an arm.
+- GOLD TIPS on the two curling horns; a CRANE on the left (post, boom, brace, pulleys) holding a hanging crystal LANTERN cage; a red / white
+  CHEVRON flag with a ragged hem on two tall posts on the right; ten more lanterns along the terrace, bridge, balconies and keep.
+- 16 draws, 58k tris. Routes unchanged and measured. Rendered: the front, a look into the shop, the pillars, the left side.
+If his sheet is a separate building (a potion shop of its own), it is the next build. Shipped unverified on the phone.
+
 ## m2121 -- the snow kit's full STYLE SHEET saved (`images/concepts/snow_village/ref_kit_sheet.webp`)
 
 His whole sheet: three hut variations (ribbed dome with horns round it, a spiral-twisted roof, a dome under a halo), three longhouses (barrel-vault ribbed,
