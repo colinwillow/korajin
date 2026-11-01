@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15EG -- the dragon cannot walk off his cliff (Nov 1 2026)
+## m2029 -- the dragon cannot walk off his cliff (Nov 1 2026)
 His screenshot (m2023): the dragon below the cliff, half in the wall, trying to run home. m2024 already makes a fallen homed dragon FLY home; this adds
 the guard that stops the fall: a homed beast whose next step would drop him more than 1.5 m (and who is not flying) is put back on his last safe footing
 (`d.safe`, refreshed whenever he stands on his own floor). His flights still cross the edge freely. Shipped unverified, no render (his rule: push first).

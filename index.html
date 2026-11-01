@@ -10111,7 +10111,7 @@ function beastStep(d, dt, t) {
   }
   if (fly) return beastFly(d, dt, t, dd, toP);
   { let gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0;
-    if (d.home && d.st !== 'cFly' && d.floorY != null && gy < d.floorY - 1.5 && d.safe) { P.x = d.safe[0]; P.z = d.safe[1]; gy = d.floorY; }     // m15EG (his: "he flies over the edge and gets stuck down there"): a homed beast does not WALK off a drop -- he is put back on his last safe footing
+    if (d.home && d.st !== 'cFly' && d.floorY != null && gy < d.floorY - 1.5 && d.safe) { P.x = d.safe[0]; P.z = d.safe[1]; gy = d.floorY; }     // m2029 (his: "he flies over the edge and gets stuck down there"): a homed beast does not WALK off a drop -- he is put back on his last safe footing
     else if (d.home && d.floorY != null && Math.abs(gy - d.floorY) < .5) d.safe = [P.x, P.z];
     d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m2012: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
   if (d.st !== 'cFire' && d.st !== 'cFly') d.beam = null;     // m2006: a hit ends the beam
