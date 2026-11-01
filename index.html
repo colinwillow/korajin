@@ -10902,9 +10902,9 @@ function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { ro
   const crystal = (x, y, z, s, tilt, mat) => { const n = 3 + Math.floor(R() * 3); for (let k = 0; k < n; k++) { const h = s * (.6 + R() * .8), r = h * .12, a = R() * 6.28, t = tilt + R() * .45;
       for (const q of [new THREE.CylinderGeometry(r, r, h, 6).translate(0, h / 2, 0), new THREE.ConeGeometry(r, r * 2.2, 6).translate(0, h + r * 1.1, 0)]) { q.rotateZ(t * Math.cos(a)).rotateX(t * Math.sin(a)).translate(x, y, z); (mat || L.ice).push(q); } } };
   const icicles = (x0, x1, y, z, n) => { for (let k = 0; k < n; k++) { const l = .3 + R() * 1.1; L.ice.push(new THREE.ConeGeometry(.07 + R() * .08, l, 5).rotateX(Math.PI).translate(x0 + R() * (x1 - x0), y - l / 2, z + (R() - .5) * .6)); } };
-  const P = {}; for (const q of K.places) P[q.id] = q;
+  const P = {}; for (const q of K.places) P[q.id] = q; const only = K.only;     // m15IC: `only` builds one piece (the region places them one by one, `rgnPlaceBuild`)
   // GROTTO: a half-dome shell (open to the west), its wall a ring of colliders
-  { const G = P.grotto, Rr = 7, H = 5.6, open = 0, half = 1.05;     // three's sphere puts phi at x = -cos(phi), z = sin(phi): the gap round phi 0 faces -X (west, toward the field)
+  if (!only || only === 'grotto') { const G = P.grotto, Rr = 7, H = 5.6, open = 0, half = 1.05;     // three's sphere puts phi at x = -cos(phi), z = sin(phi): the gap round phi 0 faces -X (west, toward the field)
     const sh = new THREE.SphereGeometry(Rr, 28, 12, open + half, Math.PI * 2 - half * 2, 0, Math.PI / 2); sh.scale(1, H / Rr, 1); { const Pp = sh.attributes.position; for (let i = 0; i < Pp.count; i++) { const x = Pp.getX(i), y = Pp.getY(i), z = Pp.getZ(i), n = nz(x * .8, y, z * .8); const k = 1 + n * .14; Pp.setXYZ(i, x * k, y * (1 + n * .08), z * k); } sh.computeVertexNormals(); }
     const inner = sh.clone(); inner.scale(.86, .9, .86); { const ix = inner.index.array; for (let i = 0; i < ix.length; i += 3) { const t = ix[i]; ix[i] = ix[i + 2]; ix[i + 2] = t; } inner.computeVertexNormals(); }     // the inside face (flipped), so the dome reads from within
     L.rock.push(sh.translate(G.x, 0, G.z)); L.rock.push(inner.translate(G.x, 0, G.z));
@@ -10916,27 +10916,27 @@ function snowKit(g) { const K = SNOWKIT, R = plantRnd(2207), Z = SNOWZ, L = { ro
     L.rock.push(lump(new THREE.BoxGeometry(1.4, 3.2, .8, 2, 3, 2).translate(G.x + 4.6, 1.6, G.z), .12)); box(G.x + 4.2, G.x + 5, 0, 3.2, G.z - .7, G.z + .7);
     L.glow.push(new THREE.TorusGeometry(.42, .07, 6, 20).rotateY(Math.PI / 2).translate(G.x + 4.18, 2.1, G.z)); }
   // BRIDGE: two pillars, a deck 6 m up, boulder steps
-  { const B = P.bridge; pillar(B.x - 6, B.z, 3, 3.2, 6, 0); pillar(B.x + 6, B.z, 3.2, 3, 6, 0);
+  if (!only || only === 'bridge') { const B = P.bridge; pillar(B.x - 6, B.z, 3, 3.2, 6, 0); pillar(B.x + 6, B.z, 3.2, 3, 6, 0);
     L.rock.push(lump(new THREE.BoxGeometry(15.5, 1.3, 3.2, 10, 2, 3).translate(B.x, 6 - .65, B.z), .25)); box(B.x - 7.75, B.x + 7.75, 4.7, 6, B.z - 1.6, B.z + 1.6);
     patchAdd(B.x, B.z, 15.2, 3.0, 6.02, 0); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z + 1.4, 26); icicles(B.x - 4.5, B.x + 4.5, 4.7, B.z - 1.4, 18);
     [[1.4, -10.5, 3.5], [2.8, -12.5, 6.2], [4.2, -11, 8.8], [5.4, -8.6, 10.2]].forEach(([h, dx, dz]) => pillar(B.x + dx, B.z + dz - 6, 2.4, 2.4, h)); }
   // STONES: the ring, and its floating crystal
-  { const S = P.stones; for (let k = 0; k < 7; k++) { const a = k / 7 * Math.PI * 2 + .2, x = S.x + Math.cos(a) * 9, z = S.z + Math.sin(a) * 9, h = 3 + R() * 2.5, w = 1.1 + R() * .5;
+  if (!only || only === 'stones') { const S = P.stones; for (let k = 0; k < 7; k++) { const a = k / 7 * Math.PI * 2 + .2, x = S.x + Math.cos(a) * 9, z = S.z + Math.sin(a) * 9, h = 3 + R() * 2.5, w = 1.1 + R() * .5;
       const geo = lump(new THREE.BoxGeometry(w, h, .7, 2, 4, 2), .1); geo.rotateY(-a + Math.PI / 2); geo.rotateZ((R() - .5) * .12); geo.translate(x, h / 2 - .2, z); L.rock.push(geo); box(x - .6, x + .6, 0, h - .2, z - .6, z + .6);
       for (let j = 0; j < 3; j++) { const rr = new THREE.BoxGeometry(w * .5, .12, .74); rr.rotateY(-a + Math.PI / 2); rr.translate(x, h * (.35 + j * .18), z); L.glow.push(rr); }
       L.cap.push(new THREE.BoxGeometry(w * 1.05, .18, .78).rotateY(-a + Math.PI / 2).translate(x, h - .14, z)); }
     const cg = []; crystal(0, -2.2, 0, 3.4, .15, cg); const cm = new THREE.Mesh(mergeGeometries(cg.map(q => q.index ? q.toNonIndexed() : q)), snowKitIce()); cm.position.set(S.x, 5.5, S.z); g.add(cm); K.spin = cm; }
   // SPIRE: a mound in two steps, a tall stack of crystals
-  { const S = P.spire; pillar(S.x, S.z, 9, 9, 2.2); pillar(S.x + 1, S.z - .5, 5.5, 5.5, 4); crystal(S.x + 1, 4, S.z - .5, 9, .08); crystal(S.x + 1, 4, S.z - .5, 15, .02); crystal(S.x - 3, 2.2, S.z + 3, 3, .4); }
+  if (!only || only === 'spire') { const S = P.spire; pillar(S.x, S.z, 9, 9, 2.2); pillar(S.x + 1, S.z - .5, 5.5, 5.5, 4); crystal(S.x + 1, 4, S.z - .5, 9, .08); crystal(S.x + 1, 4, S.z - .5, 15, .02); crystal(S.x - 3, 2.2, S.z + 3, 3, .4); }
   // PLANTS
   const ok = (x, z) => Math.abs(x) < 76 && Math.abs(z) < 76 && Math.hypot(x, z - 8) > 10 && Math.hypot(x - WILLOW.at[0], z - WILLOW.at[1]) > WILLOW.ter + 3 && !pondIn(x, z, 2) && !cliffIn(x, z, 1);
   const tiers = [[4, 2.0, -48, 6], [16, 3.8, -55, 4], [-16, 6.8, -63, 3], [P.bridge.x, 6.1, P.bridge.z, 6], [P.spire.x, 2.2, P.spire.z, 4]];     // high places to put plants on
   const at = () => { if (R() < .16) { const T = tiers[Math.floor(R() * tiers.length)]; return [T[0] + (R() - .5) * T[3], T[1], T[2] + (R() - .5) * T[3] * .5]; } for (let k = 0; k < 20; k++) { const x = (R() - .5) * 150, z = (R() - .5) * 150; if (ok(x, z)) return [x, snowAt(x, z) * Z.depth - .15, z]; } return null; };
-  for (let i = 0; i < K.shrubs; i++) { const q = at(); if (!q) continue; const s = .5 + R() * .8; for (let k = 0; k < 3; k++) { const b = plantBlob(s * (.7 + R() * .4), 2300 + i * 3 + k, 1); b.translate(q[0] + (R() - .5) * s, q[1] + s * .45, q[2] + (R() - .5) * s); L.plant.push(b);
+  for (let i = 0; i < (only ? 0 : K.shrubs); i++) { const q = at(); if (!q) continue; const s = .5 + R() * .8; for (let k = 0; k < 3; k++) { const b = plantBlob(s * (.7 + R() * .4), 2300 + i * 3 + k, 1); b.translate(q[0] + (R() - .5) * s, q[1] + s * .45, q[2] + (R() - .5) * s); L.plant.push(b);
       const c = plantBlob(s * .62, 2400 + i * 3 + k, 1); c.scale(1, .45, 1); c.translate(b.boundingBox ? 0 : 0, 0, 0); b.computeBoundingBox(); c.translate((b.boundingBox.min.x + b.boundingBox.max.x) / 2, b.boundingBox.max.y - s * .12, (b.boundingBox.min.z + b.boundingBox.max.z) / 2); L.cap.push(c); } }
-  for (let i = 0; i < K.ferns; i++) { const q = at(); if (!q) continue; const n = 5 + Math.floor(R() * 4), s = .6 + R() * .7; for (let k = 0; k < n; k++) { const a = k / n * 6.28 + R() * .3, fr = new THREE.ConeGeometry(.07 * s, 1.1 * s, 4, 3); const Pp = fr.attributes.position;
+  for (let i = 0; i < (only ? 0 : K.ferns); i++) { const q = at(); if (!q) continue; const n = 5 + Math.floor(R() * 4), s = .6 + R() * .7; for (let k = 0; k < n; k++) { const a = k / n * 6.28 + R() * .3, fr = new THREE.ConeGeometry(.07 * s, 1.1 * s, 4, 3); const Pp = fr.attributes.position;
       for (let j = 0; j < Pp.count; j++) { const y = Pp.getY(j) / (1.1 * s) + .5; Pp.setZ(j, Pp.getZ(j) + y * y * .45 * s); } fr.translate(0, .55 * s, 0); fr.rotateX(.75); fr.rotateY(a); fr.translate(q[0], q[1] + .1, q[2]); fr.computeVertexNormals(); L.plant.push(fr); } }
-  for (let i = 0; i < K.bulbs; i++) { const q = at(); if (!q) continue; const n = 2 + Math.floor(R() * 4); for (let k = 0; k < n; k++) { const h = .5 + R() * 1.3, x = q[0] + (R() - .5) * 1.2, z = q[2] + (R() - .5) * 1.2, lean = (R() - .5) * .4;
+  for (let i = 0; i < (only ? 0 : K.bulbs); i++) { const q = at(); if (!q) continue; const n = 2 + Math.floor(R() * 4); for (let k = 0; k < n; k++) { const h = .5 + R() * 1.3, x = q[0] + (R() - .5) * 1.2, z = q[2] + (R() - .5) * 1.2, lean = (R() - .5) * .4;
       L.plant.push(new THREE.CylinderGeometry(.03, .05, h, 5).translate(0, h / 2, 0).rotateZ(lean).translate(x, q[1], z)); L.glow.push(new THREE.SphereGeometry(.1 + R() * .1, 8, 6).translate(-Math.sin(lean) * h, Math.cos(lean) * h, 0).translate(x, q[1], z)); } }
   const mats = { rock: snowTriMat('snow_rock', 2, 0xd0d6e4, .95), cap: snowTriMat('snow_snow', 2.5, 0xffffff, .85), ice: snowKitIce(), glow: new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false }),
     plant: snowTriMat('snow_needles', 1.1, 0xb8d0c8, .9), dark: new THREE.MeshStandardMaterial({ color: 0x2a3340, roughness: .95 }) };
@@ -12532,6 +12532,10 @@ function rgnStage(g) { scene.background = new THREE.Color(0xc9d6e6); if (scene.f
     // m2095: THE MOVE-IN, step 5 -- the DRAGON'S LAIR: the Snowfield's whole cliff climb (ledges 2.0 / 3.8, the ice shelf, the 9.5 m cliff, the
     // frozen fall, the lair dome and its nest) in a level bay cut north of the DRAGON'S GATE junction, its ledges facing the junction
     if (meta.hamlet && meta.hamlet.lair && typeof snowCliffs === 'function') { const Lr = meta.hamlet.lair; try { rgnPlaceBuild(snowCliffs, g, Lr.ox, Lr.oy, Lr.oz); if (SNOWCLIFF.nestAt) RGN.nest = [SNOWCLIFF.nestAt[0] + Lr.ox, SNOWCLIFF.nestAt[1] + Lr.oy, SNOWCLIFF.nestAt[2] + Lr.oz]; } catch (e) { note('LAIR THREW ' + e.message); console.error(e); } }
+    // m15IC: THE MOVE-IN, step 6 -- the GROTTO is the ICE CAVES' mouth and the STONE RING is the STANDING STONES, each built alone (`SNOWKIT.only`)
+    // and shifted from its Snowfield spot onto its place, on the terrain there
+    if (typeof snowKit === 'function') for (const [kid, pid] of [['grotto', 'ice_caves'], ['stones', 'standing_stones']]) { const Q = RGN.places.find(q => q.id === pid), K0 = SNOWKIT.places.find(q => q.id === kid); if (!Q || !K0) continue;
+      try { SNOWKIT.only = kid; rgnPlaceBuild(snowKit, g, Q.x - K0.x, rgnH(Q.x, Q.z) - .05, Q.z - K0.z); } catch (e) { note('KIT ' + kid + ' THREW ' + e.message); console.error(e); } finally { SNOWKIT.only = null; } }
     if (meta.hamlet) { RGN.hm = meta.hamlet; fetch(A(meta.hamlet.file)).then(r => r.arrayBuffer()).then(b2 => { RGN.D = new Uint16Array(b2); rgnHamlet(g); }).catch(e => note('NO HAMLET ' + e.message)); }
     RGN.live = 1; RGN.stat = 'ok'; const S = (RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] - 4, z: meta.hamlet.gate[1] } : null) || RGN.places.find(q => q.id === RGN.at) || RGN.places.find(q => q.id === 'spawn') || { x: 0, z: 0 }, toT = RGN.at === 'village' && meta.hamlet ? { x: meta.hamlet.gate[0] + 40, z: meta.hamlet.gate[1] } : RGN.places.find(q => q.id === 'ice_temple');
     const put = () => { player.pos.set(S.x, rgnH(S.x, S.z) + .3, S.z); player.vel.set(0, 0, 0); if (toT) { const h = Math.atan2(toT.x - S.x, toT.z - S.z); player.faceH = player.heading = h; cam.az = h; } };

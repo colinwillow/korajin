@@ -8,6 +8,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15IC -- THE MOVE-IN, step 6: the GROTTO is the ICE CAVES' mouth; the STONE RING is the STANDING STONES (Nov 1 2026)
+- `snowKit` takes `SNOWKIT.only` ('grotto' / 'bridge' / 'stones' / 'spire'): one piece, and no field-wide plants (they were scattered by the
+  Snowfield's own coordinates). The region builds the grotto (the half-dome open to the west, its crystals, icicles and the shrine stone with its
+  glowing ring) at the ICE CAVES place (-34, 159) and the ring of seven stones + its floating crystal at the STANDING STONES (-129, -1), each through
+  `rgnPlaceBuild` onto the terrain there. Not yet: the caves themselves and the tunnel from the Big Wall (the grotto is only their mouth).
+- Headless (`at=ice_caves`): no throw, the grotto's rock and crystals round him. Shipped unverified.
+
 ## m2096 -- the snow kit SHAPE PASS 3: spires, horn arches, floating stones (classic materials)
 
 His: *"This is what I was talking about -- the SHAPE: tall tapering spires on the shrines and towers, curved horn-shaped arches on the bridge, and stones
