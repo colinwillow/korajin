@@ -32,6 +32,15 @@ His: *"I don't want the ring around the meditating guy -- I want him floating, b
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
 .7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
 
+## m2135 -- THE WILLOW SHRINE, pass 4 of 6: the arch, the bronze bell, the crystal at the trunk's foot, the stair lanterns (Nov 1 2026)
+`willowArch`, from `WILLOW.arch` [z, half-span, post height], `crystal` [x, z, size] and `stairLamps` [id, x, z]: at the stair's head two stone POSTS
+(gold collars, jade glyphs to the front, snow) carry a stone half-ring (a half lathe) faced round its outside in the gold MEANDER, gold beads on both
+edges, a gold keystone with a glyph, snow along the crown. A bronze temple BELL (a lathe of a bell's profile, lip, clapper) hangs on a chain under
+the keystone with a red tassel, framing the trunk. On the terrace at the trunk's foot a stone drum with a gold band carries a cluster of six jade
+PRISMS. Four gold-post LANTERNS stand beside the stair on the plinth (first render had them on the cheek walls, where the handrail ran through them;
+moved out, and the landing widened). The m1764 torii and stone toro are gone. Colliders: the posts, the drum, the lamp posts. Next: the waterfalls,
+pools, crystals and boulders. Shipped unverified.
+
 ## m2132 -- THE WILLOW SHRINE, pass 3 of 6: the round terraced platform, pillars with jade glyphs, gold-railed fences, the stair (Nov 1 2026)
 The m1764 tiers and raked rings are replaced by the sheet's platform, all from tables in `WILLOW`: `tiers` -- a .3 m PLINTH (r 11.6, walked straight
 onto), the TERRACE (r 9.6, 1.5 m wall, top 1.8) and the DAIS (r 4.4, top 2.1 = `terH`, the trunk's foot) -- block walls in the jin stone's purple-grey
