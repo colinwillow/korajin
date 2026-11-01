@@ -60,6 +60,32 @@ BELL SHRINE -- (1) a pagoda roof on columns with a great bronze bell, or (2) a m
 - [ ] **P4 -- THE ESCAPE** (the leap and the glide or the ride).
 - [ ] **P5 -- THE FALLEN GROUND** (the landing site, the statues, the first village voice) -> Chapter One.
 
+## DRAFT 4 -- "THE LAST BELL" (Nov 1 2026: ChatGPT's pitch, cut down, plus his notes). THE PLAN unless he changes it.
+His rule: *"Like a magician -- show the thing before you take it away."* So the sky world's LIFE is shown and walked before it falls.
+Lots of characters are welcome (*"I don't mind spending a dollar or two on characters"*).
+1. **THE NAP.** Grumbo asleep in his hammock on his own garden island (the outskirts). His little creature friend (his design, coming) can't wake
+   him, so it steals his bell charm. The chase is the movement tutorial. His rusty, centuries-unused sword hangs by the hammock.
+2. **THE BELL FESTIVAL (show it).** Today is the festival: once every hundred years the guardian rings the great bell at noon to renew the
+   ward that keeps the sky world safe. He forgot. The creature drags him across the rope bridges into THE SKY VILLAGE, mid-celebration: lanterns,
+   music, a market, kids, a river through the streets, windmills turning, a lake full to the brim, Jinra waterfalls, many villagers each doing
+   one small thing. Walkable and short (2-3 min); small optional moments (a kid's game, a vendor), nothing required but the walk to the bell.
+   This is the place the player loses.
+3. **LATE.** The sun passes noon while he dawdles. Wind stops, leaves freeze, little floating stones sink. The ward thins and the Hollow tears
+   through the sky -- because he was late (his guilt, his arc). A distant island drains and drops. The festival turns to panic.
+4. **THE LAST BELL.** He grabs the rusty sword. Jinra runs UPWARD toward the Hollow; a stone guardian wakes (first fight). He climbs the cracking
+   pavilion and rings the bell as a warning: the whole sky world lights up for one moment, then the Hollow drinks the light, the bell cracks,
+   the island splits.
+5. **THE FALL.** Falling fragments, played: reach the creature across breaking stone and a collapsing bridge. Then (cutscene first, playable
+   later) the free-fall, the Jinra stones, the red banner as a parachute that tears.
+6. **THE GROUND.** A crater in the GREEN/TAN RUINS (the first element) under red haze. Stone people frozen mid-gesture (a basket, a door, a
+   parent shielding a child). The creature turned to stone; a Jinra stone makes it flicker -- restoration is possible. He walks to the
+   mountains. Title.
+**Cut from ChatGPT's draft:** the separate caretaker (the creature nags, and village elders can be in the festival), the double bell (it is
+rung once, as the warning, which is also the festival bell he was late for). **The creature rides his shoulder** while you play.
+**Build order:** P1 garden (in progress) -> P1b THE SKY VILLAGE island (a new, bigger island in the cluster: streets, river, windmills, lake,
+villager props in place) -> P2 the nap + chase + walk to the bell -> P3 late / Hollow / first fight / the bell -> P4 the fall -> P5 the ground.
+**His art to come:** the creature (+ its stone twin), villagers, Grumbo's hammock wake clip, the red banner, the stone people's poses.
+
 ## HIS NOTES (Nov 1 2026, draft 3) -- the story is OPEN; the garden keeps being built
 - **Originality check:** draft 2's beats (sleep late on sky islands -> fetch the uniform -> knocked off a glider -> fall to the surface) are
   Skyward Sword's opening almost beat for beat (he has never played it). Rule from here: every beat asks "what could only happen in Korajin, to Grumbo?"
