@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15V3 -- THE VILLAGE, pass 3: the AQUEDUCT to the BATHHOUSE, the warm CREEK, the timber BRIDGE (Nov 1 2026)
+## m2107 -- THE VILLAGE, pass 3: the AQUEDUCT to the BATHHOUSE, the warm CREEK, the timber BRIDGE (Nov 1 2026)
 `SNOWVIL.aq` (two kit `aq_section` bays, deck 6 m, running north from the spring), `vil_bath_01` (a kit longhouse at (5, 41): the BATHHOUSE, where the
 aqueduct ends), `SNOWVIL.creek` (a warm creek from the spring past the bathhouse down the village's east side and out to the field: swept out of the
 snow, a water ribbon, bank stones, steam puffs in `snowVillStep`) and `SNOWVIL.bridges` (the kit's `bridge_timber` where the entry path crosses it).
