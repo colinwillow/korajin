@@ -22,7 +22,7 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | # | question | output | status |
 |---|---|---|---|
 | 1 | **WHY is there a village here, and what does it DO?** | the settlement's reason, its people, its jobs, what it gives the player | **approved** (hot spring + aqueduct; a HAMLET; near the spawn) |
-| 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | **drafted -- below, waiting on him** |
+| 2 | **THE SITE** -- the ground it sits on | a terrain section: the tiers (heights), the water, the wind side, the cliff; where in the Snowfield | **approved** (gorge, horseshoe cliff, ~12 buildings) -- its PLACE on the region map waits on REGION_METHOD stage 1-2 |
 | 3 | **ZONES** -- what goes where, and why | a zoning map: each district placed by its reason (water, road, defence, status) | |
 | 4 | **CIRCULATION** -- how people move | the main road (stairs only, everyone), the lanes, the dead ends, the gate; how the mammoth gets through | |
 | 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | |
@@ -149,7 +149,10 @@ kit stone retaining walls, snow-pillowed tops, `patchAdd` on every top), and the
 rock sills under the falls). Each terrace wall is ~3 m: the stairs climb it in 10 risers; a sprint wall-run (lip 3.6) climbs it directly -- the
 road is the long way round, the wall is the shortcut (pass 6).
 
-### Questions for him (pass 2)
+### His answers (pass 2)
+- *"Yes, yes and yes -- that's fine, that's good."* The gorge through the middle, the horseshoe cliff, the size.
+
+### (old) Questions for him (pass 2)
 - The GORGE through the middle (two offset banks, bridges back and forth) -- yes? Or the creek round the outside (one hill, one moat)?
 - The HORSESHOE CLIFF: a new cliff on the field's south-west corner, ~18 m. OK to move the rock bridge and standing stones?
 - Too big / too small? (~68 x 54 m, 4 storeys of terraces, ~12 buildings.)

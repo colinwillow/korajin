@@ -35,3 +35,10 @@ snow region grew (one thing dropped next to the last). **Nothing existing is del
 ## Where the village stands
 The village blueprint keeps going, but its SITE (pass 2) depends on the macro map: **stage 1-2 come before village pass 3**, so the hamlet lands
 where the map gives it a reason (a widening valley by the spring) instead of in the field's corner. Pass 1 (why) carries over unchanged.
+
+## Stage 1, first run (Nov 1 2026): `python3 tools/regionmap.py [seeds]`
+Writes `images/concepts/region/map_<seed>.png` + `.json` (nodes, floors, links, kinds, waypoints -- what the game will read) and `maps_sheet.png`.
+16 places by Poisson-disc spacing (82 m apart), a random spanning tree over near neighbours + 3 non-crossing loops, carved into noisy mountains:
+valleys (red), passes over a ridge (purple), gorges (blue), tunnels (dashed, not carved); valley floors rise with distance from the spawn (the
+region climbs toward the temple); the temple node sits on a massif. Waypoints are SUGGESTED (village = a junction near the spawn, lake = a basin,
+cabin = a high dead end, big wall = mid-route, lookout = the highest place). Knobs at the top of the file: NODES, MINSP, MAXL, LOOPS, SIZE.
