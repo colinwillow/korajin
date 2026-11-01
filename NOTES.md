@@ -24,7 +24,7 @@ TRIANGLES, measured headless on the whole waterfall scene: first build 483k (flo
 rock 79k). The pipes and the maple are the heaviest species. Rendered: the agave lay flat (stood up as a vase), the blossom was small
 (enlarged). `?wfflora=1`: the six in a row. Shipped unverified on the phone; no textures yet.
 
-## m15D2 -- THE VILLAGE, district 2: the road, the bridges, the stairs, the mammoth ramp, the tunnel stair (Nov 1 2026)
+## m2081 -- THE VILLAGE, district 2: the road, the bridges, the stairs, the mammoth ramp, the tunnel stair (Nov 1 2026)
 His: *"start district 2."* (and the kit's 7 missing pieces were sent to the kit session, which keeps refining the kit in parallel -- the village calls
 `snowKitPiece` by name at load, so its passes flow in.)
 - `tools/regionpick.py`: the RAMPS / STAIRS are slopes in the 0.5 m detail grid (`RAMPS`: the gate ramp 0 -> 1.2, the MAMMOTH RAMP market -> W2
