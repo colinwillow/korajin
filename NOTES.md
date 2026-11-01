@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## mNEXT -- THE SNOW-VILLAGE KIT, pass 1: pieces on a grid with snap ports, and the KIT SHOWROOM (`?w=forge&zone=snowkit`)
+## m2033 -- THE SNOW-VILLAGE KIT, pass 1: pieces on a grid with snap ports, and the KIT SHOWROOM (`?w=forge&zone=snowkit`)
 
 Direction change (SNOW_VILLAGE.md UPDATE, relayed from the main session): a MODULAR KIT, not a village layout; placement is another context's.
 - The m2032 village layout is now OFF by default (`?vil=1` brings it back); its hut is folded into the kit as the first whole building.
