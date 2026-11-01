@@ -28,7 +28,7 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | 5 | **LANDMARKS + SIGHTLINES** | what you see from the gate, from each tier; the one thing visible from everywhere; framed views | **drafted** (measured) |
 | 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | **drafted** |
 | 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | **drafted** |
-| 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | |
+| 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | **drafted** |
 | 9 | **THE GAME** | the quest givers (THE STOLEN ONES), the shop, the healer, the way out to the valley / temple, the secrets | |
 | 10 | **THE REVIEW** | one top-down plan + one side elevation drawn from passes 1-9, checked against every pass; his sign-off -> then the blockout, one district at a time | |
 
@@ -326,3 +326,38 @@ real ones (`snowKitPiece(kind, opts)`; hut defaults R 2.7, wallH 2.3, roofH 2.8)
 (+ the tunnel stair). These go to the kit session as one list before the blockout.
 
 **Count:** 18 buildings / structures (12 lived-in) + 7 works. Next: **pass 8 -- LIFE** (who walks where, smoke, lights at night, the animals).
+
+## PASS 8 -- LIFE (drafted)
+What makes it a place and not a set: people on routes with reasons, things that move, smoke, light. Budget for a phone: **~8 bodies** in the hamlet
+at once (each is a skinned draw), the rest is particles and emissive (nearly free).
+
+### The people (8), each with a beat -- a loop between two or three spots, not a random wander
+| who | body (what exists) | the loop | where you find them |
+|---|---|---|---|
+| the SMITH | the toad wanderer (`TOADK`, his village NPC) | forge -> the water wheel (checks it) -> forge; hammering clip at the anvil | E1, the smithy |
+| the MERCHANT | toad wanderer (tint) | behind the middle stall; to the storehouse by the WINCH and back | W1, the market |
+| the BATHKEEPER (healer) | toad wanderer (tint) | the bath door -> the hot pool -> the bath door | E2 |
+| the ELDER | toad wanderer (slow, a stick) | her porch -> the shrine stairs (the tunnel) -> the shrine -> back; she is at the shrine at NIGHT | E3 / E4 |
+| a HERDER | toad wanderer | the stable -> the paddock gate -> out to the meadow herd and back (a long loop, outside) | outside |
+| the GATE GUARD | the samurai body (calm, spear/katana sheathed) | the watch platform <-> the gate | E1 |
+| 2 CHILDREN | toad wanderer, small (scale .7) | chase each other round the market well, the snowman, the W2 lane; scatter when you run at them | W1 / W2 |
+
+- They are the **quest givers** (pass 9): the elder, the smith, the herder, a child. Each one's beat passes the road at least once, so you meet them.
+- The **mammoth** waits at the stable (he is the herder's charge); the **calf herd** grazes the meadow beyond, inside sight of the stable.
+
+### Things that move (and are played with)
+the WATER WHEEL (always turning; you can ride it), the WINCH basket (up and down on a slow loop; ride it), the GEYSER (puffs every ~12 s, a launch),
+the creek (flowing, steaming), banners and washing lines (the willow's verlet, a few links), smoke from every chimney, the zip line.
+
+### Smoke, steam, light
+- **Chimneys:** every hut and the smithy smoke (the existing `puffPool` / `SMOKE`), thicker at the smithy; the smoke leans with the wind (NW).
+- **Steam:** the creek all the way down, the bath roof, the hot pool, the spring -- the steam is the hamlet's silhouette from the pass (pass 5).
+- **Day:** warm window glow faint; the square busy.
+- **Night (`SNOWNIGHT`):** every window and lantern warm (the kit's light pools), the shrine's jade lamps the brightest thing (the beacon from the
+  market and B3), the forge glowing orange in its open shed, the children gone, the elder at the shrine, the guard with a lantern on the gate.
+
+### Sound (later, his recordings)
+the forge hammer (a rhythm you hear from the gate), the creek and the falls (louder in the gorge), the wheel creak, the market murmur, the wind
+on the high route (louder up there -- height you can hear).
+
+Next: **pass 9 -- THE GAME** (the quests from THE STOLEN ONES, the shop, the healer, the secrets, the way on to the temple).
