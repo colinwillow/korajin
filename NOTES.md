@@ -15,7 +15,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15SZ -- the Snowfield's PACK is 320 m now (it was 160): the snow reacts out to the waterfall (Nov 1 2026)
+## m2125 -- the Snowfield's PACK is 320 m now (it was 160): the snow reacts out to the waterfall (Nov 1 2026)
 His: *"a lot of parts of the map the snow doesn't react to me... if it's snowy the ground should react."* He picked the bigger pack (and said the right
 answer is "snow wherever I am"). `SNOWZ.size` 160 -> 320, `res` 640 -> 960 (texels .25 -> .33 m), the snow mesh 400 -> 560 quads a side (.4 -> .57 m).
 Footprints and trenches read a little softer; the texture upload when the pack changes is ~.9 MB (was .4); the pack's build at boot is ~2.25x. Watch
