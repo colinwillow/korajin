@@ -13,7 +13,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## mNEXT -- THE SHRINE TOWER (his reference image): a pagoda tower with curled roofs, horns and a halo
+## m2117 -- THE SHRINE TOWER (his reference image): a pagoda tower with curled roofs, horns and a halo
 
 His reference (`images/concepts/snow_village/ref_shrine_tower.webp`). `aq_shrine` is now `svkShrine` (same base footprint w = 1.1 s, same collider and
 ports, every `s` still works -- so the aqueduct's shrines all change); `pagoda: 0` (or `?hut=round`) = the m2096 shrine.
