@@ -5,6 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+<<<<<<< HEAD
 ## mNEXT -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
 
 His: *"Keep going"* -- the brief's remaining whole buildings.
@@ -18,6 +19,44 @@ His: *"Keep going"* -- the brief's remaining whole buildings.
 - `hut_base` (roof off) now has a plank lid, so it is no longer see-through from above.
 - The showroom moved further south (`SVK.at` z 150 -> 230) so its longer rows stay off the Snowfield. Headless: 55 pieces, 90 ports, 554 colliders,
   22 draws. Rendered before pushing: the watchtower, the outpost from above, the rows. Shipped unverified.
+=======
+## m2046 -- THE GREAT WATERFALL: THE ASCENT (grotto -> pillars -> cliff -> aqueduct -> a zip ride down across the falls)
+
+His: "keep going". VERTICALITY ("routes climb"): the falls had a climb to 13.5 m and nothing above it. Now (all `place` rows, local):
+- From the grotto's right end, four STEPS behind the right edge of the falling water (15.7 / 17.9 / 19 / 19, `wf_step_01..04`) onto pillar R7 (19).
+- `wf_ladder_01` up R3's flank (19 -> 30), `wf_ladder_02` up R1's face (30 -> 64), `wf_ladder_03` a CHAIN LADDER up the cliff face itself to the
+  brow (64 -> 87.6; `z: 'face'` puts it against the sheet's REAL noisy surface -- the same displacement its vertices get -- with gold brackets into
+  the rock), `wf_ladder_04` up an aqueduct pier onto the DECK (101). Ladders go through `kitClimbAdd` with a mark and `fg` (the side he climbs from),
+  gold stiles, ice rungs every .32.
+- The face's colliders now top out at the BROW (the lowest `wfTop` over each 8 m run) instead of 95 m, so the brow is walkable; the aqueduct
+  DECK is a collider (`wf_deck`, a box per 4 m piece).
+- `wf_zip`: from the deck's far end (103 m) a ZIP LINE (`ZIPS`) across the whole face of the falls down into the field at world (-30, 1.8, -5) --
+  about 186 m across, 100 m down. Posts with ice globes at both ends; the cable is in the gold draw.
+- Headless (shipped text in node): 9 draws (unchanged), 105 colliders all valid; every ladder's foot stands on its pillar / the brow, its body is
+  clear, and its exit mark is on a top (R3, R1, the brow, the deck) and not inside anything. Steps chain with .5-1 m gaps and rises <= 2.2.
+Not measured: whether the chain ladder's top reads right against the rock lip (the brow collider is the low point of its 8 m run, up to ~2 m under
+the visible rim there); the zip's steepness at 28 deg (ZIP.max caps the speed). (Its code commit went in as ": the great waterfall -- the ascent"
+-- the build number was lost in a pull race; this build carries it.) Shipped unverified.
+## m2047 -- THE BLOCKOUT IMPORTER: his Cinema 4D rooms, playable (Nov 1 2026)
+His plan: *"I'll design blockouts in Cinema 4D -- one room of a temple -- export them; you rebuild them with our stuff so I can play it; we work in
+parallel."* KORAJIN > Blockout (C4D import) (`?w=forge&zone=blockout&file=levels/<name>.glb`, default the sample). `blockStage` loads his GLB and turns
+objects into pieces BY NAME (BLOCKOUT_IMPORT.md): every mesh a SOLID with an exact TURNED-box collider from its own bounds and yaw (wall-runnable at any
+angle), tinted by prefix; `bar_*` a high bar along its long axis; `zip_<id>_a/_b` a zip line; `spawn` the start; `seal_ / gate_ / statue_ / beat_`
+markers. `levels/blockout_sample.glb` (made headless in Blender) has a start ledge, a side-wall-run panel over a gap, a 3.6 m run-up tower, a wall turned
+30 deg, a chimney pair 4.6 m apart, a high bar, a zip line, a seal and a gate marker -- the importer's proof. Shipped unverified (boot check).
+
+## m2045 -- THE CLIMB TOWER: C1 -> C2 -> C3 in one tube (Nov 1 2026)
+His "keep going on your own -- I'll make Cinema 4D blockouts in parallel; whichever way builds fun levels wins." KORAJIN > Climb Tower (C1-C3)
+(`?w=forge&zone=cell&cell=CT`): the ice temple's Climb Tower (ICE_TEMPLE_HEX.md) as one continuous route in a tube (r 10, 24 m):
+- C1 wall run UP: the 2.6 m face, the 16 m sprint lane into the 3.6 m face (as C1)
+- C2 CHIMNEY: from the 6.2 m shelf into the slot between the tube wall and a free-standing slab 4.6 m in (the measured chimney gap); kick up to 16 m
+- C3 COMBINE: along a ledge, a SIDE WALL RUN across a ~5 m gap on a flat run-wall panel (a single chord box: side runs need a face longer than
+  `WRUN.minLen` 1.2 m -- the tube is cut into 12-degree segments for the same reason), a HIGH BAR over the next gap, and a ZIP LINE from the top
+  (gold shelf) back down across the tube to the floor by the door -- the loop closes
+New piece kinds in `cellStage`: `slabs` (free-standing curved walls), `runwalls`, `bars` (hbarMake), `zips` (ZIPS + a cable). High shelves are 1.2 m
+slabs on the wall (open beneath). Bars and zips are added a tick later (HBAR / ZIPS are declared further down the module: measured TDZ throw). Boot-
+checked (71 colliders, spawn at the door). Status: blockout, waiting on play notes. C1 alone is still KORAJIN > Temple Cell C1.
+>>>>>>> 6056f68c0fffb02b346668f1aa532d19a90b840b
 
 ## m2044 -- THE GREAT WATERFALL: the HIDDEN CAVE under the falls
 
