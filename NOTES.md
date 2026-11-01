@@ -13,6 +13,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2122 -- THE ARMILLARY FORGE, pass 3: "we really need to push it" (his potion-shop sheet as the detail bar)
+
+His: "yeah we really need to push it", with a sheet of a horned potion shop in the same style. Taken as the bar for the forge's detail:
+- THE FORGE-SHOP: the door is a real OPENING -- the keep's mesh and colliders are cut round a room (x 1..7, y 6..12, z -6..2). Inside:
+  a planked floor, three SHELVES of glowing potions (five colours) and jars on the back wall, a stone HEARTH with a fire and a gold-lipped hood,
+  an ANVIL, a counter with bottles, a barrel, two hanging lanterns. Walk in from the terrace.
+- CHUNKY MASONRY on the rock masses: finer spheres with carved block COURSES (1.35 m) and staggered JOINTS (darkened in the vertex colour),
+  on their own big-block texture (ice_stone at 4.6 m) so they read as stone from across the field.
+- GLYPH PILLARS flanking the grand stair: tapered four-sided stone, three gold straps with rivets, a diamond glyph plate with a gold diamond
+  and a crystal, a snowy cap with icicles, a crystal at the foot, a lantern on an arm.
+- GOLD TIPS on the two curling horns; a CRANE on the left (post, boom, brace, pulleys) holding a hanging crystal LANTERN cage; a red / white
+  CHEVRON flag with a ragged hem on two tall posts on the right; ten more lanterns along the terrace, bridge, balconies and keep.
+- 16 draws, 58k tris. Routes unchanged and measured. Rendered: the front, a look into the shop, the pillars, the left side.
+If his sheet is a separate building (a potion shop of its own), it is the next build. Shipped unverified on the phone.
+
 ## m2121 -- the snow kit's full STYLE SHEET saved (`images/concepts/snow_village/ref_kit_sheet.webp`)
 
 His whole sheet: three hut variations (ribbed dome with horns round it, a spiral-twisted roof, a dome under a halo), three longhouses (barrel-vault ribbed,
