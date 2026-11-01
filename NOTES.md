@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15TR -- the mammoth's trunk swings (Nov 1 2026)
+## m2014 -- the mammoth's trunk swings (Nov 1 2026)
 The snow list (his "keep going"). The four `trunk_*` bones `mammoth_cow.py` added under the head carry no clip keys, so the trunk was rigid. `trunkStep`
 springs them per body exactly as `springsStep` springs his hair and cape: verlet tips with inertia from the head's motion, a pull back to rest
 (`TRUNK.stiff` 1.6), gravity (1.1), drag (.12), a bend limit (.9 rad), plus a slow breathing SWAY so it is never dead still. Runs for every mammoth in

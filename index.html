@@ -11224,7 +11224,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
   // hoof bones, found once per model) print and puff, its BODY ploughs a trench as it moves (radius from its size), and coming DOWN from a hop or a
   // fall blasts a crater; his attack's blow lands as a blast too (`beastStep`)
   for (const d of DUMMIES) { if (!d.root || !d.root.visible || d.st === 'gone' || !d.model) continue; const P = d.root.position, K = d.K || {}, r = (K.r || .4);
-    if (K.creature === 'mammoth') trunkStep(d, dt);     // m15TR
+    if (K.creature === 'mammoth') trunkStep(d, dt);     // m2014
     if (Math.abs(P.x) > Z.size / 2 || Math.abs(P.z) > Z.size / 2) continue;
     if (!d.snowFeet || d.snowFeetM !== d.model) { d.snowFeetM = d.model; d.snowFeet = []; d.model.traverse(o => { if (o.isBone && /(^|_)(L|R|Left|Right)?_?(Toe0|ToeBase|Foot|hoof_.*_tip)$/i.test(o.name) && !/Toe01/.test(o.name)) d.snowFeet.push(o); }); d.snowFeet = d.snowFeet.slice(0, 6); }
     const px = d.snowPx == null ? P.x : d.snowPx, pz = d.snowPz == null ? P.z : d.snowPz, v = dt > 0 ? Math.hypot(P.x - px, P.z - pz) / dt : 0; d.snowPx = P.x; d.snowPz = P.z;
@@ -14195,7 +14195,7 @@ function springsStep(dt) {
     b.quaternion.copy(s.rest).multiply(_chSQ2.setFromUnitVectors(s.dir, want)); b.updateMatrixWorld(true);
   }
 }
-// m15TR: THE MAMMOTH'S TRUNK SWINGS (his: "very stiff, very robotic, not a lot of movement in any of the chains"). The four `trunk_*` bones the cow
+// m2014: THE MAMMOTH'S TRUNK SWINGS (his: "very stiff, very robotic, not a lot of movement in any of the chains"). The four `trunk_*` bones the cow
 // rig gained in `mammoth_cow.py` carry no clip keys, so they spring like his hair and cape (`springsStep`'s verlet, per body): inertia from the head's
 // motion, a pull to rest, gravity, a bend limit, and a slow breathing sway so it is never dead still. `TRUNK` is live.
 const TRUNK = { on: 1, stiff: 1.6, drag: .12, grav: 1.1, maxBend: .9, sway: .35 };
