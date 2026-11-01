@@ -10,7 +10,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15HR -- THE REGION is HIDDEN (his call) (Nov 1 2026)
+## m2100 -- THE REGION is HIDDEN (his call) (Nov 1 2026)
 His: *"I feel like I'm just burning credits... the other windows' plants and buildings look so good and what we're doing looks like trash. Hide the
 region. We need to build the village -- we have a fantastic kit and all the original beautiful stuff."* The generated region (m2070-m2097) had no art
 passes and was dressed with finished pieces before it looked like anything -- the scale-up-too-fast pattern. Its two menu buttons now only show with
