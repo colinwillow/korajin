@@ -29,7 +29,7 @@ high jump 5.3; wall run UP lip 2.7 (run) / 3.6 (sprint); side wall run 5.5-6.5 m
 | 6 | **THE HIGH ROUTE** -- the parkour layer | the rooftop / aqueduct / tower route, each gap sized from the move table, a ladder (introduce -> combine); the hard-to-reach places and what is up there | **drafted** |
 | 7 | **THE BUILDINGS** -- one row each | a placement table: id, kit piece + options, tier, door facing, who lives there | **drafted** |
 | 8 | **LIFE** | who walks where, the market hours, smoke, lights at night, the animals, the mammoth stable | **drafted** |
-| 9 | **THE GAME** | the quest givers (THE STOLEN ONES), the shop, the healer, the way out to the valley / temple, the secrets | |
+| 9 | **THE GAME** | the quest givers (THE STOLEN ONES), the shop, the healer, the way out to the valley / temple, the secrets | **drafted** |
 | 10 | **THE REVIEW** | one top-down plan + one side elevation drawn from passes 1-9, checked against every pass; his sign-off -> then the blockout, one district at a time | |
 
 Each pass is short, specific, and gets his yes / change before the next. If a later pass breaks an earlier one, the earlier one is fixed on paper.
@@ -361,3 +361,34 @@ the forge hammer (a rhythm you hear from the gate), the creek and the falls (lou
 on the high route (louder up there -- height you can hear).
 
 Next: **pass 9 -- THE GAME** (the quests from THE STOLEN ONES, the shop, the healer, the secrets, the way on to the temple).
+
+## PASS 9 -- THE GAME (drafted)
+The hamlet is a HUB: no fights inside it, everything open from the start, every quest sends you OUT into a region and back. The quests follow THE
+STOLEN ONES (KORAJIN.md): the temple's guardian is someone the hamlet is missing, and bringing them home is the temple's real ending.
+
+### The quest line (in the order it unlocks the region)
+| # | from | the ask | where it sends you | what it gives | what it teaches |
+|---|---|---|---|---|---|
+| Q0 | the HERDER (stable) | "He's been wild since the bull vanished -- bring him water from the spring." | UP through the hamlet to the SPRING (the tunnel stair, or the high route) | the MAMMOTH is rideable (the existing taming, m2011 / the wild state) | the hamlet's layout, both ways up |
+| Q1 | the ELDER (her porch; the shrine at night) | "The cold comes from the mountain. The old temple wakes. Go see." | out past the meadow to the BIG WALL -- its gate is shut from the far side | the main thread; the wall is crossed through the ICE CAVES (the tunnel) | the region loop: a wall you go round, under |
+| Q2 | the SMITH | "My apprentice went to the ice caves for frost-iron. He hasn't come back." | the ICE CAVES; the apprentice is a small STONE statue there (the chalice statues' grammar, STATUES.md) -- break it, he's back | frost-iron -> the smith forges the ICE SHIELD | the SHIELD, before the dragon (his order) |
+| Q3 | the HERDER again | "The bull. Our old bull. He went up the mountain." | the ICE TEMPLE, through the DRAGON'S GATE (the shield turns the dragon's ice beam) | the temple's guardian IS the bull, in stone; the crumble frees him; walked home to the stable | the payoff: the herd whole, the herder awake |
+| side | a CHILD | "My goat ran into the forest." | the PINE FOREST; the goat is a little stone statue | a few doubloons, the child's grin | the forest branch |
+
+### The services
+- **The MERCHANT** (market): GOLD doubloons for arrows (fire / blast), food, a map scrap of the region; he BUYS what you find.
+- **The BATHKEEPER** (hot pool): stand in the pool = full health (free); she tells you where the steam rises from (the spring, Q0's hint).
+- **The SMITH** (forge): the ice shield (Q2), later blade fire upgrades; you can watch him work.
+- **The STABLE**: call the mammoth from anywhere in the meadow once Q0 is done.
+
+### The secrets (pass 6's rewards, with what is there)
+R1 the gate top: the banner and the first look down the gorge (a view). R2 the storehouse roof: a coin stash. R3 the watchtower top: the temple's
+crown in the ridge notch + the zip line. R4 behind the third fall: **his call** -- suggested: a heart-piece-style max-health bead, or the first
+piece of the wing suit (late game, so it would be LOCKED here: you see it, you can't reach it yet -- a promise).
+
+### The way on
+From the shrine's cleft (and the gate road) the region opens: the MEADOW (the herd), the BIG WALL, the ICE CAVES under it, the DRAGON'S GATE, the
+TEMPLE STAIR. Every quest comes back to the hamlet, so the hamlet is crossed again and again -- which is why its routes (passes 4 and 6) matter
+more than anywhere else's.
+
+Next: **pass 10 -- THE REVIEW**: one clean top-down plan + one side elevation drawn from passes 1-9, checked against each, for his sign-off.
