@@ -7,6 +7,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2087 -- THE FLORA: painted BARK on the wood, veins in every leaf and petal
+
+His: "sounds good" (the next passes: surface detail, texture maps). The first real texture on the plants:
+- Every bark-ridged sweep (trunks, branches, boughs, the hero's trunk and cap branches, the shimenawa) and every root goes into a NEW wood
+  draw: `snowTriMat('temple_bark', 1.4, ...)` -- his painted grey-brown bark, triplanar, multiplied by the vertex colours (so a frostcap stem
+  stays pale and a maple trunk dark) at x1.6 (2.2 read gold). The neutral `temple_bark` was picked over `snow_bark` (orange pine) so the
+  palette tints it. +1 draw for the whole waterfall.
+- `leaf()` paints chevron VEINS off the pale midrib and darkens the last fifth toward the tip -- vertex colour only, no geometry.
+Rendered: the six and the Great Frostcap -- the wood reads as bark; the snow caps (double-sided since the last build) read on every plant.
+Shipped unverified on the phone.
+
 ## m2086 -- THE GREAT FROSTCAP: the hero plant (a climb), and every plant's snow was invisible from above
 
 His: "like the willow -- a giant hero plant, the equivalent of the smaller ones but more complex." Place row `wf_herocap` (kind 'herocap',
