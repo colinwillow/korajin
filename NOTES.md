@@ -7,6 +7,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2086 -- THE GREAT FROSTCAP: the hero plant (a climb), and every plant's snow was invisible from above
+
+His: "like the willow -- a giant hero plant, the equivalent of the smaller ones but more complex." Place row `wf_herocap` (kind 'herocap',
+`wfHero`), at local (-100, 44) left of the falls:
+- A 21 m bark-ridged, flared trunk (one swept tube) with SEVEN glowing veins winding up it, flared roots.
+- EIGHT caps spiral up and out of it on branches grown from the trunk, each 2.5 m above the last (`step`, under the 2.81 m jump apex) -- a
+  CLIMB. Each cap is a box collider at its walkable height. Measured headless: rises 2.50 every step; horizontal gaps 0-2.3 m; where two caps
+  overlap in plan there is 1.66 m of headroom; the last cap reaches past the crown's edge.
+- The CROWN: a 10 m cap (flatter profile) whose height follows from the step, so the last jump is 2.5 m too; 22 glowing TENDRILS hang off it;
+  a RISING SHRINE stands on it (and the shrine's wake test now checks HEIGHT as well, or it would rise while he stood under the tree).
+- A ring of five ordinary frostcaps round its foot.
+FOUND BY THE CROWN RENDER: the snow material was single-sided and the lathed snow lids / mounds wind facing DOWN -- from above every plant's
+snow cap was invisible (the purple showed through; only the rim read white). The snow draw is double-sided now.
+Scene tris after: ~305k (flesh 103k, glow 57k). Shipped unverified on the phone.
+
 ## m2085 -- THE MOVE-IN, step 1: the region gets the Snowfield's look (Nov 1 2026)
 His: *"are we expanding on what we've already made -- a lot of the other stuff is good"* -> yes: the existing snow pieces MOVE onto the region map
 (REGION_METHOD stage 2 table); the village is the one new place. *"Do whatever makes the most sense"* -> the move-in first, before the buildings.
