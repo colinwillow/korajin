@@ -114,6 +114,20 @@ His: *"I don't want the ring around the meditating guy -- I want him floating, b
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
 .7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
 
+## m2147 -- THE WILLOW SHRINE, pass 9: real surfaces -- his painted maps with relief, a fresnel rim on the metals and jade (Nov 1 2026)
+His: *"the gold textures look pretty flat -- is there any way they rim up? the rim of the lanterns and the rails -- can we paint those? the turquoise
+needs some paint, and the stonework -- none of this really looks textured. Grunge maps, surface detail, normal maps -- something less flat."* Nearly
+every shrine material was a flat colour or a canvas block pattern with no relief. Now (`willowMats`), from the repo's own painted maps:
+- STONE: `svk_ashlar` (the purple-grey jin blocks) as map + bump on the pieces' metre uv (the m1740 canvas blocks and the coping material are gone).
+- GOLD: `temple_gold` (worn, engraved) through `triMat` (world triplanar, relief from its own brightness, rougher in the cracks), tile 2.4 m (at 1.1
+  it read as glitter on small parts). BRONZE (orb collars, bell): `bronze`. JADE (veins, orbs, crystals): `temple_jade`, which glows through
+  its own colour. ROCK: `snow_rock` tinted to the jin stone. GLYPH panels: his `svk_glyph` (jade circuit glyphs), emissive.
+- `willowRim`: a fresnel RIM -- (1 - facing)^p into the emission -- on the gold, the meander, the bronze and the jade, chained after `triMat`'s
+  own hook (and `.call(m)`, or the prototype paint hook loses `this` -- the first render threw on exactly that). Rails, frames and edges catch a line.
+- The painted MEANDER and PAVING get grime, wear, scratches, moss and hairline cracks painted in, and are their own bump maps.
+- The lantern glass is paper behind a wooden lattice (`warm`). The arch's snow is slimmer.
+No new draws (materials swapped in place); texture memory goes up by the maps the snow kit and temple already use. Shipped unverified.
+
 ## m2142 -- THE WILLOW SHRINE, pass 8: varied leaves and vine widths; the bell swings; lantern halos; mist at the falls (Nov 1 2026)
 His: *"are we able to vary the size of the leaves so they're not all identical sizes, and also vary the thickness of the vines a little"*. Yes:
 `willowLeafTex` paints its 8 leaves at 8 sizes (.68-1.1); each live strand has its own width (`L.wk`, .72-1.28) and leaf spacing (`lk`, .8-1.2, so
