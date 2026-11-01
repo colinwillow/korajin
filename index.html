@@ -68177,7 +68177,7 @@ function startGate() {
       btn(el, 'The Ship', 'A samurai pirate ship on a sunrise sea: climb the rigging, the sails, the castle, the cabin. (Being built.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=ship'); });
       btn(el, 'Building Forge', 'An empty white floor: spawn the buildings, run on them, swing on them, blow them up.', () => go('forge'));
       btn(el, 'The Forest Temple', 'A domed temple in a sunlit forest clearing: the stair, the colonnade, the gold door, the orb under the oculus. (One building, built to finish.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=dometemple'); });
-      btn(el, 'The Red Hollows', 'His home: the canyon, the river, the hut. (Being built.)', () => go('home'));
+      btn(el, 'Akatani -- the Ember Canyon', 'His home (renamed from the Red Hollows): the canyon, the river, the hut. (Being built.)', () => go('home'));
       btn(el, 'White Box', 'An empty floor to try a move on.', () => go('test'));
       add('div', 'bld', 'BUILD ' + BUILD); };     // m1848: no '< Titles' -- there is no picker to go back to
     const zapClancy = () => { page(); el.style.backgroundImage = ''; try { localStorage.setItem('mel.game', 'zap'); } catch (e) {}
