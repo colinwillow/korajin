@@ -11006,7 +11006,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   // back -- so the field's edge is hidden, the village is sheltered, and the HOT SPRING rises at its foot behind the crag (the kit's spring_geyser)
   cliff: { pts: [[-47, 36], [-48, 54], [-45.5, 70], [-36, 81], [-20, 83.5], [-4, 83], [8.5, 78], [14, 64], [14.5, 48]], h: [8, 10, 12.5, 14.5, 15, 15, 13, 10.5, 8.5], d: 7.5 },
   spring: { at: [5, 0, 67.5], r: 2 },
-  // m15SG (his: "the toad with the hat -- a floating meditating guy, a shrine for him, the guy you go to for wisdom, somewhere in the village"): THE SAGE.
+  // m2127 (his: "the toad with the hat -- a floating meditating guy, a shrine for him, the guy you go to for wisdom, somewhere in the village"): THE SAGE.
   // The toad wanderer (TOADK) in `Sitting_Idle` (Mixamo "sitting on the floor", cross-legged, hands by the knees -- the closest in the library; baked
   // onto him by the Forge into models/characters/anims/toad_sage.glb as 'meditate'), FLOATING over the hot spring, bobbing, a jade ring under him, the
   // kit's pagoda shrine (`aq_shrine`) behind the pool. Not yet: talking to him (the wisdom).
@@ -11019,7 +11019,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   // m2112 (VILLAGE pass 4: HEIGHT): the kit's WATCHTOWER on the raised crag, and a plank DECK on posts from the crag's edge out to the AQUEDUCT -- the
   // first piece of the high route: up the crag stair, onto the deck, drop to the aqueduct's walkway (6 m) and along it toward the bathhouse
   pieces: [
-    { kind: 'aq_shrine', o: {}, at: [0.5, 0, 72.2], yaw: Math.PI },     // m15SG: the sage's shrine, behind the spring
+    { kind: 'aq_shrine', o: {}, at: [0.5, 0, 72.2], yaw: Math.PI },     // m2127: the sage's shrine, behind the spring
     // m2113 (VILLAGE pass 5: THE MARKET): three kit stalls on the square's open sides (west, south-west, south), each facing the fire pit, crates and
     // barrels between them -- the paths to the gate, the north stair and the bath lane stay clear
     { kind: 'market_stall', o: {}, at: [-24.3, 0, 32.4], yaw: Math.atan2(6.3, -.4) }, { kind: 'market_stall', o: {}, at: [-22.9, 0, 27.2], yaw: Math.atan2(4.9, 4.8) },
@@ -11453,7 +11453,7 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
   // the FIRE: flames (their own mesh, so they can flicker)
   for (const F of V.fire) { const fg = []; for (let k = 0; k < 5; k++) { const a = k / 5 * 6.28, h = .7 + (k % 2) * .4; fg.push(new THREE.ConeGeometry(.22, h, 6).translate(Math.cos(a) * .22, h / 2, Math.sin(a) * .22)); } fg.push(new THREE.ConeGeometry(.3, 1.4, 7).translate(0, .7, 0));
     const fm = new THREE.Mesh(mergeGeometries(fg.map(q => q.toNonIndexed())), M.fire); fm.position.set(F.x, F.y, F.z); G.add(fm); F.mesh = fm; }
-  // m15SG: THE SAGE (deferred: `gltf` is declared below the stage, which runs at module scope)
+  // m2127: THE SAGE (deferred: `gltf` is declared below the stage, which runs at module scope)
   if (V.sage) setTimeout(() => { try { const S = V.sage, ld = u => new Promise((ok, no) => gltf.load(A(u), ok, undefined, no));
       Promise.all([ld(TOADK.file), ld(S.anims)]).then(([m, an]) => { const body = m.scene, hh = measureHeight(body) || 1; body.scale.setScalar(TOADK.h / hh); body.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; } });
         const root = new THREE.Group(); root.add(body); root.position.set(S.at[0], S.at[1], S.at[2]); root.rotation.y = S.yaw; g.add(root);
@@ -11462,7 +11462,7 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
         V.sageR = { root, mx, ring, y0: S.at[1], t: 0 }; }).catch(e => note('SAGE THREW ' + e.message)); } catch (e) { note('SAGE THREW ' + e.message); } }, 0);
   g.add(G); V.g = G; V.stat.draws = G.children.length; V.stat.tris = tris | 0; V.stat.boxes = BOXES.length - V.stat.boxes; V.stat.chim = V.chim.length; }
 function snowVillStep(dt) { const V = SNOWVIL; if (!V.g) return; if (!V.mel && window.mel) { window.mel.SNOWVIL = V; V.mel = 1; } if (V.U) V.U.uT.value += dt; const p = player.pos;
-  if (V.sageR) { const R2 = V.sageR; R2.t += dt; R2.mx.update(dt); R2.root.position.y = R2.y0 + Math.sin(R2.t * 1.1) * V.sage.bob; R2.ring.rotation.y += dt * .6; R2.ring.material.opacity = .55 + .3 * Math.sin(R2.t * 2.2); }     // m15SG: he floats and breathes
+  if (V.sageR) { const R2 = V.sageR; R2.t += dt; R2.mx.update(dt); R2.root.position.y = R2.y0 + Math.sin(R2.t * 1.1) * V.sage.bob; R2.ring.rotation.y += dt * .6; R2.ring.material.opacity = .55 + .3 * Math.sin(R2.t * 2.2); }     // m2127: he floats and breathes
   if (V.creekPts && (V.steamT = (V.steamT || 0) - dt) <= 0) { V.steamT = .22; const C = V.creekPts, k = Math.floor(Math.random() * (C.length - 1)), t = Math.random(), x = C[k][0] + (C[k + 1][0] - C[k][0]) * t, z = C[k][1] + (C[k + 1][1] - C[k][1]) * t;     // m2107: the warm creek steams
     if (Math.hypot(x - p.x, z - p.z) < 60 && typeof smokeAt === 'function') smokeAt(x, .2, z, .6, 1.4); }
   // smoke off the chimneys near him (the shared puff pool, so only the nearest few)

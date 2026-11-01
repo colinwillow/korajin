@@ -14,7 +14,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15SG -- THE SAGE: the toad wanderer meditating, floating over the hot spring, a pagoda shrine behind (Nov 1 2026)
+## m2127 -- THE SAGE: the toad wanderer meditating, floating over the hot spring, a pagoda shrine behind (Nov 1 2026)
 His: *"the toad with the hat -- can we give him a pose from Mixamo? A floating meditating guy, a shrine for him, he's the guy you go to for wisdom,
 somewhere in the main village."* The Forge library (2,392 clips) has no lotus/meditation clip; baked three candidates onto `toad_wanderer_game.glb`
 (`tools/forge.cjs ... --lib retarget-anims/library/clips`, clips only) into `models/characters/anims/toad_sage.glb` (0.5 MB): `meditate`
