@@ -13,6 +13,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- the snow kit's full STYLE SHEET saved (`images/concepts/snow_village/ref_kit_sheet.webp`)
+
+His whole sheet: three hut variations (ribbed dome with horns round it, a spiral-twisted roof, a dome under a halo), three longhouses (barrel-vault ribbed,
+ribbed gable -- built at m2116 -- and a tiered pagoda hall), the shrine tower at three scales, the watchtower (built at m2120), three gates (towers + arch
+built at m2118; a horned-arch and a triple-roof variant), the aqueduct (built at m2119), and restyles of the water wheel, winch lift, hot spring/geyser,
+timber bridge (high arched) and tunnel stair. Not built yet: the extra variations and the five utility restyles. No code change.
+
 ## m2120 -- THE WATCHTOWER (his reference image, both variants)
 
 His reference (`images/concepts/snow_village/ref_watchtower.webp`, two towers). Deck height and size, the stair, the landing and the rail gap are unchanged.
