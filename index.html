@@ -11038,7 +11038,7 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=1\b/.test(location.search
 // human"): the kit's STYLE. 'jin' (the default) is the Jin-builders' look from KORAJIN.md -- hexagonal and flowing carved stone, bronze glyph circuitry
 // glowing Jinra mint, shell-scale roofs, curved bronze ribs to a floating crystal crown, round glyph portholes, almond doors, a shell canopy, floating
 // orb lanterns, horn-like vent spires. `?svkstyle=classic` brings back m2083's human village look for an A/B. Footprints and colliders do not change.
-const SVKSTYLE = (() => { try { return /[?&]svkstyle=classic\b/.test(location.search) ? 'classic' : 'jin'; } catch (e) { return 'jin'; } })(), SVKJ = SVKSTYLE === 'jin';
+const SVKSTYLE = (() => { try { return /[?&]svkstyle=jin\b/.test(location.search) ? 'jin' : 'classic'; } catch (e) { return 'classic'; } })(), SVKJ = SVKSTYLE === 'jin';     /* m2090 (his: "I liked how it was before -- go back"): CLASSIC is the default again; the jin look is kept behind ?svkstyle=jin */
 function vilIn(x, z, m) { const K = SNOWVIL.keep; m = m || 0; return SNOWVIL.want && x > K[0] - m && x < K[1] + m && z > K[2] - m && z < K[3] + m; }
 // the painted pieces, once: stone, the meander band, timber, thatch, a lattice window, the Korajin banner
 function vilTex(name) { const V = SNOWVIL, T = V.tex || (V.tex = {}); if (T[name]) return T[name]; const cv = document.createElement('canvas'), q = cv.getContext('2d'), rr = plantRnd(91 + name.length * 7);

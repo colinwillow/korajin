@@ -8,6 +8,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## mNEXT -- the snow kit back to its CLASSIC look by default (the jin style kept behind `?svkstyle=jin`)
+
+His: *"No, I liked how it was before -- now it just feels chaotic. I was more talking about the SHAPES of the buildings ... the old textures were good."*
+`SVKSTYLE` defaults to 'classic' again (m2083's look, unchanged); m2089's jin look is kept behind `?svkstyle=jin`, nothing deleted. What he meant is the
+shape pass m2089 offered at the end -- tall tapering spires on the shrines and towers, curved horn arches on the bridge, stones floating above the
+pillars -- and that is the next build, in the classic materials. Lesson: "off-world" was about SILHOUETTE, not surface; re-skinning everything at once
+changed too much in one look. Shipped unverified.
+
 ## m2091 -- THE REGION's valleys WIDENED: from crevices to valleys (Nov 1 2026)
 His first run of the region: *"it's ridiculous -- narrow, extremely narrow; more like a crevice. Some areas are so steep I can't run up them. A marker
 says village -- how are you gonna put a village in a 5 foot wide crevice?"* He was right: `tools/regionmap.py` carved a valley as a quadratic over w
