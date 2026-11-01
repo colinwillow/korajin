@@ -11459,6 +11459,9 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
         const root = new THREE.Group(); root.add(body); root.position.set(S.at[0], S.at[1], S.at[2]); root.rotation.y = S.yaw; g.add(root);
         const ring = new THREE.Mesh(new THREE.TorusGeometry(.75, .045, 8, 40).rotateX(Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x7affd8, toneMapped: false, transparent: true, opacity: .8 })); ring.position.y = -.12; root.add(ring);
         const mx = new THREE.AnimationMixer(body), c = an.animations.find(q => q.name === S.clip) || an.animations[0]; if (c) mx.clipAction(c).play();
+        // the sitting clip carries his hips ~4 m (in his frame) off his model's origin: centre him on his HIPS so he floats over the pool, not behind it
+        mx.update(.05); root.updateMatrixWorld(true); let hip = null; body.traverse(o => { if (!hip && o.isBone && /hips$/i.test(o.name)) hip = o; });
+        if (hip) { const w = hip.getWorldPosition(new THREE.Vector3()), l = root.worldToLocal(w.clone()); body.position.x -= l.x; body.position.z -= l.z; }
         V.sageR = { root, mx, ring, y0: S.at[1], t: 0 }; }).catch(e => note('SAGE THREW ' + e.message)); } catch (e) { note('SAGE THREW ' + e.message); } }, 0);
   g.add(G); V.g = G; V.stat.draws = G.children.length; V.stat.tris = tris | 0; V.stat.boxes = BOXES.length - V.stat.boxes; V.stat.chim = V.chim.length; }
 function snowVillStep(dt) { const V = SNOWVIL; if (!V.g) return; if (!V.mel && window.mel) { window.mel.SNOWVIL = V; V.mel = 1; } if (V.U) V.U.uT.value += dt; const p = player.pos;
