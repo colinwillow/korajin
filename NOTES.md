@@ -13,6 +13,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2123 -- THE ARMILLARY FORGE: the wrong sheet's pieces out, his forge's in
+
+His: "sorry, that was wrong" -- the potion-shop sheet was sent by mistake; the target is his forge. So out came what only that sheet had:
+the GLYPH PILLARS at the stair, the CRANE and its crystal lantern, the CHEVRON flag, the gold HORN TIPS. KEPT (his forge has them too):
+the open forge-shop room (his door shows the fire and the shelves), the chunky masonry, the lanterns. ADDED from his forge sheet: BANNERS
+hung from wooden BEAMS off the keep and the right tower with a lantern at each beam's end; a torn red CLOTH (a sagging, ragged drape with a
+white star) between the keep and the right tower; one PORTHOLE holds a lantern (the other a crystal); LANTERNS under the bridge's arches; a
+second glowing cascade down the tier's face from the armillary's foot. 15 draws, 56k tris; routes unchanged. Shipped unverified on the phone.
+
 ## m2122 -- THE ARMILLARY FORGE, pass 3: "we really need to push it" (his potion-shop sheet as the detail bar)
 
 His: "yeah we really need to push it", with a sheet of a horned potion shop in the same style. Taken as the bar for the forge's detail:
