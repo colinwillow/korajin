@@ -19,6 +19,20 @@ frozen falls, pines). Look only; the colliders stay the blockout's slabs. `ICEVA
 - 150 PINES (bark trunk, four needle tiers, snow on each) and 60 snowy BOULDERS along both edges, on whichever terrace is under them, clear of the
   middle and the terrace faces; the terraces themselves rock faces under snow. No colliders on any of it.
 Cost: ~+90k triangles in the valley views (cells at 6 m were +200k; 9 m now). Shipped unverified.
+## m15S2 -- shield, snow steps and the dragon: five fixes from his play (Nov 1 2026)
+- *"The shield's point faces his elbow; it should face down."* Its long axis was the forearm. Now it is the world's UP (projected off the face, a fifth
+  of the way toward the forearm), so the point hangs down. Rendered: upright in front in the guard.
+- *"The ice beam doesn't get blocked by the shield."* With the KATANA the guard is the held charge -- `p.block` is never set then, and `shieldUp` asked
+  for `p.block`. `shieldGuard` now counts the katana's charge-guard. (The headless test passed only because it forced the guard.)
+- *"The parry isn't with the shield -- he parries with the sword."* The shield's own shove now plays: Sword And Shield Block (`shield_block`, left arm,
+  `SHIELD.bashT` .5 s) on a perfect beam parry, on every beam block (shorter), and on any blow taken on the shield. The shield now GUARDS melee blows
+  too (it counts as the guard in `playerHurt`). The perfect-parry timing reads when the shield actually came up (`S.upAt`), not `p.blockAt` (which is
+  re-stamped every guarded frame).
+- *"My snow footsteps make little animal groans and grunts."* Measured on his recording: 37-205 s is VOICED (autocorrelation .7-.9, spectral flatness
+  .02) -- animal sounds -- and m2013's "warmest" filter picked exactly those. The real snow crunches are the fast runs at 23-30 s and 290-295 s
+  (flatness ~.12, periodicity ~.15). Re-cut from those: 8 steps, .26 s each, the least voiced first, same files.
+- *"The dragon fell off the cliff and was stuck trying to get back up."* A homed dragon whose floor drops 2 m below his nest now TAKES OFF and flies home
+  (the m2016 flight, straight to the 'home' phase).
 
 ## m2021 -- THE ICE TEMPLE: the LOOK pass on the entrance (the concept art over the blockout)
 
