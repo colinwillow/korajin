@@ -20,6 +20,42 @@ His: *"Did I mention that we need stuff like this for the village as well?"* (th
   post and a jade lamp at the bridge feet. Headless: 49 pieces, 74 ports, 360 colliders, the whole room 21 draws.
 Still open: watchtower / outpost and gate as kit buildings. Shipped unverified.
 
+## m2037 -- THE ICE TEMPLE: detail pass D4 -- the back and sides (great banner, jade windows, back towers, side falls, base rocks)
+
+Compared against `big_back.webp`, the back was the plainest side. Now: the BACK's great Korajin banner (8 x 15 m) over the descent; the glyph plates
+became tall gold-framed JADE WINDOWS (a dark recess, the glow slit proud of it, a gem over each) every 7 m on ALL four faces of every big block,
+not just the front; two slim BACK TOWERS (rows, solid) with lanterns at the body's back corners; four frozen FALLS down the towers' and body's
+outer sides with ice pooled at their feet; 34 dark ROCKS heaped with snow round the base. Shipped unverified.
+
+## m2036 -- THE ICE TEMPLE: detail pass D3 -- merlons, balustrades, ice curtains, crystal growths, moat rocks, the rune circle
+
+Still "detail, detail". Look only, all in `iceDress`: snow-capped MERLONS along every curtain wall and turret top; stone BALUSTRADE posts with
+gold finials along the wings' walkable lintels; an ICE CURTAIN in every wing arch, ice pooled at its foot (the concept's falls out of the arches);
+jade CRYSTAL GROWTHS (4-6 tilted shards) at a corner of about half the walls; 26 snowy ROCKS along both edges of the moat, a third with crystals;
+a RUNE CIRCLE inlaid in the forecourt's snow (two gold rings, a jade ring, eight gold ticks). Shipped unverified.
+
+## m2035 -- THE ICE TEMPLE: detail pass D2 -- stepped towers, lanterns, shoulders, pedestals, the portcullis, drifts
+
+Still his "detail, detail, detail". Rows (solid, so they climb): each tower STEPS UP off its outer back corner (two tiers, 39 -> 44 -> 48.5),
+the facade's raised SHOULDERS (49 -> 54, the horns rise out of them), two PEDESTALS at the grand stair's foot (the two lowest lamps moved a step
+up off them). The look: an octagonal LANTERN on each tower's top tier (a jade glow band, a gold roof, snow, a crystal), crystal BRAZIERS on the
+pedestals, the outer gate an iron PORTCULLIS with gold bars, gold crossbars and a jade boss (children of the gate's mesh, so they go with it),
+SNOW DRIFTS banked against the foot of every raised wall (low half-domes, no step). All the new rows get D1's architecture for free.
+Seen from the front at this hour the temple is BACKLIT (the snow zone's sun sits behind it) -- the main session's sky, flagged, not touched.
+Shipped unverified.
+
+## m2034 -- THE ICE TEMPLE: detail pass D1 -- ARCHITECTURE on every raised stone box, the door's porch
+
+His: *"Two square, two straight -- the lines look like boxes. Detail, detail, detail; keep pounding away and make it interesting."* `iceArch`
+(numbers in `ICEARCH`) dresses every raised stone box over 3 m: a wider BASE course; an overhanging CORNICE (.55 m) with a gold lip under it, and
+the snow pillow and the icicles moved out onto its lip; STRING courses every 6 m with gold strips; PILASTERS at every corner and every 7 m along
+the long faces -- .25 m proud where he walks by, .6 m above (a gold collar where they step out, gold strips up each face, a big gold capital, a
+jade gem on each face); crystal-topped corner POSTS on the bigger tops. The DOOR got the concept's PORCH: two pillars with gold capitals, a
+snow-loaded peaked roof, a jade gem at its apex, stone in the door's top corners so the glow reads pointed. The ROUNDEL rose 5 m clear of the
+porch and the CROWN (now a stone drum, the gold drum, the crystal cluster) and the ring arcs rose 6 m over it.
+Two `//` comments landed mid-line during this pass and cut off the code after them (a parse failure, and the roundel's disc vanishing) --
+block comments now; a scan of the ICE block for `//` followed by code came back clean. Look only: no collider moved. Shipped unverified.
+
 ## m2033 -- THE SNOW-VILLAGE KIT, pass 1: pieces on a grid with snap ports, and the KIT SHOWROOM (`?w=forge&zone=snowkit`)
 
 Direction change (SNOW_VILLAGE.md UPDATE, relayed from the main session): a MODULAR KIT, not a village layout; placement is another context's.
