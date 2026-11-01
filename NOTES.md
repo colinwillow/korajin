@@ -8,7 +8,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15WV -- THE REGION's valleys WIDENED: from crevices to valleys (Nov 1 2026)
+## m2091 -- THE REGION's valleys WIDENED: from crevices to valleys (Nov 1 2026)
 His first run of the region: *"it's ridiculous -- narrow, extremely narrow; more like a crevice. Some areas are so steep I can't run up them. A marker
 says village -- how are you gonna put a village in a 5 foot wide crevice?"* He was right: `tools/regionmap.py` carved a valley as a quadratic over w
 (6-15 m) -- the floor was a few metres before the wall rose 30 m -- and each place was a 13-25 m dimple.
