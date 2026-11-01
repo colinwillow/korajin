@@ -16,6 +16,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2114 -- THE ARMILLARY FORGE, pass 1: his snowy workshop-forge, built as a kit piece
+
+His: "a new mission -- build this house so we can insert it into a level somewhere" (his concept: a purple-stone forge on a rock mound).
+`FORGEHOUSE` (SC_FORGEHOUSE) + `fhMake(T)` (pure) / `forgeHouseBuild` / `forgeHouseStep` -- ONE placement row (`at` / `yaw`, quarter turns so
+the colliders stay exact boxes); everything else is in its local frame (+z = the front). Placed for now past the Snowfield's EAST edge
+(world 125, 20) facing west into the field -- the snow village (now on by default) fills the south, where pass 0 first stood.
+- THE MOUND: a stone podium in a skirt of snowy boulders. THE KEEP (his purple masonry: `ice_stone`, triplanar), gold bands, merlons, an
+  upper tier; the FORGE DOOR (an arched dark opening, gold voussoirs, a fire inside), the SHIP'S WHEEL over it, two red COMPASS BANNERS.
+- Two IVORY ARCHES (tapered tubes) over the terrace. A cone TOWER left (gold spire), a tall TOWER right (crystal PORTHOLES, a wooden
+  balcony ring, a crystal finial) and a balcony off it with a banner.
+- The ARMILLARY: a green crystal ORB on a pedestal, three gold rings that TURN, a wide equator; two curling stone HORNS (blocks with gold bands).
+- The WATER WHEEL (turns) under a chute off the keep, glowing green WATER (a scrolling shader) falling over it into a POOL; a cascade down
+  the keep's face. A two-arch stone BRIDGE over the pool (voussoir arches, snowy parapets).
+- A wooden upper-left BALCONY (an awning, lanterns, a crystal), a walk along the keep; a red / white striped MARKET STALL (scalloped hem,
+  barrels with gold hoops, glowing potions). Lanterns, crystals, snow caps and icicles throughout.
+- WALKABLE, measured headless: the grand stair (20 x .3 m) to the terrace (6), the bridge level with it, the stair to the balcony (20 x .3 to
+  12), the walk to a ladder up the keep's face to its roof (17), a ladder up the tier to the armillary deck (23). Ladders register on the
+  first frame (the snow stage builds above `KCLIMB`).
+- 14 draws, 24k tris. `?fh=0` leaves it out; `mel.forgehouse()` puts him at its foot.
+Next passes: rocky organic masses instead of boxes (his keep sits ON rock), thicker tusks, more lanterns and gold detail, maybe an interior.
+Shipped unverified on the phone.
+
 ## m2113 -- THE VILLAGE, pass 5: THE MARKET round the square (Nov 1 2026)
 `SNOWVIL.pieces`: three kit `market_stall`s on the square's open west / south-west / south sides, each turned to face the fire pit, with kit `crates`
 and `barrels` between them; the paths (to the gate, the north stair, the bath lane) are left clear. Shipped unverified (render after the push).
