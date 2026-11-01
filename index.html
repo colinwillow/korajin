@@ -11304,6 +11304,8 @@ const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 150], cell: 7.5, perRow: 9
       ['chimney'], ['stairs'], ['stairs', { n: 3 }, 'stairs x3'], ['platform'], ['platform', { h: .9, w: 4, d: 2 }, 'platform low'], ['arch'], ['pillar'], ['pillar', { h: 2.4 }, 'pillar short']] },
     { title: 'ACCESSORIES', items: [['fence_straight'], ['fence_corner'], ['fence_gate'], ['banner_post'], ['flag_pole'], ['lantern_post'], ['jade_lamp'], ['fire_pit'], ['well'],
       ['barrels'], ['crates'], ['pots'], ['market_stall'], ['forge_station'], ['sled'], ['firewood'], ['snowman']] },
+    { title: 'BRIDGE / AQUEDUCT', cell: 11, per: 7, gap: 17, items: [['aq_pier', { h: 6 }, 'pier 6 m'], ['aq_pier', { h: 9 }, 'pier 9 m'], ['aq_pier', { h: 12 }, 'pier 12 m'], ['aq_span', { h: 6 }, 'arch span'], ['aq_deck', {}, 'deck + balustrade'], ['aq_shrine', {}, 'shrine tower'], ['aq_shrine', { s: 1.4 }, 'shrine tower big'],
+      ['aq_ramp', { rise: 3 }, 'end ramp 3 m'], ['aq_section', { h: 6 }, 'section (snapped)'], ['aq_section', { h: 9, big: 1 }, 'section tall']] },
     { title: 'BUILDINGS', items: [['hut'], ['hut', { R: 2.2, roofH: 2.4, banner: 0, chimney: 0, porch: 0, seed: 3 }, 'hut small'], ['hut', { R: 3, roofH: 3.4, wallH: 2.6, seed: 7, chimA: 2.2 }, 'hut big'], ['longhouse']] } ] };
 // SC_SVK:END
 try { if (/[?&]zone=snowkit\b/.test(location.search)) { SNOWZ.want = 1; SVK.show = 1; SNOWVIL.want = 0; } } catch (e) {}
@@ -11416,6 +11418,60 @@ const SVKP = {
     P.add('cloth', vilBox(.14, .45, .06, 1).translate(.16, 1.3, .3)); P.add('iron', new THREE.CylinderGeometry(.2, .2, .28, 10).translate(0, 2.06, 0)); P.add('iron', new THREE.CylinderGeometry(.3, .3, .03, 12).translate(0, 1.93, 0)); P.col(-.5, .5, 0, 1.9, -.5, .5); return P; },
   hut: o => { const H = vilHut(Object.assign({}, SNOWVIL.hut, o)), P = Object.assign(svkNew(), { L: H.L, cols: H.cols, smoke: H.smoke }); P.port('door', 0, 0, (o.R || SNOWVIL.hut.R) + 1.6, 0, 0, 1); return P; },
   longhouse: o => SVKP.hut(Object.assign({ R: 3, sx: 1.6, roofH: 3.2, wallH: 2.5, seed: 16, chimA: -1.6, win: [.75, -.75, 1.6, -1.6, 2.5, -2.5], barrels: 4 }, o)) };
+// m2034: THE BRIDGE / AQUEDUCT (aqueduct_sheet.webp). Runs along X; piers 8 m apart (`SVKAQ.bay`), heights in .3 m steps; the deck sits ON the pier
+// tops. Pier (top port), span (the arch between two pier centres, ports a/b at the pier tops), deck + balustrade (walkway, a pushable snow patch,
+// ports a/b at its ends on the walkway), shrine tower (stands on the deck over a pier, a jade finial), end ramp (stairs up to the deck at .3 risers),
+// and `aq_section` / `aq_bridge` -- whole runs assembled by SNAPPING each piece's port onto the last one's (svkSnap), which is the ports proving they chain.
+// SC_SVKAQ:START
+const SVKAQ = { bay: 8, pierW: 2.2, deckW: 3.4, deckT: .6, rail: .9 };
+// SC_SVKAQ:END
+// put `S` into `D` so its port `pid` sits on the point `at` (yaw 0 or a quarter turn), returning where it went
+function svkSnap(D, S, pid, at, yaw = 0) { const p = S.ports.find(q => q.id === pid) || (pid === 'foot' ? { at: [0, 0, 0] } : null); if (!p) throw new Error('no port ' + pid); const c = Math.cos(yaw), s = Math.sin(yaw), o = [at[0] - (p.at[0] * c + p.at[2] * s), at[1] - p.at[1], at[2] - (-p.at[0] * s + p.at[2] * c)]; const n0 = D.ports.length; svkEmit(D, S, o, yaw); return D.ports.slice(n0); }
+const portOf = (list, id) => list.find(q => q.id === id).at;
+Object.assign(SVKP, {
+  aq_pier: o => { const P = svkNew(), h = o.h || 9, w = SVKAQ.pierW, rnd = plantRnd(h * 7 | 0); P.box('stoneD', w + 1, 1.1, w + 1, 0, .55, 0, 1.2); P.box('band', w + 1.02, .5, w + 1.02, 0, .62, 0, .9); P.box('stoneD', w + .5, .35, w + .5, 0, 1.27, 0, 1);
+    P.box('stone', w, h - 2.6, w, 0, 1.45 + (h - 2.6) / 2, 0, 1.6); P.box('stoneD', w + .5, .5, w + .5, 0, h - .9, 0, 1.2); P.box('gold', w + .56, .12, w + .56, 0, h - .6, 0, 1); P.box('stone', w + .7, .55, w + .7, 0, h - .27, 0, 1.2);
+    for (const r of [0, Math.PI]) { const f = (g) => P.add(g.k, g.g.translate(g.x, g.y, w / 2 + .03).rotateY(r)); f({ k: 'jade', g: vilBox(.16, Math.min(2.2, h * .25), .06, 1), x: 0, y: h * .42 }); f({ k: 'gold', g: new THREE.OctahedronGeometry(.3, 0).scale(1, 1.4, .3), x: 0, y: h * .42 + Math.min(1.1, h * .125) + .45 });
+      f({ k: 'jade', g: new THREE.OctahedronGeometry(.13, 0).scale(1, 1.4, .5), x: 0, y: h * .42 + Math.min(1.1, h * .125) + .45 }); f({ k: 'gold', g: vilBox(.7, 1.1, .05, 1), x: 0, y: h - 1.9 }); f({ k: 'jade', g: vilBox(.3, .5, .07, 1), x: 0, y: h - 1.9 }); }
+    P.add('snow', vilPillow(w + 1, .18, w + 1).translate(0, 1.44, 0)); for (const sz of [-1, 1]) { P.ice(-w / 2 - .3, w / 2 + .3, h - .55, sz * (w / 2 + .38), 6, rnd); P.ice(-w / 2 - .5, w / 2 + .5, 1.1, sz * (w / 2 + .52), 5, rnd); }
+    P.col(-w / 2 - .5, w / 2 + .5, 0, 1.45, -w / 2 - .5, w / 2 + .5); P.col(-w / 2 - .35, w / 2 + .35, 0, h, -w / 2 - .35, w / 2 + .35); P.port('top', 0, h, 0, 0, 1, 0); P.port('foot', 0, 0, 0, 0, -1, 0); return P; },
+  aq_span: o => { const P = svkNew(), A = SVKAQ, h = o.h || 9, L = (o.len || A.bay) - A.pierW + .3, r = L / 2 - .15, ys = Math.max(1.6, h - .7 - r - .4), yt = h, t = A.pierW - .2, rnd = plantRnd(h * 3 | 0);
+    const sh = new THREE.Shape(); sh.moveTo(-L / 2, ys); sh.lineTo(-r, ys); sh.absarc(0, ys, r, Math.PI, 0, true); sh.lineTo(L / 2, ys); sh.lineTo(L / 2, yt); sh.lineTo(-L / 2, yt); sh.closePath();
+    const g = new THREE.ExtrudeGeometry(sh, { depth: t, bevelEnabled: false, curveSegments: 18 }); g.translate(0, 0, -t / 2); { const uv = g.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / 1.6, uv.getY(i) / 1.6); } P.add('stone', g);
+    const ring = new THREE.Shape(); ring.absarc(0, ys, r + .5, Math.PI, 0, true); ring.lineTo(r, ys); ring.absarc(0, ys, r, 0, Math.PI, false); ring.closePath(); const rg = new THREE.ExtrudeGeometry(ring, { depth: t + .2, bevelEnabled: false, curveSegments: 18 }); rg.translate(0, 0, -t / 2 - .1); { const uv = rg.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / 1.2, uv.getY(i) / 1.2); } P.add('stoneD', rg);
+    for (const sz of [-1, 1]) { P.box('gold', .7, .8, .12, 0, ys + r + .3, sz * (t / 2 + .12), 1); P.box('jade', .36, .46, .08, 0, ys + r + .3, sz * (t / 2 + .18), 1); P.add('jade', new THREE.ConeGeometry(.12, .7, 5).rotateX(Math.PI).translate(0, ys + r - .2, sz * (t / 2 + .05)));
+      for (const sx of [-1, 1]) { P.box('gold', .36, .36, .06, sx * L * .32, yt - .45, sz * (t / 2 + .04), 1); P.box('jade', .16, .16, .06, sx * L * .32, yt - .45, sz * (t / 2 + .08), 1); } }
+    P.ice(-r * .8, r * .8, ys + r * .55, 0, 8, rnd); P.col(-L / 2, L / 2, ys + r - .3, yt, -t / 2, t / 2); P.port('a', -(o.len || A.bay) / 2, h, 0, -1, 0, 0); P.port('b', (o.len || A.bay) / 2, h, 0, 1, 0, 0); return P; },
+  aq_deck: o => { const P = svkNew(), A = SVKAQ, L = o.len || A.bay, w = A.deckW, T = A.deckT, rh = A.rail, rnd = plantRnd(L * 13 | 0);
+    P.box('stoneD', L, T, w, 0, T / 2, 0, 1.4); P.box('band', L + .02, .3, w + .16, 0, T * .45, 0, .7); P.box('gold', L + .04, .07, w + .2, 0, T + .02, 0, 1);
+    for (const sz of [-1, 1]) { const z = sz * (w / 2 - .14); P.box('stone', L, rh - .15, .28, 0, T + (rh - .15) / 2, z, 1.2); P.box('gold', L + .02, .08, .34, 0, T + rh - .11, z, 1); P.box('stoneD', L + .02, .12, .38, 0, T + rh - .02, z, 1); P.add('snow', vilPillow(L, .1, .4).translate(0, T + rh + .04, z));
+      for (let k = 0; k < Math.round(L / 2); k++) { const x = -L / 2 + 1 + k * 2; P.box('gold', .32, .32, .05, x, T + rh * .45, z + sz * .15, 1); P.box('jade', .15, .15, .05, x, T + rh * .45, z + sz * .18, 1); }
+      P.ice(-L / 2 + .2, L / 2 - .2, 0, sz * (w / 2 + .12), Math.round(L * 2), rnd); P.col(-L / 2, L / 2, T, T + rh + .05, z - .14, z + .14); }
+    P.add('snow', vilPillow(L - .2, .1, w - .7).translate(0, T, 0)); P.col(-L / 2, L / 2, 0, T, -w / 2, w / 2); P.patches.push({ x: 0, z: 0, w: L - .1, d: w - .7, top: T + .01, round: 0 });
+    P.port('a', -L / 2, T, 0, -1, 0, 0); P.port('b', L / 2, T, 0, 1, 0, 0); P.port('seat', 0, 0, 0, 0, -1, 0); return P; },
+  aq_shrine: o => { const P = svkNew(), s = o.s || 1, w = 1.1 * s, h = 1.3 * s, rnd = plantRnd(50 + s * 10 | 0);
+    P.box('stoneD', w, h, w, 0, h / 2, 0, 1); P.box('band', w + .02, .2 * s, w + .02, 0, .25 * s, 0, .6); for (const r of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) { P.add('gold', vilBox(.5 * s, .5 * s, .04, 1).translate(0, h * .6, w / 2 + .02).rotateY(r)); P.add('jade', new THREE.OctahedronGeometry(.16 * s, 0).scale(1, 1, .4).translate(0, h * .6, w / 2 + .06).rotateY(r)); }
+    P.box('stone', w + .3, .18 * s, w + .3, 0, h + .09 * s, 0, 1); const y1 = h + .18 * s, ph = 1.1 * s; for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) P.box('stone', .26 * s, ph, .26 * s, x * (w / 2 - .1 * s), y1 + ph / 2, z * (w / 2 - .1 * s), 1);
+    P.add('jade', new THREE.OctahedronGeometry(.28 * s, 0).scale(1, 1.6, 1).translate(0, y1 + ph * .5, 0)); P.box('warm', .3 * s, .1 * s, .3 * s, 0, y1 + .05, 0, 1);
+    const y2 = y1 + ph; P.box('stoneD', w + .5 * s, .22 * s, w + .5 * s, 0, y2 + .11 * s, 0, 1); P.box('gold', w + .54 * s, .08 * s, w + .54 * s, 0, y2 + .02 * s, 0, 1); P.add('snow', vilPillow(w + .5 * s, .14 * s, w + .5 * s).translate(0, y2 + .22 * s, 0));
+    P.box('stone', w * .7, .45 * s, w * .7, 0, y2 + .45 * s, 0, 1); P.box('stoneD', w * .9, .16 * s, w * .9, 0, y2 + .75 * s, 0, 1); P.add('snow', vilPillow(w * .9, .1 * s, w * .9).translate(0, y2 + .83 * s, 0));
+    P.add('gold', new THREE.ConeGeometry(w * .35, .5 * s, 4).rotateY(Math.PI / 4).translate(0, y2 + 1.05 * s, 0)); P.add('jade', new THREE.OctahedronGeometry(.22 * s, 0).scale(1, 2.4, 1).translate(0, y2 + 1.75 * s, 0));
+    for (const sz of [-1, 1]) { P.ice(-w / 2, w / 2, y2, sz * (w / 2 + .26 * s), 4, rnd); P.ice(-w / 2, w / 2, y2, sz * (w / 2 + .26 * s), 4, rnd, 'z'); }
+    P.col(-w / 2, w / 2, 0, y2 + .3 * s, -w / 2, w / 2); P.port('seat', 0, 0, 0, 0, -1, 0); P.port('top', 0, y2 + 2.2 * s, 0, 0, 1, 0); return P; },
+  aq_ramp: o => { const P = svkNew(), A = SVKAQ, rise = o.rise || 3, n = Math.round(rise / .3), tr = .55, w = A.deckW, L = n * tr;     // climbs toward +X; its head at x 0
+    for (let k = 0; k < n; k++) { const top = (k + 1) * rise / n, x1 = -L + (k + 1) * tr, x0 = x1 - tr; P.box('stoneD', tr, top, w - .56, (x0 + x1) / 2, top / 2, 0, 1); P.box('stone', tr + .04, .08, w - .5, (x0 + x1) / 2, top - .04, 0, 1); P.col(x0, x1, 0, top, -w / 2 + .28, w / 2 - .28);
+      for (const sz of [-1, 1]) { const z = sz * (w / 2 - .14); P.box('stone', tr, top + A.rail - .1, .28, (x0 + x1) / 2, (top + A.rail - .1) / 2, z, 1); P.box('stoneD', tr + .02, .12, .36, (x0 + x1) / 2, top + A.rail - .05, z, 1); P.col(x0, x1, 0, top + A.rail, z - .14, z + .14); if (k % 3 === 2) P.add('snow', vilPillow(tr + .1, .08, .38).translate((x0 + x1) / 2, top + A.rail + .01, z)); } }
+    for (const sz of [-1, 1]) { P.box('stoneD', .6, 1.4, .6, -L - .3, .7, sz * (w / 2 - .1), 1); P.box('gold', .66, .1, .66, -L - .3, 1.25, sz * (w / 2 - .1), 1); P.add('snow', vilPillow(.56, .12, .56).translate(-L - .3, 1.4, sz * (w / 2 - .1))); vilJade(P.add, -L - .3, 1.4, sz * (w / 2 - .1), .5); }
+    P.port('head', 0, rise, 0, 1, 0, 0); P.port('foot', -L - .6, 0, 0, -1, 0, 0); return P; },
+  // a whole BAY: two piers, the arch, the deck over them, shrines on the deck corners -- snapped port to port
+  aq_section: o => { const P = svkNew(), h = o.h || 6, A = SVKAQ; const p0 = svkSnap(P, svkPiece('aq_pier', { h }), 'foot', [-A.bay / 2, 0, 0]); const sp = svkSnap(P, svkPiece('aq_span', { h }), 'a', portOf(p0, 'top'));
+    svkSnap(P, svkPiece('aq_pier', { h }), 'top', portOf(sp, 'b')); const t0 = portOf(p0, 'top'), dk = svkSnap(P, svkPiece('aq_deck', {}), 'a', [t0[0], t0[1] + A.deckT, t0[2]]); svkShrines(P, dk, o.big); P.ports = P.ports.filter(q => q.id === 'a' || q.id === 'b'); return P; },
+  // a whole BRIDGE: ramp, `bays` bays, ramp -- every piece snapped onto the port before it
+  aq_bridge: o => { const P = svkNew(), h = o.h || 6, n = o.bays || 3, A = SVKAQ, dT = A.deckT; let head = svkSnap(P, svkPiece('aq_ramp', { rise: h + dT }), 'head', [0, h + dT, 0]); let at = portOf(head, 'head');
+    for (let k = 0; k <= n; k++) { const pt = [at[0], at[1] - dT, at[2]]; svkSnap(P, svkPiece('aq_pier', { h }), 'top', pt); if (k === n) break; svkSnap(P, svkPiece('aq_span', { h }), 'a', pt); const dk = svkSnap(P, svkPiece('aq_deck', {}), 'a', at); svkShrines(P, dk, k === 1); at = portOf(dk, 'b'); }
+    svkSnap(P, svkPiece('aq_ramp', { rise: h + dT }), 'head', at, Math.PI); P.ports = P.ports.filter(q => q.id === 'foot' && q.at[1] < .01 && Math.abs(q.at[2]) < .01 && (q.dir[0] < -.5 || q.dir[0] > .5)); return P; } });
+// shrine towers on a deck's two end corners (over the piers), a big pair when `big`
+function svkShrines(P, dk, big) { const A = SVKAQ, a = portOf(dk, 'a'), b = portOf(dk, 'b'); for (const e of [a, b]) for (const sz of [-1, 1]) if (e === a || big) svkSnap(P, svkPiece('aq_shrine', { s: big && e === b ? 1.25 : .85 }), 'seat', [e[0], e[1] + A.rail * 0, e[2] + sz * (A.deckW / 2 - .3)]); }
 function svkPiece(kind, o) { const f = SVKP[kind]; if (!f) throw new Error('no snow-kit piece ' + kind); return f(o || {}); }
 // the merged meshes of an accumulated piece (one per material)
 function svkMesh(P) { const M = vilMats(), G = new THREE.Group(); for (const k in P.L) { const M2 = M[k]; if (!M2 || !P.L[k].length) continue;
@@ -11431,13 +11487,23 @@ function svkLabels(names) { const cv = document.createElement('canvas'), cols = 
   const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; const uv = i => [(i % cols) * 512 / cv.width, 1 - ((i / cols | 0) * 64 + 64) / cv.height, 512 / cv.width, 64 / cv.height]; return { tex: t, uv }; }
 // THE SHOWROOM: a snow plaza, the rows, a plate under each piece, jade diamonds on its ports; the player put at its front
 function svkShowroom(g) { const S = SVK, [ox, oy, oz] = S.at, D = svkNew(), labels = [], plates = []; S.chim = []; S.fire = [];
-  let row = 0; const rowsZ = []; for (const R of S.rows) { const n = R.items.length; labels.push({ text: R.title, title: 1 }); const tz = oz - row * S.rowGap; plates.push({ i: labels.length - 1, x: ox - S.perRow * S.cell / 2 - 3.5, z: tz + 4.6, w: 4.4 });
-    R.items.forEach(([kind, o, name], i) => { const sub = Math.floor(i / S.perRow); if (i && i % S.perRow === 0) row++; const x = ox + ((i % S.perRow) - (S.perRow - 1) / 2) * S.cell, z = oz - row * S.rowGap;
+  let zc = oz; const W = S.perRow * S.cell + 14, lines = [];
+  for (const R of S.rows) { const per = R.per || S.perRow, cell = R.cell || S.cell, gap = R.gap || S.rowGap; labels.push({ text: R.title, title: 1 }); plates.push({ i: labels.length - 1, x: ox - W / 2 + 3.5, z: zc + 6.8, w: 4.4 });
+    R.items.forEach(([kind, o, name], i) => { if (i && i % per === 0) { lines.push(zc); zc -= gap; } const x = ox + ((i % per) - (per - 1) / 2) * cell, z = zc;
       try { const P = svkPiece(kind, o); for (const p of P.ports) D.add('jade', new THREE.OctahedronGeometry(.16, 0).scale(1, 1.6, 1).translate(p.at[0] + p.dir[0] * .3, p.at[1] + .35, p.at[2] + p.dir[2] * .3)); svkEmit(D, P, [x, oy, z]); }
       catch (e) { console.error('[melee] snowkit', kind, e); note('SNOWKIT ' + kind + ' THREW ' + e.message); }
-      labels.push({ text: name || kind.replace(/_/g, ' ') }); plates.push({ i: labels.length - 1, x, z: z + 4.6, w: 3.2 }); }); row++; rowsZ.push(oz - row * S.rowGap); }
-  const W = S.perRow * S.cell + 14, z1 = oz + 9, z0 = oz - row * S.rowGap + 4; D.box('snow', W, oy, z1 - z0, ox, oy / 2, (z0 + z1) / 2, 4); D.col(ox - W / 2, ox + W / 2, 0, oy, z0, z1);
-  for (let k = 0; k <= row; k++) D.box('stoneD', W - 4, .05, .7, ox, oy + .02, oz + 6.3 - k * S.rowGap, 1);
+      labels.push({ text: name || kind.replace(/_/g, ' ') }); plates.push({ i: labels.length - 1, x, z: z + 4.6, w: 3.2 }); }); lines.push(zc); zc -= gap; }
+  const z1 = oz + 9, z0 = zc + 4; D.box('snow', W, oy, z1 - z0, ox, oy / 2, (z0 + z1) / 2, 4); D.col(ox - W / 2, ox + W / 2, 0, oy, z0, z1);
+  for (const lz of lines) D.box('stoneD', W - 4, .05, .7, ox, oy + .02, lz + 6.3, 1);
+  // THE DEMO PLOT east of the rows: a short aqueduct, a hut, a fence run and a fire pit -- every one placed by SNAPPING to a port
+  try { const dx0 = ox + W / 2 + 4, dw = 70, dz1 = oz + 9, dz0 = oz - 46, cx = dx0 + dw / 2, bz = oz - 22, B = svkNew();
+    D.box('snow', dw, oy, dz1 - dz0, cx, oy / 2, (dz0 + dz1) / 2, 4); D.col(dx0, dx0 + dw, 0, oy, dz0, dz1); labels.push({ text: 'DEMO: SNAPPED BY PORTS', title: 1 }); plates.push({ i: labels.length - 1, x: cx, z: oz + 6.8, w: 6 });
+    const br = svkSnap(B, svkPiece('aq_bridge', { h: 6, bays: 3 }), 'foot', [cx - 27, oy, bz]); const foot = br.find(q => q.dir[0] < 0).at, foot2 = br.find(q => q.dir[0] > 0).at;
+    svkSnap(B, svkPiece('fire_pit'), 'foot', [foot[0] - 7, oy, foot[2] + 4]); svkSnap(B, svkPiece('hut', { seed: 21 }), 'door', [foot[0] - 7, oy, foot[2] - 2.5]);
+    let at = [foot2[0] + 2, oy, foot2[2] + 4]; for (let k = 0; k < 4; k++) { const f = svkSnap(B, svkPiece(k === 3 ? 'fence_corner' : 'fence_straight'), 'a', at); at = portOf(f, 'b'); }
+    svkSnap(B, svkPiece('banner_post'), 'foot', [foot[0] - 1.5, oy, foot[2] - 2.6]); svkSnap(B, svkPiece('jade_lamp'), 'foot', [foot2[0] + 1.5, oy, foot2[2] - 2.6]);
+    B.ports = []; svkEmit(D, B, [0, 0, 0]); }
+  catch (e) { console.error('[melee] snowkit demo', e); note('SNOWKIT DEMO THREW ' + e.message); }
   const LB = svkLabels(labels), lg = []; for (const P of plates) { const [u, v, du, dv] = LB.uv(P.i), pg = new THREE.PlaneGeometry(P.w, P.w / 8), a = pg.attributes.uv; for (let k = 0; k < a.count; k++) a.setXY(k, u + a.getX(k) * du, v + a.getY(k) * dv); pg.rotateX(-.5).translate(P.x, oy + .55, P.z); lg.push(pg);
     D.box('stoneD', P.w + .2, .35, .4, P.x, oy + .17, P.z - .05, 1); }
   const G = svkMesh(D); G.name = 'snowKitShowroom'; G.add(new THREE.Mesh(mergeGeometries(lg), new THREE.MeshBasicMaterial({ map: LB.tex, toneMapped: false }))); g.add(G); S.g = G;

@@ -5,6 +5,21 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- THE SNOW-VILLAGE KIT, pass 2: the BRIDGE / AQUEDUCT, and the demo snapped together by ports
+
+His: *"Did I mention that we need stuff like this for the village as well?"* (the aqueduct sheet) -- yes, it was in the UPDATE; this is it.
+- `SVKAQ` (bay 8 m, pier 2.2 m, deck 3.4 m wide): `aq_pier` (any height in .3 m steps; showroom shows 6 / 9 / 12 m) with the meander plinth, jade slits
+  and gold diamonds front and back, a gold-banded capital; `aq_span` (the round arch between two pier centres, a proud voussoir ring, a gold keystone with
+  a jade drip, ports a/b on the pier tops); `aq_deck` (the walkway slab, gold cornice, a balustrade both sides with jade studs every 2 m, snow, a
+  pushable snow patch, icicles, rails as colliders at .95 m so he cannot step over them); `aq_shrine` (the pier-top shrine tower: base, an open lantern
+  storey with a jade core, two snowy tiers, a gold cap, a tall jade finial; any size); `aq_ramp` (stairs up to the deck, .3 m risers, railed, jade lamps
+  at its foot).
+- WHOLE RUNS assembled by snapping: `svkSnap(dst, piece, portId, point, yaw)` puts a piece so its port lands on a point. `aq_section` (two piers, the
+  arch, the deck, shrines) and `aq_bridge` (ramp, n bays, ramp -- each piece snapped onto the port the last one exposed) are built only that way.
+- THE DEMO PLOT east of the rows: a 3-bay aqueduct on 6 m piers with its ramps, a hut, a fire pit, a fence run chained end-to-end by ports, a banner
+  post and a jade lamp at the bridge feet. Headless: 49 pieces, 74 ports, 360 colliders, the whole room 21 draws.
+Still open: watchtower / outpost and gate as kit buildings. Shipped unverified.
+
 ## m2033 -- THE SNOW-VILLAGE KIT, pass 1: pieces on a grid with snap ports, and the KIT SHOWROOM (`?w=forge&zone=snowkit`)
 
 Direction change (SNOW_VILLAGE.md UPDATE, relayed from the main session): a MODULAR KIT, not a village layout; placement is another context's.
