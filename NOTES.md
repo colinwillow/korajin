@@ -17,6 +17,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2166 -- THE GARDEN: a varied sky (four painted clouds, seven island shapes); the JINRA BEAM -- he floats, meditating (Nov 1 2026)
+His: *"a lot of the clouds have a similar shape, maybe rotation direction, same with the distant islands ... variety, their silhouettes ... much
+larger clouds and islands in the background."* And from the main session: *"a JINRA BEAM spot -- walk into it and he eases into a cross-legged
+meditation and floats up a couple of metres ... shows hands-on that Jinra makes things float, the rule the whole fall depends on."*
+- **CLOUDS** (`gdnCards`, still ONE draw): an atlas of FOUR of his painted clouds (`textures/garden_clouds.webp`, 2 x 2: cumulus, a long low bank,
+  a towering cumulonimbus, wispy streamers -- the three new ones from `tools/garden_textures.py` cloud_tower / cloud_bank / cloud_wisp, trimmed into
+  their cells). Each card: its cell, flipped or not, its own aspect, a slight roll, its own drift speed and direction. Three layers: banks and puffs
+  below and round the islands, wisps high, and a ring of 34 HUGE towers and banks on the horizon (`cards.far`).
+- **FAR ISLES** (`farGen`, merged into the far meshes): 26 more round the horizon in SEVEN shapes -- mesa, spire, twin, arch, tilted slab, cluster, a
+  rock trailing roots -- each turned and tilted its own way (one matrix), sized up with distance, some with falls. Kept out of the village reserve.
+- **THE JINRA BEAM** (`GARDEN.beam`, the garden's west side by willow_a): a stone spring basin with a jade rim, a mint column (two nested open
+  cylinders, light streaming up) and 90 motes spiralling up it -- 2 draws. Walk in (grounded) and `p.medit` takes the body (stepPlayer hands it to
+  `gdnMeditStep` like the hero drop): he is eased to the centre and up `lift` 2.3 m, bobbing; the column brightens and the motes tighten and quicken;
+  the stick (after .9 s) sinks him gently back to where he stood. `rigAnim` plays `GARDEN.beam.clip`.
+- **THE CLIP**: the Forge library (colinwillow/retarget-anims, attached to this session) -> `tools/forge.cjs models/characters/alien_goblin_game.glb
+  <the agoblin profile with two clips> models/characters/anims/agoblin_meditate.glb --lib ../retarget-anims/library/clips`: `meditate`
+  (Sitting_Idle) and `sit_cross` (Male_Sitting_Pose_9), 0.42 MB, loaded by HANIM (now takes a `clip` name). Switch with `GARDEN.beam.clip`.
+- Not verified: the float and the clip in play (headless cannot drive him into it). Cost: the cluster view is still ~285 draws -- the next pass
+  thins it. Shipped unverified.
+
 ## m2165 -- THE GARDEN: the Jinra heart, hero pass 1; Grumbo's FLYING SHIP moored at a sky dock (Nov 1 2026)
 His: *"the heart is a hero object -- the particles fluid and detailed, the spirals, everything its own texture, the geometry, the shape, the movement,
 the glow, the god rays ... that fire, pulsing, moving, spiral, organic, geometric thing"*; and *"bring in the flying ship ... after the Hollow
