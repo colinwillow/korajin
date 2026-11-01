@@ -9863,7 +9863,7 @@ function beastSlam(d, k) {
 }
 function beastHurt(d, dirH, power) {
   if (d.tame) return;     // m2011: the ridden mammoth is a friend
-  if (d.sleep) d.hitT = 1;     // m15LR: a blow wakes him
+  if (d.sleep) d.hitT = 1;     // m2012: a blow wakes him
   const C = beastC(d), P = d.root.position;
   snd('creature', { g: .5 + .4 * power, r: C.pitch * (.9 + Math.random() * .2), x: P.x, z: P.z });
   if (d.entering) return;
@@ -9881,7 +9881,7 @@ function beastHurt(d, dirH, power) {
 // a flare at each end -- reaches the snow and SWEEPS after you (the aim point chases you at `chase` m/s, so you can outrun it sideways) for `T` s.
 // Where it hits: ICE SPIKES erupt (pooled, `spikes`), the snow is blasted out and dug, frost mist rises. Inside `r` of the beam you are frozen-hurt
 // every `tick` s (a roll goes through). Your first trip north of z -30 wakes him by the cliffs. `ICEB.on = 0` gives him his fireballs back.
-const LAIR = { wakeR: 13, leash: 26 };     // m15LR: he wakes when you come within `wakeR` of him (or strike him); he will not follow you more than `leash` m from his nest
+const LAIR = { wakeR: 13, leash: 26 };     // m2012: he wakes when you come within `wakeR` of him (or strike him); he will not follow you more than `leash` m from his nest
 const ICEB = { frzHits: 3, frzT: 1.5, frost: 60, frostLife: 9, frz: null, on: 1, T: 1.9, hopH: 2.4, hopUp: .4, clipK: .35, chase: 7.5, len: 34, r: .9, tick: .28, dmgK: .3, spikes: 70, spikeLife: 4.5, mesh: null, seen: -9, sp: [], stat: { beams: 0 } };
 // m2007: pass 2 -- the CHARGE (an orb of frost swelling in his jaws, motes drawn in from all round), FROZEN SOLID (three ticks in one beam and you are
 // encased in a block of ice for `frzT` s, the pose held, then it SHATTERS into spikes and powder), and the beam FREEZES the snow it sweeps (flat frost
@@ -10087,7 +10087,7 @@ function beastStep(d, dt, t) {
     return true;
   }
   if (fly) return beastFly(d, dt, t, dd, toP);
-  { const gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0; d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m15LR: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
+  { const gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0; d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m2012: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
   if (d.st !== 'cFire') d.beam = null;     // m2006: a hit ends the beam
   if (d.sleep) { const C2 = beastC(d), wk = 'wake_up'; if (d.actions[wk]) { t[wk] = 1; setSkinScale(d, wk, 0); } else t[C2.clips.idle] = 1; if (dd < LAIR.wakeR || d.hitT) { d.sleep = 0; d.waking = 0; snd('creature', { g: 1, r: .5, x: P.x, z: P.z }); camShake(.4); if (SNOWZ.air) snowBlast(P.x, P.y, P.z, 5, 1.4); if (d.actions[wk]) { setSkinScale(d, wk, 1); skinPlay(d, wk, 1); } tipShow('The dragon wakes!', 2.5); } return true; }
   if (d.waking != null && d.actions.wake_up && d.waking < skinLen(d, 'wake_up')) { d.waking += dt; t.wake_up = 1; faceTo(d, toP, dt); return true; }
@@ -10766,7 +10766,7 @@ function pondIn(x, z, m) { const dx = x - POND.at[0], dz = z - POND.at[1]; retur
 const SNOWCLIFF = { area: [-26, 40, -98, -42],
   blocks: [ { id: 'ledge1', x: 4, z: -48, w: 14, d: 8, h: 2.0 }, { id: 'ledge1b', x: -8, z: -51, w: 9, d: 7, h: 1.2 },
     { id: 'ledge2', x: 16, z: -55, w: 10, d: 8, h: 3.8 }, { id: 'ledge2b', x: 28, z: -54, w: 7, d: 6, h: 2.6 },
-    { id: 'cliff', x: 6, z: -73, w: 56, d: 14, h: 9.5 }, { id: 'lairfloor', x: 4, z: -88, w: 30, d: 16, h: 9.5 },     /* m15LR: the crag is gone; the cliff runs back under the lair */ { id: 'spur', x: -16, z: -63, w: 9, d: 8, h: 6.8 } ],
+    { id: 'cliff', x: 6, z: -73, w: 56, d: 14, h: 9.5 }, { id: 'lairfloor', x: 4, z: -88, w: 30, d: 16, h: 9.5 },     /* m2012: the crag is gone; the cliff runs back under the lair */ { id: 'spur', x: -16, z: -63, w: 9, d: 8, h: 6.8 } ],
   shelves: [ { id: 'shelf1', x: 6, z: -63, w: 14, d: 6.5, y: 6.0, t: .7 }, { id: 'shelf2', x: 24, z: -62.5, w: 8, d: 5, y: 7.8, t: .6 } ],
   falls: { x: 31, w: 6, top: 9.5, z: -66 }, lair: { x: 4, z: -86, R: 11, H: 8.5, nest: [0, -4] } };
 function cliffIn(x, z, m) { const A = SNOWCLIFF.area; m = m || 0; if (x > A[0] - m && x < A[1] + m && z > A[2] - m && z < A[3] + m) return true; for (const P of SNOWKIT.places) if (Math.hypot(x - P.x, z - P.z) < P.r + m) return true; return false; }
@@ -10799,7 +10799,7 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
   const crystal = (x, y, z, s, tilt) => { const n = 3 + Math.floor(R() * 4); for (let k = 0; k < n; k++) { const h = s * (.6 + R() * .9), r = h * .12, a = R() * 6.28, t = tilt + R() * .5;
       const geo = new THREE.CylinderGeometry(r, r, h, 6).translate(0, h / 2, 0); const tip = new THREE.ConeGeometry(r, r * 2.2, 6).translate(0, h + r * 1.1, 0);
       for (const q of [geo, tip]) { q.rotateZ(t * Math.cos(a)).rotateX(t * Math.sin(a)).translate(x, y, z); ice.push(q); } } };
-  // m15LR: THE LAIR -- an ice CAVERN on the cliff top: a lumpy rock dome (R `lair.R`, H `lair.H`) open to the south, an inner face so it reads from inside,
+  // m2012: THE LAIR -- an ice CAVERN on the cliff top: a lumpy rock dome (R `lair.R`, H `lair.H`) open to the south, an inner face so it reads from inside,
   // a ring of wall colliders, a glassy frozen floor, ice stalactites, glowing crystal banks round the walls, and at the back the NEST -- a ring of
   // boulders round a bed of bones and three great ice eggs, the dragon asleep on it. Floating crystals above its crown.
   { const L = C.lair, R0 = L.R, H = L.H, half = .62, y0 = 9.5;     // the gap round phi PI/2*3 (three's sphere: x = -cos(phi), z = sin(phi) -> -z is phi 3PI/2; +z, the mouth, is phi PI/2)
@@ -11234,7 +11234,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
   mamFrame();     // m2011
   if (!Z.mamSpawned && ARENA.kinds.MAMMOTH && typeof arenaSpawn === 'function') { Z.mamSpawned = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'mammoth') return; d.entering = 0; d.tame = 1; d.st = 'cIdle'; d.ride = { v: 0 }; d.h = MAMR.yaw; d.root.position.set(MAMR.at[0], 0, MAMR.at[1]); d.root.rotation.y = d.h + (d.faceOff || 0); if (d.bar) d.bar.g.visible = false; MAMR.d = d; mamSaddle(d); }).catch(e => note('MAMMOTH THREW ' + e.message)); }     // m2011: the tame mammoth waits, saddled
   iceFreezeStep(dt); iceFrostStep(dt);     // m2007
-  if (!Z.dragonWoke && p.pos.z < -40 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON && SNOWCLIFF.nestAt) { Z.dragonWoke = 1; Promise.resolve(arenaSpawn('DRAGON')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'dragon') return; const N = SNOWCLIFF.nestAt;     // m15LR: he sleeps in his lair
+  if (!Z.dragonWoke && p.pos.z < -40 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON && SNOWCLIFF.nestAt) { Z.dragonWoke = 1; Promise.resolve(arenaSpawn('DRAGON')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'dragon') return; const N = SNOWCLIFF.nestAt;     // m2012: he sleeps in his lair
     d.entering = 0; d.st = 'cIdle'; d.home = N; d.sleep = 1; d.root.position.set(N[0], N[1], N[2]); d.h = 0; d.root.rotation.y = d.h + (d.faceOff || 0); }).catch(e => note('DRAGON THREW ' + e.message)); }     // m2006: the blue dragon lives up here
   if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;

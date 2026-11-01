@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15LR -- THE DRAGON'S LAIR (Nov 1 2026)
+## m2012 -- THE DRAGON'S LAIR (Nov 1 2026)
 *"Go -- the mammoth ride, then the lair."* The crag and its doorway are gone; the cliff runs back under a new floor (`lairfloor`, 9.5 m, z -96..-80) and on
 it sits the LAIR (`SNOWCLIFF.lair`, at (4, -86)): a lumpy rock DOME (R 11, H 8.5) open to the south, an inner face so it reads from within, a ring of 26
 wall colliders, a frozen floor, 40 ice stalactites, a dozen glowing crystal banks round the walls, two great ice jambs at the mouth, and at the back the
