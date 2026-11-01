@@ -6,7 +6,7 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 <<<<<<< HEAD
-## mNEXT -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
+## m2048 -- THE SNOW-VILLAGE KIT, pass 3: watchtower, gate, outpost (whole buildings snapped from pieces)
 
 His: *"Keep going"* -- the brief's remaining whole buildings.
 - New pieces: `stairs_wood` (open timber stairs, .3 m risers, stringers and handrail, solid riser colliders) and `deck_posts` (a braced plank deck on
