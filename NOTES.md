@@ -6,6 +6,13 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## m2067 -- THE GREAT WATERFALL: tidy -- snow lips closer, gold bands flush
+
+His: "yeah tidy". The snow lips stood out a metre past the face (a shelf); now ~.5 m (centre at the face's front -.55). The pillars' top 5.5 m
+keep only 15 % of their noise (`block(..., sm)`), so the gold bands -- now .05-.2 m proud, front plate + sides to the rock -- lie on flat stone
+instead of floating over bumps. Render: the bands read as inlaid from the side; from the pool's low angle they still outline each pillar top
+(that is what a band looks like from below); the lips by the aqueduct still read a little shelf-like side-on. Headless: ladders clear.
+
 ## m2066 -- the BACKPACK closes on a tap anywhere else (Nov 1 2026)
 m2057 left it open until the BACKPACK button was tapped again. A capture-phase `pointerdown` on the window now closes it for any tap outside the panel
 and the button (capture, so the sticks' own handlers cannot swallow it -- the tap that closes it still moves / jumps). Shipped unverified.
