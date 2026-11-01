@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2145 -- the LIBRARY's black hut thumbnails: drawn before their textures had loaded (Nov 1 2026)
+His: *"great fix them!"* (the three huts' tiles were black silhouettes). The kit's painted maps (`texGet`, async) draw BLACK until their image
+lands, and the huts are the first tiles the pump draws -- by the long hall the shared maps had arrived. `libReady(E)` walks the prototype's
+materials (map / emissiveMap / bumpMap) and a tile whose maps are not all in goes to the back of the queue (up to 600 frames, then drawn as is).
+Thumbs are keyed by the build, so m2143's black ones are redrawn. The willow / forest temple still expose no piece builder. Shipped unverified.
+
 ## m2144 -- THE FOREST DOMED TEMPLE: one building, its own zone, built to finish (Nov 1 2026)
 His: *"I'm starting to feel again like we are moving too broad. I would like to build one building at a time, or a courtyard's worth, like a castle --
 the way we built the Red Hollows, the ship and the arena -- and only move on once the local area feels complete ... once the building is made, you
@@ -48,7 +54,6 @@ can build the landscape."* Reference: `images/concepts/forest_temple/domed_templ
 - **DONE WHEN** (not ticked: his sign-off on the phone is the last box): massing+plinth, columns+capitals, entablature+finials+drum, dome+crown tree,
   door+cella, vines+moss, interior (oculus ray, orb, banners), the clearing -- all in a first pass; detail passes against the sheet still open
   (cella panels, carved capitals, more relief, interior dome detail). Shipped unverified.
-
 ## m2143 -- THE LIBRARY: a catalogue in the Level Builder to look through and place buildings, pieces, props, plants, moving pieces (Nov 1 2026)
 His: *"Do we have a catalogue of our buildings? It would be super nice to have basically a library where I could look through and place buildings,
 and plants, and any other features."* TOOLS > LEVEL BUILDER > LIBRARY (also a LIBRARY button on the builder's top bar and its ADD panel).
