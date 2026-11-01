@@ -39,6 +39,12 @@ temple is two feet from the rest of the ice world -- I pictured it five times fa
   DOOR (red; a toast "THE TEMPLE BELOW -- sealed"). Two jackal markers guard the door, two statue markers line the corridor.
 - The warp key: VALLEY MOUTH > TERRACE 1 > TERRACE 2 > MOAT > FORECOURT > THE DOOR TOP > THE DESCENT > THE LOWER DOOR.
 Headless: warped to the moat 1.5 km out, he stands on it (y 24.06) -- nothing out there clamps or kills him. Shipped unverified.
+## m15HD -- THE HERD: mammoth calves in the Snowfield (Nov 1 2026)
+The snow list ("snow creatures"). `HERD`: five CALVES (kind CALF -- the cow-rig mammoth at 1.9 m) live round (6, 52): they GRAZE (Eat_loop), AMBLE
+to a new spot (Walk_F_IP), look up (Idle_2); come within 7 m -- or strike one -- and the whole herd STAMPEDES away from you (Run_F_IP) for 3.5 s, then
+settles and drifts back. They wade 60% up the snow pack (small bodies were drowning in it), their trunks spring, their feet carve the snow. Two traps
+measured: the tame mammoth and the calves spawned in the same frame and the tame one was never claimed (`DUMMIES[last]` picked a calf) -- spawns now
+find their body BY KIND (`K.arena`), and the herd waits for the tame mammoth. Measured headless: 5 calves, the tame mammoth claimed, grazing/walking.
 
 ## m2019 -- the far mountains painted; the platforms made organic (Nov 1 2026)
 *"Textures for the back grey rock mountains and anything else that isn't painted; the cubic, rectangular platforms look non-organic."*

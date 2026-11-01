@@ -7699,6 +7699,7 @@ const ARENA = {
     CEO: { t: 'The CEO', sub: 'MORPH him: the boss super transform', civ: 'CEO', both: 1, beam: [1, .8, .3] },
     CEOALIEN: { bones: 'reptile', t: 'The CEO, unleashed', sub: 'his reptilian self', file: 'models/characters/ceo_alien.glb', weapon: 'models/weapons/w_brute_cleaver.glb', h: 2.3, hp: 18, hitDmg: 20, beam: [1, .8, .3], noShield: 1 },
     // m974: BEASTS -- his robits creatures, through the doors, on their own brains (`beastStep`)
+    CALF: { creature: 'mammoth', t: 'Mammoth Calf', sub: 'grazes, stampedes', file: 'models/creatures/mammoth.glb', h: 1.9, hp: 6, hitDmg: 6, beam: [.9, .7, .4], noShield: 1 },     // m15HD
     MAMMOTH: { creature: 'mammoth', t: 'Mammoth', sub: 'charges and stomps', file: 'models/creatures/mammoth.glb', h: 4.4, hp: 26, hitDmg: 20, beam: [.9, .7, .4], noShield: 1 },     // m1992
     DOG: { creature: 'dog', t: 'Three-Headed Dog', sub: 'bites and lunges', file: 'models/creatures/3_headed_dog.glb', h: 2.3, hp: 16, hitDmg: 16, beam: [1, .45, .2], noShield: 1 },
     DRAGON: { creature: 'dragon', t: 'Blue Dragon', sub: 'fireballs (an ICE BEAM in the snow)', file: 'models/creatures/blue_dragon.glb', h: 3.2, hp: 20, hitDmg: 18, beam: [.3, .6, 1], noShield: 1 },
@@ -9864,6 +9865,7 @@ function beastSlam(d, k) {
 }
 function beastHurt(d, dirH, power) {
   if (d.tame) return;     // m2011: the ridden mammoth is a friend
+  if (d.critter) { d.hitT = 1; HERD.panic = 1.5; }     // m15HD: one struck, the herd runs
   if (d.sleep) d.hitT = 1;     // m2012: a blow wakes him
   const C = beastC(d), P = d.root.position;
   snd('creature', { g: .5 + .4 * power, r: C.pitch * (.9 + Math.random() * .2), x: P.x, z: P.z });
@@ -10088,6 +10090,7 @@ function beastFxStep(dt) {
 }
 function beastStep(d, dt, t) {
   if (d.tame) return mamTameStep(d, dt, t);     // m2011
+  if (d.critter) return herdStep(d, dt, t);     // m15HD
   const K = d.K, C = beastC(d), L = d.root, P = L.position, fly = K.creature === 'mech';
   const px = player.pos.x - P.x, pz = player.pos.z - P.z, dd = Math.hypot(px, pz), toP = Math.atan2(px, pz), Lv = arenaLvl();
   if (d.bar && (d.entering || d.st === 'cDeath')) d.bar.g.visible = false;
@@ -11299,7 +11302,10 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
   iceSpikeStep(dt);     // m2006
   snowNightStep(dt);     // m2018
   mamFrame();     // m2011
-  if (!Z.mamSpawned && ARENA.kinds.MAMMOTH && typeof arenaSpawn === 'function') { Z.mamSpawned = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'mammoth') return; d.entering = 0; d.tame = 1; d.st = 'cIdle'; d.ride = { v: 0 }; d.h = MAMR.yaw; d.root.position.set(MAMR.at[0], 0, MAMR.at[1]); d.root.rotation.y = d.h + (d.faceOff || 0); if (d.bar) d.bar.g.visible = false; MAMR.d = d; mamSaddle(d); }).catch(e => note('MAMMOTH THREW ' + e.message)); }     // m2011: the tame mammoth waits, saddled
+  if (HERD.panic > 0) HERD.panic -= dt;
+  if (!Z.herdSpawned && (MAMR.d || Z.t > 8) && ARENA.kinds.CALF && typeof arenaSpawn === 'function') {     /* after the tame mammoth: two spawns at once lost one (measured) */ Z.herdSpawned = 1; (async () => { for (let i = 0; i < HERD.n; i++) { try { await arenaSpawn('CALF'); const d = [...DUMMIES].reverse().find(o => o.K && o.K.arena === 'CALF' && !o.critter); if (!d) continue;
+      d.entering = 0; d.critter = 1; d.st = 'cIdle'; const a = i / HERD.n * 6.28, r = 3 + Math.random() * HERD.r * .6; d.root.position.set(HERD.at[0] + Math.cos(a) * r, 0, HERD.at[1] + Math.sin(a) * r); d.h = Math.random() * 6.28; if (d.bar) d.bar.g.visible = false; } catch (e) { note('HERD THREW ' + e.message); } } })(); }     // m15HD: the herd
+  if (!Z.mamSpawned && ARENA.kinds.MAMMOTH && typeof arenaSpawn === 'function') { Z.mamSpawned = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = [...DUMMIES].reverse().find(o => o.K && o.K.arena === 'MAMMOTH' && !o.tame && !o.critter); if (!d) return;     /* by KIND, never 'the last one' (m15HD: the calves spawn alongside) */ d.entering = 0; d.tame = 1; d.st = 'cIdle'; d.ride = { v: 0 }; d.h = MAMR.yaw; d.root.position.set(MAMR.at[0], 0, MAMR.at[1]); d.root.rotation.y = d.h + (d.faceOff || 0); if (d.bar) d.bar.g.visible = false; MAMR.d = d; mamSaddle(d); }).catch(e => note('MAMMOTH THREW ' + e.message)); }     // m2011: the tame mammoth waits, saddled
   iceFreezeStep(dt); iceFrostStep(dt);     // m2007
   if (!Z.dragonWoke && p.pos.z < -40 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON && SNOWCLIFF.nestAt) { Z.dragonWoke = 1; Promise.resolve(arenaSpawn('DRAGON')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'dragon') return; const N = SNOWCLIFF.nestAt;     // m2012: he sleeps in his lair
     d.entering = 0; d.st = 'cIdle'; d.home = N; d.sleep = 1; d.root.position.set(N[0], N[1], N[2]); d.h = 0; d.root.rotation.y = d.h + (d.faceOff || 0); }).catch(e => note('DRAGON THREW ' + e.message)); }     // m2006: the blue dragon lives up here
@@ -12811,6 +12817,20 @@ function mamTameStep(d, dt, t) { const P = d.root.position, R = d.ride || (d.rid
   R.v += (want * (S.mag > 0 ? clamp(1 - Math.abs(wrapAngle(Math.atan2(S.x, S.z) - d.h)) / 2.2, .35, 1) : 0) - R.v) * (1 - Math.exp(-dt * Math.LN2 / (want > R.v ? MAMR.accHL : MAMR.brakeHL)));
   if (R.v > .05) foeMove(d, d.h, R.v, dt);
   const clip = R.v < .35 ? 'Idle_1' : R.v < MAMR.walkV * 1.25 ? 'Walk_F_IP' : R.v < MAMR.trotV * 1.25 ? 'Trot_F_IP' : 'Run_F_IP'; t[clip] = 1; if (MAMR.ref[clip]) setSkinScale(d, clip, clamp(R.v / MAMR.ref[clip], .6, 1.5));
+  return true; }
+// m15HD: THE HERD (the snow list: "snow creatures -- a herd of mini mammoths wandering the field"). `HERD.n` calves (the mammoth on the cow rig at
+// 1.9 m, kind CALF) live round `HERD.at`: they GRAZE (Eat_loop) a few seconds, AMBLE to a new spot near the herd (Walk_F_IP), look up (Idle_*), and
+// when you come within `scare` m -- or one is struck -- the whole herd STAMPEDES away from you (Run_F_IP), then settles and drifts back. Their trunks
+// spring and their feet carve the snow like any body. They can be hurt.
+const HERD = { n: 5, at: [6, 52], r: 11, walk: 1.5, run: 6.5, scare: 7, fleeT: 3.5 };
+function herdStep(d, dt, t) { const P = d.root.position, H = d.herd || (d.herd = { st: 'graze', t: Math.random() * 3, T: 3 + Math.random() * 4, tx: P.x, tz: P.z }); P.y = SNOWZ.D && Math.abs(P.x) < SNOWZ.size / 2 && Math.abs(P.z) < SNOWZ.size / 2 ? snowAt(P.x, P.z) * SNOWZ.depth * .6 : 0; H.t += dt;     /* calves are small: they wade, not drown (60% up the pack) */
+  const px = player.pos.x - P.x, pz = player.pos.z - P.z, pd = Math.hypot(px, pz);
+  if ((pd < HERD.scare || d.hitT || HERD.panic > 0) && H.st !== 'flee') { H.st = 'flee'; H.t = 0; d.hitT = 0; HERD.panic = Math.max(HERD.panic || 0, .6); if (Math.random() < .5) snd('creature', { g: .5, r: 1.6, x: P.x, z: P.z }); }
+  if (H.st === 'flee') { const away = Math.atan2(-px, -pz); d.h += clamp(wrapAngle(away - d.h), -3 * dt, 3 * dt); foeMove(d, d.h, HERD.run, dt); t.Run_F_IP = 1;
+    if (H.t > HERD.fleeT && pd > HERD.scare * 1.6) { H.st = 'walk'; H.t = 0; const a = Math.random() * 6.28, r = Math.random() * HERD.r; H.tx = HERD.at[0] + Math.cos(a) * r; H.tz = HERD.at[1] + Math.sin(a) * r; } return true; }
+  if (H.st === 'walk') { const dx = H.tx - P.x, dz = H.tz - P.z, l = Math.hypot(dx, dz); d.h += clamp(wrapAngle(Math.atan2(dx, dz) - d.h), -1.6 * dt, 1.6 * dt); foeMove(d, d.h, HERD.walk, dt); t.Walk_F_IP = 1;
+    if (l < 1.2 || H.t > 14) { H.st = Math.random() < .7 ? 'graze' : 'look'; H.t = 0; H.T = 3 + Math.random() * 5; } return true; }
+  t[H.st === 'graze' ? 'Eat_loop' : 'Idle_2'] = 1; if (H.t > H.T) { H.st = 'walk'; H.t = 0; const a = Math.random() * 6.28, r = Math.random() * HERD.r; H.tx = HERD.at[0] + Math.cos(a) * r; H.tz = HERD.at[1] + Math.sin(a) * r; }
   return true; }
 function mountFlipPose() { const p = player, R = p.dragon || p.mamRide; if (!R || !R.flipA || !rig.root) return;
   const H = hbarH(), ax = _afV2.set(Math.cos(p.faceH), 0, -Math.sin(p.faceH)); _afQ2.setFromAxisAngle(ax, R.flipA); rig.root.quaternion.premultiply(_afQ2);     /* his LEFT is +X of the heading frame: a positive turn about it pitches him forward */
