@@ -10794,8 +10794,8 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
   const rough = (geo, k, top, cx, cz, hw, hd) => { const P = geo.attributes.position; geo.computeBoundingBox(); const bb = geo.boundingBox, y0 = bb.min.y, hy = (bb.max.y - y0) || 1;
     cx = cx != null ? cx : (bb.min.x + bb.max.x) / 2; cz = cz != null ? cz : (bb.min.z + bb.max.z) / 2; hw = hw || (bb.max.x - bb.min.x) / 2; hd = hd || (bb.max.z - bb.min.z) / 2;
     for (let i = 0; i < P.count; i++) { let x = P.getX(i), y = P.getY(i), z = P.getZ(i); const u = (x - cx) / hw, v = (z - cz) / hd, t = (y - y0) / hy, isTop = top != null && y > top - .01;
-      const pe = SNOWCLIFF.pe, m = Math.pow(Math.pow(Math.abs(u), pe) + Math.pow(Math.abs(v), pe), 1 / pe) || 1, rnd = Math.max(Math.abs(u), Math.abs(v)) / m;     // square -> rounded square (m15OR: rounder, `pe` 4 -> 2.6)
-      const ang = Math.atan2(v, u), wave = (Math.sin(ang * 3 + cx * .37) * .55 + Math.sin(ang * 7 + cz * .21) * .25) * SNOWCLIFF.wave * (isTop ? .35 : 1),     /* m15OR (his: "the platforms look non-organic -- just blocks"): the outline WAVES in plan, */
+      const pe = SNOWCLIFF.pe, m = Math.pow(Math.pow(Math.abs(u), pe) + Math.pow(Math.abs(v), pe), 1 / pe) || 1, rnd = Math.max(Math.abs(u), Math.abs(v)) / m;     // square -> rounded square (m2019: rounder, `pe` 4 -> 2.6)
+      const ang = Math.atan2(v, u), wave = (Math.sin(ang * 3 + cx * .37) * .55 + Math.sin(ang * 7 + cz * .21) * .25) * SNOWCLIFF.wave * (isTop ? .35 : 1),     /* m2019 (his: "the platforms look non-organic -- just blocks"): the outline WAVES in plan, */
         strata = isTop ? 0 : (Math.abs(((y * SNOWCLIFF.strataF) % 1 + 1) % 1 - .5) * 2 - .5) * SNOWCLIFF.strata, under = isTop ? 0 : -SNOWCLIFF.under * Math.exp(-((t - .82) ** 2) / .01);     /* the walls step in LEDGES (strata) and tuck under the lip */
       const tap = 1 + .14 * (1 - t), n = nz3(x, y, z) * k * (isTop ? .25 : 1) + wave + strata + under;
       x = cx + u * hw * rnd * tap + Math.sign(u) * n * Math.min(1, Math.abs(u)); z = cz + v * hd * rnd * tap + Math.sign(v) * n * Math.min(1, Math.abs(v)); if (!isTop) y += nz3(z, x, y) * k * .25 * Math.min(1, t * 4);
@@ -10805,7 +10805,7 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
     const cp = new THREE.BoxGeometry(b.w + .3, .4, b.d + .3, Math.max(4, Math.round(b.w)), 1, Math.max(4, Math.round(b.d))); const P = cp.attributes.position; for (let i = 0; i < P.count; i++) { const ex = Math.abs(P.getX(i)) / (b.w / 2 + .15), ez = Math.abs(P.getZ(i)) / (b.d / 2 + .15), e = Math.max(ex, ez); if (P.getY(i) > 0) P.setY(i, .02 + .04 * (1 - e * e)); else P.setY(i, -.2 - .25 * Math.max(0, Math.sin(P.getX(i) * 1.7 + P.getZ(i) * 1.3)) * (e > .97 ? 1 : 0)); }     /* a soft pillow of snow, drooping over the lip */
     cp.translate(b.x, y1 + .02, b.z); cap.push(rough(cp, .25, y1 + .1, b.x, b.z, b.w / 2 + .15, b.d / 2 + .15)); patchAdd(b.x, b.z, b.w, b.d, y1 + .06, 1); };     /* m2005: a thin skin, and a PUSHABLE patch of snow on top */
   for (const b of C.blocks) block(b, 0, b.h);
-  for (const S of C.shelves) { const geo = rough(new THREE.BoxGeometry(S.w, S.t, S.d, 10, 1, 6).translate(S.x, S.y - S.t / 2, S.z), .3, S.y, S.x, S.z, S.w / 2, S.d / 2); ice.push(geo);     /* m15OR: the shelf's outline waves too */ BOXES.push({ minx: S.x - S.w / 2, maxx: S.x + S.w / 2, miny: S.y - S.t, maxy: S.y, minz: S.z - S.d / 2, maxz: S.z + S.d / 2 });
+  for (const S of C.shelves) { const geo = rough(new THREE.BoxGeometry(S.w, S.t, S.d, 10, 1, 6).translate(S.x, S.y - S.t / 2, S.z), .3, S.y, S.x, S.z, S.w / 2, S.d / 2); ice.push(geo);     /* m2019: the shelf's outline waves too */ BOXES.push({ minx: S.x - S.w / 2, maxx: S.x + S.w / 2, miny: S.y - S.t, maxy: S.y, minz: S.z - S.d / 2, maxz: S.z + S.d / 2 });
     patchAdd(S.x, S.z, S.w - .3, S.d - .3, S.y, 1);
     for (let k = 0; k < S.w * 1.6; k++) { const L = .4 + R() * 1.4, x = S.x - S.w / 2 + R() * S.w, z = S.z + (R() < .6 ? S.d / 2 - .2 : (R() - .5) * S.d); ice.push(new THREE.ConeGeometry(.08 + R() * .1, L, 5).rotateX(Math.PI).translate(x, S.y - S.t - L / 2 + .05, z)); } }     // icicles under the shelf
   for (const b of C.blocks) if (b.h > 3) for (let k = 0; k < b.w * .7; k++) { const L = .3 + R() * 1.1, x = b.x - b.w / 2 + R() * b.w; ice.push(new THREE.ConeGeometry(.07 + R() * .08, L, 5).rotateX(Math.PI).translate(x, b.h - L / 2 - .05, b.z + b.d / 2 + .25)); }     // icicles off the lips
@@ -10934,7 +10934,7 @@ function patchStep(dt) { const S = SNOWPATCH; if (!S.mesh) return; S.acc += dt;
 // the snow surface wherever a body is: a patch under him if there is one, else the field's pack
 function snowSurfY(x, y, z) { const ps = patchSurf(x, y, z); if (ps != null) return ps; const Z = SNOWZ; return Math.abs(x) < Z.size / 2 && Math.abs(z) < Z.size / 2 ? snowAt(x, z) * Z.depth : null; }
 function snowDig(x, y, z, r, keep) { if (patchStamp(x, y, z, r, keep)) return; const Z = SNOWZ; if (Math.abs(x) < Z.size / 2 && Math.abs(z) < Z.size / 2 && y < Z.depth + 1) { const s = snowAt(x, z); snowStamp(x, z, r, s * keep); } }
-// m15OR (his: "textures for the back grey rock mountains, and anything else that isn't painted"): the far peaks get the painted granite on their
+// m2019 (his: "textures for the back grey rock mountains, and anything else that isn't painted"): the far peaks get the painted granite on their
 // slopes and the painted snow wherever a face turns up or climbs high (blended by the face's slope and its height), triplanar at a mountain's
 // scale, keeping their vertex colour as a broad tint; still unfogged (they ARE the horizon). Their storm fade and night darkening still apply.
 function snowPeakMat() { const rock = texGet('snow_rock'), snow = texGet('snow_snow'), m = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 1, fog: false }); m.customProgramCacheKey = () => 'snowpeak';
@@ -11036,7 +11036,7 @@ function snowStage(g) {
     const t = texGet('snow_ice').clone(); t.needsUpdate = true; t.repeat.set(1 / POND.tex, 1 / POND.tex);
     const ice = new THREE.Mesh(new THREE.ShapeGeometry(sh, 12).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ map: t, color: 0xdff4ff, roughness: .1, metalness: .15, emissive: 0x0c3a48, emissiveIntensity: .35 }));
     ice.position.set(POND.at[0], .025, POND.at[1]); ice.receiveShadow = true; g.add(ice); Z.ice = ice; }
-  Z.peaks = forgePeaks(g); if (Z.paint) { try { Z.peaks.material = snowPeakMat(); } catch (e) { note('PEAKS THREW ' + e.message); } }     // m15OR: the far mountains painted
+  Z.peaks = forgePeaks(g); if (Z.paint) { try { Z.peaks.material = snowPeakMat(); } catch (e) { note('PEAKS THREW ' + e.message); } }     // m2019: the far mountains painted
   camera.far = Math.max(camera.far, 900); camera.updateProjectionMatrix();
   // THE AIR: flakes, and the kicked-up puffs, in one Points
   const NF = Z.flakes, NP = Z.puffs, NT = NF + NP, P = new Float32Array(NT * 3), S = new Float32Array(NT), A = new Float32Array(NT);

@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15OR -- the far mountains painted; the platforms made organic (Nov 1 2026)
+## m2019 -- the far mountains painted; the platforms made organic (Nov 1 2026)
 *"Textures for the back grey rock mountains and anything else that isn't painted; the cubic, rectangular platforms look non-organic."*
 - the PEAKS (`snowPeakMat`, Snowfield only): painted granite on the slopes, painted snow where a face turns up or climbs high (slope + height blend),
   triplanar at a 38 m scale, their vertex colour kept as a broad tint; still unfogged; the storm fade / night darkening still work on them
