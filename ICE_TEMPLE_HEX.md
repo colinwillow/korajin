@@ -14,7 +14,7 @@ Three sub-chambers (not six): each one technique's ladder, so each feels authore
 | B1 | 1 | puzzle | REFLECT -> introduce (raise the shield, bounce a beam into one target) | -20 | K7, B2 | needs BEAM TURRET + TARGET | sketched |
 | B2 | 1 | puzzle | REFLECT -> develop (two bounces, a crystal mirror) | -20 | B1, B3 | | sketched |
 | B3 | 1 | combat | REFLECT -> twist (a moving turret + guards) | -20 | B2 | SHARD B + "mirror guard" (a perfect parry reflects anything) | sketched |
-| C1 | 1 | traversal | WALL RUN UP -> introduce (a 2.6 m face) then develop (a 3.6 m face from a 16 m sprint lane) | -20 -> -14 | K8, C2 | inside a TUBE (curved walls); KORAJIN > Temple Cell C1 | BLOCKOUT (m15C1) |
+| C1 | 1 | traversal | WALL RUN UP -> introduce (a 2.6 m face) then develop (a 3.6 m face from a 16 m sprint lane) | -20 -> -14 | K8, C2 | inside a TUBE (curved walls); KORAJIN > Temple Cell C1 | BLOCKOUT (m2040) |
 | C2 | 1 | traversal | CHIMNEY -> develop (15 m tall) | -14 -> 0 | C1, C3 | | sketched |
 | C3 | 1 | reward | COMBINE: wall run -> high bar -> zip line back down to K8 | 0 -> -20 | C2, K8 | SHARD C + "updraft dash" | sketched |
 | K1 | 1 | traversal | side wall run -> DEVELOP (an 8 m ravine) | -20 | K5, K9 | | sketched |

@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15C1 -- TEMPLE CELL C1: the first designed cell (Nov 1 2026)
+## m2040 -- TEMPLE CELL C1: the first designed cell (Nov 1 2026)
 LEVEL_METHOD.md step 3. KORAJIN > Temple Cell C1 (`?w=forge&zone=cell&cell=C1`). The bottom of the ice temple's Climb Tower (ICE_TEMPLE_HEX.md): WALL RUN
 UP, introduce -> develop, inside a TUBE (r 10, 16 m). Enter at floor level (south door, cyan frame). Ahead a low curved SHELF with a 2.6 m face (the run's
 comfy 2.7) and orange chevrons: run at it, run up, grab. Along it a ~16 m curved SPRINT LANE (floor chevrons) that ends head-on at a 3.6 m face (the

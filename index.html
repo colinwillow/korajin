@@ -11537,7 +11537,7 @@ const TLAY = { want: 0, seed: (() => { try { const m = /[?&]seed=(\d+)/.exec(loc
   col: { entry: 0x8a8f99, path: 0x9aa0aa, gate: 0xc88a4a, puzzle: 0x4ab8c8, acro: 0x8fb070, miniboss: 0xc85a4a, chalice: 0xd8b44a, mesa: 0x7a7f8a },
   graph: null, stat: null };
 try { if (/[?&]zone=tlayout\b/.test(location.search)) TLAY.want = 1; } catch (e) {}
-// m15C1: THE TCELL SANDBOX (LEVEL_METHOD.md: one cell at a time, designed, played, refined, SIGNED). `?w=forge&zone=cell&cell=C1` (KORAJIN > Temple Cell
+// m2040: THE TCELL SANDBOX (LEVEL_METHOD.md: one cell at a time, designed, played, refined, SIGNED). `?w=forge&zone=cell&cell=C1` (KORAJIN > Temple Cell
 // C1). A cell is DATA (`CELLS[id]`, pieces in the cell's own metres) built by `cellStage` from a few exact piece kinds -- `tube` (a cylinder's inside wall
 // with door gaps), `shelf` (a curved ledge band against the tube wall), `floor`, `door` (a glowing frame), `arrow` (painted chevrons saying "run up here")
 // -- every curved piece collides as TURNED boxes (`obox`: cx/cz/hx/hz/cs/sn, the kit city's format, which the wall run reads), never an axis box round a
@@ -13625,7 +13625,7 @@ function arenaStage() {
   const R = ARENA.r, g = new THREE.Group(), L = ARENA.look; world.add(g);
   // m1117: THE BUILDING FORGE -- a clean white floor under the arena's sky, nothing else: the buildings are spawned into it (SPAWN > BUILDINGS)
   if (inForge() && DRAGZ.want) { dragStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1610: THE DRAGON RIDE's island instead of the white floor
-  if (inForge() && TCELL.want) { try { cellStage(g); } catch (e) { note('CELL THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m15C1: one designed cell at a time
+  if (inForge() && TCELL.want) { try { cellStage(g); } catch (e) { note('CELL THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2040: one designed cell at a time
   if (inForge() && TLAY.want) { try { tlayStage(g); } catch (e) { note('TLAY THREW ' + e.message); console.error(e); } CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m2030: the temple layout generator
   if (inForge() && SNOWZ.want) { snowStage(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1384: THE SNOWFIELD instead of the white floor
   if (inForge() && SHIPZ.want) { shipSea(g); CWALL.g = g; COVER.meshes = []; COVER.boxes = []; ARENA.r = 60; return; }     // m1373: THE SHIP's sea instead of the white floor
