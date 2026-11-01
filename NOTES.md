@@ -5,6 +5,19 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15MR -- THE MAMMOTH RIDE (Nov 1 2026)
+*"Go -- the mammoth ride, then the lair."* (`MAMR`) A TAME mammoth waits in the Snowfield at (16, 22) -- the cow-rig mammoth spawned through the beast
+system with `d.tame` (no brain, no damage, its own `mamTameStep`), wearing his model's OWN saddle. A ring glows on the snow at his left flank:
+- MOUNT: tap the RIGHT pad in the ring -> the m1994 LEAP (crouch, high arc, front flip, drop into the seat, a dip and a thud)
+- RIDE: the LEFT stick is where he goes, camera-relative like walking; he turns toward it (2.4 rad/s slow, 1.4 at a run) and how far you push is how fast
+  (up to 9.5 m/s), slowing for a wide turn; Walk_F_IP -> Trot_F_IP -> Run_F_IP picked by speed, each clip's rate matched to it; let go and he stands
+- STOMP: RIGHT tap or flick -- Attack_F_IP, and at 42% a crater + blast 3 m in front, enemies within 4.5 m knocked down
+- OFF: double-tap the LEFT pad -> a hop off to his flank
+The camera pulls back 6.5 m and up 2.4 while riding; his snow carving (m2010) leaves a trench and prints behind him. Rider pose: Grumbo's `ride_seat`.
+SEAT: a raycast off a skinned mesh misses, and the skinned-vertex top read BELOW the spine at spawn (bone matrices lag), so the seat is his height x
+`seatH` .78, placed between Spine_02 and Spine_03 by `seatK` (-.35 = a little ahead of Spine_02, onto the saddle) -- both live on `mel.MAMR`.
+Measured headless: spawned, mounted (tap true), seated, stomp fired. Not tested: steering (no stick in the harness).
+
 ## m2010 -- the dragon (and every body) carves the snow (Nov 1 2026)
 *"The dragon needs to affect the snow -- when he runs around and slams down, it's not affecting it."* In `snowStep`, every body in `DUMMIES` inside the
 field: its FEET (toe / foot / hoof-tip bones -- `Bip001_L_Foot`, `Toe0`, Mixamo `ToeBase` / `Foot`, the cow rig's `hoof_*_tip`; found once per model, max 6)
