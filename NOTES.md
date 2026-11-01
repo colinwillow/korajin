@@ -59,6 +59,14 @@ His: *"I don't want the ring around the meditating guy -- I want him floating, b
 In its place one additive `Points` (90 points, a soft round canvas sprite): 60 MOTES (jade, every 7th gold) orbit him on tilted, breathing paths at
 .7-1.6 m, and 30 SPARKS rise off him through 2.6 m and wrap round. Stepped in `snowVillStep` with the bob. Shipped unverified.
 
+## m2142 -- THE WILLOW SHRINE, pass 8: varied leaves and vine widths; the bell swings; lantern halos; mist at the falls (Nov 1 2026)
+His: *"are we able to vary the size of the leaves so they're not all identical sizes, and also vary the thickness of the vines a little"*. Yes:
+`willowLeafTex` paints its 8 leaves at 8 sizes (.68-1.1); each live strand has its own width (`L.wk`, .72-1.28) and leaf spacing (`lk`, .8-1.2, so
+its leaves' length), and tapers to 70% at the tip; the crown shell's strands get the same. The leaf-gap snap (m2002) still holds -- it uses the
+strand's own spacing. **The bell** is its own group pivoting at the keystone (`WILLOW.bellG`, 2 draws): rung, it swings and settles; idle, it sways with
+the wind. `willowAir`: additive HALOS on every lantern, the bell and the crystal clusters (`WILLOW.glowPts`, filled by the builders; one Points draw,
+world-sized) and MIST off each fall's landing (`mistAt`, 14 motes each, cycled in `willowMist`). Arch snow slimmed (a white hood close up). Shipped unverified.
+
 ## m2141 -- THE WILLOW SHRINE, pass 7: the crown is solid from ABOVE too (leaf clusters), snow in patches; the region build checked (Nov 1 2026)
 A top-down render showed the crown as bare boughs with long white snow "sausages" along them: every leaf strip (live vines and the m2138 shell) hangs
 VERTICAL, so from the sky it is edge-on and vanishes -- and his sheet's TOP (PLAN) is a solid leafy disc. `willowLeafPads`: ~1300 tilted cards of a
