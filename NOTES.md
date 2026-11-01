@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## mNEXT -- the snow kit DETAIL PASS 4: painted banners and meander, paved walkways, LIGHT POOLS
+## m2064 -- the snow kit DETAIL PASS 4: painted banners and meander, paved walkways, LIGHT POOLS
 
 His: *"Go"* (the three offered: painted banners/band, paving, warm light on the snow).
 - `tools/snowvil_textures.py` grew `band` (a gold-inlaid Greek-key frieze in grey-violet stone, two rows) and `banner` (1024x1536 -> 512x1024, crimson
