@@ -17,6 +17,38 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2144 -- THE FOREST DOMED TEMPLE: one building, its own zone, built to finish (Nov 1 2026)
+His: *"I'm starting to feel again like we are moving too broad. I would like to build one building at a time, or a courtyard's worth, like a castle --
+the way we built the Red Hollows, the ship and the arena -- and only move on once the local area feels complete ... once the building is made, you
+can build the landscape."* Reference: `images/concepts/forest_temple/domed_temple.webp` + his turnaround sheet (not saveable as a file).
+- **ZONE**: KORAJIN > *The Forest Temple* = `?w=forge&zone=dometemple` (`DOMET.want`), stage hook `dmtStage(g)` in arenaStage's forge branch, step
+  `dmtStep(dt)` beside `plantStep`. Spawn (0, 31) facing the stair (`ARENA.youAt`).
+- **DATA-FIRST** (SCENE_COMPANION): `DOMET` (between `SC_DOMET:START/END`) is the table -- plinth tiers, stair, columns, entablature, drum, dome,
+  cella, finials, banners, pilasters, trees, path. `dmtBuild(g)` reads it and fills `DOMET.parts` (77+ ids: tier0/1, stair, balustrade_l/r,
+  col_0..11, entablature, drum, dome, crown_tree, fin_front/left/back/right, door, banner_<deg>, pedestal, orb, path, tree_<n>, fallen_log,
+  rock_shelf). Front = +Z; angles x = cos a, z = sin a.
+- **THE BUILDING** (sheet proportions at game scale): plinth r 12.6 (step .3) and r 11.6 (top 2.4) of mossy cyclopean blocks with a cream coping;
+  a 5.2 m stair of SEVEN .30 m risers (his step is .357) between sloped balustrades with scrolled newels; 12 fluted columns at r 9.6 (door between two),
+  gold rings, a leafy capital with scrolls; the entablature (architrave, the carved RELIEF frieze, cornice, gold line, brackets, soffit, mossy top);
+  four big finial blocks with an upright stone almond and the BLUE GEM in a gold bezel; the relief drum; the MOSS DOME r 8.3 with an OCULUS and a
+  small tree round its rim; the round CELLA (r 6.0/6.6) with a portal block, arched opening and the two GOLD DOOR leaves that swing INWARD when he
+  is within 6.5 m; a gem over the door; a gold medallion on the back wall.
+- **INSIDE**: a cobbled floor with two gold rings, six pilasters, five blue tree BANNERS, the stepped pedestal and the glowing ORB (bobbing, a halo),
+  a shaft of light down from the oculus and a pool of light on the floor.
+- **THE CLEARING**: a grass floor, a cobbled path winding to the stair, a cobbled ring round the plinth, 16 near + 34 far giant trees (bark trunks,
+  root flares, branches, leaf crowns), a fallen giant to climb (2.2 m), a mossy rock shelf (1.0 / 2.1 / 3.4 m), seven sun shafts along the sun,
+  ~450 plants (grass, fern, flowers, tall grass, shrubs, stones, boulders), a teal forest haze and a backdrop ring so no edge of the world shows.
+- **TEXTURES**: `tools/dome_textures.py` (gpt-image-2, made seamless): dome_stone, cyclo, moss, grass, cobble, bark, leaves, relief (tiles in X),
+  gold, door, banner, gem. Alpha foliage cards (gpt-image-1.5, transparent; tools/dome_alpha.py): dome_ivy (hanging strands), dome_clump (bush crowns).
+- **COLLIDERS**: plinth tiers as 16-gons (four turned `obox`es each), each stair step a box, balustrades stepped boxes, columns, the cella wall as
+  `cellArc` arcs with the door gap, portal jambs + lintel, pedestal, entablature + drum rings, five dome tiers, tree trunks, log, rock ledges.
+  The door has no collider: it is open whenever he is near enough to be in it.
+- **COST**: one merged mesh per material (~15 draws for the temple and the clearing), plants through `plantFlush` (culled cells). Render: 51-74
+  calls, ~200-230k tris in the headless shots.
+- **DONE WHEN** (not ticked: his sign-off on the phone is the last box): massing+plinth, columns+capitals, entablature+finials+drum, dome+crown tree,
+  door+cella, vines+moss, interior (oculus ray, orb, banners), the clearing -- all in a first pass; detail passes against the sheet still open
+  (cella panels, carved capitals, more relief, interior dome detail). Shipped unverified.
+
 ## m2143 -- THE LIBRARY: a catalogue in the Level Builder to look through and place buildings, pieces, props, plants, moving pieces (Nov 1 2026)
 His: *"Do we have a catalogue of our buildings? It would be super nice to have basically a library where I could look through and place buildings,
 and plants, and any other features."* TOOLS > LEVEL BUILDER > LIBRARY (also a LIBRARY button on the builder's top bar and its ADD panel).
