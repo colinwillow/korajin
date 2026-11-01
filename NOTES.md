@@ -14,6 +14,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15SZ -- the Snowfield's PACK is 320 m now (it was 160): the snow reacts out to the waterfall (Nov 1 2026)
+His: *"a lot of parts of the map the snow doesn't react to me... if it's snowy the ground should react."* He picked the bigger pack (and said the right
+answer is "snow wherever I am"). `SNOWZ.size` 160 -> 320, `res` 640 -> 960 (texels .25 -> .33 m), the snow mesh 400 -> 560 quads a side (.4 -> .57 m).
+Footprints and trenches read a little softer; the texture upload when the pack changes is ~.9 MB (was .4); the pack's build at boot is ~2.25x. Watch
+for frame drops when walking in deep snow. The real answer if this is not enough: a PACK THAT FOLLOWS HIM (a 160 m window re-centred as he moves).
+
 ## m2124 -- the Snowfield's weather is CLEAR by default (Nov 1 2026)
 His: *"half the time it's just a white blizzard in the sky -- you can't see the HDR at all, and sometimes you can see the beautiful HDR; is that a glitch
 or weather changing?"* It was the m-era blizzard cycle (`SNOWSTORM.weather` AUTO: 70-110 s calm, 40-65 s storm; while the storm is past .55 the sky
