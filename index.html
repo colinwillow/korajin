@@ -11731,13 +11731,23 @@ Object.assign(SVKP, {
     P.box('door', w + .3, t, d + .3, 0, h - t / 2, 0, 1.2); P.box('wood', w + .4, .22, d + .4, 0, h - t - .1, 0, 1); P.add('snow', vilPillow(w, .1, d).translate(0, h, 0)); P.col(-w / 2 - .15, w / 2 + .15, h - t, h, -d / 2 - .15, d / 2 + .15); P.patches.push({ x: 0, z: 0, w: w - .2, d: d - .2, top: h + .01, round: 0 });
     const open = o.open || 'w', rail = (x0, z0, x1, z1) => { const L = Math.hypot(x1 - x0, z1 - z0), ry = Math.atan2(x1 - x0, z1 - z0), cx = (x0 + x1) / 2, cz = (z0 + z1) / 2; for (const y of [.5, 1.0]) P.add('wood', vilBox(.08, .1, L, 1).rotateY(ry).translate(cx, h + y, cz)); P.add('snow', vilBox(.1, .05, L * .95, 2).rotateY(ry).translate(cx, h + 1.08, cz));
       const n = Math.max(1, Math.round(L / 1.1)); for (let k = 0; k <= n; k++) P.box('wood', .1, 1.05, .1, x0 + (x1 - x0) * k / n, h + .52, z0 + (z1 - z0) * k / n, 1); P.cols.push({ pts: [[Math.min(x0, x1) - .07, Math.min(z0, z1) - .07], [Math.max(x0, x1) + .07, Math.min(z0, z1) - .07], [Math.max(x0, x1) + .07, Math.max(z0, z1) + .07], [Math.min(x0, x1) - .07, Math.max(z0, z1) + .07]], y0: h, y1: h + 1.05 }); };
-    const X = w / 2 + .1, Z = d / 2 + .1; if (open !== 'n') rail(-X, -Z, X, -Z); if (open !== 's') rail(-X, Z, X, Z); if (open !== 'e') rail(X, -Z, X, Z); if (open !== 'w') rail(-X, -Z, -X, Z); else rail(-X, -Z + 1.6, -X, Z);
+    const X = w / 2 + .1, Z = d / 2 + .1; if (open !== 'n') rail(-X, -Z, X, -Z); if (open !== 's') rail(-X, Z, X, Z); if (open !== 'e') rail(X, -Z, X, Z); if (open !== 'w') rail(-X, -Z, -X, Z); else rail(-X, -Z + 1.65, -X, Z);     /* the gap: the landing's width (1.5) at the north-west end */
     P.ice(-w / 2, w / 2, h - t - .2, d / 2 + .2, Math.round(w * 2), plantRnd(h * 9 | 0)); P.ice(-w / 2, w / 2, h - t - .2, -d / 2 - .2, Math.round(w * 2), plantRnd(h * 7 | 0));
-    P.port('deck', 0, h, 0, 0, 1, 0); P.port('entry', -w / 2 - .15, h, -d / 2 + .8, -1, 0, 0); return P; },
+    P.port('deck', 0, h, 0, 0, 1, 0); P.port('entry', -w / 2 - .15, h, -d / 2 + .6, -1, 0, 0); return P; },
   // THE WATCHTOWER: a stone footing, a braced timber deck at 4.5 m reached by a timber stair up its west side, a gable roof on four posts, a lookout
   // brazier (jade), lanterns and a banner -- assembled by snapping the stair's head onto the deck's entry port
   watchtower: o => { const P = svkNew(), h = o.h || 4.5, w = 4.4; const dk = svkSnap(P, svkPiece('deck_posts', { h, w, d: w, open: 'w' }), 'foot', [0, 0, 0]); const en = portOf(dk, 'entry');
-    const n = Math.round(h / .3), hz = -w / 2 + .1; svkSnap(P, svkPiece('stairs_wood', { n, w: 1.3 }), 'head', [en[0] - .75, en[1], hz]);
+    const n = Math.round(h / .3), LW = 1.5, lx = en[0] - LW / 2, lz0 = -w / 2 - .15, lz1 = lz0 + LW, hz = lz1;     /* m2049 (his: "a staircase to nowhere -- there is a little square platform at the top, a right angle, and a break in the tower's railing"): */
+    // THE LANDING: a square at deck height off the deck's west edge, beside the gap in the deck's rail; the stair arrives at its south edge, he
+    // steps onto it and turns RIGHT (east) onto the deck. Railed on its two outer sides, open to the stair (south) and to the deck (east).
+    P.box('door', LW, .3, LW, lx, h - .15, (lz0 + lz1) / 2, 1); P.box('wood', LW + .1, .2, LW + .1, lx, h - .4, (lz0 + lz1) / 2, 1); P.add('snow', vilPillow(LW - .1, .08, LW - .1).translate(lx, h, (lz0 + lz1) / 2));
+    P.col(lx - LW / 2, lx + LW / 2, h - .3, h, lz0, lz1); P.patches.push({ x: lx, z: (lz0 + lz1) / 2, w: LW - .1, d: LW - .1, top: h + .01, round: 0 });
+    for (const [px, pz] of [[lx - LW / 2 + .1, lz0 + .1], [lx - LW / 2 + .1, lz1 - .1]]) { P.box('stoneD', .5, .4, .5, px, .2, pz, .6); P.box('wood', .22, h - .3, .22, px, (h - .3) / 2, pz, 1); P.col(px - .12, px + .12, 0, h, pz - .12, pz + .12); }
+    P.add('wood', vilBox(.12, Math.hypot(LW - .2, h - 1.2), .12, 1).rotateX(Math.atan2(LW - .2, h - 1.2)).translate(lx - LW / 2 + .1, h / 2, (lz0 + lz1) / 2));
+    for (const [x0, z0, x1, z1] of [[lx - LW / 2, lz0, lx + LW / 2, lz0], [lx - LW / 2, lz0, lx - LW / 2, lz1]]) { const L = Math.hypot(x1 - x0, z1 - z0), ry = Math.atan2(x1 - x0, z1 - z0), cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;
+      for (const y of [.5, 1.0]) P.add('wood', vilBox(.08, .1, L, 1).rotateY(ry).translate(cx, h + y, cz)); P.add('snow', vilBox(.1, .05, L * .95, 2).rotateY(ry).translate(cx, h + 1.08, cz)); for (const k of [0, 1]) P.box('wood', .1, 1.05, .1, k ? x1 : x0, h + .52, k ? z1 : z0, 1);
+      P.col(Math.min(x0, x1) - .07, Math.max(x0, x1) + .07, h, h + 1.05, Math.min(z0, z1) - .07, Math.max(z0, z1) + .07); }
+    svkSnap(P, svkPiece('stairs_wood', { n, w: 1.3 }), 'head', [lx, h, hz]);
     const rh = h + 2.5; for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) P.box('wood', .22, rh - h, .22, x * (w / 2 - .05), h + (rh - h) / 2, z * (w / 2 - .05), 1);
     svkSnap(P, svkPiece('roof_gable', { w: w - .2, d: w - .2, pitch: .7, seed: 4 }), 'seat', [0, rh, 0]);
     P.box('stoneD', .9, .4, .9, .8, h + .2, .8, .7); vilJade(P.add, .8, h + .4, .8, 1.1); P.col(.35, 1.25, h, h + .9, .35, 1.25);

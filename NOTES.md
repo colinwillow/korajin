@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## mNEXT -- the watchtower's stair gets a LANDING (his: "a staircase to nowhere")
+
+His: *"There's a mini square platform at the top of the staircase, which then does the right angle and turns to the main tower, and a break in the
+tower's railing."* The m2048 stair ran up beside the deck and stopped, its handrails on both sides, with nowhere to step off.
+- A 1.5 m square LANDING at deck height off the deck's west edge, at its north-west end: plank top, two posts on stone footings, a brace, rails on its
+  two OUTER sides (west, north), open to the stair (south) and to the deck (east). A snow patch on it, colliders on the floor and both rails.
+- The stair now arrives at the landing's south edge (climbing north); the deck's west rail breaks exactly the landing's width beside it, so he climbs,
+  steps onto the square, turns RIGHT (east) and walks onto the deck. Same in the outpost's tower (it is the same piece).
+- Rendered from the stair side and from behind before pushing. Shipped unverified.
+
 ## m2049 -- THE GREAT WATERFALL: m2046 left the WHOLE waterfall out (a TDZ read), found by its first render
 
 His: "send me a render after every pass." The first render (headless SwiftShader at `?w=forge&zone=snow`) never got a waterfall: the page logged
