@@ -9863,6 +9863,7 @@ function beastSlam(d, k) {
 }
 function beastHurt(d, dirH, power) {
   if (d.tame) return;     // m2011: the ridden mammoth is a friend
+  if (d.sleep) d.hitT = 1;     // m15LR: a blow wakes him
   const C = beastC(d), P = d.root.position;
   snd('creature', { g: .5 + .4 * power, r: C.pitch * (.9 + Math.random() * .2), x: P.x, z: P.z });
   if (d.entering) return;
@@ -9880,6 +9881,7 @@ function beastHurt(d, dirH, power) {
 // a flare at each end -- reaches the snow and SWEEPS after you (the aim point chases you at `chase` m/s, so you can outrun it sideways) for `T` s.
 // Where it hits: ICE SPIKES erupt (pooled, `spikes`), the snow is blasted out and dug, frost mist rises. Inside `r` of the beam you are frozen-hurt
 // every `tick` s (a roll goes through). Your first trip north of z -30 wakes him by the cliffs. `ICEB.on = 0` gives him his fireballs back.
+const LAIR = { wakeR: 13, leash: 26 };     // m15LR: he wakes when you come within `wakeR` of him (or strike him); he will not follow you more than `leash` m from his nest
 const ICEB = { frzHits: 3, frzT: 1.5, frost: 60, frostLife: 9, frz: null, on: 1, T: 1.9, hopH: 2.4, hopUp: .4, clipK: .35, chase: 7.5, len: 34, r: .9, tick: .28, dmgK: .3, spikes: 70, spikeLife: 4.5, mesh: null, seen: -9, sp: [], stat: { beams: 0 } };
 // m2007: pass 2 -- the CHARGE (an orb of frost swelling in his jaws, motes drawn in from all round), FROZEN SOLID (three ticks in one beam and you are
 // encased in a block of ice for `frzT` s, the pose held, then it SHATTERS into spikes and powder), and the beam FREEZES the snow it sweeps (flat frost
@@ -10085,7 +10087,12 @@ function beastStep(d, dt, t) {
     return true;
   }
   if (fly) return beastFly(d, dt, t, dd, toP);
-  P.y = 0; if (d.st !== 'cFire') d.beam = null;     // m2006: a hit ends the beam
+  { const gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0; d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m15LR: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
+  if (d.st !== 'cFire') d.beam = null;     // m2006: a hit ends the beam
+  if (d.sleep) { const C2 = beastC(d), wk = 'wake_up'; if (d.actions[wk]) { t[wk] = 1; setSkinScale(d, wk, 0); } else t[C2.clips.idle] = 1; if (dd < LAIR.wakeR || d.hitT) { d.sleep = 0; d.waking = 0; snd('creature', { g: 1, r: .5, x: P.x, z: P.z }); camShake(.4); if (SNOWZ.air) snowBlast(P.x, P.y, P.z, 5, 1.4); if (d.actions[wk]) { setSkinScale(d, wk, 1); skinPlay(d, wk, 1); } tipShow('The dragon wakes!', 2.5); } return true; }
+  if (d.waking != null && d.actions.wake_up && d.waking < skinLen(d, 'wake_up')) { d.waking += dt; t.wake_up = 1; faceTo(d, toP, dt); return true; }
+  if (d.home && Math.hypot(player.pos.x - d.home[0], player.pos.z - d.home[2]) > LAIR.leash && d.st !== 'cFire') { const hx = d.home[0] - P.x, hz = d.home[2] - P.z, hd = Math.hypot(hx, hz);     // he does not chase you off his cliff
+    if (hd > 1.5) { const hh = Math.atan2(hx, hz); d.h += clamp(wrapAngle(hh - d.h), -2.4 * dt, 2.4 * dt); foeMove(d, d.h, C.speed * .6, dt); t[C.clips.run] = 1; } else t[C.clips.idle] = 1; return true; }
   if (d.st === 'cHit') { t[d.cur] = 1; if (d.t >= skinLen(d, d.cur) * .9) beastGo(d, 'cIdle'); return true; }
   if (d.st === 'cDizzy') { t[d.cur] = 1; if (d.actions[d.cur] && d.t % skinLen(d, d.cur) < dt) skinPlay(d, d.cur, 1);
     if (d.t >= C.dizzyT) { d.exposed = 0; beastGo(d, 'cIdle'); } return true; }
@@ -10099,7 +10106,7 @@ function beastStep(d, dt, t) {
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
   if (d.st === 'cFire' && iceBeamOn(d)) { t[d.cur] = 1; const len = skinLen(d, d.cur), u = d.t / len; faceTo(d, toP, dt * (d.beam ? .9 : 1.5));     // m2006: in the snow, his ICE BEAM
-    const B = ICEB; d.lift = B.hopH * smooth(0, B.hopUp, d.t); P.y = d.lift;
+    const B = ICEB; d.lift = B.hopH * smooth(0, B.hopUp, d.t); P.y = (d.floorY || 0) + d.lift;
     if (!d.hitDone) iceCharge(d, u / C.fireAt, dt);     // m2007: frost gathers in his jaws first
     if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; d.beam = { t: 0, aim: player.pos.clone(), hurt: 0, spk: 0, hits: 0, fr: 0 }; setSkinScale(d, d.cur, B.clipK); synthHiss(B.T, P.x, P.z, .55); synthCrack(P.x, P.z, .5); camShake(.15); }     /* m2008: the hiss lasts exactly the beam */
     if (d.beam) { iceBeamStep(d, dt); if (d.beam.t >= B.T) { d.beam = null; d.fireT = C.fireCool; setSkinScale(d, d.cur, 1); beastGo(d, 'cRecover'); } }
@@ -10110,7 +10117,7 @@ function beastStep(d, dt, t) {
     if (!d.hitDone && u >= C.fireAt) { d.hitDone = 1; beastFire(d); d.fireT = C.fireCool; }
     if (u >= .95) beastGo(d, 'cRecover');
     return true; }
-  if (d.lift) { d.lift = Math.max(0, d.lift - dt * 5); P.y = d.lift; }     // m2006: down from the hop
+  if (d.lift) { d.lift = Math.max(0, d.lift - dt * 5); P.y = (d.floorY || 0) + d.lift; }     // m2006: down from the hop
   if (d.st === 'cRecover') { t[C.clips.idle] = 1; if (d.t >= Lv.recover * .8) beastGo(d, 'cIdle'); return true; }
   d.fireT = Math.max(0, (d.fireT || 0) - dt);
   const canFire = C.clips.fire && d.fireT <= 0 && dd > C.fireMin;
@@ -10756,12 +10763,12 @@ function pondIn(x, z, m) { const dx = x - POND.at[0], dz = z - POND.at[1]; retur
 // crystals. A FROZEN WATERFALL hangs down the cliff into an iced pool; ICE CRYSTALS cluster on every tier and FLOAT above the crag (the high tier);
 // ICICLES hang under the shelf and the lips. Every block is a box collider; the look is rough painted granite with a snow cap (`snow_rock` / `snow_snow`)
 // and the painted ice (`snow_ice`) -- a handful of draws. Placement table `SNOWCLIFF.blocks` (stable ids, SCENE_COMPANION).
-const SNOWCLIFF = { area: [-26, 40, -84, -42],
+const SNOWCLIFF = { area: [-26, 40, -98, -42],
   blocks: [ { id: 'ledge1', x: 4, z: -48, w: 14, d: 8, h: 2.0 }, { id: 'ledge1b', x: -8, z: -51, w: 9, d: 7, h: 1.2 },
     { id: 'ledge2', x: 16, z: -55, w: 10, d: 8, h: 3.8 }, { id: 'ledge2b', x: 28, z: -54, w: 7, d: 6, h: 2.6 },
-    { id: 'cliff', x: 6, z: -73, w: 56, d: 14, h: 9.5 }, { id: 'crag', x: 4, z: -79, w: 22, d: 8, h: 13.5 }, { id: 'spur', x: -16, z: -63, w: 9, d: 8, h: 6.8 } ],
+    { id: 'cliff', x: 6, z: -73, w: 56, d: 14, h: 9.5 }, { id: 'lairfloor', x: 4, z: -88, w: 30, d: 16, h: 9.5 },     /* m15LR: the crag is gone; the cliff runs back under the lair */ { id: 'spur', x: -16, z: -63, w: 9, d: 8, h: 6.8 } ],
   shelves: [ { id: 'shelf1', x: 6, z: -63, w: 14, d: 6.5, y: 6.0, t: .7 }, { id: 'shelf2', x: 24, z: -62.5, w: 8, d: 5, y: 7.8, t: .6 } ],
-  falls: { x: 31, w: 6, top: 9.5, z: -66 }, lair: { x: 4, z: -75, w: 5, h: 4.6 } };
+  falls: { x: 31, w: 6, top: 9.5, z: -66 }, lair: { x: 4, z: -86, R: 11, H: 8.5, nest: [0, -4] } };
 function cliffIn(x, z, m) { const A = SNOWCLIFF.area; m = m || 0; if (x > A[0] - m && x < A[1] + m && z > A[2] - m && z < A[3] + m) return true; for (const P of SNOWKIT.places) if (Math.hypot(x - P.x, z - P.z) < P.r + m) return true; return false; }
 function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap = [], ice = [], dark = [];
   // m2000: not boxes -- every block TAPERS (wider at the foot), its corners ROUND off (a superellipse in plan), and its faces are pushed by 3D noise
@@ -10788,17 +10795,33 @@ function snowCliffs(g) { const C = SNOWCLIFF, R = plantRnd(1501), rock = [], cap
       const geo = new THREE.CylinderGeometry(r * .7, r * 1.4, top, 7, 6); const P = geo.attributes.position; for (let i = 0; i < P.count; i++) { const y = P.getY(i) / top + .5, bul = Math.sin(y * Math.PI * 2.3 + k) * .18 + (1 - y) * .5; P.setXYZ(i, P.getX(i) * (1 + bul * .5), P.getY(i), P.getZ(i) * (1 + bul * .5) + bul * .6); }
       geo.computeVertexNormals(); ice.push(geo.translate(x, top / 2, F.z + .5)); }
     ice.push(new THREE.CylinderGeometry(5, 5.4, .3, 20).scale(1.3, 1, .8).translate(F.x, .15, F.z + 4.5)); }
-  // the LAIR'S MOUTH in the crag's face: two leaning ice-rock jambs, a lintel, the dark inside
-  { const L = C.lair, zf = -79 + 4 + .8;     /* jambs stand proud of the roughened face */ rock.push(rough(new THREE.BoxGeometry(1.6, L.h + 1, 1.8, 2, 4, 2).rotateZ(.08).translate(L.x - L.w / 2 - .6, 9.5 + (L.h + 1) / 2, zf), .6), rough(new THREE.BoxGeometry(1.6, L.h + 1, 1.8, 2, 4, 2).rotateZ(-.08).translate(L.x + L.w / 2 + .6, 9.5 + (L.h + 1) / 2, zf), .6));
-    rock.push(rough(new THREE.BoxGeometry(L.w + 3.4, 1.3, 2, 4, 1, 2).translate(L.x, 9.5 + L.h + .9, zf), .5)); dark.push(new THREE.PlaneGeometry(L.w + .6, L.h + .2).translate(L.x, 9.5 + L.h / 2, zf - .15)); }
   // ICE CRYSTALS: clusters on every tier, and big ones FLOATING above the crag
   const crystal = (x, y, z, s, tilt) => { const n = 3 + Math.floor(R() * 4); for (let k = 0; k < n; k++) { const h = s * (.6 + R() * .9), r = h * .12, a = R() * 6.28, t = tilt + R() * .5;
       const geo = new THREE.CylinderGeometry(r, r, h, 6).translate(0, h / 2, 0); const tip = new THREE.ConeGeometry(r, r * 2.2, 6).translate(0, h + r * 1.1, 0);
       for (const q of [geo, tip]) { q.rotateZ(t * Math.cos(a)).rotateX(t * Math.sin(a)).translate(x, y, z); ice.push(q); } } };
+  // m15LR: THE LAIR -- an ice CAVERN on the cliff top: a lumpy rock dome (R `lair.R`, H `lair.H`) open to the south, an inner face so it reads from inside,
+  // a ring of wall colliders, a glassy frozen floor, ice stalactites, glowing crystal banks round the walls, and at the back the NEST -- a ring of
+  // boulders round a bed of bones and three great ice eggs, the dragon asleep on it. Floating crystals above its crown.
+  { const L = C.lair, R0 = L.R, H = L.H, half = .62, y0 = 9.5;     // the gap round phi PI/2*3 (three's sphere: x = -cos(phi), z = sin(phi) -> -z is phi 3PI/2; +z, the mouth, is phi PI/2)
+    const ph0 = Math.PI / 2 + half, sh = new THREE.SphereGeometry(R0, 30, 12, ph0, Math.PI * 2 - half * 2, 0, Math.PI / 2); sh.scale(1, H / R0, 1);
+    { const Pp = sh.attributes.position; for (let i = 0; i < Pp.count; i++) { const x = Pp.getX(i), y = Pp.getY(i), z = Pp.getZ(i), n = Math.sin(x * .7 + z * .5 + y * .3) * .5 + Math.sin(z * 1.6 - y * 1.2 + x * .4) * .3; const k = 1 + n * .1; Pp.setXYZ(i, x * k, y * (1 + n * .06), z * k); } sh.computeVertexNormals(); }
+    const inner = sh.clone(); inner.scale(.9, .92, .9); { const ix = inner.index.array; for (let i = 0; i < ix.length; i += 3) { const t = ix[i]; ix[i] = ix[i + 2]; ix[i + 2] = t; } inner.computeVertexNormals(); }
+    rock.push(sh.translate(L.x, y0, L.z)); rock.push(inner.translate(L.x, y0, L.z));
+    for (let k = 0; k < 26; k++) { const a = ph0 + (k + .5) / 26 * (Math.PI * 2 - half * 2), cx = L.x - Math.cos(a) * R0 * .95, cz = L.z + Math.sin(a) * R0 * .95; BOXES.push({ minx: cx - 1.3, maxx: cx + 1.3, miny: y0, maxy: y0 + H * .85, minz: cz - 1.3, maxz: cz + 1.3 }); }
+    ice.push(new THREE.CircleGeometry(R0 * .86, 32).rotateX(-Math.PI / 2).translate(L.x, y0 + .04, L.z));     // the frozen floor
+    for (let k = 0; k < 40; k++) { const a = R() * 6.28, d = R() * R0 * .8, l = .5 + R() * 2.2; ice.push(new THREE.ConeGeometry(.12 + R() * .16, l, 5).rotateX(Math.PI).translate(L.x + Math.cos(a) * d, y0 + H * .9 * Math.sqrt(Math.max(0, 1 - (d / R0) ** 2)) - l / 2, L.z + Math.sin(a) * d)); }
+    for (let k = 0; k < 12; k++) { const a = ph0 + .3 + R() * (Math.PI * 2 - half * 2 - .6); crystal(L.x - Math.cos(a) * R0 * .78, y0, L.z + Math.sin(a) * R0 * .78, 2 + R() * 2.5, .45); }
+    // the mouth: two great ice jambs and a lintel of crystals
+    for (const sx of [-1, 1]) crystal(L.x + sx * R0 * .55, y0, L.z + R0 * .8, 4.5, .12);
+    // the NEST at the back
+    const N = L.nest; for (let k = 0; k < 11; k++) { const a = k / 11 * 6.28, b = plantBlob(.8 + R() * .5, 1700 + k, 1); b.translate(L.x + N[0] + Math.cos(a) * 3.4, y0 + .4, L.z + N[1] + Math.sin(a) * 3.4); rock.push(b); }
+    for (let k = 0; k < 14; k++) { const a = R() * 6.28, d = R() * 2.6, bone = new THREE.CylinderGeometry(.06, .08, .9 + R() * .6, 5).rotateZ(Math.PI / 2).rotateY(R() * 6.28); bone.translate(L.x + N[0] + Math.cos(a) * d, y0 + .12, L.z + N[1] + Math.sin(a) * d); cap.push(bone); }
+    for (const [ex, ez] of [[-1, .4], [.9, .6], [.1, -1]]) ice.push(new THREE.SphereGeometry(.55, 12, 10).scale(1, 1.35, 1).translate(L.x + N[0] + ex, y0 + .7, L.z + N[1] + ez));
+    C.nestAt = [L.x + N[0], y0, L.z + N[1]]; }
   const spots = [[-3, 2, -45, 2.2], [11, 2, -45.5, 1.6], [20, 3.8, -52, 3], [-12, 1.2, -48.5, 2], [31, 2.6, -52, 2.4], [-18, 6.8, -60, 3.2], [13, 6, -60.5, 1.8], [-6, 9.5, -67.5, 3.6],
-    [26, 9.5, -67, 2.6], [36, 0, -60, 4.5], [-24, 0, -56, 4], [-3, 13.5, -76, 2.8], [12, 13.5, -76.5, 3.2]];
+    [26, 9.5, -67, 2.6], [36, 0, -60, 4.5], [-24, 0, -56, 4], [-14, 9.5, -77, 2.8], [21, 9.5, -77.5, 3.2]];
   for (const [x, y, z, sz] of spots) crystal(x, y + .1, z, sz, .25);
-  for (let k = 0; k < 6; k++) { const x = -14 + k * 6 + (R() - .5) * 3, y = 18 + R() * 9, z = -70 - R() * 10, sz = 2.5 + R() * 2.5;     // the floating ones: a crystal cluster on a small upturned rock
+  for (let k = 0; k < 6; k++) { const x = -14 + k * 6 + (R() - .5) * 3, y = 21 + R() * 9, z = -78 - R() * 14, sz = 2.5 + R() * 2.5;     // the floating ones: a crystal cluster on a small upturned rock
     const isl = plantBlob(1, 1600 + k * 7, 2); isl.scale(sz * .75, sz * 1.1, sz * .75); { const P = isl.attributes.position; for (let i = 0; i < P.count; i++) { let yy = P.getY(i); if (yy > sz * .15) yy = sz * .15 + (yy - sz * .15) * .1; else yy -= Math.max(0, -yy) * .6; P.setY(i, yy); } isl.computeVertexNormals(); }     /* a lumpy rock, flat on top, hanging to a point */
     isl.translate(x, y - sz * .15, z); rock.push(isl); crystal(x, y - .1, z, sz, .3); }
   const mat = { rock: snowTriMat('snow_rock', 2.2, 0xd0d6e4, .95), cap: snowTriMat('snow_snow', 2.5, 0xffffff, .85), ice: new THREE.MeshStandardMaterial({ map: texGet('snow_ice'), color: 0xd6f2ff, roughness: .12, metalness: .1, emissive: 0x1a6a80, emissiveIntensity: .45 }),
@@ -11205,13 +11228,14 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     const px = d.snowPx == null ? P.x : d.snowPx, pz = d.snowPz == null ? P.z : d.snowPz, v = dt > 0 ? Math.hypot(P.x - px, P.z - pz) / dt : 0; d.snowPx = P.x; d.snowPz = P.z;
     for (const b of d.snowFeet) { b.getWorldPosition(_snF); const sy = snowSurfY(_snF.x, _snF.y, _snF.z); if (sy == null || _snF.y > sy + .08) continue; snowDig(_snF.x, _snF.y, _snF.z, Math.max(.2, r * .32), .35); if (v > 1 && Math.random() < dt * 10) snowPuff(_snF.x, sy, _snF.z, 3, 1.8 + v * .15, 1.4); }
     if (v > .6 && P.y < .5) snowDig(P.x, P.y, P.z, r * .7 * Math.min(1, v / 4), .5);
-    const was = d.snowY == null ? P.y : d.snowY; if (was > .6 && P.y <= .15) snowBlast(P.x, P.y, P.z, 1.5 + r * 1.4, Math.min(1.6, .6 + was * .3)); d.snowY = P.y; }
+    const rel = P.y - (d.floorY || 0), was = d.snowY == null ? rel : d.snowY; if (was > .6 && rel <= .15) snowBlast(P.x, P.y, P.z, 1.5 + r * 1.4, Math.min(1.6, .6 + was * .3)); d.snowY = rel; }
   if (SFX.ctx && !SFX.buf.foot_SNOW) { try { SFX.buf.foot_SNOW = snowCrunchBufs(); } catch (e) {} } if (SFX.buf.foot_SNOW && STEP.set !== 'SNOW') { Z.stepSet0 = STEP.set; STEP.set = 'SNOW'; }     // m2008: snow crunch footsteps
   iceSpikeStep(dt);     // m2006
   mamFrame();     // m2011
   if (!Z.mamSpawned && ARENA.kinds.MAMMOTH && typeof arenaSpawn === 'function') { Z.mamSpawned = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'mammoth') return; d.entering = 0; d.tame = 1; d.st = 'cIdle'; d.ride = { v: 0 }; d.h = MAMR.yaw; d.root.position.set(MAMR.at[0], 0, MAMR.at[1]); d.root.rotation.y = d.h + (d.faceOff || 0); if (d.bar) d.bar.g.visible = false; MAMR.d = d; mamSaddle(d); }).catch(e => note('MAMMOTH THREW ' + e.message)); }     // m2011: the tame mammoth waits, saddled
   iceFreezeStep(dt); iceFrostStep(dt);     // m2007
-  if (!Z.dragonWoke && p.pos.z < -30 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON) { Z.dragonWoke = 1; try { arenaSpawn('DRAGON'); tipShow('Something stirs by the cliffs...', 3); } catch (e) {} }     // m2006: the blue dragon lives up here
+  if (!Z.dragonWoke && p.pos.z < -40 && ICEB.on && typeof arenaSpawn === 'function' && ARENA.kinds.DRAGON && SNOWCLIFF.nestAt) { Z.dragonWoke = 1; Promise.resolve(arenaSpawn('DRAGON')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'dragon') return; const N = SNOWCLIFF.nestAt;     // m15LR: he sleeps in his lair
+    d.entering = 0; d.st = 'cIdle'; d.home = N; d.sleep = 1; d.root.position.set(N[0], N[1], N[2]); d.h = 0; d.root.rotation.y = d.h + (d.faceOff || 0); }).catch(e => note('DRAGON THREW ' + e.message)); }     // m2006: the blue dragon lives up here
   if (SNOWKIT.spin) { SNOWKIT.spin.rotation.y += dt * .35; SNOWKIT.spin.position.y = 5.5 + Math.sin(t * .8) * .35; }     // m2004
   if (Z.pine) { const PN = Z.pine; let dirty = 0; const fast = p.melee || p.roll || Math.hypot(p.vel.x, p.vel.z) > 5;
     for (let i = 0; i < PN.T.length; i++) { const P = PN.T[i], d = Math.hypot(p.pos.x - P.x, p.pos.z - P.z);

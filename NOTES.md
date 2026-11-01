@@ -5,6 +5,17 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15LR -- THE DRAGON'S LAIR (Nov 1 2026)
+*"Go -- the mammoth ride, then the lair."* The crag and its doorway are gone; the cliff runs back under a new floor (`lairfloor`, 9.5 m, z -96..-80) and on
+it sits the LAIR (`SNOWCLIFF.lair`, at (4, -86)): a lumpy rock DOME (R 11, H 8.5) open to the south, an inner face so it reads from within, a ring of 26
+wall colliders, a frozen floor, 40 ice stalactites, a dozen glowing crystal banks round the walls, two great ice jambs at the mouth, and at the back the
+NEST -- a ring of boulders, a bed of bones, three great ice eggs. The floating crystal rocks moved over the dome.
+THE DRAGON LIVES THERE: the first time you come north of z -40 he is spawned ASLEEP on the nest (his `wake_up` clip held on its first frame). Come
+within `LAIR.wakeR` 13 m or strike him and he WAKES -- a roar, a shake, a burst of snow, `wake_up` played through -- and fights (the ice beam, the hop,
+his bites). A beast with a `home` now stands on what is under him (`groundAt`, so 9.5 m up, falling when he steps off), and he will not chase you more
+than `LAIR.leash` 26 m from his nest -- past that he walks home. Measured headless: spawned on the nest at y 9.5 asleep; woke when the player walked in;
+stayed at y 9.5. Rendered outside / inside / from afar.
+
 ## m2011 -- THE MAMMOTH RIDE (Nov 1 2026)
 *"Go -- the mammoth ride, then the lair."* (`MAMR`) A TAME mammoth waits in the Snowfield at (16, 22) -- the cow-rig mammoth spawned through the beast
 system with `d.tame` (no brain, no damage, its own `mamTameStep`), wearing his model's OWN saddle. A ring glows on the snow at his left flank:
