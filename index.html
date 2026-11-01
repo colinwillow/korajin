@@ -10993,7 +10993,7 @@ function snowPeakMat() { const rock = texGet('snow_rock'), snow = texGet('snow_s
 //               a fire pit and a well.
 // SC_SNOWVIL:START
 const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search) ? 0 : 1; } catch (e) { return 1; } })(),     /* m2104 (his: "we need to build the village"): ON by default now; ?vil=0 hides it */     /* m2033: OFF by default -- placement is another context's (SNOW_VILLAGE.md UPDATE); ?vil=1 */ seed: 2026,
-  keep: [-38, -1, 16, 76],     // x0 x1 z0 z1 -- the village's ground: pines, bamboo, rocks and plants keep out (cliffIn)
+  keep: [-38, 15, 10, 76],     /* m15V3: east to the creek and the bathhouse */     // x0 x1 z0 z1 -- the village's ground: pines, bamboo, rocks and plants keep out (cliffIn)
   sweep: .08,                  // the pack's level (a fraction of SNOWZ.depth) where the village has swept it
   hut: { R: 2.7, sx: 1, wallH: 2.3, roofH: 2.8, eave: 1.0, door: 1, banner: 1, chimney: 1, chimA: -2.3, lanterns: 1, porch: 1, barrels: 2, pots: 2, lamp: 1, win: [1.2, -1.2, 2.45, -2.45], seed: 1 },
   terr: [     // x0 x1 z0 z1, top, the tier it stands on (base), stairs [centre, width, side] climb to it from that tier at .3 m risers
@@ -11005,11 +11005,18 @@ const SNOWVIL = { want: (() => { try { return /[?&]vil=0\b/.test(location.search
   // m2105 (VILLAGE pass 2, VILLAGE_BLUEPRINT pass 2's "horseshoe cliff"): a HORSESHOE of rock behind the village -- low on the arms (8-10 m), 15 m at the
   // back -- so the field's edge is hidden, the village is sheltered, and the HOT SPRING rises at its foot behind the crag (the kit's spring_geyser)
   cliff: { pts: [[-47, 36], [-48, 54], [-45.5, 70], [-36, 81], [-20, 83.5], [-4, 83], [8.5, 78], [14, 64], [14.5, 48]], h: [8, 10, 12.5, 14.5, 15, 15, 13, 10.5, 8.5], d: 7.5 },
-  spring: { at: [5, 0, 67.5], r: 2 },     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
+  spring: { at: [5, 0, 67.5], r: 2 },
+  // m15V3 (VILLAGE pass 3): the spring's water goes two ways -- up the AQUEDUCT (two kit `aq_section` bays, deck 6 m, running north) to the BATHHOUSE
+  // (a kit longhouse), and down the warm CREEK (a steaming channel swept through the snow) past the bathhouse, through the village's east side and out
+  // under a timber BRIDGE (the kit's `bridge_timber`) where the path comes in from the field.
+  aq: [{ at: [5, 0, 59], yaw: Math.PI / 2, h: 6 }, { at: [5, 0, 51], yaw: Math.PI / 2, h: 6 }],
+  creek: [[7.5, 66], [10.5, 57], [11.5, 46], [10, 36], [6, 26], [2.5, 17], [-1.5, 10], [-6, 3], [-12, -5]], creekW: 2.6,
+  bridges: [{ at: [0.6, 0, 13.2], yaw: Math.atan2(7, -6) - Math.PI / 2, span: 8 }],     /* pass 2b: out in the open east of the crag, where it is seen and reached (it was hidden in a slot behind the crag) */
   place: [
     { id: 'vil_hut_01', kind: 'hut', at: [-28, 0, 27], face: [-18, 31], p: { R: 2.7, seed: 11, chimA: 2.4 } },
     { id: 'vil_hut_02', kind: 'hut', at: [-8.5, 0, 35], face: [-18, 31], p: { R: 2.5, seed: 12, banner: 0, barrels: 3 } },
     { id: 'vil_hut_03', kind: 'hut', at: [-30, 0, 37.5], face: [-18, 33], p: { R: 2.5, seed: 13, chimney: 0, pots: 3 } },
+    { id: 'vil_bath_01', kind: 'hut', at: [5, 0, 41], yaw: 0, p: { R: 3, sx: 1.6, roofH: 3.2, wallH: 2.5, seed: 21, chimA: -1.6, banner: 1, barrels: 2, win: [.75, -.75, 1.6, -1.6, 2.5, -2.5] } },     // m15V3: the BATHHOUSE, where the aqueduct ends
     { id: 'vil_hut_08', kind: 'hut', at: [-3.5, 0, 30], face: [-12, 25], p: { R: 2.3, seed: 18, roofH: 2.5, porch: 0 } },
     { id: 'vil_hut_04', kind: 'hut', at: [-29, 1.5, 50.5], yaw: Math.PI, p: { R: 2.6, seed: 14 } },
     { id: 'vil_hut_05', kind: 'hut', at: [-15.5, 1.5, 50], yaw: Math.PI, p: { R: 2.4, seed: 15, chimA: 2.2, lamp: 0 } },
@@ -11323,6 +11330,20 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
   if (V.spring && typeof snowKitPiece === 'function') { try { const S = V.spring, K = snowKitPiece('spring_geyser', { r: S.r }); K.group.position.set(S.at[0], S.at[1], S.at[2]); g.add(K.group);
       for (const b of K.boxes) BOXES.push({ minx: b.minx + S.at[0], maxx: b.maxx + S.at[0], miny: b.miny + S.at[1], maxy: b.maxy + S.at[1], minz: b.minz + S.at[2], maxz: b.maxz + S.at[2] });
       K.live(S.at, 0, g); circ(S.at[0], S.at[2], S.r + 2); } catch (e) { note('VILLAGE SPRING THREW ' + e.message); console.error(e); } }
+  // m15V3: a kit piece placed at any turn: the group turned by `yaw`, each of its boxes as a turned box (`obox`, the collider yaw is -yaw)
+  const svkAt = (kind, o, at, yaw) => { const K = snowKitPiece(kind, o); K.group.position.set(at[0], at[1], at[2]); K.group.rotation.y = yaw; g.add(K.group); const c = Math.cos(yaw), sn = Math.sin(yaw);
+    for (const b of K.boxes) { const lx = (b.minx + b.maxx) / 2, lz = (b.minz + b.maxz) / 2, wx = at[0] + lx * c + lz * sn, wz = at[2] - lx * sn + lz * c; BOXES.push(obox(wx, wz, (b.maxx - b.minx) / 2, (b.maxz - b.minz) / 2, -yaw, b.miny + at[1], b.maxy + at[1])); }
+    return K; };
+  for (const A of V.aq || []) { try { svkAt('aq_section', { h: A.h }, A.at, A.yaw); } catch (e) { note('VILLAGE AQUEDUCT THREW ' + e.message); console.error(e); } }
+  for (const B of V.bridges || []) { try { svkAt('bridge_timber', { span: B.span }, B.at, B.yaw); } catch (e) { note('VILLAGE BRIDGE THREW ' + e.message); console.error(e); } }
+  if (V.creek) { const C = V.creek, w = V.creekW || 2.4, pos = [], idx = [];     // the warm CREEK: swept out of the snow, a water ribbon, stones along its banks, steam (snowVillStep)
+    for (let k = 0; k + 1 < C.length; k++) seg(C[k][0], C[k][1], C[k + 1][0], C[k + 1][1], w * .9);
+    for (let k = 0; k < C.length; k++) { const a = C[Math.max(0, k - 1)], b = C[Math.min(C.length - 1, k + 1)], dx = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(dx, dz) || 1, nx = -dz / l * w / 2, nz = dx / l * w / 2;
+      pos.push(C[k][0] + nx, .07, C[k][1] + nz, C[k][0] - nx, .07, C[k][1] - nz); if (k) { const i = k * 2; idx.push(i - 2, i - 1, i, i - 1, i + 1, i); }
+      if (k + 1 < C.length) for (let s2 = 0; s2 < 3; s2++) for (const sd of [-1, 1]) { const t = (s2 + rnd()) / 3, x = C[k][0] + (C[k + 1][0] - C[k][0]) * t + sd * nx * 1.15 + (rnd() - .5) * .3, z = C[k][1] + (C[k + 1][1] - C[k][1]) * t + sd * nz * 1.15 + (rnd() - .5) * .3;
+        L.stoneD.push(vilBox(.5 + rnd() * .4, .25 + rnd() * .2, .45 + rnd() * .4, .7).rotateY(rnd() * 3).translate(x, .12, z)); } }
+    const cg = new THREE.BufferGeometry(); cg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); cg.setIndex(idx); cg.computeVertexNormals();
+    const cm = new THREE.Mesh(cg, M.water || new THREE.MeshStandardMaterial({ color: 0x3f9cc4, roughness: .08 })); cm.receiveShadow = true; g.add(cm); V.creekPts = C; }
   // THE PLACEMENTS
   const emit = (P, built) => { const yaw = P.yaw != null ? P.yaw : P.face ? Math.atan2(P.face[0] - P.at[0], P.face[1] - P.at[2]) : 0, c = Math.cos(yaw), s = Math.sin(yaw), [px, py, pz] = P.at, w = (x, z) => [px + x * c + z * s, pz - x * s + z * c];
     m4.makeRotationY(yaw).setPosition(px, py, pz); for (const k in built.L) for (const geo of built.L[k]) (L[k] || (L[k] = [])).push(geo.applyMatrix4(m4));
@@ -11351,6 +11372,8 @@ function snowVillage(g) { const V = SNOWVIL; if (!V.want) return; const Z = SNOW
     const fm = new THREE.Mesh(mergeGeometries(fg.map(q => q.toNonIndexed())), M.fire); fm.position.set(F.x, F.y, F.z); G.add(fm); F.mesh = fm; }
   g.add(G); V.g = G; V.stat.draws = G.children.length; V.stat.tris = tris | 0; V.stat.boxes = BOXES.length - V.stat.boxes; V.stat.chim = V.chim.length; }
 function snowVillStep(dt) { const V = SNOWVIL; if (!V.g) return; if (!V.mel && window.mel) { window.mel.SNOWVIL = V; V.mel = 1; } if (V.U) V.U.uT.value += dt; const p = player.pos;
+  if (V.creekPts && (V.steamT = (V.steamT || 0) - dt) <= 0) { V.steamT = .22; const C = V.creekPts, k = Math.floor(Math.random() * (C.length - 1)), t = Math.random(), x = C[k][0] + (C[k + 1][0] - C[k][0]) * t, z = C[k][1] + (C[k + 1][1] - C[k][1]) * t;     // m15V3: the warm creek steams
+    if (Math.hypot(x - p.x, z - p.z) < 60 && typeof smokeAt === 'function') smokeAt(x, .2, z, .6, 1.4); }
   // smoke off the chimneys near him (the shared puff pool, so only the nearest few)
   let n = 0; for (const C of V.chim) { if (Math.hypot(C.x - p.x, C.z - p.z) > 70 || n >= 6) continue; n++; C.t -= dt; if (C.t <= 0) { C.t = .35 + Math.random() * .35; smokeAt(C.x + (Math.random() - .5) * .2, C.y, C.z + (Math.random() - .5) * .2, 2.4, 1.7, [.86, .86, .88], .38); } }
   for (const F of V.fire) { const t = performance.now() / 1000; if (F.mesh) { F.mesh.scale.set(1 + .08 * Math.sin(t * 13), .85 + .25 * Math.sin(t * 9.3) * Math.sin(t * 3.1) + .1, 1 + .08 * Math.cos(t * 11)); F.mesh.rotation.y = t * .7; }
