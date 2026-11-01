@@ -5,6 +5,16 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
+## m15SF -- HIS snow footsteps replace the synth crunch (Nov 1 2026)
+*"I added a folder called footsteps_snow -- four footsteps in the snow; the one you created kind of hurt my ears. Align, trim, speed up or slow down --
+do what you gotta do and use these instead."* Measured: the four files are ONE recording (4 min 55 s each, decoded envelopes correlate .99999 -- the
+same take saved four ways), 23 s of silence then ~134 steps: a run of fast steps, then mostly single steps 1-2 s apart. Cut by script: every ISOLATED
+step (>.6 s clear either side), skipping the clipped ones (peak > .95), anything that is rumble or hiss (spectral centroid outside 600-2300 Hz -- the
+warmest kept, since the synth was too bright) and drawn-out double crunches (peak > .16 s after the start); each starts 4 ms before its crunch (15% of
+its peak), runs .36 s with a .07 s tail fade, and is matched to the same loudness (RMS .11, peak <= .7). 8 kept as four left / right pairs:
+`audio/footsteps_snow/cut/snow_1..4_l|r.mp3` (96 kbps mono, ~7 KB each), registered as footstep set `foot_SNOW` and used in the Snowfield. His four
+originals stay in `audio/footsteps_snow/` untouched (not loaded). `snowCrunchBufs` (the synth) is no longer used.
+
 ## m2012 -- THE DRAGON'S LAIR (Nov 1 2026)
 *"Go -- the mammoth ride, then the lair."* The crag and its doorway are gone; the cliff runs back under a new floor (`lairfloor`, 9.5 m, z -96..-80) and on
 it sits the LAIR (`SNOWCLIFF.lair`, at (4, -86)): a lumpy rock DOME (R 11, H 8.5) open to the south, an inner face so it reads from within, a ring of 26

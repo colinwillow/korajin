@@ -5763,6 +5763,7 @@ const SFX = {
     foot_ORIG: ['audio/footsteps/footstep_l.mp3', 'audio/footsteps/footstep_r.mp3', 'audio/footsteps/footstep_2_l.mp3', 'audio/footsteps/footstep_2_r.mp3'],
     foot_CUTS: [1, 2, 3, 4, 5, 6].flatMap(n => ['audio/footsteps/step_' + n + '_l.mp3', 'audio/footsteps/step_' + n + '_r.mp3']),
     foot_NEW: ['audio/footsteps/step3_1_l.mp3', 'audio/footsteps/step3_1_r.mp3'],
+    foot_SNOW: [1, 2, 3, 4].flatMap(n => ['audio/footsteps_snow/cut/snow_' + n + '_l.mp3', 'audio/footsteps_snow/cut/snow_' + n + '_r.mp3']),     // m15SF: HIS snow recording, cut into 8 steps (see NOTES)
     foot_LAND: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_b_2.mp3'],     /* m1872: HIS LANDING, as footsteps (pairs: a left, b right); m1875: + two variant pairs */
     // m1875: BODY CONTACTS (`contactSnd`) -- his landing and three variations of each half (1: -8% pitch, lowpass 2.6k, heavier; 2: +8%, lighter;
     // 3: -3%, treble -4 dB, softer)
@@ -11229,7 +11230,7 @@ function snowStep(dt) { const Z = SNOWZ, A = Z.air, p = player; if (!A) return; 
     for (const b of d.snowFeet) { b.getWorldPosition(_snF); const sy = snowSurfY(_snF.x, _snF.y, _snF.z); if (sy == null || _snF.y > sy + .08) continue; snowDig(_snF.x, _snF.y, _snF.z, Math.max(.2, r * .32), .35); if (v > 1 && Math.random() < dt * 10) snowPuff(_snF.x, sy, _snF.z, 3, 1.8 + v * .15, 1.4); }
     if (v > .6 && P.y < .5) snowDig(P.x, P.y, P.z, r * .7 * Math.min(1, v / 4), .5);
     const rel = P.y - (d.floorY || 0), was = d.snowY == null ? rel : d.snowY; if (was > .6 && rel <= .15) snowBlast(P.x, P.y, P.z, 1.5 + r * 1.4, Math.min(1.6, .6 + was * .3)); d.snowY = rel; }
-  if (SFX.ctx && !SFX.buf.foot_SNOW) { try { SFX.buf.foot_SNOW = snowCrunchBufs(); } catch (e) {} } if (SFX.buf.foot_SNOW && STEP.set !== 'SNOW') { Z.stepSet0 = STEP.set; STEP.set = 'SNOW'; }     // m2008: snow crunch footsteps
+  if (SFX.buf.foot_SNOW && SFX.buf.foot_SNOW.filter(Boolean).length >= 2 && STEP.set !== 'SNOW') { Z.stepSet0 = STEP.set; STEP.set = 'SNOW'; }     // m15SF: his recorded snow steps (the m2008 synth crunch hurt his ears -- gone)
   iceSpikeStep(dt);     // m2006
   mamFrame();     // m2011
   if (!Z.mamSpawned && ARENA.kinds.MAMMOTH && typeof arenaSpawn === 'function') { Z.mamSpawned = 1; Promise.resolve(arenaSpawn('MAMMOTH')).then(() => { const d = DUMMIES[DUMMIES.length - 1]; if (!d || !d.K || d.K.creature !== 'mammoth') return; d.entering = 0; d.tame = 1; d.st = 'cIdle'; d.ride = { v: 0 }; d.h = MAMR.yaw; d.root.position.set(MAMR.at[0], 0, MAMR.at[1]); d.root.rotation.y = d.h + (d.faceOff || 0); if (d.bar) d.bar.g.visible = false; MAMR.d = d; mamSaddle(d); }).catch(e => note('MAMMOTH THREW ' + e.message)); }     // m2011: the tame mammoth waits, saddled
