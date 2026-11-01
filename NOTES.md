@@ -6,6 +6,28 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
+## mNEXT -- the snow kit: SEVEN NEW PIECES for the village (water wheel, winch lift, hot pool, spring + geyser, timber bridge, terrace body, tunnel stair)
+
+Asked by the village session for VILLAGE_BLUEPRINT.md pass 7 (Colin approved sending it). Same conventions; a new showroom row WATER / MOVING / TERRAIN.
+- `water_wheel` {D 5, w 1.6, rate, paddles 12}: an undershot wheel on a stone mill-race (water, A-frame trestles, bearings); it TURNS (a mover) and its 12
+  bucket boards are moving colliders he can stand on and ride round; spray at the bottom. Ports a/b up and down the race.
+- `winch_lift` {h 6, period 18}: a timber gantry, a drum, a BASKET on a rope (a mover: up h and down on a slow loop, pausing at each end; its floor is a
+  moving collider that carries him) and a COUNTERWEIGHT going the other way; a railed plank landing at the top behind. Ports foot / top.
+- `hot_pool` {r 1.6}: a stone rim .3 high (step in), hot water, snowy rocks, STEAM, a glow. `spring_geyser` {r 2, every 12, dur 1.8, v 18}: the same pool
+  with a rock vent (two .3 tiers) that ERUPTS on a timer -- a white column and spray, and standing on the vent then LAUNCHES him (vel.y = v).
+- `bridge_timber` {span 9, w 4.5, H 1.2, camber .45, steps}: stone abutments with lanterns, a cambered plank deck on stringers and two trestle bents,
+  rails; deck colliders in 1 m steps (<= .1 m apart -- walkable), ports a/b at the abutments' ends on the deck. The mammoth fits (4.5 m).
+- `terrace_body` {pts, h}: any simple outline -> rough rock below, a battered stone retaining wall above, a coping, snow on top, icicles and drifts outside;
+  the collider is the PRISM. `vilStrips` now pairs every crossing in order (even-odd), so CONCAVE outlines are exact (the showroom's is an L).
+- `tunnel_stair` {h 3, w 1.8, W 6}: an arched, plaqued opening in an h m wall, a stair inside at .3 risers (lanterns), roofed for the first metre then
+  open to the sky with rails round the slot, coming out on the top behind. Ports foot / head.
+- RUNTIME: pieces can carry `movers` / `geysers` / `steam`; svkEmit moves them with the piece; `svkLive(piece, parent)` makes them real (a mesh group per
+  mover, its boxes in BOXES moved every frame + the box grid rebuilt, him carried when he stands on one). For a scene: `snowKitPiece(k, o).live(at, yaw,
+  parent)` once after placing. `snowKitPiece(...).boxes` are now strips (exact for concave outlines). New materials `water`, `hotwater`.
+- No existing piece or option was renamed or resized. The showroom moved south again (z 230 -> 280) to keep the longer rows off the field.
+- Rendered all seven before pushing (the wheel's paddle snow and the bridge deck's snow patches came off after the look). 32 draws in the showroom
+  (+3 mover groups and the geyser column). Shipped unverified -- riding the wheel and the basket, and the geyser launch, are untested on the phone.
+
 ## m2078 -- the snow kit SILHOUETTE PASS 2: staves, bellied walls, balusters, finials, capstones
 
 His: *"Sounds good."* (the second silhouette list)

@@ -11085,7 +11085,7 @@ function vilMats() { const V = SNOWVIL; if (V.M) return V.M; const paint = SNOWZ
     snow: paint ? snowTriMat('snow_snow', 2.5, 0xffffff, .85) : std({ color: 0xf6f9ff, roughness: .85 }),
     gold: paint ? std({ map: texGet('temple_gold'), bumpMap: texGet('temple_gold'), bumpScale: 1.2, color: 0xffe2a8, roughness: .36, metalness: .55, emissive: 0x3a2400, emissiveIntensity: .35 }) : std({ color: 0xd9a441, roughness: .38, metalness: .55, emissive: 0x3a2400, emissiveIntensity: .4 }),     /* detail pass 5: hammered, engraved gold */
     jade: paint ? new THREE.MeshStandardMaterial({ color: 0x3ab890, roughness: .25, metalness: .1, emissive: 0x8affd8, emissiveMap: texGet('temple_jade'), emissiveIntensity: 4.0, toneMapped: false }) : new THREE.MeshBasicMaterial({ color: 0x6cffc8, toneMapped: false }),     /* veined, carved jade, glowing */ warm: new THREE.MeshBasicMaterial({ color: 0xffc46a, toneMapped: false }), win, ban, ice: snowKitIce(),
-    iron: std({ color: 0x3c3834, roughness: .55, metalness: .4 }), rope: std({ color: 0xc2a070, roughness: .95 }), cloth: std({ color: 0xa83228, roughness: .85, side: THREE.DoubleSide }), clay: std({ color: 0xa8653e, roughness: .9 }), rock: paint ? snowTriMat('snow_rock', 2, 0xd0d6e4, .95) : std({ color: 0x8e96a8, roughness: .95 }),
+    iron: std({ color: 0x3c3834, roughness: .55, metalness: .4 }), rope: std({ color: 0xc2a070, roughness: .95 }), water: std({ color: 0x3f9cc4, roughness: .08, metalness: .1, transparent: true, opacity: .82, emissive: 0x0a3a50, emissiveIntensity: .5 }), hotwater: std({ color: 0x7fd6d8, roughness: .1, metalness: .05, transparent: true, opacity: .85, emissive: 0x2a8a8a, emissiveIntensity: .7 }), cloth: std({ color: 0xa83228, roughness: .85, side: THREE.DoubleSide }), clay: std({ color: 0xa8653e, roughness: .9 }), rock: paint ? snowTriMat('snow_rock', 2, 0xd0d6e4, .95) : std({ color: 0x8e96a8, roughness: .95 }),
     dark: std({ color: 0x1c2630, roughness: .3, metalness: .2 }), fire: new THREE.MeshBasicMaterial({ color: 0xff8a2a, toneMapped: false, transparent: true, opacity: .9, depthWrite: false }) }); }
 // a box whose uvs run in METRES / tile (so a texture keeps its scale on any size of box)
 function vilBox(w, h, d, tile = 1.5) { const g = new THREE.BoxGeometry(w, h, d), uv = g.attributes.uv, F = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
@@ -11252,10 +11252,10 @@ const VILKIND = {
       const m = Math.max(1, Math.ceil(L / 1)); for (let k = 0; k < m; k++) { const a = k / m, b = (k + 1) / m, xa = x0 + (x1 - x0) * a, za = z0 + (z1 - z0) * a, xb = x0 + (x1 - x0) * b, zb = z0 + (z1 - z0) * b;     // short pieces, so a slanted run stays thin
         cols.push({ pts: [[Math.min(xa, xb) - .1, Math.min(za, zb) - .1], [Math.max(xa, xb) + .1, Math.min(za, zb) - .1], [Math.max(xa, xb) + .1, Math.max(za, zb) + .1], [Math.min(xa, xb) - .1, Math.max(za, zb) + .1]], y0: 0, y1: 1.15 }); } } } };
 // a collider outline (convex, world xz) cut into axis-aligned strips across x, each as deep as the outline at its middle
-function vilStrips(pts, y0, y1) { let x0 = 1e9, x1 = -1e9; for (const p of pts) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); } const n = clamp(Math.round((x1 - x0) / .7), 1, 14);
-  for (let k = 0; k < n; k++) { const xa = x0 + (x1 - x0) * k / n, xb = x0 + (x1 - x0) * (k + 1) / n, xm = (xa + xb) / 2; let zl = 1e9, zh = -1e9;
-    for (let i = 0; i < pts.length; i++) { const a = pts[i], b = pts[(i + 1) % pts.length]; if ((a[0] - xm) * (b[0] - xm) > 0 || a[0] === b[0]) { if (a[0] === xm) { zl = Math.min(zl, a[1]); zh = Math.max(zh, a[1]); } continue; } const z = a[1] + (b[1] - a[1]) * (xm - a[0]) / (b[0] - a[0]); zl = Math.min(zl, z); zh = Math.max(zh, z); }
-    if (zh > zl) BOXES.push({ minx: xa, maxx: xb, miny: y0, maxy: y1, minz: zl, maxz: zh }); } }
+function vilStrips(pts, y0, y1, out = BOXES) { let x0 = 1e9, x1 = -1e9; for (const p of pts) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); } const n = clamp(Math.round((x1 - x0) / .7), 1, 24);
+  for (let k = 0; k < n; k++) { const xa = x0 + (x1 - x0) * k / n, xb = x0 + (x1 - x0) * (k + 1) / n, xm = (xa + xb) / 2, zs = [];     // m2079: every crossing at the strip's middle, paired in order -- a concave outline gives two (or more) runs
+    for (let i = 0; i < pts.length; i++) { const a = pts[i], b = pts[(i + 1) % pts.length]; if ((a[0] <= xm) === (b[0] <= xm)) continue; zs.push(a[1] + (b[1] - a[1]) * (xm - a[0]) / (b[0] - a[0])); }
+    zs.sort((p, q) => p - q); for (let j = 0; j + 1 < zs.length; j += 2) if (zs[j + 1] > zs[j]) out.push({ minx: xa, maxx: xb, miny: y0, maxy: y1, minz: zs[j], maxz: zs[j + 1] }); } }
 // lower the pack (both what shows and what it refills to) round a point or along a segment, with a soft rim
 function vilSweep(fn, r, lvl, bx) { const Z = SNOWZ, N = Z.res, T = Math.round(lvl * 255), e = r + 1.7, i0 = clamp(Math.floor(((bx[0] - e) / Z.size + .5) * N), 0, N - 1), i1 = clamp(Math.ceil(((bx[1] + e) / Z.size + .5) * N), 0, N - 1), j0 = clamp(Math.floor((.5 - (bx[3] + e) / Z.size) * N), 0, N - 1), j1 = clamp(Math.ceil((.5 - (bx[2] - e) / Z.size) * N), 0, N - 1);
   for (let j = j0; j <= j1; j++) { const z = (.5 - j / N) * Z.size; for (let i = i0; i <= i1; i++) { const x = (i / N - .5) * Z.size, d = fn(x, z); if (d > r + 1.6) continue;
@@ -11824,7 +11824,7 @@ try { if (/[?&]zone=snow\b/.test(location.search)) SNOWZ.want = 1; } catch (e) {
 // THE SHOWROOM: `?w=forge&zone=snowkit` -- every piece and variant on a snow plaza south of the Snowfield, in labelled rows, its ports marked by
 // small jade diamonds. (The m2032 village layout is off by default now -- placement is another context's; `?vil=1` brings it back.)
 // SC_SVK:START
-const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 230], cell: 7.5, perRow: 9, rowGap: 13,
+const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 280], cell: 7.5, perRow: 9, rowGap: 13,
   rows: [
     { title: 'STRUCTURE', items: [['wall_straight'], ['wall_corner'], ['wall_window'], ['wall_door'], ['post_beam'], ['hut_base'], ['roof_round'], ['roof_gable'], ['roof_beams'],
       ['chimney'], ['stairs'], ['stairs', { n: 3 }, 'stairs x3'], ['platform'], ['platform', { h: .9, w: 4, d: 2 }, 'platform low'], ['arch'], ['pillar'], ['pillar', { h: 2.4 }, 'pillar short']] },
@@ -11834,10 +11834,11 @@ const SVK = { show: 0, grid: 2, rise: .3, at: [0, .6, 230], cell: 7.5, perRow: 9
       ['aq_ramp', { rise: 3 }, 'end ramp 3 m'], ['aq_section', { h: 6 }, 'section (snapped)'], ['aq_section', { h: 9, big: 1 }, 'section tall']] },
     { title: 'BUILDINGS', items: [['hut'], ['hut', { R: 2.2, roofH: 2.4, banner: 0, chimney: 0, porch: 0, seed: 3 }, 'hut small'], ['hut', { R: 3, roofH: 3.4, wallH: 2.6, seed: 7, chimA: 2.2 }, 'hut big'], ['longhouse'], ['stairs_wood', { n: 6 }, 'timber stairs'], ['deck_posts', { h: 2.4 }, 'deck on posts']] },
     { title: 'TOWERS / GATES', cell: 13, per: 3, gap: 30, items: [['watchtower'], ['gate'], ['gate', { wings: 0 }, 'gate (no wings)']] },
+    { title: 'WATER / MOVING / TERRAIN', cell: 15, per: 4, gap: 22, items: [['water_wheel'], ['winch_lift'], ['hot_pool'], ['spring_geyser'], ['bridge_timber', { steps: 1 }, 'bridge timber'], ['terrace_body'], ['tunnel_stair']] },
     { title: 'OUTPOST', cell: 30, per: 1, gap: 18, items: [['outpost']] } ] };
 // SC_SVK:END
 try { if (/[?&]zone=snowkit\b/.test(location.search)) { SNOWZ.want = 1; SVK.show = 1; SNOWVIL.want = 0; } } catch (e) {}
-function svkNew() { const P = { L: {}, cols: [], patches: [], ports: [], smoke: [], fire: [], pools: [] }; P.pool = (x, y, z, r, col, k) => P.pools.push([x, y, z, r, col, k]); P.add = (k, g) => { (P.L[k] || (P.L[k] = [])).push(g); return g; };
+function svkNew() { const P = { L: {}, cols: [], patches: [], ports: [], smoke: [], fire: [], pools: [], movers: [], geysers: [], steam: [] }; P.pool = (x, y, z, r, col, k) => P.pools.push([x, y, z, r, col, k]); P.add = (k, g) => { (P.L[k] || (P.L[k] = [])).push(g); return g; };
   P.box = (k, w, h, d, x, y, z, tile = 1.5, ry = 0) => { const g = (k === 'stone' || k === 'stoneD') ? vilRBox(w, h, d, tile) : (k === 'wood' || k === 'door') ? vilWood(w, h, d, tile) : vilBox(w, h, d, tile);     /* detail pass 2: stone is chamfered and chipped */ if (ry) g.rotateY(ry); return P.add(k, g.translate(x, y, z)); };
   P.col = (x0, x1, y0, y1, z0, z1) => P.cols.push({ pts: [[x0, z0], [x1, z0], [x1, z1], [x0, z1]], y0, y1 });
   P.port = (id, x, y, z, dx = 0, dy = 0, dz = 0) => P.ports.push({ id, at: [x, y, z], dir: [dx, dy, dz] });
@@ -11855,7 +11856,9 @@ function svkEmit(D, S, at, yaw = 0) { const c = Math.cos(yaw), s = Math.sin(yaw)
   const q4 = Math.round(yaw / (Math.PI / 2)), quarter = Math.abs(yaw - q4 * Math.PI / 2) < 1e-3; if (quarter) for (const T of S.patches) { const [x, z] = w(T.x, T.z), sw = q4 % 2 !== 0; D.patches.push({ x, z, w: sw ? T.d : T.w, d: sw ? T.w : T.d, top: T.top + py, round: T.round }); }
   for (const p of S.ports) { const [x, z] = w(p.at[0], p.at[2]); D.ports.push({ id: p.id, at: [x, p.at[1] + py, z], dir: [p.dir[0] * c + p.dir[2] * s, p.dir[1], -p.dir[0] * s + p.dir[2] * c] }); }
   for (const key of ['smoke', 'fire']) for (const q of S[key]) { const [x, z] = w(q[0], q[2]); D[key].push([x, q[1] + py, z]); }
-  for (const q of S.pools || []) { const [x, z] = w(q[0], q[2]); D.pools.push([x, q[1] + py, z, q[3], q[4], q[5]]); } return D; }
+  for (const q of S.pools || []) { const [x, z] = w(q[0], q[2]); D.pools.push([x, q[1] + py, z, q[3], q[4], q[5]]); }
+  for (const M of S.movers || []) { const [x, z] = w(M.pivot[0], M.pivot[2]); (D.movers || (D.movers = [])).push(Object.assign({}, M, { pivot: [x, M.pivot[1] + py, z], yaw: (M.yaw || 0) + yaw })); }
+  for (const key of ['geysers', 'steam']) for (const G of S[key] || []) { const [x, z] = w(G.at[0], G.at[2]); (D[key] || (D[key] = [])).push(Object.assign({}, G, { at: [x, G.at[1] + py, z] })); } return D; }
 // the VILKIND accessories (m2032) as kit pieces
 function svkFromVil(kind, o) { const P = svkNew(), X = { fire: [], pools: P.pools }; VILKIND[kind](o || {}, P.add, P.cols, X); for (const q of X.fire) P.fire.push(q); return P; }
 // a stone wall run along X (len, h, t), an optional opening { w, y0, y1, kind: 'window' | 'door' } in its middle
@@ -12064,6 +12067,133 @@ Object.assign(SVKP, {
     svkSnap(P, svkPiece('watchtower', {}), 'foot', [-h + 4.6, 0, -h + 3.5]); svkSnap(P, svkPiece('hut', { R: 2.4, seed: 31, chimA: 2.3 }), 'door', [h - 4.5 - 4, 0, -3], -Math.PI / 2);
     svkSnap(P, svkPiece('fire_pit'), 'foot', [-1.5, 0, 3]); svkSnap(P, svkPiece('crates'), 'foot', [h - 2, 0, h - 3]); svkSnap(P, svkPiece('firewood'), 'foot', [-h + 2, 0, 4], Math.PI / 2); svkSnap(P, svkPiece('jade_lamp'), 'foot', [2.6, 0, h - 1.2]); svkSnap(P, svkPiece('jade_lamp'), 'foot', [-2.6, 0, h - 1.2]);
     P.ports = []; P.port('gate', 0, 0, h + 2, 0, 0, 1); return P; } });
+// m2079: SEVEN NEW PIECES for the village blueprint (VILLAGE_BLUEPRINT.md pass 7; asked by the village session): water_wheel, winch_lift, hot_pool,
+// spring_geyser, bridge_timber, terrace_body, tunnel_stair. Two of them MOVE and one LAUNCHES, so a piece can now carry
+//   movers  [{ kind: 'spin' | 'lift', pivot, yaw, L (geometry about the pivot), axis 'x', rate, range, period, inv, boxes: [{ c, h }] , rope }]
+//   geysers [{ at, r, every, dur, v }]   steam [{ at, r, rate }]
+// which svkEmit carries along like ports, and `svkLive(piece, parent)` makes real: a mesh group per mover, its collider boxes in BOXES moved every frame
+// (and the box grid rebuilt), him carried when he stands on one, the geyser's column and launch, the steam. `snowKitPiece(...).live(at, yaw, parent)`
+// does the same for a scene that places the piece itself.
+Object.assign(SVKP, {
+  // THE WATER WHEEL: an undershot wheel (D m) over a stone mill-race; it turns slowly and its bucket boards are platforms you can ride round
+  water_wheel: o => { const P = svkNew(), D = o.D || 5, R = D / 2, wW = o.w || 1.6, H = R + .3, rnd = plantRnd(91);
+    for (const s of [-1, 1]) { const x = s * (wW / 2 + .45); P.box('stone', .32, .85, 8, x + s * .1, .42, 0, 1.2); P.add('snow', vilPillow(.4, .08, 7.8).translate(x + s * .1, .85, 0)); P.col(x + s * .1 - .16, x + s * .1 + .16, 0, .85, -4, 4);
+      for (const sz of [-1, 1]) { const leg = vilWood(.24, Math.hypot(H, 1.7) + .2, .24, 1); leg.rotateX(sz * Math.atan2(1.7, H)).translate(x + s * .35, H / 2, sz * .85); P.add('wood', leg); P.col(x + s * .35 - .15, x + s * .35 + .15, 0, .8, sz * 1.7 - .15, sz * 1.7 + .15); }
+      P.box('wood', .3, .3, 2.2, x + s * .35, H * .5, 0, 1); P.box('stoneD', .5, .4, .6, x + s * .35, H, 0, .6); P.box('iron', .55, .1, .65, x + s * .35, H + .25, 0, 1); }
+    P.add('water', new THREE.PlaneGeometry(wW + .6, 8).rotateX(-Math.PI / 2).translate(0, .45, 0)); P.add('stoneD', vilBox(wW + 1.2, .1, 8, 2).translate(0, .02, 0));
+    const M = { id: 'wheel', kind: 'spin', pivot: [0, H, 0], yaw: 0, axis: 'x', rate: -(o.rate || .28), L: {}, boxes: [] }, add = (k, g) => (M.L[k] || (M.L[k] = [])).push(g);
+    for (const s of [-1, 1]) { add('wood', new THREE.TorusGeometry(R - .12, .09, 6, 36).rotateY(Math.PI / 2).translate(s * wW / 2, 0, 0)); add('wood', new THREE.TorusGeometry(R * .55, .07, 6, 24).rotateY(Math.PI / 2).translate(s * wW / 2, 0, 0)); add('iron', new THREE.TorusGeometry(R - .02, .03, 4, 36).rotateY(Math.PI / 2).translate(s * wW / 2, 0, 0));
+      for (let k = 0; k < 4; k++) add('wood', vilBox(.12, D - .3, .12, 1).rotateX(k * Math.PI / 4 + Math.PI / 8).translate(s * wW / 2, 0, 0)); }
+    add('iron', new THREE.CylinderGeometry(.32, .32, wW + .6, 10).rotateZ(Math.PI / 2)); add('gold', new THREE.CylinderGeometry(.36, .36, .1, 10).rotateZ(Math.PI / 2).translate(wW / 2 + .32, 0, 0)); add('gold', new THREE.CylinderGeometry(.36, .36, .1, 10).rotateZ(Math.PI / 2).translate(-wW / 2 - .32, 0, 0));
+    const n = o.paddles || 12; for (let k = 0; k < n; k++) { const th = k / n * Math.PI * 2; add('door', vilBox(wW + .1, .1, .75, 1).translate(0, R, 0).rotateX(th)); add('wood', vilBox(wW, .45, .08, 1).translate(0, R - .25, -.36).rotateX(th));
+      M.boxes.push({ th, r: R + .02, h: [wW / 2 + .05, .1, .38] }); }
+    P.movers.push(M); P.steam.push({ at: [0, .5, .9], r: .5, rate: 3, k: .8, life: .5 }); P.pool(0, 0, 0, 3, 0x9fe0ff, .12);
+    P.port('a', 0, 0, 4, 0, 0, 1); P.port('b', 0, 0, -4, 0, 0, -1); return P; },
+  // THE WINCH LIFT: a timber gantry over a basket on a rope (a counterweight going the other way), up `h` and down on a slow loop with a pause at each
+  // end; a plank landing at the top behind it. Step on at the foot (+Z), off at the top (-Z).
+  winch_lift: o => { const P = svkNew(), h = o.h || 6, T = h + 2.6, g = 1.3;
+    for (const [x, z] of [[-g, -g], [g, -g], [-g, g], [g, g]]) { P.box('stoneD', .55, .4, .55, x, .2, z, .6); P.box('wood', .3, T, .3, x, T / 2, z, 1); P.col(x - .17, x + .17, 0, T, z - .17, z + .17); }
+    for (const sx of [-1, 1]) P.box('wood', .26, .3, 2 * g + .6, sx * g, T + .1, 0, 1); for (const sz of [-1, 1]) P.box('wood', 2 * g + .6, .26, .26, 0, T - .2, sz * g, 1);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) P.add('wood', vilWood(.14, 2.2, .14, 1).rotateX(sz * .6).translate(sx * g, T - 1.1, sz * (g - .5)));
+    P.add('wood', new THREE.CylinderGeometry(.38, .38, 2 * g, 12).rotateZ(Math.PI / 2).translate(0, T + .55, 0)); P.add('iron', new THREE.CylinderGeometry(.42, .42, .08, 12).rotateZ(Math.PI / 2).translate(g - .2, T + .55, 0)); P.add('iron', new THREE.CylinderGeometry(.42, .42, .08, 12).rotateZ(Math.PI / 2).translate(-g + .2, T + .55, 0));
+    P.box('wood', .5, .08, .08, g + .45, T + .55, 0, 1); P.box('wood', .08, .45, .08, g + .7, T + .35, 0, 1); for (const sx of [-1, 1]) P.add('snow', vilPillow(.3, .1, 2 * g + .5).translate(sx * g, T + .25, 0)); P.add('snow', vilPillow(.7, .12, 2 * g).translate(0, T + .9, 0).rotateZ(0));
+    // the landing behind, at h
+    const lz0 = -g - .1, lz1 = lz0 - 2.2; P.box('door', 2.4, .2, 2.2, 0, h - .1, (lz0 + lz1) / 2, 1); P.col(-1.2, 1.2, h - .2, h, lz1, lz0); P.patches.push({ x: 0, z: (lz0 + lz1) / 2, w: 2.2, d: 2, top: h + .01, round: 0 });
+    for (const sx of [-1, 1]) { P.box('wood', .22, h, .22, sx * 1.05, h / 2, lz1 + .15, 1); P.col(sx * 1.05 - .12, sx * 1.05 + .12, 0, h, lz1 + .03, lz1 + .27); for (const y of [.5, 1]) P.box('wood', .08, .1, 2.2, sx * 1.2, h + y, (lz0 + lz1) / 2, 1); P.col(sx * 1.2 - .06, sx * 1.2 + .06, h, h + 1.05, lz1, lz0); }
+    for (const y of [.5, 1]) P.box('wood', 2.4, .1, .08, 0, h + y, lz1, 1); P.col(-1.2, 1.2, h, h + 1.05, lz1 - .06, lz1 + .06);
+    // the basket (a mover) and the counterweight (a mover the other way)
+    const B = { id: 'basket', kind: 'lift', pivot: [0, 0, 0], yaw: 0, range: h, period: o.period || 18, L: {}, boxes: [{ c: [0, .07, 0], h: [.9, .08, .9] }], rope: { x: 0, z: 0, y0: 2.35, top: T + .55 } }, ba = (k, g2) => (B.L[k] || (B.L[k] = [])).push(g2);
+    ba('door', vilBox(1.8, .15, 1.8, 1).translate(0, .075, 0)); for (const sx of [-1, 1]) { for (const sz of [-1, 1]) ba('wood', vilBox(.1, 1.0, .1, 1).translate(sx * .85, .6, sz * .85)); for (const y of [.55, 1.05]) ba('wood', vilBox(.08, .08, 1.8, 1).translate(sx * .85, y, 0)); }
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { const a = vilBox(.03, Math.hypot(1.25, 1.2), .03, 1); a.rotateX(-sz * Math.atan2(.85, 1.25)).rotateZ(sx * Math.atan2(.85, 1.25)).translate(sx * .42, 1.72, sz * .42); ba('iron', a); }
+    ba('gold', new THREE.TorusGeometry(.12, .03, 5, 10).rotateX(Math.PI / 2).translate(0, 2.35, 0)); vilBarrel(ba, .45, .15, .45, () => .3); ba('wood', vilBox(.5, .4, .5, 1).translate(-.4, .35, -.35));
+    const C = { id: 'counter', kind: 'lift', pivot: [g + .55, 0, 0], yaw: 0, range: h, period: B.period, inv: 1, L: {}, boxes: [], rope: { x: 0, z: 0, y0: 1.0, top: T + .55 } }; (C.L.stoneD = []).push(vilRBox(.6, .9, .6, .8).translate(0, .45, 0)); (C.L.iron = []).push(new THREE.TorusGeometry(.32, .03, 4, 10).rotateX(Math.PI / 2).translate(0, .92, 0));
+    P.movers.push(B, C); P.port('foot', 0, 0, g + .8, 0, 0, 1); P.port('top', 0, h, lz1, 0, 0, -1); return P; },
+  // THE HOT POOL: a stone-rimmed steaming pool (rim .3 -- step in), rocks round it, a soft glow on the water
+  hot_pool: o => { const P = svkNew(); svkPoolRim(P, o.r || 1.6, 'hot', o.seed || 3); return P; },
+  // THE SPRING + GEYSER: the pool, a rock vent in the middle (two .3 tiers), erupting every `every` s for `dur` s -- stand on the vent and it LAUNCHES you
+  spring_geyser: o => { const P = svkNew(), r = o.r || 2, rnd = plantRnd(77); svkPoolRim(P, r, 'spring', o.seed || 5);
+    const mound = new THREE.ConeGeometry(1.1, .7, 9, 2), Q = mound.attributes.position; for (let i = 0; i < Q.count; i++) { const n = .08 * Math.sin(Q.getX(i) * 7 + Q.getZ(i) * 5); Q.setXYZ(i, Q.getX(i) * (1 + n), Q.getY(i), Q.getZ(i) * (1 + n)); } mound.computeVertexNormals(); P.add('rock', mound.translate(0, .32, 0));
+    P.add('dark', new THREE.CircleGeometry(.22, 10).rotateX(-Math.PI / 2).translate(0, .68, 0)); for (let k = 0; k < 7; k++) { const a = k / 7 * 6.28, ch = .3 + rnd() * .35; P.add(k % 3 ? 'ice' : 'jade', new THREE.OctahedronGeometry(.08 + ch * .1, 0).scale(1, ch * 4, 1).translate(0, ch * .3, 0).rotateZ(.35 * Math.cos(a)).rotateX(.35 * Math.sin(a)).translate(Math.cos(a) * .75, .35, Math.sin(a) * .75)); }
+    P.col(-.75, .75, 0, .3, -.75, .75); P.col(-.42, .42, 0, .6, -.42, .42); P.geysers.push({ at: [0, .6, 0], r: .8, every: o.every || 12, dur: o.dur || 1.8, v: o.v || 18 }); P.steam.push({ at: [0, .7, 0], r: .15, rate: 1.2, k: 1.4, life: 1.2 });
+    P.pool(0, .2, 0, r + .6, 0x80ffe0, .35); P.port('vent', 0, .6, 0, 0, 1, 0); return P; },
+  // THE TIMBER ROAD BRIDGE: stone abutments, a cambered plank deck `w` wide over `span` on stringers and two trestle bents, railed; the mammoth fits.
+  // Ports a/b at the abutments' outer ends on the deck; `steps: 1` adds .3 m steps down off each end.
+  bridge_timber: o => { const P = svkNew(), S = o.span || 9, w = o.w || 4.5, H = o.H || 1.2, cam = o.camber == null ? .45 : o.camber, A = 2, y = x => Math.abs(x) >= S / 2 ? H : H + cam * (1 - (2 * x / S) ** 2), rnd = plantRnd(23);
+    for (const s of [-1, 1]) { const ax = s * (S / 2 + A / 2); P.box('stoneD', A, H, w + .8, ax, H / 2, 0, 1.2); P.box('band', A + .02, .14, w + .82, ax, H - .25, 0, .6); P.col(ax - A / 2, ax + A / 2, 0, H, -w / 2 - .4, w / 2 + .4); P.patches.push({ x: ax, z: 0, w: A - .2, d: w - .3, top: H + .01, round: 0 });
+      for (const sz of [-1, 1]) { P.box('stone', A + .2, H + .7, .4, ax, (H + .7) / 2, sz * (w / 2 + .2), 1); P.add('snow', vilPillow(A + .1, .1, .4).translate(ax, H + .7, sz * (w / 2 + .2))); P.col(ax - A / 2 - .1, ax + A / 2 + .1, 0, H + .7, sz * (w / 2 + .2) - .2, sz * (w / 2 + .2) + .2); vilLantern(P.add, ax + s * .6, H + 1.1, sz * (w / 2 + .2), .8); P.pool(ax + s * .6, H, sz * (w / 2 - .6), 1.6, 0xffc070, .4); }
+      if (o.steps) for (let k = 0; k < Math.round(H / .3); k++) { const top = H - (k + 1) * .3, x0 = s * (S / 2 + A + k * .55), x1 = x0 + s * .55; if (top <= 0) break; P.box('stoneD', .55, top, w, (x0 + x1) / 2, top / 2, 0, 1); P.col(Math.min(x0, x1), Math.max(x0, x1), 0, top, -w / 2, w / 2); } }
+    const n = Math.round(S); for (let k = 0; k < n; k++) { const xa = -S / 2 + k * S / n, xb = xa + S / n, ym = y((xa + xb) / 2); P.col(xa, xb, ym - .3, ym, -w / 2, w / 2);
+      const sl = Math.atan2(y(xb) - y(xa), xb - xa); for (const sz of [-1.6, -.55, .55, 1.6]) P.add('wood', vilBox(S / n + .02, .3, .22, 1).rotateZ(sl).translate((xa + xb) / 2, ym - .25, sz * w / 3.6));
+      for (const sz of [-1, 1]) { const z = sz * (w / 2 + .05); P.add('wood', vilBox(S / n + .02, .1, .1, 1).rotateZ(sl).translate((xa + xb) / 2, ym + 1.0, z)); P.add('wood', vilBox(S / n + .02, .08, .08, 1).rotateZ(sl).translate((xa + xb) / 2, ym + .55, z)); P.add('snow', vilBox(S / n, .05, .12, 2).rotateZ(sl).translate((xa + xb) / 2, ym + 1.07, z)); P.col(xa, xb, ym, ym + 1.05, z - .07, z + .07); } }
+    for (let x = -S / 2 + .15; x < S / 2; x += .32) { const yy = y(x); P.add('door', vilBox(.3, .08, w + .1, 1).translate(x, yy - .04, 0)); }
+    for (let x = -S / 2; x <= S / 2 + .01; x += S / 6) for (const sz of [-1, 1]) { const yy = y(x); P.add('wood', vilWood(.16, 1.15, .16, 1).translate(x, yy + .55, sz * (w / 2 + .05))); P.add('snow', vilPillow(.2, .06, .2).translate(x, yy + 1.12, sz * (w / 2 + .05))); }
+    for (const s of [-1, 1]) { const bx = s * S / 6, yy = y(bx) - .4; for (const sz of [-1, 1]) { P.box('wood', .3, yy, .3, bx, yy / 2, sz * (w / 2 - .4), 1); P.box('stoneD', .6, .3, .6, bx, .15, sz * (w / 2 - .4), .6); P.col(bx - .17, bx + .17, 0, yy, sz * (w / 2 - .4) - .17, sz * (w / 2 - .4) + .17); }
+      P.box('wood', .26, .3, w - .4, bx, yy - .15, 0, 1); const L = Math.hypot(w - .8, yy - .6); for (const d of [-1, 1]) P.add('wood', vilBox(.12, .12, L, 1).rotateX(d * Math.atan2(yy - .6, w - .8)).translate(bx, yy / 2 + .1, 0)); }
+    P.ice(-S / 2 + .3, S / 2 - .3, H - .2, w / 2 + .15, Math.round(S * 1.6), rnd); P.ice(-S / 2 + .3, S / 2 - .3, H - .2, -w / 2 - .15, Math.round(S * 1.6), rnd);
+    P.port('a', -S / 2 - A, H, 0, -1, 0, 0); P.port('b', S / 2 + A, H, 0, 1, 0, 0); return P; },
+  // A TERRACE BODY from an outline (`pts`, local [x, z], any simple polygon) and a height: rough rock below, a battered stone retaining wall above, a
+  // coping, snow on top; the collider is the prism (the strips handle concave outlines)
+  terrace_body: o => { const P = svkNew(), h = o.h || 2.4, pts = o.pts || [[-4, -3], [4, -3], [4, 1], [0, 1], [0, 3], [-4, 3]], rnd = plantRnd(o.seed || 41), n = pts.length;
+    let area = 0; for (let i = 0; i < n; i++) { const a = pts[i], b = pts[(i + 1) % n]; area += a[0] * b[1] - b[0] * a[1]; } const ccw = area > 0 ? 1 : -1;     // which side of each edge is OUTSIDE
+    const sh = new THREE.Shape(pts.map(p => new THREE.Vector2(p[0], -p[1]))), rock = new THREE.ExtrudeGeometry(sh, { depth: h * .5, bevelEnabled: false }).rotateX(-Math.PI / 2), Q = rock.attributes.position;
+    for (let i = 0; i < Q.count; i++) { const x = Q.getX(i), yv = Q.getY(i), z = Q.getZ(i), k = .2 * Math.sin(x * 2.3 + z * 1.7 + yv * 3) + .12 * Math.sin(z * 4.1 - x * 3.3); Q.setXYZ(i, x + k * .6, yv, z + k * .6); } rock.computeVertexNormals(); P.add('rock', rock);
+    for (let i = 0; i < n; i++) { const a = pts[i], b = pts[(i + 1) % n], L = Math.hypot(b[0] - a[0], b[1] - a[1]), ry = Math.atan2(b[0] - a[0], b[1] - a[1]), nx = (b[1] - a[1]) / L * ccw, nz = -(b[0] - a[0]) / L * ccw, cx = (a[0] + b[0]) / 2, cz = (a[1] + b[1]) / 2, wh = h * .62;
+      const wall = vilTaper(vilRBox(L + .5, wh, .55, 1.4).rotateY(ry + Math.PI / 2), 1, 0); P.add('stone', wall.translate(cx - nx * .15, h - wh / 2 - .1, cz - nz * .15)); P.add('stoneD', vilRBox(L + .6, .2, .75, 1).rotateY(ry + Math.PI / 2).translate(cx - nx * .1, h + .0, cz - nz * .1));
+      P.ice(-L / 2 + .3, L / 2 - .3, h - .12, 0, Math.round(L * 1.4), rnd); const ic = P.L.ice.splice(-Math.round(L * 1.4)); for (const g of ic) P.add('ice', g.rotateY(ry + Math.PI / 2).translate(cx + nx * .25, 0, cz + nz * .25));
+      for (let k = 0; k < Math.round(L / 2.5); k++) { const t = (k + .5) / Math.round(L / 2.5), x = a[0] + (b[0] - a[0]) * t + nx * .5, z = a[1] + (b[1] - a[1]) * t + nz * .5; P.add('snow', vilPillow(1.4 + rnd(), .3 + rnd() * .3, .9).rotateY(ry + Math.PI / 2).translate(x, 0, z)); } }
+    const top = new THREE.ShapeGeometry(sh, 4).rotateX(-Math.PI / 2); P.add('snow', top.translate(0, h + .11, 0)); P.cols.push({ pts: pts.map(p => p.slice()), y0: 0, y1: h + .1 });
+    const xs = pts.map(p => p[0]), zs = pts.map(p => p[1]); if (n === 4 && new Set(xs.map(v => v.toFixed(2))).size === 2) P.patches.push({ x: (Math.min(...xs) + Math.max(...xs)) / 2, z: (Math.min(...zs) + Math.max(...zs)) / 2, w: Math.max(...xs) - Math.min(...xs) - .4, d: Math.max(...zs) - Math.min(...zs) - .4, top: h + .12, round: 0 });
+    pts.forEach((p, i) => P.port('c' + i, p[0], h + .1, p[1], 0, 1, 0)); return P; },
+  // A TUNNEL STAIR: an arched opening in an `h` m retaining wall (W wide), a stair inside climbing one terrace at .3 m risers, open to the sky after the
+  // first metre, coming out on the terrace top behind; railed round the slot
+  tunnel_stair: o => { const P = svkNew(), h = o.h || 3, w = o.w || 1.8, W = o.W || 6, n = Math.round(h / .3), tr = .5, L = n * tr, D = L + 3, zF = D / 2, rnd = plantRnd(61);
+    for (const s of [-1, 1]) { const x0 = s * w / 2, x1 = s * W / 2, cx = (x0 + x1) / 2, bw = Math.abs(x1 - x0); P.box('stone', bw, h, D, cx, h / 2, 0, 1.4); P.col(Math.min(x0, x1), Math.max(x0, x1), 0, h, -D / 2, D / 2); P.patches.push({ x: cx, z: 0, w: bw - .3, d: D - .3, top: h + .01, round: 0 });
+      for (let k = 0; k <= 3; k++) { const z = zF - 1.2 - k * (L - 1) / 3; P.box('wood', .14, 1.0, .14, s * (w / 2 + .12), h + .5, z, 1); } for (const y of [.5, 1]) P.box('wood', .08, .1, L - .9, s * (w / 2 + .12), h + y, zF - 1.2 - (L - 1) / 2, 1); P.col(s * (w / 2 + .12) - .06, s * (w / 2 + .12) + .06, h, h + 1.05, zF - 1.2 - L + 1, zF - 1.2); }
+    const back = D / 2 - .2 - L; P.box('stone', w, h, back + D / 2, 0, h / 2, (back - D / 2) / 2, 1.4); P.col(-w / 2, w / 2, 0, h, -D / 2, back); P.box('stoneD', w + .02, .2, .4, 0, h - .1, back, 1);
+    P.box('stoneD', w + .1, .35, 1.2, 0, h - .17, zF - .6, 1); P.col(-w / 2, w / 2, h - .35, h, zF - 1.2, zF);     // the tunnel's roof over the first metre
+    for (let k = 0; k < n; k++) { const top = (k + 1) * .3, z1 = zF - .2 - k * tr, z0 = z1 - tr; P.box('stoneD', w, top, tr, 0, top / 2, (z0 + z1) / 2, 1); P.box('stone', w + .04, .07, tr + .03, 0, top - .035, (z0 + z1) / 2, 1); P.col(-w / 2, w / 2, 0, top, z0, z1); if (k % 3 === 1) for (const s of [-1, 1]) vilLantern(P.add, s * (w / 2 - .12), top + 1.7, (z0 + z1) / 2, .6); }
+    { const X = W / 2, sh = new THREE.Shape(), hole = new THREE.Path(), ah = Math.min(2.5, h - .4); sh.moveTo(-X, 0); sh.lineTo(X, 0); sh.lineTo(X, h); sh.lineTo(-X, h); sh.closePath(); hole.moveTo(-w / 2, 0); hole.lineTo(w / 2, 0); hole.lineTo(w / 2, ah - w / 2); hole.absarc(0, ah - w / 2, w / 2, 0, Math.PI, false); hole.lineTo(-w / 2, 0); sh.holes.push(hole);
+      const g = new THREE.ExtrudeGeometry(sh, { depth: .3, bevelEnabled: false, curveSegments: 12 }), uv = g.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / 1.2, uv.getY(i) / 1.2); P.add('stoneD', g.translate(0, 0, zF)); P.col(-w / 2, w / 2, ah, h, zF, zF + .3);
+      const ring = new THREE.Shape(); ring.absarc(0, ah - w / 2, w / 2 + .35, Math.PI, 0, true); ring.lineTo(w / 2, ah - w / 2); ring.absarc(0, ah - w / 2, w / 2, 0, Math.PI, false); ring.closePath(); P.add('stone', new THREE.ExtrudeGeometry(ring, { depth: .45, bevelEnabled: false, curveSegments: 12 }).translate(0, 0, zF));
+      vilPlaque(P.add, .6, .7, 0, ah + .2, zF + .42); for (const s of [-1, 1]) { P.add('stone', vilRBox(.4, ah - w / 2, .45, 1).translate(s * (w / 2 + .18), (ah - w / 2) / 2, zF + .2)); vilLantern(P.add, s * (w / 2 + .7), 2.0, zF + .55, .8); P.pool(s * (w / 2 + .7), 0, zF + 1.3, 1.6, 0xffc070, .4); } }
+    P.box('stoneD', W + .3, .22, .6, 0, h + .02, zF + .1, 1); P.add('snow', vilPillow(W + .2, .12, .6).translate(0, h + .13, zF + .1)); P.ice(-W / 2 + .2, W / 2 - .2, h - .1, zF + .45, Math.round(W * 2), rnd);
+    for (let k = 0; k < 3; k++) P.add('snow', vilPillow(1.5 + rnd(), .35 + rnd() * .2, .9).translate(-W / 2 + (k + .5) * W / 3 + (Math.abs(-W / 2 + (k + .5) * W / 3) < w ? W / 3 : 0), 0, zF + .7));
+    P.port('foot', 0, 0, zF + 1, 0, 0, 1); P.port('head', 0, h, back - .5, 0, 0, -1); return P; } });
+// the pool both water pieces share: a stone rim .3 high (steppable) in 12 boxes, the water, rocks with snow round it, steam, a glow
+function svkPoolRim(P, r, kind, seed) { const rnd = plantRnd(seed * 31);
+  P.add('stoneD', vilLathe([[r + .5, -.05], [r + .5, .3], [r + .25, .34], [r - .02, .3], [r - .02, -.05]], 28, (a, t, k) => [k > 0 && k < 4 ? .05 * Math.sin(a * 5 + seed) : 0, 0], 1)); P.add('band', vilLathe([[r + .52, .08], [r + .52, .22]], 28, null, .6));
+  P.add(kind === 'hot' ? 'hotwater' : 'water', new THREE.CircleGeometry(r, 28).rotateX(-Math.PI / 2).translate(0, .2, 0)); P.add('dark', new THREE.CircleGeometry(r, 20).rotateX(-Math.PI / 2).translate(0, .02, 0));
+  for (let k = 0; k < 12; k++) { const a = (k + .5) / 12 * Math.PI * 2, cx = Math.sin(a) * (r + .24), cz = Math.cos(a) * (r + .24), hw = Math.PI * (r + .24) / 12 + .05; P.cols.push({ pts: [[-hw, -.26], [hw, -.26], [hw, .26], [-hw, .26]].map(([u, v]) => [cx + u * Math.cos(a) + v * Math.sin(a), cz - u * Math.sin(a) + v * Math.cos(a)]), y0: 0, y1: .3 }); }
+  for (let k = 0; k < 8; k++) { const a = rnd() * 6.28, d = r + .7 + rnd() * .5, s = .3 + rnd() * .35, x = Math.sin(a) * d, z = Math.cos(a) * d; if (k > 5 && rnd() < .5) continue; P.add('stone', new THREE.DodecahedronGeometry(s, 0).scale(1, .7, 1).translate(x, s * .45, z)); P.add('snow', vilPillow(s * 1.4, s * .3, s * 1.4).translate(x, s * .75, z)); }
+  P.steam.push({ at: [0, .3, 0], r: r * .7, rate: kind === 'hot' ? 3 : 2, k: 2.2, life: 1.6 }); P.pool(0, .2, 0, r + .8, kind === 'hot' ? 0xa0fff0 : 0x80ffe0, .28); P.port('edge', 0, 0, r + .6, 0, 0, 1); }
+// MAKE A PIECE LIVE: its movers as mesh groups whose collider boxes ride along in BOXES, the geysers, the steam. `P` is in world space (after svkEmit).
+function svkLive(P, parent) { const S = SVK, out = { movers: [], geysers: [], steam: [] }; S.live = S.live || [];
+  for (const M of P.movers || []) { const G = new THREE.Group(), I = new THREE.Group(); G.position.set(M.pivot[0], M.pivot[1], M.pivot[2]); G.rotation.y = M.yaw || 0; G.add(I); I.add(svkMesh({ L: M.L, pools: [] })); parent.add(G);
+    let rope = null; if (M.rope) { rope = new THREE.Mesh(new THREE.CylinderGeometry(.025, .025, 1, 5).translate(0, .5, 0), vilMats().rope); G.add(rope); }
+    const boxes = M.boxes.map(B => { const b = { minx: 0, maxx: 0, miny: 0, maxy: 0, minz: 0, maxz: 0 }; BOXES.push(b); return Object.assign({ b }, B); });
+    out.movers.push({ M, G, I, rope, boxes, ang: 0, t: 0, y: 0 }); }
+  for (const Gz of P.geysers || []) { const col = new THREE.Mesh(new THREE.CylinderGeometry(.22, .5, 1, 12, 1, true).translate(0, .5, 0), new THREE.MeshBasicMaterial({ color: 0xf2fbff, transparent: true, opacity: .55, depthWrite: false }));
+    col.position.set(Gz.at[0], Gz.at[1], Gz.at[2]); col.visible = false; parent.add(col); out.geysers.push(Object.assign({ col, t: Gz.every * .5, on: 0 }, Gz)); }
+  for (const St of P.steam || []) out.steam.push(Object.assign({ acc: Math.random() }, St));
+  S.live.push(out); svkLiveStep(out, 0); return out; }
+function svkLiveStep(L, dt) { const p = (() => { try { return player; } catch (e) { return null; } })(), pos = p ? p.pos : { x: 1e9, y: 1e9, z: 1e9 }, now = performance.now() / 1000; let moved = 0;     /* the showroom builds before the player exists */
+  for (const m of L.movers) { const M = m.M, c = Math.cos(M.yaw || 0), s = Math.sin(M.yaw || 0), Px = M.pivot[0], Py = M.pivot[1], Pz = M.pivot[2];
+    // where is each box now? (local about the pivot, then the yaw)
+    const place = () => { for (const B of m.boxes) { let lx, ly, lz; if (M.kind === 'spin') { const th = B.th + m.ang; lx = 0; ly = Math.cos(th) * B.r; lz = Math.sin(th) * B.r; } else { lx = B.c[0]; ly = B.c[1] + m.y; lz = B.c[2]; }
+        const wx = Px + lx * c + lz * s, wz = Pz - lx * s + lz * c, hx = Math.abs(B.h[0] * c) + Math.abs(B.h[2] * s), hz = Math.abs(B.h[0] * s) + Math.abs(B.h[2] * c), b = B.b;
+        b.minx = wx - hx; b.maxx = wx + hx; b.miny = Py + ly - B.h[1]; b.maxy = Py + ly + B.h[1]; b.minz = wz - hz; b.maxz = wz + hz; } };
+    const onB = dt && p ? m.boxes.find(B => p.grounded && pos.x > B.b.minx - .15 && pos.x < B.b.maxx + .15 && pos.z > B.b.minz - .15 && pos.z < B.b.maxz + .15 && Math.abs(pos.y - B.b.maxy) < .3) : null, before = onB ? [(onB.b.minx + onB.b.maxx) / 2, onB.b.maxy, (onB.b.minz + onB.b.maxz) / 2] : null;
+    if (M.kind === 'spin') { m.ang += (M.rate || .3) * dt; m.I.rotation.x = m.ang; }
+    else { m.t = (m.t + dt / M.period) % 1; const f = m.t < .12 ? 0 : m.t < .5 ? .5 - .5 * Math.cos((m.t - .12) / .38 * Math.PI) : m.t < .62 ? 1 : .5 + .5 * Math.cos((m.t - .62) / .38 * Math.PI); m.y = (M.inv ? 1 - f : f) * M.range; m.I.position.y = m.y;
+      if (m.rope) { const y0 = m.y + M.rope.y0, len = Math.max(.05, M.rope.top - y0); m.rope.position.set(M.rope.x, y0, M.rope.z); m.rope.scale.y = len; } }
+    place(); moved = 1; if (onB) { pos.x += (onB.b.minx + onB.b.maxx) / 2 - before[0]; pos.y += onB.b.maxy - before[1]; pos.z += (onB.b.minz + onB.b.maxz) / 2 - before[2]; } }
+  if (moved) try { if (BGRID.on) boxGrid(); } catch (e) {}
+  if (!dt || !p) return;
+  for (const g of L.geysers) { g.t += dt; const near = Math.hypot(g.at[0] - pos.x, g.at[2] - pos.z) < 70; if (!g.on && g.t >= g.every) { g.on = 1; g.t = 0; } if (g.on && g.t >= g.dur) { g.on = 0; g.t = 0; }
+    const k = g.on ? Math.min(1, g.t / .25) * (1 - Math.max(0, (g.t - g.dur + .4) / .4)) : 0; g.col.visible = k > .02; if (g.col.visible) { g.col.scale.set(1 + .15 * Math.sin(now * 23), 1 + 9 * k, 1 + .15 * Math.cos(now * 19)); g.col.material.opacity = .5 * k; }
+    if (g.on && near) { if (Math.random() < dt * 40) smokeAt(g.at[0] + (Math.random() - .5) * .6, g.at[1] + Math.random() * 8 * k, g.at[2] + (Math.random() - .5) * .6, 3, 1, [.95, .97, 1], .45);
+      if (Math.hypot(pos.x - g.at[0], pos.z - g.at[2]) < g.r && pos.y < g.at[1] + 1.6 && k > .3) { p.vel.y = g.v; p.grounded = false; } } }
+  for (const St of L.steam) { if (Math.hypot(St.at[0] - pos.x, St.at[2] - pos.z) > 60) continue; St.acc += dt * St.rate; while (St.acc > 1) { St.acc -= 1; const a = Math.random() * 6.28, d = Math.sqrt(Math.random()) * St.r; smokeAt(St.at[0] + Math.cos(a) * d, St.at[1], St.at[2] + Math.sin(a) * d, St.k || 2, St.life || 1.5, [.93, .95, .97], .3); } } }
 function svkPiece(kind, o) { const f = SVKP[kind]; if (!f) throw new Error('no snow-kit piece ' + kind); return f(o || {}); }
 // the merged meshes of an accumulated piece (one per material)
 function svkMesh(P) { const M = vilMats(), G = new THREE.Group(); for (const k in P.L) { const M2 = M[k]; if (!M2 || !P.L[k].length) continue;
@@ -12078,8 +12208,10 @@ function svkPools(list) { const V = SNOWVIL, tex = V.poolTex || (V.poolTex = (()
   const m = new THREE.Mesh(mergeGeometries(gs), new THREE.MeshBasicMaterial({ map: tex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
   m.renderOrder = 2; m.userData.mat = 'pool'; return m; }
 // THE PUBLIC DOOR: { group, boxes (local AABBs), patches, ports }
-function snowKitPiece(kind, opts) { const P = svkPiece(kind, opts), boxes = []; for (const C of P.cols) { let x0 = 1e9, x1 = -1e9, z0 = 1e9, z1 = -1e9; for (const [x, z] of C.pts) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, z); z1 = Math.max(z1, z); } boxes.push({ minx: x0, maxx: x1, miny: C.y0, maxy: C.y1, minz: z0, maxz: z1 }); }
-  return { group: svkMesh(P), boxes, patches: P.patches, ports: P.ports, smoke: P.smoke, fire: P.fire }; }
+function snowKitPiece(kind, opts) { const P = svkPiece(kind, opts), boxes = []; for (const C of P.cols) vilStrips(C.pts, C.y0, C.y1, boxes);     /* m2079: strips, so a concave outline (terrace_body) is exact */
+  const moving = { L: {}, cols: [], patches: [], ports: [], smoke: [], fire: [], pools: [], movers: P.movers, geysers: P.geysers, steam: P.steam };
+  return { group: svkMesh(P), boxes, patches: P.patches, ports: P.ports, smoke: P.smoke, fire: P.fire, movers: P.movers, geysers: P.geysers, steam: P.steam,
+    live: (at, yaw, parent) => svkLive(svkEmit(svkNew(), moving, at || [0, 0, 0], yaw || 0), parent || scene) }; }     // m2079: a scene that places the piece calls .live(at, yaw, parent) once to make its wheel/lift/geyser/steam run
 // a sheet of name plates, one canvas, one draw
 function svkLabels(names) { const cv = document.createElement('canvas'), cols = 4, rows = Math.ceil(names.length / cols), q = cv.getContext('2d'); cv.width = 2048; cv.height = Math.max(64, THREE.MathUtils.ceilPowerOfTwo(rows * 64));
   q.fillStyle = '#1e1a24'; q.fillRect(0, 0, cv.width, cv.height); q.font = 'bold 40px sans-serif'; q.textAlign = 'center'; q.textBaseline = 'middle';
@@ -12111,9 +12243,10 @@ function svkShowroom(g) { const S = SVK, [ox, oy, oz] = S.at, D = svkNew(), labe
   for (const q of D.smoke) S.chim.push({ x: q[0], y: q[1], z: q[2], t: Math.random() });
   for (const q of D.fire) { const fg = []; for (let k = 0; k < 5; k++) { const a = k / 5 * 6.28, h = .7 + (k % 2) * .4; fg.push(new THREE.ConeGeometry(.22, h, 6).translate(Math.cos(a) * .22, h / 2, Math.sin(a) * .22).toNonIndexed()); } fg.push(new THREE.ConeGeometry(.3, 1.4, 7).translate(0, .7, 0).toNonIndexed());
     const fm = new THREE.Mesh(mergeGeometries(fg), vilMats().fire); fm.position.set(q[0], q[1], q[2]); G.add(fm); S.fire.push({ x: q[0], y: q[1], z: q[2], t: 0, mesh: fm }); }
+  S.live = []; svkLive(D, G);
   S.stat = { pieces: plates.length - S.rows.length, draws: G.children.length, boxes: D.cols.length, ports: D.ports.length };
   const sp = [ox, oy + .1, oz + 8]; setTimeout(() => { try { player.pos.set(sp[0], sp[1], sp[2]); player.vel.set(0, 0, 0); player.faceH = player.heading = Math.PI; cam.az = Math.PI; } catch (e) {} }, 0); }
-function svkStep(dt) { const S = SVK; if (!S.g) return; if (!S.mel && window.mel) { window.mel.SVK = S; window.mel.snowKitPiece = snowKitPiece; S.mel = 1; } const V = SNOWVIL; if (V.U) V.U.uT.value += dt * (V.g ? 0 : 1); const p = player.pos, t = performance.now() / 1000;
+function svkStep(dt) { const S = SVK; if (S.live) for (const L of S.live) svkLiveStep(L, dt); if (!S.g) return; if (!S.mel && window.mel) { window.mel.SVK = S; window.mel.snowKitPiece = snowKitPiece; S.mel = 1; } const V = SNOWVIL; if (V.U) V.U.uT.value += dt * (V.g ? 0 : 1); const p = player.pos, t = performance.now() / 1000;
   let n = 0; for (const C of S.chim) { if (Math.hypot(C.x - p.x, C.z - p.z) > 60 || n >= 6) continue; n++; C.t -= dt; if (C.t <= 0) { C.t = .35 + Math.random() * .35; smokeAt(C.x, C.y, C.z, 2.4, 1.7, [.86, .86, .88], .38); } }
   for (const F of S.fire) { F.mesh.scale.set(1 + .08 * Math.sin(t * 13), .95 + .25 * Math.sin(t * 9.3) * Math.sin(t * 3.1), 1 + .08 * Math.cos(t * 11)); F.mesh.rotation.y = t * .7; F.t -= dt; if (F.t <= 0) { F.t = .5 + Math.random() * .4; smokeAt(F.x, F.y + 1.3, F.z, 2.0, 1.4, [.7, .7, .72], .3); } } }
 // SNOW_KIT:END
