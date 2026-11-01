@@ -15912,7 +15912,11 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   clouds: { y: -150, layers: [{ dy: 0, cover: .97, k: .011, sp: 1.2 }, { dy: 8, cover: .55, k: .017, sp: 2.0 }, { dy: 17, cover: .3, k: .023, sp: 2.8 }] },
   isle: { id: 'isle_main', rx: 23, rz: 27, depth: 30, sides: 56 },
   spawn: { at: [-9.8, 4.6], face: [6.6, 3.0] },                                    // STANDING beside the hammock, facing out over the garden (no sleep clip yet)
-  wakeClip: '',                                                                        // HOOK: his hammock sleep + roll-out clip (GLB, Grumbo's rig) -> played at hammock.bed, then control                                       // beside the hammock, looking up the garden at the shrine
+  wakeClip: '',
+  sword: { id: 'rusty_sword', tree: 'willow_a', t: .2, face: [-9.8, 4.6] },             // DRAFT 4: the dozy guardian's rusty sword, hung on a peg by the hammock
+  // RESERVED (DRAFT 4, not built): THE SKY VILLAGE -- the bell-festival town, a bigger island than the garden, the highest and most central of the
+  // cluster, to be reached by rope bridge. Nothing far (rocks, far islands, cloud cards) is placed inside this sphere.
+  reserve: { village: { at: [10, 34, -135], r: 70 } },                                                                        // HOOK: his hammock sleep + roll-out clip (GLB, Grumbo's rig) -> played at hammock.bed, then control                                       // beside the hammock, looking up the garden at the shrine
   terrace: { id: 'terrace', at: [0, -16], r: 8.5, h: 2.4 },                          // the shrine's knoll: a mossy cyclopean drum
   stair: { id: 'shrine_stair', hw: 1.7, rise: .3, tread: .42, n: 8 },                // risers .30 (his step is .357)
   shrine: { id: 'bell_shrine', at: [0, -17.2], plat: 3.9, colH: 4.0, colR: .28, col: 2.75, bellH: 2.0, bellR: .95 },
@@ -16240,6 +16244,17 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     Z.hammockG = { g: hg, ax: ux, az: uz, sw: .35, t: 0 }; Z.pieces.hammock = hg; G.add(hg);
     HM.bed = { at: [mx, Y0 + y + .25 - HM.sag, mz], yaw: Math.atan2(ux, uz), sag: HM.sag, span: L, ends: [[ax, Y0 + y + .35, az], [bx, Y0 + y + .35, bz]] };
     BOXES.push(obox(mx, mz, (e1 - e0) / 2 - .2, HM.w * .4, Math.atan2(uz, ux), Y0 + y - HM.sag - .1, Y0 + y - HM.sag + .45)); part(HM.id, 'hammock', { x: mx, z: mz, y, span: L }); }
+  // ---- THE RUSTY SWORD (DRAFT 4: Grumbo the dozy guardian): hung by its cord from a peg in willow_a, blade down, on the side facing the spawn ----
+  { const SW = Z.sword, T = Z.treeAt[SW.tree], c = T.curve.getPointAt(SW.t), dx = SW.face[0] - c.x, dz = SW.face[1] - c.z, L = Math.hypot(dx, dz), ux = dx / L, uz = dz / L, yaw = Math.atan2(ux, uz);
+    const rr = .95, px = c.x + ux * rr, pz = c.z + uz * rr, py = c.y + .15, rust = new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .85, metalness: .45 }), grip = new THREE.MeshStandardMaterial({ color: 0x3a2618, roughness: .9 });
+    const sg = new THREE.Group(); sg.position.set(px, py, pz); sg.rotation.y = yaw; sg.name = 'garden_' + SW.id;
+    const m = (geo, mat) => { const o = new THREE.Mesh(geo, mat); o.castShadow = true; sg.add(o); };
+    m(new THREE.CylinderGeometry(.035, .035, .25, 6).rotateX(Math.PI / 2).translate(0, 0, -.05), grip);     // the peg
+    m(new THREE.CylinderGeometry(.008, .008, .22, 3).translate(0, -.11, .06), M.rope);     // the cord
+    const bx = new THREE.Shape([[-.035, 0], [.035, 0], [.032, -.82], [0, -.9], [-.032, -.82]].map(([a, b]) => new THREE.Vector2(a, b)));
+    m(new THREE.ExtrudeGeometry(bx, { depth: .012, bevelEnabled: true, bevelThickness: .004, bevelSize: .006, bevelSegments: 1 }).translate(0, -.5, .06), rust);     // the blade, rusted
+    m(new THREE.BoxGeometry(.2, .035, .05).translate(0, -.48, .066), rust); m(new THREE.CylinderGeometry(.022, .025, .24, 8).translate(0, -.34, .066), grip); m(new THREE.SphereGeometry(.035, 8, 6).translate(0, -.21, .066), rust);
+    sg.rotation.z = .08; G.add(sg); Z.pieces.sword = sg; part(SW.id, 'prop', { x: px, y: py, z: pz }); }
   // ---- THE FENCES: wooden rails between stone posts, each post set with a glowing jade gem, round the rim's open edges ----
   { const F = Z.fence; for (const [id, a0, a1] of F.arcs) { const pts = []; for (let a = a0; a <= a1 + .01; a += 1) { const p = rimAt(a); pts.push([p[0] * F.inset, p[2] * F.inset]); }
       const posts = [pts[0]]; let acc = 0; for (let i = 1; i < pts.length; i++) { acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if (acc >= F.step) { posts.push(pts[i]); acc = 0; } }
@@ -16354,8 +16369,8 @@ function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clou
     for (const deg of F.falls || []) { const p = rk.rim[Math.round(rk.rim.length * deg / 360) % rk.rim.length], L = Math.hypot(p[0] - x, p[2] - z); falls.push(gdnFall(p[0], y + .1, p[2], (p[0] - x) / L, (p[2] - z) / L, Math.max(1.5, F.r * .12), Math.min(220, y + 160), 2)); }
     Z.parts.push({ id: F.id, kind: 'far_isle', x, y, z, r: F.r }); }
   function part0(id) { Z.parts.push({ id, kind: 'far_pagoda' }); }
-  const RK = Z.rocks; for (let k = 0; k < RK.n; k++) { const a = R() * Math.PI * 2, d = RK.r0 + R() * (RK.r1 - RK.r0), s = RK.s0 + R() * (RK.s1 - RK.s0), x = Math.sin(a) * d, z = Math.cos(a) * d; if (Math.abs(x - 10) < 30 && z > 0 && z < 60) continue;
-    const rk = templeRock(x, RK.y0 + R() * (RK.y1 - RK.y0), z, s, s * (.7 + R() * .5), s * (1.4 + R()), 9, 900 + k); rock.push(rk.side); rk.cap.deleteAttribute('color'); cap.push(rk.cap); }
+  const RK = Z.rocks; for (let k = 0; k < RK.n; k++) { const a = R() * Math.PI * 2, d = RK.r0 + R() * (RK.r1 - RK.r0), s = RK.s0 + R() * (RK.s1 - RK.s0), x = Math.sin(a) * d, z = Math.cos(a) * d; if (Math.abs(x - 10) < 30 && z > 0 && z < 60) continue; const yr = RK.y0 + R() * (RK.y1 - RK.y0); if (gdnReserved(x, yr, z, s * 2)) continue;
+    const rk = templeRock(x, yr, z, s, s * (.7 + R() * .5), s * (1.4 + R()), 9, 900 + k); rock.push(rk.side); rk.cap.deleteAttribute('color'); cap.push(rk.cap); }
   // heaps of cumulus on the cloud sea (far below now: the panorama's sea is behind them)
   for (let i = 0; i < 0; i++) { const a = R() * Math.PI * 2, d = 90 + R() * 1000, x = Math.sin(a) * d, z = Math.cos(a) * d, s = 20 + R() * 55 * (d / 1000 + .4); for (let j = 0; j < 4; j++) { const r2 = s * (1 - j * .18), ox = (j ? (R() - .5) * s * 1.6 : 0), oz = (j ? (R() - .5) * s * 1.2 : 0); heaps.push(new THREE.SphereGeometry(r2, 16, 10).scale(1, j ? .5 : .62, 1).translate(x + ox, Z.clouds.y + 2 + r2 * .14 + (j ? 0 : r2 * .1), z + oz)); } }
   // FLOATING MOUNTAINS: a snow massif (a summit and two shoulders) standing on a rock that tapers away into the sky below
@@ -16380,7 +16395,7 @@ function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clou
 // island at many heights so looking off the edge you look DOWN through them -- the read that you are up in the air. Drawn far-to-near from the island.
 function gdnCards(g) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.cards.seed), L = [];
   for (let i = 0; i < Z.cards.n; i++) { const a = R() * Math.PI * 2, d = 45 + Math.pow(R(), .7) * 650, w = 30 + R() * 70 + d * .12, y = i % 9 === 0 ? 30 + R() * 90 : -18 - Math.pow(R(), .8) * 150;
-    L.push([Math.sin(a) * d, y, Math.cos(a) * d, w, w * (.5 + R() * .18), R() * 6.3, .75 + R() * .25]); }
+    if (gdnReserved(Math.sin(a) * d, y, Math.cos(a) * d, w * .4)) continue; L.push([Math.sin(a) * d, y, Math.cos(a) * d, w, w * (.5 + R() * .18), R() * 6.3, .75 + R() * .25]); }
   L.sort((p, q) => Math.hypot(q[0], q[2], q[1] * 2) - Math.hypot(p[0], p[2], p[1] * 2));
   const base = new THREE.PlaneGeometry(1, 1), geo = new THREE.InstancedBufferGeometry(); geo.index = base.index; geo.setAttribute('position', base.attributes.position); geo.setAttribute('uv', base.attributes.uv);
   geo.setAttribute('iP', new THREE.InstancedBufferAttribute(new Float32Array(L.flatMap(c => [c[0], c[1] + Z.top, c[2]])), 3)); geo.setAttribute('iS', new THREE.InstancedBufferAttribute(new Float32Array(L.flatMap(c => [c[3], c[4]])), 2));
@@ -16393,6 +16408,7 @@ function gdnCards(g) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.cards.seed), L = 
       #include <colorspace_fragment>
     }` });
   const o = new THREE.Mesh(geo, m); o.frustumCulled = false; o.renderOrder = 1; o.name = 'garden_cards'; g.add(o); Z.cardM = o; }
+function gdnReserved(x, y, z, pad) { for (const V of Object.values(GARDEN.reserve || {})) if (Math.hypot(x - V.at[0], y - V.at[1], z - V.at[2]) < V.r + (pad || 0)) return true; return false; }
 // THE ROPE BRIDGES between the islands: the Rope Course's verlet bridge (`rspAdd` -- it sags, sways, dips under him, carries him), strung from the
 // rim of one island to the rim of the next at their own heights; a pair of lantern posts at each end. Anchors: the rim point facing the other island,
 // pulled `inset` m in. Runs after the build (rspAdd moves him away while the ropes settle).

@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+##  -- THE GARDEN: the rusty sword by the hammock; room kept for the Sky Village (Nov 1 2026)
+From the main Korajin session (PROLOGUE.md DRAFT 4 -- THE LAST BELL): Grumbo's island is the quiet OUTSKIRTS, he is a dozy guardian.
+- **THE RUSTY SWORD** (`GARDEN.sword`, part `rusty_sword`, piece `GARDEN.pieces.sword`): a short rusted blade, guard, wrapped grip and pommel hung
+  by a cord from a peg in willow_a, on the trunk side facing the spawn, blade down. A simple prop (its own small group, ~6 draws) until the real one.
+- **RESERVED, NOT BUILT**: `GARDEN.reserve.village` = a 70 m sphere at (10, +34, -135) -- behind and above the shrine, the highest and most central
+  spot of the cluster -- for THE SKY VILLAGE (the bell-festival town, reached by rope bridge). No drifting rock or cloud card is placed in it
+  (`gdnReserved`). Shipped unverified.
+
 ## m2156 -- THE GARDEN becomes a CLUSTER: big / medium / small islands at three heights, joined by the Rope Course's bridges (Nov 1 2026)
 His (relayed by the main Korajin session): the garden *"looks really good now"* but is too small to do anything up there -- grow it into a cluster of
 three floating islands, BIG, MEDIUM, SMALL, at clearly different heights, routes that climb, rope bridges as connective tissue; REUSE the existing
