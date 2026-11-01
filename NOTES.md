@@ -14,6 +14,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2129 -- THE WILLOW SHRINE, pass 1 of 6: a bigger willow with a twisted, grooved trunk, jade veins and orbs, a snowed crown (Nov 1 2026)
+His: *"I also wanna make the Willow tree bigger and make the shrine more complex and interesting"* -- his sheet is
+`images/concepts/willow/willow_shrine_sheet.png`. Passes: 1 tree, 2 gold rings + lanterns + banners, 3 platform + pillars + fences, 4 stair + arch + bell,
+5 waterfalls + pools + crystals + boulders, 6 detail. This one: `WILLOW.k` 1.3 -> 2.0 (crown ~20 m). `willowTube` takes `gr` ({ n, d, twist, flare }):
+7 SPIRAL grooves cut down one ring column each (so they wind with the twist), the foot flared, normals recomputed; `willowR` is its radius so
+`willowTrunkGlow` lays the jade VEINS (`WILLOW.veins`, in grooves) and ORBS (`WILLOW.orbs`, stable ids, half-sunk in bronze collars) on its real surface.
+Three ROPES wind round the trunk. 18 boughs (every third an inner, higher one that domes the crown), `willowCrownSnow` drifts on top (one draw).
+The 520 strands hang in CLUMPS of ~5 with gaps, a third shorter in layers, and each rests on what is under it (`willowFloor` -> `L.fl`, so a strand
+off the terrace lies on the ground, not .6 m above it). Strands glow mint along their length. The shimenawa rope is gone (the sheet has none; the
+arch replaces the torii in pass 4). Draws: +2 (jade, bronze) +1 (crown snow). Rendered headless (render harness in the session scratchpad).
+Open: everything below the trunk is still the m1764 garden. Shipped unverified.
+
 ## m2127 -- THE SAGE: the toad wanderer meditating, floating over the hot spring, a pagoda shrine behind (Nov 1 2026)
 His: *"the toad with the hat -- can we give him a pose from Mixamo? A floating meditating guy, a shrine for him, he's the guy you go to for wisdom,
 somewhere in the main village."* The Forge library (2,392 clips) has no lotus/meditation clip; baked three candidates onto `toad_wanderer_game.glb`
