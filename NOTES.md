@@ -6,7 +6,7 @@ report, and read the entry before touching that system. New notes go at the TOP 
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
 
-## mNEXT -- the snow kit: SEVEN NEW PIECES for the village (water wheel, winch lift, hot pool, spring + geyser, timber bridge, terrace body, tunnel stair)
+## m2083 -- the snow kit: SEVEN NEW PIECES for the village (water wheel, winch lift, hot pool, spring + geyser, timber bridge, terrace body, tunnel stair)
 
 Asked by the village session for VILLAGE_BLUEPRINT.md pass 7 (Colin approved sending it). Same conventions; a new showroom row WATER / MOVING / TERRAIN.
 - `water_wheel` {D 5, w 1.6, rate, paddles 12}: an undershot wheel on a stone mill-race (water, A-frame trestles, bearings); it TURNS (a mover) and its 12
