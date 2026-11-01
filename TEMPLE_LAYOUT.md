@@ -22,3 +22,12 @@ you walk. The descent sells the iceberg.
   loops back over earlier sections, per-beat set pieces (the gate arena's spawn ring, a puzzle with three switches on three routes)
 - v3: hand edits -- pin a node, drag it, reroll the rest; export the graph as a placement table (SCENE_COMPANION) to dress with a kit (the ice temple's)
 - v4: the statue wakes (STATUES.md) when the chalice is taken; the descent entrance
+
+## HIS STRUCTURE IDEA (Nov 1 2026, "not 100% sold -- a brief concept to explore") -- `images/concepts/ice_temple/layout_hub.webp`
+- The ENTRANCE is above ground and is a puzzle in itself: beat some guys, earn / find a key, shoot 4-6 buttons -- TBD.
+- Inside: ONE CENTRAL CHAMBER ringed by SUB-CHAMBERS (six in the art; maybe three). Each sub-chamber has its own dynamic -- puzzle, acrobatics, enemies,
+  or a mix (acrobatics under fire, a puzzle with guards, one mostly a fight). Completed in any order.
+- A sub-chamber can award something -- a power-up / weapon / special ability -- that the boss needs.
+- The CENTRAL chamber has all three (acrobatics, enemies, a little puzzle) and ends with the GIANT BOSS (the dormant statue on the mesa).
+- The art's six: puzzle (logic / mechanism), combat, traversal (parkour / climbing), glide (aerial / wind), balance (weight / pressure), elemental
+  (wind / flow / rotation). Section view: several vertical levels, a light shaft down the middle.
