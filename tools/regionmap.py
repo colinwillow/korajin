@@ -94,15 +94,18 @@ def make(seed):
         bends.append(mid.tolist())
         if kd == 'tunnel': continue
         w = {'valley': 15, 'pass': 11, 'gorge': 6}[kd] * rng.uniform(.8, 1.3)
+        # m2091 (his: "extremely narrow -- more like a crevice; how are you gonna put a village in a 5 foot wide crevice"): WIDE floors, GENTLE banks
+        F = {'valley': .9, 'pass': .8, 'gorge': 1.0}[kd] * w     # flat floor HALF-width: valley ~27 m across, pass ~18, gorge ~12
         for (P, Q, fa, fb) in ((A, mid, floor[a], (floor[a] + floor[b]) / 2), (mid, B, (floor[a] + floor[b]) / 2, floor[b])):
             d, t = seg_dist(xx, yy, P[0], P[1], Q[0], Q[1])
             f = fa + (fb - fa) * t
             if kd == 'pass': f = f + 16 * np.sin(np.pi * (t * .5 + (0 if P is A else .5)))     # up over the ridge and down
-            prof = f + (np.clip(d / w, 0, 1) ** 2) * 30 + np.clip(d - w, 0, None) * (.9 if kd != 'gorge' else 2.4)
+            bank = (np.clip(d - F, 0, 10) * .3) if kd != 'gorge' else 0     # a walkable bank (~17 deg) for 10 m, then the mountain
+            prof = f + bank + np.clip(d - F - (10 if kd != 'gorge' else 0), 0, None) * (1.1 if kd != 'gorge' else 2.6)
             H = np.minimum(H, prof)
     for k, P in enumerate(nodes):     # each node a small widening (a basin is a wide bowl: the lake)
-        r = 22 if k in basins else 13 + 4 * deg[k]
-        d = np.hypot(xx - P[0], yy - P[1]); H = np.minimum(H, floor[k] + (np.clip(d / r, 0, 1) ** 2) * 22 + np.clip(d - r, 0, None) * .8)
+        r = 30 if k in basins else 16 + 4 * deg[k]     # m2091: every PLACE a real basin (20-32 m round, flat), the lake's wider
+        d = np.hypot(xx - P[0], yy - P[1]); H = np.minimum(H, floor[k] + np.clip(d - r, 0, 10) * .3 + np.clip(d - r - 10, 0, None) * 1.1)
     # waypoints from what the terrain offers
     used = {spawn, temple}
     def pick(cond, key):

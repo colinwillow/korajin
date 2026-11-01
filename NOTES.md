@@ -7,6 +7,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m15WV -- THE REGION's valleys WIDENED: from crevices to valleys (Nov 1 2026)
+His first run of the region: *"it's ridiculous -- narrow, extremely narrow; more like a crevice. Some areas are so steep I can't run up them. A marker
+says village -- how are you gonna put a village in a 5 foot wide crevice?"* He was right: `tools/regionmap.py` carved a valley as a quadratic over w
+(6-15 m) -- the floor was a few metres before the wall rose 30 m -- and each place was a 13-25 m dimple.
+- Now (same seed, same graph, same places -- only the carving): a FLAT floor (half-width .9 w: a valley ~27 m across, a pass ~18, a gorge ~12), then
+  a walkable BANK (.3 rise per m, ~17 deg) for 10 m, then the mountain (1.1 per m = a wall to `rgnWall`). Every place is a flat BASIN 20-32 m round
+  (the lake's 30), with the same bank. An overshoot (floors 2 w, basins 26-50) was tried first and merged everything into one plain -- the mountains
+  between are what make it a maze.
+- Everything built on the map re-derives from it (`tools/regionpick.py`): the hamlet site + detail grid (BASE is now 5.2 m), the willow's dell, the
+  ridge notch. Map: images/concepts/region/region_pick.png. Shipped unverified.
+
 ## m2089 -- the snow kit goes OFF-WORLD: the Jin-builders' style (`?svkstyle=classic` for the old look)
 
 His: *"Can we make this architecture more off-world? It's supposed to be mythical, mystical -- an alternate reality, planet, species -- and it feels kind
