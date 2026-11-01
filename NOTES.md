@@ -13,6 +13,12 @@ of the snowfield, up past the cliffs, the dragon's lair on its west flank, 255 m
 beats of TEMPLE_KIT's template filled with sized moves (every gap and lip from the move table, the one SKILL gap marked), the side-on height
 profile, the top-down in the temple's local frame, where the guardians stand and what wakes them (events, never proximity), and three open
 questions for him (the valley's side, the boss, whether it starts FALLEN). Nothing in index.html changes.
+## m15DF -- the lair fight: the dragon FLIES (Nov 1 2026)
+The snow list. Awake in his lair (`d.home`), every `DFLY.cool` 16 s (the first 9 s after he wakes) the dragon TAKES OFF -- `attack_air` beating, up
+8 m in 1.1 s -- CIRCLES you at 13 m and 11 m/s for 2.6 s, then from the air sweeps the ICE BEAM down at you (the same beam, spikes, frost and freeze;
+the shield blocks it and a perfect parry still bounces it back), then flies HOME to his nest and settles with a blast of snow and a shake. The leash
+and the beam-cancel no longer cut a flight short. Measured headless (dragon awake, player on the cliff top): up (y 14.6), circling at y ~17.7 over the
+cliffs; rendered. The beam and the landing phases follow the same code as the ground beam / the hop landing.
 
 ## m2014 -- the mammoth's trunk swings (Nov 1 2026)
 The snow list (his "keep going"). The four `trunk_*` bones `mammoth_cow.py` added under the head carry no clip keys, so the trunk was rigid. `trunkStep`
