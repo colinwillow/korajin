@@ -1,0 +1,133 @@
+{
+ "seed": 6,
+ "places": {
+  "SPAWN": {
+   "node": 5,
+   "at": [
+    53.8,
+    119.5
+   ],
+   "floor": 2.0
+  },
+  "WILLOW SHRINE": {
+   "node": 15,
+   "at": [
+    132.1,
+    50.7
+   ],
+   "floor": 5.2
+  },
+  "VILLAGE (gate)": {
+   "node": 14,
+   "at": [
+    223.9,
+    85.5
+   ],
+   "floor": 14.5
+  },
+  "HOT SPRING": {
+   "node": 2,
+   "at": [
+    314.1,
+    84.7
+   ],
+   "floor": 17.5
+  },
+  "MAMMOTH MEADOW": {
+   "node": 0,
+   "at": [
+    255.7,
+    175.4
+   ],
+   "floor": 19.7
+  },
+  "BIG WALL": {
+   "node": 9,
+   "at": [
+    221.1,
+    256.2
+   ],
+   "floor": 26.8
+  },
+  "PINE FOREST": {
+   "node": 13,
+   "at": [
+    151.5,
+    319.6
+   ],
+   "floor": 24.6
+  },
+  "STANDING STONES": {
+   "node": 7,
+   "at": [
+    110.8,
+    238.9
+   ],
+   "floor": 41.3
+  },
+  "CABIN": {
+   "node": 3,
+   "at": [
+    55.3,
+    384.3
+   ],
+   "floor": 43.8
+  },
+  "ICE CAVES (underpass)": {
+   "node": 8,
+   "at": [
+    206.2,
+    399.4
+   ],
+   "floor": 30.6
+  },
+  "DRAGON'S GATE": {
+   "node": 10,
+   "at": [
+    303.4,
+    278.0
+   ],
+   "floor": 37.5
+  },
+  "LAKE": {
+   "node": 6,
+   "at": [
+    384.1,
+    212.2
+   ],
+   "floor": 28.2
+  },
+  "GREAT WATERFALL": {
+   "node": 12,
+   "at": [
+    440.6,
+    142.3
+   ],
+   "floor": 55.4
+  },
+  "TEMPLE STAIR": {
+   "node": 4,
+   "at": [
+    374.7,
+    357.5
+   ],
+   "floor": 42.9
+  },
+  "LOOKOUT": {
+   "node": 11,
+   "at": [
+    440.9,
+    408.6
+   ],
+   "floor": 54.5
+  },
+  "ICE TEMPLE": {
+   "node": 1,
+   "at": [
+    440.8,
+    294.7
+   ],
+   "floor": 73.7
+  }
+ }
+}

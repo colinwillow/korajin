@@ -42,3 +42,29 @@ Writes `images/concepts/region/map_<seed>.png` + `.json` (nodes, floors, links, 
 valleys (red), passes over a ridge (purple), gorges (blue), tunnels (dashed, not carved); valley floors rise with distance from the spawn (the
 region climbs toward the temple); the temple node sits on a massif. Waypoints are SUGGESTED (village = a junction near the spawn, lake = a basin,
 cabin = a high dead end, big wall = mid-route, lookout = the highest place). Knobs at the top of the file: NODES, MINSP, MAXL, LOOPS, SIZE.
+
+## Stage 2: THE PICK -- seed 6 (Nov 1 2026, his: "I trust your judgment")
+Map: `images/concepts/region/region_pick.png` (+ `region_pick.json`: each place's node, position and floor height). `tools/regionpick.py` redraws it.
+Why seed 6: a short entry (spawn -> a gorge -> a pass -> the village), the village at a junction with its own loop (gate <-> hot spring <->
+meadow), one clear spine south to a big junction (the BIG WALL), side branches that are worth a detour (forest / caves loop with a tunnel, the
+lake and the waterfall up a dead end, the cabin, the standing stones), and the temple on its own mountain at the far corner, reached last,
+through the DRAGON'S GATE -- so the shield comes before the dragon, and the dragon before the temple (his order).
+
+| place | node | floor | what goes there (existing piece re-placed, or new) |
+|---|---|---|---|
+| SPAWN | 5 | 2 m | the start; a gorge leads out |
+| WILLOW SHRINE | 15 | 5 m | the willow + shrine terrace (exists) |
+| VILLAGE (gate) / HOT SPRING | 14 / 2 | 14 / 18 m | the hamlet (VILLAGE_BLUEPRINT.md): the gate at 14, the spring + shrine at 18; the loop between them is the hamlet's gorge |
+| MAMMOTH MEADOW | 0 | 20 m | the tame mammoth + the calf herd (exist); the widest valley |
+| BIG WALL | 9 | 27 m | a great wall across the valley junction (new) |
+| PINE FOREST | 13 | 25 m | the pines (exist, moved), a forest crossroads |
+| STANDING STONES / CABIN | 7 / 3 | 41 / 44 m | the standing stones (exist); a hunter's cabin up a dead end (new) |
+| ICE CAVES (underpass) | 8 | 31 m | the grotto (exists) grown into caves; the tunnel from the big wall comes out here |
+| LAKE / GREAT WATERFALL | 6 / 12 | 28 / 55 m | the frozen pond (exists) as the lake; the waterfall session's GREAT WATERFALL falls from 55 m into it |
+| DRAGON'S GATE | 10 | 37 m | the dragon's lair and climb (exist, moved): the junction you must pass |
+| TEMPLE STAIR / LOOKOUT | 4 / 11 | 43 / 55 m | the climb to the temple; an outpost on the lookout (the kit's outpost) |
+| ICE TEMPLE | 1 | 74 m | the temple's entrance on the mountain (the temple session's interior goes under it) |
+
+**Scale:** the map is 480 m square -- three times the Snowfield's 160 m. The route spawn -> temple is ~670 m and climbs ~72 m.
+**Next (stage 3):** this heightmap built in the game as its own zone (snow ground over the carved valleys, walls of the mountains impassable,
+markers at each place), walkable from the spawn to the temple, nothing dressed yet. Then the village, region 1.
