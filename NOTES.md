@@ -5,7 +5,7 @@ automatically — `grep -n` it for a symbol, a build number (`(m146`), or the wo
 report, and read the entry before touching that system. New notes go at the TOP of the
 landmine list, in the same shape: what he said, what was actually wrong, what was measured.
 
-## m15CT -- THE CLIMB TOWER: C1 -> C2 -> C3 in one tube (Nov 1 2026)
+## m2045 -- THE CLIMB TOWER: C1 -> C2 -> C3 in one tube (Nov 1 2026)
 His "keep going on your own -- I'll make Cinema 4D blockouts in parallel; whichever way builds fun levels wins." KORAJIN > Climb Tower (C1-C3)
 (`?w=forge&zone=cell&cell=CT`): the ice temple's Climb Tower (ICE_TEMPLE_HEX.md) as one continuous route in a tube (r 10, 24 m):
 - C1 wall run UP: the 2.6 m face, the 16 m sprint lane into the 3.6 m face (as C1)
