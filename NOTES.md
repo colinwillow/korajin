@@ -17,6 +17,35 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2164 -- THE GARDEN is ONE MOUNTAIN CRACKED IN THREE: the trifecta -- the monks' garden, Grumbo's farm homestead, the Jinra-source summit (Nov 1 2026)
+His, on the m2156 cluster: *"I don't really like how these are spaced ... the new islands are very plain ... like a mountain with some cracks cut
+through it to separate it into three chunks -- one cohesive whole place"*; then *"each island should have a distinct purpose and theme ... a monk
+garden, a farmland, a temple ... a beautiful cherry tree on one, a willow on the other ... one emanates the power source -- the Jinra, the blue
+swirling power crystal ... lots of greenery, flowers, benches, arches, little pots"*; then *"lift one segment a little, the third even more, space
+them out a tiny bit more."* (Three islands, not four: the homestead REPLACES the medium blockout; the round medium/small isles, the lookout islet and
+the stepping stones are gone.)
+- **THE SHAPE** (SC_GARDEN `chunks`): two CRESCENTS cut from the same rock and wrapped round the garden's rim across cracks (`gap` 6.2 / 7.5 m) --
+  their inner edge IS the garden's rim (`rimRad`, interpolated) pushed out, so the three pieces fit back together. `gdnChunkGeo(poly, ...)`: any
+  outline as a flat top, a SHEER fractured face for the first eighth of its depth, then a taper to a point below (the cracks widen as they go
+  down); stone columns hung under the rims, moss and ivy along every edge at a fixed spacing. Garden lawn 0, HOMESTEAD +4 (house terrace +6.4),
+  SUMMIT ledge +10 (temple terrace +13, pagoda to ~+25).
+- **THE TRIFECTA**: the GARDEN = the monks' sand garden + bell shrine + Grumbo's hammock (hero: the willow). The HOMESTEAD = his house (curved jade
+  roof, chimney smoke, round lattice window, red banners), its deck under an awning, the CHERRY tree with falling petals, a pond fed by a cascade
+  off the terrace turning a WATERWHEEL, an arched footbridge, a gazebo with cushions, vegetable beds under a cloth shade, and FIELDS -- greens in
+  rows, golden grain, a flooded rice paddy -- a scarecrow, hay bales, barrels, pots. The SUMMIT = THE JINRA SOURCE: a stone fire-pit basin with a
+  great blue crystal turning above it in rings of light, blue flames round its rim, a swirl, six jade braziers, a beam into the sky; a three-storey
+  pagoda behind; the glowing teal JINRA TREE; a ledge path of stone lanterns through a BELL GATE (it rings as he passes), a viewing deck over the
+  clouds, prayer flags. The Jinra runs DOWN: the heart's basin spills over the terrace to a ledge pool whose stream falls into the crack behind
+  the garden's shrine; the homestead's pond stream falls into the crack beside the garden.
+- **SHARED KIT** (`props`, every island): benches, flower arches over the paths, clay pots of flowers; his painted fern + flower clumps on the chunks.
+- **ROUTE**: the garden's east path -> a rope bridge 13.4 m DIAGONALLY across the crack up 4 m to the homestead -> the farm -> a rope bridge 18.4 m up 6
+  m to the summit ledge -> the slab stair (ten .30 risers) to the heart. Bridges are the Rope Course's verlet spans (`rspAdd`), explicit ends.
+- **PERF**: only bark / leaves / blossom / lacquer / plaster / wood / roof / stone / timber / bronze cast shadows (the shadow pass drew every moss
+  blob, card and pebble twice); plant cells 72 m here; the shrine terrace merged into the shrine piece. Headless: the spawn view ~185 draws / 520k
+  tris, the whole-cluster view ~245 / 620k. More thinning to come with the detail passes.
+- **NEXT** (his): the JINRA HEART is the hero object and gets its own run of passes (texture, geometry, movement, glow, god rays, particles,
+  spirals). Painted maps for it are in (`garden_jinra_crystal`, `_swirl`, `_flame`), not yet used. Shipped unverified.
+
 ## m2160 -- shots from the mammoth's saddle go through the mammoth
 *"When you're riding the mammoth and you try to shoot, your projectiles shoot into the mammoth."* The tame mammoth already took no damage
 (`dummyBlow` returns on `d.tame`), but every HIT TEST still counted it: `dummyHit` (bolts, rockets, melee) is a 2D radius test and his
