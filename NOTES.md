@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the vertical wall run: hips back 40 deg, chest upright (Nov 2 2026)
+## m2172 -- the vertical wall run: hips back 40 deg, chest upright (Nov 2 2026)
 *"The vertical wall run is basically just the running animation -- his hips need to rotate back maybe 45 degrees, the torso still straight up and
 down, the legs bent."* The RUN look (m1836, TOOLS > UP LOOK: RUN) pitches the whole drawn body back `upHip` about his right axis, pivot at the feet,
 and turns the spine forward by `upHip x upTorso` so the chest stays upright. Two faults: `upHip` was .35 (20 deg) -> **.7 (40 deg)**; and
