@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2247 -- THE HAMMOCK: the Exorcist spine (m204's landmine, again) (Nov 2 2026)
+
+*"Instead of lying there his back is arching and he goes through the hammock as it swings. One of his spine bones keeps rotating like 45 degrees --
+it looks like the Exorcist."* (via main) CAUSE, mine: `lay` (Male_Laying_Pose_2) is ONE KEY, and three's PropertyMixer only writes a bone when its
+blended value CHANGES -- so at full weight it never rewrote his spine, and m2243's breathing turn (`ltTurn` on Spine1/Spine2, premultiplied) STACKED
+every frame. Exactly m204 (the rocket launcher's spinning spine) and Shredworld's c128. FIX: `ltKeep(bone)` saves each bone the first time the lotus or
+the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` puts them back just before the next mixer update (beside `bladeUndo`
+-- `check:syntax` wants `rigAnim` within 4 lines of `rig.mixer.update`). This also covers the lotus's breath / sway on static clips.
+MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
+minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
+
 ## m2244 -- THE INTRO's last two shots, re-aimed with Grumbo IN the hammock (the garden worker's m2243 sleep) (Nov 2 2026)
 - With him actually lying there, `reveal` and `grumbo` framed his boots and his shield from the foot end. Measured on the live rig: his head is at
   bed-local (across -.09, up 1.07, along +.35), face up and toward his feet. Both shots now come from over his chest, across the sling, looking
