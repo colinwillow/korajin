@@ -16972,6 +16972,31 @@ function gdnMeditStep(dt, s) { const Z = GARDEN, Bm = Z.beam, p = player, M = p.
   if (!M.out && M.t > Bm.hold && s && s.mag > .35) M.out = 1;
   if (M.out) { p.pos.y -= Bm.sink * dt; if (p.pos.y <= M.y0) { p.pos.y = M.y0; p.medit = null; if (Z.beamFx) Z.beamFx.cd = 1.8; p.grounded = true; } return; }
   const ty = M.y0 + Bm.lift + Math.sin(M.t * 1.3) * .14, k = 1 - Math.exp(-Bm.ease * dt); p.pos.y += (ty - p.pos.y) * k; p.pos.x += (bx - p.pos.x) * k; p.pos.z += (bz - p.pos.z) * k; }
+// m2177 FEWER MATERIALS (his: "if it has that many unique materials it doesn't seem like it needs that many -- cut that way down"). Most of the ship's
+// and the islands' materials are the same look in another colour. `gdnConsolidate(root)` repaints a group: every PLAIN material (no map, no custom
+// shader) bakes its colour into the mesh's vertex colours and shares ONE vertex-coloured material; every EMISSIVE plain one shares ONE glow material
+// (its emissive colour baked in); materials that share a MAP and differ only in tint share the first of them (tint baked). Then `gdnMergeStatic`
+// merges per material as before. Transparent, alpha-tested, double-sided and shader materials are left alone.
+const GDNV = {}; function gdnPlainMat() { return GDNV.plain || (GDNV.plain = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .8, metalness: .05 })); }
+function gdnGlowMat() { if (GDNV.glow) return GDNV.glow; const m = new THREE.MeshStandardMaterial({ vertexColors: true, color: 0x000000, emissive: 0xffffff, emissiveIntensity: 1, roughness: .5 });
+  m.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n totalEmissiveRadiance *= vColor.rgb;').replace('#include <color_fragment>', ''); };
+  m.customProgramCacheKey = () => 'gdnGlowV'; return (GDNV.glow = m); }
+function gdnTintGeo(geo, col, mul) { const q = geo.index ? geo.toNonIndexed() : geo.clone(), n = q.attributes.position.count, c = new Float32Array(n * 3), src = q.attributes.color;
+  for (let i = 0; i < n; i++) { const k = mul || 1; c[i * 3] = col.r * k * (src ? src.getX(i) : 1); c[i * 3 + 1] = col.g * k * (src ? src.getY(i) : 1); c[i * 3 + 2] = col.b * k * (src ? src.getZ(i) : 1); }
+  q.setAttribute('color', new THREE.BufferAttribute(c, 3)); return q; }
+function gdnConsolidate(root, keep) { const groups = new Map(); let n = 0;
+  root.traverse(o => { if (!o.isMesh || o.isInstancedMesh || o.isSkinnedMesh || Array.isArray(o.material) || (keep && (keep.has(o) || keep.has(o.geometry)))) return; const m = o.material;
+    if (keep) { let p = o.parent; while (p && p !== root) { if (keep.has(p)) return; p = p.parent; } }
+    if (!m.isMeshStandardMaterial || (keep && keep.has(m))) return; const fn = String(m.onBeforeCompile), dflt = m.onBeforeCompile === THREE.Material.prototype.onBeforeCompile;
+    const glow = m.emissive && (m.emissive.r + m.emissive.g + m.emissive.b) * (m.emissiveIntensity || 1) > .3;
+    if (!m.map && dflt && !m.transparent && m.alphaTest === 0 && !(m.vertexColors && !m.userData.gdnV)) { const k = (glow ? 'glow|' : 'plain|') + m.side + (m.flatShading ? 'f' : ''); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(o); return; }     // plain colours: one per side, roughness be damned
+    const k = [m.map ? m.map.uuid : '-', m.side, m.transparent ? 1 : 0, m.alphaTest, m.opacity.toFixed(2), fn.length + fn.slice(0, 160), m.emissive ? m.emissive.getHexString() + (m.emissiveIntensity || 0).toFixed(2) : '', Math.round(m.roughness * 4), Math.round(m.metalness * 4), m.customProgramCacheKey ? m.customProgramCacheKey() : '', m.flatShading ? 1 : 0].join('|');
+    if (!groups.has(k)) groups.set(k, []); groups.get(k).push(o); });
+  for (const [gk, L] of groups) { if (L.length < 2) continue;
+    if (gk.startsWith('glow|')) { for (const o of L) { o.geometry = gdnTintGeo(o.geometry, o.material.emissive, o.material.emissiveIntensity); o.material = gdnGlowMat(); n++; } continue; }
+    const base = L[0].material; if (!base.userData.gdnV) { base.userData.gdnV = 1; base.userData.c0 = base.color.clone(); base.vertexColors = true; base.needsUpdate = true; }
+    for (const o of L) { const c = o.material === base ? base.userData.c0 : o.material.color; o.geometry = gdnTintGeo(o.geometry, c); o.material = base; n++; } base.color.setRGB(1, 1, 1); }
+  return n; }
 // m2170 MERGE A STATIC GROUP: every mesh under `root` that does not move on its own (not in `keep`: cloth, wing canvas) is baked into the root's frame
 // and merged with the others on the same material and shadow flag -- one draw each instead of one per piece. A set whose attributes disagree is left
 // as it was. (The moored ship was 70 meshes, 43 casting: ~113 draws with the shadow pass.)
@@ -16989,7 +17014,9 @@ function gdnShip(G) { const Z = GARDEN, S = Z.ship, C = Z.isleAt && Z.isleAt[S.c
   const ux = Math.sin(a), uz = Math.cos(a), er = Math.hypot(ep[0], ep[2]), tx = Math.cos(a), tz = -Math.sin(a), md = shipModel({ air: true }), B2 = SHIPZ.B / 2;
   const cx = ux * (er + S.off), cz = uz * (er + S.off), yaw = Math.atan2(tx, tz), gy = Ch.H - md.deckY;     // the ship lies along the edge, its deck at the chunk's height
   md.g.position.set(cx, gy, cz); md.g.rotation.y = yaw; md.g.name = 'garden_' + S.id; G.add(md.g); Z.shipM = md;
-  try { const keep = new Set(); for (const F of md.flags || []) { if (F.f) { keep.add(F.f.geometry); keep.add(F.f); } if (F.pv) keep.add(F.pv); } for (const W of md.wings || []) if (W.geo) keep.add(W.geo); Z.shipMerge = gdnMergeStatic(md.g, keep); } catch (e) { note('GARDEN SHIP MERGE ' + e.message); }
+  try { const keep = new Set(); for (const F of md.flags || []) { if (F.f) { keep.add(F.f.geometry); keep.add(F.f); } if (F.pv) keep.add(F.pv); } for (const W of md.wings || []) if (W.geo) keep.add(W.geo);
+    const wingMeshes = []; md.g.traverse(o => { if (o.isMesh && keep.has(o.geometry)) wingMeshes.push(o); }); for (const o of wingMeshes) keep.add(o);
+    if (md.coreM) keep.add(md.coreM); Z.shipRepaint = gdnConsolidate(md.g, keep); Z.shipMerge = gdnMergeStatic(md.g, keep); } catch (e) { note('GARDEN SHIP MERGE ' + e.message); }
   md.g.traverse(o => { if (o.isMesh && o.geometry && o.geometry.attributes.position.count < 2500) o.castShadow = false; });     /* m2170: only the ship's big pieces cast */ Z.shipBase = { y: gy, yaw }; Z.pieces.ship = md.g;
   const cs = Math.cos(yaw), sn = Math.sin(yaw), W = (x, z) => [cx + x * cs + z * sn, cz - x * sn + z * cs];     // ship-local -> garden (Ry(yaw))
   for (const b of md.deck) { const [wx, wz] = W((b.minx + b.maxx) / 2, (b.minz + b.maxz) / 2); BOXES.push(obox(wx, wz, (b.maxx - b.minx) / 2, (b.maxz - b.minz) / 2, -yaw, Y0 + gy + b.miny, Y0 + gy + b.maxy)); }
@@ -17072,6 +17099,9 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   try { gdnShip(G); } catch (e) { note('GARDEN SHIP ' + e.message); console.error(e); }
   try { gdnBeamFx(G); } catch (e) { note('GARDEN BEAM ' + e.message); console.error(e); }
   try { if (Z.swordG) gdnMergeStatic(Z.swordG, new Set()); } catch (e) {}
+  // m2177: the islands' own pieces -- every material that differs only in tint shares one, then each piece merges again (one draw per material)
+  try { const keepG = new Set([Z.shipM && Z.shipM.g, Z.pieces.heart, Z.cardM, Z.glow].filter(Boolean)); Z.repaint = gdnConsolidate(g, keepG);
+    let m0 = 0, m1 = 0; for (const [k, pg] of Object.entries(Z.pieces)) { if (!pg || keepG.has(pg) || k === 'far') continue; const [a, b] = gdnMergeStatic(pg, new Set()); m0 += a; m1 += b; } Z.remerge = [m0, m1]; } catch (e) { note('GARDEN REPAINT ' + e.message); console.error(e); }
   try { if (Z.isleRec) Z.plantMeshes = Z.plantMeshes.concat(plantFlush(g, Z.isleRec)); } catch (e) { note('GARDEN ISLE PLANTS ' + e.message); }
   PLANT.cell = cell0;
   try { gdnGlow(G); } catch (e) { note('GARDEN GLOW ' + e.message); }
