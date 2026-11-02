@@ -16546,7 +16546,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
   // ---- RIM BOULDERS (mossy, half sunk at the edge) and RUNE STONES (a jade glyph glowing on the face) ----
   { const RB = gdnRnd(Z.boulders.seed); for (let i = 0; i < Z.boulders.n; i++) { const a = RB() * 360, p = rimAt(a), L = Math.hypot(p[0], p[2]), k = .9 - RB() * .06, x = p[0] * k, z = p[2] * k;
       if (Z.fallsAt.some(f => Math.hypot(f[0] - x, f[1] - z) < 3.5) || Math.abs(a - 78) < 9 || Math.abs(a) < 6) continue; const r = .7 + RB() * 1.0;
-      put(gdnBoulder(RB, x, 0, z, r).rock, M.rock); box(x, z, r * .65, r * .65, -1, r * .7); part('boulder_' + i, 'boulder', { x, z }); } }
+      put(gdnBoulder(RB, x, 0, z, r).rock, M.rock); box(x, z, r * .65, r * .65, -1, r * .7); BOXES[BOXES.length - 1].noLedge = 1; part('boulder_' + i, 'boulder', { x, z }); } }
   for (const [id, x, z, s] of Z.runes) { const yaw = Math.atan2(-x, -z); put(new THREE.BoxGeometry(1.0 * s, 2.6 * s, .55 * s, 2, 3, 1).rotateY(yaw).translate(x, 1.2 * s, z), M.stone); put(gdnBlob(R, x, 2.55 * s, z, .5 * s, .4, 0), M.moss);
     const fx = Math.sin(yaw), fz = Math.cos(yaw); for (const [gx, gy, gw, gh, rz] of [[0, 1.6, .07, .9, 0], [0, 1.75, .5, .07, 0], [-.14, 1.25, .07, .5, .5], [.14, 1.25, .07, .5, -.5], [0, 2.05, .3, .07, .8]])
       put(new THREE.BoxGeometry(gw * s, gh * s, .04).rotateZ(rz).rotateY(yaw).translate(x + fx * .28 * s + Math.cos(yaw) * gx * s, gy * s, z + fz * .28 * s - Math.sin(yaw) * gx * s), M.jade);
@@ -16806,7 +16806,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     for (const [x, z, eh] of C.cairns || []) { let y = H + (eh || 0); for (let i = 0; i < 5; i++) { const r = .5 - i * .08, hh = r * .55; put(gdnBlob(RC, x + (RC() - .5) * .08, y + hh * .5, z + (RC() - .5) * .08, r, .55, 1), M.pebble, into); y += hh * .95; } box(x, z, .35, .35, H - 1, y); }
     // boulders along the outer edge, a wooden rail along stretches of it
     for (let i = 0; i < (C.boulders || 0); i++) { const p = outer[1 + Math.floor(RC() * (outer.length - 2))], k = .9 - RC() * .08, x = cx + (p[0] - cx) * k, z = cz + (p[2] - cz) * k, r = .6 + RC() * .9;
-      if (lines.some(Ln => nearLine(x, z, Ln.pl, Ln.w + 1.5))) continue; put(gdnBoulder(RC, x, H, z, r).rock, M.rock, into); box(x, z, r * .6, r * .6, H - 1, H + r * .7); }
+      if (lines.some(Ln => nearLine(x, z, Ln.pl, Ln.w + 1.5))) continue; put(gdnBoulder(RC, x, H, z, r).rock, M.rock, into); box(x, z, r * .6, r * .6, H - 1, H + r * .7); BOXES[BOXES.length - 1].noLedge = 1; }
     for (const [f0, f1] of C.fence || []) { const i0 = Math.round(f0 * (outer.length - 1)), i1 = Math.round(f1 * (outer.length - 1)), pts = [];
       for (let i = i0; i <= i1; i++) { const p = outer[i], L = Math.hypot(p[0] - cx, p[2] - cz) || 1; pts.push([p[0] - (p[0] - cx) / L * 1.1, p[2] - (p[2] - cz) / L * 1.1]); }
       const posts = [pts[0]]; let acc = 0; for (let i = 1; i < pts.length; i++) { acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if (acc > 2.4) { posts.push(pts[i]); acc = 0; } }
@@ -17375,7 +17375,7 @@ function gdnWalls() { const Z = GARDEN, t0 = performance.now(), cs = .5, R = Z.w
   // the pots, the plain painted props) rasterised onto the grid by its x/z bounds; a cell holds the lowest bottom and highest top of whatever stands
   // in it. Solid that starts near the ground (< `knee` over it) and rises past a step is a wall -- a roof, an arch or a canopy starts high and is not.
   { const M = Z.M || gdnMats(), V = new THREE.Vector3(), solid = new Set([M.cliff, M.rock, M.stone, M.white, M.cyclo, M.wood, M.lacquer, M.bronze, M.gold, M.jade, M.dark, M.bark, M.pot, M.pebble, M.clay, GDNV.plain].filter(Boolean)), maps = new Set([...solid].map(m => m.map).filter(Boolean));
-    const lo2 = new Float32Array(n * n).fill(1e9), hi2 = new Float32Array(n * n).fill(-1e9), knee = Z.wallKnee || .9;
+    const lo2 = new Float32Array(n * n).fill(1e9), hi2 = new Float32Array(n * n).fill(-1e9), knee = Z.wallKnee || .9; const org = new Uint8Array(n * n), ORG = new Set([M.cliff, M.rock, M.pebble, M.bark, M.moss].filter(Boolean));     /* m2248: a wall raised by a rock face offers no ledge */
     Z.on.g.traverse(o => { if (!o.isMesh || o.isInstancedMesh || o.userData.noSurf || !o.geometry || !o.material || Array.isArray(o.material)) return; const m = o.material; if (!solid.has(m) && !(m.map && maps.has(m.map))) return;
       for (let q = o; q; q = q.parent) if (q === (Z.shipM && Z.shipM.g)) return; o.updateMatrixWorld(true); const P = o.geometry.attributes.position, I = o.geometry.index, nt = (I ? I.count : P.count) / 3, w = new Float32Array(9);
       for (let tr = 0; tr < nt; tr++) { for (let k = 0; k < 3; k++) { V.fromBufferAttribute(P, I ? I.getX(tr * 3 + k) : tr * 3 + k).applyMatrix4(o.matrixWorld); w[k * 3] = V.x; w[k * 3 + 1] = V.y; w[k * 3 + 2] = V.z; }
@@ -17387,18 +17387,18 @@ function gdnWalls() { const Z = GARDEN, t0 = performance.now(), cs = .5, R = Z.w
         for (let jj = j0; jj <= j1; jj++) for (let ii = i0; ii <= i1; ii++) { const px = -R + ii * cs, pz = -R + jj * cs; let inside = false;     /* the cell's centre on the triangle's real footprint (or within .3 m of an edge) -- not its bounding box */
           if (Math.abs(den) > 1e-6) { const l1 = ((bz - cz) * (px - cx) + (cx - bx) * (pz - cz)) / den, l2 = ((cz - az) * (px - cx) + (ax - cx) * (pz - cz)) / den; inside = l1 >= 0 && l2 >= 0 && l1 + l2 <= 1; }
           if (!inside && Math.min(sd(px, pz, ax, az, bx, bz), sd(px, pz, bx, bz, cx, cz), sd(px, pz, cx, cz, ax, az)) > .3) continue;
-          const c = jj * n + ii, h = H[c]; if (h < Y0 - 30 || y0 > h + knee || y1 < h + rise) continue; if (y1 > hi2[c]) hi2[c] = y1; lo2[c] = h; } } });     /* each triangle qualifies ALONE: a flat stone at the ground and a column top over it are not, together, a wall */
+          const c = jj * n + ii, h = H[c]; if (h < Y0 - 30 || y0 > h + knee || y1 < h + rise) continue; if (y1 > hi2[c]) hi2[c] = y1; lo2[c] = h; if (ORG.has(m) || (m.map && [...ORG].some(q => q.map === m.map))) org[c] = 1; } } });     /* each triangle qualifies ALONE: a flat stone at the ground and a column top over it are not, together, a wall */
     const shipB = Z.shipM ? new THREE.Box3().setFromObject(Z.shipM.g).expandByScalar(1) : null;     /* the ship keeps its own deck colliders */
     for (let j = 1; j < n - 1; j++) for (let i = 1; i < n - 1; i++) { const c = j * n + i, h = H[c]; if (h < Y0 - 30 || hi2[c] < -1e8) continue; const x = -R + i * cs, z = -R + j * cs; if (shipB && x > shipB.min.x && x < shipB.max.x && z > shipB.min.z && z < shipB.max.z) continue;
-      if (boxAt(x, z, h + .6)) continue; W.set(c, [h - .5, Math.min(hi2[c], h + 12)]); } }
+      if (boxAt(x, z, h + .6)) continue; W.set(c, [h - .5, Math.min(hi2[c], h + 12), org[c]]); } }
   const nDrawn = W.size;
   for (let j = 1; j < n - 1; j++) for (let i = 1; i < n - 1; i++) { const hb = H[j * n + i]; if (hb < Y0 - 30) continue; const x = -R + i * cs, z = -R + j * cs; let lo = 1e9;
     for (const [di, dj] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const ha = H[(j + dj) * n + i + di]; if (ha < Y0 - 30 || hb - ha <= rise) continue; if (boxAt(x, z, ha + .6) || boxAt(x - di * cs * .45, z - dj * cs * .45, ha + .6)) continue; lo = Math.min(lo, ha); }
     if (lo > 1e8) continue; const under = groundAt(x, z, hb - .5, 0); if (under > lo - .3 && hb - under > 2) continue;     /* a deck you walk under */
     if (!W.has(j * n + i)) W.set(j * n + i, [lo - .5, hb - .02]); }
   let boxes = 0; for (let j = 0; j < n; j++) { let i = 0; while (i < n) { const c = W.get(j * n + i); if (!c) { i++; continue; } let k = i + 1, lo = c[0], hi = c[1];
-      while (k < n) { const d = W.get(j * n + k); if (!d || Math.abs(d[1] - c[1]) > .15) break; lo = Math.min(lo, d[0]); hi = Math.max(hi, d[1]); k++; }
-      const wb = { minx: -R + i * cs - cs / 2, maxx: -R + (k - 1) * cs + cs / 2, miny: lo, maxy: hi, minz: -R + j * cs - cs / 2, maxz: -R + j * cs + cs / 2, gdnWall: 1 }; BOXES.push(wb); (Z.wallBoxes = Z.wallBoxes || []).push(wb); boxes++; i = k; } }
+      while (k < n) { const d = W.get(j * n + k); if (!d || Math.abs(d[1] - c[1]) > .15 || !!d[2] !== !!c[2]) break; lo = Math.min(lo, d[0]); hi = Math.max(hi, d[1]); k++; }
+      const wb = { minx: -R + i * cs - cs / 2, maxx: -R + (k - 1) * cs + cs / 2, miny: lo, maxy: hi, minz: -R + j * cs - cs / 2, maxz: -R + j * cs + cs / 2, gdnWall: 1 }; if (c[2]) wb.noLedge = 1; BOXES.push(wb); (Z.wallBoxes = Z.wallBoxes || []).push(wb); boxes++; i = k; } }
   boxGrid(); Z.walls = { cells: W.size, drawn: nDrawn, boxes, ms: Math.round(performance.now() - t0) }; }
 // m2232 THE LOTUS (his: "a better lotus pose, and an idle form of meditation, so when he's floating there's a little movement -- it just looks better").
 // The Forge library has no lotus clip, so the pose is SOLVED on top of the seated one (`beam.clip`), after the mixer, in his body frame (forward his +Z,
@@ -21573,6 +21573,7 @@ function ledgeFind(px, py, pz, R) {
     if (b.maxy - b.miny < LEDGE.tall) continue;      // a kerb is not a ledge
     if (thinBox(b)) continue;                         // nor is the top of a pole (m205)
     if (b._wc || b._sc) continue;                     // nor a Red Hollows terrain column, whose top is inside the cliff (m1761)
+    if (b.noLedge) continue;                          // m2248: nor anything ORGANIC -- a boulder, a rock face (builders tag the box)
     const dy = b.maxy - hands;
     if (dy < -LEDGE.band || dy > LEDGE.band) continue;
     if (px + R < b.minx || px - R > b.maxx) continue;
