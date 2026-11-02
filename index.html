@@ -16061,6 +16061,20 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
   M.blossom = triMat('garden_blossom', { scale: 2.0, rough: .9, bump: .8 }); M.blossomCard = uvm('garden_blossom_card', { alphaTest: .4, side: THREE.DoubleSide, roughness: .85 });
   M.awning = sway(uvm('garden_awning', { roughness: .95, side: THREE.DoubleSide }), .05, 1.2, 'aw'); M.awning.userData.sw = 1;
   M.soil = new THREE.MeshStandardMaterial({ color: 0x4a3324, roughness: 1 }); M.clay = new THREE.MeshStandardMaterial({ color: 0xb8704a, roughness: .8 }); M.dark = new THREE.MeshStandardMaterial({ color: 0x3a2618, roughness: .85 });
+  // m2169 LIVING VEINS (his: "the green spirals round the trees -- particle effects, more magical, not just random lines"): the vein tubes carry light
+  // travelling UP them (pulses along the tube's length, uv.x), each vein out of step; motes peel off them in `gdnGlow` (Z.veinPts)
+  M.vein = new THREE.MeshStandardMaterial({ color: 0x0f5a48, emissive: 0x35ffc0, emissiveIntensity: 1.0, roughness: .3 });
+  M.vein.onBeforeCompile = sh => { sh.uniforms.uT = U.uTime; sh.vertexShader = 'varying vec2 vVU; varying vec3 vVW;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n vVU = uv; vVW = (modelMatrix * vec4(position, 1.0)).xyz;');
+    sh.fragmentShader = 'uniform float uT; varying vec2 vVU; varying vec3 vVW;\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      { float ph = vVW.x * .7 + vVW.z * .9, p1 = pow(.5 + .5 * sin(vVU.x * 26.0 - uT * 2.6 + ph), 14.0), p2 = pow(.5 + .5 * sin(vVU.x * 9.0 - uT * 1.3 + ph * 2.0), 6.0);
+        totalEmissiveRadiance *= .45 + p1 * 2.6 + p2 * .9; }`); };
+  M.vein.customProgramCacheKey = () => 'gdnVein';
+  // ...and a soft SHEATH of light round each vein (additive, brightest where it faces you edge-on, the same travelling pulses) -- a glow, not a line
+  M.veinGlow = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uTime: U.uTime, uGlow: U.uGlow },
+    vertexShader: 'varying vec2 vU; varying vec3 vW; varying float vE; void main() { vU = uv; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vec3 n = normalize(mat3(modelMatrix) * normal); vE = abs(dot(n, normalize(cameraPosition - w.xyz))); gl_Position = projectionMatrix * viewMatrix * w; }',
+    fragmentShader: `uniform float uTime, uGlow; varying vec2 vU; varying vec3 vW; varying float vE; void main() { float ph = vW.x * .7 + vW.z * .9, p1 = pow(.5 + .5 * sin(vU.x * 26.0 - uTime * 2.6 + ph), 14.0), p2 = pow(.5 + .5 * sin(vU.x * 9.0 - uTime * 1.3 + ph * 2.0), 6.0);
+      float a = pow(vE, 2.5) * (.18 + p1 * 1.1 + p2 * .35); gl_FragColor = vec4(vec3(.3, 1.0, .75) * a * uGlow, 1.0); }` });
+  M.basalt = triMat('garden_rock', { scale: 1.6, rough: .45, bump: 1.2, color: 0x3c4658 });
   M.jinLeaves = triMat('dome_leaves', { scale: 1.1, rough: .8, bump: 1, color: 0xb8f4ff }); M.jinLeaves.emissive = new THREE.Color(0x0e5a6a); M.jinLeaves.emissiveIntensity = .8;
   M.jinCard = uvm('dome_clump', { alphaTest: .42, side: THREE.DoubleSide, roughness: .85, color: 0xb0f0ff, emissive: 0x0c4a5a, emissiveIntensity: .7 });
   M.heart = new THREE.MeshStandardMaterial({ color: 0x1a6aff, emissive: 0x2a9cff, emissiveIntensity: 2.2, roughness: .1, metalness: .2, flatShading: true });
@@ -16165,7 +16179,7 @@ function gdnDisc(x, z, r, y0, y1) { const N = Math.max(3, Math.ceil(r * 2 / 1.1)
     const dd = (d + d2) / 2 > .3 ? Math.min(d2, d + .25) : 0; if (dd > .05) BOXES.push({ minx: x + a, maxx: x + b, miny: y0, maxy: y1, minz: z - dd, maxz: z + dd }); } }
 // THE BUILDER -- a pure function of GARDEN: fills G (the island-local group) and the colliders; returns parts
 function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 = Z.top, d2r = Math.PI / 180, parts = Z.parts; parts.length = 0;
-  const MG = new Map(), KEEP = new Set([M.jinCard, M.blossomCard, M.awning, M.sand, M.roof, M.hammock, M.banner_red, M.banner_teal, M.vine, M.ivy, M.clump, M.fern, M.flowers, M.water, M.fall]);
+  const MG = new Map(), KEEP = new Set([M.vein, M.veinGlow, M.jinCard, M.blossomCard, M.awning, M.sand, M.roof, M.hammock, M.banner_red, M.banner_teal, M.vine, M.ivy, M.clump, M.fern, M.flowers, M.water, M.fall]);
   const put = (geo, m, into) => { const key = into || 'main'; if (!MG.has(key)) MG.set(key, new Map()); const B = MG.get(key); if (!B.has(m)) B.set(m, []); let q = geo.index ? geo.toNonIndexed() : geo;
       const keep = ['position', 'normal']; if (KEEP.has(m)) keep.push('uv'); if (m.userData.sw) keep.push('aSw'); if (m === M.rock) keep.push('color');
       for (const k of Object.keys(q.attributes)) if (!keep.includes(k)) q.deleteAttribute(k);
@@ -16275,7 +16289,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     // roots flaring into the lawn, veins down the grooves
     for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2 + Rt(), L = (1.6 + Rt() * 1.2) * k; put(gdnTube([[x + Math.cos(a) * .4 * k, by + .7 * k, z + Math.sin(a) * .4 * k], [x + Math.cos(a) * L * .55, by + .25, z + Math.sin(a) * L * .55], [x + Math.cos(a) * L, by - .15, z + Math.sin(a) * L]], 8, 8, t => (.38 - t * .3) * k).geo, M.bark, into); }
     for (let v = 0; v < 3; v++) { const vp = []; for (let i = 0; i <= 24; i++) { const t = i / 24 * .8, c = tb.curve.getPointAt(t), a = v * 2.1 + t * 9 + Math.sin(t * 13 + v) * .3, rr = (r0 + (r1 - r0) * Math.pow(t, .8)) * (1 + 1.1 * Math.pow(Math.max(0, 1 - t * 5), 2)) * .92;
-        vp.push(new THREE.Vector3(c.x + Math.cos(a) * rr, c.y, c.z + Math.sin(a) * rr)); } put(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(vp), 48, .022 * k + .008, 4, false), M.jade, into); }
+        vp.push(new THREE.Vector3(c.x + Math.cos(a) * rr, c.y, c.z + Math.sin(a) * rr)); } { const vc = new THREE.CatmullRomCurve3(vp); put(new THREE.TubeGeometry(vc, 48, .016 * k + .006, 4, false), M.vein, into); put(new THREE.TubeGeometry(vc, 48, .09 * k + .03, 6, false), M.veinGlow, into); } for (let q = 2; q < vp.length; q += 3) (Z.veinPts = Z.veinPts || []).push([vp[q].x, vp[q].y, vp[q].z, T.jin ? 1 : 0]); }
     // boughs out from the upper trunk, a leaf dome over them, strands hanging
     const top = tb.curve.getPointAt(1), blobs = [];
     for (let b = 0; b < 7; b++) { const t0 = .55 + Rt() * .35, s = tb.curve.getPointAt(t0), a = b / 7 * Math.PI * 2 + Rt() * .6, L = (3.2 + Rt() * 1.8) * k * (h / 9), dx = Math.cos(a), dz = Math.sin(a);
@@ -16476,7 +16490,8 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     // THE JINRA HEART: the sacred source. A stone fire-pit basin (its water the spring), six jade braziers in a ring, a great blue crystal turning above
     // the basin in a swirl of light, blue flames licking the rim, a beam of light into the sky -- its moving parts are their own group (`GARDEN.heart`)
     if (S.heart) { const Hh = S.heart, [hx, hz] = Hh.at, hy = top + .02;
-      P(new THREE.LatheGeometry([[Hh.r - .1, 0], [Hh.r + .55, 0], [Hh.r + .62, .5], [Hh.r + .5, .62], [Hh.r + .05, .6], [Hh.r - .05, .2]].map(([a, b]) => new THREE.Vector2(a, b)), 32).translate(hx, hy, hz), M.stone);
+      P(new THREE.LatheGeometry([[Hh.r - .1, 0], [Hh.r + .55, 0], [Hh.r + .62, .5], [Hh.r + .5, .62], [Hh.r + .05, .6], [Hh.r - .05, .2]].map(([a, b]) => new THREE.Vector2(a, b)), 32).translate(hx, hy, hz), M.basalt);
+      P(gdnBlobDisc(hx, hz, Hh.r + 2.6, top + .036, RS, 40), M.basalt);     // m2169: a dark basalt basin on a dark floor ring, so the light has something to read against
       P(new THREE.TorusGeometry(Hh.r + .3, .06, 6, 40).rotateX(Math.PI / 2).translate(hx, hy + .64, hz), M.gold); bx(hx, hz, Hh.r + .5, Hh.r + .5, TY - 1, TY + .6);
       for (let i = 0; i < Hh.n; i++) { const a = i / Hh.n * 6.283 + .3, x = hx + Math.cos(a) * Hh.ring, z = hz + Math.sin(a) * Hh.ring; P(new THREE.CylinderGeometry(.24, .3, 1.3, 8).translate(x, hy + .65, z), M.stone);
         P(new THREE.CylinderGeometry(.34, .18, .3, 8).translate(x, hy + 1.45, z), M.bronze); P(new THREE.SphereGeometry(.2, 10, 8).translate(x, hy + 1.62, z), M.jade); bx(x, z, .3, .3, TY - 1, TY + 1.6); Z.lanterns.push([C.id + '_brazier', x, z, hy - .1]); }
@@ -16771,9 +16786,14 @@ function gdnHeart(hg, Hh, U) { const cy = 3.4, uP = U.uPulse = U.uPulse || { val
   const add = (geo, mat, ro) => { const m = new THREE.Mesh(geo, mat); if (ro != null) m.renderOrder = ro; m.frustumCulled = false; hg.add(m); return m; };
   const ADD = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide };
   // ---- the crystals: a hexagonal prism with a pointed crown and foot, its facets a little irregular
-  const prism = (r, h, tip) => { const g = new THREE.CylinderGeometry(r, r * .92, h, 6, 4).translate(0, 0, 0), P = g.attributes.position; for (let i = 0; i < P.count; i++) P.setY(i, P.getY(i));
-    const crown = new THREE.ConeGeometry(r, tip, 6).translate(0, h / 2 + tip / 2, 0), foot = new THREE.ConeGeometry(r * .92, tip * .6, 6).rotateX(Math.PI).translate(0, -h / 2 - tip * .3, 0);
-    return mergeGeometries([g.toNonIndexed(), crown.toNonIndexed(), foot.toNonIndexed()].map(q => { for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; })); };
+  // m2169 (his: "shape the crystal more organically"): a seven-sided shaft that TWISTS as it grows, bends, swells and pinches, its facets uneven, a
+  // crown of three uneven points; faceted normals (each face flat) so it still reads as crystal
+  let pseed = 1; const prism = (r, h, tip) => { const sd = pseed++ * 1.7, g = new THREE.CylinderGeometry(r, r * .78, h, 7, 12, false), crown = new THREE.ConeGeometry(r, tip, 7, 3).translate(0, h / 2 + tip / 2, 0), foot = new THREE.ConeGeometry(r * .78, tip * .5, 7).rotateX(Math.PI).translate(0, -h / 2 - tip * .25, 0);
+    const out = [g, crown, foot].map(q => { q = q.toNonIndexed(); const P = q.attributes.position; for (let i = 0; i < P.count; i++) { let x = P.getX(i), y = P.getY(i), z = P.getZ(i); const u = (y + h / 2) / (h + tip), a = Math.atan2(z, x), tw = u * 1.1 + sd;
+        const sw = 1 + .14 * Math.sin(u * 7 + sd) + .07 * Math.sin(a * 3 + sd * 2) - (y > h / 2 ? .12 * Math.sin(a * 2 + sd) : 0), cs = Math.cos(tw), sn = Math.sin(tw); x *= sw; z *= sw;
+        P.setXYZ(i, x * cs - z * sn + Math.pow(u, 2) * r * .5 * Math.sin(sd), y, x * sn + z * cs + Math.pow(u, 2) * r * .3 * Math.cos(sd)); }
+      q.computeVertexNormals(); for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; });
+    return mergeGeometries(out); };
   const cmat = new THREE.ShaderMaterial({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow, uMap: { value: texGet('garden_jinra_crystal') } }, side: THREE.FrontSide,
     vertexShader: 'varying vec3 vO; varying vec3 vN; varying vec3 vV; void main() { vO = position; vN = normalize(normalMatrix * normal); vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
     fragmentShader: `uniform float uTime, uPulse, uGlow; uniform sampler2D uMap; varying vec3 vO; varying vec3 vN; varying vec3 vV; void main() {
@@ -16843,18 +16863,26 @@ function gdnHeart(hg, Hh, U) { const cy = 3.4, uP = U.uPulse = U.uPulse || { val
     bm.geometry.setAttribute('aF', new THREE.Float32BufferAttribute(new Array(bm.geometry.attributes.position.count).fill(1), 1)); bm.frustumCulled = false; bm.renderOrder = 3; hg.add(bm); }
   // ---- the motes: a VORTEX drawn in and up round the crystal, EMBERS off the flames, SPARKS flung out on the beat -- one draw
   { const N1 = 260, N2 = 110, N3 = 60, P = [], A = [], R = gdnRnd(915);
-    for (let i = 0; i < N1 + N2 + N3; i++) { const kind = i < N1 ? 0 : i < N1 + N2 ? 1 : 2; P.push(0, 0, 0); A.push(R() * 6.283, R(), kind, .07 + R() * .1); }
+    for (let i = 0; i < N1 + N2 + N3; i++) { const kind = i < N1 ? 0 : i < N1 + N2 ? 1 : 2, ph = R() * 6.283, sd = R(), sz = .07 + R() * .1; const tr = kind === 0 && i % 2 === 0 ? 4 : 1;     // m2169: half the vortex motes trail a comet tail (4 copies, each a beat behind)
+      for (let k = 0; k < tr; k++) { P.push(0, 0, 0); A.push(ph, sd, kind + k * .1, sz * (1 - k * .2)); } }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('aM', new THREE.Float32BufferAttribute(A, 4));
     const m = new THREE.Points(g, new THREE.ShaderMaterial(Object.assign({ uniforms: { uTime: U.uTime, uPulse: uP, uGlow: U.uGlow, uPx: U.uPx || (U.uPx = { value: 600 }), uR: { value: Hh.r } },
-      vertexShader: `attribute vec4 aM; uniform float uTime, uPulse, uPx, uR; varying vec3 vC; varying float vA; void main() { float ph = aM.x, sd = aM.y, k = aM.z, s = aM.w; vec3 p; float t;
-        if (k < .5) { t = fract(uTime * (.07 + sd * .05) + sd); float r = mix(uR + 1.6, .35, t * t), a = ph + t * 9.0 + uTime * 1.4; p = vec3(cos(a) * r, .6 + t * 5.6 + sin(a * 3.0) * .15, sin(a) * r);
-          vC = mix(vec3(.3, .7, 1.0), vec3(.9, 1.0, 1.0), t); vA = smoothstep(0.0, .15, t) * smoothstep(1.0, .8, t); }
+      vertexShader: `attribute vec4 aM; uniform float uTime, uPulse, uPx, uR; varying vec3 vC; varying float vA; void main() { float ph = aM.x, sd = aM.y, k = floor(aM.z + .01), tr = fract(aM.z + .01) * 10.0, s = aM.w; vec3 p; float t;
+        if (k < .5) { t = fract(uTime * (.07 + sd * .05) + sd - tr * .006); float r = mix(uR + 1.6, .35, t * t), a = ph + t * 9.0 + uTime * 1.4; p = vec3(cos(a) * r, .6 + t * 5.6 + sin(a * 3.0) * .15, sin(a) * r);
+          vC = mix(vec3(.3, .7, 1.0), vec3(.9, 1.0, 1.0), t); vA = smoothstep(0.0, .15, t) * smoothstep(1.0, .8, t) * (1.0 - tr * .22) * (1.0 + uPulse * .6); p *= 1.0 + uPulse * .06; }
         else if (k < 1.5) { t = fract(uTime * (.25 + sd * .2) + sd * 3.0); float a = ph; p = vec3(cos(a) * uR * (1.0 + t * .3), .6 + t * 3.5, sin(a) * uR * (1.0 + t * .3)); p.x += sin(t * 9.0 + ph) * .25;
           vC = vec3(.45, .85, 1.0); vA = (1.0 - t) * .9; }
         else { t = fract(uTime * .45 + sd); float a = ph + t * .5, r = .6 + t * 6.0; p = vec3(cos(a) * r, ${cy.toFixed(1)} + sin(ph * 3.0) * 1.5 + t * 1.2 - t * t * 2.5, sin(a) * r); vC = vec3(.8, .95, 1.0); vA = (1.0 - t) * uPulse; }
         vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = s * (1.0 + uPulse * .6) * uPx / max(.5, -mv.z); }`,
       fragmentShader: `uniform float uGlow; varying vec3 vC; varying float vA; void main() { float d = length(gl_PointCoord - .5) * 2.0; gl_FragColor = vec4(vC * pow(max(0.0, 1.0 - d), 1.8) * vA * 1.6 * uGlow, 1.0); }` }, ADD)));
     m.frustumCulled = false; m.renderOrder = 6; hg.add(m); }
+  // ==== HERO PASS 3 (m2169) ==== the heart LIGHTS its surroundings (one blue point light -- the pagoda, the Jinra tree, the braziers, the floor), and
+  // a BEACON glow that keeps a constant size on screen however far off he is, so it reads from the garden and the farm against the morning sky
+  const lamp = new THREE.PointLight(0x5ab4ff, 30, 26, 1.5); lamp.position.y = cy; hg.add(lamp);
+  const beacon = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial(Object.assign({ uniforms: { uPulse: uP, uGlow: U.uGlow },
+    vertexShader: 'varying vec2 vU; uniform float uPulse; void main() { vU = uv; vec4 mv = modelViewMatrix * vec4(0.0, 0.0, 0.0, 1.0); float d = -mv.z, s = max(6.0, d * .22) * (1.0 + uPulse * .25); mv.xy += position.xy * s; gl_Position = projectionMatrix * mv; }',
+    fragmentShader: `uniform float uPulse, uGlow; varying vec2 vU; void main() { float d = length(vU - .5) * 2.0; float a = (pow(max(0.0, 1.0 - d), 3.5) * .5 + pow(max(0.0, 1.0 - d), 12.0) * .8) * (.6 + .4 * uPulse) * uGlow; gl_FragColor = vec4(vec3(.45, .8, 1.0) * a, 1.0); }` }, ADD)));
+  beacon.renderOrder = 7; beacon.frustumCulled = false; cg.add(beacon);
   // ==== HERO PASS 2 (m2167, his: "keep doing passes -- make it phenomenal, mesmerizing") ====
   // RUNE RINGS: his painted glyph circle (`garden_jinra_runes`) three times -- flat over the basin, tilted round the crystal, upright behind it --
   // each turning its own way, brightening on the beat
@@ -16895,7 +16923,7 @@ function gdnHeart(hg, Hh, U) { const cy = 3.4, uP = U.uPulse = U.uPulse || { val
       for (let k = 0; k < NS; k++) { const p0 = pts[k], p1 = pts[k + 1], w = .045 * (1 - k / NS * .5); for (const [ox, oy, oz] of [[w, 0, 0], [0, w, 0]]) {
           for (const [p, s2] of [[p0, -1], [p0, 1], [p1, -1], [p1, 1]]) { arcV[o * 3] = p[0] + ox * s2; arcV[o * 3 + 1] = p[1] + oy * s2; arcV[o * 3 + 2] = p[2] + oz * s2 + (ox ? 0 : 0); arcA[o] = al; o++; } } } }
     ag.attributes.position.needsUpdate = ag.attributes.aA.needsUpdate = true; };
-  return { g: hg, cg, core, halo, outer, spirals, sw1, sw2, rays, rune1, r2g, r3g, arcStep, arcT: 0, y: cy }; }
+  return { g: hg, cg, core, halo, outer, lamp, spirals, sw1, sw2, rays, rune1, r2g, r3g, arcStep, arcT: 0, y: cy }; }
 // a breathing double-beat, 0..1 (lub-dub, then rest)
 function gdnPulse(t) { const p = (t * .72) % 1; return Math.max(Math.exp(-Math.pow((p - .1) / .05, 2)), .65 * Math.exp(-Math.pow((p - .28) / .06, 2))) * .85 + .15 * (.5 + .5 * Math.sin(t * .9)); }
 // A CHUNK OF THE MOUNTAIN: any outline (island-local [x, y, z] points) as a flat top at `y0` and a rock that drops SHEER for the first eighth of its
@@ -16988,13 +17016,15 @@ function gdnGlow(G) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.seed + 9), P = [],
   // SPRAY where the cascades land and where the streams go over the edge
   for (const [x, y, z] of Z.splash || []) for (let i = 0; i < 18; i++) add(x + (R() - .5) * .5, y, z + (R() - .5) * .5, [.85, 1, .95], .16 + R() * .14, 2);
   for (const [x, z] of Z.fallsAt || []) { const L = Math.hypot(x, z); for (let i = 0; i < 14; i++) add(x * 1.04 + (R() - .5) * 1.2, -.2 - R() * 1.5, z * 1.04 + (R() - .5) * 1.2, [.8, 1, .95], .25 + R() * .25, 2); }
+  for (const [x, y, z, jin] of Z.veinPts || []) for (let i = 0; i < 4; i++) add(x, y, z, jin ? [.5, .9, 1] : [.45, 1, .78], .1 + R() * .09, 3);     // motes off the trees' veins
   const wl = Z.parts.filter(q => q.kind === 'pool' || q.kind === 'stream'); for (let i = 0; i < Z.motes.n; i++) { const a = R() * 6.3, rr = Math.sqrt(R()) * 22; let x = Math.sin(a) * rr, z = Math.cos(a) * rr;
     if (i % 3 === 0 && Z.pools.length) { const P2 = Z.pools[i % Z.pools.length]; x = P2.at[0] + (R() - .5) * 4; z = P2.at[1] + (R() - .5) * 4; } add(x, R() * 3, z, R() < .75 ? [.5, 1, .82] : [1, .9, .6], .12 + R() * .1, 1); }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('aC', new THREE.Float32BufferAttribute(C, 3)); g.setAttribute('aS', new THREE.Float32BufferAttribute(S, 1));
   g.setAttribute('aP', new THREE.Float32BufferAttribute(PH, 1)); g.setAttribute('aK', new THREE.Float32BufferAttribute(K, 1)); U.uPx = U.uPx || { value: 600 };
   const m = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uTime: U.uTime, uPx: U.uPx, uGlow: U.uGlow },
     vertexShader: `attribute vec3 aC; attribute float aS, aP, aK; uniform float uTime, uPx; varying vec3 vC; varying float vA; void main() { vec3 p = position;
-      if (aK > 1.5) { float t = mod(uTime * .9 + aP * .159, 1.0); p += vec3(cos(aP * 3.0) * t * .8, t * 1.0 - t * t * 1.5, sin(aP * 3.0) * t * .8); vA = (1.0 - t) * .75; }
+      if (aK > 2.5) { float t = mod(uTime * .13 + aP * .159, 1.0), a = aP * 3.0 + t * 5.0; p += vec3(cos(a) * t * .9, t * 3.2, sin(a) * t * .9); vA = smoothstep(0.0, .12, t) * (1.0 - t) * (.7 + .3 * sin(uTime * 4.0 + aP * 9.0)); }
+      else if (aK > 1.5) { float t = mod(uTime * .9 + aP * .159, 1.0); p += vec3(cos(aP * 3.0) * t * .8, t * 1.0 - t * t * 1.5, sin(aP * 3.0) * t * .8); vA = (1.0 - t) * .75; }
       else if (aK > .5) { float t = mod(uTime * .11 + aP * .159, 1.0); p += vec3(sin(uTime * .4 + aP) * .7, t * 4.0, cos(uTime * .33 + aP * 1.7) * .7); vA = sin(t * 3.1416) * (.6 + .4 * sin(uTime * 3.0 + aP * 5.0)); }
       else vA = .55 + .1 * sin(uTime * 2.3 + aP);
       vC = aC; vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = aS * uPx / max(.5, -mv.z); }`,
@@ -17041,9 +17071,10 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
   if (Z.bridgeList && Z.bridgeList.length) rspStep(dt);
   for (const w of Z.wheels || []) w.children[0].rotation.x -= dt * 1.1;
   if (Z.shipM) { const md = Z.shipM, t = O.t; md.step(dt, t); md.g.position.y = Z.shipBase.y + Math.sin(t * .7) * Z.ship.bob; md.g.rotation.z = Math.sin(t * .5) * .008; }     // the moored ship rides the air
-  if (Z.heart) { const Hh = Z.heart, t = O.t, pu = gdnPulse(t); Z.U.uPulse.value = pu;     // the Jinra heart breathes: turns, bobs, its spirals wind up, its swirl and rays turn
-    Hh.cg.rotation.y += dt * .35; Hh.cg.position.y = Hh.y + Math.sin(t * .8) * .16; Hh.core.scale.setScalar(1 + pu * .25); Hh.halo.scale.setScalar(1 + pu * .18);
-    Hh.spirals.rotation.y += dt * .9; Hh.rays.rotation.y -= dt * .12; Hh.rays.position.y = Hh.cg.position.y;
+  if (Z.heart) { const Hh = Z.heart, t = O.t, pu = gdnPulse(t), fl = 1 + pu * 1.8; Z.U.uPulse.value = pu;     // the Jinra heart breathes: on each beat EVERYTHING flares -- light, size, spin
+    Hh.cg.rotation.y += dt * .35 * fl; Hh.cg.position.y = Hh.y + Math.sin(t * .8) * .16; Hh.cg.scale.setScalar(1 + pu * .05); Hh.core.scale.setScalar(1 + pu * .25); Hh.halo.scale.setScalar(1 + pu * .18);
+    if (Hh.lamp) { Hh.lamp.intensity = 22 + pu * 55; Hh.lamp.position.y = Hh.cg.position.y; }
+    Hh.spirals.rotation.y += dt * .9 * fl; Hh.rays.rotation.y -= dt * .12; Hh.rays.position.y = Hh.cg.position.y;
     Hh.rune1.rotation.y += dt * .25; Hh.r2g.rotation.y -= dt * .45; Hh.r2g.children[0].rotation.z += dt * .6; Hh.r2g.position.y = Hh.cg.position.y; Hh.r3g.rotation.y += dt * .15; Hh.r3g.children[0].rotation.z -= dt * .3; Hh.r3g.position.y = Hh.cg.position.y + .2;
     Hh.outer.scale.setScalar(1 + pu * .12); Hh.arcT -= dt; if (Hh.arcT <= 0) { Hh.arcT = .07; Hh.arcStep(.07, t, Hh.cg.position.y, pu); } }     // the homestead's waterwheel, turned by its cascade
   if (Z.U.uPx) Z.U.uPx.value = renderer.domElement.height * camera.projectionMatrix.elements[5] / 2;
