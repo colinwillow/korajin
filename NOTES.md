@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2222 -- THE TITLE LOOP: the SNOW ISLE (his snow village's own pieces, snow pines, ice crystals, frostcaps) (Nov 2 2026)
+*"I don't have screenshots of the red hollows (it's renamed) -- go and look at it yourself... bushes and trees from the snow level, snow caps, the
+beautiful snow architecture, the ice crystals, the crazy trees in the snow world, the willow, the glowing mushroom trees."*
+- **I LOOKED AT AKATANI** (the renamed Red Hollows, `?w=home`) headless, fallen and restored: a pink-sand canyon with banded red cliffs, a
+  BLUE river lined with cattails, round bushy trees, timber stilt structures, boulders, purple flowers, a red arch gate in the cliff, a sunset sky.
+  (The game camera will not pull back far enough for a wide shot of the buildings; that is the next look.) The canyon isle built from this is
+  the next pass.
+- **THE SNOW ISLE** (`kind: 'snowisle'`, mid band, above the terraces): a floating isle whose every up-facing face is SNOW (it stays snowbound in
+  every season). It carries his SNOW VILLAGE'S OWN PAINTED PIECES -- `svkPiece` hut, longhouse (the horned hall), market stall, two lantern
+  posts, a banner post and a well. They are all EMITTED into one kit (`svkEmit` -> `svkMesh`, his `vilMats`), so it is one mesh per material,
+  not one per piece. Also: 7 snow-laden PINES, ICE CRYSTALS lit pale blue from inside, and two FROSTCAPS (mushroom trees: a pale trunk, five
+  violet caps spiralling up it with snow on top and FROSTLIGHT glowing under the gills, glowing tendrils hanging).
+- **THE WATER WHEEL was 35 meshes a copy**: its parts are now merged per material (2 a copy).
+- Measured, headless: ~134 draw calls on a phone where the snow isle is in frame. That is the highest the loop has been, and it is the first
+  thing to watch on the device. Render: phone, spring (the horned longhouse and snowy pines above the terraces).
+- **Shipped unverified.**
+
 ## m2219 -- THE HITCH: every footfall raycast half a million triangles (Nov 2 2026)
 
 His report (via main): *"loading the prologue ... it's choppy, like every ~30 frames it kind of waits a second -- we need a warm-up."* FOUND by
