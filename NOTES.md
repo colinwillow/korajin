@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2239 -- THE GARDEN: spawned enemies land on the island (Nov 2 2026)
+## m2240 -- THE GARDEN: spawned enemies land on the island (Nov 2 2026)
 
 *"Whenever I try to spawn an enemy in the floating clouds they just aren't up on the cliffs."* (via main; he wants to film fights there.) Every
 spawn used the arena's fixed spot (`ARENA.spawnAt`, the stadium doors) at y 0 -- the Forge floor, 120 m under the Garden. `gdnSpawnSpot(clear, k)`:
@@ -28,6 +28,16 @@ a ring of candidates ahead of him (6-11 m, fanning round, offset per k), each wa
 fly-down land on their own `floorY`, not 0.
 Headless: MAMMOTH / WARBOSS / HICK / CALF and the big + small spiders all on the lawn (y 0.00 vs ground 0.00, spiders .05) after their AI ran
 (mammoth and calf mid-`cRun`). Render spw. `mel.arenaSpawn` / `mel.gdnSpawnSpot` / `mel.DUMMIES` live. **Shipped unverified.**
+## m2239 -- THE INTRO, CUT TO THE PEACEFUL PART: no Hollow (Colin's correction, via main) (Nov 2 2026)
+*"The narration was only a TEST script. It is not the story. The intro must NOT show or name the Hollow; that comes much later in the prologue
+(the festival, then the strike)."*
+- **The Hollow is GONE**: its shots (shadow / horizon / stir / hollow), its shader quad (`reelHollow`), its fx tracks (dim, fog, hollow, pulse,
+  shade keyframes) and the `rel2: 'hollow'` anchor. The player keeps `dim` / `fog` / `shade` as generic tracks; the intro uses none of them.
+- **The reel is now: clouds / drift / falls / shrine / sweep / descend / grumbo, 29.6 s.** The test voice stays as a placeholder and is CUT at
+  `voiceEnd` 20.75 with a .6 s fade (after "...untouched by darkness.", the next word is at 21.01). The crawl fades from `textEnd` 21.2 over 1.4 s.
+  The clock carries on (frame time) once the voice stops, and the lens goes down to the hammock.
+- **A new script and recording swap in through the table alone**: `voice`, `lines`, `voiceEnd` / `textEnd` (drop them to play the whole file),
+  shot times. Rendered at 19, 21.6, 24, 28.5 s: the last line, its fade over the sweep, the descent, the bed. **Shipped unverified.**
 
 ## m2236 -- REELS: the cut-scene player, and the PROLOGUE INTRO (his narration, the crawl, ten shots, the Hollow) (Nov 2 2026)
 His brief: *"a test prologue narration -- cinematic camera pans and zooms of the world, then finally Grumbo sleeping in the hammock; text going up
