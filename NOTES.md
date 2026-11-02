@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- no shutter panels: the menu fades straight onto the LOADING SCREEN, and the build runs behind it (Nov 2 2026)
+*"You put in some curtains -- lines that don't look like anything in game. We already have a loading screen: just curtain out to the loading screen;
+don't curtain in, load most of the game, and show the loading screen for a second."* m2256's ink panels are gone (CSS and DOM). `shutterClose` now
+fades #start out (.45 s) over the BOOT CARD -- the real loading screen, already under it (his second poster, the turning sun-wheel, the bar,
+Korajin's loading lines) -- and only after that has painted (two frames) runs the heavy build, so the whole load happens ON the loading screen.
+His other idea -- the title's walking loop AS the loading screen -- is not done: it is its own 3D scene and would freeze with the rest while the
+garden builds on the same thread. Shipped unverified.
+
 ## m2270 -- CRAFT PASS 4 (the Garden): posts seated, lamps hung from something (Nov 2 2026)
 
 CRAFT.md rule 3 (his: "railings, stairs, and things attached to trees or plants float"). Found in the builders, not guessed: the main fence's stone
