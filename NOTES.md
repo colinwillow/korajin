@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2194 -- THE GARDEN: the water deforms under him; painted grass; the Jinra lifts to 7 m (Nov 2 2026)
+
+*"Make the creek more reactive, like the snow -- an actual ripple, a surface deform, a nice little trick so it looks like you're squishing the water
+around."* The garden water shader carries a HEIGHT FIELD (`wH`): eight ring waves (`uDrops`, x/z/t0/amp -- spreading 1.1 m/s, dying in ~2.5 s)
+plus a DIP round his legs and a fast ripple off them (`uWake`). Its slope (forward differences, 5 cm) bends the texture lookup, lights the crests,
+shades the troughs and puts foam where it is steep. No geometry moves; the water meshes are too coarse to displace and the shading carries it.
+`gdnStep` drops a ring on each step in the water (every .34 -> .22 s by speed, a little ahead of him), on entering it, and a BIG one (1.6) on landing.
+*"A few blades of grass that aren't textured."* The plant system's 'grass' is vertex-coloured blades with no map. In the Garden every 'grass' record
+(508 of them) becomes three crossed cards of his painted tuft (`dome_tuft`, new `M.tuft`, tagged plant) in one draw, `garden_grass_cards`.
+*"The Jinra stream should shoot you up higher."* `beam.lift` 3 -> 7 m, `h` 10 -> 12, `spring` 1.6 -> 2.2, `up` 4.5 -> 8 m/s.
+(His meditation pose is going to the other session.) Renders wade2 (rings), farm (tufts). **Shipped unverified.**
+
 ## m2192 -- the START tap draws a blade; the song starts with it; menu taps and entering a world have sounds (Nov 2 2026)
 *"A sword noise or something interesting when you push the start button -- and when you push it that song should start playing; sounds for the
 menus and transitions."* Kenney CC0 (`audio/ui`, CREDITS.txt, added to bump's DIRS), levelled only: `ui_start` = RPG Audio's drawKnife 1-3 (a
