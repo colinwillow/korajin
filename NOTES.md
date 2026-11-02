@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2228 -- the song is continuous from the title into the prologue: forest zones are entered WITHOUT a reload (Nov 2 2026)
+*"The music starts on the first screen, then once you select the prologue it stops and starts again once loaded -- it should be continuous."* Picking a
+level was `location.replace` -- a new page, and iOS starts no sound on a new page before a touch. Now: when the start menu will show, the module-scope
+`arenaStage()` is DEFERRED (`STAGEDEFER`, startGate's own skip test read early) and `startGate().then` builds it before `init`. A pick of a forest
+zone in the loaded world (`?w=forge&zone=<z>` with `ZONEWANT[z]`: garden, rope, wall, prove, temple, dometemple, ship, dragon, tlayout, cell, snow)
+swaps the URL with `replaceState`, sets that zone's `want` by hand (each mirrors its own module-scope `?zone=` line -- a NEW forest zone must add
+itself to ZONEWANT or it falls back to the reload), and continues the boot behind the card. `MUSIC.carry` keeps the menu's song wanted until
+`rig.ready`; the garden then wants the same key, so it never restarts. Anything else (another world, a level id, another hero) still reloads.
+Measured headless (webdriver spoofed so the menu shows): menu up -> Prologue tapped -> the boot finished in the SAME page (a window marker
+survived), `?w=forge&zone=garden`, GARDEN built, 0 page errors. Shipped unverified on the phone.
+
 ## m2227 -- THE TITLE LOOP: waterfalls that read as water; the lightning dragon recoloured to the KORAJIN palette (and sized right) (Nov 2 2026)
 *"Can we make the waterfall particles more realistic, actually look like water... that dragon isn't on brand -- tint or hue-shift him to the
 game's colours, the reds and greens, so he doesn't stand out so much on the hero screen."*
