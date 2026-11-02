@@ -17,6 +17,40 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2236 -- REELS: the cut-scene player, and the PROLOGUE INTRO (his narration, the crawl, ten shots, the Hollow) (Nov 2 2026)
+His brief: *"a test prologue narration -- cinematic camera pans and zooms of the world, then finally Grumbo sleeping in the hammock; text going up
+the screen, almost like the Star Wars prologue, with this guy narrating; the music playing under it."* CINEMA.md's REELS, built.
+- **THE PLAYER (`REELS` between `SC_REELS` markers; `reelPlay` / `reelStep` / `reelCam`, just above `stepCam`).** A reel is a table: `shots`
+  (eye/at pairs eased a -> b, or an `orbit`; `rel: 'bed'` = relative to `GARDEN.hammock.bed`, `rel2: 'hollow'` = look relative to the Hollow),
+  `lines` (the crawl, timed), `fx` keyframe tracks (`dim` sun/sky, `fog` toward `fogDark`, `hollow` alpha, `pulse`, `shade` the passing
+  shadow), `voice`, `end`, `back`. The LOOK is interpolated as yaw + pitch (`rlTurn`), never as a vector lerp: the turn to the horizon is ~150
+  degrees and a lerp through it passes through zero. `reelStep` runs at the top of `frameBody` (before he moves) and zeroes both sticks and
+  every key: his control is held. `reelCam` runs at the END of `stepCam`, after the play camera has been worked out, so the way back (`back`
+  2.2 s) eases into exactly the lens he gets. While it plays `body.reeling` hides every other HUD piece; a tap skips (straight into the back).
+- **THE INTRO** plays the first time the Garden is built (`mel.reel.intro` in localStorage, set on end or skip); **TOOLS > PROLOGUE > REPLAY
+  INTRO** plays it again. If the audio context is not running yet (a direct URL load, no touch so far) it opens on **TAP TO BEGIN** -- iOS
+  starts no sound before a touch, and the reel is nothing without the voice. The voice is fetched once and decoded per context (the context is
+  rebuilt after the app has been away), played through `SFX.bus`, and the reel's clock IS the audio clock while it plays (`ctx.currentTime`),
+  so the text cannot drift from the voice on a slow phone. `MUSIC.duck = 1` under the voice, released over the way back.
+- **THE TIMINGS, RE-MEASURED** (`silencedetect=noise=-38dB:d=0.3`): all 17 segments agree with the brief to the hundredth, including the split
+  of the last two (43.91-44.66 "His name...", 45.19-46.37 "was Grumbo."). File 46.39 s.
+- **THE CRAWL**: Permanent Marker (the start button's lettering), cream with the dark ink shadow, on a CSS plane tilted 24 degrees. Each
+  line's centre crosses the anchor (58% down the frame) at the middle of its speech (`reelYs` keyframes, linear between them); "The Hollow."
+  and "was Grumbo." are BIG and HELD from their first word. The line being spoken is full; the rest are at .28; a mask fades the top and bottom.
+- **THE SHOTS** (garden-local; `top` 120): clouds (wide, pushing in from 335 m out) / drift (lateral past far_w and the pagoda isle) / falls
+  (stream_l's fall off the west rim, from outside, below the lip) / shrine / sweep (an orbit, r 78 at +48) / shadow (light dims to .62, a dark
+  band crosses) / horizon (turns ~150 degrees from the garden to the edge of the world) / stir / hollow (fov 36 -> 30, a pulse on "The Hollow.")
+  / descend (from +46 down to the hammock) / grumbo (over the bed, from above -- portrait's horizontal field is only ~20 degrees, so a side-on
+  close-up was a wall of cloth). Spread over heights from -10 to +48.
+- **THE HOLLOW**: ONE shader quad at (-200, 60, 1450) local, 520 m, `fog: false`, billboarded, a slow dark swirl with a ragged edge and a dim
+  purple rim; removed at the end. First placement (520, 30, 1380) sat behind far_se and under the big title; moved off that line and framed
+  so it sits above the text.
+- **RENDERED** headless (Chromium/SwiftShader, 390 x 780) at 3, 10, 13, 18, 22, 30, 35, 40, 45 s; looked at, and fixed: the crawl showed too
+  many lines at once; the falls shot was all rock; the Hollow read as a soft purple glow (now dark) and was hidden; the hammock was too close.
+  The reel ending was checked too: `REEL.on` null, `body.reeling` gone, the play HUD back.
+- **OPEN**: Grumbo is not in the hammock yet (the garden worker's build) -- the last shot frames the bed, and his first stick push after the
+  reel is theirs. No skip-hold (one tap skips; an accidental tap loses the intro, but REPLAY INTRO is there). **Shipped unverified.**
+
 ## m2235 -- THE GARDEN: the lotus, and a meditation that breathes (Nov 2 2026)
 
 *"A better lotus pose, and an idle form of meditation, so when he's floating there's a little movement -- it just looks better."* (via main) The
