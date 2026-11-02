@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- a wall run up a face has a HEIGHT BUDGET from his speed (Nov 2 2026)
+*"He can run almost indefinitely up a wall -- he can run up an entire temple. It needs a limit so you run up, then jump over to the other
+wall."* Each face he catches gets a climb budget `WRUN.climbBase + climbPerV x his speed in`, capped at `climbCap` (2 + .45 v, cap 6.5 m:
+a walk-in ~3.3 m, a run ~5.2, a sprint ~6). It is set on the FIRST catch of a face and KEPT across re-catches of the same face (the re-catch
+from the air used to grant a fresh climb every time -- the endless run); a catch on a DIFFERENT face (normal off by > ~45 deg: a wall-to-wall
+jump) gets a fresh budget from where he is, so chimney climbs between two walls still go up; landing (`integrate`'s grounded branch) clears it.
+In the last `climbEase` (.8 m) his upward speed eases to 0 (min(v, left x 4)) and the run turns to the perch / slide on its own. `climbCap` 0
+= no limit. Live on WRUN. Shipped unverified.
+
 ## m2169 -- THE GARDEN: living veins on the trees; the Jinra heart, hero pass 3 (it lights the summit; organic crystal; trails; the beat) (Nov 2 2026)
 His: *"the green spirals around the trees -- particle effects so it looks more magical and mystical, not just random lines"*; and for the heart:
 *"stand out against the bright morning sky -- a darker basin, glow that carries further, light thrown on the pagoda and the trees; the crystal more
