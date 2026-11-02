@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2205 -- THE TITLE LOOP: a village (three homes), festival lantern strings, koi in his stream (Nov 2 2026)
+*"Keep going, make it amazing."*
+- **VILLAGE HOMES** (`kind: 'house'`, three on the mid terraces): a stone plinth, plaster walls in a dark timber frame, PAPER WINDOWS lit
+  from inside (warm, haloed), a door, an engawa porch, a curved tile roof stretched to the house's depth, a red paper lantern by the door, and a
+  bush and a fern at its corners.
+- **FESTIVAL LANTERN STRINGS** (`kind: 'lstring'`): a sagging rope between two poles with paper lanterns (red / amber / gold) hung on cords, each
+  with a rim at top and bottom and its own halo. One runs behind him on his isle at head height; one crosses the right-hand terrace.
+- **KOI** (`LOOPBG.koi`): six fish (an ellipsoid and a tail; orange, white, gold) in his Jinra stream, swimming up and down it, weaving and
+  turning at its ends. One InstancedMesh, three per stream copy, moved in the ground band's frame.
+- Measured, headless: 101 draw calls, ~741k tris drawn. Render: night at 1400x620 (moon, the lantern string, the tunnel, crystals, the lit castle).
+- **Shipped unverified.**
+
 ## m2204 -- THE GARDEN: painted flowers; lanterns of glowing rice paper (Nov 2 2026)
 
 Continuing the unpainted-object audit (m2197). FLOWERS: the plant system's vertex-coloured flower bushes (73k tris) -> 255 clumps of three crossed
