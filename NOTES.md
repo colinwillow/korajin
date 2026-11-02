@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2268 -- CRAFT PASS 2 (the Garden): falls leave the lip in an ARC (Nov 2 2026)
+
+CRAFT.md rule 2 (his: "water coming out of a hill as a straight line"). `gdnFall`'s outward offset was `out x sqrt(min(1, drop/6)) + 2.5 v` -- on a
+150-240 m fall that is ~4 m out over the whole drop: a vertical line. A LONG fall (H > 12, blended in over 12-32 m) is now ballistic: out =
+`out x .95 x sqrt(drop)` (a parabola: ~15-20 m out by the bottom), widening x(1 + 2.3 v), with a slow side-to-side waver, on 30 rows. Short
+cascades (into the garden's pools, H < 12) keep the old aimed shape -- they land where their splash and pools are. Renders craft2_farlow /
+craft2_edgefall: every far and edge fall curves out and away from its isle. STILL OPEN: the main island's edge-fall top grazes the cliff where
+the rock bulges out below the lip (a notch or a lip stone is next), and the CLIFF VINES hang dead straight (rule 1, next build). **Shipped unverified.**
+
 ## m2267 -- CRAFT PASS 1 (the Garden): lit undersides; the rusty sword is a pickup (Nov 2 2026)
 
 His m2260 intro screenshots (images/feedback/m2260): the far isles' undersides "nearly black and flat"; the bell black (fixed m2266). CRAFT.md
