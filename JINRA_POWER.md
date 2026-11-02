@@ -32,3 +32,20 @@ are money (`COIN`), never green -- so the two stay: **gold buys, Jinra powers.**
 - [ ] A lifter column with the free-float feel (air pose / meditation) and a launcher.
 - [ ] Too little Jinra reads clearly (the stream sputters, the thing shivers and settles back).
 - [ ] His sign-off on his phone.
+
+## JINRA SHRINES = checkpoints, healing, and why he comes back (his, Nov 2 2026)
+*"Little ports that you light up, like checkpoints: once you beat a place a mechanical port glows with Jinra, unlocks, opens and shines -- when you
+die you come back through it. Maybe the Korajin are the eternal guardians, powered through the source. Fall off a floating island and you appear
+back up top in one of these Jinra baths. Sitting in it and floating up recharges your health. Health is the blue stuff: collect it and your bar
+grows. Gold still buys things."*
+- **Shrine (a Jinra bath / port):** dormant until you clear its area; then a short unlock (gears turn, it opens, light pours out) = a CHECKPOINT.
+- **Falling off an island / into fire / dying:** you re-form at the last lit shrine (a mint shimmer, the body gathering from light). Lore: the
+  Korajin are the eternal guardians -- the Jinra carries them back. (The alternative he also likes, for some places: fall and SKYDIVE to a real
+  ground below.)
+- **Health = Jinra:** the meter is your life as well as your power; collecting Jinra fills it, and lasting upgrades grow its cap. Sitting in a
+  shrine's beam (the meditation float, already built) refills it.
+- **Gold buys; Jinra lives.**
+
+## JINRA BLINK -- a teleport strike (his idea)
+A swipe that BLINKS him 2-3 m forward (or the swiped way) and lands him mid-flip, mid-slash, in a burst of mint light -- like the vanish moves in
+Smash (Sheik's Vanish, Zelda's Farore's Wind). Costs a little Jinra. Also a dodge and a gap-closer.
