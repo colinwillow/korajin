@@ -6092,7 +6092,7 @@ const SSRX = [['WATER', /water|stream|pond|river|lake|creek|spring_pool|pool/], 
 const SSPLANT = /bush|fern|shrub|reed|flower|plant|foliage|hedge|leaf|leaves|ivy|vine|bamboo|tallgrass|grass_?card|weed|crop|veg/;
 function ssWalk(o, fn) { if (!o.visible || o === rig.root) return; fn(o); const c = o.children; for (let i = 0; i < c.length; i++) ssWalk(c[i], fn); }
 function stepSurfList() { const S = STEPSURF, p = player, L = S.list, PL = S.plants; L.length = 0; PL.length = 0;
-  ssWalk(scene, o => { if (!o.isMesh || o.isSkinnedMesh || !o.geometry) return; const g = o.geometry;
+  ssWalk(scene, o => { if (!o.isMesh || o.isSkinnedMesh || !o.geometry || o.userData.noSurf) return; const g = o.geometry;     // m2214: `noSurf` -- scenery nobody walks on (far isles, clouds, sky)
     const nm = ((o.name || '') + ' ' + ((o.material && o.material.name) || '') + ' ' + ((o.parent && o.parent.name) || '')).toLowerCase(), plant = (o.userData.surf || (o.material && o.material.userData && o.material.userData.surf)) === 'plant' || SSPLANT.test(nm);
     if (o.isInstancedMesh) { let C = o.userData._ssPos;     // m2213: instance positions worked out ONCE per mesh (they are static scenery) -- not every rebuild
       if (!C || C.n !== o.count) { if (!g.boundingSphere) g.computeBoundingSphere(); const r0 = g.boundingSphere.radius, n = Math.min(o.count, 6000), a = new Float32Array(n * 4); o.updateMatrixWorld();
@@ -6103,6 +6103,23 @@ function stepSurfList() { const S = STEPSURF, p = player, L = S.list, PL = S.pla
     if (!g.boundingSphere) g.computeBoundingSphere(); _ssS.copy(g.boundingSphere).applyMatrix4(o.matrixWorld);
     if (Math.hypot(_ssS.center.x - p.pos.x, _ssS.center.z - p.pos.z) - _ssS.radius > S.near) return;
     if (plant) PL.push({ x: _ssS.center.x, y: _ssS.center.y, z: _ssS.center.z, r: _ssS.radius }); else L.push(o); }); }
+// m2214 a mesh's triangles binned on a 2 m x/z grid in WORLD space, built once (and again only if the mesh moves -- after two moves it is treated as
+// moving and goes back to the Raycaster). Under 2,000 triangles a mesh is not worth a grid. `ssGrid(o, 1)` builds without the size test (a warm).
+const SSGRID = new WeakMap(); function ssGrid(o, force) { const g = o.geometry, P = g && g.attributes.position; if (!P) return null; const n = (g.index ? g.index.count : P.count) / 3; if (!force && n < 2000) return null;
+  const e = o.matrixWorld.elements, sig = g.uuid + '|' + e[0].toFixed(4) + e[2].toFixed(4) + e[5].toFixed(4) + '|' + e[12].toFixed(3) + e[13].toFixed(3) + e[14].toFixed(3); let G = SSGRID.get(o);
+  if (G) { if (G.sig === sig) return G; if (++G.moves > 2) { G.sig = sig; G.dead = 1; } if (G.dead) return null; }
+  const W = new Float32Array(P.count * 3), V = new THREE.Vector3(); for (let i = 0; i < P.count; i++) { V.fromBufferAttribute(P, i).applyMatrix4(o.matrixWorld); W[i * 3] = V.x; W[i * 3 + 1] = V.y; W[i * 3 + 2] = V.z; }
+  const I = g.index ? g.index.array : null, cells = new Map(), cs = 2, vi = k => I ? I[k] : k;
+  for (let t = 0; t < n; t++) { const a = vi(t * 3) * 3, b = vi(t * 3 + 1) * 3, c = vi(t * 3 + 2) * 3, x0 = Math.floor(Math.min(W[a], W[b], W[c]) / cs), x1 = Math.floor(Math.max(W[a], W[b], W[c]) / cs), z0 = Math.floor(Math.min(W[a + 2], W[b + 2], W[c + 2]) / cs), z1 = Math.floor(Math.max(W[a + 2], W[b + 2], W[c + 2]) / cs);
+    if ((x1 - x0) * (z1 - z0) > 400) continue;     /* a wall seen edge-on spans no ground worth reading; a 40 m sheet is skipped rather than binned 400 times */
+    for (let gx = x0; gx <= x1; gx++) for (let gz = z0; gz <= z1; gz++) { const k = gx * 100003 + gz; let L = cells.get(k); if (!L) cells.set(k, L = []); L.push(t); } }
+  G = { sig, W, I, cells, cs, moves: G ? G.moves : 0 }; SSGRID.set(o, G); return G; }
+function ssDown(o, G, x, z, yTop, yBot, out) { const L = G.cells.get(Math.floor(x / G.cs) * 100003 + Math.floor(z / G.cs)); if (!L) return; const W = G.W, I = G.I, gr = o.geometry.groups;
+  for (const t of L) { const ia = I ? I[t * 3] : t * 3, ib = I ? I[t * 3 + 1] : t * 3 + 1, ic = I ? I[t * 3 + 2] : t * 3 + 2, a = ia * 3, b = ib * 3, c = ic * 3;
+    const v0x = W[b] - W[a], v0z = W[b + 2] - W[a + 2], v1x = W[c] - W[a], v1z = W[c + 2] - W[a + 2], v2x = x - W[a], v2z = z - W[a + 2], den = v0x * v1z - v1x * v0z; if (Math.abs(den) < 1e-9) continue;
+    const u = (v2x * v1z - v1x * v2z) / den, v = (v0x * v2z - v2x * v0z) / den; if (u < 0 || v < 0 || u + v > 1) continue; const y = W[a + 1] + u * (W[b + 1] - W[a + 1]) + v * (W[c + 1] - W[a + 1]); if (y > yTop || y < yBot) continue;
+    let mi = 0; if (gr && gr.length) for (const q of gr) if (t * 3 >= q.start && t * 3 < q.start + q.count) { mi = q.materialIndex || 0; break; }
+    out.push({ object: o, distance: yTop - y, face: { a: ia, b: ib, c: ic, materialIndex: mi } }); } }
 function ssTexAvg(t) { const S = STEPSURF; if (S.tex.has(t)) return S.tex.get(t); let c = null;
   try { const im = t.image; if (im && (im.width || im.videoWidth) && !t.isCompressedTexture && !t.isDataTexture) { const cv = document.createElement('canvas'); cv.width = cv.height = 8; const x = cv.getContext('2d', { willReadFrequently: true }); x.drawImage(im, 0, 0, 8, 8); const d = x.getImageData(0, 0, 8, 8).data; let r = 0, gg = 0, b = 0; for (let i = 0; i < d.length; i += 4) { r += d[i]; gg += d[i + 1]; b += d[i + 2]; } const k = 1 / (64 * 255); c = new THREE.Color(r * k, gg * k, b * k); } } catch (e) { c = null; }
   S.tex.set(t, c); return c; }
@@ -6125,7 +6142,12 @@ function ssClassify(h) { const o = h.object, m = Array.isArray(o.material) ? o.m
 function stepSurf(x, z, u) { const S = STEPSURF, p = player; if (!S.on || !rig.root || Math.hypot(x - p.pos.x, z - p.pos.z) > .6) return '';
   const now = performance.now() / 1000; if (now - S.t > S.every && (now - S.t > 6 || Math.hypot(p.pos.x - (S.lx || 1e9), p.pos.z - (S.lz || 1e9)) > 2.5)) { S.t = now; S.lx = p.pos.x; S.lz = p.pos.z; stepSurfList(); }     // m2213: rebuilt only after he has moved 2.5 m (or every 6 s)
   for (const P of S.plants) if (Math.hypot(P.x - p.pos.x, P.z - p.pos.z) < P.r * S.plantR + .25 && p.pos.y < P.y + P.r && p.pos.y > P.y - P.r - .5) { snd('rustle', { g: .3 + .35 * (u || 0), r: .9 + Math.random() * .2, x, z }); break; }
-  _ssO.set(p.pos.x, p.pos.y + .6, p.pos.z); _ssRay.set(_ssO, _ssD); _ssRay.far = 1.5; const hits = _ssRay.intersectObjects(S.list, false);
+  // m2214 THE HITCH (his: "choppy, like every ~30 frames it waits"): this ray went through every triangle of every mesh whose bounds reached him -- in
+  // the Garden 64 meshes, 490k triangles, 67 ms on a desktop, on EVERY FOOTFALL. A big static mesh now answers from a cached grid of its triangles
+  // over x/z (`ssGrid`): a straight-down ray reads the few under his feet. Small, instanced and moving meshes still take the Raycaster.
+  _ssO.set(p.pos.x, p.pos.y + .6, p.pos.z); _ssRay.set(_ssO, _ssD); _ssRay.far = 1.5; const hits = [], slow = [];
+  for (const o of S.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, p.pos.x, p.pos.z, _ssO.y, _ssO.y - 1.5, hits); else slow.push(o); }
+  if (slow.length) hits.push(..._ssRay.intersectObjects(slow, false)); hits.sort((q, w) => q.distance - w.distance);
   let k = ''; for (const h of hits) { k = ssClassify(h); if (k !== 'PLANT') break; k = ''; }
   const b = k && SFX.buf['foot_' + k]; if (!b || b.filter(Boolean).length < 2) k = ''; S.last = k; return k; }
 function footSnd(sp, top, x, z, left, gk, rk) {
@@ -17292,6 +17314,20 @@ function gdnBridges(g) { const Z = GARDEN, Y0 = Z.top, M = gdnMats(), posts = []
   if (sill.length) { const o = new THREE.Mesh(mergeGeometries(sill.map(strip)), M.stone); o.position.y = Y0; o.receiveShadow = true; o.name = 'garden_bridge_sills'; g.add(o); }
   boxGrid(); }
 // the stage hook runs at MODULE scope, above TROCKS / TEMPLEGLSL_N (templeRock's numbers): a read there is a blank page, so the build waits a tick
+// m2214 THE GARDEN WARM (his: "choppy, like every ~30 frames it waits -- we need a warm-up so everything is loaded before you play"). Awaited by the
+// boot before KJ_READY: wait for the Garden to be built and its textures to have LOADED (TextureLoader is async; a texture still loading when the
+// boot's own warm ran uploads on its first draw, mid-play), push every one to the GPU, compile the Garden with everything shown, and build the
+// footstep grids (`ssGrid`) for its big walkable meshes, so the first step on each is not a build. Capped at `GARDEN.warmCap` s.
+async function gdnWarm() { const Z = GARDEN, t0 = performance.now(), cap = (Z.warmCap || 6) * 1000; while (!(Z.on && Z.on.built) && performance.now() - t0 < cap) await new Promise(r => setTimeout(r, 100));
+  if (!(Z.on && Z.on.built)) return; const g = Z.on.g, tex = new Set(), hid = [];
+  g.traverse(o => { if (!o.visible) { hid.push(o); o.visible = true; } const ms = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
+    for (const m of ms) { for (const k of ['map', 'emissiveMap', 'normalMap', 'roughnessMap', 'alphaMap']) if (m[k] && m[k].isTexture) tex.add(m[k]); if (m.uniforms) for (const u of Object.values(m.uniforms)) if (u && u.value && u.value.isTexture) tex.add(u.value); } });
+  const ready = x => { const im = x.image; return !!(x.isDataTexture || x.isCompressedTexture || (im && (im.width || im.naturalWidth || im.videoWidth))); };
+  while ([...tex].some(x => !ready(x)) && performance.now() - t0 < cap) await new Promise(r => setTimeout(r, 120));
+  let up = 0; for (const x of tex) if (ready(x)) { try { renderer.initTexture(x); up++; } catch (e) {} }
+  try { renderer.compile(g, camera); } catch (e) {} for (const o of hid) o.visible = false;
+  let grids = 0; g.traverse(o => { if (o.isMesh && !o.isInstancedMesh && !o.isSkinnedMesh && !o.userData.noSurf && o.geometry && ssGrid(o)) grids++; });
+  Z.warm = { ms: Math.round(performance.now() - t0), tex: tex.size, up, grids }; }
 function gdnStage(g) { const Z = GARDEN; Z.on = { g, t: 0, tris: 0, safe: null, built: 0 }; ARENA.youAt = Z.spawn.at.slice();
   setTimeout(() => { try { gdnMake(g); } catch (e) { note('GARDEN THREW ' + e.message); console.error(e); } }, 0); }
 // LIGHT IN THE AIR: one Points draw for the lamps' halos and the drifting Jinra motes (sizes in metres: `uPx` from the drawing buffer each frame)
@@ -17341,7 +17377,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   // triplanar) and its painted fern cards
   const rocksG = [], fernG = [], flowG = [], RS = gdnRnd(Z.seed + 77);
   try { const M = gdnMats(), cards = []; const take = L => (L || []).filter(r => { const s = r.s || 1, y = r.y - Z.top;
-      if (r.kind === 'stones') { const n = 2 + Math.floor(RS() * 3); for (let k = 0; k < n; k++) { const a = RS() * 6.3, d = k ? .2 + RS() * .35 : 0, rr = (k ? .1 + RS() * .1 : .17 + RS() * .1) * s; rocksG.push(gdnBlob(RS, r.x + Math.cos(a) * d * s, y + rr * .3, r.z + Math.sin(a) * d * s, rr, .6, 1)); } return false; }
+      if (r.kind === 'stones') { const n = 2 + Math.floor(RS() * 3); for (let k = 0; k < n; k++) { const a = RS() * 6.3, d = k ? .2 + RS() * .35 : 0, rr = (k ? .1 + RS() * .1 : .17 + RS() * .1) * s; rocksG.push(gdnBlob(RS, r.x + Math.cos(a) * d * s, y + rr * .3, r.z + Math.sin(a) * d * s, rr, .6, -.75)); }     /* m2214: 7 x 4 -- these were 141k triangles of pebbles */ return false; }
       if (r.kind === 'boulder') { rocksG.push(gdnBlob(RS, r.x, y + .25 * s, r.z, .7 * s, .7, 1)); return false; }
       if (r.kind === 'fern') { for (const q of dmtCards(RS, r.x, y + .38 * s, r.z, 1.0 * s, .8 * s, 3, 0)) fernG.push(q); return false; }
       if (r.kind === 'flowers') { for (const q of dmtCards(RS, r.x, y + .27 * s, r.z, .8 * s, .6 * s, 3, 0)) flowG.push(q); return false; }     /* m2198: his painted flowers, not the vertex-coloured bush */
@@ -17371,11 +17407,15 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   { const L0 = Math.hypot(_sunOff.x, _sunOff.y, _sunOff.z) || 20; _sunOff.copy(Z.U.uSun.value).multiplyScalar(L0); sun.position.copy(_sunOff); sun.color.setHex(0xffe6bc); sun.intensity = 2.9;
     hemi.color.setHex(0xd4e8ff); hemi.groundColor.setHex(0x7f9a6a); hemi.intensity = 1.35; Z.light = { sun: 2.9, sunC: 0xffe6bc, hemi: 1.35, hemiC: 0xd4e8ff, fog: S.fog }; }
   camera.far = Math.max(camera.far, 2600); camera.updateProjectionMatrix();
+  // m2214 never walked on: the far isles, the sky, clouds, shafts, glows, the heart's light -- out of the footstep ray's list (they spanned the sky,
+  // so every footfall tested every one of their triangles)
+  g.traverse(o => { if (!o.isMesh && !o.isPoints) return; const m = o.material, far = (() => { for (let q = o; q; q = q.parent) if (q === Z.pieces.far) return 1; return 0; })();
+    if (far || o.isPoints || (m && (m.isShaderMaterial || (m.transparent && m.depthWrite === false) || m.blending === THREE.AdditiveBlending)) || /sky|cards|shaft|glow|heart|cloud/.test(o.name || '')) o.userData.noSurf = 1; });
   Object.assign(Z.on, { G, built: 1, tris: 1 }); try { bldTris(Z.on, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); }
   const [sx, sz] = Z.spawn.at, [fx, fz] = Z.spawn.face;
   const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
-  setTimeout(() => { try { if (window.mel) mel.GARDEN = GARDEN; } catch (e) {} }, 0); }
+  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
 function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O.t += dt; Z.U.uTime.value = O.t;
   if (!O.tris) { O.tris = 1; try { bldTris(O, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } }
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
@@ -69312,6 +69352,7 @@ async function init() {
   try { await Promise.race([Promise.all(Object.values(FORGED.fetching || {})), new Promise(r => setTimeout(r, BOOTWARM.wait))]); } catch (err) {}
   await warmBoot();
   bootWarm();
+  try { if (GARDEN.on) await gdnWarm(); } catch (err) { console.warn('[garden warm]', err); }     // m2214: the Garden's late textures, programs and footstep grids, before TAP TO START
   rig.ready = true;
   setBoot('go', 1); try { window.KJ_READY = 1; dispatchEvent(new Event('kjready')); } catch (e) {}     // m2213: loaded AND warmed -- now TAP TO START
   PERF.bootMs = performance.now();                  // m416: the boot, from the page's start to the card going
