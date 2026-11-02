@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2176 -- THE GARDEN: thinning the draws (measured, not guessed) (Nov 2 2026)
+His earlier: *"we're probably going to have to weed or merge things, thin things out."* MEASURED first (headless, the game's own camera at the
+spawn, `renderer.info` with the shadow map on and off): ~204 draws = ~159 main pass + ~45 shadow pass; the widest cluster shot ~290. Where they went:
+the moored SHIP was 70 meshes (43 casting); the far islands 7 textured meshes; and each island piece is one draw per MATERIAL (~30 each, x4).
+- **THE SHIP**: `gdnMergeStatic(root, keep)` bakes every static mesh into the root's frame and merges per material + shadow flag (the cloth flags
+  and the wing canvas are kept apart, they animate; `shipModel` now hands out its `wings`): 70 -> 45 (most of its pieces have a material of their
+  own). Only its big pieces (>= 2,500 verts) cast, and only while he is within 45 m of it. The rusty sword's six pieces merge too.
+- **THE FAR ISLANDS**: ONE vertex-coloured mesh (was seven textured): rock, lawn, leaves, bark, roof, trim, lacquer as their average colours --
+  in LINEAR values (vertex colours are not sRGB-decoded; the first try came out chalk-white).
+- **SHADOWS BY DISTANCE**: every island piece's casting meshes and the plant cells cast only while he is within 40 m (`GARDEN.shadowFar`).
+- **DETAIL BY DISTANCE**: the small-detail materials of each piece (lamps, jade, crystals, rope, clay, pebbles, cards, veins, banners...) hide past
+  60 m from the camera (`GARDEN.detailFar`) -- a big win only from far off (each piece's detail spans its whole island).
+- **WHAT IS LEFT**: the main pass is distinct materials x islands. The next real cut is consolidating materials (a shared texture atlas for the
+  stone/wood/gold/lacquer family, or vertex-coloured trims) -- a bigger job; flagged, not started. Shipped unverified.
+
 ## m2172 -- the vertical wall run: hips back 40 deg, chest upright (Nov 2 2026)
 *"The vertical wall run is basically just the running animation -- his hips need to rotate back maybe 45 degrees, the torso still straight up and
 down, the legs bent."* The RUN look (m1836, TOOLS > UP LOOK: RUN) pitches the whole drawn body back `upHip` about his right axis, pivot at the feet,
