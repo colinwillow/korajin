@@ -1,3 +1,4 @@
-start_draw_* -- Kenney "RPG Audio" (drawKnife1-3), CC0. https://kenney.nl/assets/rpg-audio
-tap_*, go_*  -- Kenney "Interface Sounds" (select_001/002, confirmation_001), CC0. https://kenney.nl/assets/interface-sounds
-Levelled only (start -4 dBFS peak, taps -12, go -10). No other processing.
+start_draw_* -- "RPG Sound Pack" (battle/sword-unsheathe*), CC0. https://opengameart.org/content/rpg-sound-pack
+tap_*        -- Kenney "Impact Sounds" (impactWood_light), CC0. https://kenney.nl/assets/impact-sounds
+go_*         -- Kenney "Impact Sounds" (impactBell_heavy), CC0.
+Trimmed and levelled only.

@@ -191,6 +191,8 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #splash img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; pointer-events: none; }
 #splash img.blur { filter: blur(22px) brightness(.4); transform: scale(1.12); display: none; }
 @media (min-aspect-ratio: 3/4) { #splash img.main { object-fit: contain; } #splash img.blur { display: block; } }
+#splash .kjtap.wait { opacity: .8; font-size: 19px; animation: kjpulse 1.4s ease-in-out infinite; } @keyframes kjpulse { 50% { opacity: .45; } }     /* m15XX */
+#splash .kjtap.zt { font-size: 18px; }
 #splash .kjtap { position: absolute; left: 0; right: 0; margin: 0 auto; width: max-content; bottom: calc(7% + env(safe-area-inset-bottom)); padding: 16px 48px 18px 50px;     /* m1319: centred by margin, not transform */
   /* m2008 (his: "the start button -- the rounded pill and the text don't match the title's aesthetic"): a torn RED BRUSH STROKE like the title's ink,
      the words in a dry hand-lettered brush face, cream like the title, with a dark ink offset. No pill, no neon. */
@@ -987,12 +989,20 @@ body.kit3 #wepRow text { font-size: 12px; }
   let kj = false; try { kj = localStorage.getItem('mel.game') === 'korajin'; } catch (e) {}
   const bn = (document.getElementById('buildN') || {}).textContent || '', src = (kj ? 'images/korajin/korajin_title_01.webp' : 'images/splash_zap_n_clancy.webp') + '?b=' + bn;
   const [blur, img] = el.querySelectorAll('img'), glow = el.querySelector('.glow'); blur.src = src; img.src = src; el.querySelector('.bn').textContent = bn;
-  if (kj) { img.alt = 'Korajin'; glow.style.display = 'none'; const t = document.createElement('div'); t.className = 'kjtap'; t.textContent = 'TAP TO START'; el.appendChild(t); }
+  // m15XX (his: "it says TAP TO START, then I tap 25 times -- it shouldn't say push to start if it's not ready; out of service it should just be loading
+  // longer"): the label reads LOADING nn% (the boot card's own bar, under the splash) until the game says it is ready (`KJ_READY`, the 'kjready'
+  // event: the start menu is up, or the world finished loading and warming), and a tap before that does nothing. 90 s with no word = let him in.
+  const t = document.createElement('div'); t.className = 'kjtap' + (kj ? '' : ' zt'); el.appendChild(t);
+  if (kj) { img.alt = 'Korajin'; glow.style.display = 'none'; }
+  const bar = () => { const b = document.querySelector('#boot .bar i'); return b ? parseFloat(b.style.width) || 0 : 0; };
+  const label = () => { if (window.KJ_READY) { t.textContent = 'TAP TO START'; t.classList.remove('wait'); if (!kj) t.style.display = 'none'; return; } t.classList.add('wait'); t.textContent = 'LOADING ' + Math.round(bar()) + '%'; };
+  label(); const tick = setInterval(() => { label(); if (window.KJ_READY) clearInterval(tick); }, 250);
+  addEventListener('kjready', label); setTimeout(() => { if (!window.KJ_READY) { window.KJ_READY = 1; label(); } }, 90000);
   const IW = 941, IH = 1672, B = [225, 1495, 715, 1615];   // the painted button, in the art's own pixels
   function fit() { const W = el.clientWidth, H = el.clientHeight, cover = W / H < .75, k = cover ? Math.max(W / IW, H / IH) : Math.min(W / IW, H / IH), ox = (W - IW * k) / 2, oy = (H - IH * k) / 2;
     Object.assign(glow.style, { left: ox + B[0] * k + 'px', top: oy + B[1] * k + 'px', width: (B[2] - B[0]) * k + 'px', height: (B[3] - B[1]) * k + 'px' }); }
   if (!kj) { fit(); addEventListener('resize', fit); }
-  el.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); el.classList.add('gone'); setTimeout(() => el.remove(), 400); });
+  el.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); if (!window.KJ_READY) return; el.classList.add('gone'); setTimeout(() => el.remove(), 400); });     // m15XX: not before it is ready
 })();
 </script>
 <div class="chip" id="wep"><span id="wepName">UNARMED</span><small id="wepHint">tap left pad</small></div>
@@ -6075,8 +6085,11 @@ function ssWalk(o, fn) { if (!o.visible || o === rig.root) return; fn(o); const 
 function stepSurfList() { const S = STEPSURF, p = player, L = S.list, PL = S.plants; L.length = 0; PL.length = 0;
   ssWalk(scene, o => { if (!o.isMesh || o.isSkinnedMesh || !o.geometry) return; const g = o.geometry;
     const nm = ((o.name || '') + ' ' + ((o.material && o.material.name) || '') + ' ' + ((o.parent && o.parent.name) || '')).toLowerCase(), plant = (o.userData.surf || (o.material && o.material.userData && o.material.userData.surf)) === 'plant' || SSPLANT.test(nm);
-    if (o.isInstancedMesh) { if (!g.boundingSphere) g.computeBoundingSphere(); const r0 = g.boundingSphere.radius, n = Math.min(o.count, 4000); let any = 0;
-      for (let i = 0; i < n; i++) { o.getMatrixAt(i, _ssM); _ssM.premultiply(o.matrixWorld); _ssP.setFromMatrixPosition(_ssM); const r = r0 * _ssM.getMaxScaleOnAxis(); const dd = Math.hypot(_ssP.x - p.pos.x, _ssP.z - p.pos.z) - r; if (dd > S.near) continue; any = 1; if (plant) PL.push({ x: _ssP.x, y: _ssP.y, z: _ssP.z, r }); }
+    if (o.isInstancedMesh) { let C = o.userData._ssPos;     // m15XX: instance positions worked out ONCE per mesh (they are static scenery) -- not every rebuild
+      if (!C || C.n !== o.count) { if (!g.boundingSphere) g.computeBoundingSphere(); const r0 = g.boundingSphere.radius, n = Math.min(o.count, 6000), a = new Float32Array(n * 4); o.updateMatrixWorld();
+        for (let i = 0; i < n; i++) { o.getMatrixAt(i, _ssM); _ssM.premultiply(o.matrixWorld); _ssP.setFromMatrixPosition(_ssM); a[i * 4] = _ssP.x; a[i * 4 + 1] = _ssP.y; a[i * 4 + 2] = _ssP.z; a[i * 4 + 3] = r0 * _ssM.getMaxScaleOnAxis(); }
+        C = o.userData._ssPos = { n: o.count, a }; }
+      const a = C.a; let any = 0; for (let i = 0; i < a.length; i += 4) { if (Math.abs(a[i] - p.pos.x) > S.near + a[i + 3] || Math.abs(a[i + 2] - p.pos.z) > S.near + a[i + 3]) continue; any = 1; if (!plant) break; PL.push({ x: a[i], y: a[i + 1], z: a[i + 2], r: a[i + 3] }); }
       if (any && !plant) L.push(o); return; }
     if (!g.boundingSphere) g.computeBoundingSphere(); _ssS.copy(g.boundingSphere).applyMatrix4(o.matrixWorld);
     if (Math.hypot(_ssS.center.x - p.pos.x, _ssS.center.z - p.pos.z) - _ssS.radius > S.near) return;
@@ -6101,7 +6114,7 @@ function ssClassify(h) { const o = h.object, m = Array.isArray(o.material) ? o.m
   if (hu >= 170 && hu < 200 && sa > .4 && li > .45) return 'WATER';
   return 'STONE'; }
 function stepSurf(x, z, u) { const S = STEPSURF, p = player; if (!S.on || !rig.root || Math.hypot(x - p.pos.x, z - p.pos.z) > .6) return '';
-  const now = performance.now() / 1000; if (now - S.t > S.every) { S.t = now; stepSurfList(); }
+  const now = performance.now() / 1000; if (now - S.t > S.every && (now - S.t > 6 || Math.hypot(p.pos.x - (S.lx || 1e9), p.pos.z - (S.lz || 1e9)) > 2.5)) { S.t = now; S.lx = p.pos.x; S.lz = p.pos.z; stepSurfList(); }     // m15XX: rebuilt only after he has moved 2.5 m (or every 6 s)
   for (const P of S.plants) if (Math.hypot(P.x - p.pos.x, P.z - p.pos.z) < P.r * S.plantR + .25 && p.pos.y < P.y + P.r && p.pos.y > P.y - P.r - .5) { snd('rustle', { g: .3 + .35 * (u || 0), r: .9 + Math.random() * .2, x, z }); break; }
   _ssO.set(p.pos.x, p.pos.y + .6, p.pos.z); _ssRay.set(_ssO, _ssD); _ssRay.far = 1.5; const hits = _ssRay.intersectObjects(S.list, false);
   let k = ''; for (const h of hits) { k = ssClassify(h); if (k !== 'PLANT') break; k = ''; }
@@ -6341,10 +6354,10 @@ function sfxWake(ev) {
 // names the zone's track; TOOLS > MUSIC turns it off (kept). `duck` (0..1) is the hook for cut-scenes and dialogue.
 const MUSIC = { on: 1, vol: .24, fadeIn: 4, fadeOut: 2.5, duck: 0, duckK: .4, tracks: { garden: 'audio/music/forgotten_garden.mp3' }, menu: 'garden',     /* m2192: the menu's track key (one song so far -- the SAME key as the garden's, so going from the menu into the garden does not restart it) */ el: null, src: null, g: null, ctx: null, trk: '', k: 0, retry: 0 };
 try { if (localStorage.getItem('mel.music') === '0') MUSIC.on = 0; } catch (e) {}
-function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden'; const st = document.getElementById('start'); return st && st.classList.contains('on') ? MUSIC.menu : ''; }     // m2192: the start menu plays `MUSIC.menu` too (his: 'when you push the start button the song should start playing')
+function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden'; if (document.getElementById('splash')) return MUSIC.menu;     /* m15XX: the theme starts on the title screen -- the first touch there, even while it loads (iOS plays nothing before a touch) */ const st = document.getElementById('start'); return st && st.classList.contains('on') ? MUSIC.menu : ''; }     // m2192: the start menu plays `MUSIC.menu` too (his: 'when you push the start button the song should start playing')
 // m2192: THE START TAP draws a blade. The splash is a classic script; its tap is also the touch that builds the audio context (`sfxWake`, capture),
 // so the files are decoding as this runs -- it retries for a moment until one is ready.
-(function () { const sp = document.getElementById('splash'); if (!sp) return; sp.addEventListener('click', () => { let n = 0; const go = () => { const b = SFX.buf.ui_start; if (b && b.some(Boolean)) snd('ui_start', { g: .8 }); else if (n++ < 12) setTimeout(go, 60); }; go(); }); })();
+(function () { const sp = document.getElementById('splash'); if (!sp) return; sp.addEventListener('click', () => { if (!window.KJ_READY) return; let n = 0; const go = () => { const b = SFX.buf.ui_start; if (b && b.some(Boolean)) snd('ui_start', { g: .8 }); else if (n++ < 12) setTimeout(go, 60); }; go(); }); })();
 function musicCtx() { const M = MUSIC, c = SFX.ctx; if (!c || !SFX.bus) return; try { if (M.el) M.el.pause(); } catch (e) {}
   const el = new Audio(); el.loop = true; el.preload = 'auto'; el.setAttribute('playsinline', ''); M.trk = musicWant() || 'garden'; el.src = A(M.tracks[M.trk]);
   M.g = c.createGain(); M.g.gain.value = 0; M.src = null; try { M.src = c.createMediaElementSource(el); M.src.connect(M.g); M.g.connect(SFX.bus); } catch (e) { M.src = null; }
@@ -69291,7 +69304,7 @@ async function init() {
   await warmBoot();
   bootWarm();
   rig.ready = true;
-  setBoot('go', 1);
+  setBoot('go', 1); try { window.KJ_READY = 1; dispatchEvent(new Event('kjready')); } catch (e) {}     // m15XX: loaded AND warmed -- now TAP TO START
   PERF.bootMs = performance.now();                  // m416: the boot, from the page's start to the card going
   setTimeout(() => bootCard.classList.add('gone'), 260);
 }
@@ -70596,7 +70609,7 @@ function startGate() {
       card('images/splash_zap_n_clancy.webp', 'ZAP &amp; CLANCY', zapClancy);
       add('div', 'bld', 'BUILD ' + BUILD); };
     korajin();     // m1848: KORAJIN's own repo -- straight to its page, no game picker (Zap & Clancy stay in colinwillow/zap)
-    el.classList.add('on');
+    el.classList.add('on'); try { window.KJ_READY = 1; dispatchEvent(new Event('kjready')); } catch (e) {}     // m15XX: the menu is up -- the splash may say TAP TO START
   });
 }
 startGate().then(init);

@@ -17,6 +17,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the title screen waits until the game is READY; the theme starts there; sword / wood / bell UI sounds (Nov 2 2026)
+*"It says TAP TO START, then later after the menu it says TAP TO START and I tap like 25 times -- it shouldn't say push to start if it's not ready;
+out of service it should just be loading longer."* The splash took its tap at once while the module was still loading. Now its label reads
+LOADING nn% (the boot card's bar, underneath it) and pulses, a tap before ready does NOTHING, and TAP TO START appears on `KJ_READY` / the
+'kjready' event -- set when the start menu is up, and at the end of the boot AFTER `warmBoot` + `bootWarm` (shaders compiled, textures uploaded)
+-- so the tap is the moment the world is warm. 90 s with no word lets him in anyway (a boot that threw).
+*"The theme music should start at the start screen."* `musicWant` plays `MUSIC.menu` while the splash is up: the first touch on it (even while it
+loads; iOS plays nothing before a touch) starts the song. *"Still a weird Game Boy plonk -- should be ethereal, Japanese, a sword."* `ui_start`
+= a real sword unsheathe (RPG Sound Pack, CC0), `ui_tap` (menu buttons) = a light wood knock, `ui_go` (entering a world) = a temple bell
+(Kenney Impact Sounds, CC0). His picks from the audition page (artifact 552d1Dy4oXa8urTCVKoLb1) will replace these when he sends codes.
+Also: the footstep surface list (`stepSurfList`) caches each InstancedMesh's instance positions once and rebuilds only after he has moved 2.5 m.
+Shipped unverified.
+
 ## m2212 -- THE TITLE LOOP: dry-stone retaining walls on the terraces, a stair to the temple, foam on every fall (Nov 2 2026)
 From his garden screenshots (the terraced stone walls):
 - **RETAINING WALLS**: along each mid terrace's FRONT rim (the rim points facing the camera), a dry-stone wall segment between neighbouring rim
