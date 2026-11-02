@@ -17,6 +17,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2217 -- THE TITLE LOOP: stone statues, a water wheel, Grumbo's domed home (his reference sheets, pass A) (Nov 2 2026)
+*"The red hollows... the building, the lighting, the aqua water wheel, the creek, the floating lanterns... mythical statues... the red building, the
+floating castle... the toad guy... hills and valleys and streams... perspective, lots of cool stuff going on."* (+ his Olmec / spider / dome-home sheets)
+- **STONE STATUES** (`kind: 'glb'` with `clips` + `pose` + `stone`): his OLMEC on its own floating rock above the terraces (9 m, with a fall)
+  and his GUARDIAN as a 34 m colossus on a far isle. Each is the enemy's STONE TWIN (STATUES.md): posed ONCE on the Forge-baked library clip
+  (`flex`), emissive zeroed. **The forged files are CLIPS ONLY**: the first try loaded `forged/stone_olmec.glb` as the model and drew nothing.
+  The mesh is `models/creatures/stone_*.glb` and the poses come from `forged/` (the glb kind now takes both).
+  Skinned models are `skeletonClone`d per band copy.
+- **THE WATER WHEEL** (`kind: 'wheel'`): his Red Hollows wheel in weathered teal on the right terrace, half in a stone pit, turned by a wooden
+  FLUME pouring white water onto its top (with spray). It is a real model turning every frame (rims, 8 spokes, 16 paddles), three copies on
+  the band.
+- **GRUMBO'S DOMED HOME** (`kind: 'domehome'`, his poster / the Red Hollows): cream domes in his speckled `hollows_cream` plaster (a new
+  texture class), two chimney towers with brass caps, a big BRASS WHEEL on the front, portholes and a doorway lit warm, three red CHEVRON
+  banners, a timber frame with hanging lanterns, and pots of plants. It sits on its own floating isle (with a fall), high in the far layer.
+- **SIGHTLINES**: on a phone the frame is a narrow column, and whatever stands in the middle of the ground layer hides everything behind it.
+  The ground willow, bamboo and cherry are gone from his isle and the tunnels are shorter, so the statues, the wheel and the home show through.
+  The set pieces sit ABOVE the mid layer's skyline (the Olmec's rock at y 9, the home's at 18, the guardian's at 16); low in the middle
+  distance they were hidden behind his own isle.
+- Measured, headless: ~109 draw calls. Renders: phone at four moments (the Olmec, the wheel, the guardian, the home). **Shipped unverified.**
+
 ## m2215 -- the start menu is a WHEEL (centre = selected, a tink per step, tap the lit one to enter); Korajin's own loading lines (Nov 2 2026)
 *"Scroll, and whatever is in the middle of the screen is selected; it should click / tink as the highlight moves; an advance noise; the top one or two
 always look selected."* `korajin()` marks #start `.kjwheel`: on scroll (one rAF) the button nearest the screen's middle line gets `.sel` (lit, jade
