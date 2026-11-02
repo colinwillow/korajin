@@ -17336,6 +17336,45 @@ async function gdnWarm() { const Z = GARDEN, t0 = performance.now(), cap = (Z.wa
   try { renderer.compile(g, camera); } catch (e) {} for (const o of hid) o.visible = false;
   let grids = 0; g.traverse(o => { if (o.isMesh && !o.isInstancedMesh && !o.isSkinnedMesh && !o.userData.noSurf && o.geometry && ssGrid(o)) grids++; });
   Z.warm = { ms: Math.round(performance.now() - t0), tex: tex.size, up, grids }; }
+// m2231 SIDES ARE SOLID (his: "a bunch of areas where I can walk through the side of colliders that should be solid -- most things work from the top
+// but sides are very often a problem"). A raised surface built only as walkable TRIANGLES (a terrace drum, a raised bed, a tier, a ledge) is a floor
+// from above and nothing from the side: `groundAt` looks one step up, so a top higher than that is simply not seen and he walks in under it. This
+// samples the top surface on a 0.5 m grid over the whole cluster; wherever a cell stands more than `rise` over a neighbour that is real ground, and
+// no box already blocks it at knee height, the cell becomes a WALL from below the low side to just under the top. Cells merge into runs along x.
+// Space you can walk UNDER (2 m clear) is left open. `Z.walls` reports what it did.
+function gdnWalls() { const Z = GARDEN, t0 = performance.now(), cs = .5, R = Z.wallR || 78, n = Math.round(R * 2 / cs) + 1, H = new Float32Array(n * n), Y0 = Z.top, NB = [];
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) H[j * n + i] = groundAt(-R + i * cs, -R + j * cs, Y0 + 40, 0);
+  const boxAt = (x, z, y) => { for (const b of boxesNear(x - .01, x + .01, z - .01, z + .01, NB)) { if (y < b.miny || y > b.maxy) continue; if (b.box8) { const dx = x - b.cx, dz = z - b.cz, lx = dx * b.cs + dz * b.sn, lz = -dx * b.sn + dz * b.cs; if (Math.abs(lx) <= b.hx && Math.abs(lz) <= b.hz) return true; } else if (x >= b.minx && x <= b.maxx && z >= b.minz && z <= b.maxz) return true; } return false; };
+  const W = new Map(), rise = Z.wallRise || .45;
+  // (2) what is DRAWN solid with nothing under it: every triangle of the solid-looking materials (stone, rock, cliff, wood, lacquer, metal, jade, bark,
+  // the pots, the plain painted props) rasterised onto the grid by its x/z bounds; a cell holds the lowest bottom and highest top of whatever stands
+  // in it. Solid that starts near the ground (< `knee` over it) and rises past a step is a wall -- a roof, an arch or a canopy starts high and is not.
+  { const M = Z.M || gdnMats(), V = new THREE.Vector3(), solid = new Set([M.cliff, M.rock, M.stone, M.white, M.cyclo, M.wood, M.lacquer, M.bronze, M.gold, M.jade, M.dark, M.bark, M.pot, M.pebble, M.clay, GDNV.plain].filter(Boolean)), maps = new Set([...solid].map(m => m.map).filter(Boolean));
+    const lo2 = new Float32Array(n * n).fill(1e9), hi2 = new Float32Array(n * n).fill(-1e9), knee = Z.wallKnee || .9;
+    Z.on.g.traverse(o => { if (!o.isMesh || o.isInstancedMesh || o.userData.noSurf || !o.geometry || !o.material || Array.isArray(o.material)) return; const m = o.material; if (!solid.has(m) && !(m.map && maps.has(m.map))) return;
+      for (let q = o; q; q = q.parent) if (q === (Z.shipM && Z.shipM.g)) return; o.updateMatrixWorld(true); const P = o.geometry.attributes.position, I = o.geometry.index, nt = (I ? I.count : P.count) / 3, w = new Float32Array(9);
+      for (let tr = 0; tr < nt; tr++) { for (let k = 0; k < 3; k++) { V.fromBufferAttribute(P, I ? I.getX(tr * 3 + k) : tr * 3 + k).applyMatrix4(o.matrixWorld); w[k * 3] = V.x; w[k * 3 + 1] = V.y; w[k * 3 + 2] = V.z; }
+        const y0 = Math.min(w[1], w[4], w[7]), y1 = Math.max(w[1], w[4], w[7]), ux = w[3] - w[0], uy = w[4] - w[1], uz = w[5] - w[2], vx = w[6] - w[0], vy = w[7] - w[1], vz = w[8] - w[2], nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+        if (Math.abs(ny) > .6 * Math.hypot(nx, ny, nz)) continue;     /* a SIDE face (steep), not a top, a slope or a roof */
+        const i0 = Math.max(0, Math.round((Math.min(w[0], w[3], w[6]) + R) / cs)), i1 = Math.min(n - 1, Math.round((Math.max(w[0], w[3], w[6]) + R) / cs)), j0 = Math.max(0, Math.round((Math.min(w[2], w[5], w[8]) + R) / cs)), j1 = Math.min(n - 1, Math.round((Math.max(w[2], w[5], w[8]) + R) / cs));
+        if ((i1 - i0 + 1) * (j1 - j0 + 1) > 1600) continue; const ax = w[0], az = w[2], bx = w[3], bz = w[5], cx = w[6], cz = w[8], den = (bz - cz) * (ax - cx) + (cx - bx) * (az - cz);
+        const sd = (px, pz, x1, z1, x2, z2) => { const dx = x2 - x1, dz = z2 - z1, l2 = dx * dx + dz * dz, u = l2 ? Math.max(0, Math.min(1, ((px - x1) * dx + (pz - z1) * dz) / l2)) : 0; return Math.hypot(px - x1 - dx * u, pz - z1 - dz * u); };
+        for (let jj = j0; jj <= j1; jj++) for (let ii = i0; ii <= i1; ii++) { const px = -R + ii * cs, pz = -R + jj * cs; let inside = false;     /* the cell's centre on the triangle's real footprint (or within .3 m of an edge) -- not its bounding box */
+          if (Math.abs(den) > 1e-6) { const l1 = ((bz - cz) * (px - cx) + (cx - bx) * (pz - cz)) / den, l2 = ((cz - az) * (px - cx) + (ax - cx) * (pz - cz)) / den; inside = l1 >= 0 && l2 >= 0 && l1 + l2 <= 1; }
+          if (!inside && Math.min(sd(px, pz, ax, az, bx, bz), sd(px, pz, bx, bz, cx, cz), sd(px, pz, cx, cz, ax, az)) > .3) continue;
+          const c = jj * n + ii, h = H[c]; if (h < Y0 - 30 || y0 > h + knee || y1 < h + rise) continue; if (y1 > hi2[c]) hi2[c] = y1; lo2[c] = h; } } });     /* each triangle qualifies ALONE: a flat stone at the ground and a column top over it are not, together, a wall */
+    const shipB = Z.shipM ? new THREE.Box3().setFromObject(Z.shipM.g).expandByScalar(1) : null;     /* the ship keeps its own deck colliders */
+    for (let j = 1; j < n - 1; j++) for (let i = 1; i < n - 1; i++) { const c = j * n + i, h = H[c]; if (h < Y0 - 30 || hi2[c] < -1e8) continue; const x = -R + i * cs, z = -R + j * cs; if (shipB && x > shipB.min.x && x < shipB.max.x && z > shipB.min.z && z < shipB.max.z) continue;
+      if (boxAt(x, z, h + .6)) continue; W.set(c, [h - .5, Math.min(hi2[c], h + 12)]); } }
+  const nDrawn = W.size;
+  for (let j = 1; j < n - 1; j++) for (let i = 1; i < n - 1; i++) { const hb = H[j * n + i]; if (hb < Y0 - 30) continue; const x = -R + i * cs, z = -R + j * cs; let lo = 1e9;
+    for (const [di, dj] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const ha = H[(j + dj) * n + i + di]; if (ha < Y0 - 30 || hb - ha <= rise) continue; if (boxAt(x, z, ha + .6) || boxAt(x - di * cs * .45, z - dj * cs * .45, ha + .6)) continue; lo = Math.min(lo, ha); }
+    if (lo > 1e8) continue; const under = groundAt(x, z, hb - .5, 0); if (under > lo - .3 && hb - under > 2) continue;     /* a deck you walk under */
+    if (!W.has(j * n + i)) W.set(j * n + i, [lo - .5, hb - .02]); }
+  let boxes = 0; for (let j = 0; j < n; j++) { let i = 0; while (i < n) { const c = W.get(j * n + i); if (!c) { i++; continue; } let k = i + 1, lo = c[0], hi = c[1];
+      while (k < n) { const d = W.get(j * n + k); if (!d || Math.abs(d[1] - c[1]) > .15) break; lo = Math.min(lo, d[0]); hi = Math.max(hi, d[1]); k++; }
+      const wb = { minx: -R + i * cs - cs / 2, maxx: -R + (k - 1) * cs + cs / 2, miny: lo, maxy: hi, minz: -R + j * cs - cs / 2, maxz: -R + j * cs + cs / 2, gdnWall: 1 }; BOXES.push(wb); (Z.wallBoxes = Z.wallBoxes || []).push(wb); boxes++; i = k; } }
+  boxGrid(); Z.walls = { cells: W.size, drawn: nDrawn, boxes, ms: Math.round(performance.now() - t0) }; }
 function gdnStage(g) { const Z = GARDEN; Z.on = { g, t: 0, tris: 0, safe: null, built: 0 }; ARENA.youAt = Z.spawn.at.slice();
   setTimeout(() => { try { gdnMake(g); } catch (e) { note('GARDEN THREW ' + e.message); console.error(e); } }, 0); }
 // LIGHT IN THE AIR: one Points draw for the lamps' halos and the drifting Jinra motes (sizes in metres: `uPx` from the drawing buffer each frame)
@@ -17419,7 +17458,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   // so every footfall tested every one of their triangles)
   g.traverse(o => { if (!o.isMesh && !o.isPoints) return; const m = o.material, far = (() => { for (let q = o; q; q = q.parent) if (q === Z.pieces.far) return 1; return 0; })();
     if (far || o.isPoints || (m && (m.isShaderMaterial || (m.transparent && m.depthWrite === false) || m.blending === THREE.AdditiveBlending)) || /sky|cards|shaft|glow|heart|cloud/.test(o.name || '')) o.userData.noSurf = 1; });
-  Object.assign(Z.on, { G, built: 1, tris: 1 }); try { bldTris(Z.on, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } try { if (Z.sillMake) Z.sillMake(); } catch (e) { note('GARDEN SILLS ' + e.message); }
+  Object.assign(Z.on, { G, built: 1, tris: 1 }); try { bldTris(Z.on, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } try { if (Z.sillMake) Z.sillMake(); } catch (e) { note('GARDEN SILLS ' + e.message); } try { gdnWalls(); } catch (e) { note('GARDEN WALLS ' + e.message); }
   const [sx, sz] = Z.spawn.at, [fx, fz] = Z.spawn.face;
   const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
