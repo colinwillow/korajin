@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2201 -- THE TITLE LOOP: the rope bridge SAGS under him and he rides it; banners, snow, cliffs and stone textured (Nov 2 2026)
+*"The rope bridge is a cool effect but it doesn't bend at all, and when he walks over it he's floating above it... he needs to go down with the
+bridge... and the flag isn't textured, a lot of the rocks and mountains aren't textured."*
+- **THE BRIDGE IS LIVE** (`loopDeck`, `loopBridgeStep`). The deck was static geometry with a fixed .3 m sag while he stayed at y = 0, so he
+  floated over the middle. Now the deck is a taut rope with POINT LOADS: him (.32 m) and the mammoth (.5 m). The dip under a load is
+  linear to each anchor, as a loaded string's is, and the loads add. Each frame it computes where he and the mammoth are on the deck (u)
+  and sets the 16 PLANKS (one InstancedMesh, 3 copies, textured wood), the two ROPE rails and their hangers (one LineSegments), AND HIS HEIGHT
+  and the mammoth's (and his shadow) to the deck under them. At the ends the deck meets the ground at y .04, so the step on and off is flush.
+  The static posts stay in the band. Checked headless at scroll 20 (him mid-bridge, the mammoth on it behind him): both stand on the planks.
+- **BANNERS ARE HIS PAINTED BANNER ART** (`LOOPBG.banners`: garden_banner_red, dome_banner, svk_banner, ice_banner -> one 2048x1024 atlas).
+  Each banner picks one with `art`; the cloth keeps its sway.
+- **SNOW and CLIFF texture classes** (now 10 maps): every white face (snow caps, peaks) gets `snow_snow`; the mountain range and the snow peaks'
+  rock get `hollows_cliff` (14 m tile, x6 in the range band); built stone (castle, toro, flagstones) is `stone_blocks` now (it was the pale
+  dome_stone). Boulders and bank stones take the mossy rock map. Luminance detail as before, so the painted hue stays.
+- Measured, headless: 93 draw calls. Open: the far range is still pale under the haze (its texture shows weakly at 1 km); his look.
+  **Shipped unverified.**
+
 ## m2200 -- THE TITLE LOOP pass 7: a STORM season with lightning, fairies, villagers at work, a river isle (Nov 2 2026)
 *"Magic, thunder, storms... some village people doing stuff... a creek, a river, stuff passing... fairies."*
 - **THE STORM** joins the cycle after the rain (spring, summer, rain, STORM, autumn, winter; 6 x 35 s). The sky goes dark and grey, the light
