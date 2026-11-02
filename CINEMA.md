@@ -16,7 +16,7 @@
 - **Blender for:** a one-off story painting or an opening title -- the "the sorceress turns the village to stone" prologue, maybe -- where the
   look is something the engine cannot do. Even those can be in-engine first and replaced later.
 
-## The system (proposal): REELS
+## The system: REELS (BUILT m2236 -- `REELS` in index.html, `SC_REELS`; the first one is the prologue intro)
 A **reel** is a list of shots the lens plays while his control is held (a tap skips); one small player, every cutscene is data:
 | shot | what the lens does |
 |---|---|
