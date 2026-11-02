@@ -3,3 +3,4 @@ tap_*        -- Kenney "Impact Sounds" (impactWood_light), CC0. https://kenney.n
 go_*         -- Kenney "Impact Sounds" (impactBell_heavy), CC0.
 Trimmed and levelled only.
 tick_*       -- "RPG Sound Pack" (inventory/metal-small1, 2), CC0. https://opengameart.org/content/rpg-sound-pack
+start_tap    -- same as start_draw_1 (sword-unsheathe), levelled to -8 dBFS for the splash's direct <audio> play.

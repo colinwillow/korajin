@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the first start tap has its sound (a plain <audio> in the tap); no second splash after the menu (Nov 2 2026)
+*"There's still no sound when you click start on the first screen... it shows the same picture twice, I tap start through it twice."* The m2192 start
+sound went through WebAudio: the splash's tap is also the touch that BIRTHS the context, so the files were still decoding and the sound was lost.
+Now the splash plays `audio/ui/start_tap.mp3` (the sword unsheathe, -8 dBFS) with a plain <audio> inside its own click -- iOS allows that, no
+context needed. The module's retry listener is gone (no double). And the splash is skipped when this tab has already been through the start menu
+(`sessionStorage['mel.started']`, the same key that skips the menu): picking a world reloads the page, and that showed the same poster again.
+Shipped unverified.
+
 ## m2223 -- THE TITLE LOOP: the AKATANI canyon isle (as the renamed Red Hollows really looks) (Nov 2 2026)
 From looking at Akatani itself (`?w=home`, restored): a floating canyon mesa (`kind: 'canyon'`, far band, the nearest far piece at 300 m).
 - Banded RED cliffs (four reds in 1.6 m strata, the cliff map) under a PINK-SAND top; a BLUE river winding across it that falls off the end in white

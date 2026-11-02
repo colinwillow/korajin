@@ -991,6 +991,7 @@ body.kit3 #wepRow text { font-size: 12px; }
 (function () {
   const el = document.getElementById('splash'); if (!el) return;
   if (navigator.webdriver || /[?&]splash=0\b/.test(location.search)) { el.remove(); return; }
+  try { if (sessionStorage.getItem('mel.started')) { el.remove(); return; } } catch (e) {}     // m15XX (his: 'it shows the same picture twice, I tap start twice'): picked from the menu = this tab has started -> no second splash
   // m1110: the LAST GAME PLAYED's art (`mel.game`, written by the title picker): Korajin's poster has no painted button, so it gets a tag
   let kj = false; try { kj = localStorage.getItem('mel.game') === 'korajin'; } catch (e) {}
   const bn = (document.getElementById('buildN') || {}).textContent || '', src = (kj ? 'images/korajin/korajin_title_01.webp' : 'images/splash_zap_n_clancy.webp') + '?b=' + bn;
@@ -1008,7 +1009,10 @@ body.kit3 #wepRow text { font-size: 12px; }
   function fit() { const W = el.clientWidth, H = el.clientHeight, cover = W / H < .75, k = cover ? Math.max(W / IW, H / IH) : Math.min(W / IW, H / IH), ox = (W - IW * k) / 2, oy = (H - IH * k) / 2;
     Object.assign(glow.style, { left: ox + B[0] * k + 'px', top: oy + B[1] * k + 'px', width: (B[2] - B[0]) * k + 'px', height: (B[3] - B[1]) * k + 'px' }); }
   if (!kj) { fit(); addEventListener('resize', fit); }
-  el.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); if (!window.KJ_READY) return; el.classList.add('gone'); setTimeout(() => el.remove(), 400); });     // m2213: not before it is ready
+  // m15XX (his: 'still no sound when you click start on the first screen'): played by a plain <audio> INSIDE the tap -- it does not wait for the
+  // game's WebAudio context to be born and its files decoded in that same touch (which is where the m2192 sound was lost)
+  const tapSnd = new Audio('audio/ui/start_tap.mp3?b=' + bn); tapSnd.preload = 'auto';
+  el.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); if (!window.KJ_READY) return; try { tapSnd.currentTime = 0; tapSnd.play().catch(() => {}); } catch (err) {} el.classList.add('gone'); setTimeout(() => el.remove(), 400); });     // m2213: not before it is ready
 })();
 </script>
 <div class="chip" id="wep"><span id="wepName">UNARMED</span><small id="wepHint">tap left pad</small></div>
@@ -6387,9 +6391,6 @@ function sfxWake(ev) {
 const MUSIC = { on: 1, vol: .24, fadeIn: 4, fadeOut: 2.5, duck: 0, duckK: .4, tracks: { garden: 'audio/music/forgotten_garden.mp3' }, menu: 'garden',     /* m2192: the menu's track key (one song so far -- the SAME key as the garden's, so going from the menu into the garden does not restart it) */ el: null, src: null, g: null, ctx: null, trk: '', k: 0, retry: 0 };
 try { if (localStorage.getItem('mel.music') === '0') MUSIC.on = 0; } catch (e) {}
 function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden'; if (document.getElementById('splash')) return MUSIC.menu;     /* m2213: the theme starts on the title screen -- the first touch there, even while it loads (iOS plays nothing before a touch) */ const st = document.getElementById('start'); return st && st.classList.contains('on') ? MUSIC.menu : ''; }     // m2192: the start menu plays `MUSIC.menu` too (his: 'when you push the start button the song should start playing')
-// m2192: THE START TAP draws a blade. The splash is a classic script; its tap is also the touch that builds the audio context (`sfxWake`, capture),
-// so the files are decoding as this runs -- it retries for a moment until one is ready.
-(function () { const sp = document.getElementById('splash'); if (!sp) return; sp.addEventListener('click', () => { if (!window.KJ_READY) return; let n = 0; const go = () => { const b = SFX.buf.ui_start; if (b && b.some(Boolean)) snd('ui_start', { g: .8 }); else if (n++ < 12) setTimeout(go, 60); }; go(); }); })();
 function musicCtx() { const M = MUSIC, c = SFX.ctx; if (!c || !SFX.bus) return; try { if (M.el) M.el.pause(); } catch (e) {}
   if (!M.tick) M.tick = setInterval(() => { try { musicStep(.05); } catch (e) {} }, 50);     // m2218: its OWN clock -- the game's frame loop does not run while the title / start menu is up, so the fade never rose and the song played at 0
   const el = new Audio(); el.loop = true; el.preload = 'auto'; el.setAttribute('playsinline', ''); M.trk = musicWant() || 'garden'; el.src = A(M.tracks[M.trk]);
