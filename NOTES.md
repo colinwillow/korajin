@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- footsteps: the leaf rustle only when a plant is really round his legs; a real grass step; green tiles are stone (Nov 2 2026)
+*"The grass sound plays on anything moderately grass-like -- tiles with some green running through them -- and it sounds like brushing past a bush,
+not walking on grass (dirt squish). Reserve it for when you literally touch a plant. Tile, stone, metal, wood, plank shouldn't get it."* Three causes:
+(1) the RUSTLE: a MERGED plant mesh (a bed of ferns as one mesh) was tested by its bounding sphere -- the size of the lawn -- so nearly every step on
+the lawn rustled. Merged plant meshes (radius > 1.2 m) are now binned once into .5 m cells of their leaf heights (`ssPlantCells`); `ssInPlant`
+rustles only where leaves reach above his shins (> .3 m up) in his cell or the 8 round it. Instanced plants: tufts under .25 m are lawn, not plants.
+(2) the GRASS STEP itself: Kenney's grass read as brushy -> congusbongus/swuing's grass footsteps (OGA, CC-BY 3.0 -- CREDIT, see CREDITS.txt),
+levelled softer (-11 dBFS). (3) the COLOUR fallback called anything greenish grass: now only a plainly green (hue 70-165, sat > .3), untextured
+surface; textured or muted green = STONE. Tags still win (the Garden tags its lawn grass, paving stone, planks wood). Shipped unverified.
+
 ## m2253 -- THE INTRO, TAKE 3 ("...an extraordinary talent for sleeping in"), on the house-style shots (Nov 2 2026)
 - `audio/voice/korajin_intro_03.mp3` (48.46 s) replaces take 2. Re-measured (silencedetect -38 dB, .25 s): main's segments agree; the long
   breaths split at their own pauses -- "high above the clouds," 1.53-3.14 / 3.46-6.51, "...among these skies," 18.52-22.81 / 23.10-26.54,
