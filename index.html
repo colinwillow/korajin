@@ -16468,8 +16468,12 @@ function gdnBlobDisc(x, z, r, lift, R, n, flow) { const P = [x, lift, z], U = [.
   for (let i = 1; i <= N; i++) I.push(0, i + 1, i);
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(U, 2)); g.setAttribute('aFl', new THREE.Float32BufferAttribute(FL, 1)); g.setIndex(I); g.computeVertexNormals(); return g; }
 // a WATERFALL from a lip point (x, y, z) pouring outward along (ux, uz): a curtain that arcs out and drops `H` m; aL = H
-function gdnFall(x, y, z, ux, uz, w, H, out) { const nh = 18, P = [], U = [], AL = [], I = [], sx = -uz, sz = ux;
-  for (let i = 0; i <= nh; i++) { const v = i / nh, dy = H * v * v * .2 + H * v * .8, o = (out || 1.6) * Math.sqrt(Math.min(1, dy / 6)) + v * 2.5, ww = w * (1 + v * .7);
+// m2268 CRAFT 2 (his: "water coming out of a hill as a straight line"; CRAFT.md rule 2): a LONG fall is BALLISTIC -- it leaves the lip with the stream's
+// own outward speed and drops in a parabola (out ~ sqrt(drop)), widening as it falls and wavering a little side to side, not a vertical sheet. A short
+// cascade (H < 12) keeps its old, aimed shape -- each lands in its pool.
+function gdnFall(x, y, z, ux, uz, w, H, out) { const nh = H > 12 ? 30 : 18, P = [], U = [], AL = [], I = [], sx = -uz, sz = ux, ph = x * .37 + z * .21;
+  for (let i = 0; i <= nh; i++) { const v = i / nh, dy = H * v * v * .2 + H * v * .8, bal = H > 12 ? Math.min(1, (H - 12) / 20) : 0;
+    const o0 = (out || 1.6) * Math.sqrt(Math.min(1, dy / 6)) + v * 2.5, o1 = (out || 1.6) * .95 * Math.sqrt(dy) + Math.sin(v * 5 + ph) * v * 1.2, o = o0 + (o1 - o0) * bal, ww = w * (1 + v * (.7 + bal * 1.6));
     for (let j = 0; j <= 1; j++) { const s = (j - .5) * ww; P.push(x + ux * o + sx * s, y - dy, z + uz * o + sz * s); U.push(j, dy); AL.push(H); } }
   for (let i = 0; i < nh; i++) { const a = i * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(U, 2)); g.setAttribute('aL', new THREE.Float32BufferAttribute(AL, 1)); g.setIndex(I); return g.toNonIndexed(); }
