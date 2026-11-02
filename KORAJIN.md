@@ -255,3 +255,11 @@ In the game: world `home` (KORAJIN > The Red Hollows), first pass m1113 -- see N
 
 A bow for Grumbo; the sword-and-bow enemy who switches; a Korajin place (the bronze town, the floating islands); a Korajin
 splash (drop the poster PNG in the repo and it goes on the title card).
+
+## THE VILLAIN'S NAME (his pick, Nov 2 2026): VORAKAI, THE HOLLOW EMPEROR (VOHR-ah-kai), Devourer of Jinra
+The sorcerer behind the Hollow. He means to drain every trace of Jinra until nothing can grow, move or float -- the world an empty monument to his
+rule. Unseen in the prologue (only his purple); his name first spoken late ("Vorakai has awakened"). Korajin (the lineage), Jinra (the living
+essence), the Hollow (his void and its creatures), Vorakai (who commands it).
+Turnaround sheet that came with it: images/concepts/characters/stone_guardian/ (front, back, sides) -- a giant stone warrior in gold-banded armour,
+an oni mask, white mane and beard, red banners, a GREEN Jinra core and veins. Open: is it Vorakai, or (as its green Jinra suggests) an ancient
+Jinra GUARDIAN -- the earth temple's boss, its veins turned purple by the Hollow and green again when restored?
