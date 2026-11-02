@@ -31,6 +31,17 @@ snow only where the zone already plays snow. No hit / a bank not decoded -> the 
 'plant' or named bush/fern/reed/flower/leaf...) are walked through: within reach a rustle plays on top. `mel` has no handle yet; STEPSURF.last is
 the last surface. Builders: tag a mesh `userData.surf = 'wood'` etc. when its name and colour would mislead. Shipped unverified.
 
+## m2180 -- THE GARDEN: the rope bridges leave through a NOTCH (Nov 2 2026)
+
+*"There needs to be a part of the floating island shaved away -- they start on the island and droop down below, but they cut through the edge
+of the ridge."* The deck left the lawn straight through the rounded moss LIP (big flattened blobs on the rim) and the ivy fringe. `gdnBridges` now
+records each bridge END and cuts, after the build: every moss / ivy / fern / clump / flower / vine triangle whose centre sits in a box round the end
+(.7 m behind the anchor to 4.2 m out, the deck's width + .7 m each side, 3 m under to 1.6 m over) -- and when a hit lands on a SMALL piece (a blob,
+a card: connected by shared vertices, under 7 x 9 x 7 m) the WHOLE piece goes, because half a blob is an open shell. A dressed stone SILL
+(`garden_bridge_sills`, one draw) is laid under the deck's first 2.2 m so the cut reads as made. 1,694 triangles cut over the four ends.
+Renders br1c / br1d: both ends of the garden-home bridge come out of a clean cut. Box moved: none. Still open: water push + footstep sounds, the
+Jinra float. **Shipped unverified.**
+
 ## m2179 -- THE GARDEN: the far floating islands rebuilt (Nov 2 2026)
 
 *"These background floating islands are crazy so so bad, they need so much attention."* They were `templeRock` lumps in ONE flat olive, lollipop
