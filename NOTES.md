@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2203 -- THE TITLE LOOP: NIGHT (moon, stars, moonlight) and a HALO on every light; a vignette (Nov 2 2026)
+*"Keep going, make it amazing."* (And from before: "the sun or the moon".)
+- **NIGHT joins the cycle** after winter (7 seasons, ~245 s round). The pano dims to blue (`sky` .16/.2/.42, desat .3), the light drops to .27, the
+  KEY turns to MOONLIGHT (`keyCol` 0x9db4ff; every season can now set its own key colour), and the fog goes deep blue. The sky lanterns and
+  fairies are at full, with some petals.
+- **THE MOON**: a painted canvas disc (craters, a cool glow round it) on the sky's frame, up and left of him, under the title on a phone.
+  **THE STARS**: 260 twinkling points above the horizon. Both fade with the season (`moon`, `stars`).
+- **A HALO ON EVERY LIGHT**: `glow()` now adds a soft additive card (the atlas' puff, the light's own colour, x.7) sized off the light's bounds,
+  to every lantern, toro window, castle window, dark-tower slit and crystal, and the volcano's crater. It is one draw per band (`MAT.halo`).
+  By day the halos are faint (`haloDay` .28); at night they are full. A crystal cluster gets ONE halo, not one per shard: six overlapping
+  additive halos blew out to white on the first try.
+- **A VIGNETTE** in the title shade (a radial darkening at the corners), for a more cinematic frame.
+- Measured, headless: 100 draw calls. Renders: night, phone and 1400x620.
+- **Shipped unverified.**
+
 ## m2202 -- THE TITLE LOOP: the mammoth stops cutting through the ground; his garden's vocabulary on his isle (Nov 2 2026)
 *"The mammoth was cutting through the ground when he was walking over the bridge... we need to keep doing detail passes; the title screen
 should be way more interesting than the gameplay"* -- with three screenshots of the prologue garden (blossom arches, a cobble path, stone-post
