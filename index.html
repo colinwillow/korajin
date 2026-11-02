@@ -1015,7 +1015,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
 // bar; Zap & Clancy keep the cyan card with their own name. Inline and before the module, so it is right on the first paint.
 (function () { const b = document.getElementById('boot'); if (!b) return; let kj = false; try { kj = localStorage.getItem('mel.game') === 'korajin'; } catch (e) {}
   if (kj) { b.dataset.g = 'kj'; document.getElementById('bootT').textContent = 'KORAJIN'; document.getElementById('bootSub').textContent = 'コラジン · the Jin wakes';
-    b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_01.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')'; } })();
+    b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_02.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')'; } })();     // m15XX: the LOADING card wears the second poster -- the splash keeps the first (his: 'we don't use the same image twice')
 </script>
 
 <div class="chip" id="build"><b id="buildN">m2257</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
@@ -64013,7 +64013,7 @@ function reelVoice(R) { const k = R.voice, c = SFX.ctx; if (!k) return null; con
 function reelUi(R) { let el = document.getElementById('reel'); if (el) el.remove(); el = document.createElement('div'); el.id = 'reel';
   const big = l => l[3] === 'big';
   el.innerHTML = '<div class="rl-bar t"></div><div class="rl-bar b"></div><div class="rl-shade"></div><div class="rl-crawl"><div class="rl-plane">' + R.lines.map((l, i) => '<p data-i="' + i + '"' + (big(l) ? ' class="big"' : '') + '>' + l[2] + '</p>').join('') + '<div class="rl-pad"></div></div></div>' +
-    '<div class="rl-black"></div><div class="rl-gate"><b>TAP TO BEGIN</b><small>sound on</small></div><div class="rl-skip">tap to skip</div>';
+    '<div class="rl-black"></div><div class="rl-gate"><b>TAP TO HEAR THE TALE</b><small>sound on</small></div><div class="rl-skip">tap to skip</div>';
   document.body.appendChild(el); document.body.classList.add('reeling');
   for (const t of ['pointerdown', 'touchstart']) el.addEventListener(t, e => e.stopPropagation(), { passive: true });
   el.addEventListener('click', e => { e.stopPropagation(); const O = REEL.on; if (!O) return; if (O.st === 'gate') { O.st = 'load'; O.loadT = 0; try { SFX.ctx && SFX.ctx.resume(); } catch (er) {} } else if (O.st === 'play') reelSkip(); });
@@ -64038,6 +64038,8 @@ function reelStep(dt) {
   if (R.zone === 'garden' && !GARDEN.on) { reelEnd(); return; }
   stick.L.x = stick.L.y = stick.R.x = stick.R.y = 0; stick.L.down = stick.R.down = 0; for (const k in keys) keys[k] = false;     // control is held
   if (O.st === 'wait') { if (!GARDEN.on || !GARDEN.on.built || !GARDEN.hammock.bed) return;
+    if (SFX.ctx && SFX.ctx.state !== 'running' && !O.tryT) { O.tryT = 1; try { SFX.ctx.resume().catch(() => {}); } catch (e) {} }     // m15XX: the sound was unlocked on the title screen -- try to wake it before asking for a tap
+    if (SFX.ctx && SFX.ctx.state !== 'running' && (O.waitR = (O.waitR || 0) + dt) < .6) return;
     O.st = SFX.ctx && SFX.ctx.state === 'running' ? 'load' : 'gate'; O.loadT = 0; O.el.dataset.st = O.st; }
   if (O.st === 'load') { O.loadT += dt; const b = reelVoice(R);
     if (b || O.loadT > 8 || (R.voice && REEL.raw[R.voice] === 'x')) { O.st = 'play'; O.el.dataset.st = 'play'; O.t = 0;

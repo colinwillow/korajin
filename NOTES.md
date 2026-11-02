@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- one start: the loading card wears the second poster; the intro's tap card only when sound is really locked (Nov 2 2026)
+*"The start screen kind of shows up twice -- the same image, and after selecting the prologue there's another start button. There should only be one
+start button; the other should be something other than start, with a different image."* (1) The boot / LOADING card used `korajin_title_01` -- the
+splash's own poster -- so the load looked like the title again; it wears `korajin_title_02` now. (2) The intro reel opens on a black "TAP TO
+BEGIN" card whenever `SFX.ctx` is not 'running'; the context unlocked at the title can be suspended by the time the garden is up, so it now tries
+`resume()` and waits .6 s before asking, and the card (when it must show, e.g. a direct link with no touch yet) says TAP TO HEAR THE TALE, not
+another "start". Shipped unverified. His looping videos for the title and the loading card: next, when he sends them.
+
 ## m2256 -- THE SHUTTERS: picking a level closes two ink panels over the menu before the heavy build, so nothing freezes in view (Nov 2 2026)
 *"After you choose the prologue the screen just freezes for like five seconds while it loads, and it doesn't say loading -- design fun, cool
 transitional states in and out of the menus, so it doesn't freeze the graphic; that's what the loading screen is for."* The in-place entry (m2228)
