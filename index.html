@@ -154,6 +154,12 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #start.on { display: flex; }
 #start { background-size: cover; background-position: center top; }
 #start .kjgap { height: min(40vh, 300px); flex: none; }
+/* m2188: THE TITLE LOOP -- the parallax garden behind the KORAJIN page (LOOPBG); the shade keeps the buttons readable under his feet */
+#start .loopbg, #start .loopshade { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+#start .loopbg canvas { width: 100%; height: 100%; display: block; }
+#start .loopshade { background: linear-gradient(#07080c00 0%, #07080c00 48%, #07080c8c 56%, #07080cd8 70%, #07080cf0); }
+#start h1.loopt { margin: 1vh 0 0; font-size: 46px; text-shadow: 3px 3px 0 #c8242c, 0 0 18px #0006; flex: none; }
+#start .loopgap { height: calc(50vh - 96px); flex: none; }
 #start .posters { display: flex; gap: 12px; width: min(94vw, 560px); margin: 8px 0 14px; }
 #start .poster { flex: 1; aspect-ratio: 941 / 1672; border-radius: 14px; border: 1px solid #ffffff30; background: #111 center / cover no-repeat;
   position: relative; overflow: hidden; padding: 0; cursor: pointer; box-shadow: 0 8px 26px #0008; color: #fff; }
@@ -954,7 +960,7 @@ body.kit3 #wepRow text { font-size: 12px; }
   <div class="sub" id="bootSub"></div>
   <div class="msg" id="bootMsg">loading</div>
   <div class="bar"><i id="bootBar"></i></div>
-  <div class="bld">BUILD <span id="bootBuild">m2187</span></div>
+  <div class="bld">BUILD <span id="bootBuild">m2188</span></div>
 </div>
 <script>
 // m1320: THE BOOT CARD SAYS WHICH GAME IS LOADING. *"It still says Weirdport and we're not even on that game. We could stylize the loading
@@ -966,7 +972,7 @@ body.kit3 #wepRow text { font-size: 12px; }
     b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_01.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')'; } })();
 </script>
 
-<div class="chip" id="build"><b id="buildN">m2187</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
+<div class="chip" id="build"><b id="buildN">m2188</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
 <div id="splash" aria-label="tap to start"><img class="blur" alt=""><img class="main" alt="Zap and Clancy"><div class="glow"></div><div class="bn"></div></div>
 <script>
 // m879 (STEER 02:22): THE SPLASH, before the module (so it shows on the first paint, while the boot carries on behind it). The image's
@@ -1076,7 +1082,7 @@ import { KTX2Loader } from './vendor/KTX2Loader.js';
 import { clone as skeletonClone } from './vendor/SkeletonUtils.js';
 import { mergeGeometries as _mergeGeos } from './vendor/BufferGeometryUtils.js';
 
-const BUILD = 'm2187';
+const BUILD = 'm2188';
 /* ASSETS:START */
 const ASSETS = {"textures/bronze.webp":"bdb5b1c0","textures/dome_banner.webp":"a45add1e","textures/dome_bark.webp":"fb0d16fd","textures/dome_clump.webp":"c1c1a6b8","textures/dome_cobble.webp":"1679cf07","textures/dome_cushion.webp":"d1923b5f","textures/dome_cyclo.webp":"9a8ec8c4","textures/dome_door.webp":"bfc435fd","textures/dome_gem.webp":"e5c4d5d9","textures/dome_gold.webp":"bcdc15e7","textures/dome_grass.webp":"5e209ee3","textures/dome_ivy.webp":"c89dc304","textures/dome_leaves.webp":"7177812d","textures/dome_moss.webp":"f826b682","textures/dome_relief.webp":"4d91574b","textures/dome_smooth.webp":"572d0f5e","textures/dome_stone.webp":"5a30ba9b","textures/dome_tuft.webp":"8141f322","textures/garden_awning.webp":"6193efc8","textures/garden_banner_red.webp":"2aebfd9b","textures/garden_banner_teal.webp":"7512c2b8","textures/garden_blossom.webp":"37b3de85","textures/garden_blossom_card.webp":"dfaa5d14","textures/garden_cloud.webp":"5f2ab760","textures/garden_cloud_bank.webp":"3cc1fc57","textures/garden_cloud_tower.webp":"1e274a7a","textures/garden_cloud_wisp.webp":"af500526","textures/garden_clouds.webp":"eb9e32ce","textures/garden_crystal.webp":"030910bf","textures/garden_fern.webp":"5a23e89a","textures/garden_flag.webp":"09cff172","textures/garden_flowers.webp":"d2e3124f","textures/garden_hammock.webp":"e3b1a6a0","textures/garden_jinra_crystal.webp":"a8d5591e","textures/garden_jinra_flame.webp":"dc513783","textures/garden_jinra_runes.webp":"767488c0","textures/garden_jinra_swirl.webp":"7c3e5772","textures/garden_lawn.webp":"082a0332","textures/garden_rock.webp":"b9df9367","textures/garden_roof.webp":"a9f5304b","textures/garden_sand.webp":"325c6a60","textures/garden_sky.webp":"2e0058a2","textures/garden_vine.webp":"00d060eb","textures/garden_water.webp":"da1edfcc","textures/garden_wood.webp":"6cd0d3d9","textures/hollows_cliff.webp":"afd42c1e","textures/hollows_cream.webp":"3e412dd3","textures/hollows_leaves.webp":"09c66339","textures/hollows_pebble.webp":"49006598","textures/hollows_rock.webp":"a6d17614","textures/hollows_sand.webp":"b977d1fc","textures/ice_banner.webp":"fe145f59","textures/ice_stone.webp":"c1889752","textures/jinra_adobe.webp":"c94ac8eb","textures/jinra_iron.webp":"d00651c1","textures/jinra_teal.webp":"4f1000b2","textures/marble.webp":"53c3d802","textures/red_cloth.webp":"82877ebd","textures/roof_tiles.webp":"bc0a6ac0","textures/sandstone.webp":"4d991588","textures/sky_sunset_01.webp":"db9645b5","textures/sky_sunset_02.webp":"385ca84e","textures/snow_bark.webp":"238a9743","textures/snow_ice.webp":"3b4e4405","textures/snow_needles.webp":"764b48a2","textures/snow_rock.webp":"71d1c6db","textures/snow_snow.webp":"fefa935b","textures/stone_blocks.webp":"419e5209","textures/svk_ashlar.webp":"6f6a247d","textures/svk_band.webp":"748c5ec4","textures/svk_banner.webp":"8e765d3a","textures/svk_glyph.webp":"1f852b02","textures/svk_hexstone.webp":"c917b8f9","textures/svk_jinstone.webp":"7473678d","textures/svk_jinwood.webp":"809b50d0","textures/svk_paving.webp":"bbc7d4d3","textures/svk_planks.webp":"e6d34955","textures/svk_shell.webp":"a822cea9","textures/svk_stone.webp":"367cb102","textures/svk_thatch.webp":"8f36bcdd","textures/svk_timber.webp":"e4c792ee","textures/temple_banner.webp":"f356ed38","textures/temple_bark.webp":"0b407ebe","textures/temple_carpet.webp":"9b3a2df9","textures/temple_frond.webp":"c4e424d9","textures/temple_glyph.webp":"2ff2a87e","textures/temple_gold.webp":"63c94d47","textures/temple_jade.webp":"338e5694","textures/temple_lacquer.webp":"d469819f","textures/temple_paving.webp":"baa24e2f","textures/temple_planks.webp":"046e23cf","textures/temple_rock.webp":"67d14316","textures/temple_rope.webp":"75b11f94","textures/temple_sky_dawn.webp":"459fafc8","textures/temple_sky_day.webp":"a5094225","textures/temple_sky_storm.webp":"fe1837cb","textures/temple_wall.webp":"ec010c84","textures/temple_weave.webp":"927b8a35","textures/wood_planks.webp":"c8b25167","textures/wood_timber.webp":"dc42d865","models/alien_lizard.glb":"faffcf4c","models/alien_lizard_ktx2.glb":"05da2a20","models/skate.glb":"0c612d5e","models/skateboard.glb":"5ba93796","models/characters/alien_antenna_game.glb":"f3ccf328","models/characters/alien_antenna_game_ktx2.glb":"28afac8c","models/characters/alien_female_purple.glb":"1c73eef1","models/characters/alien_female_purple_ktx2.glb":"fc914afb","models/characters/alien_goblin.glb":"3e91bffb","models/characters/alien_goblin_chains.glb":"e72d1550","models/characters/alien_goblin_game.glb":"cfabd926","models/characters/alien_grey_medium.glb":"5a779e8e","models/characters/alien_grey_medium_ktx2.glb":"61600c3e","models/characters/alien_rollerskate_blue.glb":"abf0917c","models/characters/alien_rollerskate_blue_ktx2.glb":"e9a7948a","models/characters/alien_warrior.glb":"f5cc9c49","models/characters/alien_warrior_ktx2.glb":"a13fb7b6","models/characters/beautiful_asian.glb":"910f6565","models/characters/beautiful_asian_ktx2.glb":"35281eef","models/characters/beautiful_blonde.glb":"edddc421","models/characters/beautiful_blonde_ktx2.glb":"89cf3899","models/characters/brute_warboss_armor.glb":"cc5c7936","models/characters/ceo_alien.glb":"844dc3a7","models/characters/ceo_human.glb":"ec289865","models/characters/clancy.glb":"4b9d271f","models/characters/clancy_ktx2.glb":"74edbc6e","models/characters/colin.glb":"99d38b7d","models/characters/colin_ktx2.glb":"35040f87","models/characters/contruction_worker.glb":"8bd3d7ce","models/characters/contruction_worker_ktx2.glb":"3df8c344","models/characters/dummy_officer.glb":"724965ac","models/characters/dummy_officer_ktx2.glb":"db640cda","models/characters/fat_activist_01.glb":"3c566fee","models/characters/fat_activist_01_ktx2.glb":"b9328df4","models/characters/fat_biker_01.glb":"576b7cf5","models/characters/fat_biker_01_ktx2.glb":"7142cfad","models/characters/fat_biker_02.glb":"ab5d7ec7","models/characters/fat_biker_02_ktx2.glb":"28cec6cc","models/characters/fat_hippie.glb":"f09a260d","models/characters/fat_hippie_ktx2.glb":"0be745a4","models/characters/fat_hipster.glb":"9cf45ffb","models/characters/fat_hipster_ktx2.glb":"18106ff3","models/characters/fat_secret_service.glb":"6d546fb0","models/characters/fat_secret_service_ktx2.glb":"a23a304e","models/characters/fat_trump.glb":"5de6bc56","models/characters/fat_trump_ktx2.glb":"a0ddaf4d","models/characters/firefighter.glb":"ebde005d","models/characters/firefighter_ktx2.glb":"ccf93c96","models/characters/goblin_game.glb":"db1cf0e0","models/characters/hick_skinny.glb":"1ebe78e8","models/characters/hick_skinny_ktx2.glb":"1e93f0ed","models/characters/hobo_01.glb":"34e80b1d","models/characters/hobo_01_ktx2.glb":"69497677","models/characters/jack.glb":"ab009b9b","models/characters/jack_ktx2.glb":"1f4c9f7f","models/characters/jackal_game.glb":"f8c9256d","models/characters/moussa.glb":"6d80b1cf","models/characters/moussa_ktx2.glb":"66e040f8","models/characters/orc_game.glb":"d9aa816d","models/characters/osari_bowman_game.glb":"2ee424af","models/characters/proxy_ceo.bin":"6eca0c34","models/characters/proxy_ceo.jpg":"fadc9d0a","models/characters/proxy_ceo.json":"e62a7975","models/characters/proxy_ceo_alien.bin":"be247ecc","models/characters/proxy_ceo_alien.jpg":"8f8bf8fc","models/characters/proxy_ceo_alien.json":"eb23e28f","models/characters/proxy_hick.bin":"4485560e","models/characters/proxy_hick.jpg":"8c331965","models/characters/proxy_hick.json":"d85a0d36","models/characters/proxy_zap.bin":"dd7b300e","models/characters/proxy_zap.jpg":"2e7330ae","models/characters/proxy_zap.json":"b3b42754","models/characters/proxy_zap2.bin":"51088f46","models/characters/proxy_zap2.jpg":"a954a815","models/characters/proxy_zap2.json":"5c50abb7","models/characters/rept_heavy_armor.glb":"934661c7","models/characters/samurai_game.glb":"c7940015","models/characters/toad_wanderer_game.glb":"2efc31c4","models/characters/xray_skeleton.glb":"46480317","models/characters/zap.glb":"5e5cca54","models/characters/zap_02.glb":"4ff12de0","models/characters/zap_02_lib.glb":"e23d91da","models/characters/zap_ktx2.glb":"4b29d886","models/characters/zoar.glb":"423a9de9","models/characters/zoar_game.glb":"d20a3736","models/vehicles/dump_truck.glb":"d870dc18","models/vehicles/dump_truck_ktx2.glb":"21ee7059","models/vehicles/motorcycle_fatboy.glb":"9ed9be28","models/weapons/alien_antenna_blaster_game.glb":"54083b44","models/weapons/alien_antenna_hammer_game.glb":"707b8a27","models/weapons/alien_launcher.glb":"ba8ab96a","models/weapons/hammer.glb":"3335fdf2","models/weapons/shield_brute.glb":"c6e5593f","models/weapons/spikey_mace.glb":"dcd43acd","models/weapons/w_brute_cleaver.glb":"07a97580","models/weapons/w_rept_maul.glb":"84c3a1a4","models/buildings/alien_base_01.glb":"d9b9fd7f","models/buildings/alien_base_01_ktx2.glb":"6cbbfef2","models/buildings/korajin_bld_01.glb":"edf3178e","models/towers/alien_tower_01.glb":"98d23375","models/towers/alien_tower_01_ktx2.glb":"47597651","models/streets/modular_streets_kit.glb":"6a4bcaa5","models/toon_city/impact_marks.json":"2b616620","models/toon_city/impact_marks_atlas.ktx2":"efe0840e","models/toon_city/impact_marks_atlas.png":"490ed049","models/toon_city/toon_city_breakables.glb":"29bddbc8","models/toon_city/toon_city_collision.glb":"fb3a693f","models/toon_city/toon_city_obb.json":"81c18a47","models/toon_city/toon_city_visual.glb":"5df62285","models/toon_city/toon_city_visual_ktx2.glb":"cf080531","models/toon_city/weirdkit_tint.js":"f6e9d802","models/toon_city_kit/toon_city_collision.glb":"5540a364","models/toon_city_kit/toon_city_kit_buildings.glb":"590e53f0","models/toon_city_kit/toon_city_kit_buildings_ktx2.glb":"e6dff3a3","models/toon_city_kit/toon_city_kit_pieces.glb":"8232bd6f","models/toon_city_kit/toon_city_kit_twins.glb":"fcc9fdfc","models/toon_city_kit/toon_city_visual.glb":"45cf2957","models/toon_city_kit/toon_city_visual_ktx2.glb":"f26a6984","models/toon_city_kit/weirdkit_detile.js":"dd05bd70","models/characters/morph/shapes.bin":"4e680384","models/characters/morph/shapes.json":"abfc949d","models/characters/forged/alien_female_purple.glb":"0308860e","models/characters/forged/alien_goblin_game.glb":"11f44bc1","models/characters/forged/alien_rollerskate_blue.glb":"bcccc63f","models/characters/forged/alien_warrior.glb":"a067d5ab","models/characters/forged/beautiful_asian.glb":"f1c7baa5","models/characters/forged/beautiful_blonde.glb":"f83172bd","models/characters/forged/brute_warboss_armor.glb":"dc15dc94","models/characters/forged/ceo_alien.glb":"20659ac3","models/characters/forged/ceo_human.glb":"326d9e7e","models/characters/forged/clancy.glb":"19fabcce","models/characters/forged/contruction_worker.glb":"99fe1a17","models/characters/forged/dummy_officer.glb":"87a11843","models/characters/forged/fat_activist_01.glb":"6546645c","models/characters/forged/fat_biker_01.glb":"943f38ea","models/characters/forged/fat_biker_02.glb":"5d63a0cf","models/characters/forged/fat_hippie.glb":"ff0539ba","models/characters/forged/fat_hipster.glb":"792b92d8","models/characters/forged/fat_secret_service.glb":"7c29d1da","models/characters/forged/firefighter.glb":"20410689","models/characters/forged/goblin_game.glb":"3c813462","models/characters/forged/hick_skinny.glb":"d9232022","models/characters/forged/hobo_01.glb":"37d266c9","models/characters/forged/index.json":"7ac38412","models/characters/forged/jack.glb":"712b6241","models/characters/forged/moussa.glb":"74d19c70","models/characters/forged/orc_game.glb":"7bf3c227","models/characters/forged/osari_archer.glb":"bf2f27f5","models/characters/forged/rept_heavy_armor.glb":"01e631b0","models/characters/forged/samurai_archer.glb":"04db413e","models/characters/forged/samurai_game.glb":"a946c148","models/characters/forged/stone_guardian.glb":"8a9ff43d","models/characters/forged/stone_olmec.glb":"be0ae8f6","models/characters/forged/zap.glb":"10eda718","models/characters/forged/zap_02.glb":"fd513cea","models/characters/forged/zap_02_lib.glb":"fd513cea","models/characters/forged/zoar_game.glb":"b032a28e","models/characters/anims/agoblin_meditate.glb":"d95f135c","models/characters/anims/toad_sage.glb":"10cc522d","models/characters/anims/wall_side.glb":"089d3dc7","levels/blockout_sample.glb":"ee8a0f57","levels/hamlet_d1.bin":"5bb698c2","levels/index.json":"2c8499e1","levels/region_6.bin":"085f2591","levels/region_6.json":"5236372c","levels/sample_two_towers.json":"e2466683","images/crack_sprite_01.ktx2":"4aa55fde","images/crack_sprite_01.png":"16b52e8c","images/fire_sprites_01.ktx2":"922e1191","images/fire_sprites_01.png":"f87e2696","images/fire_sprites_02.ktx2":"e0cbfe1d","images/fire_sprites_02.png":"b373a6fd","images/fire_sprites_03.ktx2":"4fbbb985","images/fire_sprites_03.png":"7eece336","images/geyser_sprites_01.png":"b6325470","images/hdri_game.ktx2":"0feb5c79","images/hdri_game.png":"dac55f41","images/serpent_eye.webp":"b764e90d","images/serpent_fin.webp":"a592c818","images/serpent_skin.webp":"f7e0e45d","images/ship_lacquer.jpg":"51b8e6e5","images/ship_sail.jpg":"9d04714c","images/snow_sky.webp":"e0c34c2d","images/splash_zap_n_clancy.webp":"52a9d8a4","images/water_sprites_01.ktx2":"326924c5","images/water_sprites_01.png":"31e12659","audio/blaster_sound_01.mp3":"40d99583","audio/blaster_sound_02.mp3":"4bd7bb7c","audio/box_break_01.mp3":"e4127980","audio/electricity_beam_01.mp3":"986db8c9","audio/explosion_small.mp3":"f154a537","audio/metal_clang_01.mp3":"a333bd27","audio/metal_clang_02.mp3":"1e3ebbd6","audio/metal_clang_03.mp3":"afe44812","audio/metal_ping_01.mp3":"8ffca1a0","audio/plasma_canon.mp3":"e32c324d","audio/powerup_01.mp3":"48fbbe08","audio/swoosh_01.mp3":"193db185","audio/swoosh_02.mp3":"19145e70","audio/swoosh_03.mp3":"544fdffb","audio/swoosh_04.mp3":"843bee5d","audio/plasma_sounds/plasma_01.mp3":"e71c010f","audio/plasma_sounds/plasma_02.mp3":"ac3b1c75","audio/plasma_sounds/plasma_03.mp3":"eaa59355","audio/plasma_sounds/plasma_04.mp3":"bc7865e0","audio/plasma_sounds/plasma_05.mp3":"1d821cd0","audio/plasma_sounds/plasma_06.mp3":"cb979fbe","audio/plasma_sounds/plasma_hit.mp3":"30e5af5c","audio/alien_orc_grunt_sounds/alien_orc_grunt_01.mp3":"d6f4b343","audio/alien_orc_grunt_sounds/alien_orc_grunt_02.mp3":"78afc603","audio/alien_orc_grunt_sounds/alien_orc_grunt_03.mp3":"972c524a","audio/alien_orc_grunt_sounds/alien_orc_grunt_04.mp3":"b0ce76eb","audio/alien_orc_grunt_sounds/alien_orc_grunt_05.mp3":"1f0ba1f4","audio/alien_orc_grunt_sounds/alien_orc_grunt_06.mp3":"4f749866","audio/alien_orc_grunt_sounds/alien_orc_grunt_07.mp3":"dcf75925","audio/hit_sounds/hit_sound_01.mp3":"befaa2be","audio/hit_sounds/hit_sound_02.mp3":"73bc4433","audio/hit_sounds/hit_sound_03.mp3":"24b181e4","audio/hit_sounds/hit_sound_gound_01.mp3":"86ee2674","audio/hit_sounds/hit_sound_ground_02.mp3":"8a7cac73","audio/hit_sounds/hit_sound_plasma_01.mp3":"9abc0202","audio/hit_sounds/hit_sound_plasma_02.mp3":"6aaf0fe5","audio/hit_sounds/thud_a_1.mp3":"3e526f73","audio/hit_sounds/thud_a_2.mp3":"e99874e5","audio/hit_sounds/thud_a_3.mp3":"7aaaea7d","audio/hit_sounds/thud_b_1.mp3":"c6e4c4f4","audio/hit_sounds/thud_b_2.mp3":"db6b7fbb","audio/hit_sounds/thud_b_3.mp3":"5c7909e3","audio/creature_noises/creature_noise_01.mp3":"cbcc6ee7","audio/creature_noises/creature_noise_02.mp3":"201a8247","audio/creature_noises/creature_noise_03.mp3":"97680811","audio/creature_noises/creature_noise_04.mp3":"6f734df2","audio/creature_noises/creature_noise_05.mp3":"6f736441","audio/creature_noises/creature_noise_06.mp3":"992712e9","audio/creature_noises/creature_noise_07.mp3":"d9ad04b3","audio/footsteps/footstep_2_l.mp3":"abeabfbe","audio/footsteps/footstep_2_r.mp3":"7dd16046","audio/footsteps/footstep_3_L.mp3":"bc044ed9","audio/footsteps/footstep_3_R.mp3":"49c6f23d","audio/footsteps/footstep_l.mp3":"b66e579b","audio/footsteps/footstep_r.mp3":"96e13433","audio/footsteps/footsteps.mp3":"8ee73ccb","audio/footsteps/step3_1_l.mp3":"a855262e","audio/footsteps/step3_1_r.mp3":"1ea0a2b4","audio/footsteps/step3_2_l.mp3":"43ef40dd","audio/footsteps/step3_2_r.mp3":"91cfe687","audio/footsteps/step3_3_l.mp3":"56ff6eb2","audio/footsteps/step3_3_r.mp3":"0e73e8e3","audio/footsteps/step3_4_l.mp3":"26c965fd","audio/footsteps/step3_4_r.mp3":"c3110fbb","audio/footsteps/step_1_l.mp3":"f7efc3d9","audio/footsteps/step_1_r.mp3":"b236bde4","audio/footsteps/step_2_l.mp3":"0e397d22","audio/footsteps/step_2_r.mp3":"2392717c","audio/footsteps/step_3_l.mp3":"364d26a3","audio/footsteps/step_3_r.mp3":"8434aa01","audio/footsteps/step_4_l.mp3":"1fb763a6","audio/footsteps/step_4_r.mp3":"74f5aff2","audio/footsteps/step_5_l.mp3":"8619ec0e","audio/footsteps/step_5_r.mp3":"eff2c01e","audio/footsteps/step_6_l.mp3":"553ba89d","audio/footsteps/step_6_r.mp3":"f2fec766","audio/footsteps_snow/cut/snow_1_l.mp3":"aa3d5f06","audio/footsteps_snow/cut/snow_1_r.mp3":"8cf29d4b","audio/footsteps_snow/cut/snow_2_l.mp3":"2e2d5197","audio/footsteps_snow/cut/snow_2_r.mp3":"51ab8c34","audio/footsteps_snow/cut/snow_3_l.mp3":"4a16321c","audio/footsteps_snow/cut/snow_3_r.mp3":"2a77bf77","audio/footsteps_snow/cut/snow_4_l.mp3":"984d75e0","audio/footsteps_snow/cut/snow_4_r.mp3":"c9998642","audio/steps/grass_1.mp3":"8928141c","audio/steps/grass_2.mp3":"605eff73","audio/steps/grass_3.mp3":"0d49c3fe","audio/steps/grass_4.mp3":"f7efb844","audio/steps/metal_1.mp3":"71e474bf","audio/steps/metal_2.mp3":"6c51c9f5","audio/steps/metal_3.mp3":"1781bed4","audio/steps/metal_4.mp3":"aee7b99d","audio/steps/metal_5.mp3":"dba70524","audio/steps/metal_6.mp3":"f1d7a18a","audio/steps/rustle_1.mp3":"9dd271aa","audio/steps/rustle_2.mp3":"41696f76","audio/steps/rustle_3.mp3":"da17b02c","audio/steps/rustle_4.mp3":"4e9a4451","audio/steps/rustle_5.mp3":"ee911bc6","audio/steps/rustle_6.mp3":"af76d88b","audio/steps/sand_1.mp3":"be494ed1","audio/steps/sand_2.mp3":"33e96de8","audio/steps/sand_3.mp3":"bcef3396","audio/steps/sand_4.mp3":"e339c214","audio/steps/sand_5.mp3":"b65c5cd7","audio/steps/sand_6.mp3":"2598249e","audio/steps/stone_1.mp3":"d58c055c","audio/steps/stone_2.mp3":"8b20f2aa","audio/steps/stone_3.mp3":"b707af84","audio/steps/stone_4.mp3":"7417f8d1","audio/steps/water_1.mp3":"1323a529","audio/steps/water_2.mp3":"98ec63be","audio/steps/water_3.mp3":"0d9f507d","audio/steps/water_4.mp3":"43a07b4d","audio/steps/water_5.mp3":"af74047d","audio/steps/water_6.mp3":"13f8846a","audio/steps/wood_1.mp3":"45305153","audio/steps/wood_2.mp3":"c384dc8c","audio/steps/wood_3.mp3":"52e69344","audio/steps/wood_4.mp3":"69632057","audio/music/forgotten_garden.mp3":"da0acb09","models/props/prop_hydrant.glb":"f157fee9","models/props/prop_hydrant_collision.glb":"0bbfc4d2","models/creatures/3_headed_dog.glb":"9263480a","models/creatures/blue_dragon.glb":"d72f4da7","models/creatures/mammoth.glb":"0bd2b2d8","models/creatures/mech_lightning_dragon.glb":"5935bb67","models/creatures/osari_spider.glb":"6c38e031","models/creatures/stone_guardian.glb":"ad47ade1","models/creatures/stone_olmec.glb":"da3e8cbd"};
 /* ASSETS:END */
@@ -69627,6 +69633,294 @@ function heroStage(box, pick) {
     for (const k in T.cache) { const c = T.cache[k]; if (c.root && !c.root.parent) c.root.traverse(o => { if (o.geometry) o.geometry.dispose(); const ms = o.material ? [].concat(o.material) : []; for (const m of ms) { for (const key in m) { const v = m[key]; if (v && v.isTexture) v.dispose(); } m.dispose(); } }); }
     R.dispose(); try { R.forceContextLoss(); } catch (e) {} } };
 }
+// m2188: THE TITLE LOOP (his idea, after Pwnisher's "Infinite Loop" challenge): *"a loading screen that's a sideways view -- Grumbo walking left or
+// right, stationary in the centre of the frame, an infinite loop -- with different backgrounds at different rates: PARALLAX... layers of depth with
+// primary/secondary/tertiary detail and things animating in the background."* Pass 1 is the KORAJIN title page's backdrop (the boot card stays: nothing
+// is loaded then). A real perspective camera on a LONG LENS (18 deg, lens-shifted so the verticals stay straight), so the parallax is the depth
+// itself: EVERY band slides at the same world speed -- his measured walk -- and the far ones crawl because they are far. Each band is ONE merged
+// geometry per material drawn as THREE instances W apart, so it wraps with no seam and no pop. The garden's own builders make the pieces
+// (gdnIsleGeo, gdnFarTree, gdnRoof, gdnToro, gdnTaper, gdnPaint). Placed things are in `place` with stable ids; scatter is seeded; the builder is a
+// pure function of this table. HOOK (later pass): `time` picks a palette from `pal`, `theme` the world -- cycle them; only 'garden'/'dusk' exist.
+// SC_LOOPBG:START
+const LOOPBG = {
+  theme: 'garden', time: 'dusk',
+  cam: { fov: 18, dist: 22, y: 2.2, shift: .62, far: 7000 },          // shift: the lens shift (NDC) that puts his feet just under the middle, above the menu
+  walker: { hero: 'agoblin', clip: 'walk_fwd', height: 1.4, speed: 0 },     // speed 0 = MEASURED at load off the planted foot (`loopGait`)
+  pal: { dusk: { top: 0x3d63a8, mid: 0x9ab4dc, hor: 0xfcd5b5, glow: 0xfff0d2, sunDir: [-.025, .028, -1], fog: 0xfcd5b5, fogNear: 90, fogFar: 2600,
+    hemiSky: 0xffe9d2, hemiGnd: 0x55607a, hemi: 1.55, key: 0xffdcb0, keyI: 1.9, keyDir: [-.45, .75, .6], cloud: 0xfff6ee, shade: 0xc8a8b8, floor: 0xf6e2dc } },
+  jinra: [0x2fd6a0, 0xb8ffe6],     // mint: JINRA ONLY (the stream, the falls, the motes)
+  lamp: 0xffb24a,                  // lantern light: warm, never mint
+  bands: [
+    { id: 'clouds', W: 2000, drift: -1.4, fog: 0 },     // drift: the band's own wind (m/s) on top of the walk
+    { id: 'far', W: 640 },
+    { id: 'mid', W: 132 },
+    { id: 'ground', W: 40 },
+    { id: 'near', W: 44 } ],
+  floorY: -48,                     // the cloud sea's floor
+  place: [
+    // FAR: islands at cloud level, snow peaks out of the sea, the pagoda isle; `fall` = Jinra waterfalls off the lip
+    { id: 'far_isle_a', band: 'far', kind: 'isle', at: [-250, -6, -470], s: 15, trees: 7, fall: 1, seed: 11 },
+    { id: 'far_isle_b', band: 'far', kind: 'isle', at: [-175, 6, -610], s: 11, trees: 5, seed: 12 },
+    { id: 'far_pagoda', band: 'far', kind: 'pagoda', at: [-95, -10, -430], s: 13, trees: 4, fall: 2, seed: 13 },
+    { id: 'far_peak_a', band: 'far', kind: 'peak', at: [-10, -52, -640], s: 19, peak: 1.9, seed: 14 },
+    { id: 'far_peak_b', band: 'far', kind: 'peak', at: [30, -52, -580], s: 14, peak: 2.2, seed: 15 },
+    { id: 'far_isle_c', band: 'far', kind: 'isle', at: [95, -14, -420], s: 12, trees: 5, fall: 1, seed: 16 },
+    { id: 'far_isle_d', band: 'far', kind: 'isle', at: [150, 10, -540], s: 7, trees: 3, seed: 17 },
+    { id: 'far_peak_c', band: 'far', kind: 'peak', at: [215, -52, -620], s: 17, peak: 1.8, seed: 18 },
+    { id: 'far_isle_e', band: 'far', kind: 'isle', at: [268, -4, -460], s: 13, trees: 6, fall: 1, seed: 19 },
+    // MID: two long floating terraces with the rope bridge between, willows, cherries, a temple hall, lanterns
+    { id: 'mid_terr_a', band: 'mid', kind: 'terrace', at: [-36, -1.2, -58], s: 13, ex: 2.1, ez: .8, seed: 21, fall: 1 },
+    { id: 'mid_terr_b', band: 'mid', kind: 'terrace', at: [34, -.4, -74], s: 12, ex: 1.9, ez: .9, seed: 22 },
+    { id: 'mid_bridge', band: 'mid', kind: 'bridge', a: [-12.5, -61], b: [11.5, -73], sag: 1.8 },
+    { id: 'mid_temple', band: 'mid', kind: 'temple', at: [38, 0, -80], s: 1.25 },
+    { id: 'mid_willow_a', band: 'mid', kind: 'willow', at: [-52, 0, -56], h: 9 },
+    { id: 'mid_willow_b', band: 'mid', kind: 'willow', at: [-22, 0, -60], h: 7.5 },
+    { id: 'mid_willow_c', band: 'mid', kind: 'willow', at: [52, 0, -70], h: 8.5 },
+    { id: 'mid_cherry_a', band: 'mid', kind: 'cherry', at: [-40, 0, -64], h: 7 },
+    { id: 'mid_cherry_b', band: 'mid', kind: 'cherry', at: [22, 0, -68], h: 6.5 },
+    { id: 'mid_cherry_c', band: 'mid', kind: 'cherry', at: [-63, 0, -60], h: 5.5 },
+    { id: 'mid_tree_a', band: 'mid', kind: 'round', at: [-30, 0, -70], h: 8 },
+    { id: 'mid_tree_b', band: 'mid', kind: 'pine', at: [46, 0, -84], h: 10 },
+    { id: 'mid_toro_a', band: 'mid', kind: 'toro', at: [-14, 0, -58], s: 1.3 },
+    { id: 'mid_toro_b', band: 'mid', kind: 'toro', at: [14, 0, -71], s: 1.3 },
+    { id: 'mid_lant_a', band: 'mid', kind: 'lantern', at: [-46, 0, -52] },
+    { id: 'mid_lant_b', band: 'mid', kind: 'lantern', at: [28, 0, -70] },
+    { id: 'mid_flag_a', band: 'mid', kind: 'banner', at: [31, 0, -76], h: 6, col: 0xa8282a },
+    { id: 'mid_flag_b', band: 'mid', kind: 'banner', at: [45, 0, -77], h: 6, col: 0x2c3a6e },
+    // GROUND: he walks on z = 0; the stream runs behind him
+    { id: 'gnd_strip', band: 'ground', kind: 'strip', z0: -9, z1: 16, path: [-.95, .95], stream: [-4.6, 1.5] },
+    { id: 'gnd_toro', band: 'ground', kind: 'toro', at: [-8, 0, -2.4], s: .8 },
+    { id: 'gnd_lant', band: 'ground', kind: 'lantern', at: [11, 0, -6.6], k: .7 },
+    { id: 'gnd_rock_a', band: 'ground', kind: 'rock', at: [3, 0, -2.4], s: .38 },
+    { id: 'gnd_rock_b', band: 'ground', kind: 'rock', at: [-15, 0, 2.3], s: .7 },
+    { id: 'gnd_cherry', band: 'ground', kind: 'cherry', at: [16, 0, -7.6], h: 4.2 },
+    // NEAR: big and fast, crossing in front now and then
+    { id: 'near_flag', band: 'near', kind: 'banner', at: [-16, 0, 7.5], h: 5.2, col: 0xb02a26 },
+    { id: 'near_toro', band: 'near', kind: 'toro', at: [6, 0, 9], s: 1.0 },
+    { id: 'near_fern_a', band: 'near', kind: 'fern', at: [-3, 0, 6.2], s: 1.3 },
+    { id: 'near_fern_b', band: 'near', kind: 'fern', at: [8.5, 0, 6.8], s: 1.1 },
+    { id: 'near_fern_c', band: 'near', kind: 'fern', at: [17, 0, 6.4], s: 1.5 } ],
+  scatter: [
+    { band: 'clouds', kind: 'cloud', n: 30, seed: 31, z: [-1300, -2200], y: [-20, 120], s: [60, 190] },
+    { band: 'far', kind: 'seapuff', n: 46, seed: 32, z: [-260, -720], y: [-50, -40], s: [40, 110] },
+    { band: 'far', kind: 'drift', n: 8, seed: 33, z: [-380, -620], y: [-25, 20], s: [1.2, 3] },      // small drifting rocks
+    { band: 'mid', kind: 'seapuff', n: 12, seed: 34, z: [-90, -180], y: [-46, -38], s: [18, 40] },
+    { band: 'mid', kind: 'shrub', n: 60, seed: 35, z: [-50, -86], s: [.45, 1.1] },
+    { band: 'ground', kind: 'tuft', n: 260, seed: 36, z: [-8.6, 9], s: [.18, .42] },
+    { band: 'ground', kind: 'shrub', n: 34, seed: 37, z: [-8.8, -7.2], s: [.25, .6] },
+    { band: 'ground', kind: 'bankstone', n: 30, seed: 38, z: [-5.6, -3.6], s: [.12, .3] } ],
+  life: { petals: 80, motes: 70, birds: 8 },
+};
+// SC_LOOPBG:END
+function loopBgCol(h) { const c = new THREE.Color(h); return [c.r, c.g, c.b]; }
+function loopCardTex() { const cv = document.createElement('canvas'); cv.width = cv.height = 128; const x = cv.getContext('2d'), R = dmtRnd(77);
+  for (let i = 0; i < 16; i++) { const r = 12 + R() * 18, cx = 30 + r * .5 + R() * (68 - r), cy = 58 + (R() - .5) * 26 - (i < 6 ? 0 : 6), g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
+    g.addColorStop(0, 'rgba(255,255,255,.55)'); g.addColorStop(.6, 'rgba(255,255,255,.3)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); }
+  const m = x.createRadialGradient(64, 64, 20, 64, 64, 63); m.addColorStop(0, 'rgba(0,0,0,1)'); m.addColorStop(1, 'rgba(0,0,0,0)'); x.globalCompositeOperation = 'destination-in'; x.fillStyle = m; x.fillRect(0, 0, 128, 128);     // no card edge can show
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t; }
+// the BUILDER: a pure function of the table -> per band, per material, one geometry (local x in [-W/2, W/2])
+function loopBgBuild(T) { const P = T.pal[T.time] || T.pal.dusk, out = {}, d2r = Math.PI / 180;
+  for (const B of T.bands) out[B.id] = { solid: [], glow: [], cloth: [], jinra: [], card: [] };
+  const terr = [], surfAt = (b, x, z) => { if (b !== 'mid') return 0; let best = -99;     // the top of the terrace a mid thing stands on; the ground strip is 0
+    for (const { pl, surf } of terr) { const dx = (x - pl.at[0]) / (pl.s * pl.ex), dz = (z - pl.at[2]) / (pl.s * pl.ez); if (dx * dx + dz * dz < .8) best = Math.max(best, surf(x, z)); } return best; };
+  const mix = (p, q, t) => [p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t, p[2] + (q[2] - p[2]) * t];
+  const solid = (b, g, c) => { if (c) gdnPaint(g, typeof c === 'function' ? c : () => c); out[b].solid.push(g); return g; };
+  const glow = (b, g, c) => { gdnPaint(g, () => c); out[b].glow.push(g); };
+  const lampC = loopBgCol(T.lamp), stone = [.42, .4, .38], stoneD = [.3, .29, .28], moss = [.16, .3, .08], bark = [.16, .1, .06], red = [.5, .09, .07], slate = [.14, .15, .19];
+  const toro = (b, x, y, z, s) => gdnToro((g, k) => k === 'lamp' ? glow(b, g, lampC) : solid(b, g, k === 'moss' ? moss : stone), { stone: 'stone', lamp: 'lamp', moss: 'moss' }, x, z, y, s);
+  const lantern = (b, x, y, z, k) => { k = k || 1; solid(b, new THREE.CylinderGeometry(.06 * k, .08 * k, 2.6 * k, 6).translate(x, y + 1.3 * k, z), bark);
+    solid(b, new THREE.BoxGeometry(.8 * k, .07 * k, .07 * k).translate(x + .35 * k, y + 2.55 * k, z), bark);
+    glow(b, new THREE.SphereGeometry(.26 * k, 10, 8).scale(1, 1.25, 1).translate(x + .66 * k, y + 2.12 * k, z), mix(lampC, [1, .35, .2], .35));
+    solid(b, new THREE.CylinderGeometry(.16 * k, .16 * k, .06 * k, 8).translate(x + .66 * k, y + 2.48 * k, z), [.08, .06, .05]); };
+  const tree = (b, R, x, y, z, h, kind) => { for (const g of gdnFarTree(R, x, y, z, h, kind)) solid(b, g); };
+  const willow = (b, R, x, y, z, h) => { solid(b, gdnTaper([new THREE.Vector3(x, y - .3, z), new THREE.Vector3(x + .4, y + h * .35, z), new THREE.Vector3(x - .2, y + h * .72, z)], h * .07, 7, bark, [.22, .15, .09]));
+    const lo = [.06, .16, .04], hi = [.3, .5, .12];
+    for (let k = 0; k < 4; k++) { const a = R() * 6.3, rr = k ? h * .22 : 0, w = h * (k ? .2 : .28); solid(b, new THREE.IcosahedronGeometry(w, 1).scale(1.3, .6, 1).translate(x + Math.cos(a) * rr, y + h * (.78 + R() * .1), z + Math.sin(a) * rr * .6), (px, py) => mix(lo, hi, Math.max(0, Math.min(1, (py - y - h * .7) / (h * .2))))); }
+    for (let i = 0; i < 22; i++) { const a = i / 22 * 6.3 + R() * .3, rr = h * (.25 + R() * .25), sx = x + Math.cos(a) * rr, sz = z + Math.sin(a) * rr * .7, sy = y + h * (.74 + R() * .1), L = h * (.35 + R() * .3);
+      solid(b, gdnTaper([new THREE.Vector3(sx, sy, sz), new THREE.Vector3(sx + Math.cos(a) * .4, sy - L * .45, sz + Math.sin(a) * .3), new THREE.Vector3(sx + Math.cos(a) * .55, sy - L, sz + Math.sin(a) * .4)], h * .018, 4, [.18, .36, .08], [.42, .62, .2])); } };
+  const banner = (b, x, y, z, h, col) => { const c = loopBgCol(col); solid(b, new THREE.CylinderGeometry(.06, .08, h, 6).translate(x, y + h / 2, z), [.12, .08, .06]);
+    solid(b, new THREE.BoxGeometry(1.15, .06, .06).translate(x + .55, y + h - .15, z), [.12, .08, .06]); solid(b, new THREE.SphereGeometry(.1, 8, 6).translate(x, y + h + .05, z), [.55, .42, .2]);
+    const W = 1.0, L = h * .62, g = new THREE.PlaneGeometry(W, L, 4, 10).translate(x + .06 + W / 2, y + h - .2 - L / 2, z), Pp = g.attributes.position, sw = new Float32Array(Pp.count);
+    for (let i = 0; i < Pp.count; i++) sw[i] = (Pp.getX(i) - x) / (W + .06) * .6 + (y + h - .2 - Pp.getY(i)) / L * .7;
+    g.setAttribute('aSw', new THREE.BufferAttribute(sw, 1));
+    gdnPaint(g, (px, py) => { const t = (y + h - .2 - py) / L; return t > .12 && t < .2 || t > .86 ? [.86, .82, .74] : c; }); out[b].cloth.push(g); };
+  const card = (b, x, y, z, w, h, c0, c1) => { const g = new THREE.PlaneGeometry(w, h).translate(x, y, z); gdnPaint(g, (px, py) => mix(c1, c0, Math.max(0, Math.min(1, (py - (y - h / 2)) / h * 1.4)))); out[b].card.push(g); };
+  const fall = (b, x, y0, z, w, y1) => { const H = y0 - y1, n = 14, Pp = [], U = [], J = [], I = [];
+    for (let i = 0; i <= n; i++) { const v = i / n, o = Math.sqrt(v) * w * .6, ww = w * (1 + v * .8); for (let j = 0; j <= 1; j++) { Pp.push(x + (j - .5) * ww, y0 - H * v, z + o); U.push(j, v); J.push(1, H); } }
+    for (let i = 0; i < n; i++) { const a = i * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(Pp, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(U, 2)); g.setAttribute('aJ', new THREE.Float32BufferAttribute(J, 2)); g.setIndex(I);
+    out[b].jinra.push(g); const jc = loopBgCol(T.jinra[1]); card(b, x, y1 + w * .9, z + 2, w * 4.5, w * 2.2, jc, mix(jc, loopBgCol(P.cloud), .5)); };
+  const cloudC = loopBgCol(P.cloud), shadeC = loopBgCol(P.shade);
+  const isle = (pl, opt) => { const R = gdnRnd(pl.seed), [x, y, z] = pl.at, I = gdnIsleGeo(R, pl.s, opt); for (const g of I.geos) solid(pl.band, g.translate(x, y, z)); return { R, surf: (px, pz) => y + I.surf(px - x, pz - z), I }; };
+  for (const pl of T.place) { const b = pl.band, [x, y, z] = pl.at || [0, 0, 0];
+    if (pl.kind === 'isle' || pl.kind === 'pagoda' || pl.kind === 'terrace') {
+      const S = isle(pl, pl.kind === 'terrace' ? { ex: pl.ex, ez: pl.ez, depth: .9, drip: 2, N: 40 } : { drip: 3, shards: 4, dome: .1 }), R = S.R;
+      if (pl.kind === 'terrace') terr.push({ pl, surf: S.surf });
+      for (let i = 0; i < (pl.trees || 0); i++) { const a = R() * 6.3, rr = pl.s * (.25 + R() * .55), tx = x + Math.cos(a) * rr, tz = z + Math.sin(a) * rr; tree(b, R, tx, S.surf(tx, tz), tz, pl.s * (.28 + R() * .2), R() < .3 ? 'cherry' : R() < .5 ? 'pine' : 'round'); }
+      for (let f = 0; f < (pl.fall || 0); f++) { const a = Math.PI / 2 + (f ? .7 : -.35), rr = pl.s * (pl.ex || 1) * (pl.kind === 'terrace' ? .55 : .93), fx = x + Math.cos(a) * rr, fz = z + Math.sin(a) * pl.s * (pl.ez || 1) * .93;
+        fall(b, fx, y - pl.s * .06, fz + 1, pl.kind === 'terrace' ? 2.4 : pl.s * .16, T.floorY + 2); }
+      if (pl.kind === 'pagoda') { const py0 = S.surf(x, z), k = pl.s / 13; solid(b, new THREE.BoxGeometry(9 * k, 1.2 * k, 9 * k).translate(x, py0 + .6 * k, z), stone);
+        let yy = py0 + 1.2 * k; for (let t = 0; t < 5; t++) { const bw = (6.4 - t * .95) * k, bh = (t ? 2.3 : 3.2) * k; solid(b, new THREE.BoxGeometry(bw, bh, bw).translate(x, yy + bh / 2, z), t ? [.5, .1, .08] : [.58, .14, .1]);
+          const rf = gdnRoof(x, yy + bh, z, bw / 2 + 1.9 * k, bw * .22, 1.2 * k, .9 * k); for (const g of rf.roof) solid(b, g, slate); for (const g of rf.trim) solid(b, g, [.32, .07, .06]); yy += bh + 1.0 * k; }
+        solid(b, new THREE.CylinderGeometry(.08 * k, .25 * k, 4.5 * k, 6).translate(x, yy + 1.6 * k, z), [.3, .25, .18]); } }
+    else if (pl.kind === 'peak') { const S = isle(pl, { peak: pl.peak, depth: .5, N: 34 }); for (let i = 0; i < 5; i++) { const R = S.R, a = R() * 6.3, rr = pl.s * (.75 + R() * .2), tx = x + Math.cos(a) * rr, tz = z + Math.sin(a) * rr; tree(b, R, tx, S.surf(tx, tz), tz, pl.s * .12, 'pine'); } }
+    else if (pl.kind === 'bridge') { const [ax, az] = pl.a, [bx, bz] = pl.b, ya = surfAt(b, ax, az), yb = surfAt(b, bx, bz), N = 26, L = Math.hypot(bx - ax, bz - az), yaw = Math.atan2(-(bz - az), bx - ax), M = new THREE.Matrix4(), Q = new THREE.Quaternion(), E = new THREE.Euler();
+      const at = u => [ax + (bx - ax) * u, ya + (yb - ya) * u - pl.sag * 4 * u * (1 - u), az + (bz - az) * u];
+      for (let i = 0; i < N; i++) { const u = (i + .5) / N, p = at(u), q = at(u + .01), sl = Math.atan2(q[1] - p[1], L * .01); E.set(0, yaw, sl, 'YXZ'); Q.setFromEuler(E);
+        const g = new THREE.BoxGeometry(L / N * .78, .1, 1.5).applyMatrix4(M.compose(new THREE.Vector3(...p), Q, new THREE.Vector3(1, 1, 1))); solid(b, g, i % 3 ? [.36, .24, .14] : [.3, .2, .12]); }
+      for (const side of [-1, 1]) { const ox = Math.sin(yaw) * .75 * side, oz = Math.cos(yaw) * .75 * side, pts = [];
+        for (let i = 0; i <= 12; i++) { const p = at(i / 12); pts.push(new THREE.Vector3(p[0] + ox, p[1] + 1.0 - (i % 12 ? .15 : 0), p[2] + oz)); }
+        solid(b, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 40, .05, 4, false), [.55, .45, .3]);
+        for (const [px, py, pz] of [[ax, ya, az], [bx, yb, bz]]) solid(b, new THREE.CylinderGeometry(.12, .15, 1.6, 6).translate(px + ox, py + .7, pz + oz), bark); } }
+    else if (pl.kind === 'temple') { const k = pl.s, ty = surfAt(b, x, z);
+      solid(b, new THREE.BoxGeometry(7 * k, .7 * k, 5.4 * k).translate(x, ty + .25 * k, z), stoneD);
+      for (const [dx, dz] of [[-3, -2.2], [3, -2.2], [-3, 2.2], [3, 2.2], [-1, 2.2], [1, 2.2]]) solid(b, new THREE.CylinderGeometry(.18 * k, .2 * k, 2.6 * k, 8).translate(x + dx * k, ty + 1.9 * k, z + dz * k), red);
+      solid(b, new THREE.BoxGeometry(5.6 * k, 2.2 * k, 3.6 * k).translate(x, ty + 1.75 * k, z - .3 * k), [.62, .52, .38]);
+      const rf = gdnRoof(x, ty + 3.2 * k, z, 4.4 * k, 1.1 * k, 1.9 * k, .9 * k); for (const g of rf.roof) solid(b, g.scale(1, 1, 1), slate); for (const g of rf.trim) solid(b, g, [.32, .07, .06]); }
+    else if (pl.kind === 'willow' || pl.kind === 'cherry' || pl.kind === 'round' || pl.kind === 'pine') { const R = gdnRnd(pl.id.length * 97 + x | 0), surf = surfAt(b, x, z);
+      if (pl.kind === 'willow') willow(b, R, x, surf, z, pl.h); else tree(b, R, x, surf, z, pl.h, pl.kind); }
+    else if (pl.kind === 'toro') toro(b, x, surfAt(b, x, z), z, pl.s);
+    else if (pl.kind === 'lantern') lantern(b, x, surfAt(b, x, z), z, pl.k);
+    else if (pl.kind === 'banner') banner(b, x, surfAt(b, x, z), z, pl.h, pl.col);
+    else if (pl.kind === 'rock') solid(b, new THREE.IcosahedronGeometry(pl.s, 1).scale(1.3, .7, 1).translate(x, pl.s * .25, z), (px, py) => py > pl.s * .35 ? mix(stone, moss, .55) : stone);
+    else if (pl.kind === 'fern') { const R = gdnRnd(pl.id.length * 31 + x | 0); for (let i = 0; i < 11; i++) { const a = i / 11 * 6.3 + R() * .3, L = pl.s * (.8 + R() * .5), up = .6 + R() * .5, g = new THREE.PlaneGeometry(.22 * pl.s, L, 1, 6), Pp = g.attributes.position;
+        for (let j = 0; j < Pp.count; j++) { const t = Pp.getY(j) / L + .5, w = Pp.getX(j) * (1 - t * .85); Pp.setXYZ(j, w, Math.sin(t * up * 1.8) * L * .55, t * L * .8); }
+        g.rotateY(a).translate(x, y, z); solid(b, g, (px, py) => mix([.04, .14, .03], [.22, .48, .1], Math.min(1, py / (pl.s * .6)))); } }
+    else if (pl.kind === 'strip') { const W = T.bands.find(q => q.id === b).W, D = pl.z1 - pl.z0, g = new THREE.PlaneGeometry(W, D, W, Math.ceil(D)).rotateX(-Math.PI / 2).translate(0, 0, (pl.z0 + pl.z1) / 2), Pp = g.attributes.position, TAU = Math.PI * 2;
+      const [s0, sw] = pl.stream;
+      for (let i = 0; i < Pp.count; i++) { const px = Pp.getX(i), pz = Pp.getZ(i); if (Math.abs(pz - s0) < sw * .62) Pp.setY(i, -.12); }
+      g.computeVertexNormals();
+      solid(b, g, (px, py, pz) => { const n = .5 + .25 * Math.sin(px * TAU * 3 / W + pz * .7) + .25 * Math.sin(px * TAU * 7 / W - pz * 1.3);
+        if (Math.abs(pz - s0) < sw * .75) return [.14, .12, .08]; if (pz > pl.path[0] - .35 && pz < pl.path[1] + .35) return mix([.36, .3, .2], [.3, .32, .14], n * .6);
+        return mix([.14, .3, .05], [.3, .46, .1], n); });
+      const R = gdnRnd(41);
+      for (let i = 0; i < W; i++) for (let r = 0; r < 2; r++) { const sx = -W / 2 + i + .5 + (r ? .5 : 0), sz = r ? .46 : -.46, w = .8 + R() * .12, d = .78 + R() * .1, sh = .9 + R() * .2, a = (R() - .5) * .14;
+        if (sx > W / 2) continue; solid(b, new THREE.BoxGeometry(w, .14, d).rotateY(a).translate(sx, .02, sz), [.44 * sh, .42 * sh, .39 * sh]); }
+      { const Pj = [], U = [], J = [], I = [], n = W * 2; for (let i = 0; i <= n; i++) { const px = -W / 2 + i / n * W; for (let j = 0; j <= 1; j++) { Pj.push(px, -.04, s0 + (j - .5) * sw); U.push(px / 4, j); J.push(0, 1); } }
+        for (let i = 0; i < n; i++) { const a = i * 2; I.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+        const jg = new THREE.BufferGeometry(); jg.setAttribute('position', new THREE.Float32BufferAttribute(Pj, 3)); jg.setAttribute('uv', new THREE.Float32BufferAttribute(U, 2)); jg.setAttribute('aJ', new THREE.Float32BufferAttribute(J, 2)); jg.setIndex(I); out[b].jinra.push(jg); } } }
+  for (const sc of T.scatter) { const R = gdnRnd(sc.seed), W = T.bands.find(q => q.id === sc.band).W, b = sc.band;
+    const items = []; for (let i = 0; i < sc.n; i++) items.push({ x: (R() - .5) * W, z: sc.z[0] + (sc.z[1] - sc.z[0]) * R(), y: sc.y ? sc.y[0] + (sc.y[1] - sc.y[0]) * R() : 0, s: sc.s[0] + (sc.s[1] - sc.s[0]) * R(), r: R() });
+    items.sort((p, q) => p.z - q.z);     // back to front (the cards are transparent)
+    for (const it of items) { const { x, y, z, s } = it;
+      if (sc.kind === 'cloud') card(b, x, y, z, s, s * (.38 + it.r * .2), cloudC, mix(shadeC, cloudC, .35));
+      else if (sc.kind === 'seapuff') card(b, x, y, z, s, s * .32, cloudC, mix(shadeC, cloudC, .55));
+      else if (sc.kind === 'drift') { const q = new THREE.IcosahedronGeometry(s, 0).scale(1, 1.6, 1).rotateZ(it.r - .5).translate(x, y, z); q.computeVertexNormals(); solid(b, q, (px, py) => py > y + s * 1.2 ? [.14, .3, .06] : [.3, .22, .15]); }
+      else if (sc.kind === 'shrub') { const sy = surfAt(b, x, z); if (sy < -5) continue; const hue = it.r < .2 ? [.42, .5, .12] : it.r < .35 ? [.55, .3, .38] : [.2, .4, .09]; for (let k = 0; k < 3; k++) solid(b, new THREE.IcosahedronGeometry(s * (k ? .7 : 1), 1).scale(1.25, .8, 1).translate(x + (k - 1) * s * .7, sy + s * (k ? .35 : .5), z + (k & 1) * s * .3), (px, py) => mix([.04, .12, .03], hue, Math.min(1, (py - sy) / (s * 1.2)))); }
+      else if (sc.kind === 'tuft') { if (z > -.95 - .3 && z < .95 + .3 || Math.abs(z + 4.6) < 1.1) continue; for (let k = 0; k < 3; k++) { const a = it.r * 6 + k * 2.1; solid(b, new THREE.ConeGeometry(s * .06, s * (1 + k * .3), 3).rotateZ(Math.cos(a) * .3).rotateX(Math.sin(a) * .3).translate(x + Math.cos(a) * s * .15, s * .5, z + Math.sin(a) * s * .15), (px, py) => mix([.08, .2, .03], [.4, .6, .14], Math.min(1, py / s))); } }
+      else if (sc.kind === 'bankstone') { solid(b, new THREE.IcosahedronGeometry(s, 0).scale(1.4, .6, 1).translate(x, 0, z), [.38 + it.r * .1, .36 + it.r * .1, .33]); } } }
+  return out; }
+// the walk speed his feet ask for: the planted (lower) foot's backward speed, median over the cycle
+function loopGait(root, mixer, clip) { const L = root.getObjectByName('mixamorig_LeftToeBase') || root.getObjectByName('mixamorig_LeftFoot'), Rt = root.getObjectByName('mixamorig_RightToeBase') || root.getObjectByName('mixamorig_RightFoot');
+  if (!L || !Rt) return 0; const n = 60, dt = clip.duration / n, v = [], a = new THREE.Vector3(), b = new THREE.Vector3(); let prev = null;
+  for (let i = 0; i <= n; i++) { mixer.setTime(i * dt); root.updateMatrixWorld(true); L.getWorldPosition(a); Rt.getWorldPosition(b); const low = a.y < b.y ? 0 : 1, p = low ? b.x : a.x;
+    if (prev && prev.low === low) v.push(-(p - prev.p) / dt); prev = { low, p }; }
+  mixer.setTime(0); v.sort((p, q) => p - q); return v.length ? v[v.length >> 1] : 0; }
+// the RUNTIME: its own renderer on the title page (like the hero turntable); returns { dispose }
+function loopBg(host) { const T = LOOPBG, P = T.pal[T.time] || T.pal.dusk, C = T.cam, cv = document.createElement('canvas'); host.appendChild(cv);
+  const R = new THREE.WebGLRenderer({ canvas: cv, antialias: true }); R.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); R.outputColorSpace = THREE.SRGBColorSpace;
+  const S = new THREE.Scene(), cam = new THREE.PerspectiveCamera(C.fov, 1, .5, C.far), tanH = Math.tan(C.fov * Math.PI / 360); cam.position.set(0, C.y, C.dist);
+  S.fog = new THREE.Fog(P.fog, P.fogNear, P.fogFar);
+  S.add(new THREE.HemisphereLight(P.hemiSky, P.hemiGnd, P.hemi)); const key = new THREE.DirectionalLight(P.key, P.keyI); key.position.set(...P.keyDir); S.add(key);
+  const U = { uT: { value: 0 } }, sunDir = new THREE.Vector3(...P.sunDir).normalize();
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(C.far * .9, 24, 12), new THREE.ShaderMaterial({ side: THREE.BackSide, depthWrite: false, fog: false,
+    uniforms: { uTop: { value: new THREE.Color(P.top) }, uMid: { value: new THREE.Color(P.mid) }, uHor: { value: new THREE.Color(P.hor) }, uGlow: { value: new THREE.Color(P.glow) }, uSun: { value: sunDir } },
+    vertexShader: 'varying vec3 vD; void main(){ vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform vec3 uTop, uMid, uHor, uGlow, uSun; varying vec3 vD;
+      void main(){ vec3 d = normalize(vD); float y = d.y; vec3 c = mix(uHor, uMid, smoothstep(-.004, .03, y)); c = mix(c, uTop, smoothstep(.03, .085, y));
+        float s = max(dot(d, uSun), 0.0); c += uGlow * (pow(s, 900.0) * .55 + pow(s, 9000.0) * 1.2); c = mix(c, uGlow, smoothstep(.99985, .9999, s));
+        gl_FragColor = vec4(c, 1.0);
+        #include <colorspace_fragment>
+      }` })); sky.renderOrder = -10; S.add(sky);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(C.far * 3, C.far * 2).rotateX(-Math.PI / 2).translate(0, T.floorY, -C.far * .9), new THREE.MeshBasicMaterial({ color: P.floor })); S.add(floor);
+  // the materials: one per kind, shared by every band
+  const jc0 = new THREE.Color(T.jinra[0]), jc1 = new THREE.Color(T.jinra[1]);
+  const MAT = { solid: new THREE.MeshLambertMaterial({ vertexColors: true }), glow: new THREE.MeshBasicMaterial({ vertexColors: true }),
+    cloth: new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }),
+    jinra: new THREE.ShaderMaterial({ transparent: true, depthWrite: false, side: THREE.DoubleSide, uniforms: { uT: U.uT, uA: { value: jc0 }, uB: { value: jc1 }, uFog: { value: new THREE.Color(P.fog) }, uFR: { value: new THREE.Vector2(P.fogNear, P.fogFar) } },
+      vertexShader: 'attribute vec2 aJ; varying vec2 vU; varying vec2 vJ; varying float vD; void main(){ vU = uv; vJ = aJ; vec4 p = vec4(position, 1.0);\n#ifdef USE_INSTANCING\n p = instanceMatrix * p;\n#endif\n vec4 mv = modelViewMatrix * p; vD = -mv.z; gl_Position = projectionMatrix * mv; }',
+      fragmentShader: `uniform float uT; uniform vec3 uA, uB, uFog; uniform vec2 uFR; varying vec2 vU; varying vec2 vJ; varying float vD;
+        void main(){ float a, f; const float TAU = 6.2831853;
+          if (vJ.x < .5) { float u = vU.x, v = vU.y; f = .5 + .25 * sin(TAU * (u * 3.0 - uT * .55) + v * 5.0) + .25 * sin(TAU * (u * 7.0 - uT * .8) - v * 9.0);
+            a = .82 * smoothstep(0.0, .22, v) * smoothstep(1.0, .78, v); f = smoothstep(.55, .95, f); }
+          else { float u = vU.x, v = vU.y * vJ.y; f = .5 + .3 * sin(TAU * u * 3.0 + 1.7) * sin(v * .35 - uT * 5.0) + .2 * sin(TAU * u * 5.0 + v * .12 - uT * 2.0);
+            a = smoothstep(0.0, .25, u) * smoothstep(1.0, .75, u) * (.75 + .25 * f) * (1.0 - smoothstep(.75, 1.0, vU.y) * .7); }
+          gl_FragColor = vec4(mix(mix(uA, uB, f), uFog, clamp((vD - uFR.x) / (uFR.y - uFR.x), 0.0, 1.0)), a);
+          #include <colorspace_fragment>
+        }` }),
+    card: new THREE.MeshBasicMaterial({ map: loopCardTex(), vertexColors: true, transparent: true, depthWrite: false }) };
+  MAT.cardNoFog = MAT.card.clone(); MAT.cardNoFog.fog = false; MAT.cardNoFog.map = MAT.card.map;
+  MAT.cloth.onBeforeCompile = sh => { sh.uniforms.uT = U.uT; sh.vertexShader = 'uniform float uT; attribute float aSw;\n' + sh.vertexShader.replace('#include <begin_vertex>',
+    '#include <begin_vertex>\n transformed.z += aSw * (sin(uT * 2.3 + position.x * .9 + position.y * .6) * .28 + sin(uT * 4.1 + position.y * 1.7) * .08); transformed.x -= aSw * aSw * .12 * (1.0 + sin(uT * 1.7));'); };
+  const ATT = { solid: ['position', 'normal', 'color'], glow: ['position', 'color'], cloth: ['position', 'normal', 'color', 'aSw'], jinra: ['position', 'uv', 'aJ'], card: ['position', 'uv', 'color'] };
+  const RO = { clouds: { card: -5 }, far: { jinra: -4, card: -3 }, mid: { jinra: 1, card: 2 }, ground: { jinra: 3 } };
+  const built = loopBgBuild(T), bands = [], M4 = new THREE.Matrix4(); let tris = 0;
+  for (const B of T.bands) { const L = { B, ims: [] };
+    for (const k in built[B.id]) { const gs = built[B.id][k]; if (!gs.length) continue;
+      const clean = gs.map(g => { let q = g.index ? g.toNonIndexed() : g; if (ATT[k].includes('normal') && !q.attributes.normal) q.computeVertexNormals();
+        for (const a of Object.keys(q.attributes)) if (!ATT[k].includes(a)) q.deleteAttribute(a); return q; });
+      const geo = _mergeGeos(clean, false); if (!geo) { console.warn('[melee] LOOPBG merge', B.id, k); continue; } tris += geo.attributes.position.count / 3;
+      const mat = k === 'card' && B.fog === 0 ? MAT.cardNoFog : MAT[k], im = new THREE.InstancedMesh(geo, mat, 3); im.frustumCulled = false; im.renderOrder = (RO[B.id] && RO[B.id][k]) || 0; S.add(im); L.ims.push(im); }
+    bands.push(L); }
+  // HIM: walking in place at the centre, facing screen-right (+X); the measured walk is the world's speed
+  const W = { root: null, mixer: null, speed: T.walker.speed || 1.0, measured: 0 };
+  const shadow = new THREE.Mesh(new THREE.CircleGeometry(.5, 24).rotateX(-Math.PI / 2).scale(1.4, 1, .7), new THREE.MeshBasicMaterial({ color: 0x1a1408, transparent: true, opacity: .35, depthWrite: false })); shadow.position.y = .09; shadow.renderOrder = 5; S.add(shadow);
+  loadGLB(HERO.files[T.walker.hero], 'title loop').then(g => { if (st.dead) return; const root = g.scene; let lo = Infinity, hi = -Infinity;
+    root.traverse(o => { if (!o.isSkinnedMesh || !o.geometry) return; o.frustumCulled = false; o.geometry.computeBoundingBox(); lo = Math.min(lo, o.geometry.boundingBox.min.y); hi = Math.max(hi, o.geometry.boundingBox.max.y); });
+    if (!(hi > lo)) root.traverse(o => { if (!o.isMesh || !o.geometry) return; o.geometry.computeBoundingBox(); lo = Math.min(lo, o.geometry.boundingBox.min.y); hi = Math.max(hi, o.geometry.boundingBox.max.y); });
+    const k = hi > lo ? T.walker.height / (hi - lo) : 1, hold = new THREE.Group(); root.scale.setScalar(k); root.position.y = -lo * k + .08; hold.add(root); hold.rotation.y = Math.PI / 2; S.add(hold);
+    const mixer = new THREE.AnimationMixer(root), clip = (g.animations || []).find(a => a.name === T.walker.clip) || (g.animations || []).find(a => /walk/i.test(a.name));
+    if (clip) { mixer.clipAction(clip).play(); hold.updateMatrixWorld(true); const m = loopGait(root, mixer, clip); W.measured = m; if (!T.walker.speed && m > .2 && m < 4) W.speed = m; }
+    W.root = hold; W.mixer = mixer; }).catch(e => console.warn('[melee] title loop walker', e));
+  // LIFE: one Points pool (petals fall, Jinra motes rise), one bird mesh rewritten each frame
+  const LF = T.life, NP = LF.petals + LF.motes, pp = new Float32Array(NP * 3), pc = new Float32Array(NP * 3), ps = new Float32Array(NP), pa = new Float32Array(NP), pk = new Float32Array(NP), Pt = [];
+  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pp, 3)); pg.setAttribute('aC', new THREE.BufferAttribute(pc, 3)); pg.setAttribute('aS', new THREE.BufferAttribute(ps, 1)); pg.setAttribute('aA', new THREE.BufferAttribute(pa, 1)); pg.setAttribute('aK', new THREE.BufferAttribute(pk, 1));
+  const uPx = { value: 800 }, pts = new THREE.Points(pg, new THREE.ShaderMaterial({ transparent: true, depthWrite: false, uniforms: { uPx, uT: U.uT },
+    vertexShader: 'attribute vec3 aC; attribute float aS, aA, aK; uniform float uPx; varying vec3 vC; varying float vA, vK; void main(){ vC = aC; vA = aA; vK = aK; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = max(1.5, aS * uPx / -mv.z); }',
+    fragmentShader: `varying vec3 vC; varying float vA, vK; void main(){ vec2 q = gl_PointCoord - .5; float a;
+      if (vK < .5) { a = smoothstep(.5, .0, length(q)); a *= a; } else { float c = cos(vK), s = sin(vK); vec2 r = vec2(c * q.x - s * q.y, s * q.x + c * q.y); a = smoothstep(.5, .4, length(r * vec2(1.0, 2.2))); }
+      gl_FragColor = vec4(vC, a * vA); if (gl_FragColor.a < .01) discard;
+      #include <colorspace_fragment>
+    }` })); pts.frustumCulled = false; pts.renderOrder = 6; S.add(pts);
+  const rnd = Math.random, ck = [new THREE.Color(0xffc2d4), new THREE.Color(0xff9fbd), new THREE.Color(0xfff0f4)];
+  const half = d => ({ w: d * tanH * cam.aspect + 1, top: C.y + d * tanH * (1 - C.shift), bot: C.y - d * tanH * (1 + C.shift) });
+  const spawn = (i, first) => { const p = Pt[i], mote = i >= LF.petals; p.z = mote ? (rnd() < .45 ? -4.6 + (rnd() - .5) * 1.4 : -70 + rnd() * 76) : -45 + rnd() * 54; const d = C.dist - p.z, H = half(d);
+    p.x = (rnd() * 2 - 1) * H.w; p.mote = mote; p.ph = rnd() * 6.3; p.life = 0;
+    if (mote) { p.y = first ? H.bot + rnd() * (H.top - H.bot) : (p.z > -9 ? -.1 : -2 - rnd() * 4); p.vy = .25 + rnd() * .45; p.max = 5 + rnd() * 6; p.s = .05 + rnd() * .07; pc.set([.45 + rnd() * .3, 1, .82], i * 3); }
+    else { p.y = first ? H.bot + rnd() * (H.top - H.bot) : H.top + rnd() * 2; p.vy = -(.45 + rnd() * .5); p.max = 1e9; p.s = .07 + rnd() * .05; const c = ck[(rnd() * 3) | 0]; pc.set([c.r, c.g, c.b], i * 3); }
+    p.vx = mote ? (rnd() - .5) * .2 : -(.4 + rnd() * .8); };
+  for (let i = 0; i < NP; i++) { Pt.push({}); spawn(i, 1); }
+  const NB = LF.birds, bp = new Float32Array(NB * 36), bg = new THREE.BufferGeometry(); bg.setAttribute('position', new THREE.BufferAttribute(bp, 3));
+  const birds = new THREE.Mesh(bg, new THREE.MeshBasicMaterial({ color: 0x2e2833, side: THREE.DoubleSide })); birds.frustumCulled = false; S.add(birds);
+  const flocks = [{ n: 5, wait: 2 }, { n: NB - 5, wait: 9 }], Bd = []; for (const F of flocks) { F.b = []; for (let i = 0; i < F.n; i++) { const b = { on: 0, ph: rnd() * 6.3 }; F.b.push(b); Bd.push(b); } }
+  const launch = F => { const z = -40 - rnd() * 110, d = C.dist - z, H = half(d), dir = rnd() < .5 ? 1 : -1, y = H.bot + (H.top - H.bot) * (.62 + rnd() * .3), sp = 4 + rnd() * 3;
+    F.b.forEach((b, j) => { b.on = 1; b.z = z + (rnd() - .5) * 6; b.x = -dir * (H.w + 2 + j * 1.6 + rnd()); b.y = y - Math.abs(j - F.n / 2) * .7 + rnd() * .5; b.vx = dir * sp; b.dir = dir; b.fr = 7 + rnd() * 2; }); };
+  const st = { dead: 0, raf: 0, last: performance.now(), t: 0, scroll: 0 };
+  const size = () => { const w = host.clientWidth || innerWidth, h = host.clientHeight || innerHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+    cam.projectionMatrix.elements[9] = -C.shift; cam.projectionMatrixInverse.copy(cam.projectionMatrix).invert(); uPx.value = h * R.getPixelRatio() / (2 * tanH); };
+  addEventListener('resize', size);
+  const frame = dt => { st.t += dt; U.uT.value = st.t; const sp = W.speed; st.scroll += sp * dt; if (W.mixer) W.mixer.update(dt);
+    for (const L of bands) { const off = st.scroll - (L.B.drift || 0) * st.t, base = -(((off % L.B.W) + L.B.W) % L.B.W);
+      for (const im of L.ims) { for (let k = 0; k < 3; k++) im.setMatrixAt(k, M4.makeTranslation(base + (k - 1) * L.B.W, 0, 0)); im.instanceMatrix.needsUpdate = true; } }
+    for (let i = 0; i < NP; i++) { const p = Pt[i], d = C.dist - p.z, H = half(d); p.life += dt; p.x += (p.vx - sp + (p.mote ? 0 : Math.sin(st.t * 1.3 + p.ph) * .5)) * dt; p.y += p.vy * dt;
+      if (p.x < -H.w - 1) p.x += 2 * H.w + 1; if (p.x > H.w + 1) p.x -= 2 * H.w + 1;
+      if (p.life > p.max || p.y < (p.z > -9 ? 0 : T.floorY) || p.y < H.bot - 2 || p.y > H.top + 3) spawn(i, 0);
+      pp[i * 3] = p.x; pp[i * 3 + 1] = p.y; pp[i * 3 + 2] = p.z; ps[i] = p.s; pk[i] = p.mote ? 0 : 1 + ((st.t * 2 + p.ph) % 5.2);
+      pa[i] = p.mote ? Math.min(1, p.life / 1.2, (p.max - p.life) / 1.5) * (.6 + .4 * Math.sin(st.t * 3 + p.ph)) : .95; }
+    for (const a of ['position', 'aS', 'aA', 'aK']) pg.attributes[a].needsUpdate = true;
+    for (const F of flocks) { if (F.b.every(b => !b.on)) { F.wait -= dt; if (F.wait <= 0) { launch(F); F.wait = 6 + rnd() * 10; } } }
+    Bd.forEach((b, i) => { const o = i * 36; if (!b.on) { bp.fill(0, o, o + 36); return; } b.x += (b.vx - sp) * dt; b.ph += dt * b.fr; const H = half(C.dist - b.z);
+      if (b.x * b.dir > H.w + 4) b.on = 0; const f = Math.sin(b.ph), sp2 = .42, y = b.y + Math.sin(b.ph * .25) * .3, x = b.x, z = b.z, th = .035, ey = y + .06 + f * sp2 * .35, ty = y + f * sp2 * .75 - .04;
+      let j = o; for (const sd of [-1, 1]) { const ex = x + sd * sp2 * .45, tx = x + sd * sp2;     // an 'm' seen from the side: shoulder -> elbow -> tip, flapping
+        bp.set([x, y + th, z, x, y - th, z, ex, ey, z, ex, ey + th * .6, z, ex, ey - th * .6, z, tx, ty, z], j); j += 18; } });
+    bg.attributes.position.needsUpdate = true; R.render(S, cam); };
+  const loop = () => { if (st.dead) return; st.raf = requestAnimationFrame(loop); const now = performance.now(), dt = Math.min(.05, (now - st.last) / 1000); st.last = now; frame(dt); };
+  size(); loop();
+  const api = { T, W, st, frame, info: () => ({ calls: R.info.render.calls, tris: R.info.render.triangles, built: tris | 0, speed: +W.speed.toFixed(3), measured: +W.measured.toFixed(3) }),
+    dispose() { st.dead = 1; cancelAnimationFrame(st.raf); removeEventListener('resize', size);
+      S.traverse(o => { if (o.geometry) o.geometry.dispose(); const ms = o.material ? [].concat(o.material) : []; for (const m of ms) { if (m.map) m.map.dispose(); m.dispose(); } });
+      R.dispose(); try { R.forceContextLoss(); } catch (e) {} } };
+  window.LOOPBGRUN = api; return api; }
 function startGate() {
   let skip = false;
   try {
@@ -69651,8 +69945,12 @@ function startGate() {
     // that was here. The pick is not remembered across a fresh launch, on purpose: the title screen is the front door.
     let stage = null;
     const page = () => { while (el.firstChild) el.removeChild(el.firstChild); };
-    const korajin = () => { page(); el.style.backgroundImage = 'linear-gradient(#07080c00, #07080c00 26%, #07080cbb 46%, #07080cee), url(images/korajin/korajin_title_02.webp?b=' + BUILD + ')';
-      add('div', 'kjgap');     // the poster's own painted title shows through here
+    const korajin = () => { page(); if (stage) { stage.dispose(); stage = null; }
+      // m2188: THE TITLE LOOP (`LOOPBG`) -- Grumbo walking in place through the parallax garden; the poster is the fallback when WebGL is not there
+      try { const host = add('div', 'loopbg'); add('div', 'loopshade'); stage = loopBg(host); } catch (e) { console.warn('[melee] title loop', e); stage = null; while (el.firstChild) el.removeChild(el.firstChild); }
+      if (stage) { el.style.backgroundImage = ''; add('h1', 'kj loopt', 'KORAJIN'); add('div', 'loopgap'); }
+      else { el.style.backgroundImage = 'linear-gradient(#07080c00, #07080c00 26%, #07080cbb 46%, #07080cee), url(images/korajin/korajin_title_02.webp?b=' + BUILD + ')';
+      add('div', 'kjgap'); }     // the poster's own painted title shows through here
       const go = (w, d) => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter(w, w === WORLD.now && HERO.pick !== 'agoblin' ? '?w=' + w : ''); };
       add('h4', '', 'KORAJIN GRUMBO');
       if (/[?&]rgnmenu\b/.test(location.search)) btn(el, 'SNOW VILLAGE (being built)', 'VILLAGE_BLUEPRINT build step 1: the hamlet ground in the region -- the 8 terraces at their heights, the gorge stepping down in three falls, the horseshoe cliff. Grey, walkable, no buildings yet. Starts at the gate.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=region&at=village'); });
