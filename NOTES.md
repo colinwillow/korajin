@@ -17,6 +17,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2253 -- THE INTRO, TAKE 3 ("...an extraordinary talent for sleeping in"), on the house-style shots (Nov 2 2026)
+- `audio/voice/korajin_intro_03.mp3` (48.46 s) replaces take 2. Re-measured (silencedetect -38 dB, .25 s): main's segments agree; the long
+  breaths split at their own pauses -- "high above the clouds," 1.53-3.14 / 3.46-6.51, "...among these skies," 18.52-22.81 / 23.10-26.54,
+  "...the floating kingdoms," 27.13-29.97 / 30.30-33.84. "was Grumbo." big and held 47.16 -> 49.6.
+- The m2250 shots (linear trucks / dollies, fixed lens, crossfades) moved onto the new beats; the bell rings at 27.2 and 30.6.
+- **Seen key `mel.reel.intro3`**, so every phone plays it once more. Rendered every shot at its middle and looked at each. **Shipped unverified.**
+
 ## m2250 -- THE INTRO, RE-SHOT IN HIS HOUSE STYLE: linear trucks and dollies, fixed lens, crossfades, subjects framed whole (Nov 2 2026)
 Main, from Colin (now CINEMA.md's rules for every reel): shots are LINEAR moves at constant speed (a truck across the line of sight, or a dolly
 along it), with NO rotation, already moving at the cut, joined by a CROSSFADE, and every subject whole, unoccluded, front-on or 3/4, readable.
