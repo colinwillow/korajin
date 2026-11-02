@@ -16080,6 +16080,7 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   // the sling as DATA: anchors on the two trunks (`a`, `b`), the ring height `y`, the `sag` of the bed below the spreader bars, its width `w`; the
   // builder writes `bed` = { at: [x, y, z] (the sling's lowest point, world), yaw (along the span), sag, span } so a body can be fitted by number
   hammock: { id: 'hammock', a: 'willow_a', b: 'willow_b', y: 1.75, sag: 1.05, w: 1.35, bed: null },
+  sleep: { on: 1, clip: 'lay', out: 1.1, clear: .06, flip: 0, side: 1.3, push: .3 },     // m2242: he wakes IN the hammock (Male_Laying_Pose_2); the first stick push gets him up (`out` s) beside it. `flip` 1 turns him end for end
   path: { id: 'path', w: 2.3, pts: [[-11.6, 15.2], [-8.9, 10.4], [-6.8, 5.2], [-3.4, .8], [-.8, -2.4], [0, -4.0]],
     branches: [{ id: 'path_east', pts: [[-3.4, .8], [1.2, -3.6], [6.5, -5.2], [12, -3.6], [17.5, -1.4], [21.4, 4.0]] }, { id: 'path_front', pts: [[-6.8, 5.2], [-3, 11], [-.4, 17], [0, 22.6]] }] },
   plaza: { id: 'stair_foot', at: [0, -3.2], r: 3.3 },
@@ -16504,7 +16505,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     const rm = new THREE.Mesh(mergeGeometries(rp.map(q => q.toNonIndexed ? (q.index ? q.toNonIndexed() : q) : q).map(q => { for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; })), M.rope);
     const wm = new THREE.Mesh(mergeGeometries(wd.map(q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; })), M.wood); rm.castShadow = wm.castShadow = true; hg.add(rm, wm);
     Z.hammockG = { g: hg, ax: ux, az: uz, sw: .35, t: 0 }; Z.pieces.hammock = hg; G.add(hg);
-    HM.bed = { at: [mx, Y0 + y + .25 - HM.sag, mz], yaw: Math.atan2(ux, uz), sag: HM.sag, span: L, ends: [[ax, Y0 + y + .35, az], [bx, Y0 + y + .35, bz]] };
+    HM.bed = { at: [mx, Y0 + y + .25 - HM.sag, mz], yaw: Math.atan2(ux, uz), sag: HM.sag, span: L, ends: [[ax, Y0 + y + .35, az], [bx, Y0 + y + .35, bz]], ux, uz, nx, nz, e0, e1, y0: Y0 + y };     // m2242: + the sling's own numbers, for `gdnClothY`
     BOXES.push(obox(mx, mz, (e1 - e0) / 2 - .2, HM.w * .4, Math.atan2(uz, ux), Y0 + y - HM.sag - .1, Y0 + y - HM.sag + .45)); part(HM.id, 'hammock', { x: mx, z: mz, y, span: L }); }
   // ---- THE JINRA BEAM: a stone spring basin, its water, a mint column of light, motes rising (one additive mesh, one Points) ----
   { const Bm = Z.beam, [bx2, bz2] = Bm.at; put(new THREE.LatheGeometry([[Bm.r - .1, 0], [Bm.r + .5, 0], [Bm.r + .55, .38], [Bm.r + .42, .46], [Bm.r + .05, .44], [Bm.r - .05, .14]].map(([a, b]) => new THREE.Vector2(a, b)), 28).translate(bx2, 0, bz2), M.stone);
@@ -17444,6 +17445,30 @@ function gdnLotus(dt) { const L = LOTUS, p = player, B = rig.bones; if (!L.on ||
     const T = L.hands === 'lap' ? hip.clone().addScaledVector(F, .2).addScaledVector(U, .03 + (sd > 0 ? .03 : 0)).addScaledVector(Lf, sd * .035) : knee.clone().addScaledVector(U, .07).addScaledVector(Lf, -sd * .04).addScaledVector(F, -.02);
     ltArm(bn(S + 'Arm'), bn(S + 'ForeArm'), bn(S + 'Hand'), T, V(sd * .7, -.2, -.7), w);
     const mid = bn(S + 'HandMiddle1'); if (mid) ltDir(bn(S + 'Hand'), mid, L.hands === 'lap' ? V(-sd * .9, -.05, .3) : V(sd * .2, -.35, .9), w * .8); } }
+// m2242 ASLEEP IN THE HAMMOCK (his, via main: "use the laying pose for the hammock"): the Garden starts with him lying in it -- Male_Laying_Pose_2 (on his
+// back, legs crossed, hands behind his head), along the span, on the cloth at its lowest point; he sways with the hammock and breathes slowly. The
+// first stick push (`push`) starts the wake: over `out` s the pose blends to his idle while he is carried up and out to `side` m beside the sling,
+// facing the garden. (A real roll-out clip is `GARDEN.wakeClip`'s, when he makes one.) The intro reel ends on this shot: `hammock.bed` is exact.
+function gdnClothY(B, x, z) { const d = (x - (B.at[0])) * B.ux + (z - B.at[2]) * B.uz, s = d + B.span / 2, u = Math.max(0, Math.min(1, (s - B.e0) / (B.e1 - B.e0))), lat = ((x - B.at[0]) * B.nx + (z - B.at[2]) * B.nz) / (GARDEN.hammock.w / 2);
+  return B.y0 + .25 - B.sag * Math.pow(Math.sin(Math.PI * u), 1.2) * (1 - .25 * Math.min(1, lat * lat)); }
+function gdnSleepStart() { const Z = GARDEN, B = Z.hammock.bed, p = player; if (!B || !Z.sleep.on || Z.wakeClip) return; p.sleep = { t: 0, out: 0, dy: .25, sway: 0 };
+  p.faceH = p.heading = B.yaw + (Z.sleep.flip ? Math.PI : 0); p.pos.set(B.at[0], B.at[1] + .25, B.at[2]); p.vel.set(0, 0, 0); p.grounded = true; if (Z.hammockG) Z.hammockG.sw = Math.max(Z.hammockG.sw, .1); }
+function gdnSleepStep(dt, s) { const Z = GARDEN, S = Z.sleep, B = Z.hammock.bed, p = player, Q = p.sleep; if (!B) { p.sleep = null; return; } Q.t += dt; p.vel.set(0, 0, 0); p.grounded = true;
+  if (!Q.out && s && s.mag > S.push) { Q.out = 1; Q.t = 0; const [fx, fz] = Z.spawn.face; let best = null;
+    for (const sd of [1, -1]) { const x = B.at[0] + B.nx * sd * S.side, z = B.at[2] + B.nz * sd * S.side, gy = groundAt(x, z, B.y0 + .5, 2); const d = Math.hypot(fx - x, fz - z); if (gy > B.y0 - 3 && (!best || d < best[3])) best = [x, gy, z, d]; }
+    Q.to = best || [Z.spawn.at[0], Z.top, Z.spawn.at[1]]; Q.from = [p.pos.x, p.pos.y, p.pos.z]; Q.h0 = p.faceH; Q.h1 = Math.atan2(fx - Q.to[0], fz - Q.to[2]); }
+  if (Q.out) { const u = smooth(0, S.out, Q.t), arc = Math.sin(Math.PI * Math.min(1, Q.t / S.out)) * .25; p.pos.set(Q.from[0] + (Q.to[0] - Q.from[0]) * u, Q.from[1] + (Q.to[1] - Q.from[1]) * u + arc, Q.from[2] + (Q.to[2] - Q.from[2]) * u);
+    let dh = Q.h1 - Q.h0; dh = Math.atan2(Math.sin(dh), Math.cos(dh)); p.faceH = p.heading = Q.h0 + dh * u; if (Q.t >= S.out) { p.sleep = null; p.pos.y = Q.to[1]; p.grounded = true; try { if (typeof cam !== 'undefined') cam.az = p.faceH; } catch (e) {} } return; }
+  // asleep: on the cloth (lifted by what `gdnSleepPose` measured last frame), swaying with the sling about its span axis
+  const H = Z.hammockG; if (H) H.sw = Math.max(H.sw, .1); const a = H ? H.sw * Math.sin(Z.on.t * 1.6) + .025 * Math.sin(Z.on.t * .7) : 0, drop = B.y0 - B.at[1];
+  p.pos.set(B.at[0] + B.nx * Math.sin(a) * drop * -1, B.at[1] + drop * (1 - Math.cos(a)) + Q.dy, B.at[2] + B.nz * Math.sin(a) * drop * -1); }
+const _slV = new THREE.Vector3();
+function gdnSleepPose(dt) { const p = player, Q = p.sleep, B = GARDEN.hammock.bed; if (!Q || !B || !rig.bones) return; const bn = n => rig.bones['mixamorig_' + n];
+  if (!Q.out) { const br = gdnBreath(GARDEN.on ? GARDEN.on.t * .8 : 0), side = new THREE.Vector3(Math.cos(p.faceH), 0, -Math.sin(p.faceH)); ltTurn(bn('Spine2'), side, br * 2.4); ltTurn(bn('Spine1'), side, br * 1.2); }     /* slow breathing, asleep */
+  // FIT: every body point must clear the cloth by `clear` -- measure the worst and carry him up (or down onto it) next frame
+  let worst = 1e9; for (const n of ['Hips', 'Spine', 'Spine2', 'Neck', 'Head', 'LeftUpLeg', 'RightUpLeg', 'LeftLeg', 'RightLeg', 'LeftFoot', 'RightFoot', 'LeftHand', 'RightHand', 'LeftArm', 'RightArm', 'LeftForeArm', 'RightForeArm']) { const b = bn(n); if (!b) continue;
+    b.getWorldPosition(_slV); const gap = _slV.y - gdnClothY(B, _slV.x, _slV.z) - (n === 'Hips' || /Spine/.test(n) ? .14 : n === 'Head' ? .12 : .06); if (gap < worst) worst = gap; }
+  if (!Q.out && worst < 1e8) { Q.dy = Math.max(-.3, Math.min(.8, Q.dy - (worst - GARDEN.sleep.clear) * Math.min(1, dt * 8))); Q.worst = worst; } }
 function gdnStage(g) { const Z = GARDEN; Z.on = { g, t: 0, tris: 0, safe: null, built: 0 }; ARENA.youAt = Z.spawn.at.slice();
   setTimeout(() => { try { gdnMake(g); } catch (e) { note('GARDEN THREW ' + e.message); console.error(e); } }, 0); }
 // LIGHT IN THE AIR: one Points draw for the lamps' halos and the drifting Jinra motes (sizes in metres: `uPx` from the drawing buffer each frame)
@@ -17529,9 +17554,9 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
     if (far || o.isPoints || (m && (m.isShaderMaterial || (m.transparent && m.depthWrite === false) || m.blending === THREE.AdditiveBlending)) || /sky|cards|shaft|glow|heart|cloud/.test(o.name || '')) o.userData.noSurf = 1; });
   Object.assign(Z.on, { G, built: 1, tris: 1 }); try { bldTris(Z.on, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } try { if (Z.sillMake) Z.sillMake(); } catch (e) { note('GARDEN SILLS ' + e.message); } try { gdnWalls(); } catch (e) { note('GARDEN WALLS ' + e.message); }
   const [sx, sz] = Z.spawn.at, [fx, fz] = Z.spawn.face;
-  const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };
+  const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); if (Z.sleep && Z.sleep.on && Z.hammock.bed && !Z.wakeClip && !player.sleepDone) { gdnSleepStart(); player.sleepDone = 1; if (typeof cam !== 'undefined') cam.az = h; return; } if (player.sleep) return; player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };     // m2242: he starts asleep in the hammock
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
-  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
+  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.gdnSleepStart = gdnSleepStart; mel.reelEnd = reelEnd; mel.stick = stick; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
 function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O.t += dt; Z.U.uTime.value = O.t;
   if (!O.tris) { O.tris = 1; try { bldTris(O, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } }
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
@@ -41308,7 +41333,8 @@ function stepPlayer(dt) {
   p.lock = findLock();
   if (p.lock && p.lock !== hadLock) snd('lock', { g: .3, r: 1.5 });
   const s = p.lock ? stickLocked(p.lock) : stickWorld();
-  if (p.hdrop) { hdropStep(dt, s); return; }     // m1953: the hero drop owns the body
+  if (p.hdrop) { hdropStep(dt, s); return; }
+  if (p.sleep) { gdnSleepStep(dt, s); return; }     // m2242: asleep in the Garden's hammock -- the hammock owns the body until the first push     // m1953: the hero drop owns the body
 
   // **THE SLAM ENDS WHEN HE MEETS THE GROUND (m81)**, which is the opposite of every other
   // strike here -- they all end when he leaves it. That is why this is its own branch and not a
@@ -43072,6 +43098,7 @@ function rigAnim(dt) {
     if (sum < .01) t[CLIPS.idle] = 1;
     setWeights(t, dt); return;
   }
+  if (p.sleep && rig.actions[GARDEN.sleep.clip]) { const u = p.sleep.out ? smooth(0, GARDEN.sleep.out, p.sleep.t) : 0; t[GARDEN.sleep.clip] = 1 - u; if (u > 0) t[CLIPS.idle] = (t[CLIPS.idle] || 0) + u; setWeights(t, dt); return; }     // m2242: lying in the hammock, and the blend up out of it
   if (p.meditPose && GARDEN.on && rig.actions[GARDEN.beam.clip]) { t[GARDEN.beam.clip] = 1; setWeights(t, dt); return; }     // m2166: meditating in the Jinra beam
   if (p.bar) { t[hbarClip()] = 1; setWeights(t, dt); return; }
   if (p.zip) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1168: hanging from the zipline
@@ -65584,7 +65611,7 @@ function frameBody() {
     weapUnitKeep();       // m1022: one weapon size on every body, held every frame
     coverArm(dt);         // m1020: before the katana's left hand, which follows the blade
     runArm(dt);           // m1033
-    katRunTilt(); katLeftGrip(dt); smearStep(dt); try { gdnLotus(dt); } catch (e) { LOTUS.on = 0; note('LOTUS ' + e.message); }     // m2232: the Jinra beam's lotus, after every pose above     // m1015: the smear reads the final pose     // m999: the katana's left hand onto its grip, after every pose above
+    katRunTilt(); katLeftGrip(dt); smearStep(dt); try { gdnLotus(dt); } catch (e) { LOTUS.on = 0; note('LOTUS ' + e.message); } try { gdnSleepPose(dt); } catch (e) { note('SLEEP ' + e.message); }     // m2232: the Jinra beam's lotus, after every pose above     // m1015: the smear reads the final pose     // m999: the katana's left hand onto its grip, after every pose above
     // DRAWN AT `faceH`, not at `heading`, plus the rigid yaw that puts the barrel down his nose.
     // `aimComp` reads the barrel off world matrices that are a frame old, which is exactly why
     // it subtracts `rig.drawnYaw` -- the yaw THAT frame was drawn at -- rather than this one.
