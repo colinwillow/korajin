@@ -17,6 +17,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2206 -- THE TITLE LOOP: a slow handheld camera drift (Nov 2 2026)
+The camera floats a few tens of cm on three slow, unrelated sines (x .22 + .12 m, y .09 m, z .25 m). Because the layers are at real depths,
+even that much makes them slide against each other, and the frame never sits dead still. The lens shift and the wrap are untouched (the drift
+is tiny next to every band's margin). Checked headless: autumn at a village home by day on a phone. **Shipped unverified.**
+
 ## m2205 -- THE TITLE LOOP: a village (three homes), festival lantern strings, koi in his stream (Nov 2 2026)
 *"Keep going, make it amazing."*
 - **VILLAGE HOMES** (`kind: 'house'`, three on the mid terraces): a stone plinth, plaster walls in a dark timber frame, PAPER WINDOWS lit
