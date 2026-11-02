@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2196 -- THE TITLE LOOP pass 4: THE SEASONS -- spring, summer, a rain spell, autumn, winter (Nov 2 2026)
+*"Maybe it's snowing... maybe it goes through the seasons, maybe it goes from sun to... rain. We could try everything -- leaves blowing, those
+beautiful cherry tree blossoms, the willow tree."*
+- **The loop walks `LOOPBG.cycle`**: spring -> summer -> rain -> autumn -> winter, 28 s each with a 7 s crossfade (175 s round). **The chip
+  top-right** (`.loopwx`, under the title) reads AUTO · <season>. A tap PINS the next one (spring, summer, rain, autumn, winter) and then
+  goes back to AUTO; the pick is remembered (`mel.loopwx`). It is on a switch because it is a taste call.
+- **Per season** (`LOOPBG.seasons`, all data): a TINT per texture class (leaf / blossom / grass: the cherry pink goes leafy green in summer,
+  red-orange in autumn, bare grey in winter); SNOW on every up-facing face (`uSnow`, by the piece's own normal); the panorama's tint and
+  desaturation (rain greys it, winter cools it); the hemi / key / fill / env light; the fog colour; the cloud cards' tint; the sun shafts (off in
+  rain); and the WIND, which sways every leaf and blossom vertex in the shader (the willows and cherries breathe; autumn and rain are gusty).
+- **Weather is the same Points pool**, now in groups: petals 90, LEAVES 70 (orange/red/gold, tumbling, blown by the wind), SNOW 200, RAIN 260
+  (a thin vertical streak in the point shader), Jinra motes 70, sky lanterns 14. Each group's alpha is its season weight, so the crossfade costs
+  no draw (still 61 calls). **Jinra is never tinted**: the stream and falls stay mint in every season.
+- Renders: all five pinned, phone (seasons.png in the session). Readable: petals; rain greys the sky and draws streaks; autumn leaves; winter puts
+  snow on the path and the lawn tops. Weak: summer looks like spring wherever no tree is in frame; snowfall is faint against the bright sky.
+- Open: his look; rain splashes / puddles; a winter sky of its own (another pano) rather than a tinted one; time of day. **Shipped unverified.**
+
 ## m2195 -- THE TITLE LOOP pass 3: he walks on a FLOATING ISLE, his garden sky, real textures, the sky ship (Nov 2 2026)
 *"I was kind of thinking he would be walking like the plane he's walking on is an island floating... we really need to start texturing the
 models... in the vertical view I don't see some of the interesting stuff... make sure we have an HDRI, clouds in the background, the flying
