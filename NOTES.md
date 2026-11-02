@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2188 -- THE GARDEN: far isles pass 2 -- hills on top, eroded rims, upright, nearer and bigger (Nov 2 2026)
+
+His phone shots: the snow-peaked one with irregular crags "looks good"; the rest "see how flat the tops are -- upside-down cones or pyramids",
+some "rotated weird -- they should be straight up", and "very small and sparse ... essentially a floating village". `gdnIsleGeo`: a non-peaked
+top now carries 3-5 rolling HILLS (gaussian bumps, eased to 0 at the rim) and sometimes a rocky CRAG (sharper, painted scree), on 9 rings not 6;
+the rim is ERODED (bites from two high-power sines, a fine 17-lobe ripple); the body's taper exponent (`pe` .5-1.15) and a shoulder BULGE vary per
+isle; the depth has stronger lobes; drips are bigger and longer. Placement: NO tilt at all (yaw only); `tilted` is gone, `peak` (the one he liked:
+.7-1.5 x s, pines) and `hills` (the default) join the kinds; `farGen` n 26 -> 44, r0 260 -> 170, r1 1350 -> 1150, y -70..150, sizes x(.55 + d/900)
+instead of d/600, so the near ones are big and the ring is full. ~198k triangles in the one far draw (was ~130k). Renders skyw / skylow.
+**Shipped unverified.**
+
 ## m2185 -- footsteps: the rope-bridge planks and the Garden's ship sound WOOD (Nov 2 2026)
 
 The main session's checklist for surface footsteps (m2180/m2181) asked the Garden to tag what its names and colours would mislead. m2184 tagged the
