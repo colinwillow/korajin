@@ -53,6 +53,47 @@ the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` 
 MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
 minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
 
+## m2251 -- THE MESH COLLIDER (`COLL`), garden first, behind TOOLS > COLLIDER: BOXES / MESH (Nov 2 2026)
+
+Part 2 of his *"go fix it all"*: collide with the REAL TRIANGLES, not boxes. `COLL` (index.html, `// COLL:START`..`:END`, after TRICOL):
+- **THE STORE** (`collBuild`, once, when the zone is up -- `collTick` from `frameBody`): the zone's drawn SOLID meshes (`collSolid`: opaque,
+  visible, not foliage / water / cards / glow / sky / fx; `userData.coll` forces in, `noColl` / `noSurf` out), world space, binned on a 1 m
+  x/z grid TWICE in typed arrays (CSR): FLOORS (n.y >= `walk` .707 = 45 deg) and WALLS (steeper, down to a slight overhang; ceilings are
+  neither). A DOUBLE-SIDED sheet is turned to face up (moss, the ship's parts were wound downward and fell out as "ceilings" -- 1st run).
+- **GROUND**: `groundAt` takes `collGround` (the highest floor triangle at or a step over y: `triGround`'s contract). Hills walk up to 45 deg;
+  steeper has no floor and is a wall.
+- **WALLS**: `resolveBoxes(..., vert)` (the player only) ends in `collPush`: his capsule (r, from `MOVE.step` + .08 over his feet to his head,
+  three heights, two passes) out of every steep triangle -- along the face, or off the edge/corner he touches. A riser under his step is never
+  a wall, so stairs and kerbs still walk up; a stair's SIDE is.
+- **LEDGES**: `ledgeFind` first asks `collLedge`: a near-vertical face (|n.y| < .35) topped where his hands are, a FLAT drawn top (n.y > .85)
+  .2 m in over it, the face going on down under the lip, headroom -- and face and top NOT noLedge (`COLL.noLedgeRx`: rock, cliff, basalt,
+  bark, trunk, lawn, soil, sand, pebble, clay, boulder, moss, root; or `userData.noLedge`). Same answer shape, `b: null`, `mesh: 1`.
+- **THE BOXES**: `collMark` marks a box `meshRep` when the mesh already draws it (3 of 5 top points on a drawn floor within .5 m, or 2 of its
+  4 sides on drawn triangles); `groundAt`, the player's `resolveBoxes` and `ledgeFind` skip those. Undrawn boxes (guards) are KEPT.
+  NPCs still push against boxes (only the player meets the mesh walls); the camera, bolts and cover (`camHit`, `wallFind`) are still boxes.
+- **THE SWITCH**: TOOLS > COLLIDER: BOXES / MESH (shown in a zone with a `COLL.zones` row; `mel.coll` in localStorage). The garden's `def`
+  is still `'boxes'` -- step 3 turns it on. `mel.COLL` is live (`.stat`: tris, floors, walls, rep, kept, ms, and call counters).
+
+**THE GARDEN, MEASURED (`npm run colaudit garden --boxes` / `--mesh`, the same predicate both ways -- the audit now asks the game's
+`collSolid` and `COLL.walk`, which moved the m2249 numbers: moss is solid ground, 45 deg not 50):**
+                              BOXES     MESH
+    HOLES (fall-through)      4,292       30
+    MISMATCH (.15-.6 m)       1,868      101
+    GHOST floors              3,182      757     (the kept undrawn boxes and the island caps' rims)
+    WALK-THROUGH walls           77       29
+    INVISIBLE walls             749      310     (the 231 kept boxes: guards with nothing drawn on them)
+    ledges offered BAD / good  472 / 94  246 / 244
+    store: 207,041 tris (75,145 floor / 131,896 wall), built in 320-850 ms (desktop swiftshader page; expect ~1-2 s once on a phone);
+    ~11 MB typed arrays. 1,763 boxes replaced by the mesh, 231 kept.
+    cost per call (desktop, 3,000 standable cells): groundAt 2.3-3.3 us (boxes 1.7-3.5), the player's walls 7.5-12.7 us (3.3-4.8),
+    ledgeFind 5.4-9.5 us (3.7-6.6). A frame calls the player's walls 1-3 times and ledgeFind at most once: well under .1 ms here, so
+    under ~.4 ms on a phone. Pictures: `docs/colaudit/garden_boxes.png`, `docs/colaudit/garden_mesh.png`.
+**Still open (what step 3 should look at):** the ship's 76 bad ledges and 29 walk-through samples (its rails); 'dark' and 'stone' trims on
+the chunks offering ledges the audit calls bad (32 + 22 + 19 + 16); ghost floors at (48.1, 126.8, -6.3) and (35.5, 124.2, 19) (kept boxes over
+nothing drawn); a one-off build hitch. Renders of his named spots (a rock, a stair side, a hill) come with step 3. **Shipped unverified.**
+**What to try:** in the garden, TOOLS > COLLIDER: MESH, then jump at a round rock (no hang), walk into the shrine stair's side (solid), walk
+up a hill (no float), walk under/over the roofs and onto the ship's bow and stern.
+
 ## m2249 -- THE COLLIDER AUDIT: `npm run colaudit [zone]`, what is DRAWN against what COLLIDES (Nov 2 2026)
 
 *"Whenever we make complex geometry, especially organic, the colliders are horrendous ... I wish there was a general solution -- go fix it

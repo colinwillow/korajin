@@ -538,6 +538,8 @@ rule that has to be in front of me *before* I know which system I am in.
   finished without its statue form; a level wakes statues on an EVENT (the chalice), never by proximity.
 - **A VEHICLE BANKS INTO ITS TURN (m1703): left stick, LEFT side DOWN.** Every vehicle this file has built leaned OUT of the turn. Prove it
   with a dot product (root up . the side it turns toward > 0), never by reasoning about a rotation sign.
+- **ORGANIC / COMPLEX GEOMETRY COLLIDES ON ITS TRIANGLES, NOT BOXES (m2251, `COLL`).** A zone row in `COLL.zones` builds the mesh collider from
+  its drawn solid meshes; tag a mesh `userData.noLedge` (or a rock/cliff/bark material) so it offers no ledge. MEASURE with `npm run colaudit <zone>`.
 - **HIS STEP IS .357 M, NOT .5 (m368).** `MOVE.step` is `.5 * SZ` and the rig is 1.25 m. A riser over .357 is a WALL
   he has to jump. Build stairs at .32 or less, and prove them with `places`' `walkUp`, never with a lenient `groundAt`.
 

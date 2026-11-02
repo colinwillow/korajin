@@ -25,7 +25,7 @@ const ZONES = {
   arena: { url: '?w=arena', ready: 'true', rect: [-70, 70, -70, 70], y: [-20, 80] },
 };
 const want = ARGS.filter(a => !a.startsWith('--')); if (!want.length) want.push('garden');
-const HANDLE = 'window.__ca = { BOXES, boxesNear, boxNear, boxLocal, thinBox, groundAt, LEDGE, RIG, MOVE, TRI, SURF, scene, WORLD, player, GARDEN, COLL: typeof COLL !== "undefined" ? COLL : null, meshMode: typeof collMode === "function" ? collMode : null }; ';
+const HANDLE = 'window.__ca = { BOXES, boxesNear, boxNear, boxLocal, thinBox, groundAt, LEDGE, RIG, MOVE, TRI, SURF, scene, WORLD, player, GARDEN, COLL: typeof COLL !== "undefined" ? COLL : null, ledgeFind, resolveBoxes }; ';
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.webmanifest': 'application/manifest+json' };
 const server = http.createServer((q, r) => {
@@ -56,7 +56,7 @@ function audit(Z) {
     for (let q = o; q; q = q.parent) if (q.visible === false) return;
     const m = Array.isArray(o.material) ? o.material[0] : o.material; if (!m) return; const key = mkey.get(m) || '';
     const nm = (o.name || '') + '|' + (m.name || '') + '|' + key + '|' + ((o.parent && o.parent.name) || '');
-    if (o.userData.noSurf || m.transparent && m.opacity < .95 || m.depthWrite === false || m.side === 1 || m.blending === 2 || NONSOLID.test(nm) || (m.isMeshBasicMaterial && m.fog === false)) { nSkip++; return; }
+    if (A.COLL && A.COLL.solid ? !A.COLL.solid(o, key) : (o.userData.noSurf || m.transparent && m.opacity < .95 || m.depthWrite === false || m.side === 1 || m.blending === 2 || NONSOLID.test(nm) || (m.isMeshBasicMaterial && m.fog === false))) { nSkip++; return; }     /* the game's own test when it has one */
     const g = o.geometry; if (!g.boundingSphere) g.computeBoundingSphere();
     const insts = o.isInstancedMesh ? Math.min(o.count, 4000) : 1; nMesh++;
     for (let ii = 0; ii < insts; ii++) { let e = o.matrixWorld.elements;
@@ -78,16 +78,18 @@ function audit(Z) {
       out.push([y, ny / nl, o]); }
     out.sort((a, b) => b[0] - a[0]); return out; };
   // a horizontal ray (x, y, z) along (dx, dz), first hit distance <= L against the render tris (Moller-Trumbore), or 1e9
-  const rayH = (x, y, z, dx, dz, L) => { let best = 1e9; const seen = new Set();
+  const rayH = (x, y, z, dx, dz, L, wall) => { let best = 1e9; const seen = new Set();
     for (let s = 0; s <= L + CS; s += CS * .5) { const B = binAt(x + dx * Math.min(s, L), z + dz * Math.min(s, L)); if (!B) continue;
       for (const o of B) { if (seen.has(o)) continue; seen.add(o); const ax = TR[o], ay = TR[o + 1], az = TR[o + 2], e1x = TR[o + 3] - ax, e1y = TR[o + 4] - ay, e1z = TR[o + 5] - az, e2x = TR[o + 6] - ax, e2y = TR[o + 7] - ay, e2z = TR[o + 8] - az;
         const px = -dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y, det = e1x * px + e1y * py + e1z * pz; if (Math.abs(det) < 1e-9) continue; const inv = 1 / det, tx = x - ax, ty = y - ay, tz = z - az, u = (tx * px + ty * py + tz * pz) * inv; if (u < 0 || u > 1) continue;
-        const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x, v = (dx * qx + dz * qz) * inv; if (v < 0 || u + v > 1) continue; const t = (e2x * qx + e2y * qy + e2z * qz) * inv; if (t >= 0 && t < best && t <= L) { best = t; seen.hit = o; } } }
+        const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x, v = (dx * qx + dz * qz) * inv; if (v < 0 || u + v > 1) continue; const t = (e2x * qx + e2y * qy + e2z * qz) * inv;
+        if (wall && t >= 0 && t < best) { const ny = e1z * e2x - e1x * e2z, nl = Math.hypot(e1y * e2z - e1z * e2y, ny, e1x * e2y - e1y * e2x) || 1; if (Math.abs(ny / nl) > .707) continue; }     /* walkable ground rising ahead (or a ceiling) is not a wall */
+        if (t >= 0 && t < best && t <= L) { best = t; seen.hit = o; } } }
     rayH.hit = seen.hit; return best; };
   // the collider along the same ray: the first box (miny < y < maxy, top above his step) the segment enters, analytically per box (turned in its own frame)
   const NB = [], step = A.MOVE.step;
   const rayC = (x, y, z, dx, dz, L, g) => { let best = 1e9; const ex = x + dx * L, ez = z + dz * L;
-    for (const b of A.boxesNear(Math.min(x, ex) - .1, Math.max(x, ex) + .1, Math.min(z, ez) - .1, Math.max(z, ez) + .1, NB)) { if (y <= b.miny || y >= b.maxy || b.maxy <= g + step) continue;
+    for (const b of A.boxesNear(Math.min(x, ex) - .1, Math.max(x, ex) + .1, Math.min(z, ez) - .1, Math.max(z, ez) + .1, NB)) { if ((A.COLL && A.COLL.on && b.meshRep) || y <= b.miny || y >= b.maxy || b.maxy <= g + step) continue;
       let ox = x, oz = z, ux = dx, uz = dz, hx, hz;
       if (b.cs !== undefined) { const rx = x - b.cx, rz = z - b.cz; ox = rx * b.cs + rz * b.sn; oz = -rx * b.sn + rz * b.cs; ux = dx * b.cs + dz * b.sn; uz = -dx * b.sn + dz * b.cs; hx = b.hx; hz = b.hz; }
       else { const cx = (b.minx + b.maxx) / 2, cz = (b.minz + b.maxz) / 2; ox = x - cx; oz = z - cz; hx = (b.maxx - b.minx) / 2; hz = (b.maxz - b.minz) / 2; }
@@ -96,13 +98,13 @@ function audit(Z) {
     if (A.COLL && A.COLL.mode === 'mesh' && A.COLL.rayWall) { const t = A.COLL.rayWall(x, y, z, dx, dz, L, g); if (t < best) best = t; }
     return best; };
   // (2) GROUND, every .5 m
-  const GS = .5, NX = Math.round((X1 - X0) / GS), NZ = Math.round((Z1 - Z0) / GS), code = new Uint8Array(NX * NZ), hgt = new Float32Array(NX * NZ).fill(NaN), stand = new Float32Array(NX * NZ).fill(NaN);
+  const WALK = (A.COLL && A.COLL.walk) || .707, GS = .5, NX = Math.round((X1 - X0) / GS), NZ = Math.round((Z1 - Z0) / GS), code = new Uint8Array(NX * NZ), hgt = new Float32Array(NX * NZ).fill(NaN), stand = new Float32Array(NX * NZ).fill(NaN);
   // codes: 1 hole, 2 ghost, 3 mismatch, 4 walk-through wall, 5 invisible wall, 6 bad ledge
   const C = { high: 0, hole: 0, ghost: 0, mismatch: 0, walk: 0, invis: 0, ledgeBad: 0, ledgeGood: 0, cells: 0, walkable: 0 }, who = new Map(), tag = (c, o) => { if (o == null) return; const n = names[TR[o + 9]] || '?'; const k = c + ' ' + n; who.set(k, (who.get(k) || 0) + 1); };
   for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) { const x = X0 + (i + .5) * GS, z = Z0 + (j + .5) * GS, c = j * NX + i;
     const R = downAll(x, z).filter(h => h[0] > YLO && h[0] < YHI); if (R.length) hgt[c] = R[0][0];
-    // walkable drawn tops: up-facing, under 50 deg, with 1.2 m of drawn headroom over them
-    const tops = []; for (let q = 0; q < R.length; q++) if (R[q][1] > .64 && (q === 0 || R[q - 1][0] - R[q][0] > 1.2)) tops.push(R[q]);
+    // walkable drawn tops: up-facing, under the game's own slope limit (`COLL.walk`, 45 deg), with 1.2 m of drawn headroom over them
+    const tops = []; for (let q = 0; q < R.length; q++) if (R[q][1] > WALK && (q === 0 || R[q - 1][0] - R[q][0] > 1.2)) tops.push(R[q]);
     let flag = 0;
     for (const h of tops) { C.walkable++; const g = A.groundAt(x, z, h[0] + .3, 0), d = h[0] - g;
       if (Math.abs(d) <= .15) { if (isNaN(stand[c])) stand[c] = g; continue; }
@@ -117,25 +119,24 @@ function audit(Z) {
   const DIRS = []; for (let a = 0; a < 8; a++) DIRS.push([Math.sin(a * Math.PI / 4), Math.cos(a * Math.PI / 4)]);
   for (let j = 1; j < NZ; j += 2) for (let i = 1; i < NX; i += 2) { const c = j * NX + i, g = stand[c]; if (isNaN(g)) continue; const x = X0 + (i + .5) * GS, z = Z0 + (j + .5) * GS;
     if (rayC(x, g + .45, z, 1, 0, 0, g) === 0) continue;     /* he cannot stand here: inside a box already */
-    let w = 0, v = 0; for (const yy of [.45, 1.1]) for (const [dx, dz] of DIRS) { const tr = rayH(x, g + yy, z, dx, dz, 1.05), tc = rayC(x, g + yy, z, dx, dz, 1.05, g);
+    let w = 0, v = 0; for (const yy of [.45, 1.1]) for (const [dx, dz] of DIRS) { const tr = rayH(x, g + yy, z, dx, dz, 1.05, 1), tc = rayC(x, g + yy, z, dx, dz, 1.05, g);
       if (tr <= .7 && tc > tr + .35) { w = 1; tag('walk', rayH.hit); } if (tc <= .7 && tr > tc + .35) v = 1; }
     if (w) { C.walk++; if (!code[c]) code[c] = 4; } if (v) { C.invis++; if (!code[c]) code[c] = 5; } }
-  // (4) LEDGES -- every box ledgeFind would take, its top edges every .5 m
-  const LBAD = [];
-  for (const b of A.BOXES) { if (b.maxy - b.miny < A.LEDGE.tall || A.thinBox(b) || b._wc || b._sc) continue; if (b.maxx < X0 || b.minx > X1 || b.maxz < Z0 || b.minz > Z1 || b.maxy < YLO || b.maxy > YHI) continue;
-    const corners = b.cs !== undefined ? [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([u, w]) => [b.cx + u * b.hx * b.cs - w * b.hz * b.sn, b.cz + u * b.hx * b.sn + w * b.hz * b.cs]) : [[b.minx, b.minz], [b.maxx, b.minz], [b.maxx, b.maxz], [b.minx, b.maxz]];
-    for (let e = 0; e < 4; e++) { const [ax, az] = corners[e], [bx, bz] = corners[(e + 1) % 4], L = Math.hypot(bx - ax, bz - az); if (L < .3) continue; const tx = (bx - ax) / L, tz = (bz - az) / L;
-      let nx = tz, nz = -tx; const mx = (ax + bx) / 2, mz = (az + bz) / 2, ccx = (corners[0][0] + corners[2][0]) / 2, ccz = (corners[0][1] + corners[2][1]) / 2; if ((mx - ccx) * nx + (mz - ccz) * nz < 0) { nx = -nx; nz = -nz; }
-      for (let s = .25; s < L; s += .5) { const ex = ax + tx * s, ez = az + tz * s;
-        // is this lip reachable from outside at all (something to stand under it), and not buried in another box?
-        if (A.groundAt(ex + nx * .3, ez + nz * .3, b.maxy + .1, 0) > b.maxy - .25) continue;     /* an inner edge: the box beside it is as tall (a disc's strips, a wall's run) */
-        const gOut = A.groundAt(ex + nx * .6, ez + nz * .6, b.maxy - .3, 0); if (!(gOut > b.maxy - 3.2) || b.maxy - gOut < A.LEDGE.tall) continue;
-        const top = downAll(ex - nx * .25, ez - nz * .25).find(h => Math.abs(h[0] - b.maxy) < .6);
-        const flat = top && top[1] > .85 && Math.abs(top[0] - b.maxy) < .2, face = rayH(ex + nx * .8, b.maxy - .35, ez + nz * .8, -nx, -nz, 1.2), fo = rayH.hit;
-        const faceOk = face > .45 && face < 1.15;
-        let bad = !(flat && faceOk); if (!bad && fo != null) { const o = fo, ux = TR[o + 3] - TR[o], uy = TR[o + 4] - TR[o + 1], uz = TR[o + 5] - TR[o + 2], vx = TR[o + 6] - TR[o], vy = TR[o + 7] - TR[o + 1], vz = TR[o + 8] - TR[o + 2], fny = (uz * vx - ux * vz) / (Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx) || 1); if (Math.abs(fny) > .5) bad = true; }
-        if (bad) { C.ledgeBad++; tag('ledge', top ? top[2] : fo); LBAD.push([+ex.toFixed(1), +b.maxy.toFixed(1), +ez.toFixed(1)]); const i = Math.floor((ex - X0) / GS), j = Math.floor((ez - Z0) / GS); if (i >= 0 && j >= 0 && i < NX && j < NZ) code[j * NX + i] = 6; }
-        else C.ledgeGood++; } } }
+  // (4) LEDGES -- the shipped `ledgeFind` from every standable cell (every 1 m) at five heights over the ground: every ledge he would actually be
+  // offered. Each is checked against the drawing: GOOD = a drawn near-flat top at the lip and a drawn steep face under it, on nothing round or organic.
+  const LBAD = [], LSEEN = new Set(), ORG = (A.COLL && A.COLL.noLedgeRx) || /rock|cliff|basalt|bark|trunk|lawn|soil|sand|pebble|clay|boulder/i, R0 = (A.player.r || .24) + A.LEDGE.reach;
+  for (let j = 1; j < NZ; j += 2) for (let i = 1; i < NX; i += 2) { const c = j * NX + i, g = stand[c]; if (isNaN(g)) continue; const x = X0 + (i + .5) * GS, z = Z0 + (j + .5) * GS;
+    for (const up of [0, .6, 1.2, 1.8, 2.4]) { const L = A.ledgeFind(x, g + up, z, R0); if (!L) continue; const key = Math.round(L.cx * 2) + ',' + Math.round(L.cz * 2) + ',' + Math.round(L.y * 2); if (LSEEN.has(key)) continue; LSEEN.add(key);
+      const top = downAll(L.cx - L.nx * .25, L.cz - L.nz * .25).find(h => Math.abs(h[0] - L.y) < .6), flat = top && top[1] > .85 && Math.abs(top[0] - L.y) < .2;
+      const face = rayH(L.cx + L.nx * .8, L.y - .35, L.cz + L.nz * .8, -L.nx, -L.nz, 1.2), fo = rayH.hit; let bad = !(flat && face > .45 && face < 1.15);
+      if (!bad && fo != null) { const o = fo, ux = TR[o + 3] - TR[o], uy = TR[o + 4] - TR[o + 1], uz = TR[o + 5] - TR[o + 2], vx = TR[o + 6] - TR[o], vy = TR[o + 7] - TR[o + 1], vz = TR[o + 8] - TR[o + 2], fny = (uz * vx - ux * vz) / (Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx) || 1); if (Math.abs(fny) > .5) bad = true; if (ORG.test(names[TR[o + 9]] || '')) bad = true; }
+      if (!bad && top && ORG.test(names[TR[top[2] + 9]] || '')) bad = true;
+      if (bad) { C.ledgeBad++; tag('ledge', top ? top[2] : fo); LBAD.push([+L.cx.toFixed(1), +L.y.toFixed(1), +L.cz.toFixed(1), L.mesh ? 'mesh' : 'box']); const ii = Math.floor((L.cx - X0) / GS), jj = Math.floor((L.cz - Z0) / GS); if (ii >= 0 && jj >= 0 && ii < NX && jj < NZ) code[jj * NX + ii] = 6; }
+      else C.ledgeGood++; } }
+  // (4b) THE COST, per call, on the standable cells: groundAt, the player's resolveBoxes (walls), ledgeFind
+  const bench = {}; { const P = []; for (let c = 0; c < NX * NZ && P.length < 3000; c += 7) if (!isNaN(stand[c])) P.push([X0 + (c % NX + .5) * GS, stand[c], Z0 + (((c / NX) | 0) + .5) * GS]);
+    const q = { x: 0, y: 0, z: 0 }, r = A.player.r || .24, hh = A.player.hh || 1.14, T = (f) => { const t = performance.now(); for (let k = 0; k < 3; k++) for (const p of P) f(p); return +((performance.now() - t) * 1000 / (3 * P.length)).toFixed(2); };
+    bench.n = P.length; bench.groundUs = T(p => A.groundAt(p[0], p[2], p[1] + .3, A.MOVE.step)); bench.wallsUs = T(p => { q.x = p[0]; q.y = p[1]; q.z = p[2]; A.resolveBoxes(q, r, hh, 1); }); bench.ledgeUs = T(p => A.ledgeFind(p[0], p[1] + 1, p[2], r + A.LEDGE.reach)); }
   // (5) CLUSTERS -- connected flagged cells of one code, ranked by size
   const seen = new Uint8Array(NX * NZ), CL = [], NAME = ['', 'hole', 'ghost', 'mismatch', 'walk-through wall', 'invisible wall', 'bad ledge'];
   for (let c0 = 0; c0 < NX * NZ; c0++) { if (!code[c0] || seen[c0]) continue; const k = code[c0], st = [c0]; seen[c0] = 1; let n = 0, sx = 0, sz = 0, sy = 0, ny = 0;
@@ -153,7 +154,7 @@ function audit(Z) {
   const bx2 = big.getContext('2d'); bx2.imageSmoothingEnabled = false; bx2.fillStyle = '#111'; bx2.fillRect(0, 0, big.width, big.height); bx2.drawImage(cv, 0, 0, NX * K, NZ * K);
   bx2.font = '13px sans-serif'; let lx = 6; for (let k = 1; k < 7; k++) { bx2.fillStyle = 'rgb(' + COL[k] + ')'; bx2.fillRect(lx, NZ * K + 8, 12, 12); bx2.fillStyle = '#ddd'; bx2.fillText(NAME[k], lx + 16, NZ * K + 19); lx += 30 + bx2.measureText(NAME[k]).width; }
   const top = [...who.entries()].sort((a, b) => b[1] - a[1]).slice(0, 25);
-  return { png: big.toDataURL('image/png'), counts: C, meshes: nMesh, skipped: nSkip, tris: NT, clusters: CL.slice(0, 60), nClusters: CL.length, culprits: top, ledges: LBAD.slice(0, 80), grid: [NX, NZ, GS], rect: Z.rect, ms: Math.round(performance.now() - t0), mode: A.COLL ? A.COLL.mode : 'boxes' };
+  return { png: big.toDataURL('image/png'), counts: C, meshes: nMesh, skipped: nSkip, tris: NT, clusters: CL.slice(0, 60), nClusters: CL.length, culprits: top, ledges: LBAD.slice(0, 80), bench, coll: A.COLL ? A.COLL.stat : null, grid: [NX, NZ, GS], rect: Z.rect, ms: Math.round(performance.now() - t0), mode: A.COLL ? A.COLL.mode : 'boxes' };
 }
 
 let code = 0;
@@ -174,7 +175,8 @@ for (const id of want) {
     const c = R.counts;
     console.log(`${id} [${R.mode}] ${el()}  ${R.meshes} meshes (${R.skipped} skipped as not solid), ${R.tris} tris, audit ${R.ms} ms`);
     console.log(`  walkable drawn tops ${c.walkable}: HOLES ${c.hole}  MISMATCH ${c.mismatch}  (out of reach above the collider: ${c.high})   collider floors with nothing drawn (GHOST) ${c.ghost}`);
-    console.log(`  walls: WALK-THROUGH ${c.walk}  INVISIBLE ${c.invis}   ledges: BAD ${c.ledgeBad} / good ${c.ledgeGood}   clusters ${R.nClusters}`);
+    console.log(`  walls: WALK-THROUGH ${c.walk}  INVISIBLE ${c.invis}   ledges offered: BAD ${c.ledgeBad} / good ${c.ledgeGood}   clusters ${R.nClusters}`);
+    console.log(`  cost per call (us): groundAt ${R.bench.groundUs}  walls ${R.bench.wallsUs}  ledgeFind ${R.bench.ledgeUs}  (n ${R.bench.n})` + (R.coll && R.mode === 'mesh' ? `   store: ${R.coll.tris} tris (${R.coll.floors} floor / ${R.coll.walls} wall), built in ${R.coll.ms} ms, boxes replaced ${R.coll.rep} kept ${R.coll.kept}` : ''));
     for (const k of R.clusters.slice(0, 15)) console.log(`    ${k.kind.padEnd(18)} ${String(k.cells).padStart(4)} cells at (${k.at.join(', ')})`);
     console.log('  culprits:'); for (const [k, n] of R.culprits.slice(0, 12)) console.log(`    ${String(n).padStart(5)}  ${k}`);
     if (errs.length) console.log('  pageerrors:', errs.slice(0, 3).join(' | '));
