@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2204 -- THE GARDEN: painted flowers; lanterns of glowing rice paper (Nov 2 2026)
+
+Continuing the unpainted-object audit (m2197). FLOWERS: the plant system's vertex-coloured flower bushes (73k tris) -> 255 clumps of three crossed
+cards of his painted flowers (`garden_flower_cards`, one draw). LANTERNS: `M.lamp` was a black material with a flat orange glow; it now glows
+through a generated rice-paper panel in a wooden lattice with painted plum blossom (`textures/garden_lantern.webp`, `garden_textures.py lantern`)
+as its EMISSIVE map; `M.lamp` joined the merge's uv-keeping `KEEP`, and the bridge lamps keep their uvs too. Renders open / lant.
+Left: small jade / rope / dark bits and the ship's plain parts. **Shipped unverified.**
+
 ## m2203 -- THE TITLE LOOP: NIGHT (moon, stars, moonlight) and a HALO on every light; a vignette (Nov 2 2026)
 *"Keep going, make it amazing."* (And from before: "the sun or the moon".)
 - **NIGHT joins the cycle** after winter (7 seasons, ~245 s round). The pano dims to blue (`sky` .16/.2/.42, desat .3), the light drops to .27, the
