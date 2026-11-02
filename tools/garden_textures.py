@@ -71,12 +71,23 @@ def seamless(im, band=110):
   dy = np.minimum(np.arange(H), H - 1 - np.arange(H))[:, None]; dx = np.minimum(np.arange(W), W - 1 - np.arange(W))[None, :]
   m = 1 - np.clip(np.minimum(dx, dy) / band, 0, 1); m = (m * m * (3 - 2 * m))[..., None]
   return Image.fromarray((a * (1 - m) + b * m).clip(0, 255).astype(np.uint8))
+# WRAPS: a lathe's skin, u round it and v up it; the side seam blended so it wraps (m2195)
+WRAP = {
+  'pot': ("Flat unrolled orthographic texture of a hand-made Asian garden FLOWER POT's outer surface filling the ENTIRE image edge to edge, no background, no shadows, no perspective: "
+          "the TOP 12% a thick rolled rim in glossy jade-teal glaze with a thin gold line; below it a band (about 25% tall) of cream-white glaze painted with small pink cherry blossoms "
+          "and teal leaves; the rest warm orange-brown TERRACOTTA clay with soft hand-thrown throwing rings, slight speckle, a few pale mineral stains and a little green moss creeping up "
+          "from the bottom 10%. Stylised hand-painted fantasy game style (Ghibli / Zelda palette), even lighting, no text.", "1536x1024"),
+}
 for n in (sys.argv[1:] or list(PROMPTS) + list(SINGLES) + list(ALPHA)):
   try:
     if n in PANO:     # 2:1 equirect; the side seam blended so it wraps
       p, sz = PANO[n]; im = gen(p, sz).convert('RGB').resize((2048, 1024), Image.LANCZOS)
       a = np.asarray(im).astype(np.float32); W = a.shape[1]; b = np.roll(a, W // 2, 1); dx = np.minimum(np.arange(W), W - 1 - np.arange(W))[None, :]
       m = 1 - np.clip(dx / 160, 0, 1); m = (m * m * (3 - 2 * m))[..., None]
+      Image.fromarray((a * (1 - m) + b * m).clip(0, 255).astype(np.uint8)).save(f'textures/garden_{n}.webp', quality=88, method=6); print('wrote', n, flush=True); continue
+    if n in WRAP:
+      p, sz = WRAP[n]; im = gen(p, sz).convert('RGB').resize((1024, 512), Image.LANCZOS); a = np.asarray(im).astype(np.float32); W = a.shape[1]; b = np.roll(a, W // 2, 1)
+      dx = np.minimum(np.arange(W), W - 1 - np.arange(W))[None, :]; m = 1 - np.clip(dx / 120, 0, 1); m = (m * m * (3 - 2 * m))[..., None]
       Image.fromarray((a * (1 - m) + b * m).clip(0, 255).astype(np.uint8)).save(f'textures/garden_{n}.webp', quality=88, method=6); print('wrote', n, flush=True); continue
     if n in ALPHA:
       p, sz, out = ALPHA[n]; im = req({"model": "gpt-image-1.5", "prompt": p, "size": sz, "n": 1, "background": "transparent", "output_format": "png"}).convert('RGBA').resize(out, Image.LANCZOS)
