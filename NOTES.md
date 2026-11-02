@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2209 -- THE GARDEN: boulders that are rocks; a paddy that is a paddy (Nov 2 2026)
+
+BOULDERS ("look like beanbags": a smooth `gdnBlob` with a second flattened moss blob on it). `gdnBoulder`: a sphere pushed about by noise, CUT by
+three random planes (flat broken faces), squat (y x.74) and sat on the ground (floor -.22 r); the MOSS is a vertex-colour TINT on the garden's
+rock material (`M.rock`, which keeps colour through the merge) fading in as a face turns up (smoothstep .5-.85 on the normal, wobbled by a little
+noise). A first try lifted the upward TRIANGLES off as a moss shell -- it covered too much and its edge was a saw-tooth; the tint has no edge.
+Both builders (the main rim's 22 and every chunk's) use it. THE PADDY: it was the Jinra's glowing mint water (a cyan tile from afar) with 4-sided
+green cones. Now `M.paddy` -- still, muddy-olive, low roughness so it takes the sky (garden_water as its map, uv kept) -- and the rice is pairs of
+crossed cards of his painted tuft standing in it. Renders bould2 / shipwide. **Shipped unverified.**
+
 ## m2208 -- THE TITLE LOOP: an ACES colour grade, a warm RIM light, butterflies, mist banks between the layers (Nov 2 2026)
 *"Keep going!! More detail, render as beauty, and art direction."*
 - **THE GRADE**: the loop renders through ACES filmic tone mapping at exposure 1.18 (`LOOPBG.grade`). It was compared side by side on the
