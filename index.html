@@ -16084,7 +16084,7 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   // column rising from a stone spring basin. m2183: an UPDRAFT -- walk in and it lifts him to `lift` m over the pad (`spring`, capped `up`/`down` m/s),
   // control his own; left alone `idleT` s he meditates (`clip`: 'meditate' = Sitting_Idle, 'sit_cross' = Male_Sitting_Pose_9). `drag` stills him when idle.
   wade: { sink: .16, amp0: .35, fullAt: 4, lag: .45 },     // m2184: in the water -- the drawn sink, the wake's amplitude at rest and at `fullAt` m/s, the trailing ring's lag (s)
-  beam: { id: 'jinra_beam', at: [-17.6, -9.4], r: 1.15, lift: 3.0, h: 10, clip: 'meditate', spring: 1.6, up: 4.5, down: 2.5, ease: 3.0, drag: 1.4, idleT: .7 },
+  beam: { id: 'jinra_beam', at: [-17.6, -9.4], r: 1.15, lift: 7.0, h: 12, clip: 'meditate', spring: 2.2, up: 8.0, down: 2.5, ease: 3.0, drag: 1.4, idleT: .7 },
   ship: { id: 'flying_ship', chunk: 'chunk_home', a: 80, off: 21, bob: .12 },
   // (m2161: run DIAGONALLY across the cracks, so a 4 m and a 6 m climb stay a walkable 17-18 degrees)
   bridges: [{ id: 'bridge_garden_home', from: 'rim:62', to: 'inner:chunk_home:100', w: 1.5 }, { id: 'bridge_home_summit', from: [36, 4, -28], to: [10, 10, -38], w: 1.4 }],     // m2190: routes picked for the longest OPEN span (8.4 m at 25 deg, 13.4 m at 24 deg -- they were 6.0 at 34 and 9.9 at 31 once anchored at the edge)
@@ -16161,12 +16161,20 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
   M.rock.vertexColors = true; M.crystal.emissive = new THREE.Color(0x6a2cd8); M.crystal.emissiveIntensity = .75; M.crystal.flatShading = true; for (const k of ['vine', 'ivy', 'banner_red', 'banner_teal']) M[k].userData.sw = 1;
   M.flag.polygonOffset = true; M.flag.polygonOffsetFactor = -1; M.flag.polygonOffsetUnits = -2;
   // THE JINRA WATER: glowing mint, flowing along `uv.y` (metres down the stream), brighter at the banks; `uGlow` is P2's drain
-  const wtex = texGet('garden_water'); U.uRip = U.uRip || { value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()] }; U.uWake = U.uWake || { value: new THREE.Vector3(0, 0, 0) }; U.uWake2 = U.uWake2 || { value: new THREE.Vector3(0, 0, 0) };
-  M.water = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4, uniforms: { uTime: U.uTime, uGlow: U.uGlow, uMap: { value: wtex }, uRip: U.uRip, uWake: U.uWake, uWake2: U.uWake2 },
+  const wtex = texGet('garden_water'); U.uRip = U.uRip || { value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()] }; U.uWake = U.uWake || { value: new THREE.Vector3(0, 0, 0) }; U.uDrops = U.uDrops || { value: Array.from({ length: 8 }, () => new THREE.Vector4(0, 0, -99, 0)) }; U.uWake2 = U.uWake2 || { value: new THREE.Vector3(0, 0, 0) };
+  M.water = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4, uniforms: { uTime: U.uTime, uGlow: U.uGlow, uMap: { value: wtex }, uRip: U.uRip, uWake: U.uWake, uWake2: U.uWake2, uDrops: U.uDrops },
     vertexShader: 'attribute float aFl; varying vec2 vU; varying vec3 vW; varying float vF; void main() { vU = uv; vF = aFl; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
-    fragmentShader: TEMPLEGLSL_N + `uniform float uTime, uGlow; uniform sampler2D uMap; uniform vec3 uRip[3], uWake, uWake2; varying vec2 vU; varying vec3 vW; varying float vF; void main() {
+    fragmentShader: TEMPLEGLSL_N + `uniform float uTime, uGlow; uniform sampler2D uMap; uniform vec3 uRip[3], uWake, uWake2; uniform vec4 uDrops[8]; varying vec2 vU; varying vec3 vW; varying float vF;
+    // m2193 THE SURFACE DEFORMS (his: "a surface deform, a nice little trick so the water looks like you're squishing it around"): a HEIGHT field of
+    // ring waves off each step he takes in the water (8 drops, each spreading at 1.1 m/s and dying in ~2.5 s) plus a DIP round his legs and a ripple
+    // off them; its slope bends the texture and lights the crests -- no geometry moves, the shading does it
+    float wH(vec2 q) { float h = 0.0; for (int i = 0; i < 8; i++) { vec4 D = uDrops[i]; float a = uTime - D.z; if (a < 0.0 || a > 2.6) continue; float R = .15 + a * 1.1, x = length(q - D.xy) - R;
+        h += D.w * exp(-a * 1.3) * sin(x * 10.0) * exp(-x * x * 5.0) / (1.0 + R * 1.5); }
+      float wl = length(q - uWake.xy); h -= uWake.z * .55 * exp(-wl * wl * 6.0); h += uWake.z * .14 * sin(wl * 11.0 - uTime * 9.0) * exp(-wl * 1.5); return h; }
+    void main() {
       vec2 p = vF > .5 ? vec2(vU.x * 1.6, vU.y * .55 - uTime * .9) : vW.xz * .3 + vec2(uTime * .03, uTime * .02);
       vec2 wd = vW.xz - uWake.xy; float wl = length(wd), wl2 = length(vW.xz - uWake2.xy); p += wd / max(wl, .05) * uWake.z * exp(-wl * 2.4) * .22;     /* m2184: pushed away from his legs */
+      float h0 = wH(vW.xz); vec2 gr = vec2(wH(vW.xz + vec2(.05, 0.0)) - h0, wH(vW.xz + vec2(0.0, .05)) - h0) / .05; p += gr * .05;     /* m2193: the slope bends what is seen through it */
       float n = tN(p * 2.0), n2 = tN(p * 5.3 + 5.1 + uTime * .3), edge = vF > .5 ? pow(abs(vU.x * 2.0 - 1.0), 3.0) : 0.0;
       vec3 tx = texture2D(uMap, p * .5 + vec2(n * .06, 0.0)).rgb, tx2 = texture2D(uMap, p * .31 + vec2(.37, uTime * .02) - n2 * .05).rgb;
       vec3 c = mix(tx, tx2, .5) * vec3(.85, 1.05, 1.0);
@@ -16175,6 +16183,7 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
            + uWake2.z * smoothstep(.22, 0.0, abs(fract(wl2 * 1.4 - uTime * 1.1) - .5) - .3) * smoothstep(1.3, .2, wl2);     /* the collar of foam, its rings, the trailing ring */
       float glint = pow(max(0.0, tN(vW.xz * 6.0 + vec2(uTime * 1.7, -uTime * 1.1)) * tN(vW.xz * 7.3 - vec2(uTime * 1.3, uTime * 1.9))), 6.0) * 26.0;
       c = mix(c, vec3(.9, 1.0, .97), clamp(edge * .55 + rip * .55 + smoothstep(.72, .9, n2) * .25, 0.0, 1.0)); c += vec3(1.0, .98, .9) * glint;
+      c *= 1.0 + clamp(dot(gr, vec2(.6, .25)), -1.0, 1.0) * .35; c += vec3(.95, 1.0, .97) * (clamp(dot(gr, vec2(-.55, -.3)), 0.0, 2.0) * .32 + smoothstep(.5, 1.4, length(gr)) * .3);     /* m2193: crests lit, troughs shaded, foam where it is steep */
       c *= mix(.35, 1.3, uGlow); gl_FragColor = vec4(c, .9);
       #include <tonemapping_fragment>
       #include <colorspace_fragment>
@@ -16199,10 +16208,11 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
         { vec2 q = vSW.xz; float d = length(q - uC), best = 99.0; for (int i = 0; i < 3; i++) best = min(best, length(q - uS[i].xy) - uS[i].z);
           float r = best < 1.1 ? best : d; float w = .5 + .5 * cos(r * 6.2832 * 3.2); diffuseColor.rgb *= .8 + .26 * w; }`); };
     M.sand.customProgramCacheKey = () => 'gdnSand'; }
+  M.tuft = uvm('dome_tuft', { alphaTest: .5, side: THREE.DoubleSide, roughness: .95, color: 0xeaffd6 });     // m2192: his painted grass tuft, for the grass cards
   // m2184 WHAT HIS FEET ARE ON (the surface footsteps, m2180): the garden's materials say it outright -- the consolidation and the merges rename
   // meshes, and pale stone paving reads as SAND by colour. Plants are walked through (a rustle on top).
   { const SF = { lawn: 'grass', moss: 'grass', rock: 'stone', cliff: 'stone', pebble: 'stone', cyclo: 'stone', stone: 'stone', white: 'stone', jade: 'stone', crystal: 'stone',
-      wood: 'wood', bark: 'wood', rope: 'wood', lacquer: 'wood', bronze: 'metal', gold: 'metal', fern: 'plant', clump: 'plant', flowers: 'plant', ivy: 'plant', vine: 'plant', leaves: 'plant' };
+      wood: 'wood', bark: 'wood', rope: 'wood', lacquer: 'wood', bronze: 'metal', gold: 'metal', fern: 'plant', clump: 'plant', flowers: 'plant', ivy: 'plant', vine: 'plant', leaves: 'plant', tuft: 'plant' };
     for (const [k, m] of Object.entries(M)) { if (!m || !m.userData) continue; const t = SF[k] || (/water|pool|stream|fall|spring/.test(k) ? 'water' : /sand|zen|rake/.test(k) ? 'sand' : null); if (t) m.userData.surf = t; } }
   return (Z.M = M); }
 // ---- shared shapes ----
@@ -17277,6 +17287,12 @@ function gdnGlow(G) { const Z = GARDEN, U = Z.U, R = gdnRnd(Z.seed + 9), P = [],
 function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   const G = new THREE.Group(); G.name = 'garden'; G.position.y = Z.top; g.add(G); Z.pieces.main = new THREE.Group(); Z.pieces.main.name = 'garden_main'; G.add(Z.pieces.main);
   gdnBuild(G); gdnSky(g);
+  // m2192 THE GRASS IS PAINTED (his: "a few blades of grass that aren't textured"): the plant system's 'grass' is vertex-coloured blades with no map,
+  // pale against the painted lawn. Here every 'grass' record becomes three crossed cards of his painted clump (`garden_clump`, M.clump), one draw.
+  try { const M = gdnMats(), cards = []; const take = L => (L || []).filter(r => { if (r.kind !== 'grass') return true; const s = r.s || 1;
+      for (let k = 0; k < 3; k++) { const q = new THREE.PlaneGeometry(.95 * s, .85 * s).translate(0, .425 * s - .04, 0).rotateY((r.yaw || 0) + k * Math.PI / 3); cards.push(q.translate(r.x, r.y - Z.top, r.z)); } return false; });
+    Z.plantRec = take(Z.plantRec); Z.isleRec = take(Z.isleRec);
+    if (cards.length) { const o = new THREE.Mesh(mergeGeometries(cards.map(q => { q.deleteAttribute('normal'); q.computeVertexNormals(); return q; })), M.tuft); o.position.y = Z.top; o.name = 'garden_grass_cards'; g.add(o); Z.grassCards = cards.length / 3; } } catch (e) { note('GARDEN GRASS ' + e.message); }
   const cell0 = PLANT.cell; PLANT.cell = 72;     // m2161: fewer, bigger plant cells here (each kind x cell is a draw)
   try { Z.plantMeshes = plantFlush(g, Z.plantRec); } catch (e) { note('GARDEN PLANTS ' + e.message); }
   try { gdnBridges(g); } catch (e) { note('GARDEN BRIDGES ' + e.message); console.error(e); }
@@ -17323,6 +17339,9 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
       if (Math.hypot(x - ax - dx * u, z - az - dz * u) < S.w / 2 + .1) inW = true; } }
     inW = inW && Math.abs(ly) < .6; Z.inWater = inW; const sp = Math.hypot(p.vel.x, p.vel.z), amp = inW ? W.amp0 + Math.min(1, sp / W.fullAt) * (1 - W.amp0) : 0;
     p.wadeYd = damp(p.wadeYd || 0, inW && p.grounded ? -W.sink : 0, .08, dt); const U = Z.U;
+    if (U.uDrops) { W.dt = (W.dt || 0) - dt; const land = inW && p.grounded && !W.wasG, step = inW && p.grounded && sp > .6 && W.dt <= 0;     /* m2193: a ring off each step, a big one on landing */
+      if (land || step || (inW && !W.wasIn)) { const D = U.uDrops.value[W.di = ((W.di || 0) + 1) % 8], f = Math.min(1, sp / 6); D.set(x + p.vel.x * .08, z + p.vel.z * .08, O.t, land ? 1.6 : .55 + f * .6); W.dt = .34 - f * .12; }
+      W.wasG = p.grounded; W.wasIn = inW; }
     if (U.uWake) { const a = U.uWake.value, b = U.uWake2.value; a.x = x; a.y = z; a.z += (amp - a.z) * (1 - Math.exp(-5 * dt)); const kb = 1 - Math.exp(-dt / W.lag); b.x += (x - b.x) * kb; b.y += (z - b.y) * kb; b.z += (amp * .6 - b.z) * (1 - Math.exp(-2.5 * dt)); } }
   if ((O.dT = (O.dT || 0) - dt) <= 0) { O.dT = .25; const c = camera.position, far = Z.detailFar || 60, sf = Z.shadowFar || 40;     // m2170: small detail hides when far; an island's pieces cast only when he is near
     for (const D of Z.detail || []) D.o.visible = Math.hypot(c.x - D.c.x, c.y - Z.top - D.c.y, c.z - D.c.z) - D.r < far;
