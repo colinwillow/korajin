@@ -17,6 +17,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2231 -- THE GARDEN: sides are solid (automatic walls) (Nov 2 2026)
+
+*"A bunch of areas where I can walk through the side of colliders that should be solid. Most things work from the top but sides are very often a
+problem."* Two causes, one pass (`gdnWalls`, after `bldTris` and the landings): (1) a raised surface that is only walkable TRIANGLES is a floor from
+above and nothing from the side -- `groundAt` looks one step up, so a higher top is not seen and he walks in under it; (2) things DRAWN solid with
+no collider at all, or with an approximate one (the terrace drums' "inscribed strips" leave their round rim walk-through).
+The top surface is sampled on a .5 m grid over the cluster (`wallR` 78 m). (1) a cell more than `wallRise` .45 over a real-ground neighbour,
+with no box at knee height there, is a wall (space with 2 m clear under it is left open). (2) every triangle of the solid-looking materials
+(cliff, rock, stone, cyclopean, wood, lacquer, metals, jade, dark, bark, pots, plain painted props), rasterised by its REAL x/z footprint (+.3 m),
+marks a cell only if that triangle ALONE is a SIDE face (|n.y| < .6), reaches down to within `wallKnee` .9 of the ground there and rises past
+.45 -- so roofs, arches, canopies, slopes and a flat stone with a column over it are not walls. (A first version took each triangle's bounding box
+and pooled the cell's lowest/highest: it walled the shrine platform and the homestead tier top -- checked with a red debug overlay from above.)
+Cells merge into x-runs: 2,106 cells -> 1,363 boxes, 155 ms at load. The ship's footprint is left to its own colliders. Rings now stand round
+both drums with gaps exactly at their stairs; fences, lanterns, pots, house walls and root flares are solid; paths, lawns and the shrine
+platform open. `GARDEN.walls` reports; `GARDEN.wallBoxes` lists them. **Shipped unverified.**
+
 ## m2230 -- THE GARDEN: no ship wings; you can walk onto the bridges; no fall loop (Nov 2 2026)
 
 *"Hide the wings on the ship -- I thought the jets made it fly by magic; they interfere with the bridge."* `shipModel({ wings: false })` (sets
