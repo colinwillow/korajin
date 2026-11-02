@@ -6495,7 +6495,7 @@ const SNDBTN = { el: null, need: 0, back: 0 };
 try { SFX.mute = localStorage.getItem('mel.mute') === '1' ? 1 : 0; } catch (e) { SFX.mute = 0; }
 function sndBtnPaint() { const B = SNDBTN.el; if (!B) return; const st = SFX.ctx ? SFX.ctx.state : 'none', need = (!SFXM.simple && SNDBTN.back) || !SFX.ctx || st !== 'running';
   B.dataset.need = need ? '1' : '';     // what the button SAYS is what a tap does (the global wake listeners run first and can make the context before the click)
-  // m15XX (his: "a generic speaker icon in the upper right -- super out of place, ugly; make our own or nothing"): a TEMPLE BELL, drawn, in the game's
+  // m2260 (his: "a generic speaker icon in the upper right -- super out of place, ugly; make our own or nothing"): a TEMPLE BELL, drawn, in the game's
   // ink -- cream on dark with the red rim; muted = the bell struck through. The wake state is the same ink pill with the bell and SOUND, not a yellow banner.
   if (need) { B.innerHTML = SNDBELL(0) + '<span style="margin-left:7px;letter-spacing:.14em">TAP FOR SOUND</span>'; B.style.cssText = SNDBTN.css + 'background:#1a0f14e6;color:#f4e7cf;font-size:12px;padding:6px 12px 6px 8px;border-color:#c8242c;box-shadow:0 0 0 2px #c8242c55;animation:kjPulse 1.8s ease-in-out infinite;'; B.title = st; }
   else { B.innerHTML = SNDBELL(SFX.mute); B.style.cssText = SNDBTN.css + 'background:#1a0f14b0;color:#f4e7cf;padding:5px;width:34px;height:34px;justify-content:center;border-color:#c8242c99;opacity:' + (SFX.mute ? '.75' : '.9') + ';'; B.title = st; } }

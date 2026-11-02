@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the sound button is a drawn temple bell, not the generic speaker emoji (Nov 2 2026)
+## m2260 -- the sound button is a drawn temple bell, not the generic speaker emoji (Nov 2 2026)
 *"A little icon in the upper right that looks like the generic speaker sound icon -- super out of place, ugly. Make our own or not have it."* The
 m1879 button (mute toggle; after the app was away, the iOS TAP FOR SOUND wake) drew 🔊 / 🔈 / 🔇 on a blue chip and a yellow banner. Now `SNDBELL`:
 an inline SVG temple bell in cream ink with a red stripe, on a dark ink circle with a red rim; muted = the bell struck through in red; the wake state
