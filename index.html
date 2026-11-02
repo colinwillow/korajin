@@ -6390,7 +6390,7 @@ function sfxWake(ev) {
 // names the zone's track; TOOLS > MUSIC turns it off (kept). `duck` (0..1) is the hook for cut-scenes and dialogue.
 const MUSIC = { on: 1, vol: .24, fadeIn: 4, fadeOut: 2.5, duck: 0, duckK: .4, tracks: { garden: 'audio/music/forgotten_garden.mp3' }, menu: 'garden',     /* m2192: the menu's track key (one song so far -- the SAME key as the garden's, so going from the menu into the garden does not restart it) */ el: null, src: null, g: null, ctx: null, trk: '', k: 0, retry: 0 };
 try { if (localStorage.getItem('mel.music') === '0') MUSIC.on = 0; } catch (e) {}
-function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden'; if (MUSIC.carry && !rig.ready) return MUSIC.menu;     /* m15XX: entered in place -- the song carries on through the load */ if (document.getElementById('splash')) return MUSIC.menu;     /* m2213: the theme starts on the title screen -- the first touch there, even while it loads (iOS plays nothing before a touch) */ const st = document.getElementById('start'); return st && st.classList.contains('on') ? MUSIC.menu : ''; }     // m2192: the start menu plays `MUSIC.menu` too (his: 'when you push the start button the song should start playing')
+function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden'; if (MUSIC.carry && !rig.ready) return MUSIC.menu;     /* m2228: entered in place -- the song carries on through the load */ if (document.getElementById('splash')) return MUSIC.menu;     /* m2213: the theme starts on the title screen -- the first touch there, even while it loads (iOS plays nothing before a touch) */ const st = document.getElementById('start'); return st && st.classList.contains('on') ? MUSIC.menu : ''; }     // m2192: the start menu plays `MUSIC.menu` too (his: 'when you push the start button the song should start playing')
 function musicCtx() { const M = MUSIC, c = SFX.ctx; if (!c || !SFX.bus) return; try { if (M.el) M.el.pause(); } catch (e) {}
   if (!M.tick) M.tick = setInterval(() => { try { musicStep(.05); } catch (e) {} }, 50);     // m2218: its OWN clock -- the game's frame loop does not run while the title / start menu is up, so the fade never rose and the song played at 0
   const el = new Audio(); el.loop = true; el.preload = 'auto'; el.setAttribute('playsinline', ''); M.trk = musicWant() || 'garden'; el.src = A(M.tracks[M.trk]);
@@ -17541,7 +17541,7 @@ function arenaStage() {
     m.rotation.x = -Math.PI / 2; m.position.set(x, .03, z); g.add(m); return m; };
   ARENA.pad = pad(ARENA.spawnAt[0], ARENA.spawnAt[1], 2.2, 0xff4d6d); pad(ARENA.youAt[0], ARENA.youAt[1], 1.3, L.spot);
 }
-// m15XX: when the START MENU will show (startGate's own skip test, read early), the stage waits for the pick -- so a forest zone can be entered IN PLACE
+// m2228: when the START MENU will show (startGate's own skip test, read early), the stage waits for the pick -- so a forest zone can be entered IN PLACE
 // (no reload, the music never stops) and still be built by its own branch here. `startGate().then` builds it, before `init`.
 const STAGEDEFER = (() => { try { const q = location.search || ''; return !!document.getElementById('start') && !(/[?&](w|spawn)=/.test(q) || sessionStorage.getItem('mel.started') || sessionStorage.getItem('mel.godGo') || navigator.webdriver || navigator.userAgent === 'node'); } catch (e) { return false; } })();
 if (inArena() && !STAGEDEFER) arenaStage();
@@ -70716,7 +70716,7 @@ function loopBg(host) { const T = LOOPBG, P = T.pal[T.time] || T.pal.dusk, C = T
   window.LOOPBGRUN = api; return api; }
 const ZONEWANT = { garden: () => GARDEN.want = 1, rope: () => ROPEB.want = 1, wall: () => WPARK.want = 1, prove: () => PROVE.want = 1, temple: () => TEMPLEZ.want = 1,
   dometemple: () => DOMET.want = 1, ship: () => SHIPZ.want = 1, dragon: () => DRAGZ.want = 1, tlayout: () => TLAY.want = 1, cell: () => TCELL.want = 1,
-  snow: () => { SNOWZ.want = 1; ICET.want = 1; } };     // m15XX: the forge zones the start menu can enter without a reload (each mirrors its own `?zone=` line)
+  snow: () => { SNOWZ.want = 1; ICET.want = 1; } };     // m2228: the forge zones the start menu can enter without a reload (each mirrors its own `?zone=` line)
 function startGate() {
   let skip = false;
   try {
@@ -70731,7 +70731,7 @@ function startGate() {
       if (stage) { stage.dispose(); stage = null; }
       try { sessionStorage.setItem(START.key, '1'); sessionStorage.setItem(WORLD.store, w); } catch (e) {}
       if (w === WORLD.now && !extra) { el.classList.remove('on'); go(); return; }
-      // m15XX (his: "the music starts on the first screen, then once you select the prologue it stops and starts again -- it should be continuous"):
+      // m2228 (his: "the music starts on the first screen, then once you select the prologue it stops and starts again -- it should be continuous"):
       // a reload is a new page, and iOS will not start sound on a new page before a touch. So a FOREST ZONE in the world that is already loaded is
       // entered IN PLACE: the URL is swapped (`replaceState`), the zone's `want` -- which its own line read off the URL at module scope -- is set by
       // hand (`ZONEWANT`), and the boot simply continues behind the card. Anything else (another world, another hero, a level id) still reloads.
@@ -70819,7 +70819,7 @@ function startGate() {
     el.classList.add('on'); try { window.KJ_READY = 1; dispatchEvent(new Event('kjready')); } catch (e) {}     // m2213: the menu is up -- the splash may say TAP TO START
   });
 }
-startGate().then(() => { if (STAGEDEFER && inArena()) arenaStage(); return init(); });     // m15XX
+startGate().then(() => { if (STAGEDEFER && inArena()) arenaStage(); return init(); });     // m2228
 </script>
 </body>
 </html>

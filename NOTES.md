@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the song is continuous from the title into the prologue: forest zones are entered WITHOUT a reload (Nov 2 2026)
+## m2228 -- the song is continuous from the title into the prologue: forest zones are entered WITHOUT a reload (Nov 2 2026)
 *"The music starts on the first screen, then once you select the prologue it stops and starts again once loaded -- it should be continuous."* Picking a
 level was `location.replace` -- a new page, and iOS starts no sound on a new page before a touch. Now: when the start menu will show, the module-scope
 `arenaStage()` is DEFERRED (`STAGEDEFER`, startGate's own skip test read early) and `startGate().then` builds it before `init`. A pick of a forest
