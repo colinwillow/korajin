@@ -17,6 +17,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2233 -- THE TITLE LOOP: falls that POUR from somewhere; ivy clear of the rock; the Jinra Stone and its beam; guard towers; an erupting snow volcano; foreground clouds (Nov 2 2026)
+His phone screenshots: *"are these beams of light or streams? If waterfalls, they don't look like they're coming out of anything... the hanging plants
+intersect the ground planes... add detail: a beam of light from a temple, the magical Jinra stone from the prologue that keeps the island floating,
+volcanoes, eruption, fires, guard towers... foreground clouds, background clouds... depth."*
+- **FALLS POUR**: every fall now starts ON TOP, 1.1 m behind the lip, runs over it and ARCS out (outward motion grows with the drop) before
+  falling (`fall()` builds rows along the path, uv by arc length). The Jinra colour is a deeper jade (`jinra[0]` 0x13846c), so the streaks have
+  contrast and read as liquid, not light. The two falls under his own isle (right under him on a phone, with no visible source) are gone.
+- **IVY THROUGH THE ROCK**: the rock lobes under every isle could poke out past the rim, so ivy hanging from the rim passed through them. Each
+  lobe is now clamped INSIDE .9 of the rim. The six extra slab lobes under his isle (the big flat ledge in his first screenshot) are gone.
+- **THE JINRA STONE** (`kind: 'jinrastone'`, far isle at y 30): a stepped stone dais, six capped pillars, a bronze ring, the STONE floating in it
+  (a large jade crystal) with five small shards round it, two Jinra falls pouring off the isle, and a soft LIGHT BEAM rising 260 m from the
+  stone. The flow shader's kind 2 is now a real beam: a gaussian core, brightest at the source, motes rising in it.
+- **GUARD TOWERS** (two, on the terraces): tapered stone, a timber lookout with a curved roof, a BRAZIER burning on top (haloed), a lit slit
+  window and a black banner.
+- **THE VOLCANO** is snow-capped (snow down to 10 m below its rim) and ERUPTS: a fountain of fire over the crater, haloed.
+- **FOREGROUND CLOUDS**: six mist banks in the NEAR band, 5-11 m in front of him and below his isle, the nearest layer of all.
+- The near floating fern rock (y 1.9) blocked him on a wide screen; it floats below the path now.
+- ~115-134 draw calls. Renders: phone at three moments, a close look at the shrine. **Shipped unverified.**
+
 ## m2232 -- THE TITLE LOOP: his fix list -- mammoth feet, a flowing cape, no upward "streams", a cleaner underside, real ropes, no junk rocks (Nov 2 2026)
 His list, item by item:
 - **The mammoth's front feet float and its stride sinks through the ground.** The clip bobs its body. FOOT LOCK (`BS.feet`, `BS.foot0`):
