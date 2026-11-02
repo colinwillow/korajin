@@ -263,3 +263,13 @@ essence), the Hollow (his void and its creatures), Vorakai (who commands it).
 Turnaround sheet that came with it: images/concepts/characters/stone_guardian/ (front, back, sides) -- a giant stone warrior in gold-banded armour,
 an oni mask, white mane and beard, red banners, a GREEN Jinra core and veins. Open: is it Vorakai, or (as its green Jinra suggests) an ancient
 Jinra GUARDIAN -- the earth temple's boss, its veins turned purple by the Hollow and green again when restored?
+
+## RESTORE -- the Hollowed are people in stone shells (his, Nov 2 2026)
+*"When you knock them down... you go up to them and hold the stick and charge them / extract them -- you turn them back into good. They turn from
+the possessed stone into the original character."* Every Hollowed is a REAL character (villager, monk, guardian, beast) encased in stone and driven by
+the Hollow's purple. THREE LOOKS per character: the ORIGINAL (living), the HOLLOWED (animated stone, purple cracks) and, in the ruins, the INERT
+statue (STATUES.md's stone twin). The fight: knock him DOWN (the stone cracks, pieces fall off) -> go to him and HOLD to pour Jinra in (a short
+channel; others can interrupt; it costs Jinra you carry) -> the shell bursts off, the original stands up, free, and goes home (the village fills up as
+you play). Option (open): SHATTER instead -- quick, it gives you Jinra, he is gone for good. Pairs with the JINRA DRAW sword (raise it among crystals,
+draw Jinra in, a charged spinning strike) and the boss: Vorakai's armour floats back onto him unless a Jinra-charged strike cuts its threads.
+Villain design ideas + an image prompt (the EMPTY ARMOUR: a hollow emperor's samurai armour around a purple void) are in the chat of Nov 2.
