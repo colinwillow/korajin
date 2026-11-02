@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2227 -- THE TITLE LOOP: waterfalls that read as water; the lightning dragon recoloured to the KORAJIN palette (and sized right) (Nov 2 2026)
+*"Can we make the waterfall particles more realistic, actually look like water... that dragon isn't on brand -- tint or hue-shift him to the
+game's colours, the reds and greens, so he doesn't stand out so much on the hero screen."*
+- **FALLING WATER** (the flow shader's kind 1, so every fall: Jinra, white water, and the lava runs): value noise in place of the old sines.
+  The streaks are DOMAIN-WARPED, so they waver; CLUMPS drop with see-through gaps between them, and it ACCELERATES down the fall (every
+  layer scrolls faster with depth). The edges are TORN (noise-driven, widening as it falls), there are spray flecks, it whitens at the lip
+  and where it breaks up, and it thins into the mist at the foot. Close-up render: wavering sheets with ragged edges (it was straight stripes).
+- **THE DRAGON, RECOLOURED** (`loopRecolor`, `flyers[].recolor`): a GRADIENT MAP on its own texture's luminance (dark stone -> terracotta ->
+  bronze / gold) that keeps every texture detail. Its emissive -- which covers the WHOLE body in this export, and washed it pale at first -- now
+  glows Jinra jade only where the emissive is bright AND saturated (the lightning lines). That is his enemy sheet's palette (stone,
+  terracotta, dark stone, bronze/gold, Jinra glow), and it now sits beside the mammoth as one family.
+- **THE DRAGON WAS ~20 M WIDE AND 10 M OFF ITS ANCHOR**: the flyer was sized off its skinned mesh's BIND-pose box, which is about 2x wrong
+  for this export (that is why it only ever showed as a pink smear near the ship). It is sized and centred off its POSED vertices now.
+- **Shipped unverified.**
+
 ## m2226 -- THE TITLE LOOP: floating isles are ROCK, not pencils (Nov 2 2026)
 *"Those floating islands come to an extremely pointy tip... not a pencil tip sharpened at the bottom -- like a rock. Organic, rocky, bulky
 structures, no flat tops, everything irregular, good silhouettes."*
