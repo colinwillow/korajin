@@ -17,6 +17,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2219 -- THE HITCH: every footfall raycast half a million triangles (Nov 2 2026)
+
+His report (via main): *"loading the prologue ... it's choppy, like every ~30 frames it kind of waits a second -- we need a warm-up."* FOUND by
+measuring, not by guessing: `stepSurf` (m2180's surface footsteps) casts a ray down on EVERY FOOTFALL -- every .3-.5 s, which is "every ~30 frames"
+-- through `Raycaster.intersectObjects` on every mesh whose bounds reach him. In the Garden that was **64 meshes, 489,884 triangles, 66.9 ms per
+footfall on a desktop CPU** (more on a phone): the far isles' one mesh (198k tris, bounds spanning the sky), my m2195 stone clusters (141k!), and
+every merged piece (each spans the island, so each is always "near"). The fix, three parts:
+- `ssGrid(o)` / `ssDown`: a big (2,000+ tris) static mesh's triangles binned once on a 2 m x/z grid in WORLD space; a straight-down ray reads only
+  the cell under his feet (barycentric in x/z, height interpolated). It returns the same hit shape (`object`, `distance`, `face.a/b/c`,
+  `materialIndex` from the groups) so `ssClassify` is untouched. Small, instanced and MOVING meshes (a mesh whose matrix changes past twice is marked
+  moving) still take the Raycaster. Footfall now **1-6 ms** (first after a list rebuild), **0.7-2.3 ms** after.
+- `userData.noSurf`: `stepSurfList` skips it; the Garden sets it on the far isles, shader / additive / no-depth-write materials and the sky,
+  cards, shafts, glows, heart.
+- The stone clusters were 141k triangles of pebbles: `gdnBlob` 7 x 4 segments now.
+AND THE WARM he asked for: `gdnWarm`, awaited by the boot after `bootWarm` and before `KJ_READY` (TAP TO START): waits for the Garden to be built and
+its TEXTURES to have loaded (a texture still loading when the boot's own warm ran uploads on its first draw, mid-play), `initTexture` on each,
+`renderer.compile` on the Garden with everything shown, and builds the footstep grids. Headless: 205 ms, 47/47 textures, 42 grids.
+`mel.stepSurf` / `mel.STEPSURF` / `mel.ssProbe(x, z, y)` for testing. **Shipped unverified.**
+
 ## m15XX -- the song actually plays on the title / start menu now (Nov 2 2026)
 *"The splash shows, I press start to go to the level picker with the sideways scrolling thing -- and no music plays there."* Two faults. (1)
 `musicStep` (the fade) was called from the GAME's frame loop, which does not run while the title / start menu is up -- the song started at gain 0
