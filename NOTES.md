@@ -17,6 +17,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2202 -- THE TITLE LOOP: the mammoth stops cutting through the ground; his garden's vocabulary on his isle (Nov 2 2026)
+*"The mammoth was cutting through the ground when he was walking over the bridge... we need to keep doing detail passes; the title screen
+should be way more interesting than the gameplay"* -- with three screenshots of the prologue garden (blossom arches, a cobble path, stone-post
+fences, violet crystals, pots, flowers everywhere).
+- **THE MAMMOTH ON THE BRIDGE**: it was set to the deck height at its CENTRE, so near either end its back (or front) legs were still over the
+  isle and sank into the ground. It now hangs on a PIVOT (`BS.pivot`). The deck (or ground) is read under its FRONT and BACK feet
+  (+/- `BS.half`, measured off its geometry: 62% of half its length), and it sits at their mean and PITCHES between them. Stepping on, it
+  dips nose-first; stepping off, it tips back up.
+- **THE COBBLE PATH**: his garden's `dome_cobble` in its OWN colour (a new texture class, `full: 1`) on a 31 m ribbon with ragged edges and
+  pebbles along them. The flagstones are gone.
+- **BLOSSOM TUNNELS** (`kind: 'arch'`): from the side camera a single arch over the path is EDGE-ON and reads as a post (the first try did
+  exactly that), so each is a pergola of 3-4 arches ALONG the path, joined by top rails, with a blossom canopy over its whole length and vines
+  hanging. He walks through it, and its front posts pass between him and the camera.
+- **A FENCE** behind the stream (stone posts with caps, two wooden rails), **violet CRYSTAL clusters** (lit from within; violet, not mint) on
+  his isle and a big one mid, **terracotta POTS** of flowers, and 150 flower cards (was 90).
+- Measured, headless: 93 draw calls. Renders: the mammoth stepping onto the deck (1400x620), the tunnel over him (phone).
+- Open: more passes toward his garden's density; his first-level screenshots (he is sending them). **Shipped unverified.**
+
 ## m2201 -- THE TITLE LOOP: the rope bridge SAGS under him and he rides it; banners, snow, cliffs and stone textured (Nov 2 2026)
 *"The rope bridge is a cool effect but it doesn't bend at all, and when he walks over it he's floating above it... he needs to go down with the
 bridge... and the flag isn't textured, a lot of the rocks and mountains aren't textured."*
