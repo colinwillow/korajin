@@ -5691,7 +5691,7 @@ const BOOTLINES = ['waking the garden', 'gathering Jinra', 'raising the islands'
 // m2256: the shutters (CSS above). Close -> wait for the panels to meet and for two frames to PAINT -> run `then` (the heavy build). Open on the first
 // loading report (`setBoot`), or after `SHUT.max` s whatever happens.
 const SHUT = { closed: 0, max: 12 };
-// m15XX (his: "instead of using the loading screen we already have, you made some line curtains -- they don't look like anything in game. Just
+// m2271 (his: "instead of using the loading screen we already have, you made some line curtains -- they don't look like anything in game. Just
 // curtain out to the loading screen"): no panels. The menu FADES OUT over the boot card (the loading screen: his poster, the turning sun-wheel, the
 // bar), which is already underneath it; once that has painted, the heavy build runs behind the loading screen itself.
 function shutterClose(then) { const st = document.getElementById('start'); if (bootCard) bootCard.classList.remove('gone');

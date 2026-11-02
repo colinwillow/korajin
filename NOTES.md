@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- no shutter panels: the menu fades straight onto the LOADING SCREEN, and the build runs behind it (Nov 2 2026)
+## m2271 -- no shutter panels: the menu fades straight onto the LOADING SCREEN, and the build runs behind it (Nov 2 2026)
 *"You put in some curtains -- lines that don't look like anything in game. We already have a loading screen: just curtain out to the loading screen;
 don't curtain in, load most of the game, and show the loading screen for a second."* m2256's ink panels are gone (CSS and DOM). `shutterClose` now
 fades #start out (.45 s) over the BOOT CARD -- the real loading screen, already under it (his second poster, the turning sun-wheel, the bar,
