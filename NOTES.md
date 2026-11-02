@@ -17,6 +17,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2199 -- THE TITLE LOOP pass 6: the mountain range + rivers + volcano, a floating castle, a dark tower, the temple's sky pillar, his hut, the lightning dragon (Nov 2 2026)
+*"Cool stuff in the background -- magic, thunder, storms, a temple beaming up into the sky... a mountain range... a dragon flying... dark towers... take the
+building from the Red Hollows, our hero's home, the floating castle range... a fire somewhere... more flying stuff, different levels."*
+(Storms / thunder / fairies / villagers / a creek are P7.)
+- **THE MOUNTAIN RANGE** (`range` band, W 1100, `kind: 'ridge'`): one TILEABLE heightfield ~1 km out (every noise term has a whole number of
+  periods in W, so the copies join). Forest on the low front rows (grass/leaf class, so autumn turns it orange), rock above, and snow above the
+  `snow` line. Six white-water RIVERS run down its faces (`MAT.water`: the flow shader in blue-white, because mint is Jinra only).
+  The VOLCANO is a raised peak with a crater: a glowing rim, three LAVA runs (`MAT.lava`, never fogged) and a smoke column of dark puff cards.
+  It was first built 120-260 m tall and ate the whole sky; now it is -6..58 m, a hazy ridge under the islands.
+- **THE FLOATING CASTLE** (`far_castle`): a big floating rock with a crenellated curtain wall, six round towers with conical roofs, a keep under a
+  curved roof, warm lit windows, and two Jinra falls off it. **THE DARK TOWER** (`far_dark`): six tapering hexagonal tiers with ledges and
+  outward SPIKES, violet window slits, and a spire with a glowing violet crystal (violet, not mint).
+- **THE TEMPLE'S SKY PILLAR**: the pagoda isle sends a Jinra beam 420 m up (two crossed flow strips; the flow shader's new kind 2 rises and thins).
+- **HIS HUT** (`mid_home`, models/buildings/korajin_bld_01.glb from the Red Hollows): on the left mid terrace, painted texture and all.
+  Its collider / interior / lights are dropped, and it rides the mid band (`kind: 'glb'` -> three copies W apart, moved with the band).
+- **THE LIGHTNING DRAGON** (`flyers`, models/creatures/mech_lightning_dragon.glb on its own `fly_fast` clip): flies LEFT across the sky 300 m
+  out, against the walk, bobbing and rolling, and comes round again after a wait. (The blue dragon has no flying clip; this one does.)
+- The cherry bough over the frame is blossom cards now (it was solid lumps).
+- Measured, headless: 78 draw calls, ~463k tris drawn. Renders: 1400x620 (spring, autumn) and phone (winter).
+- Open: P7 (storms + lightning, magic, fairies, villagers at work, a foreground creek), the moon / a night, his look. **Shipped unverified.**
+
 ## m2198 -- THE TITLE LOOP pass 5: painted plant CARDS, the mammoth he leads, the katana on his back, bamboo, ivy (Nov 2 2026)
 *"That bush just looks like a ball with a texture on it, let's put literal leaves on there... the willow, the cherry blossom... I want our hero
 to have the sword on his back... maybe he's leading the mammoth behind him... ivy, bamboo."* (His long list: P5 is plants + hero.
