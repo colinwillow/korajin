@@ -52,6 +52,6 @@ GAME OVER, and the game over basically puts you back at the beginning of the lev
 - [ ] re-flow animates when the set changes (m2263)
 - [ ] one palette; selected / unselected / disabled obvious (m2263 render)
 - [ ] tap the drawn weapon again = holstered (kept from m2057)
-- [ ] GOD off: damage, lives, respawn at the level start, GAME OVER -> restart the level; the numbers in one table
+- [ ] GOD off: damage, lives, respawn at the level start, GAME OVER -> restart the level; the numbers in one table (m2264; enemies not reset yet)
 - [ ] the prologue grants the rusty sword on its peg (story hook)
 - [ ] **his sign-off on his phone**

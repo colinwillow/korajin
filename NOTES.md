@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2264 -- REAL PLAY: with GOD off he has LIVES -- lose them all and it is GAME OVER, back to the level's start (Nov 2 2026)
+*"If it's NOT on, he's taking damage. He has life and LIVES, which eventually end in a GAME OVER, and the game over basically puts you back at the
+beginning of the level."* `LIFE` (beside `HEALTH`) holds every number: `lives` 3, `inv` 2.2 s untouchable after a respawn, `downT`, `overT`.
+- `lifeStep` (frame loop, beside `juiceStep`): the level's start is where he stands .6 s into it (the garden's hammock included); hp at zero with
+  GOD off -> `lifeLose`: a LIFE LOST card and back to `LIFE.cp` (set by `lifeCheckpoint(x,y,z,h)` -- the hook for JINRA_POWER.md's shrines) or
+  the start, full hp, blinking while untouchable (`playerHurt0` takes no damage then). At zero lives: the GAME OVER card (title cream on red),
+  then the start again with full lives. Not in a versus duel (that has its own KO). GOD flipped on mid-death clears it.
+- `lifeFall()`: the garden's fall respawn (`gdnStep`, Z.falls) costs a life too; the garden keeps doing the putting-back.
+- HUD: the lives as cream diamond pips left of the health bar, PLAY only; the bar is always up in PLAY.
+- HOOK, NOT BUILT: `LIFE.pool` ('hp') is the one name the death test reads -- Jinra as health swaps it.
+- NOT done: enemies are not reset by a GAME OVER (the level is not rebuilt -- a reload would be). Unverified on a phone.
+
 ## m2263 -- THE RINGS + WHAT HE OWNS: one layout for every pad button; GOD off = only what the save has earned (Nov 2 2026)
 *"If there's only ONE option it should span the whole space, and the THICKNESS stays the same. Two buttons: the same space, divided in two. A third
 goes above -- a second ring. Why is the backpack floating up there?"* + *"When you start the game you're just the guy -- no backpack, no sword, no
