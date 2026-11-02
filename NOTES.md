@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2274 -- THE BELL'S PATTERN SWINGS WITH IT; every island's rock is lit (Nov 2 2026)
+
+*"When it swings the texture is mapped almost like projection mapping: the texture stays fixed while the bell moves."* It WAS a projection: `triMat`
+samples by WORLD position, so the swinging bell slid under a fixed pattern. `M.bellGold` is now a plain UV-mapped standard material, and the bell's
+geometry gets a cylindrical wrap of its own LOCAL shape (u round it, v up it, the map repeated 4 x 2) -- the engraving rides the swing. Its sky
+reflection is `envMapIntensity` .55 (was 1.1; per-material `userData.envK`) so the engraving leads, not the fixed sky. Renders at both ends of a
+forced swing: the pattern tilts with the body.
+*"The undersides are still too dark -- I don't know why some are dark and some aren't."* The far isles had bounce (m2267); the MAIN island and its
+chunks are `gdnMats`' `rockMat` (garden_rock, triplanar) and had none: their undersides got only the dark hemisphere ground. `rockMat` now lifts its
+albedo x1.18 and adds the same BOUNCE from below (albedo x warm grey x (.3 + .7 x how much the face points down) x .8, view-space up) -- so every
+island, near and far, is lit the same way from the cloud sea. Sheet m2271_sheet: bell x2, main underside, edge cliff, far isles x2. **Shipped unverified.**
+
 ## m2273 -- THE STICKS NEVER GO AWAY: a floating pad rests faintly at home (Nov 2 2026)
 *"When I turn off GOD mode the STICKS go away. I just wanted the BUTTONS to go away if you don't have them yet."* Not reproduced headless:
 garden prologue, fresh save, GOD off -> on -> off, both `#padL` / `#padR` stay `block/visible/1` at 148 px (`padprobe`), and nothing in the
