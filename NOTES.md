@@ -17,6 +17,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2275 -- THE GARDEN: the pots break (Nov 2 2026)
+
+*"The pots should be able to break."* (via main). Reused the city's breakables rather than a new system: every garden pot (23) is now an INSTANCE
+(`gdnPots`: four instanced draws for all of them -- pot, soil, flower top, fern top -- in place of the merged ones) and a `BREAK` entry
+(`type: 'pot'`, hp `POTS.hp` 12 -- one bolt, one swing), with its own collider box. So everything that already breaks a crate breaks a pot:
+the bolt and charged shots, every melee swing including the katana (`brkBlast`, the one door), and now ARROWS (`arrowStep` -> `brkBlast`, a hit
+consumes the arrow), plus a ROLL or dash into one (`gdnStep`: speed > `rollAt` 6.5 m/s, within reach). `brkBreak` hands a pot to `gdnPotBreak`:
+its four instances go to zero scale, the box goes (`boxDel`, grid rebuilt by `brkStep`), ~11 SHARDS -- a curved piece of the pot's own wall, on
+its own texture -- fly out and the way the blow went (one pooled InstancedMesh, 160 shards for the garden), tumble, bounce on the real ground
+(`groundAt`), rest, and shrink away after 3.2 s; two puffs of clay dust (`spkBurst`), the crack (`thud`, box_break_01, pitched up), and a
+30% doubloon (`coinDrop`) or 35% Jinra wisp (`jinraEmit`). Headless: a pot broken -> dead, box gone, 11 shards live; render pot_shatter.
+Not done: barrels and crates in the garden (there are barrels on the homestead -- same path, a later build), no respawn of pots. **Shipped unverified.**
+
 ## m2274 -- THE BELL'S PATTERN SWINGS WITH IT; every island's rock is lit (Nov 2 2026)
 
 *"When it swings the texture is mapped almost like projection mapping: the texture stays fixed while the bell moves."* It WAS a projection: `triMat`
