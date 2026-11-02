@@ -22,7 +22,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 The main session's checklist for surface footsteps (m2180/m2181) asked the Garden to tag what its names and colours would mislead. m2184 tagged the
 garden's materials (water, stone paving, lawns, plants, wood); the two left were outside them: `rspAdd`'s plank InstancedMesh (every rope bridge in
 every zone -- planks are always wood) and the moored ship (`Z.shipM.g`, every mesh). Box moved: none. **Shipped unverified.**
-## m15XX -- MUSIC: his Suno song "Forgotten Garden" plays quietly in the prologue garden (Nov 2 2026)
+## m2186 -- MUSIC: his Suno song "Forgotten Garden" plays quietly in the prologue garden (Nov 2 2026)
 *"Play it in the prologue, kind of quiet in the background, give it a vibe."* (Made on his PAID Suno plan -> commercial use OK.) Suno will not hand
 its audio to anything but its own player (signed CDN keys), so he downloaded the MP3: `audio/music/forgotten_garden.mp3` (3:28, re-encoded 128k /
 44.1k, a 2 s fade-in and 5 s fade-out baked in so the loop's restart is soft; `audio/music` added to bump's DIRS). `MUSIC`: ONE streamed <audio>

@@ -6309,7 +6309,7 @@ function sfxWake(ev) {
   if (SFXM.simple) { if (SFX.ctx) { if (SFX.ctx.state !== 'running') { try { SFX.ctx.resume().catch(() => {}); } catch (e) {} if (real) sfxUnlock(); } return; }
     if (!real) return;     // the context is born inside a real activation (touchend / click / key), never a pointerdown
     const AC0 = window.AudioContext || window.webkitAudioContext; if (!AC0) { note('NO AUDIO'); return; }
-    SFX.ctx = new AC0(); SFX.bus = SFX.ctx.createGain(); SFX.bus.gain.value = SFX.mute ? 0 : SFX.vol; SFX.bus.connect(SFX.ctx.destination); try { musicCtx(); } catch (e) {}     /* m15XX: the rebuilt context gets a fresh music element, in this touch */
+    SFX.ctx = new AC0(); SFX.bus = SFX.ctx.createGain(); SFX.bus.gain.value = SFX.mute ? 0 : SFX.vol; SFX.bus.connect(SFX.ctx.destination); try { musicCtx(); } catch (e) {}     /* m2186: the rebuilt context gets a fresh music element, in this touch */
     for (const k in SFX.raw) { SFX.buf[k] = []; SFX.edge[k] = []; SFX.raw[k].forEach((ab, i) => sfxDecode(k, i)); }
     sfxUnlock(); return; }
   if (SFX.ctx && sfxWasHidden && document.visibilityState === 'visible') { if (!real) { try { SFX.ctx.resume().catch(() => {}); } catch (e) {} return; }
@@ -6324,9 +6324,9 @@ function sfxWake(ev) {
   SFX.bus.gain.value = SFX.mute ? 0 : SFX.vol;     // m1879: the mute survives a rebuild
   SFX.bus.connect(SFX.ctx.destination);
   for (const k in SFX.raw) { SFX.buf[k] = []; SFX.edge[k] = []; SFX.raw[k].forEach((ab, i) => sfxDecode(k, i)); }
-  sfxUnlock(); try { musicCtx(); } catch (e) {}     // m15XX: inside the touch that built the context
+  sfxUnlock(); try { musicCtx(); } catch (e) {}     // m2186: inside the touch that built the context
 }
-// m15XX: MUSIC (his: "my Suno song -- play it in the prologue, quiet in the background, give it a vibe"). One streamed <audio> (a 3.5-min song
+// m2186: MUSIC (his: "my Suno song -- play it in the prologue, quiet in the background, give it a vibe"). One streamed <audio> (a 3.5-min song
 // decoded whole would be ~80 MB of PCM) routed through WebAudio into SFX.bus, so the game's mute and volume hold it and its own gain fades.
 // iOS lets a media element play only once a TOUCH has started it, and an element can feed only one AudioContext ever -- so the element is made
 // and started inside the same touch that builds (or rebuilds) the context (`musicCtx`), then left paused until a zone wants it. `musicWant`
@@ -20599,7 +20599,7 @@ function arenaUi() {
       else if (a === 'lvlb') { ARENA.menu = ''; lbEnter(); }
       else if (a === 'lvlib') { ARENA.menu = ''; lbEnter().then(() => libOpen()); }     // m2143: TOOLS > LEVEL BUILDER > LIBRARY     // m1880
       else if (a === 'posedit') { ARENA.menu = ''; posedEnter(); }     // m1877
-      else if (a === 'music') { MUSIC.on = MUSIC.on ? 0 : 1; try { localStorage.setItem('mel.music', MUSIC.on ? '1' : '0'); } catch (err) {} }     // m15XX
+      else if (a === 'music') { MUSIC.on = MUSIC.on ? 0 : 1; try { localStorage.setItem('mel.music', MUSIC.on ? '1' : '0'); } catch (err) {} }     // m2186
       else if (a === 'fset') { STEP.set = ({ LAND: 'ORIG', ORIG: 'CUTS', CUTS: 'NEW', NEW: 'LAND' })[STEP.set] || 'LAND'; try { localStorage.setItem('mel.fset2', STEP.set); } catch (err) {} }     // m1870
       else if (a === 'ftone') { STEP.tone = STEP.tone === 'SOFT' ? 'RAW' : 'SOFT'; try { localStorage.setItem('mel.ftone2', STEP.tone); } catch (err) {} }     // m1869
       else if (a === 'wside') { WRUN.sidePose = WRUN.sidePose === 'IK' ? 'CLIP' : 'IK'; try { localStorage.setItem('mel.wside2', WRUN.sidePose); } catch (err) {} }     // m1864
@@ -41010,7 +41010,7 @@ function stepPlayer(dt) {
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
   if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (RGN.live) rgnStep(dt); if (DRAGZ.on) dragStep(dt); }     // m2051 roomStep
   if (PLANT.list.length) plantStep(dt);     // m1424
-  try { musicStep(dt); } catch (e) {}     // m15XX
+  try { musicStep(dt); } catch (e) {}     // m2186
   if (GARDEN.on) { try { gdnStep(dt); } catch (e) { GARDEN.on = null; note('GARDEN STEP ' + e.message); console.error('[garden step]', e.stack); } }     // PROLOGUE P1: the hammock, the bell, the falls, the catch
   if (DOMET.on) { try { dmtStep(dt); } catch (e) { DOMET.on = null; note('DOMET STEP ' + e.message); } }     // m2144: the temple's door, orb and light
   if (ROCK.loose.length || ROCK.broken.length) rockStep(dt);     // m1745
