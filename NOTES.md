@@ -17,6 +17,34 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2195 -- THE TITLE LOOP pass 3: he walks on a FLOATING ISLE, his garden sky, real textures, the sky ship (Nov 2 2026)
+*"I was kind of thinking he would be walking like the plane he's walking on is an island floating... we really need to start texturing the
+models... in the vertical view I don't see some of the interesting stuff... make sure we have an HDRI, clouds in the background, the flying
+ship, the floating islands... textures for bushes and plants."* (Seasons and weather are his other asks; they are the next build.)
+- **THE GROUND IS A FLOATING ISLE** (`gnd_isle`, kind `walkisle`): a 33 m long isle (my own ring profile: lawn, a mossy lip with its dark shadow,
+  a rock keel in strata with moss streaks down to a point 7 m below, drips, and 14 ROOTS off the front lip). Then a 10 m PLANK BRIDGE with rope rails
+  over the drop to the next isle. Isle + bridge is the 40 m band, so the loop is "isle, bridge, isle". The stream is a pond-ribbon behind him that
+  tapers at both ends; two Jinra SPRINGS spill off the front lip in mint falls. Rim shrubs only on the back rim and the ends, so nothing hides his
+  feet. **The near band floats too**: four little rocks (fern, toro, banner) drifting between the camera and him.
+- **The camera's lens shift went .62 -> .49**: his feet sit at ~57% of the height, so the isle's underside shows under him and there is more
+  sky above. The menu starts at ~74vh (`.loopgap`), and the shade begins at 70%.
+- **THE SKY IS HIS GARDEN PANORAMA** (`textures/garden_sky.webp`, the prologue's HDRI). It is MAGNIFIED 4x about the view axis: an 18 deg lens on a
+  2048 px equirect is a ~100 px blur, and at 4x it is ~400 px. The sun is the image's own (measured: u .836, v .586), and the shafts and the
+  glow are aimed at it. **The same image lights him and the ship** (PMREM, `env` .55). The gradient sky and the flat cloud floor are gone.
+- **TEXTURES** (`LOOPBG.tex`): every solid vertex gets a CLASS from its own paint plus a builder hint (rock, grass, leaf, blossom, bark,
+  roof, wood, stone), and the map's LUMINANCE over its MEASURED mean multiplies the paint (the painted colour stays the colour). It is triplanar in
+  the piece's own space, so the grain rides with the band and does not crawl. Maps: garden_rock / garden_lawn / dome_leaves / garden_blossom /
+  dome_bark / garden_roof / garden_wood / dome_stone. The far bands use a coarser tile.
+- **CLOUDS ARE HIS PAINTINGS**: garden_cloud_bank / wisp / tower and a soft puff are packed into one 2048x768 atlas (`loopAtlas`), so every card in
+  every band is still one draw.
+- **THE SKY SHIP** (`shipModel`, the garden's) sails right at 2.4 m/s, 170 m out, bobbing and rolling, 11 m long. Its 37 meshes are baked into ONE
+  vertex-coloured mesh (`loopShipBake`): each triplanar map becomes its average colour (`loopShipTint`, once the images load). That leaves the
+  14 flags + 2 wing sails animated, so the ship costs 17 draws.
+- A warm FILL light from below-front (the bounce off the cloud sea) lights the undersides.
+- Measured, headless: 61 draw calls (the ship is 17 of them), ~393k tris drawn. Renders: phone x2 (sky -> ship -> clouds -> isles -> peaks ->
+  cloud sea -> him on his isle) and 1800x800.
+- Open: the seasons + weather cycle (next), his look, and maybe drop the 14 flags if the phone is warm. **Shipped unverified.**
+
 ## m2194 -- THE GARDEN: the water deforms under him; painted grass; the Jinra lifts to 7 m (Nov 2 2026)
 
 *"Make the creek more reactive, like the snow -- an actual ripple, a surface deform, a nice little trick so it looks like you're squishing the water
