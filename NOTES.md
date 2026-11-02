@@ -17,6 +17,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2230 -- THE GARDEN: no ship wings; you can walk onto the bridges; no fall loop (Nov 2 2026)
+
+*"Hide the wings on the ship -- I thought the jets made it fly by magic; they interfere with the bridge."* `shipModel({ wings: false })` (sets
+`SHIPZ._noWings` round `shipMake`) skips the wing loop -- the two fans, their spars, lamps and the walkable spar BEAMS; the jets, tail fins and the
+rest of `air` stay. Only the Garden passes it.
+*"At the entrance to the rope bridge the collision stops, so you fall through stepping from the ground onto the bridge; you have to jump the
+beginning."* The m2191 landings were DRAWN with nothing under them, and the lawn's collider stops up to ~2.6 m short of its drawn edge. Each landing
+is now a floor (`obox` in BOXES) and REACHES BACK until it meets the walkable ground (`groundAt`), at the HIGHEST lawn over the last 2.5 m before
+the edge (the summit's sat .46 m higher than its lip -- a step over his .357). They are laid by `Z.sillMake()` AFTER `bldTris` registers the
+Garden's triangles (before that `groundAt` saw no lawn and every slab ran 8 m), and carry white vertex colours (the consolidation had turned the
+shared stone to vertex colours; built after it, they drew black). Measured along all four ends: lawn 0.00 -> landing 0.04 -> anchor, no gap, no step.
+*"If I fall off this one part it spawns me back to a place that's not on the island -- falling, spawning, falling."* The catch respawned at the last
+grounded spot pulled 1.6 m toward the nearest island centre in `isleAt`, which has no CHUNKS -- on the homestead or summit it pulled him into the
+crack. Now a spot is SAFE only if the static collider is under him and .5 m round him (`ok`, checked every .2 s), and a respawn tries the pulled-in
+spot, then the safe spot itself, then the spawn, taking the first `ok` one. **Shipped unverified.**
+
 ## m2228 -- the song is continuous from the title into the prologue: forest zones are entered WITHOUT a reload (Nov 2 2026)
 *"The music starts on the first screen, then once you select the prologue it stops and starts again once loaded -- it should be continuous."* Picking a
 level was `location.replace` -- a new page, and iOS starts no sound on a new page before a touch. Now: when the start menu will show, the module-scope
