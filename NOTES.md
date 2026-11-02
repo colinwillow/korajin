@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2223 -- THE TITLE LOOP: the AKATANI canyon isle (as the renamed Red Hollows really looks) (Nov 2 2026)
+From looking at Akatani itself (`?w=home`, restored): a floating canyon mesa (`kind: 'canyon'`, far band, the nearest far piece at 300 m).
+- Banded RED cliffs (four reds in 1.6 m strata, the cliff map) under a PINK-SAND top; a BLUE river winding across it that falls off the end in white
+  water; 40 CATTAILS along its banks; seven round bushy trees (clump cards); purple flowers; red boulders; a timber STILT HOUSE (four posts, a deck,
+  plank walls with lit windows, a thatched pyramid roof, a stair down, a red chevron banner); and a red rock ARCH.
+- From his eye level (2.2 m) every floating isle above the horizon shows its UNDERSIDE, so the canyon reads by its banded cliffs, with the
+  arch, trees and house as silhouettes along its top edge. That is the honest limit of a level camera; a set piece that has to show its top
+  has to sit below eye level, where the near layers cover it.
+- Measured, headless: ~135 draw calls with it in frame. Renders: phone + 1400x620, summer and autumn. **Shipped unverified.**
+
 ## m2222 -- THE TITLE LOOP: the SNOW ISLE (his snow village's own pieces, snow pines, ice crystals, frostcaps) (Nov 2 2026)
 *"I don't have screenshots of the red hollows (it's renamed) -- go and look at it yourself... bushes and trees from the snow level, snow caps, the
 beautiful snow architecture, the ice crystals, the crazy trees in the snow world, the willow, the glowing mushroom trees."*
