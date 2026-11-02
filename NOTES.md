@@ -17,6 +17,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2244 -- THE INTRO's last two shots, re-aimed with Grumbo IN the hammock (the garden worker's m2243 sleep) (Nov 2 2026)
+- With him actually lying there, `reveal` and `grumbo` framed his boots and his shield from the foot end. Measured on the live rig: his head is at
+  bed-local (across -.09, up 1.07, along +.35), face up and toward his feet. Both shots now come from over his chest, across the sling, looking
+  back up the body (`grumbo` aims just short of his head so the whole of him fills a portrait frame). Rendered at 46 / 50 s. **Shipped unverified.**
+
 ## m2243 -- THE GARDEN: he wakes in the hammock (Nov 2 2026)
 
 *"Use the laying pose for the hammock too."* (via main; the intro reel ends on this shot.) The Garden starts with him ASLEEP in the hammock:
