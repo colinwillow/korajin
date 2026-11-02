@@ -16346,7 +16346,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     const bx = new THREE.Shape([[-.035, 0], [.035, 0], [.032, -.82], [0, -.9], [-.032, -.82]].map(([a, b]) => new THREE.Vector2(a, b)));
     m(new THREE.ExtrudeGeometry(bx, { depth: .012, bevelEnabled: true, bevelThickness: .004, bevelSize: .006, bevelSegments: 1 }).translate(0, -.5, .06), rust);     // the blade, rusted
     m(new THREE.BoxGeometry(.2, .035, .05).translate(0, -.48, .066), rust); m(new THREE.CylinderGeometry(.022, .025, .24, 8).translate(0, -.34, .066), grip); m(new THREE.SphereGeometry(.035, 8, 6).translate(0, -.21, .066), rust);
-    sg.rotation.z = .08; G.add(sg); Z.pieces.sword = sg; part(SW.id, 'prop', { x: px, y: py, z: pz }); }
+    sg.rotation.z = .08; G.add(sg); Z.swordG = sg; Z.pieces.sword = sg; part(SW.id, 'prop', { x: px, y: py, z: pz }); }
   // ---- THE FENCES: wooden rails between stone posts, each post set with a glowing jade gem, round the rim's open edges ----
   { const F = Z.fence; for (const [id, a0, a1] of F.arcs) { const pts = []; for (let a = a0; a <= a1 + .01; a += 1) { const p = rimAt(a); pts.push([p[0] * F.inset, p[2] * F.inset]); }
       const posts = [pts[0]]; let acc = 0; for (let i = 1; i < pts.length; i++) { acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if (acc >= F.step) { posts.push(pts[i]); acc = 0; } }
@@ -16656,7 +16656,10 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
   // ---- merge each piece per material: one draw each ----
   for (const [key, B] of MG) { const pg = Z.pieces[key] || (Z.pieces[key] = new THREE.Group()); pg.name = 'garden_' + key; if (!pg.parent) G.add(pg);
     const CAST = new Set([M.bark, M.leaves, M.blossom, M.jinLeaves, M.lacquer, M.white, M.wood, M.roof, M.cyclo, M.stone, M.dark, M.bronze]);     // m2161: only these cast (the shadow pass drew every moss blob, card and pebble again)
-    for (const [m, list] of B) { const mg = mergeGeometries(list); if (!mg) { note('GARDEN MERGE ' + key + ' ' + (m.map && m.map.image && m.map.image.src || m.type)); continue; } const o = new THREE.Mesh(mg, m); o.castShadow = CAST.has(m); o.receiveShadow = true; o.name = 'garden_' + key; pg.add(o); } }
+    const SMALL = new Set([M.lamp, M.jade, M.crystal, M.rope, M.clay, M.pebble, M.flowers, M.fern, M.vein, M.veinGlow, M.bronze, M.banner_red, M.banner_teal, M.soil, M.grain, M.straw, M.awning, M.blossomCard, M.jinCard]);
+    for (const [m, list] of B) { const mg = mergeGeometries(list); if (!mg) { note('GARDEN MERGE ' + key + ' ' + (m.map && m.map.image && m.map.image.src || m.type)); continue; } const o = new THREE.Mesh(mg, m); o.castShadow = CAST.has(m); o.receiveShadow = true; o.name = 'garden_' + key; pg.add(o);
+      if (o.castShadow) { mg.computeBoundingSphere(); (Z.casters = Z.casters || []).push({ o, c: mg.boundingSphere.center.clone(), r: mg.boundingSphere.radius }); }
+      if (SMALL.has(m)) { mg.computeBoundingSphere(); (Z.detail = Z.detail || []).push({ o, c: mg.boundingSphere.center.clone(), r: mg.boundingSphere.radius }); } } }     // m2170: small detail hides past `detailFar`
   if (Z.fallLook) Z.pieces.lookout.add(Z.fallLook, Z.lookWater);
   // ---- PLANTS: ferns, flowers, grass, shrubs and rocks everywhere the paving and water are not (the plant library, swaying and hittable) ----
   { const near = (x, z, lines) => lines.some(Ln => { for (let i = 1; i < Ln.pl.length; i++) { const [ax, az] = Ln.pl[i - 1], [bx, bz] = Ln.pl[i], dx = bx - ax, dz = bz - az, l2 = dx * dx + dz * dz || 1e-6, t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / l2));
@@ -16736,8 +16739,12 @@ function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clou
     cg.setAttribute('color', new THREE.BufferAttribute(col, 3)); cg.computeVertexNormals(); snow.push(cg.scale(.8, .75, .8).translate(x0 * 1.35 + (x - x0) * .8, yb + h * .375 - 4, z0 * 1.35 + (z - z0) * .8).toNonIndexed()); }
   const add = (L, m, nm, sh) => { if (!L.length) return null; const o = new THREE.Mesh(mergeGeometries(L.map(q => { q = q.index ? q.toNonIndexed() : q; return q; }), false), m); o.name = nm; if (sh) o.castShadow = true; far.add(o); return o; };
   const strip = (L, keep) => L.map(q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (!keep.includes(k)) q.deleteAttribute(k); return q; });
-  add(strip(rock, ['position', 'normal', 'color']), M.rock, 'garden_far_rock'); add(strip(cap, ['position', 'normal']), M.lawn, 'garden_far_cap'); add(strip(leaf, ['position', 'normal']), M.leaves, 'garden_far_leaf');
-  add(strip(bark, ['position', 'normal']), M.bark, 'garden_far_bark'); add(strip(roofs, ['position', 'normal', 'uv']), M.roof, 'garden_far_roof'); add(strip(trims, ['position', 'normal']), M.gold, 'garden_far_trim'); add(strip(lac, ['position', 'normal']), M.lacquer, 'garden_far_lac');
+  // m2170: the far islands are ONE vertex-coloured mesh (was seven textured ones: rock, lawn, leaves, bark, roof, trim, lacquer) -- at that distance a
+  // painted map reads as its average colour anyway. The rock keeps its top-to-tip shading.
+  { const tint = (L, c, keepC) => strip(L, keepC ? ['position', 'normal', 'color'] : ['position', 'normal']).map(q => { const n = q.attributes.position.count, cl = new Float32Array(n * 3), src = q.attributes.color;
+      for (let i = 0; i < n; i++) { const k = src ? src.getX(i) : 1; cl[i * 3] = c[0] * k; cl[i * 3 + 1] = c[1] * (src ? src.getY(i) : 1); cl[i * 3 + 2] = c[2] * (src ? src.getZ(i) : 1); } q.setAttribute('color', new THREE.BufferAttribute(cl, 3)); return q; });
+    const all = [].concat(tint(rock, [.2, .22, .1], 1), tint(cap, [.11, .27, .05]), tint(leaf, [.05, .18, .035]), tint(bark, [.1, .06, .03]), tint(roofs, [.04, .2, .15]), tint(trims, [.6, .36, .07]), tint(lac, [.36, .03, .02]));     /* LINEAR colours: vertex colours are not sRGB-decoded */
+    const fm = new THREE.Mesh(mergeGeometries(all), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .95 })); fm.name = 'garden_far'; far.add(fm); }
   { const fm = add(strip(falls, ['position', 'normal', 'uv', 'aL']), M.fall, 'garden_far_falls'); if (fm) { fm.renderOrder = 2; fm.frustumCulled = false; } }
   { const hm = add(strip(heaps, ['position', 'normal']), new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xdfe8f6, emissiveIntensity: .32, roughness: 1, fog: true }), 'garden_heaps'); if (hm) hm.frustumCulled = false; }
   { const pm = add(strip(snow, ['position', 'normal', 'color']), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .9, fog: false }), 'garden_peaks'); if (pm) pm.frustumCulled = false;
@@ -16965,12 +16972,25 @@ function gdnMeditStep(dt, s) { const Z = GARDEN, Bm = Z.beam, p = player, M = p.
   if (!M.out && M.t > Bm.hold && s && s.mag > .35) M.out = 1;
   if (M.out) { p.pos.y -= Bm.sink * dt; if (p.pos.y <= M.y0) { p.pos.y = M.y0; p.medit = null; if (Z.beamFx) Z.beamFx.cd = 1.8; p.grounded = true; } return; }
   const ty = M.y0 + Bm.lift + Math.sin(M.t * 1.3) * .14, k = 1 - Math.exp(-Bm.ease * dt); p.pos.y += (ty - p.pos.y) * k; p.pos.x += (bx - p.pos.x) * k; p.pos.z += (bz - p.pos.z) * k; }
+// m2170 MERGE A STATIC GROUP: every mesh under `root` that does not move on its own (not in `keep`: cloth, wing canvas) is baked into the root's frame
+// and merged with the others on the same material and shadow flag -- one draw each instead of one per piece. A set whose attributes disagree is left
+// as it was. (The moored ship was 70 meshes, 43 casting: ~113 draws with the shadow pass.)
+function gdnMergeStatic(root, keep) { root.updateMatrixWorld(true); const inv = new THREE.Matrix4().copy(root.matrixWorld).invert(), M4 = new THREE.Matrix4(), by = new Map(), drop = [];
+  root.traverse(o => { if (!o.isMesh || o.isInstancedMesh || o.isSkinnedMesh || !o.visible || keep.has(o.geometry) || Array.isArray(o.material)) return; let p = o.parent; while (p && p !== root) { if (keep.has(p)) return; p = p.parent; }
+    const k = o.material.uuid + (o.castShadow ? 's' : '') + (o.renderOrder || 0); if (!by.has(k)) by.set(k, { m: o.material, cs: o.castShadow, rs: o.receiveShadow, ro: o.renderOrder, list: [] }); by.get(k).list.push(o); });
+  let n0 = 0, n1 = 0; for (const [, B] of by) { if (B.list.length < 2) continue; const geos = B.list.map(o => { let q = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone(); q.applyMatrix4(M4.multiplyMatrices(inv, o.matrixWorld)); return q; });
+    const names = geos.map(q => Object.keys(q.attributes).sort().join()); if (names.some(nm => nm !== names[0])) { const want = ['position', 'normal'].concat(B.m.map ? ['uv'] : []); if (!geos.every(q => want.every(a => q.attributes[a]))) continue; for (const q of geos) for (const a of Object.keys(q.attributes)) if (!want.includes(a)) q.deleteAttribute(a); }
+    for (const q of geos) for (const a of Object.keys(q.morphAttributes || {})) delete q.morphAttributes[a];
+    const mg = mergeGeometries(geos); if (!mg) continue; const o = new THREE.Mesh(mg, B.m); o.castShadow = B.cs; o.receiveShadow = B.rs; o.renderOrder = B.ro; root.add(o); n0 += B.list.length; n1++; drop.push(...B.list); }
+  for (const o of drop) o.removeFromParent(); return [n0, n1]; }
 // THE FLYING SHIP, moored: the Ship's model placed by GARDEN.ship, its deck boxes and ramps registered (turned into the garden's frame), a pier
 function gdnShip(G) { const Z = GARDEN, S = Z.ship, C = Z.isleAt && Z.isleAt[S.chunk]; if (!S || !C) return; const Ch = Z.chunks.find(c => c.id === S.chunk), Y0 = Z.top, a = S.a * Math.PI / 180;
   let ep = C.outer[0], bd = 9; for (const p of C.outer) { let d = Math.abs(Math.atan2(p[0], p[2]) - a); d = Math.min(d, 6.2832 - d); if (d < bd) { bd = d; ep = p; } }
   const ux = Math.sin(a), uz = Math.cos(a), er = Math.hypot(ep[0], ep[2]), tx = Math.cos(a), tz = -Math.sin(a), md = shipModel({ air: true }), B2 = SHIPZ.B / 2;
   const cx = ux * (er + S.off), cz = uz * (er + S.off), yaw = Math.atan2(tx, tz), gy = Ch.H - md.deckY;     // the ship lies along the edge, its deck at the chunk's height
-  md.g.position.set(cx, gy, cz); md.g.rotation.y = yaw; md.g.name = 'garden_' + S.id; G.add(md.g); Z.shipM = md; Z.shipBase = { y: gy, yaw }; Z.pieces.ship = md.g;
+  md.g.position.set(cx, gy, cz); md.g.rotation.y = yaw; md.g.name = 'garden_' + S.id; G.add(md.g); Z.shipM = md;
+  try { const keep = new Set(); for (const F of md.flags || []) { if (F.f) { keep.add(F.f.geometry); keep.add(F.f); } if (F.pv) keep.add(F.pv); } for (const W of md.wings || []) if (W.geo) keep.add(W.geo); Z.shipMerge = gdnMergeStatic(md.g, keep); } catch (e) { note('GARDEN SHIP MERGE ' + e.message); }
+  md.g.traverse(o => { if (o.isMesh && o.geometry && o.geometry.attributes.position.count < 2500) o.castShadow = false; });     /* m2170: only the ship's big pieces cast */ Z.shipBase = { y: gy, yaw }; Z.pieces.ship = md.g;
   const cs = Math.cos(yaw), sn = Math.sin(yaw), W = (x, z) => [cx + x * cs + z * sn, cz - x * sn + z * cs];     // ship-local -> garden (Ry(yaw))
   for (const b of md.deck) { const [wx, wz] = W((b.minx + b.maxx) / 2, (b.minz + b.maxz) / 2); BOXES.push(obox(wx, wz, (b.maxx - b.minx) / 2, (b.maxz - b.minz) / 2, -yaw, Y0 + gy + b.miny, Y0 + gy + b.maxy)); }
   const tr = []; for (let i = 0; i < md.tris.length; i += 3) { const [wx, wz] = W(md.tris[i], md.tris[i + 2]); tr.push(wx, Y0 + gy + md.tris[i + 1], wz); } try { bldTris(Z.shipTriO = Z.shipTriO || {}, tr); } catch (e) {}
@@ -17051,6 +17071,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   try { gdnBridges(g); } catch (e) { note('GARDEN BRIDGES ' + e.message); console.error(e); }
   try { gdnShip(G); } catch (e) { note('GARDEN SHIP ' + e.message); console.error(e); }
   try { gdnBeamFx(G); } catch (e) { note('GARDEN BEAM ' + e.message); console.error(e); }
+  try { if (Z.swordG) gdnMergeStatic(Z.swordG, new Set()); } catch (e) {}
   try { if (Z.isleRec) Z.plantMeshes = Z.plantMeshes.concat(plantFlush(g, Z.isleRec)); } catch (e) { note('GARDEN ISLE PLANTS ' + e.message); }
   PLANT.cell = cell0;
   try { gdnGlow(G); } catch (e) { note('GARDEN GLOW ' + e.message); }
@@ -17079,6 +17100,11 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
     Hh.outer.scale.setScalar(1 + pu * .12); Hh.arcT -= dt; if (Hh.arcT <= 0) { Hh.arcT = .07; Hh.arcStep(.07, t, Hh.cg.position.y, pu); } }     // the homestead's waterwheel, turned by its cascade
   if (Z.U.uPx) Z.U.uPx.value = renderer.domElement.height * camera.projectionMatrix.elements[5] / 2;
   const p = player, ly = p.pos.y - Z.top;
+  if ((O.dT = (O.dT || 0) - dt) <= 0) { O.dT = .25; const c = camera.position, far = Z.detailFar || 60, sf = Z.shadowFar || 40;     // m2170: small detail hides when far; an island's pieces cast only when he is near
+    for (const D of Z.detail || []) D.o.visible = Math.hypot(c.x - D.c.x, c.y - Z.top - D.c.y, c.z - D.c.z) - D.r < far;
+    for (const D of Z.casters || []) D.o.castShadow = Math.hypot(p.pos.x - D.c.x, p.pos.z - D.c.z) - D.r < sf;
+    if (Z.shipM) { const sp = Z.shipM.g.position, near = Math.hypot(p.pos.x - sp.x, p.pos.z - sp.z) < 45; if (near !== O.shipCast) { O.shipCast = near; Z.shipM.g.traverse(o => { if (o.isMesh && o.geometry.attributes.position.count >= 2500) o.castShadow = near; }); } }
+    for (const m of Z.plantMeshes || []) if (m.castShadow || m.userData.cast0) { if (m.userData.cast0 == null) m.userData.cast0 = 1; m.geometry.boundingSphere || m.computeBoundingSphere(); const bs = m.boundingSphere || m.geometry.boundingSphere; m.castShadow = !!bs && Math.hypot(p.pos.x - bs.center.x, p.pos.z - bs.center.z) - bs.radius < sf; } }
   if (Z.beamFx) { const F = Z.beamFx, Bm = Z.beam; F.cd -= dt; if (!p.medit && F.cd <= 0 && p.grounded && Math.hypot(p.pos.x - Bm.at[0], p.pos.z - Bm.at[1]) < Bm.r * .9 && Math.abs(ly) < 1.2) p.medit = { t: 0, y0: p.pos.y, out: 0 };     // into the Jinra beam: he floats
     F.on.value += ((p.medit && !p.medit.out ? 1 : 0) - F.on.value) * (1 - Math.exp(-2.5 * dt)); }
   for (const Gt of Z.gates || []) { Gt.cd -= dt; if (Gt.cd <= 0 && Math.hypot(p.pos.x - Gt.x, p.pos.z - Gt.z) < 1.3 && Math.abs(ly - Gt.y) < 2) { Gt.cd = 4; try { snd('lock', { g: .3, r: .4, x: Gt.x, z: Gt.z }); setTimeout(() => snd('lock', { g: .14, r: .4, x: Gt.x, z: Gt.z }), 700); } catch (e) {} } }     // the summit's bell gate rings as he passes under it
@@ -35672,7 +35698,7 @@ function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = 
 // Its painted maps are mapped in OBJECT space (`triMat` `local`), so they ride with it instead of crawling as it flies. Returns { g, deckY,
 // deck: every solid box in the group's LOCAL frame, tris: the walkable ramps' triangles (local, flat xyz), flags, step(dt, t): the cloth }.
 // Safe at module scope: it reads SHIPZ, TEXLIB and function declarations only.
-function shipModel(opts) { const S = shipMake(1, !opts || opts.air !== false); return { g: S.g, deckY: SHIPZ.deckY, deck: S.O.boxes, tris: S.tris, flags: S.flags, coreM: S.coreM,
+function shipModel(opts) { const S = shipMake(1, !opts || opts.air !== false); return { g: S.g, deckY: SHIPZ.deckY, deck: S.O.boxes, tris: S.tris, flags: S.flags, coreM: S.coreM, wings: S.wings,
   step(dt, t) { for (const F of S.flags) shipCloth(F, t); S.coreM.emissiveIntensity = 2.1 + Math.sin(t * 2.4) * .5;
     for (const Wg of S.wings) { const P = Wg.geo.attributes.position.array, B = Wg.base; for (let i = 0, n = Wg.w.length; i < n; i++) { const x = B[i * 3], z = B[i * 3 + 2]; P[i * 3 + 1] = B[i * 3 + 1] + Wg.w[i] * (Math.sin(t * 1.9 + Wg.ph + x * .25 + z * .18) * .35 + Math.sin(t * 3.7 + z * .5) * .08); }
       Wg.geo.attributes.position.needsUpdate = true; Wg.geo.computeVertexNormals(); } } }; }     // m1479: the wings' canvas ripples
@@ -40772,7 +40798,7 @@ function stepPlayer(dt) {
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
   if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (RGN.live) rgnStep(dt); if (DRAGZ.on) dragStep(dt); }     // m2051 roomStep
   if (PLANT.list.length) plantStep(dt);     // m1424
-  if (GARDEN.on) { try { gdnStep(dt); } catch (e) { GARDEN.on = null; note('GARDEN STEP ' + e.message); } }     // PROLOGUE P1: the hammock, the bell, the falls, the catch
+  if (GARDEN.on) { try { gdnStep(dt); } catch (e) { GARDEN.on = null; note('GARDEN STEP ' + e.message); console.error('[garden step]', e.stack); } }     // PROLOGUE P1: the hammock, the bell, the falls, the catch
   if (DOMET.on) { try { dmtStep(dt); } catch (e) { DOMET.on = null; note('DOMET STEP ' + e.message); } }     // m2144: the temple's door, orb and light
   if (ROCK.loose.length || ROCK.broken.length) rockStep(dt);     // m1745
   if (RESTORE.list.length) restoreStep(dt);     // m1505     // m1105; m1119; m1120: each building's own life
