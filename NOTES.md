@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2211 -- THE TITLE LOOP: the terrace tops dressed; a darker night (Nov 2 2026)
+A beauty sheet of all seven seasons on the phone (same moment, him on the bridge) read well -- spring pink, summer lush, rain and storm grey
+(the bolt through the frame), autumn orange, winter snowed in, night under the moon -- and showed two weak spots:
+- **THE MID TERRACE TOPS were bare green fields.** Now 280 grass clumps, 220 flower cards and 26 mossy boulders sit on them (`mtuft` /
+  `mflower` / `mrock`, placed by `surfAt` so they sit on the hills). They were too small to read at ~90 m at first: tufts .8-1.4 m, flowers
+  1.9-3 m across now.
+- **NIGHT was too bright on the ground**: light .22 (was .27), key .4, and the grass and leaves tinted bluer and darker.
+- Renders: the seven-season sheet; spring on the phone with the dressed terrace. **Shipped unverified.**
+
 ## m2210 -- THE TITLE LOOP: the keel of his isle dressed (Jinra crystals, moss curtains, hung lanterns); footstep dust (Nov 2 2026)
 *"Keep going -- more detail."* The phone frame shows a lot of the underside of his isle, and it was bare rock with roots.
 - **THE KEEL** (`keel(a, t)` reads a point on the walkisle's own rock rings): 9 clusters of JINRA CRYSTALS grown out of it, pointing down and
