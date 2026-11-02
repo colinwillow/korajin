@@ -15909,7 +15909,7 @@ function dmtStep(dt) { const Z = DOMET, O = Z.on; if (!O) return; O.t += dt;
 const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 1851,
   sky: { zen: [.13, .38, .88], mid: [.4, .66, .98], hor: [.96, .92, .84], sun: [-.6, .48, -.25], fog: 0xeae2d2, fogNear: 180, fogFar: 1900, pano: 'garden_sky', panoSunU: .824 },
   cards: { n: 90, far: 34, seed: 404 },
-  farGen: { n: 26, seed: 5150, r0: 260, r1: 1350, kinds: ['mesa', 'spire', 'twin', 'arch', 'tilted', 'cluster', 'roots', 'spire', 'mesa'] },                                                         // his painted cloud, billboarded: drifting banks BELOW and round the island
+  farGen: { n: 26, seed: 5150, r0: 260, r1: 1350, kinds: ['mesa', 'spire', 'twin', 'shelf', 'tilted', 'cluster', 'roots', 'spire', 'forest', 'mesa'] },                                                         // his painted cloud, billboarded: drifting banks BELOW and round the island
   clouds: { y: -150, layers: [{ dy: 0, cover: .97, k: .011, sp: 1.2 }, { dy: 8, cover: .55, k: .017, sp: 2.0 }, { dy: 17, cover: .3, k: .023, sp: 2.8 }] },
   isle: { id: 'isle_main', rx: 23, rz: 27, depth: 30, sides: 56 },
   spawn: { at: [-9.8, 4.6], face: [6.6, 3.0] },                                    // STANDING beside the hammock, facing out over the garden (no sleep clip yet)
@@ -16681,6 +16681,71 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     for (const r of rec) r.y += Y0; Z.plantRec = rec; }
   return parts; }
 // THE SKY WORLD: the dome, the sea of cloud and its heaps, the far islands (one with a pagoda), drifting rocks, snow peaks, the sun shafts
+// m2179 THE FAR-ISLE GENERATOR. A floating island built as rings round its axis: a domed (or PEAKED) lawn, an overhanging grass LIP, then a rock body
+// tapering to a point in STRATA (ledged bands), with MOSS streaks running down from the lip, lesser DRIPS hanging under it and SHARDS floating
+// below. Every vertex carries a LINEAR colour (vertex colours are not sRGB-decoded). Local: the lawn's rim at y = 0. Returns { geos, rim, surf, ex, ez }.
+function gdnIsleGeo(RG, s, o) { o = o || {}; const N = o.N || 26, ex = o.ex || 1, ez = o.ez || 1, ph = [RG() * 6.3, RG() * 6.3, RG() * 6.3, RG() * 6.3, RG() * 6.3];
+  const rad = a => s * (1 + .15 * Math.sin(2 * a + ph[0]) + .08 * Math.sin(3 * a + ph[1]) + .045 * Math.sin(5 * a + ph[2]) + .02 * Math.sin(9 * a + ph[3]));
+  const peak = o.peak || 0, dome = o.dome == null ? .08 : o.dome, D0 = s * (o.depth || 1.2), lip = s * .1;
+  const hTop = (u, a) => peak ? s * peak * Math.pow(Math.max(0, 1 - u), 1.35) * (1 + .22 * u * Math.sin(5 * a + ph[4]) + .1 * Math.sin(11 * a + ph[1])) + s * .03 : s * dome * (1 - u * u) + s * .012 * Math.sin(4 * a + ph[3]) * u;
+  const grass = o.grass || [.1, .27, .035], grassL = [.2, .42, .07], lipC = [.05, .14, .025], snow = [.88, .9, .95], scree = [.3, .28, .27], warm = [.36, .25, .15], cold = [.1, .075, .085];
+  const pos = [], col = [], idx = [], rings = [], mix = (p, q, t) => [p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t, p[2] + (q[2] - p[2]) * t];
+  const ring = pts => { const b = pos.length / 3; for (const [x, y, z, c] of pts) { pos.push(x, y, z); col.push(c[0], c[1], c[2]); } rings.push(b); };
+  pos.push(0, hTop(0, 0), 0); col.push(...(peak ? snow : grassL)); const c0 = 0;
+  const TU = [.12, .3, .5, .7, .86, 1];
+  for (const u of TU) ring(Array.from({ length: N }, (_, i) => { const a = i / N * Math.PI * 2, r = rad(a) * u, y = hTop(u, a);
+    let c; if (peak) { const line = s * peak * (.42 + .08 * Math.sin(7 * a + ph[0])); c = y > line ? snow : y > line * .55 ? mix(scree, snow, .25) : u > .8 ? grass : scree; }
+    else c = mix(grassL, grass, Math.min(1, u * 1.15 + .12 * Math.sin(a * 6 + ph[2])));
+    return [Math.cos(a) * r * ex, y, Math.sin(a) * r * ez, c]; }));
+  const rim = []; ring(Array.from({ length: N }, (_, i) => { const a = i / N * Math.PI * 2, r = rad(a) * 1.045; const p = [Math.cos(a) * r * ex, -lip * .45, Math.sin(a) * r * ez]; rim.push(p); return [...p, lipC]; }));
+  ring(Array.from({ length: N }, (_, i) => { const a = i / N * Math.PI * 2, r = rad(a) * .99; return [Math.cos(a) * r * ex, -lip, Math.sin(a) * r * ez, [.05, .04, .03]]; }));     // the dark shadow under the lip
+  const K = 9, Dm = a => D0 * (.78 + .22 * Math.sin(2 * a + ph[1]) + .1 * Math.sin(5 * a + ph[3])), band = s * (.2 + RG() * .08);
+  for (let k = 1; k <= K; k++) { const t = k / K; ring(Array.from({ length: N }, (_, i) => { const a = i / N * Math.PI * 2, y = -lip - Math.pow(t, 1.08) * Dm(a), b = -y / band, f = b - Math.floor(b);
+    const r = rad(a) * Math.pow(1 - t * .93, .8) * (1 - .085 * f) * (1 + .05 * Math.sin(a * 13 + k * 1.7 + ph[2]));
+    const moss = Math.max(0, Math.sin(a * 7 + ph[0]) * Math.sin(a * 3 + ph[4])) * .55, sk = (Math.floor(b) % 2 ? .86 : 1.08) * (f < .18 ? .72 : 1);
+    let c = mix(warm, cold, Math.pow(t, .8)).map(v => v * sk); if (t < moss) c = mix(c, [.07, .17, .03], .8 * (1 - t / moss));
+    return [Math.cos(a) * r * ex, y, Math.sin(a) * r * ez, c]; })); }
+  const tipY = -lip - D0 * 1.08; pos.push((RG() - .5) * s * .1, tipY, (RG() - .5) * s * .1); col.push(...cold); const tip = pos.length / 3 - 1;
+  for (let i = 0; i < N; i++) { const j = (i + 1) % N; idx.push(c0, rings[0] + j, rings[0] + i); }
+  for (let r = 0; r + 1 < rings.length; r++) { const A = rings[r], B = rings[r + 1]; for (let i = 0; i < N; i++) { const j = (i + 1) % N; idx.push(A + i, A + j, B + i, A + j, B + j, B + i); } }
+  { const A = rings[rings.length - 1]; for (let i = 0; i < N; i++) { const j = (i + 1) % N; idx.push(A + i, A + j, tip); } }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx); g.computeVertexNormals();
+  const geos = [g];
+  for (let d = 0; d < (o.drip || 0); d++) { const a = RG() * 6.3, rr = rad(a) * (.35 + RG() * .25), y0 = -lip - D0 * (.25 + RG() * .25), L = D0 * (.35 + RG() * .45), w = s * (.1 + RG() * .1);
+    geos.push(gdnPaint(new THREE.ConeGeometry(w, L, 7, 4).rotateX(Math.PI).translate(Math.cos(a) * rr * ex, y0 - L / 2, Math.sin(a) * rr * ez), (x, y) => mix(warm, cold, Math.min(1, (y0 - y) / L * .8 + .3)))); }
+  for (let d = 0; d < (o.shards || 0); d++) { const a = RG() * 6.3, rr = s * (.2 + RG() * .7), w = s * (.025 + RG() * .045), y = tipY + D0 * (.1 + RG() * .3) - s * (.3 + RG() * .9), q = new THREE.IcosahedronGeometry(w, 0).scale(.7 + RG() * .6, 1.2 + RG() * .9, .7 + RG() * .6).rotateZ(RG() - .5).rotateY(RG() * 6).translate(Math.cos(a) * rr, y, Math.sin(a) * rr);
+    q.computeVertexNormals(); const top = y + w; geos.push(gdnPaint(q, (x, yy) => yy > top - w * .25 ? lipC : mix(warm, cold, .55 + (top - yy) / w * .2))); }
+  const surf = (x, z) => { const a = Math.atan2(z / ez, x / ex), u = Math.min(1, Math.hypot(x / ex, z / ez) / rad(a)); return hTop(u, a) - s * .01; };
+  return { geos, rim, surf, ex, ez }; }
+function gdnPaint(q, fn) { const P = q.attributes.position, c = new Float32Array(P.count * 3); for (let i = 0; i < P.count; i++) c.set(fn(P.getX(i), P.getY(i), P.getZ(i)), i * 3); q.setAttribute('color', new THREE.BufferAttribute(c, 3)); return q; }
+// a tapered tube along points (a hanging root): radius r at the top to a point, colour top to tip
+function gdnTaper(pts, r, n, c0, c1) { const C = new THREE.CatmullRomCurve3(pts), S = 12, pos = [], col = [], idx = [], T = new THREE.Vector3(), Nn = new THREE.Vector3(), Bn = new THREE.Vector3(), up = new THREE.Vector3(1, 0, 0);
+  for (let j = 0; j <= S; j++) { const u = j / S, p = C.getPoint(u); C.getTangent(u, T); Nn.crossVectors(T, up).normalize(); Bn.crossVectors(T, Nn).normalize(); const rr = r * (1 - u * .92);
+    for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2; pos.push(p.x + (Nn.x * Math.cos(a) + Bn.x * Math.sin(a)) * rr, p.y + (Nn.y * Math.cos(a) + Bn.y * Math.sin(a)) * rr, p.z + (Nn.z * Math.cos(a) + Bn.z * Math.sin(a)) * rr); col.push(c0[0] + (c1[0] - c0[0]) * u, c0[1] + (c1[1] - c0[1]) * u, c0[2] + (c1[2] - c0[2]) * u); } }
+  for (let j = 0; j < S; j++) for (let i = 0; i < n; i++) { const a = j * n + i, b = j * n + (i + 1) % n; idx.push(a, b, a + n, b, b + n, a + n); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx); g.computeVertexNormals(); return g; }
+// a far tree in vertex colour: ROUND (a cluster of canopy lumps, light on top, dark beneath), PINE (stacked cones), CHERRY (pink lumps)
+function gdnFarTree(R, x, y, z, h, kind) { const out = [], bark = [.09, .055, .03];
+  out.push(gdnPaint(new THREE.CylinderGeometry(h * .045, h * .08, h * (kind === 'pine' ? .5 : .7), 5).translate(x, y + h * (kind === 'pine' ? .25 : .35), z), () => bark));
+  if (kind === 'pine') { for (let k = 0; k < 3; k++) { const w = h * (.32 - k * .08), hh = h * (.42 - k * .06), yy = y + h * (.3 + k * .22); out.push(gdnPaint(new THREE.ConeGeometry(w, hh, 7).translate(x, yy + hh / 2, z), (px, py) => { const t = (py - yy) / hh; return [.025 + t * .03, .1 + t * .1, .04 + t * .03]; })); } return out; }
+  const lo = kind === 'cherry' ? [.5, .14, .22] : [.03, .11, .025], hi = kind === 'cherry' ? [.95, .5, .62] : [.17, .38, .06], y0 = y + h * .55, y1 = y + h * 1.05;
+  for (let k = 0; k < 4; k++) { const a = R() * 6.3, rr = k ? h * .2 : 0, w = h * (k ? .24 + R() * .08 : .34), cx = x + Math.cos(a) * rr, cz = z + Math.sin(a) * rr, cy = y + h * (k ? .62 + R() * .12 : .78);
+    const q = new THREE.IcosahedronGeometry(w, k ? 0 : 1).scale(1, .78, 1).translate(cx, cy, cz); out.push(gdnPaint(q, (px, py) => { const t = Math.max(0, Math.min(1, (py - y0) / (y1 - y0))); return [lo[0] + (hi[0] - lo[0]) * t, lo[1] + (hi[1] - lo[1]) * t, lo[2] + (hi[2] - lo[2]) * t]; })); }
+  return out; }
+// the far material: vertex colour, the rock map as triplanar DETAIL (luminance only, so the paint keeps its hue), and AERIAL HAZE by distance --
+// warm toward the sun, cool away -- because a far island in a bright sky is mostly sky. Lambert: at this distance the specular is never seen.
+function gdnFarMat() { const U = GARDEN.U, m = new THREE.MeshLambertMaterial({ vertexColors: true, fog: false });
+  m.onBeforeCompile = sh => { Object.assign(sh.uniforms, { uDet: { value: texGet('garden_rock') }, uSun: U.uSun, uHazeW: { value: new THREE.Color(0xf7dcc0) }, uHazeC: { value: new THREE.Color(0xc6d2e6) } });
+    sh.vertexShader = 'varying vec3 vFW, vFN;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vFW = (modelMatrix * vec4(transformed, 1.0)).xyz; vFN = normalize(mat3(modelMatrix) * objectNormal);');
+    sh.fragmentShader = 'uniform sampler2D uDet; uniform vec3 uSun, uHazeW, uHazeC; varying vec3 vFW, vFN;\n' + sh.fragmentShader
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        vec3 bw = pow(abs(normalize(vFN)), vec3(4.0)); bw /= dot(bw, vec3(1.0)); vec3 q3 = vFW * .035;
+        float dt = dot(texture2D(uDet, q3.zy).rgb * bw.x + texture2D(uDet, q3.xz).rgb * bw.y + texture2D(uDet, q3.xy).rgb * bw.z, vec3(.333));
+        float lum = dot(diffuseColor.rgb, vec3(.333)); diffuseColor.rgb *= mix(.45 + dt * 1.15, .9 + dt * .2, smoothstep(.5, .8, lum));`)
+      .replace('#include <dithering_fragment>', `#include <dithering_fragment>
+        vec3 vd = vFW - cameraPosition; float dd = length(vd), sk = max(dot(vd / dd, normalize(uSun)), 0.0);
+        vec3 hz = mix(uHazeC, uHazeW, .25 + .75 * pow(sk, 1.5)); gl_FragColor.rgb = mix(gl_FragColor.rgb, hz, smoothstep(140.0, 2000.0, dd) * .78);`); };
+  m.customProgramCacheKey = () => 'gdnFar1'; return m; }
 function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clouds }, R = gdnRnd(Z.seed + 5), M = gdnMats();
   // THE SKY (m2152, his: "put an HDR... a really mystical magical one"): his generated 360 panorama (textures/garden_sky.webp -- a morning sky over an
   // endless sea of cloud FAR below), sampled by direction and turned so its sun glow sits on the scene's sun. It replaces the three full-screen fbm
@@ -16694,61 +16759,55 @@ function gdnSky(g) { const Z = GARDEN, U = Z.U, T = { sky: Z.sky, clouds: Z.clou
       }` })); sky.renderOrder = -2; sky.frustumCulled = false; sky.onBeforeRender = (rn, sc, cm) => { sky.position.copy(cm.position); sky.updateMatrixWorld(); }; sky.name = 'garden_sky'; g.add(sky); }
   try { gdnCards(g); } catch (e) { note('GARDEN CARDS ' + e.message); }
   const far = new THREE.Group(); far.position.y = Z.top; far.name = 'garden_far'; g.add(far); Z.pieces.far = far;
-  const rock = [], cap = [], leaf = [], bark = [], roofs = [], trims = [], lac = [], falls = [], heaps = [], snow = [];
-  for (const F of Z.far) { const [x, y, z] = F.at, rk = templeRock(x, y, z, F.r, F.r * (.8 + R() * .3), F.d, 24, 500 + rock.length); rock.push(rk.side); rk.cap.deleteAttribute('color'); cap.push(rk.cap);
-    for (let i = 0; i < F.trees; i++) { const a = R() * 6.3, rr = R() * F.r * .6, tx = x + Math.cos(a) * rr, tz = z + Math.sin(a) * rr, h = F.r * (.25 + R() * .15) + 3;
-      bark.push(new THREE.CylinderGeometry(h * .05, h * .09, h, 6).translate(tx, y + h / 2, tz)); leaf.push(gdnBlob(R, tx, y + h, tz, h * .42, .55, 1), gdnBlob(R, tx + h * .2, y + h * .82, tz, h * .3, .5, 0)); }
-    if (F.pagoda) { let yy = y; const W0 = F.r * .3; lac.push(new THREE.BoxGeometry(W0 * 2.4, 2.4, W0 * 2.4).translate(x, yy + 1.2, z)); yy += 2.4;
+  const falls = [], heaps = [], G = [];     // G: every far solid, each a geometry with a LINEAR vertex colour, merged into ONE mesh below
+  const lam = (c, k) => [c[0] * k, c[1] * k, c[2] * k];
+  // the hand-placed isles (the pagoda isle, the big western one ...), now on the same generator as the rest
+  for (const F of Z.far) { const [x, y, z] = F.at, I = gdnIsleGeo(R, F.r, { depth: F.d / F.r, dome: .08, drip: 2 + (F.r > 15 ? 2 : 0), shards: F.r > 12 ? 2 : 0, ex: .9 + R() * .3 });
+    for (const q of I.geos) G.push(q.translate(x, y, z)); for (let i = 0; i < F.trees; i++) { const a = R() * 6.3, rr = R() * F.r * .6, tx = Math.cos(a) * rr, tz = Math.sin(a) * rr;
+      for (const q of gdnFarTree(R, tx, I.surf(tx, tz), tz, F.r * (.25 + R() * .15) + 3, R() < .2 ? 'cherry' : R() < .35 ? 'pine' : 'round')) G.push(q.translate(x, y, z)); }
+    if (F.pagoda) { let yy = y + I.surf(0, 0); const W0 = F.r * .3, lac = [], roofs = [], trims = []; lac.push(new THREE.BoxGeometry(W0 * 2.4, 2.4, W0 * 2.4).translate(x, yy + 1.2, z)); yy += 2.4;
       for (let k = 0; k < 4; k++) { const w = W0 * (1 - k * .18); lac.push(new THREE.BoxGeometry(w * 1.5, w * .9, w * 1.5).translate(x, yy + w * .45, z)); const rf = gdnRoof(x, yy + w * .9, z, w * 1.25, w * .5, w * .45, w * .2); roofs.push(...rf.roof); trims.push(...rf.trim.slice(0, 4)); yy += w * .9 + w * .45; }
-      trims.push(new THREE.CylinderGeometry(.3, .5, W0 * 1.2, 8).translate(x, yy + W0 * .6, z)); part0(F.id + '_pagoda'); }
-    for (const deg of F.falls || []) { const p = rk.rim[Math.round(rk.rim.length * deg / 360) % rk.rim.length], L = Math.hypot(p[0] - x, p[2] - z); falls.push(gdnFall(p[0], y + .1, p[2], (p[0] - x) / L, (p[2] - z) / L, Math.max(1.5, F.r * .12), Math.min(220, y + 160), 2)); }
+      trims.push(new THREE.CylinderGeometry(.3, .5, W0 * 1.2, 8).translate(x, yy + W0 * .6, z));
+      for (const [L, c] of [[lac, [.36, .03, .02]], [roofs, [.04, .2, .15]], [trims, [.6, .36, .07]]]) for (const q of L) G.push(gdnPaint(q, () => c)); Z.parts.push({ id: F.id + '_pagoda', kind: 'far_pagoda' }); }
+    for (const deg of F.falls || []) { const p = I.rim[Math.round(I.rim.length * deg / 360) % I.rim.length], L = Math.hypot(p[0], p[2]); falls.push(gdnFall(x + p[0], y + p[1] + .1, z + p[2], p[0] / L, p[2] / L, Math.max(1.5, F.r * .12), Math.min(220, y + 160), 2)); }
     Z.parts.push({ id: F.id, kind: 'far_isle', x, y, z, r: F.r }); }
-  function part0(id) { Z.parts.push({ id, kind: 'far_pagoda' }); }
-  // m2166 THE FAR ISLES, VARIED (his: "a variety of floating islands -- their silhouettes ... much larger in the background"): `farGen` adds islands
-  // of SEVEN shapes round the horizon, each turned and tilted its own way -- a flat MESA, a tall SPIRE, TWINS, an ARCH, a TILTED slab, a CLUSTER,
-  // and a rock trailing long ROOTS -- some huge and far. Built at the origin, then moved and turned with one matrix, so a tilt is free.
+  // m2179 THE FAR ISLES, REBUILT (his, on the phone: "these background floating islands are crazy so so bad, they need so much attention"). They were
+  // templeRock lumps in ONE flat olive with lollipop trees and pipe roots. Every one is now `gdnIsleGeo`: a domed lawn with an overhanging grass LIP,
+  // a rock body in STRATA (ledged bands, warm at the top, cold and dark at the tip) with MOSS running down it, DRIPS (lesser points) hanging under the
+  // main one, and broken SHARDS floating below; canopy CLUSTERS (round, pine, cherry); tapered roots. All still one mesh, one draw -- painted in vertex
+  // colour, its rock texture brought in as triplanar DETAIL, and AERIAL HAZE by distance (warm toward the sun, cool away) so the far ones sit in the sky.
   { const FG = Z.farGen, RG = gdnRnd(FG.seed), MX = new THREE.Matrix4(), Q = new THREE.Quaternion(), E = new THREE.Euler(), V = new THREE.Vector3(), S1 = new THREE.Vector3(1, 1, 1);
-    const rock2 = (x, y, z, r, r2, d, n, seed) => { const k = templeRock(x, y, z, r, r2, d, n, seed); k.cap.deleteAttribute('color'); return k; };
-    const lay = (parts, m) => { for (const [L, q] of parts) { q.applyMatrix4(m); L.push(q); } };
+    const trees = (P, I, n, s, kinds) => { for (let t = 0; t < n; t++) { const a = RG() * 6.3, rr = Math.sqrt(RG()) * s * .72, tx = Math.cos(a) * rr * I.ex, tz = Math.sin(a) * rr * I.ez; P.push(...gdnFarTree(RG, tx, I.surf(tx, tz), tz, s * (.22 + RG() * .16), kinds[Math.floor(RG() * kinds.length)])); }
+      for (let t = 0; t < n * 2; t++) { const a = RG() * 6.3, rr = (.8 + RG() * .17) * s, tx = Math.cos(a) * rr * I.ex, tz = Math.sin(a) * rr * I.ez, w = s * (.05 + RG() * .05), q = new THREE.IcosahedronGeometry(w, 0).scale(1.4, .6, 1.4).translate(tx, I.surf(tx, tz) + w * .2, tz);
+        P.push(gdnPaint(q, (x, y) => y > I.surf(tx, tz) + w * .3 ? [.15, .34, .05] : [.05, .14, .025])); } };     /* shrubs round the rim, so a top is never bare */
     for (let i = 0; i < FG.n; i++) { const a = i / FG.n * Math.PI * 2 + RG() * .25, d = FG.r0 + Math.pow(RG(), .8) * (FG.r1 - FG.r0), x = Math.sin(a) * d, z = Math.cos(a) * d, y = -70 + RG() * 200, big = d / 600, kind = FG.kinds[Math.floor(RG() * FG.kinds.length)];
-      if (gdnReserved(x, y, z, 80 * big)) continue; const P = [], sd = 1200 + i * 17, s = (14 + RG() * 22) * big;
-      if (kind === 'mesa') { const k = rock2(0, 0, 0, s * 1.6, s * (1.1 + RG() * .4), s * .55, 26, sd); P.push([rock, k.side], [cap, k.cap]); for (let t = 0; t < 5; t++) { const tx = (RG() - .5) * s * 1.6, tz = (RG() - .5) * s, h = s * .22; P.push([bark, new THREE.CylinderGeometry(h * .06, h * .1, h, 5).translate(tx, h / 2, tz)], [leaf, gdnBlob(RG, tx, h, tz, h * .5, .55, 0)]); } }
-      else if (kind === 'spire') { const k = rock2(0, 0, 0, s * .45, s * .4, s * 2.6, 16, sd); P.push([rock, k.side], [cap, k.cap]); const h = s * .3; P.push([bark, new THREE.CylinderGeometry(h * .06, h * .1, h, 5).translate(0, h / 2, 0)], [leaf, gdnBlob(RG, 0, h, 0, h * .55, .6, 0)]); }
-      else if (kind === 'twin') { for (const sx of [-1, 1]) { const k = rock2(sx * s * .75, sx * s * .15, 0, s * .8, s * .7, s * (1.1 + RG() * .6), 18, sd + sx); P.push([rock, k.side], [cap, k.cap]); } }
-      else if (kind === 'arch') { for (const sx of [-1, 1]) { const k = rock2(sx * s * 1.1, -s * .2, 0, s * .45, s * .4, s * 1.8, 14, sd + sx); P.push([rock, k.side], [cap, k.cap]); }
-        const top = rock2(0, s * .25, 0, s * 1.7, s * .45, s * .5, 20, sd + 7); P.push([rock, top.side], [cap, top.cap]); }
-      else if (kind === 'cluster') { const k = rock2(0, 0, 0, s * .8, s * .7, s * 1.3, 18, sd); P.push([rock, k.side], [cap, k.cap]); for (let t = 0; t < 4; t++) { const aa = RG() * 6.3, rr = s * (1.3 + RG() * .8), ss = s * (.18 + RG() * .25); const k2 = rock2(Math.cos(aa) * rr, (RG() - .5) * s, Math.sin(aa) * rr, ss, ss, ss * 1.8, 10, sd + t * 3); P.push([rock, k2.side], [cap, k2.cap]); } }
-      else if (kind === 'roots') { const k = rock2(0, 0, 0, s, s * .85, s * .8, 22, sd); P.push([rock, k.side], [cap, k.cap]); for (let t = 0; t < 6; t++) { const aa = t / 6 * 6.3, rr = s * .5, L = s * (1.2 + RG() * 1.4), pts = [];
-          for (let j = 0; j <= 6; j++) { const u = j / 6; pts.push(new THREE.Vector3(Math.cos(aa) * rr * (1 - u * .4) + Math.sin(u * 5 + t) * s * .08, -s * .3 - u * L, Math.sin(aa) * rr * (1 - u * .4))); }
-          P.push([bark, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 10, s * .045, 5, false)]); } P.push([leaf, gdnBlob(RG, 0, s * .3, 0, s * .6, .45, 1)]); }
-      else { const k = rock2(0, 0, 0, s * 1.2, s * .6, s * .9, 22, sd); P.push([rock, k.side], [cap, k.cap]); }     // 'tilted': a slab, the tilt below does it
-      const tilt = kind === 'tilted' ? .3 + RG() * .25 : (RG() - .5) * .16; Q.setFromEuler(E.set((RG() - .5) * tilt * 2, RG() * 6.3, tilt * (RG() < .5 ? -1 : 1)));
-      MX.compose(V.set(x, y, z), Q, S1); lay(P, MX);
-      if (RG() < .45) { const h = s * (kind === 'spire' ? 2.6 : 1.2) + 90; const fg = gdnFall(s * .6, 0, 0, 1, 0, Math.max(2, s * .08), Math.min(240, h), 2).applyMatrix4(MX); falls.push(fg); }
+      if (gdnReserved(x, y, z, 80 * big)) continue; const P = [], s = (14 + RG() * 22) * big; let fallAt = null;
+      const isle = (ox, oy, oz, ss, o) => { const I = gdnIsleGeo(RG, ss, o); for (const q of I.geos) P.push(q.translate(ox, oy, oz)); I.ox = ox; I.oy = oy; I.oz = oz; if (!fallAt) fallAt = I; return I; };
+      if (kind === 'mesa' || kind === 'forest') { const I = isle(0, 0, 0, s * 1.4, { depth: .7 + RG() * .3, dome: .06, drip: 4, shards: 3, ex: 1.2, ez: .8 }); trees(P, I, kind === 'forest' ? 22 : 11, s * 1.4, ['round', 'round', 'pine', 'cherry']); }
+      else if (kind === 'spire') { const I = isle(0, 0, 0, s * .6, { depth: 3.6 + RG(), dome: .1, drip: 2, shards: 2 }); trees(P, I, 3, s * .6, ['pine', 'round']); }
+      else if (kind === 'twin') { for (const sx of [-1, 1]) { const I = isle(sx * s * .95, sx * s * .35, (RG() - .5) * s * .4, s * (.7 + RG() * .2), { depth: 1.3 + RG() * .7, dome: .08, drip: 2, shards: 1 }); trees(P, I, 5, s * .7, ['round', 'pine', 'cherry']); } }
+      else if (kind === 'shelf') { for (let t = 0; t < 3; t++) { const I = isle((t - 1) * s * .9 + (RG() - .5) * s * .3, t * s * .45, (RG() - .5) * s * .6, s * (.75 - t * .14), { depth: 1.1 + RG() * .5, dome: .05, drip: 2, shards: t ? 0 : 2 }); trees(P, I, 5 - t, s * .6, ['round', 'cherry']); } }
+      else if (kind === 'cluster') { const I = isle(0, 0, 0, s * .85, { depth: 1.5, dome: .08, drip: 3, shards: 2 }); trees(P, I, 6, s * .8, ['round', 'pine']);
+        for (let t = 0; t < 4; t++) { const aa = RG() * 6.3, rr = s * (1.5 + RG() * .9), ss = s * (.2 + RG() * .22); const J = isle(Math.cos(aa) * rr, (RG() - .5) * s * 1.2, Math.sin(aa) * rr, ss, { depth: 1.6, dome: .08, drip: 1, shards: 0, N: 16 }); if (RG() < .6) trees(P, J, 1, ss, ['round', 'pine']); } }
+      else if (kind === 'roots') { const I = isle(0, 0, 0, s, { depth: .8, dome: .07, drip: 2, shards: 0 }); trees(P, I, 7, s, ['round', 'cherry']);
+        for (let t = 0; t < 9; t++) { const aa = t / 9 * 6.3 + RG() * .4, rr = s * (.55 + RG() * .3), L = s * (.8 + RG() * 1.3), pts = [];
+          for (let j = 0; j <= 7; j++) { const u = j / 7; pts.push(new THREE.Vector3(Math.cos(aa) * rr * (1 - u * .55) + Math.sin(u * 4 + t) * s * .07, -s * .15 - u * L, Math.sin(aa) * rr * (1 - u * .55) + Math.cos(u * 3 + t) * s * .07)); }
+          P.push(gdnTaper(pts, s * (.05 + RG() * .03), 6, [.16, .1, .06], [.07, .05, .04])); } }
+      else { const I = isle(0, 0, 0, s * 1.1, { depth: .9, dome: .05, drip: 3, shards: 2, ex: 1.3, ez: .7 }); trees(P, I, 8, s * 1.1, ['round', 'pine']); }     // 'tilted': a slab, the tilt below does it
+      const tilt = kind === 'tilted' ? .28 + RG() * .2 : (RG() - .5) * .1; Q.setFromEuler(E.set((RG() - .5) * tilt * 2, RG() * 6.3, tilt * (RG() < .5 ? -1 : 1)));
+      MX.compose(V.set(x, y, z), Q, S1); for (const q of P) G.push(q.applyMatrix4(MX));
+      if (RG() < .45 && fallAt) { const p = fallAt.rim[Math.floor(RG() * fallAt.rim.length)], L = Math.hypot(p[0], p[2]) || 1, h = s * 2 + 90;
+        falls.push(gdnFall(p[0] + fallAt.ox, p[1] + fallAt.oy + .1, p[2] + fallAt.oz, p[0] / L, p[2] / L, Math.max(2, s * .08), Math.min(240, h), 2).applyMatrix4(MX)); }
       Z.parts.push({ id: 'far_gen_' + i, kind: 'far_' + kind, x, y, z, r: s }); } }
-
+  // the small drifting rocks round the island: little isles of their own now (a tuft of lawn, a strata body, a point)
   const RK = Z.rocks; for (let k = 0; k < RK.n; k++) { const a = R() * Math.PI * 2, d = RK.r0 + R() * (RK.r1 - RK.r0), s = RK.s0 + R() * (RK.s1 - RK.s0), x = Math.sin(a) * d, z = Math.cos(a) * d; if (Math.abs(x - 10) < 30 && z > 0 && z < 60 || d < 80) continue; const yr = RK.y0 + R() * (RK.y1 - RK.y0); if (gdnReserved(x, yr, z, s * 2)) continue;
-    const rk = templeRock(x, yr, z, s, s * (.7 + R() * .5), s * (1.4 + R()), 9, 900 + k); rock.push(rk.side); rk.cap.deleteAttribute('color'); cap.push(rk.cap); }
-  // heaps of cumulus on the cloud sea (far below now: the panorama's sea is behind them)
-  for (let i = 0; i < 0; i++) { const a = R() * Math.PI * 2, d = 90 + R() * 1000, x = Math.sin(a) * d, z = Math.cos(a) * d, s = 20 + R() * 55 * (d / 1000 + .4); for (let j = 0; j < 4; j++) { const r2 = s * (1 - j * .18), ox = (j ? (R() - .5) * s * 1.6 : 0), oz = (j ? (R() - .5) * s * 1.2 : 0); heaps.push(new THREE.SphereGeometry(r2, 16, 10).scale(1, j ? .5 : .62, 1).translate(x + ox, Z.clouds.y + 2 + r2 * .14 + (j ? 0 : r2 * .1), z + oz)); } }
-  // FLOATING MOUNTAINS: a snow massif (a summit and two shoulders) standing on a rock that tapers away into the sky below
-  const mtnRock = []; for (const [x0, z0, h1, yb] of Z.peaks) { const h0 = h1 * .6, rk = templeRock(x0 * 1.35, yb, z0 * 1.35, h0 * .55, h0 * .48, h0 * 1.3, 28, 700 + (x0 | 0)); mtnRock.push(rk.side); }
-  for (const [x0, z0, h1, yb] of Z.peaks) for (let sh = 0; sh < 3; sh++) { const h0 = h1 * .6; const x = x0 + (sh ? (sh === 1 ? -1 : 1) * h0 * .55 : 0), z = z0 + (sh ? h0 * .15 : 0), h = h0 * (sh ? .62 : 1), cg = new THREE.ConeGeometry(h * .62, h, 40, 14), P = cg.attributes.position, col = new Float32Array(P.count * 3);
-    for (let i = 0; i < P.count; i++) { const px = P.getX(i), py = P.getY(i), pz = P.getZ(i), a = Math.atan2(pz, px), t = (py + h / 2) / h, rid = 1 + .22 * Math.sin(a * 5 + x) + .14 * Math.sin(a * 11 + z) + .07 * Math.sin(a * 23 + t * 9) - .12 * t;
-      P.setX(i, px * rid); P.setZ(i, pz * rid); const sn = t > .5 + .1 * Math.sin(a * 7 + x * .01) + .06 * Math.sin(a * 17); col.set(sn ? [.97, .96, .98] : [.58, .56, .62], i * 3); }
-    cg.setAttribute('color', new THREE.BufferAttribute(col, 3)); cg.computeVertexNormals(); snow.push(cg.scale(.8, .75, .8).translate(x0 * 1.35 + (x - x0) * .8, yb + h * .375 - 4, z0 * 1.35 + (z - z0) * .8).toNonIndexed()); }
+    const I = gdnIsleGeo(R, s, { depth: 1.4 + R(), dome: .1, drip: 1, shards: 0, N: 14 }); for (const q of I.geos) G.push(q.translate(x, yr, z)); }
+  // FLOATING MOUNTAINS: a snow massif standing on its own floating rock -- the same generator with a PEAKED top (ridged, snow above its line)
+  for (const [x0, z0, h1, yb] of Z.peaks) { const h0 = h1 * .6, s = h0 * .62, I = gdnIsleGeo(R, s, { depth: 1.9, peak: h0 / s, drip: 4, shards: 3, ex: 1.25, ez: .85 }); for (const q of I.geos) G.push(q.translate(x0 * 1.35, yb, z0 * 1.35)); }
   const add = (L, m, nm, sh) => { if (!L.length) return null; const o = new THREE.Mesh(mergeGeometries(L.map(q => { q = q.index ? q.toNonIndexed() : q; return q; }), false), m); o.name = nm; if (sh) o.castShadow = true; far.add(o); return o; };
   const strip = (L, keep) => L.map(q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (!keep.includes(k)) q.deleteAttribute(k); return q; });
-  // m2170: the far islands are ONE vertex-coloured mesh (was seven textured ones: rock, lawn, leaves, bark, roof, trim, lacquer) -- at that distance a
-  // painted map reads as its average colour anyway. The rock keeps its top-to-tip shading.
-  { const tint = (L, c, keepC) => strip(L, keepC ? ['position', 'normal', 'color'] : ['position', 'normal']).map(q => { const n = q.attributes.position.count, cl = new Float32Array(n * 3), src = q.attributes.color;
-      for (let i = 0; i < n; i++) { const k = src ? src.getX(i) : 1; cl[i * 3] = c[0] * k; cl[i * 3 + 1] = c[1] * (src ? src.getY(i) : 1); cl[i * 3 + 2] = c[2] * (src ? src.getZ(i) : 1); } q.setAttribute('color', new THREE.BufferAttribute(cl, 3)); return q; });
-    const all = [].concat(tint(rock, [.2, .22, .1], 1), tint(cap, [.11, .27, .05]), tint(leaf, [.05, .18, .035]), tint(bark, [.1, .06, .03]), tint(roofs, [.04, .2, .15]), tint(trims, [.6, .36, .07]), tint(lac, [.36, .03, .02]));     /* LINEAR colours: vertex colours are not sRGB-decoded */
-    const fm = new THREE.Mesh(mergeGeometries(all), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .95 })); fm.name = 'garden_far'; far.add(fm); }
+  { const fm = new THREE.Mesh(mergeGeometries(strip(G, ['position', 'normal', 'color'])), gdnFarMat()); fm.name = 'garden_far'; fm.frustumCulled = false; far.add(fm); Z.farTris = fm.geometry.attributes.position.count / 3; }
   { const fm = add(strip(falls, ['position', 'normal', 'uv', 'aL']), M.fall, 'garden_far_falls'); if (fm) { fm.renderOrder = 2; fm.frustumCulled = false; } }
-  { const hm = add(strip(heaps, ['position', 'normal']), new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xdfe8f6, emissiveIntensity: .32, roughness: 1, fog: true }), 'garden_heaps'); if (hm) hm.frustumCulled = false; }
-  { const pm = add(strip(snow, ['position', 'normal', 'color']), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .9, fog: false }), 'garden_peaks'); if (pm) pm.frustumCulled = false;
-    const mr = triMat('garden_rock', { scale: 26, rough: .95, bump: .6, color: 0xc8b8b0 }); mr.vertexColors = true; mr.fog = false; const mm = add(strip(mtnRock, ['position', 'normal', 'color']), mr, 'garden_mtn_rock'); if (mm) mm.frustumCulled = false; }
   // shafts of morning sun slanting down through the canopies, along the sun
   { const sd = U.uSun.value, q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), sd), rm = dmtRayMat(0xfff0c8, .13), geos = [];
     for (const [x, z, w] of Z.shafts) geos.push(new THREE.CylinderGeometry(w * 1.3, w * .7, 26, 12, 1, true).translate(0, 13, 0).applyQuaternion(q).translate(x, 0, z));
