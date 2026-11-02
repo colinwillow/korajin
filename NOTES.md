@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2188 -- THE GARDEN: far isles pass 2 -- hills on top, eroded rims, upright, nearer and bigger (Nov 2 2026)
+## m2189 -- THE GARDEN: far isles pass 2 -- hills on top, eroded rims, upright, nearer and bigger (Nov 2 2026)
 
 His phone shots: the snow-peaked one with irregular crags "looks good"; the rest "see how flat the tops are -- upside-down cones or pyramids",
 some "rotated weird -- they should be straight up", and "very small and sparse ... essentially a floating village". `gdnIsleGeo`: a non-peaked
@@ -27,6 +27,33 @@ isle; the depth has stronger lobes; drips are bigger and longer. Placement: NO t
 .7-1.5 x s, pines) and `hills` (the default) join the kinds; `farGen` n 26 -> 44, r0 260 -> 170, r1 1350 -> 1150, y -70..150, sizes x(.55 + d/900)
 instead of d/600, so the near ones are big and the ring is full. ~198k triangles in the one far draw (was ~130k). Renders skyw / skylow.
 **Shipped unverified.**
+## m2188 -- THE TITLE LOOP: Grumbo walks in place through a parallax garden behind the KORAJIN menu (Nov 2 2026)
+*"A loading screen that's a sideways view -- Grumbo walking left or right, stationary in the centre of the frame, an infinite loop -- with
+different backgrounds at different rates: PARALLAX... layers of depth with primary/secondary/tertiary detail and things animating in the
+background."* (After Pwnisher's "Infinite Loop".) Pass 1 is the TITLE PAGE's backdrop; the first boot card is unchanged, because nothing has loaded
+by then. `loopBg(host)` runs its own renderer like the hero turntable, and `startGate` disposes it on entering a world. The poster is still there as
+the fallback when WebGL fails.
+- **A real perspective camera on a LONG LENS** (18 deg, 22 m back, eye height 2.2) with a LENS SHIFT (`cam.shift` .62, written into the projection
+  matrix) that puts his feet just under mid-screen, above the buttons, and keeps the verticals straight. **EVERY band slides at the SAME world speed**:
+  his walk, MEASURED at load off the planted foot (`loopGait`, median backward speed of the lower toe over the clip): **0.847 m/s**. So the
+  far layers crawl only because they are far; the depth makes the parallax and no speed was typed per band. Each band can still add its own
+  `drift` (the clouds' wind).
+- **The bands** (`LOOPBG.bands`): clouds (W 2000), far (640: floating isles with Jinra falls, a five-tier pagoda isle, three snow peaks
+  out of the cloud sea, drifting rocks, sea puffs), mid (132: two long floating terraces, the rope bridge between them, willows, cherries,
+  a pine, a temple hall, stone and paper lanterns, two banners, a Jinra fall off the terrace), ground (40: flagstones, grass, the Jinra stream, bank
+  stones, a toro, a lantern, a cherry), near (44: a banner, a big toro, ferns crossing in front). **Each band is ONE merged geometry per material,
+  drawn as an InstancedMesh of 3 copies W apart**, so the wrap has no seam and no pop. Every W was checked against the visible width at
+  that band's deepest point at a 2.25 aspect, plus the biggest prop.
+- **Life**: one Points pool (cherry petals falling and turning, mint Jinra motes rising off the stream), one bird mesh rewritten each frame (two
+  flocks, 'm' wings flapping), the banners sway in a vertex shader, and the stream and falls flow in one shared Jinra shader. Mint is Jinra only; the
+  lanterns are amber.
+- **Data-first** (`SC_LOOPBG`): placed things in `place` with stable ids, seeded `scatter`, and `loopBgBuild(T)` a pure function of the table. It
+  reuses the garden's builders (`gdnIsleGeo`, `gdnFarTree`, `gdnRoof`, `gdnToro`, `gdnTaper`, `gdnPaint`). **HOOK:** `time` picks a palette
+  from `pal` and `theme` a world; only garden/dusk exist, and cycling them is the next pass.
+- **Measured, headless (swiftshader)**: 23 draw calls, ~235k tris drawn (74k built x up to 3 copies), speed 0.847 measured. Renders: phone
+  390x844 and 1800x800, and a six-frame sequence (peaks barely move, terraces drift, ground slides, birds cross, the near toro sweeps in front).
+- Box moved: none (a new piece, the title screen). Open: his look on the phone; time of day and element worlds; the sea puffs only read in
+  landscape. **Shipped unverified.**
 
 ## m2185 -- footsteps: the rope-bridge planks and the Garden's ship sound WOOD (Nov 2 2026)
 
