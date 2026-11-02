@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2197 -- THE GARDEN: the pots made over; the last flat-coloured plants painted (Nov 2 2026)
+
+*"This pot needs a full makeover ... there are some unpainted objects -- keep texturing things that need it, and extra geometry or modelling."*
+AUDIT first (harness: every garden mesh whose material has no map and no shader, by triangles): the pots (a 6-point, 12-sided lathe in flat
+`M.clay`), and the PLANT system's vertex-coloured `stones` (41k tris -- the pale grey low-poly rocks), `boulder` and `fern` (the pale blades).
+THE POT: `gdnPot` -- 17-point profile (foot, swelling belly, shoulder, ROLLED rim, the wall back down inside), 20 sides, a soil disc in the mouth,
+v by HEIGHT so the bands land on the profile; skinned with a new generated wrap `textures/garden_pot.webp` (jade glazed rim + gold line, a cream band
+of painted cherry blossom, thrown terracotta, moss at the foot; `tools/garden_textures.py pot`, a new WRAP kind with its side seam blended).
+`M.pot` had to join the merge's `KEEP` (uv-keeping) set -- without it the merge strips the uvs and the pot renders flat grey.
+STONES / BOULDERS / FERNS: like the grass (m2194), their records become the Garden's own painted things -- clusters of smooth rock blobs on
+`garden_rock` (triplanar, `garden_stones`, one draw) and three crossed cards of his painted fern (`garden_fern_cards`, one draw).
+Still unpainted after this: the plant system's FLOWERS (vertex colour, 73k tris -- they read as painted at a glance), small lamp / jade / rope
+bits, and the ship's plain parts. Render `pots`. **Shipped unverified.**
+
 ## m2196 -- THE TITLE LOOP pass 4: THE SEASONS -- spring, summer, a rain spell, autumn, winter (Nov 2 2026)
 *"Maybe it's snowing... maybe it goes through the seasons, maybe it goes from sun to... rain. We could try everything -- leaves blowing, those
 beautiful cherry tree blossoms, the willow tree."*
