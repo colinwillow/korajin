@@ -31,7 +31,7 @@ snow only where the zone already plays snow. No hit / a bank not decoded -> the 
 'plant' or named bush/fern/reed/flower/leaf...) are walked through: within reach a rustle plays on top. `mel` has no handle yet; STEPSURF.last is
 the last surface. Builders: tag a mesh `userData.surf = 'wood'` etc. when its name and colour would mislead. Shipped unverified.
 
-## m2180 -- THE GARDEN: the rope bridges leave through a NOTCH (Nov 2 2026)
+## m2182 -- THE GARDEN: the rope bridges leave through a NOTCH (Nov 2 2026)
 
 *"There needs to be a part of the floating island shaved away -- they start on the island and droop down below, but they cut through the edge
 of the ridge."* The deck left the lawn straight through the rounded moss LIP (big flattened blobs on the rim) and the ivy fringe. `gdnBridges` now
