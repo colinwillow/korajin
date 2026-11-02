@@ -31,6 +31,18 @@ snow only where the zone already plays snow. No hit / a bank not decoded -> the 
 'plant' or named bush/fern/reed/flower/leaf...) are walked through: within reach a rustle plays on top. `mel` has no handle yet; STEPSURF.last is
 the last surface. Builders: tag a mesh `userData.surf = 'wood'` etc. when its name and colour would mislead. Shipped unverified.
 
+## m2183 -- THE GARDEN: the Jinra beam is an UPDRAFT, not a lock (Nov 2 2026)
+
+*"When you're on it it just lifts you up in the air; if you're in the air you can do the in-air pose, but if you don't push anything he'll
+naturally go into the meditation pose. Right now it locks you in, you go up, and to get down you have to go down again. I want it more dynamic,
+like you actually float up."* (He means to use it for game dynamics later.) `gdnMeditStep` and stepPlayer's `p.medit` takeover are GONE. In
+`gdnStep`, inside the beam's column (r, from the pad to `h` above it) his vertical eases toward `lift` m over the pad (`spring` 1.6, capped
+`up` 4.5 / `down` 2.5 m/s, `ease` 3), gravity cancelled with one frame of `MOVE.g` (the kick's trick), a slow bob. His stick, jump and air control
+stay his: he can drift out and fall. With no stick for `idleT` .7 s, `p.meditPose` is set and rigAnim plays `meditate`; any push and he is back in
+the ordinary air pose; idle he is stilled horizontally (`drag`). The beam's glow follows `Z.inBeam`. `lift` 2.3 -> 3.0.
+Headless trace (slow frames, game time): t0.6 y1.35 rising 3.1 m/s -> t1.0 y2.5 MEDITATING -> t2.0 y3.61 v0.14 -> hovering ~3.6 (pad at .3).
+Box moved: none. Still open: water push + splash + footstep sounds per surface. **Shipped unverified.**
+
 ## m2182 -- THE GARDEN: the rope bridges leave through a NOTCH (Nov 2 2026)
 
 *"There needs to be a part of the floating island shaved away -- they start on the island and droop down below, but they cut through the edge
