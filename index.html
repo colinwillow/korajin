@@ -16056,9 +16056,9 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   // homestead's outer edge, its deck level with the farm, a pier out to it. Not flown yet -- P4 rides it down. `at` = the homestead's outer edge at
   // that angle, `off` m out from it to the ship's centreline; it lies along the edge.
   // THE JINRA BEAM (his, via the main session: "show the player hands-on that Jinra makes things float -- the rule the whole fall depends on"): a mint
-  // column rising from a stone spring basin; walk into it and he eases into a cross-legged meditation and FLOATS `lift` m, bobbing, motes rising
-  // round him; push the stick (after `hold` s) and he sinks gently back down. `clip` 'meditate' (Sitting_Idle) or 'sit_cross' (Male_Sitting_Pose_9).
-  beam: { id: 'jinra_beam', at: [-17.6, -9.4], r: 1.15, lift: 2.3, h: 10, clip: 'meditate', hold: .9, ease: 1.6, sink: 1.5 },
+  // column rising from a stone spring basin. m2183: an UPDRAFT -- walk in and it lifts him to `lift` m over the pad (`spring`, capped `up`/`down` m/s),
+  // control his own; left alone `idleT` s he meditates (`clip`: 'meditate' = Sitting_Idle, 'sit_cross' = Male_Sitting_Pose_9). `drag` stills him when idle.
+  beam: { id: 'jinra_beam', at: [-17.6, -9.4], r: 1.15, lift: 3.0, h: 10, clip: 'meditate', spring: 1.6, up: 4.5, down: 2.5, ease: 3.0, drag: 1.4, idleT: .7 },
   ship: { id: 'flying_ship', chunk: 'chunk_home', a: 80, off: 21, bob: .12 },
   // (m2161: run DIAGONALLY across the cracks, so a 4 m and a 6 m climb stay a walkable 17-18 degrees)
   bridges: [{ id: 'bridge_garden_home', from: 'rim:78', to: 'inner:chunk_home:100', w: 1.5 }, { id: 'bridge_home_summit', from: [40.2, 4, -22.3], to: [24.65, 10, -32.13], w: 1.4 }],
@@ -17079,11 +17079,6 @@ function gdnBeamFx(G) { const Z = GARDEN, Bm = Z.beam, U = Z.U, [bx, bz] = Bm.at
     fragmentShader: `uniform float uGlow; varying float vA; void main() { float d = length(gl_PointCoord - .5) * 2.0; gl_FragColor = vec4(vec3(.55, 1.0, .85) * pow(max(0.0, 1.0 - d), 1.8) * vA * 1.6 * uGlow, 1.0); }` }));
   pts.frustumCulled = false; pts.renderOrder = 4; g.add(pts); Z.beamFx = { g, on: col.material.uniforms.uOn, cd: 0 }; }
 // he floats in the beam: eased up to `lift` over the water, drawn to its centre, bobbing; the stick (after `hold` s) sinks him gently back down.
-// The body is his for as long as `p.medit` is set (stepPlayer hands it over, like the hero drop); `rigAnim` plays GARDEN.beam.clip.
-function gdnMeditStep(dt, s) { const Z = GARDEN, Bm = Z.beam, p = player, M = p.medit, [bx, bz] = Bm.at; M.t += dt; p.vel.set(0, 0, 0);
-  if (!M.out && M.t > Bm.hold && s && s.mag > .35) M.out = 1;
-  if (M.out) { p.pos.y -= Bm.sink * dt; if (p.pos.y <= M.y0) { p.pos.y = M.y0; p.medit = null; if (Z.beamFx) Z.beamFx.cd = 1.8; p.grounded = true; } return; }
-  const ty = M.y0 + Bm.lift + Math.sin(M.t * 1.3) * .14, k = 1 - Math.exp(-Bm.ease * dt); p.pos.y += (ty - p.pos.y) * k; p.pos.x += (bx - p.pos.x) * k; p.pos.z += (bz - p.pos.z) * k; }
 // m2177 FEWER MATERIALS (his: "if it has that many unique materials it doesn't seem like it needs that many -- cut that way down"). Most of the ship's
 // and the islands' materials are the same look in another colour. `gdnConsolidate(root)` repaints a group: every PLAIN material (no map, no custom
 // shader) bakes its colour into the mesh's vertex colours and shares ONE vertex-coloured material; every EMISSIVE plain one shares ONE glow material
@@ -17268,8 +17263,21 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
     for (const D of Z.casters || []) D.o.castShadow = Math.hypot(p.pos.x - D.c.x, p.pos.z - D.c.z) - D.r < sf;
     if (Z.shipM) { const sp = Z.shipM.g.position, near = Math.hypot(p.pos.x - sp.x, p.pos.z - sp.z) < 45; if (near !== O.shipCast) { O.shipCast = near; Z.shipM.g.traverse(o => { if (o.isMesh && o.geometry.attributes.position.count >= 2500) o.castShadow = near; }); } }
     for (const m of Z.plantMeshes || []) if (m.castShadow || m.userData.cast0) { if (m.userData.cast0 == null) m.userData.cast0 = 1; m.geometry.boundingSphere || m.computeBoundingSphere(); const bs = m.boundingSphere || m.geometry.boundingSphere; m.castShadow = !!bs && Math.hypot(p.pos.x - bs.center.x, p.pos.z - bs.center.z) - bs.radius < sf; } }
-  if (Z.beamFx) { const F = Z.beamFx, Bm = Z.beam; F.cd -= dt; if (!p.medit && F.cd <= 0 && p.grounded && Math.hypot(p.pos.x - Bm.at[0], p.pos.z - Bm.at[1]) < Bm.r * .9 && Math.abs(ly) < 1.2) p.medit = { t: 0, y0: p.pos.y, out: 0 };     // into the Jinra beam: he floats
-    F.on.value += ((p.medit && !p.medit.out ? 1 : 0) - F.on.value) * (1 - Math.exp(-2.5 * dt)); }
+  // m2183 THE JINRA UPDRAFT (his: "when you're on it it just lifts you up in the air; in the air you can do the in-air pose, but if you don't push
+  // anything he'll naturally go into the meditation pose -- right now it locks you in ... I want it to feel more dynamic, like you actually float up").
+  // The beam no longer takes the body. Inside its column it is a LIFT: his vertical eases toward a hover over the pad (gravity cancelled the way a
+  // kick does it -- one frame of `MOVE.g`), with a slow bob; his stick, jump and air control are all his own, and he can drift out of it and fall.
+  // Left alone for `idleT` he settles into the meditation pose (`p.meditPose`, read by rigAnim); any push and he is back in the air pose.
+  if (Z.beamFx) { const F = Z.beamFx, Bm = Z.beam, dxb = p.pos.x - Bm.at[0], dzb = p.pos.z - Bm.at[1], rb = Math.hypot(dxb, dzb);
+    if (p.grounded && rb < Bm.r * 1.4) Z.beamY0 = p.pos.y; const y0 = Z.beamY0 != null ? Z.beamY0 : Z.top, inCol = rb < Bm.r && p.pos.y > y0 - .5 && p.pos.y < y0 + Bm.h && !p.dragon && !p.hdrop;
+    Z.inBeam = inCol; const push = stickWorld().mag > .2;
+    if (inCol) { Z.beamT = (Z.beamT || 0) + dt; const ty = y0 + Bm.lift + Math.sin(O.t * 1.3) * .18, vT = Math.max(-Bm.down, Math.min(Bm.up, (ty - p.pos.y) * Bm.spring));
+      if (p.grounded && vT > .3) { p.grounded = false; p.pos.y += .02; }
+      if (!p.grounded) { p.vel.y += (vT - p.vel.y) * (1 - Math.exp(-Bm.ease * dt)); p.vel.y += MOVE.g * dt;
+        if (!push) { const kd = Math.exp(-Bm.drag * dt); p.vel.x *= kd; p.vel.z *= kd; } }
+      Z.beamIdle = push || p.grounded ? 0 : (Z.beamIdle || 0) + dt; } else { Z.beamT = 0; Z.beamIdle = 0; }
+    p.meditPose = inCol && !p.grounded && Z.beamIdle > Bm.idleT;
+    F.on.value += ((inCol ? 1 : 0) - F.on.value) * (1 - Math.exp(-2.5 * dt)); }
   for (const Gt of Z.gates || []) { Gt.cd -= dt; if (Gt.cd <= 0 && Math.hypot(p.pos.x - Gt.x, p.pos.z - Gt.z) < 1.3 && Math.abs(ly - Gt.y) < 2) { Gt.cd = 4; try { snd('lock', { g: .3, r: .4, x: Gt.x, z: Gt.z }); setTimeout(() => snd('lock', { g: .14, r: .4, x: Gt.x, z: Gt.z }), 700); } catch (e) {} } }     // the summit's bell gate rings as he passes under it
   // the hammock: still rocking from him getting out of it, then the breeze
   if (Z.hammockG) { const H = Z.hammockG; H.sw *= Math.exp(-.25 * dt); const a = H.sw * Math.sin(O.t * 1.6) + .025 * Math.sin(O.t * .7); H.g.setRotationFromAxisAngle(_gdnAx.set(H.ax, 0, H.az), a); }
@@ -40977,7 +40985,6 @@ function stepPlayer(dt) {
   if (p.lock && p.lock !== hadLock) snd('lock', { g: .3, r: 1.5 });
   const s = p.lock ? stickLocked(p.lock) : stickWorld();
   if (p.hdrop) { hdropStep(dt, s); return; }     // m1953: the hero drop owns the body
-  if (p.medit) { gdnMeditStep(dt, s); return; }     // m2166: the Garden's Jinra beam -- he floats in it, meditating
 
   // **THE SLAM ENDS WHEN HE MEETS THE GROUND (m81)**, which is the opposite of every other
   // strike here -- they all end when he leaves it. That is why this is its own branch and not a
@@ -42741,7 +42748,7 @@ function rigAnim(dt) {
     if (sum < .01) t[CLIPS.idle] = 1;
     setWeights(t, dt); return;
   }
-  if (p.medit && rig.actions[GARDEN.beam.clip]) { t[GARDEN.beam.clip] = 1; setWeights(t, dt); return; }     // m2166: meditating in the Jinra beam
+  if (p.meditPose && GARDEN.on && rig.actions[GARDEN.beam.clip]) { t[GARDEN.beam.clip] = 1; setWeights(t, dt); return; }     // m2166: meditating in the Jinra beam
   if (p.bar) { t[hbarClip()] = 1; setWeights(t, dt); return; }
   if (p.zip) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1168: hanging from the zipline
   if (p.mbar) { t[hbarClip()] = 1; setWeights(t, dt); return; }     // m1857: on the monkey bars
