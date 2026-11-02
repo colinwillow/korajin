@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2179 -- THE GARDEN: the far floating islands rebuilt (Nov 2 2026)
+
+*"These background floating islands are crazy so so bad, they need so much attention."* They were `templeRock` lumps in ONE flat olive, lollipop
+trees, pipe-straight roots, and the snow peaks were a crumpled cone on a cone. Now every far isle, the hand-placed ones, the 26 generated ones, the
+small drifting rocks and the floating mountains, comes from ONE generator, `gdnIsleGeo`: a domed (or PEAKED, snow above a ragged line) lawn, an
+overhanging grass LIP with a dark shadow under it, a rock body tapering to a point in STRATA (ledged bands, warm tan at the top to cold dark at
+the tip), MOSS streaks running down from the lip, lesser DRIPS hanging under the main point, and small broken SHARDS floating below. Trees are
+`gdnFarTree` (ROUND canopy clusters lit on top, PINE stacks, CHERRY pink), with shrubs round every rim so no top is bare; roots are TAPERED
+(`gdnTaper`). Kinds: mesa, forest, spire, twin, SHELF (three stepped isles; replaced the arch), tilted, cluster, roots.
+Still ONE mesh, ONE draw (`gdnFarMat`: Lambert, vertex colour, the rock map as triplanar luminance DETAIL, and AERIAL HAZE by distance -- warm
+toward the sun, cool away). The peaks' two meshes are gone into it. ~130k triangles in that one draw (it was fewer, flatter ones).
+Renders: skylow / skyw / sky1. Box moved: none (look). Still open: bridges notching the rim, water push + footstep sounds, the Jinra float.
+**Shipped unverified.**
+
 ## m2178 -- THE GARDEN: materials cut down -- one material per look, the tint baked into vertex colours (Nov 2 2026)
 
 *"If it has that many unique materials it doesn't seem like it needs that many, we could probably cut that way down."* He was right: most
