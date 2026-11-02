@@ -6358,7 +6358,7 @@ function sfxSession() { try { if (!SFXQ.el) { const a = SFXQ.el = document.creat
 const SFXM = { simple: (() => { try { return localStorage.getItem('mel.audiomode') !== 'heavy'; } catch (e) { return true; } })() };
 function sfxWake(ev) {
   const real = !ev || ev.type !== 'pointerdown';
-  if (real) { try { const M = MUSIC; if (M.el && M.el.paused && M.ctx === SFX.ctx && musicWant()) M.el.play().catch(() => {}); } catch (e) {} }     // m15XX: every real touch retries the song (iOS lets a media element start only inside one)
+  if (real) { try { const M = MUSIC; if (M.el && M.el.paused && M.ctx === SFX.ctx && musicWant()) M.el.play().catch(() => {}); } catch (e) {} }     // m2218: every real touch retries the song (iOS lets a media element start only inside one)
   if (SFXM.simple) { if (SFX.ctx) { if (SFX.ctx.state !== 'running') { try { SFX.ctx.resume().catch(() => {}); } catch (e) {} if (real) sfxUnlock(); } return; }
     if (!real) return;     // the context is born inside a real activation (touchend / click / key), never a pointerdown
     const AC0 = window.AudioContext || window.webkitAudioContext; if (!AC0) { note('NO AUDIO'); return; }
@@ -6391,7 +6391,7 @@ function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden';
 // so the files are decoding as this runs -- it retries for a moment until one is ready.
 (function () { const sp = document.getElementById('splash'); if (!sp) return; sp.addEventListener('click', () => { if (!window.KJ_READY) return; let n = 0; const go = () => { const b = SFX.buf.ui_start; if (b && b.some(Boolean)) snd('ui_start', { g: .8 }); else if (n++ < 12) setTimeout(go, 60); }; go(); }); })();
 function musicCtx() { const M = MUSIC, c = SFX.ctx; if (!c || !SFX.bus) return; try { if (M.el) M.el.pause(); } catch (e) {}
-  if (!M.tick) M.tick = setInterval(() => { try { musicStep(.05); } catch (e) {} }, 50);     // m15XX: its OWN clock -- the game's frame loop does not run while the title / start menu is up, so the fade never rose and the song played at 0
+  if (!M.tick) M.tick = setInterval(() => { try { musicStep(.05); } catch (e) {} }, 50);     // m2218: its OWN clock -- the game's frame loop does not run while the title / start menu is up, so the fade never rose and the song played at 0
   const el = new Audio(); el.loop = true; el.preload = 'auto'; el.setAttribute('playsinline', ''); M.trk = musicWant() || 'garden'; el.src = A(M.tracks[M.trk]);
   M.g = c.createGain(); M.g.gain.value = 0; M.src = null; try { M.src = c.createMediaElementSource(el); M.src.connect(M.g); M.g.connect(SFX.bus); } catch (e) { M.src = null; }
   M.el = el; M.ctx = c; M.k = 0; const pr = el.play(); if (pr && pr.then) pr.then(() => { if (!musicWant()) el.pause(); }).catch(() => {}); }
