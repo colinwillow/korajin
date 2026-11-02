@@ -17,6 +17,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2207 -- the flying ship's lanterns are paper (Nov 2 2026)
+
+The unpainted-object pass reaches the ship (`shipMake`, shared: every zone that shows it gets this). Its hull, sails and roofs were already
+textured; its two LANTERN materials (`lamp` on the hull/deck, `lm` on the strings between the masts) were flat glowing pink-orange boxes. Both are
+now black with the garden's rice-paper lattice (`garden_lantern`) as the EMISSIVE map, warm cream-orange, `userData.uvS` .45 so the ship's world-uv
+`put` lays one lattice panel per lantern face. Render ship. **Shipped unverified.**
+
 ## m2206 -- THE TITLE LOOP: a slow handheld camera drift (Nov 2 2026)
 The camera floats a few tens of cm on three slow, unrelated sines (x .22 + .12 m, y .09 m, z .25 m). Because the layers are at real depths,
 even that much makes them slide against each other, and the frame never sits dead still. The lens shift and the wrap are untouched (the drift
