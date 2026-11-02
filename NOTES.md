@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2185 -- footsteps: the rope-bridge planks and the Garden's ship sound WOOD (Nov 2 2026)
+
+The main session's checklist for surface footsteps (m2180/m2181) asked the Garden to tag what its names and colours would mislead. m2184 tagged the
+garden's materials (water, stone paving, lawns, plants, wood); the two left were outside them: `rspAdd`'s plank InstancedMesh (every rope bridge in
+every zone -- planks are always wood) and the moored ship (`Z.shipM.g`, every mesh). Box moved: none. **Shipped unverified.**
+
 ## m2184 -- THE GARDEN: wading pushes the water; the garden tells the footsteps what it is made of (Nov 2 2026)
 
 *"The streams or the water -- when you walk through it you need to push the water around, maybe drop down slightly, and walking-through-water
