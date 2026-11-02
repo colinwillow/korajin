@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2184 -- THE GARDEN: wading pushes the water; the garden tells the footsteps what it is made of (Nov 2 2026)
+
+*"The streams or the water -- when you walk through it you need to push the water around, maybe drop down slightly, and walking-through-water
+sounds; walking through bushes and brush; different sounds for grass, stone, wood for the bridges."* The SOUNDS are the main session's m2180
+(surface banks + a rustle through plants). This build makes the Garden answer it honestly: every garden material carries `userData.surf` (lawn /
+moss grass; rock, cliff, paving, cyclopean, jade stone; wood, bark, rope, lacquer wood; bronze / gold metal; fern, clump, flowers, ivy, vine, leaves
+PLANT; any water / pool / stream / fall material water; sand / zen sand) -- the consolidation and merges rename meshes, and pale paving read as
+SAND by colour.
+WADING: `gdnStep` knows when he is in a pool (radius) or a stream (its polyline, half its width + .1); his DRAWN body sinks `wade.sink` .16 m
+(eased, `p.wadeYd`, added to the rig root in the frame like `leapYd`; the collider stays on the bed). The water shader takes `uWake` (his feet,
+amplitude .35 at rest rising to 1 at `fullAt` 4 m/s) and `uWake2` (a point trailing him by `lag` .45 s): the surface lookup is bent AWAY from his
+legs, a collar of foam round them, rings spreading off them, and a smaller ring trailing behind. Renders wade / wade2. Box moved: none.
+**Shipped unverified.**
+
 ## m2183 -- THE GARDEN: the Jinra beam is an UPDRAFT, not a lock (Nov 2 2026)
 
 *"When you're on it it just lifts you up in the air; if you're in the air you can do the in-air pose, but if you don't push anything he'll
