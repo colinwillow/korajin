@@ -53,6 +53,17 @@ the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` 
 MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
 minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
 
+## m2252 -- THE MESH COLLIDER leaves out what the garden worker asked: the hammock, the ship, the heart, the far isles (Nov 2 2026)
+
+The garden worker: those move, carry him, or have their own floors (the hammock swings and `player.sleep` owns him there; the moored ship bobs
+and has its own deck boxes; the Jinra heart and beam float him). `COLL.zones.garden.skip` lists the pieces (`GARDEN.pieces.hammock / heart /
+far / ship`, `GARDEN.shipM.g`) and `collBuild` drops any mesh under them. Water, cards, ivy, vines, flags, banners, the beam column and cloud
+cards were already out by `collSolid`'s name test; the rope-bridge planks are not under the garden group (never in the store).
+Measured again (`colaudit garden --mesh`): HOLES 1,511 (1,267 of them the ship: its drawn hull is back over its own deck boxes, which cover
+half of it -- the ship's own colliders are an open item for the ship zone), MISMATCH 178, GHOST 834, WALK-THROUGH 54, INVISIBLE 337, ledges
+BAD 202 / good 143. Store 181,604 tris, built in 267 ms; 1,484 boxes replaced, 510 kept. Off the ship: 244 holes against BOXES' 3,025.
+Default still BOXES. **Shipped unverified.**
+
 ## m2251 -- THE MESH COLLIDER (`COLL`), garden first, behind TOOLS > COLLIDER: BOXES / MESH (Nov 2 2026)
 
 Part 2 of his *"go fix it all"*: collide with the REAL TRIANGLES, not boxes. `COLL` (index.html, `// COLL:START`..`:END`, after TRICOL):
