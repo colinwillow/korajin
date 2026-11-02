@@ -35,3 +35,16 @@ Plus: letterbox bars, a TITLE CARD (the place's name in brush lettering, its sub
 3. **A boss beaten**: slow-motion on the last blow, an orbit round the fall.
 4. **A place transforms**: the Red Hollows' water starting to flow (`hwAgeLive` already animates it) -- track the water front down the canyon.
 5. **Dialogue**: over-the-shoulder pairs and close-ups, cut on each line.
+
+## THE HOUSE STYLE FOR EVERY REEL (Colin, Nov 2 2026 -- these are the rules)
+1. **SHOTS ARE LINEAR MOVES, NOT RAMPS.** A shot is either a **TRUCK** (the camera slides in a straight line PERPENDICULAR to what it looks at --
+   left to right past a temple) or a slow **DOLLY** along its own view axis, in or out. **Constant velocity**: no ease-in, no ease-out, no
+   acceleration. (`move: 'truck' | 'dolly'`, `v` m/s; `eye` / `at` frame the shot at its MIDDLE.)
+2. **NO ROTATION during a shot.** The lens's orientation is fixed for the whole shot: no orbit, no turning to follow.
+3. **ALREADY MOVING AT THE CUT.** The motion starts before the shot is seen, so its first frame is mid-move (a linear move framed at its middle
+   is this by construction).
+4. **CROSSFADE between shots** (a dissolve, ~0.6-1 s; `xfade`), never a camera swing from one place to the next -- and the end is a crossfade
+   into the play camera, not an ease back to it.
+5. **FRAME THE SUBJECT CLEARLY**: whole, unoccluded, front-on or 3/4 (never edge-on or from the side), not so close it is unreadable. Render
+   every shot at its middle and check what it shows before shipping. (His notes on take 2: some shots he could not tell what they showed --
+   occluded, too zoomed in, or turned to show the side of the thing.)

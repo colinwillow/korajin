@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2250 -- THE INTRO, RE-SHOT IN HIS HOUSE STYLE: linear trucks and dollies, fixed lens, crossfades, subjects framed whole (Nov 2 2026)
+Main, from Colin (now CINEMA.md's rules for every reel): shots are LINEAR moves at constant speed (a truck across the line of sight, or a dolly
+along it), with NO rotation, already moving at the cut, joined by a CROSSFADE, and every subject whole, unoccluded, front-on or 3/4, readable.
+- **The player** (`reelPose`): a shot is `eye` / `at` framed at its MIDDLE, `move` truck | dolly, `v` m/s; position = eye + axis * v * (t - mid),
+  orientation fixed. `rlTurn`, the orbit, the eased a -> b and the black dips are gone.
+- **The crossfade** (`reelAfterRender`, after the frame's `renderer.render`): a cut holds ONE frame on the outgoing shot, that frame is copied off
+  the screen (`copyFramebufferToTexture` into a `FramebufferTexture`, one blit) and drawn over the new shot as a full-screen quad fading out over
+  `xfade` .8 s. Only while a dissolve runs is there a second (one-quad) draw. The END crossfades into the play camera too -- the lens no longer
+  eases back; `fov` is put back to what it was when the reel began.
+- **The shots, same beats and times**: clouds (dolly in on the whole cluster) / temple (truck past the summit pagoda, whole, front-on) / rivers
+  (truck past the west fall, head-on -- from z +6 the rim's rock hid it) / skies (high truck over the garden) / shrine (dolly in, front-on, the
+  bell inside) / bell (slow truck, the bell front-on, rings at 27.75) / kingdoms (truck past the pagoda isle) / garden (dolly in) / sword (a
+  slow truck, low) / reveal / grumbo (both slow dollies on him in the hammock). Every shot rendered at its middle and looked at.
+- **Kept ready**: the line "...sleeping through it all" will be re-recorded (his: "through it all" is odd, nothing has been introduced yet) --
+  a note in the table says what changes when it lands. **Headless note**: SwiftShader runs ~1 fps here, so a frame grabbed right after a time
+  jump can still show the dissolve's old picture or the one held frame; wait ~2 s per frame. **Shipped unverified.**
+
 ## m2248 -- no ledge-hangs off rocks: `noLedge` (Nov 2 2026)
 
 Main's heads-up (a collision worker is building a triangle collider; his complaint includes "rocks with box colliders he ledge-hangs off"). `ledgeFind`
@@ -65,7 +82,6 @@ transparent and the hidden are left out by a name/material test) with the shippe
 ledges) behind TOOLS > COLLIDER, garden first, judged by these same numbers; then akatani / snow / arena / the ship through the same tool
 (their `ZONES` rows have `ready: 'true'` and a guessed rect -- check them on the first run). **Shipped unverified** (the tool runs; the game
 is unchanged).
-
 ## m2244 -- THE INTRO's last two shots, re-aimed with Grumbo IN the hammock (the garden worker's m2243 sleep) (Nov 2 2026)
 - With him actually lying there, `reveal` and `grumbo` framed his boots and his shield from the foot end. Measured on the live rig: his head is at
   bed-local (across -.09, up 1.07, along +.35), face up and toward his feet. Both shots now come from over his chest, across the sling, looking
