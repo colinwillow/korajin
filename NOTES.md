@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- one start: the loading card wears the second poster; the intro's tap card only when sound is really locked (Nov 2 2026)
+## m2258 -- one start: the loading card wears the second poster; the intro's tap card only when sound is really locked (Nov 2 2026)
 *"The start screen kind of shows up twice -- the same image, and after selecting the prologue there's another start button. There should only be one
 start button; the other should be something other than start, with a different image."* (1) The boot / LOADING card used `korajin_title_01` -- the
 splash's own poster -- so the load looked like the title again; it wears `korajin_title_02` now. (2) The intro reel opens on a black "TAP TO

@@ -1015,7 +1015,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
 // bar; Zap & Clancy keep the cyan card with their own name. Inline and before the module, so it is right on the first paint.
 (function () { const b = document.getElementById('boot'); if (!b) return; let kj = false; try { kj = localStorage.getItem('mel.game') === 'korajin'; } catch (e) {}
   if (kj) { b.dataset.g = 'kj'; document.getElementById('bootT').textContent = 'KORAJIN'; document.getElementById('bootSub').textContent = 'コラジン · the Jin wakes';
-    b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_02.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')'; } })();     // m15XX: the LOADING card wears the second poster -- the splash keeps the first (his: 'we don't use the same image twice')
+    b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_02.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')'; } })();     // m2258: the LOADING card wears the second poster -- the splash keeps the first (his: 'we don't use the same image twice')
 </script>
 
 <div class="chip" id="build"><b id="buildN">m2258</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
@@ -64038,7 +64038,7 @@ function reelStep(dt) {
   if (R.zone === 'garden' && !GARDEN.on) { reelEnd(); return; }
   stick.L.x = stick.L.y = stick.R.x = stick.R.y = 0; stick.L.down = stick.R.down = 0; for (const k in keys) keys[k] = false;     // control is held
   if (O.st === 'wait') { if (!GARDEN.on || !GARDEN.on.built || !GARDEN.hammock.bed) return;
-    if (SFX.ctx && SFX.ctx.state !== 'running' && !O.tryT) { O.tryT = 1; try { SFX.ctx.resume().catch(() => {}); } catch (e) {} }     // m15XX: the sound was unlocked on the title screen -- try to wake it before asking for a tap
+    if (SFX.ctx && SFX.ctx.state !== 'running' && !O.tryT) { O.tryT = 1; try { SFX.ctx.resume().catch(() => {}); } catch (e) {} }     // m2258: the sound was unlocked on the title screen -- try to wake it before asking for a tap
     if (SFX.ctx && SFX.ctx.state !== 'running' && (O.waitR = (O.waitR || 0) + dt) < .6) return;
     O.st = SFX.ctx && SFX.ctx.state === 'running' ? 'load' : 'gate'; O.loadT = 0; O.el.dataset.st = O.st; }
   if (O.st === 'load') { O.loadT += dt; const b = reelVoice(R);
