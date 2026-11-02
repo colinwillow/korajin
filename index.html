@@ -16334,8 +16334,10 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
       float rn = tF(vTriW.xz * .045 + vTriW.y * .03), rn2 = tF(vTriW.zx * .021 + vec2(4.1, vTriW.y * .017));
       vec4 sampledDiffuseColor = mix(cA, cB, smoothstep(.38, .62, rn));
       sampledDiffuseColor.rgb *= mix(vec3(.92, .9, .84), vec3(1.06, 1.04, .98), smoothstep(.3, .7, rn2));
-      sampledDiffuseColor.rgb = mix(sampledDiffuseColor.rgb, vec3(dot(sampledDiffuseColor.rgb, vec3(.33))) * vec3(1.05, 1.0, .9), .22 * smoothstep(.55, .75, rn2));`); };
-    m.customProgramCacheKey = () => 'gdnRock' + (vc ? 'V' : '') + (sc || 7); return m; };
+      sampledDiffuseColor.rgb = mix(sampledDiffuseColor.rgb, vec3(dot(sampledDiffuseColor.rgb, vec3(.33))) * vec3(1.05, 1.0, .9), .22 * smoothstep(.55, .75, rn2));
+      sampledDiffuseColor.rgb *= 1.18;`).replace('#include <dithering_fragment>', `#include <dithering_fragment>
+      { vec3 upV = normalize((viewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz); gl_FragColor.rgb += diffuseColor.rgb * vec3(.62, .56, .5) * (.3 + .7 * max(dot(normal, -upV), 0.0)) * .8; }     /* m2271 CRAFT 4: BOUNCE from the cloud sea -- undersides and cliffs read as lit rock */`); };
+    m.customProgramCacheKey = () => 'gdnRock2' + (vc ? 'V' : '') + (sc || 7); return m; };
   const M = { lawn: triMat('garden_lawn', { scale: 5.5, rough: 1, bump: .5, color: 0xe2efc8 }), rock: rockMat(1), cliff: rockMat(0, 6),
     pebble: triMat('garden_rock', { scale: 2.6, rough: .92, bump: 1.3, color: 0xeee8dc }), flag: triMat('garden_flag', { scale: 3.2, rough: .9, bump: 1.1 }), cyclo: triMat('dome_cyclo', { scale: 3.4, rough: .95, bump: 1.6 }),
     stone: triMat('dome_stone', { scale: 2.4, rough: .88, bump: .9, color: 0xfff6e8 }), white: triMat('dome_stone', { scale: 12, rough: .82, bump: .4, color: 0xf6efe2 }),
@@ -17068,11 +17070,16 @@ function gdnMetalEnv(root) { const Z = GARDEN, M = Z.M; if (!M) return; const ma
   // the BELL is GOLD (his word), and the bronze could never be: the 'bronze' map averages sRGB (127, 95, 34) and m2177 baked the d8b880 tint over it,
   // so its albedo -- which for a metal IS its reflection colour -- was ~.15 / .05 / .004 linear: dark brown whatever it reflected. Its own material:
   // the gold map untinted, metalness .85, roughness .3, the sky env below.
-  if (Z.bell && Z.bell.g) { if (!M.bellGold) { M.bellGold = triMat('dome_gold', { scale: 1.1, rough: .3, metal: .85, bump: .8, color: 0xffffff, side: THREE.DoubleSide });     /* double-sided like the bronze: the lathe's faces wind inward */ M.bellGold.emissive = new THREE.Color(0x5a3c10); M.bellGold.emissiveIntensity = .3; }
-    Z.bell.g.traverse(o => { if (o.isMesh && o.material && o.material.map && maps.has(o.material.map)) { o.material = M.bellGold; mats.add(M.bellGold); } }); }
+  // m2271 (his: "when it swings the texture is mapped like projection mapping -- it stays fixed while the bell moves"): triMat projects in WORLD space,
+  // so the bell slid under its own pattern. The bell's gold is UV-mapped now: a cylindrical wrap of the bell's OWN (local) shape -- u round it, v up
+  // it -- so the engraving rides the swing; and the sky reflection is turned down (envMapIntensity .55) so the engraving leads, not the fixed sky.
+  if (Z.bell && Z.bell.g) { if (!M.bellGold) { const gt = texGet('dome_gold').clone(); gt.repeat.set(4, 2); gt.needsUpdate = true;
+      M.bellGold = new THREE.MeshStandardMaterial({ map: gt, metalness: .85, roughness: .32, side: THREE.DoubleSide, emissive: 0x5a3c10, emissiveIntensity: .3 }); M.bellGold.userData.envK = .55; }
+    Z.bell.g.traverse(o => { if (o.isMesh && o.material && o.material.map && (maps.has(o.material.map) || o.material === M.bellGold)) { const G = o.geometry, P = G.attributes.position; G.computeBoundingBox(); const b = G.boundingBox, h = (b.max.y - b.min.y) || 1, uv = new Float32Array(P.count * 2);
+        for (let i = 0; i < P.count; i++) { uv[i * 2] = Math.atan2(P.getX(i), P.getZ(i)) / (Math.PI * 2) + .5; uv[i * 2 + 1] = (P.getY(i) - b.min.y) / h; } G.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); o.material = M.bellGold; mats.add(M.bellGold); } }); }
   for (const m of mats) { m.emissive = m.emissive || new THREE.Color(); if (m.emissive.getHex() === 0) { m.emissive.setHex(0x4a3418); m.emissiveIntensity = .45; } }
   const apply = () => { if (!Z.envTex) { const src = texGet(Z.sky.pano), tx = src.clone(); tx.mapping = THREE.EquirectangularReflectionMapping; tx.needsUpdate = true; const pm = new THREE.PMREMGenerator(renderer); Z.envTex = pm.fromEquirectangular(tx).texture; pm.dispose(); }
-    for (const m of mats) { m.envMap = Z.envTex; m.envMapIntensity = 1.1; m.needsUpdate = true; } Z.metalEnv = mats.size; };
+    for (const m of mats) { m.envMap = Z.envTex; m.envMapIntensity = m.userData.envK || 1.1; m.needsUpdate = true; } Z.metalEnv = mats.size; };
   const im = texGet(Z.sky.pano).image; if (im && (im.width || im.naturalWidth)) apply(); else { let n = 0; const iv = setInterval(() => { const i2 = texGet(Z.sky.pano).image; if ((i2 && (i2.width || i2.naturalWidth)) || ++n > 100) { clearInterval(iv); try { apply(); } catch (e) { note('GARDEN ENV ' + e.message); } } }, 150); } }
 // m2269 CRAFT 3 (his: "ivy hanging from the tree sticking straight out"; CRAFT.md rule 1, organic things are never straight): a hanging card of ivy or
 // vine is no longer a flat rectangle dropped plumb. `gdnHang(w, len)` builds it on 10 rows and bends it: it TAPERS to the tip (to 40%), SAGS out from
