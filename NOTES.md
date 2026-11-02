@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2267 -- CRAFT PASS 1 (the Garden): lit undersides; the rusty sword is a pickup (Nov 2 2026)
+
+His m2260 intro screenshots (images/feedback/m2260): the far isles' undersides "nearly black and flat"; the bell black (fixed m2266). CRAFT.md
+rule 4. The far isles' material (`gdnFarMat`, Lambert) was lit only by the sun from above, so every face pointing down got the hemisphere's dark
+ground and nothing else. Now a BOUNCE term off the sunlit cloud sea below: + albedo x warm grey x (.28 + .72 x how much the face points DOWN) x .75,
+before the aerial haze. (m2266 had lifted the tip colour .1 -> .2.) Renders craft1_pagoda / craft1_farlow: warm lit rock with form under every isle.
+THE SWORD (the UI worker's `grant()`, m2263): walking within `sword.reach` 1.6 m of it on its peg grants 'sword' (their FOUND card), plays a
+clink, and hides `Z.swordG`. Owned at load (GOD on, or a save with it) -> it stays on the peg as scenery and nothing happens.
+Rules checked: 4 (undersides). Still open in the pass: rule 1 (ivy / vines / ropes droop), rule 2 (every fall and stream leaves a SOURCE and arcs;
+the far falls are straight lines in craft1_farlow), rule 3 (railings, posts, stairs, attachments seated). **Shipped unverified.**
+
 ## m2266 -- THE GARDEN: the bell is gold; the hair and sash lie on the hammock (Nov 2 2026)
 
 *"The bell is often black -- meant to be gold"* and *"his hair and his tail go through the hammock"* (via main).
