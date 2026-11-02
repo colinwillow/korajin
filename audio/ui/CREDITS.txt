@@ -2,3 +2,4 @@ start_draw_* -- "RPG Sound Pack" (battle/sword-unsheathe*), CC0. https://opengam
 tap_*        -- Kenney "Impact Sounds" (impactWood_light), CC0. https://kenney.nl/assets/impact-sounds
 go_*         -- Kenney "Impact Sounds" (impactBell_heavy), CC0.
 Trimmed and levelled only.
+tick_*       -- "RPG Sound Pack" (inventory/metal-small1, 2), CC0. https://opengameart.org/content/rpg-sound-pack

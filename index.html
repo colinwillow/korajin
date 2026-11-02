@@ -219,6 +219,12 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #start .go:active { transform: scale(.98); background: #ffffff1c; }
 #start .row { display: flex; gap: 8px; width: min(92vw, 420px); }
 #start .row .go { flex: 1; }
+#start.kjwheel { scroll-snap-type: y proximity; }     /* m15XX: THE WHEEL */
+#start.kjwheel .go { scroll-snap-align: center; opacity: .42; transform: scale(.94); transition: opacity .15s, transform .15s, border-color .15s, background .15s; position: relative; }
+#start.kjwheel .go.main { background: #ffffff0d; border-color: #ffffff1f; }
+#start.kjwheel .go.sel { opacity: 1; transform: scale(1.02); border-color: #7affd8aa; background: linear-gradient(135deg, #1d3a36cc, #2a1d3dcc); box-shadow: 0 0 0 1px #7affd855, 0 8px 30px #0008; }
+#start.kjwheel .go.sel::after { content: 'TAP TO ENTER'; position: absolute; right: 12px; top: 10px; font: 700 10px var(--disp), sans-serif; letter-spacing: .14em; color: #7affd8; }
+#start .kjpad { height: 42vh; flex: none; }
 #start .bld { font-family: var(--disp); font-size: 12px; color: var(--sun); opacity: .7; margin-top: 18px; }
 #boot h1 { font-family: var(--disp); font-size: 30px; letter-spacing: .02em; margin: 0; color: var(--sky); }
 #boot .msg { font-size: 15px; letter-spacing: .09em; text-transform: uppercase; opacity: .78; min-height: 20px; text-align: center; }
@@ -5540,10 +5546,13 @@ function bootWarm() {
   for (const o of hid) o.visible = false;
   console.log('[melee] boot warm: ' + renderer.info.programs.length + ' programs, ' + tex.size + ' textures uploaded, ' + hid.length + ' hidden shown for the compile, ' + (performance.now() - t0).toFixed(0) + ' ms');
 }
+// m15XX (his: "the loading subtext says 'loading the alien', 'loading zap' -- stuff from the old game; nothing is called an alien here"): the card
+// shows KORAJIN's own lines, stepped by how far the load has got; the file-by-file label stays in `PROG.label` for debugging. A failure still says so.
+const BOOTLINES = ['waking the garden', 'gathering Jinra', 'raising the islands', 'hanging the lanterns', 'tuning the great bell', 'sharpening the blade', 'calling the wind', 'almost there'];
 function setBoot(label, frac) {
   PROG.label = label;
-  if (bootMsg) bootMsg.textContent = label;
   const p = clamp((PROG.done + clamp(frac || 0, 0, 1)) / PROG.total, 0, 1);
+  if (bootMsg) bootMsg.textContent = /could not|fail|error/i.test(label) ? label : label === 'go' ? 'ready' : BOOTLINES[Math.min(BOOTLINES.length - 1, Math.floor(p * BOOTLINES.length))];
   if (bootBar) bootBar.style.width = (p * 100).toFixed(1) + '%';
 }
 
@@ -5809,7 +5818,7 @@ const SFX = {
     foot_STONE: [1, 2, 3, 4].map(n => 'audio/steps/stone_' + n + '.mp3'), foot_SAND: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/sand_' + n + '.mp3'),
     foot_METAL: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/metal_' + n + '.mp3'), foot_WATER: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/water_' + n + '.mp3'),
     rustle: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/rustle_' + n + '.mp3'),
-    ui_start: [1, 2, 3].map(n => 'audio/ui/start_draw_' + n + '.mp3'), ui_tap: ['audio/ui/tap_1.mp3', 'audio/ui/tap_2.mp3'], ui_go: ['audio/ui/go_1.mp3'],     // m2192: the start tap (a blade drawn), menu taps, entering a world (Kenney CC0, audio/ui/CREDITS.txt)     // m2013: HIS snow recording, cut into 8 steps (see NOTES)
+    ui_start: [1, 2, 3].map(n => 'audio/ui/start_draw_' + n + '.mp3'), ui_tap: ['audio/ui/tap_1.mp3', 'audio/ui/tap_2.mp3'], ui_go: ['audio/ui/go_1.mp3'], ui_tick: ['audio/ui/tick_1.mp3', 'audio/ui/tick_2.mp3'],     // m2192: the start tap (a blade drawn), menu taps, entering a world (Kenney CC0, audio/ui/CREDITS.txt)     // m2013: HIS snow recording, cut into 8 steps (see NOTES)
     foot_LAND: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_b_2.mp3'],     /* m1872: HIS LANDING, as footsteps (pairs: a left, b right); m1875: + two variant pairs */
     // m1875: BODY CONTACTS (`contactSnd`) -- his landing and three variations of each half (1: -8% pitch, lowpass 2.6k, heavier; 2: +8%, lighter;
     // 3: -3%, treble -4 dB, softer)
@@ -70544,7 +70553,9 @@ function startGate() {
     };
     const add = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; el.appendChild(e); return e; };
     const btn = (parent, t, d, f, cls) => { const b = document.createElement('button'); b.className = 'go' + (cls ? ' ' + cls : ''); b.innerHTML = '<b>' + t + '</b>' + (d ? '<small>' + d + '</small>' : '');
-      b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); try { snd('ui_tap', { g: .5 }); } catch (err) {} f(); }); parent.appendChild(b); return b; };     // m2192: a tap sound
+      b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation();
+        if (el.classList.contains('kjwheel') && !b.classList.contains('sel')) { b.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }     // m15XX: a tap on a dimmed one brings it to the middle; a tap on the highlighted one goes
+        if (!el.classList.contains('kjwheel')) { try { snd('ui_tap', { g: .5 }); } catch (err) {} } f(); }); parent.appendChild(b); return b; };     // m2192: a tap sound
     // m1104: THE TITLE PICKER. *"This repo could hold multiple games... the first screen could be a title picker, and then you either pick Zap and
     // Clancy or you pick Korajin."* KORAJIN (KORAJIN.md) is Grumbo -- the alien goblin with the katana -- in the arena; ZAP & CLANCY is the menu
     // that was here. The pick is not remembered across a fresh launch, on purpose: the title screen is the front door.
@@ -70585,7 +70596,15 @@ function startGate() {
       btn(el, 'The Forest Temple', 'A domed temple in a sunlit forest clearing: the stair, the colonnade, the gold door, the orb under the oculus. (One building, built to finish.)', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=dometemple'); });
       btn(el, 'Akatani -- the Ember Canyon', 'His home (renamed from the Red Hollows): the canyon, the river, the hut. (Being built.)', () => go('home'));
       btn(el, 'White Box', 'An empty floor to try a move on.', () => go('test'));
-      add('div', 'bld', 'BUILD ' + BUILD); };     // m1848: no '< Titles' -- there is no picker to go back to
+      add('div', 'bld', 'BUILD ' + BUILD); add('div', 'kjpad');
+      // m15XX (his: "scroll, and whatever is in the middle of the screen is selected -- it clicks / tinks as the highlight moves, and the top ones
+      // shouldn't always look selected"): THE WHEEL. The button nearest the screen's middle line is `.sel` (lit, a TAP TO ENTER tag); the rest are
+      // dimmed. Each change of highlight plays `ui_tick`; a tap on a dimmed button scrolls it to the middle; a tap on the lit one enters (the bell).
+      el.classList.add('kjwheel'); const items = [...el.querySelectorAll('.go')]; let sel = null, armed = 0, raf = 0;
+      const pick = () => { raf = 0; if (!el.isConnected) return; const cy = innerHeight * .5; let best = null, bd = 1e9;
+        for (const b of items) { if (!b.isConnected) continue; const q = b.getBoundingClientRect(), d = Math.abs(q.top + q.height / 2 - cy); if (d < bd) { bd = d; best = b; } }
+        if (best !== sel) { if (sel) sel.classList.remove('sel'); sel = best; if (sel) sel.classList.add('sel'); if (armed) { try { snd('ui_tick', { g: .4, r: .97 + Math.random() * .06 }); } catch (e) {} } } armed = 1; };
+      el.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(pick); }, { passive: true }); requestAnimationFrame(pick); };     // m1848: no '< Titles' -- there is no picker to go back to
     const zapClancy = () => { page(); el.style.backgroundImage = ''; try { localStorage.setItem('mel.game', 'zap'); } catch (e) {}
     add('h1', '', 'ZAP &amp; CLANCY'); add('div', 'sub', 'aliens, a city, and whatever happens next');
     // m785: WHO YOU PLAY, saved and read before the rig loads (`HERO`); m882 (STEER 02:28): on a 3D TURNTABLE (`heroStage`), one at a time

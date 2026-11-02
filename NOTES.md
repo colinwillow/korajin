@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the start menu is a WHEEL (centre = selected, a tink per step, tap the lit one to enter); Korajin's own loading lines (Nov 2 2026)
+*"Scroll, and whatever is in the middle of the screen is selected; it should click / tink as the highlight moves; an advance noise; the top one or two
+always look selected."* `korajin()` marks #start `.kjwheel`: on scroll (one rAF) the button nearest the screen's middle line gets `.sel` (lit, jade
+edge, a TAP TO ENTER tag), the rest dim to .42 at .94 scale; `.main` (The Arena) no longer looks lit when it isn't. Each change of highlight plays
+`ui_tick` (RPG Sound Pack metal-small 1/2, CC0, pitch wobble .97-1.03); a tap on a dimmed button scrolls it to the middle (no entry); a tap on the
+lit one enters (the temple bell, `ui_go`). Scroll snap `proximity` to the centres; a `kjpad` spacer so the last item can reach the middle.
+*"The loading subtext says 'loading the alien', 'loading zap'."* `setBoot` shows BOOTLINES (waking the garden, gathering Jinra, raising the islands,
+hanging the lanterns, tuning the great bell, sharpening the blade, calling the wind, almost there) stepped by progress; the old per-file label stays
+in `PROG.label`; a failure still shows its own words. Shipped unverified.
+
 ## m2213 -- the title screen waits until the game is READY; the theme starts there; sword / wood / bell UI sounds (Nov 2 2026)
 *"It says TAP TO START, then later after the menu it says TAP TO START and I tap like 25 times -- it shouldn't say push to start if it's not ready;
 out of service it should just be loading longer."* The splash took its tap at once while the module was still loading. Now its label reads
