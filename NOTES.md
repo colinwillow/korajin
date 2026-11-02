@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2266 -- THE GARDEN: the bell is gold; the hair and sash lie on the hammock (Nov 2 2026)
+
+*"The bell is often black -- meant to be gold"* and *"his hair and his tail go through the hammock"* (via main).
+THE BELL: measured, not guessed. It was `M.bronze`, metalness .7 -- and a metal's albedo IS its reflection colour: the 'bronze' map averages sRGB
+(127, 95, 34) and m2177's consolidation baked the d8b880 tint over it, so its albedo was ~(.15, .05, .004) linear. Dark brown whatever it reflected,
+and nearly black where the scene's environment was weak or absent (which varies by zone, time of day and while the reel runs). `gdnMetalEnv` (end of
+gdnMake): the bell gets its own `M.bellGold` (the gold map UNTINTED, metal .85, rough .3, double-sided like the bronze -- the lathe winds inward),
+and every garden metal (bronze / gold, by material or map) gets a PMREM of the Garden's sky panorama as its OWN `envMap` (made once when the pano
+has loaded) plus a warm emissive floor, so none of them can go black. Renders bellc / bellc2: gold, ornate, lit.
+THE UNDERSIDES: the far isles' tip colour was .1 linear -- near black from below; now .2 / .16 / .17. (The main island's underside rendered fine.)
+HAIR AND SASH: `springsStep` clamps every spring tip above the sling (`gdnClothY` + .065) while `player.sleep`, inside the cloth's footprint, then
+re-lengths it. Measured over 2 game s with the sling forced to swing: every spring-driven joint above the cloth (min .004 m); chain roots .2 m up
+on his body. (The extra margin covers the bend limit and the sling's own swing after the spring step.) **Shipped unverified.**
+
 ## m2265 -- THE INTRO's sword shot reads (his m2260 feedback, images/feedback/m2260/intro_unreadable_sword.png) (Nov 2 2026)
 *"Considerable strength"* was an extreme close-up against the willow bark and he could not tell what it was (CRAFT.md rule 5: shots must read).
 The shot is now 3.3 m off the blade, front-on (along the sword's own facing), fov 46: the WHOLE sword on its peg against the trunk, the hammock's
