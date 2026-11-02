@@ -17241,7 +17241,7 @@ function gdnMergeStatic(root, keep) { root.updateMatrixWorld(true); const inv = 
 // THE FLYING SHIP, moored: the Ship's model placed by GARDEN.ship, its deck boxes and ramps registered (turned into the garden's frame), a pier
 function gdnShip(G) { const Z = GARDEN, S = Z.ship, C = Z.isleAt && Z.isleAt[S.chunk]; if (!S || !C) return; const Ch = Z.chunks.find(c => c.id === S.chunk), Y0 = Z.top, a = S.a * Math.PI / 180;
   let ep = C.outer[0], bd = 9; for (const p of C.outer) { let d = Math.abs(Math.atan2(p[0], p[2]) - a); d = Math.min(d, 6.2832 - d); if (d < bd) { bd = d; ep = p; } }
-  const ux = Math.sin(a), uz = Math.cos(a), er = Math.hypot(ep[0], ep[2]), tx = Math.cos(a), tz = -Math.sin(a), md = shipModel({ air: true }), B2 = SHIPZ.B / 2;
+  const ux = Math.sin(a), uz = Math.cos(a), er = Math.hypot(ep[0], ep[2]), tx = Math.cos(a), tz = -Math.sin(a), md = shipModel({ air: true, wings: false }), B2 = SHIPZ.B / 2;
   const cx = ux * (er + S.off), cz = uz * (er + S.off), yaw = Math.atan2(tx, tz), gy = Ch.H - md.deckY;     // the ship lies along the edge, its deck at the chunk's height
   md.g.position.set(cx, gy, cz); md.g.rotation.y = yaw; md.g.name = 'garden_' + S.id; G.add(md.g); Z.shipM = md; md.g.traverse(o => { if (o.isMesh) o.userData.surf = 'wood'; });     /* m2185: the ship's deck sounds wood */
   try { const keep = new Set(); for (const F of md.flags || []) { if (F.f) { keep.add(F.f.geometry); keep.add(F.f); } if (F.pv) keep.add(F.pv); } for (const W of md.wings || []) if (W.geo) keep.add(W.geo);
@@ -17278,7 +17278,7 @@ function gdnBridges(g) { const Z = GARDEN, Y0 = Z.top, M = gdnMats(), posts = []
       const edge = (P, Q) => { const dx = Q[0] - P[0], dz = Q[2] - P[2], L = Math.hypot(dx, dz), ux = dx / L, uz = dz / L; let d = 0;
         const hs = B.w / 2 + .25, ON = [], YT = [], dMax = Math.min(30, L * .9); for (let k = 0; k * .1 < dMax; k++) { const dd = k * .1; let on = false, yy = null; for (const sd of [-hs, 0, hs]) { const ty = top(P[0] + ux * dd - uz * sd, P[2] + uz * dd + ux * sd, Y0 + P[1]); if (ty >= Y0 + P[1] - 1.5) { on = true; if (!sd) yy = ty; } } ON.push(on); YT.push(yy); }
         let k0 = ON.length; for (let k = 0; k < ON.length; k++) { let clear = true; for (let j = k; j < Math.min(ON.length, k + 15); j++) if (ON[j]) { clear = false; break; } if (clear) { k0 = k; break; } }     /* the EDGE is where 1.5 m of open air begins -- a pool or a basin in the lawn is not it */
-        d = k0 * .1; let yT = null; for (let k = k0 - 1; k >= 0; k--) if (YT[k] != null) { yT = YT[k]; break; }     /* both rope lines and the middle must be clear of the island: an edge met at a slant keeps one side under the grass */
+        d = k0 * .1; let yT = null; for (let k = k0 - 1; k >= Math.max(0, k0 - 25); k--) if (YT[k] != null && (yT == null || YT[k] > yT)) yT = YT[k];     /* m2220: the HIGHEST lawn over its last 2.5 m -- a landing set at the lip's height left a .46 m step up onto the summit */     /* both rope lines and the middle must be clear of the island: an edge met at a slant keeps one side under the grass */
         d = Math.max(0, d - .1) + (B.edgeOut != null ? B.edgeOut : .3); return [P[0] + ux * d, yT != null ? yT - Y0 : P[1], P[2] + uz * d]; };     /* at the lawn's OWN height there: a summit edge stands a metre over its chunk's H */ const A2 = edge(A, C), C2 = edge(C, A); A = A2; C = C2; }
     const span = rspAdd([A[0], Y0 + A[1] + .05, A[2]], [C[0], Y0 + C[1] + .05, C[2]], { w: B.w }); Z.bridgeList.push(span);
     for (const [P, Q] of [[A, C], [C, A]]) { const dx = Q[0] - P[0], dz = Q[2] - P[2], L = Math.hypot(dx, dz), ux = dx / L, uz = dz / L, nx = -uz, nz = ux;
@@ -17308,13 +17308,18 @@ function gdnBridges(g) { const Z = GARDEN, Y0 = Z.top, M = gdnMats(), posts = []
       const keep = []; for (let t = 0; t < n / 3; t++) { const B = box.get(find(t)), small = B[1] - B[0] < 7 && B[5] - B[4] < 7 && B[3] - B[2] < 9;
         if (hit[t] || (B[6] && small)) { cut++; (Z.notchHits = Z.notchHits || {})[o.name || '?'] = 1; } else keep.push(vi(t * 3), vi(t * 3 + 1), vi(t * 3 + 2)); }
       if (keep.length < n) G.setIndex(keep); });
-    for (const E of ends) { const yaw = Math.atan2(E.ux, E.uz), q = new THREE.BoxGeometry(E.w + .75, .4, 2.6).translate(0, -.16, -1.0); q.rotateY(yaw); sill.push(q.translate(E.x, E.y, E.z));
-      const br = new THREE.CylinderGeometry(.55, .12, 1.3, 5, 1).scale(E.w + .5, 1, 1).translate(0, -.95, -.35); br.rotateY(yaw); sill.push(br.translate(E.x, E.y, E.z)); }     /* the landing's lip runs to the anchor; a stone corbel under it */
     Z.notchCut = cut; }
   const strip = q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; };
   if (posts.length) { const o = new THREE.Mesh(mergeGeometries(posts.map(strip)), M.wood); o.position.y = Y0; o.castShadow = true; g.add(o); const l = new THREE.Mesh(mergeGeometries(lamps.map(q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(k)) q.deleteAttribute(k); return q; })), M.lamp); l.position.y = Y0; g.add(l); }
   if (ropesG.length) { const o = new THREE.Mesh(mergeGeometries(ropesG.map(strip)), rspMats().straw); o.position.y = Y0; o.name = 'garden_bridge_lashing'; g.add(o); }
-  if (sill.length) { const o = new THREE.Mesh(mergeGeometries(sill.map(strip)), M.stone); o.position.y = Y0; o.receiveShadow = true; o.name = 'garden_bridge_sills'; g.add(o); }
+  // m2220 the LANDINGS are laid after the Garden's walkable triangles are registered (`bldTris` runs at the end of gdnMake): sizing one by `groundAt`
+  // before that found no lawn at all and every slab ran 8 m. `gdnMake` calls `Z.sillMake()` after `bldTris`.
+  Z.sillMake = () => {
+      for (const E of ends) { let back = 2.3; for (let d = .5; d < 8; d += .2) { const gy = groundAt(E.x - E.ux * d, E.z - E.uz * d, Y0 + E.y + .4, .4); if (gy > Y0 + E.y - .3) { back = Math.max(2.3, d + .5); break; } back = d + .5; }     /* m2220: reach back until it MEETS the walkable ground (the lawn's collider stops short of its drawn edge) */
+        const len = back + .3, mid = (.3 - back) / 2, yaw = Math.atan2(E.ux, E.uz), q = new THREE.BoxGeometry(E.w + .75, .4, len).translate(0, -.16, mid); q.rotateY(yaw); sill.push(q.translate(E.x, E.y, E.z)); BOXES.push(obox(E.x + E.ux * mid, E.z + E.uz * mid, len / 2, (E.w + .75) / 2, Math.atan2(E.uz, E.ux), Y0 + E.y - .4, Y0 + E.y + .04));     /* m2220: the landing is a FLOOR (his: "the collision stops, so you fall through stepping onto the rope bridge") -- it was drawn with nothing under it, and the lawn's collider ends short of its drawn edge */
+        const br = new THREE.CylinderGeometry(.55, .12, 1.3, 5, 1).scale(E.w + .5, 1, 1).translate(0, -.95, -.35); br.rotateY(yaw); sill.push(br.translate(E.x, E.y, E.z)); }     /* the landing's lip runs to the anchor; a stone corbel under it */
+    if (sill.length) { const o = new THREE.Mesh(mergeGeometries(sill.map(q => { q = strip(q); if (M.stone.vertexColors) q.setAttribute('color', new THREE.BufferAttribute(new Float32Array(q.attributes.position.count * 3).fill(1), 3)); return q; })), M.stone);     /* built after the consolidation, which turned the shared stone to vertex colours: white ones, or it draws black */ o.position.y = Y0; o.receiveShadow = true; o.name = 'garden_bridge_sills'; g.add(o); }
+    boxGrid(); };
   boxGrid(); }
 // the stage hook runs at MODULE scope, above TROCKS / TEMPLEGLSL_N (templeRock's numbers): a read there is a blank page, so the build waits a tick
 // m2214 THE GARDEN WARM (his: "choppy, like every ~30 frames it waits -- we need a warm-up so everything is loaded before you play"). Awaited by the
@@ -17414,7 +17419,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   // so every footfall tested every one of their triangles)
   g.traverse(o => { if (!o.isMesh && !o.isPoints) return; const m = o.material, far = (() => { for (let q = o; q; q = q.parent) if (q === Z.pieces.far) return 1; return 0; })();
     if (far || o.isPoints || (m && (m.isShaderMaterial || (m.transparent && m.depthWrite === false) || m.blending === THREE.AdditiveBlending)) || /sky|cards|shaft|glow|heart|cloud/.test(o.name || '')) o.userData.noSurf = 1; });
-  Object.assign(Z.on, { G, built: 1, tris: 1 }); try { bldTris(Z.on, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); }
+  Object.assign(Z.on, { G, built: 1, tris: 1 }); try { bldTris(Z.on, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } try { if (Z.sillMake) Z.sillMake(); } catch (e) { note('GARDEN SILLS ' + e.message); }
   const [sx, sz] = Z.spawn.at, [fx, fz] = Z.spawn.face;
   const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
@@ -17474,11 +17479,17 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
       try { snd('lock', { g: .45, r: .26, x: B.x, z: B.z }); setTimeout(() => snd('lock', { g: .22, r: .26, x: B.x, z: B.z }), 900); setTimeout(() => snd('lock', { g: .1, r: .26, x: B.x, z: B.z }), 1900); } catch (e) {} }
     B.swing *= Math.exp(-.45 * dt); B.g.rotation.x = B.swing * Math.sin(O.t * 2.2) + .012 * Math.sin(O.t * .8); B.g.rotation.z = .01 * Math.sin(O.t * .6 + 1); }
   // the fall: back to where he last stood
-  if (p.grounded && ly > -1 && ly < 40) O.safe = [p.pos.x, p.pos.y, p.pos.z];
+  // m2220 THE LOOP (his: "if I fall off this one part it spawns me back to a place that's not on the island ... falling, spawning, falling"). A spot is
+  // SAFE only if the static collider is under his feet there (the rope bridges, the ship's deck and a ledge's lip are not), and a respawn is only
+  // made where `ok` finds that ground -- the old pull-in toward the nearest island centre (`isleAt`, which has no chunks in it) could throw him
+  // off a chunk into the crack, again and again.
+  const ok = (x, y, z) => { const gy = groundAt(x, z, y + .6, .6); return Math.abs(gy - y) < .5 && groundAt(x + .5, z, y + .6, .6) > y - .6 && groundAt(x - .5, z, y + .6, .6) > y - .6 && groundAt(x, z + .5, y + .6, .6) > y - .6 && groundAt(x, z - .5, y + .6, .6) > y - .6; };
+  if (p.grounded && ly > -1 && ly < 40 && (O.sT = (O.sT || 0) - dt) <= 0) { O.sT = .2; if (ok(p.pos.x, p.pos.y, p.pos.z)) O.safe = [p.pos.x, p.pos.y, p.pos.z]; }
   if (ly < -Z.fallY) { const s = O.safe || [Z.spawn.at[0], Z.top + .1, Z.spawn.at[1]]; let c = { x: 0, z: 0 }, cd = 1e9;     // a step back in from the edge he went off, toward the middle of THAT island
     for (const I of Object.values(Z.isleAt || {})) { if (!I) continue; const d = Math.hypot(s[0] - I.x, s[2] - I.z) + Math.abs(s[1] - Z.top - I.y) * 3; if (d < cd) { cd = d; c = I; } }
     const dx = s[0] - c.x, dz = s[2] - c.z, L = Math.hypot(dx, dz) || 1, k = L > 4 ? 1.6 / L : 0;
-    p.pos.set(s[0] - dx * k, s[1] + .4, s[2] - dz * k); p.vel.set(0, 0, 0); Z.falls = (Z.falls || 0) + 1; } }
+    const sp = [Z.spawn.at[0], Z.top + .1, Z.spawn.at[1]], cand = [[s[0] - dx * k, s[1], s[2] - dz * k], s, sp], q = cand.find(C => ok(C[0], C[1], C[2])) || sp;
+    p.pos.set(q[0], q[1] + .4, q[2]); p.vel.set(0, 0, 0); Z.falls = (Z.falls || 0) + 1; } }
 const _gdnAx = new THREE.Vector3();
 function arenaStage() {
   arenaSky();
@@ -36060,7 +36071,7 @@ function shipBuild() { const Z = SHIPZ; Z.want = 2; if (Z.on) return; const S = 
 // Its painted maps are mapped in OBJECT space (`triMat` `local`), so they ride with it instead of crawling as it flies. Returns { g, deckY,
 // deck: every solid box in the group's LOCAL frame, tris: the walkable ramps' triangles (local, flat xyz), flags, step(dt, t): the cloth }.
 // Safe at module scope: it reads SHIPZ, TEXLIB and function declarations only.
-function shipModel(opts) { const S = shipMake(1, !opts || opts.air !== false); return { g: S.g, deckY: SHIPZ.deckY, deck: S.O.boxes, tris: S.tris, flags: S.flags, coreM: S.coreM, wings: S.wings,
+function shipModel(opts) { SHIPZ._noWings = !!(opts && opts.wings === false); let S; try { S = shipMake(1, !opts || opts.air !== false); } finally { SHIPZ._noWings = false; }     /* m2220: the Garden's ship flies by its Jinra jets, no wings (his) */ return { g: S.g, deckY: SHIPZ.deckY, deck: S.O.boxes, tris: S.tris, flags: S.flags, coreM: S.coreM, wings: S.wings,
   step(dt, t) { for (const F of S.flags) shipCloth(F, t); S.coreM.emissiveIntensity = 2.1 + Math.sin(t * 2.4) * .5;
     for (const Wg of S.wings) { const P = Wg.geo.attributes.position.array, B = Wg.base; for (let i = 0, n = Wg.w.length; i < n; i++) { const x = B[i * 3], z = B[i * 3 + 2]; P[i * 3 + 1] = B[i * 3 + 1] + Wg.w[i] * (Math.sin(t * 1.9 + Wg.ph + x * .25 + z * .18) * .35 + Math.sin(t * 3.7 + z * .5) * .08); }
       Wg.geo.attributes.position.needsUpdate = true; Wg.geo.computeVertexNormals(); } } }; }     // m1479: the wings' canvas ripples
@@ -36290,7 +36301,7 @@ function shipMake(vis, air) {
   // billowing and rippling -- and two TAIL FINS at the stern. Each wing's leading spar runs straight out along X at the gunwale's height and is a
   // walkable BEAM (a deck box), so he can walk out over the drop. Only when `air` is set: the sea ship keeps its sails furled to the masts.
   const wings = []; if (air) { const NR = 8, SUB = 5, A = [0, .28, .55, .82, 1.05, 1.28], LEN = [19.5, 22, 22.7, 21.4, 18.2, 13.6], dih = .1, zR = 1.5;
-    for (const sx of [-1, 1]) { const xR = sx * (halfW(zR / (L / 2)) + .1), yR = Math.max(dY + 1.1, gun(zR / (L / 2))) + .1;
+    if (!SHIPZ._noWings) for (const sx of [-1, 1]) { const xR = sx * (halfW(zR / (L / 2)) + .1), yR = Math.max(dY + 1.1, gun(zR / (L / 2))) + .1;
       put(new THREE.CylinderGeometry(.55, .55, 1.4, 14).translate(xR, yR, zR), bronze); for (const dy of [-.7, .7]) put(new THREE.TorusGeometry(.58, .07, 6, 16).rotateX(Math.PI / 2).translate(xR, yR + dy, zR), gold);
       const tipOf = (a, l) => [xR + sx * Math.cos(a) * l, yR + (a ? l * dih : 0), zR - Math.sin(a) * l];
       for (let k = 0; k < A.length; k++) { const [tx, ty, tz] = tipOf(A[k], LEN[k]), d = new THREE.Vector3(tx - xR, ty - yR, tz - zR), q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
