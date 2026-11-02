@@ -17,7 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- no shutter panels: the menu fades straight onto the LOADING SCREEN, and the build runs behind it (Nov 2 2026)
+## m2273 -- THE STICKS NEVER GO AWAY: a floating pad rests faintly at home (Nov 2 2026)
+*"When I turn off GOD mode the STICKS go away. I just wanted the BUTTONS to go away if you don't have them yet."* Not reproduced headless:
+garden prologue, fresh save, GOD off -> on -> off, both `#padL` / `#padR` stay `block/visible/1` at 148 px (`padprobe`), and nothing in the
+file hides a pad by GOD or by ownership. What DOES hide both: the build number toggles FLOATING pads (`setDyn`), which were `opacity: 0` until
+a thumb lands -- and that badge sits right over the GOD key in the same top-left stack. With GOD on, the rings still marked where the sticks
+were; with GOD off on a fresh save there are no rings, so the screen read as stick-less. Fix: `body.dyn .pad` rests at .38 opacity at its
+home spot (still floats to the thumb). Only the ring BUTTONS depend on ownership (m2263). If he still sees no sticks with fixed pads, that is a
+different bug -- a screenshot of the top-left chip would settle which.
+## m2271 -- no shutter panels: the menu fades straight onto the LOADING SCREEN, and the build runs behind it (Nov 2 2026)
 *"You put in some curtains -- lines that don't look like anything in game. We already have a loading screen: just curtain out to the loading screen;
 don't curtain in, load most of the game, and show the loading screen for a second."* m2256's ink panels are gone (CSS and DOM). `shutterClose` now
 fades #start out (.45 s) over the BOOT CARD -- the real loading screen, already under it (his second poster, the turning sun-wheel, the bar,
