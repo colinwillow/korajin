@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2270 -- CRAFT PASS 4 (the Garden): posts seated, lamps hung from something (Nov 2 2026)
+
+CRAFT.md rule 3 (his: "railings, stairs, and things attached to trees or plants float"). Found in the builders, not guessed: the main fence's stone
+posts started at exactly y 0 and the chunk fences' dark posts at exactly H -- wherever the lawn dips toward the rim, the post's foot hovers. Both
+now run .6 m INTO the ground, the stone ones on a wider footing slab. The rope bridges' lanterns (m2191) hung beside their posts from NOTHING: each
+now hangs on a short cord from a bracket arm off its post. Renders craft4_fence (post on its footing, rails meeting it) / craft4_bridge.
+THE PASS SO FAR: m2266 (bell gold, metals keep a sky env), m2267 (lit undersides, sword pickup), m2268 (falls arc), m2269 (ivy/vines droop), this.
+Not yet audited close: every pot / lantern / bench base on a slope, the stairs' sides from below, the main edge-fall's top meeting the cliff.
+**Shipped unverified.**
+
 ## m2269 -- CRAFT PASS 3 (the Garden): hanging ivy and vines droop (Nov 2 2026)
 
 CRAFT.md rule 1 (his: "ivy hanging from the tree sticking straight out"; "anything organic with a 100% straight edge"). Every hanging card in the
