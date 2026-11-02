@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2239 -- THE INTRO, CUT TO THE PEACEFUL PART: no Hollow (Colin's correction, via main) (Nov 2 2026)
+*"The narration was only a TEST script. It is not the story. The intro must NOT show or name the Hollow; that comes much later in the prologue
+(the festival, then the strike)."*
+- **The Hollow is GONE**: its shots (shadow / horizon / stir / hollow), its shader quad (`reelHollow`), its fx tracks (dim, fog, hollow, pulse,
+  shade keyframes) and the `rel2: 'hollow'` anchor. The player keeps `dim` / `fog` / `shade` as generic tracks; the intro uses none of them.
+- **The reel is now: clouds / drift / falls / shrine / sweep / descend / grumbo, 29.6 s.** The test voice stays as a placeholder and is CUT at
+  `voiceEnd` 20.75 with a .6 s fade (after "...untouched by darkness.", the next word is at 21.01). The crawl fades from `textEnd` 21.2 over 1.4 s.
+  The clock carries on (frame time) once the voice stops, and the lens goes down to the hammock.
+- **A new script and recording swap in through the table alone**: `voice`, `lines`, `voiceEnd` / `textEnd` (drop them to play the whole file),
+  shot times. Rendered at 19, 21.6, 24, 28.5 s: the last line, its fade over the sweep, the descent, the bed. **Shipped unverified.**
+
 ## m2236 -- REELS: the cut-scene player, and the PROLOGUE INTRO (his narration, the crawl, ten shots, the Hollow) (Nov 2 2026)
 His brief: *"a test prologue narration -- cinematic camera pans and zooms of the world, then finally Grumbo sleeping in the hammock; text going up
 the screen, almost like the Star Wars prologue, with this guy narrating; the music playing under it."* CINEMA.md's REELS, built.

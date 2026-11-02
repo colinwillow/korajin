@@ -63715,46 +63715,40 @@ function flyEdge() { const E = FLYEDGE; if (!E.on || !inArena()) { if (E.el) E.e
 // ============================================================================================
 // m2236 REELS (CINEMA.md): a cut-scene is DATA -- a list of shots the lens plays while his control is held; a tap skips. One small player
 // (`reelPlay` / `reelStep` / `reelCam`), every cut-scene a row in REELS. Shots are [eye, at] pairs in the zone's space (the Garden's: island-local,
-// lawn top = 0, raised by GARDEN.top) eased from `a` to `b`; `rel: 'bed'` puts a shot relative to GARDEN.hammock.bed, `rel: 'hollow'` relative
-// to the Hollow's far swirl. The look is interpolated as a DIRECTION (so a pan from a near thing to the horizon turns, rather than sliding a point
+// lawn top = 0, raised by GARDEN.top) eased from `a` to `b`; `rel: 'bed'` puts a shot relative to GARDEN.hammock.bed (`rel2` on a point: its
+// look only). The look is interpolated as a DIRECTION (so a pan from a near thing to the horizon turns, rather than sliding a point
 // across 1.5 km). `lines` is the crawl, timed to the voice (silencedetect, -38 dB, .3 s: re-measured m2236); `big` lines are held on their own
-// beat. `fx` are keyframe tracks [t, value]: `dim` (sun + sky light), `fog` (toward `fogDark`), `hollow` (the swirl's alpha), `pulse`.
+// beat. `fx` are keyframe tracks [t, value]: `dim` (sun + sky light), `fog` (toward `fogDark`); `shade` [t0, t1] a passing shadow.
 // After the last shot the lens eases back to the play camera over `back` s and control returns. First time only (`seen` key); TOOLS > REPLAY INTRO.
 // SC_REELS:START
+// THE INTRO IS A PLACEHOLDER (Colin, via main): the voice is a TEST script, not the story -- the intro must not show or name the Hollow (that comes
+// much later in the prologue: the festival, then the strike). So it plays only the PEACEFUL part of the test voice: the voice and the crawl stop at
+// `voiceEnd` / `textEnd` with a fade, and the lens goes on down to Grumbo in the hammock. A new script and recording swap in HERE only: `voice`,
+// `lines` (re-measure with silencedetect), `voiceEnd` / `textEnd` (or drop them to play the whole file), and the shot times.
 const REELS = {
-  intro: { id: 'intro', zone: 'garden', seen: 'mel.reel.intro', voice: 'audio/voice/korajin_intro_01.mp3', end: 47.4, back: 2.2, fadeIn: 2.6,
-    hollow: { at: [-200, 60, 1450], size: 520 }, fogDark: 0x6e6478,
+  intro: { id: 'intro', zone: 'garden', seen: 'mel.reel.intro', voice: 'audio/voice/korajin_intro_01.mp3', voiceEnd: 20.75, voiceFade: .6, textEnd: 21.2, textFade: 1.4,
+    end: 29.6, back: 2.2, fadeIn: 2.6, fogDark: 0x6e6478,
     lines: [[0.00, 2.22, 'Long before the world was broken…'], [2.90, 5.12, 'there was a kingdom above the clouds.'], [5.74, 8.54, 'A place where mountains drifted through the heavens,'],
-      [9.06, 11.68, 'where rivers flowed with the light of Jinra…'], [12.34, 15.05, 'and where the ancient Korajin lived in peace.'], [15.87, 20.31, 'For a thousand years, the skies remained untouched by darkness.'],
-      [21.01, 23.51, 'But even the brightest light casts a shadow.'], [24.21, 26.74, 'And deep beyond the edge of the known world…'], [27.28, 29.20, 'something had begun to stir.'],
-      [29.87, 31.12, 'An ancient hunger.'], [31.65, 33.42, 'A darkness without form.'], [34.19, 34.97, 'They called it…'], [35.55, 36.33, 'The Hollow.', 'big', 36.95],
-      [37.12, 38.91, 'And on the day the heavens fell…'], [39.38, 43.22, 'one unlikely warrior would find himself at the heart of it all.'], [43.91, 44.66, 'His name…'],
-      [45.19, 46.37, '<small>was</small>Grumbo.', 'big', 47.4]],
+      [9.06, 11.68, 'where rivers flowed with the light of Jinra…'], [12.34, 15.05, 'and where the ancient Korajin lived in peace.'], [15.87, 20.31, 'For a thousand years, the skies remained untouched by darkness.']],
     shots: [
       { id: 'clouds',  t0: 0,    t1: 5.6,  fov: [50, 46], a: { eye: [150, 14, 300], at: [10, -22, 0] }, b: { eye: [92, 16, 178], at: [4, -6, -6] } },
       { id: 'drift',   t0: 5.6,  t1: 8.9,  fov: [48, 48], dip: .45, a: { eye: [-70, 40, 80], at: [-230, 10, -60] }, b: { eye: [-92, 40, 8], at: [-210, 30, -200] } },
       { id: 'falls',   t0: 8.9,  t1: 12.2, fov: [50, 48], dip: .4, a: { eye: [-50, 3, 12], at: [-22.4, -7, -5.2] }, b: { eye: [-47, -4, 4], at: [-22.6, -10, -5.2] } },
       { id: 'shrine',  t0: 12.2, t1: 15.7, fov: [42, 40], dip: .4, a: { eye: [13, 3.6, 3], at: [1, 4.5, -16] }, b: { eye: [8, 4.2, -2.5], at: [0, 5, -17] } },
-      { id: 'sweep',   t0: 15.7, t1: 20.8, fov: [52, 52], dip: .45, orbit: { c: [8, 0, -8], r: 78, y: 48, a0: 30, a1: 85, at: [6, 0, -10] } },
-      { id: 'shadow',  t0: 20.8, t1: 24.0, fov: [46, 44], dip: .4, a: { eye: [-34, 7, 34], at: [0, 2, -6] }, b: { eye: [-29, 6, 28], at: [0, 2, -8] } },
-      { id: 'horizon', t0: 24.0, t1: 30.2, fov: [48, 44], dip: .4, a: { eye: [6, 8, 18], at: [-6, 2, -10] }, b: { eye: [20, 9, 34], rel2: 'hollow', at: [0, -230, 0] } },
-      { id: 'stir',    t0: 30.2, t1: 34.0, fov: [44, 40], a: { eye: [20, 9, 34], rel2: 'hollow', at: [0, -230, 0] }, b: { eye: [24, 10, 40], rel2: 'hollow', at: [0, -150, 0] } },
-      { id: 'hollow',  t0: 34.0, t1: 37.0, fov: [36, 30], a: { eye: [24, 10, 40], rel2: 'hollow', at: [0, -150, 0] }, b: { eye: [30, 11, 56], rel2: 'hollow', at: [0, -110, 0] } },
-      { id: 'descend', t0: 37.0, t1: 43.7, fov: [50, 46], dip: .5, a: { eye: [30, 46, 52], at: [-8, 0, 0] }, b: { eye: [-2, 7, 13], at: [-13, 1, 4.4] } },
-      { id: 'grumbo',  t0: 43.7, t1: 47.4, fov: [50, 44], dip: .4, rel: 'bed', a: { eye: [3.6, 4.2, -3.6], at: [0, .3, 0] }, b: { eye: [2.8, 3.4, -2.8], at: [0, .2, 0] } }],
-    fx: { dim: [[0, 1], [20.6, 1], [22.6, .62], [33, .5], [37.4, .55], [40, 1]], fog: [[0, 0], [24, 0], [31, .6], [36.5, .75], [39.5, 0]],
-      hollow: [[0, 0], [26, 0], [30.5, 1], [37.6, 1], [38.4, 0]], pulse: [[0, 0], [35.4, 0], [35.9, 1], [37, .2]], shade: [21.2, 24.0] } } };
+      { id: 'sweep',   t0: 15.7, t1: 21.4, fov: [52, 52], dip: .45, orbit: { c: [8, 0, -8], r: 78, y: 48, a0: 30, a1: 92, at: [6, 0, -10] } },
+      { id: 'descend', t0: 21.4, t1: 26.2, fov: [50, 46], dip: .5, a: { eye: [30, 46, 52], at: [-8, 0, 0] }, b: { eye: [-2, 7, 13], at: [-13, 1, 4.4] } },
+      { id: 'grumbo',  t0: 26.2, t1: 29.6, fov: [50, 44], dip: .4, rel: 'bed', a: { eye: [3.6, 4.2, -3.6], at: [0, .3, 0] }, b: { eye: [2.8, 3.4, -2.8], at: [0, .2, 0] } }],
+    fx: { dim: [[0, 1]], fog: [[0, 0]] } } };
 // SC_REELS:END
 const REEL = { on: null, buf: {}, raw: {}, busy: {} };
 const _rlE = new THREE.Vector3(), _rlA = new THREE.Vector3(), _rlD = new THREE.Vector3(), _rlD2 = new THREE.Vector3(), _rlE2 = new THREE.Vector3(), _rlC = new THREE.Color();
 const rlEase = u => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
 function rlTrack(K, t) { if (!K || !K.length) return 0; if (t <= K[0][0]) return K[0][1]; for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const [a, va] = K[i - 1], [b, vb] = K[i]; return va + (vb - va) * rlEase((t - a) / Math.max(1e-4, b - a)); } return K[K.length - 1][1]; }
 function rlSeen(R) { try { return localStorage.getItem(R.seen) === '1'; } catch (e) { return 0; } }
-// a point of a shot -> world: zone space (the Garden's island-local, y + top), relative to the hammock's bed, or to the Hollow
+// a point of a shot -> world: zone space (the Garden's island-local, y + top), or relative to the hammock's bed
 function rlPt(R, S, v, which, out) { const top = GARDEN.top || 0, rel = which === 'at' ? (v.rel2 || S.rel || '') : (S.rel || ''), p = v[which];
   if (rel === 'bed') { const B = GARDEN.hammock && GARDEN.hammock.bed;     // across the sling = (cos yaw, -sin yaw), along it = (sin yaw, cos yaw)
     if (B) { const c = Math.cos(B.yaw), s = Math.sin(B.yaw); return out.set(B.at[0] + p[0] * c + p[2] * s, B.at[1] + p[1], B.at[2] - p[0] * s + p[2] * c); } }
-  if (rel === 'hollow') { const H = R.hollow.at; return out.set(H[0] + p[0], H[1] + p[1] + top, H[2] + p[2]); }
   return out.set(p[0], p[1] + top, p[2]); }
 // a turn between two look directions by YAW and PITCH (the short way round), never a straight lerp of the vectors (a 180 pan passes through zero)
 function rlTurn(a, b, u, out) { const ya = Math.atan2(a.x, a.z), yb = Math.atan2(b.x, b.z), pa = Math.asin(clamp(a.y, -1, 1)), pb = Math.asin(clamp(b.y, -1, 1));
@@ -63786,23 +63780,7 @@ function reelPlay(id, force) { const R = REELS[id]; if (!R) return; if (REEL.on)
 function reelSkip() { const O = REEL.on; if (!O || O.st === 'back') return; O.st = 'back'; O.back = 0; O.el.dataset.st = 'back'; try { if (O.src) O.src.stop(); } catch (e) {} O.src = null; }
 function reelEnd() { const O = REEL.on; if (!O) return; REEL.on = null; try { if (O.src) O.src.stop(); } catch (e) {} MUSIC.duck = 0;
   try { localStorage.setItem(O.R.seen, '1'); } catch (e) {} if (O.el) O.el.remove(); document.body.classList.remove('reeling');
-  if (O.hol) { O.hol.parent && O.hol.parent.remove(O.hol); O.hol.geometry.dispose(); O.hol.material.dispose(); }
   const Lt = GARDEN.light; if (Lt) { sun.intensity = Lt.sun; hemi.intensity = Lt.hemi; if (scene.fog) scene.fog.color.setHex(Lt.fog); } }
-// the Hollow, far off at the edge of the world: ONE shader quad, a slow dark swirl that turns to face the lens. Gone when the reel ends.
-function reelHollow(R) { const m = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, fog: false, uniforms: { uT: { value: 0 }, uA: { value: 0 }, uP: { value: 0 } },
-    vertexShader: 'varying vec2 vU; void main() { vU = uv * 2.0 - 1.0; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-    fragmentShader: `uniform float uT, uA, uP; varying vec2 vU;
-      float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-      float n(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + vec2(1, 1)), f.x), f.y); }
-      void main() { float r = length(vU), a = atan(vU.y, vU.x); if (r > 1.0) discard;
-        float sw = a + 3.2 * r - uT * .25, f = n(vec2(cos(sw), sin(sw)) * 2.2 * r + vec2(uT * .05, 0.0)) * .6 + n(vec2(sw * 1.7, r * 6.0 - uT * .3)) * .4;
-        float rr = r + (f - .5) * .35, arms = .5 + .5 * sin(sw * 3.0 + f * 3.0), core = smoothstep(.5, .05, rr), edge = smoothstep(.95, .4, rr);
-        float k = edge * (core + arms * .7 * (1.0 - core) + f * .2) * uA;
-        float rim = smoothstep(.22, .0, abs(rr - .62)) * (1.0 - core);
-        vec3 c = mix(vec3(.02, .0, .035), vec3(.2, .06, .3), arms * (1.0 - core) * .6) + vec3(.3, .1, .42) * rim * (.35 + .65 * uP);
-        gl_FragColor = vec4(c, clamp(k, 0.0, .96)); }` });
-  const q = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), m), H = R.hollow; q.scale.setScalar(H.size); q.position.set(H.at[0], H.at[1] + (GARDEN.top || 0), H.at[2]);
-  q.frustumCulled = false; q.renderOrder = -1; q.name = 'reel_hollow'; scene.add(q); return q; }
 // the crawl's scroll: each line's centre crosses the middle at the middle of its speech; a BIG line is held from its first word to its `hold`
 function reelYs(O) { const P = O.el.querySelectorAll('.rl-plane p'), K = []; O.R.lines.forEach((l, i) => { const e = P[i]; if (!e) return; const c = e.offsetTop + e.offsetHeight / 2;
     if (l[3] === 'big') { K.push([l[0] - .15, c], [l[4] || l[1], c]); } else K.push([(l[0] + l[1]) / 2, c]); });
@@ -63814,20 +63792,20 @@ function reelStep(dt) {
   const O = REEL.on; if (!O) return; const R = O.R;
   if (R.zone === 'garden' && !GARDEN.on) { reelEnd(); return; }
   stick.L.x = stick.L.y = stick.R.x = stick.R.y = 0; stick.L.down = stick.R.down = 0; for (const k in keys) keys[k] = false;     // control is held
-  if (O.st === 'wait') { if (!GARDEN.on || !GARDEN.on.built || !GARDEN.hammock.bed) return; O.hol = reelHollow(R);
+  if (O.st === 'wait') { if (!GARDEN.on || !GARDEN.on.built || !GARDEN.hammock.bed) return;
     O.st = SFX.ctx && SFX.ctx.state === 'running' ? 'load' : 'gate'; O.loadT = 0; O.el.dataset.st = O.st; }
   if (O.st === 'load') { O.loadT += dt; const b = reelVoice(R);
     if (b || O.loadT > 8 || (R.voice && REEL.raw[R.voice] === 'x')) { O.st = 'play'; O.el.dataset.st = 'play'; O.t = 0;
-      if (b && SFX.ctx && SFX.bus) { try { const s = SFX.ctx.createBufferSource(); s.buffer = b; const g = SFX.ctx.createGain(); g.gain.value = 1; s.connect(g); g.connect(SFX.bus); O.at0 = SFX.ctx.currentTime + .05; s.start(O.at0); O.src = s; } catch (e) { O.src = null; } } } }
+      if (b && SFX.ctx && SFX.bus) { try { const s = SFX.ctx.createBufferSource(); s.buffer = b; const g = SFX.ctx.createGain(); g.gain.value = 1; s.connect(g); g.connect(SFX.bus); O.vg = g; O.at0 = SFX.ctx.currentTime + .05; s.start(O.at0); O.src = s; } catch (e) { O.src = null; } } } }
   if (O.st === 'play') { MUSIC.duck = 1;
-    if (O.src && SFX.ctx && SFX.ctx.state === 'running') O.t = Math.max(0, SFX.ctx.currentTime - O.at0); else O.t += dt;
+    if (O.src && SFX.ctx && SFX.ctx.state === 'running') O.t = Math.max(0, SFX.ctx.currentTime - O.at0); else O.t += dt;     // the audio clock while the voice speaks
     if (O.t >= R.end) { O.st = 'back'; O.back = 0; O.el.dataset.st = 'back'; } }
   if (O.st === 'back') { O.back += dt; MUSIC.duck = Math.max(0, 1 - O.back / R.back); if (O.back >= R.back) { reelEnd(); return; } }
   // the room's light and air
   const t = O.st === 'play' || O.st === 'back' ? O.t : 0, fx = R.fx, Lt = GARDEN.light, bk = O.st === 'back' ? rlEase(O.back / R.back) : 0;
   if (Lt) { const d = rlTrack(fx.dim, t) * (1 - bk) + bk; sun.intensity = Lt.sun * d; hemi.intensity = Lt.hemi * (.45 + .55 * d);
     if (scene.fog) scene.fog.color.setHex(Lt.fog).lerp(_rlC.setHex(R.fogDark), rlTrack(fx.fog, t) * (1 - bk)); }
-  if (O.hol) { const U = O.hol.material.uniforms; U.uT.value += dt; U.uA.value = rlTrack(fx.hollow, t) * (1 - bk); U.uP.value = rlTrack(fx.pulse, t); O.hol.visible = U.uA.value > .01; O.hol.quaternion.copy(camera.quaternion); }
+  if (O.vg && R.voiceEnd) { const k = clamp((R.voiceEnd - t) / (R.voiceFade || .5), 0, 1); O.vg.gain.value = k; if (k <= 0 && O.src) { try { O.src.stop(); } catch (e) {} O.src = null; } }     // the voice ends here, with a fade
   // the overlay: the crawl, the fade from black and the dips at the cuts, the passing shadow
   const el = O.el; if (!O.ys) { const pl = el.querySelector('.rl-plane'); if (pl && pl.offsetHeight) O.ys = reelYs(O); }
   if (O.ys) el.querySelector('.rl-plane').style.transform = 'rotateX(24deg) translateY(' + (-rlScroll(O.ys, t)).toFixed(1) + 'px)';
@@ -63836,7 +63814,7 @@ function reelStep(dt) {
   el.querySelector('.rl-black').style.opacity = blk.toFixed(3);
   const sh = fx.shade, su = sh ? (t - sh[0]) / (sh[1] - sh[0]) : -1; el.querySelector('.rl-shade').style.cssText = su > 0 && su < 1 && O.st === 'play' ? 'opacity:' + Math.sin(su * Math.PI).toFixed(3) + ';transform:translateX(' + ((su * 2.4 - 1.2) * 100).toFixed(1) + '%)' : 'opacity:0';
   for (const p of el.querySelectorAll('.rl-plane p')) { const l = R.lines[+p.dataset.i], on = t >= l[0] - .4 && t <= (l[4] || l[1]) + .9; p.classList.toggle('on', on); }
-  el.style.setProperty('--rk', (1 - bk).toFixed(3)); }
+  el.style.setProperty('--rk', ((1 - bk) * (R.textEnd ? 1 - rlEase((t - R.textEnd) / (R.textFade || 1)) : 1)).toFixed(3)); }
 // the lens, after the play camera has been worked out this frame (so the way BACK can ease into exactly it)
 function reelCam(dt) { const O = REEL.on; if (!O || O.st === 'wait') return; const R = O.R, t = O.st === 'play' || O.st === 'back' ? O.t : 0;
   const { fov } = reelPose(R, t, _rlE, _rlD); let f = fov;
