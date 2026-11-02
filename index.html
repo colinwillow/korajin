@@ -6336,6 +6336,7 @@ function sfxSession() { try { if (!SFXQ.el) { const a = SFXQ.el = document.creat
 const SFXM = { simple: (() => { try { return localStorage.getItem('mel.audiomode') !== 'heavy'; } catch (e) { return true; } })() };
 function sfxWake(ev) {
   const real = !ev || ev.type !== 'pointerdown';
+  if (real) { try { const M = MUSIC; if (M.el && M.el.paused && M.ctx === SFX.ctx && musicWant()) M.el.play().catch(() => {}); } catch (e) {} }     // m15XX: every real touch retries the song (iOS lets a media element start only inside one)
   if (SFXM.simple) { if (SFX.ctx) { if (SFX.ctx.state !== 'running') { try { SFX.ctx.resume().catch(() => {}); } catch (e) {} if (real) sfxUnlock(); } return; }
     if (!real) return;     // the context is born inside a real activation (touchend / click / key), never a pointerdown
     const AC0 = window.AudioContext || window.webkitAudioContext; if (!AC0) { note('NO AUDIO'); return; }
@@ -6368,6 +6369,7 @@ function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden';
 // so the files are decoding as this runs -- it retries for a moment until one is ready.
 (function () { const sp = document.getElementById('splash'); if (!sp) return; sp.addEventListener('click', () => { if (!window.KJ_READY) return; let n = 0; const go = () => { const b = SFX.buf.ui_start; if (b && b.some(Boolean)) snd('ui_start', { g: .8 }); else if (n++ < 12) setTimeout(go, 60); }; go(); }); })();
 function musicCtx() { const M = MUSIC, c = SFX.ctx; if (!c || !SFX.bus) return; try { if (M.el) M.el.pause(); } catch (e) {}
+  if (!M.tick) M.tick = setInterval(() => { try { musicStep(.05); } catch (e) {} }, 50);     // m15XX: its OWN clock -- the game's frame loop does not run while the title / start menu is up, so the fade never rose and the song played at 0
   const el = new Audio(); el.loop = true; el.preload = 'auto'; el.setAttribute('playsinline', ''); M.trk = musicWant() || 'garden'; el.src = A(M.tracks[M.trk]);
   M.g = c.createGain(); M.g.gain.value = 0; M.src = null; try { M.src = c.createMediaElementSource(el); M.src.connect(M.g); M.g.connect(SFX.bus); } catch (e) { M.src = null; }
   M.el = el; M.ctx = c; M.k = 0; const pr = el.play(); if (pr && pr.then) pr.then(() => { if (!musicWant()) el.pause(); }).catch(() => {}); }
@@ -41117,7 +41119,6 @@ function stepPlayer(dt) {
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
   if (inArena()) { deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (RGN.live) rgnStep(dt); if (DRAGZ.on) dragStep(dt); }     // m2051 roomStep
   if (PLANT.list.length) plantStep(dt);     // m1424
-  try { musicStep(dt); } catch (e) {}     // m2186
   if (GARDEN.on) { try { gdnStep(dt); } catch (e) { GARDEN.on = null; note('GARDEN STEP ' + e.message); console.error('[garden step]', e.stack); } }     // PROLOGUE P1: the hammock, the bell, the falls, the catch
   if (DOMET.on) { try { dmtStep(dt); } catch (e) { DOMET.on = null; note('DOMET STEP ' + e.message); } }     // m2144: the temple's door, orb and light
   if (ROCK.loose.length || ROCK.broken.length) rockStep(dt);     // m1745

@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the song actually plays on the title / start menu now (Nov 2 2026)
+*"The splash shows, I press start to go to the level picker with the sideways scrolling thing -- and no music plays there."* Two faults. (1)
+`musicStep` (the fade) was called from the GAME's frame loop, which does not run while the title / start menu is up -- the song started at gain 0
+and never rose. It has its own 50 ms clock now (`MUSIC.tick`, started in `musicCtx`). (2) iOS lets a media element start only inside a real touch;
+the context is born in one, but `sfxWake` now also retries `MUSIC.el.play()` on every real touch while a track is wanted and paused. Shipped unverified.
+
 ## m2217 -- THE TITLE LOOP: stone statues, a water wheel, Grumbo's domed home (his reference sheets, pass A) (Nov 2 2026)
 *"The red hollows... the building, the lighting, the aqua water wheel, the creek, the floating lanterns... mythical statues... the red building, the
 floating castle... the toad guy... hills and valleys and streams... perspective, lots of cool stuff going on."* (+ his Olmec / spider / dome-home sheets)
