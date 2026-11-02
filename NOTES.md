@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2169 -- THE GARDEN: living veins on the trees; the Jinra heart, hero pass 3 (it lights the summit; organic crystal; trails; the beat) (Nov 2 2026)
+His: *"the green spirals around the trees -- particle effects so it looks more magical and mystical, not just random lines"*; and for the heart:
+*"stand out against the bright morning sky -- a darker basin, glow that carries further, light thrown on the pagoda and the trees; the crystal more
+organic; particle trails; tie the motion to the shockwave -- everything flares on each beat."*
+- **LIVING VEINS** (every tree): the vein tube (`M.vein`) carries light travelling UP it -- pulses along its length, each vein out of step with the
+  next; a soft additive SHEATH round it (`M.veinGlow`, brightest edge-on, the same pulses) so it reads as a glow, not a line; and motes peel off
+  the veins and spiral up round the trunk (4 per vein point, `aK` 3 in the one glow draw). The Jinra tree's motes are blue.
+- **THE HEART STANDS OUT**: a dark BASALT basin on a dark floor ring (`M.basalt`); ONE blue POINT LIGHT in the heart (26 m, pulsing 22 -> 77) that
+  lights the pagoda, the Jinra tree, the braziers and the floor; a BEACON glow that keeps a constant size on screen however far off he is, so the
+  heart reads from the garden and the farm against the morning sky.
+- **ORGANIC CRYSTAL**: seven-sided shafts that twist as they grow, bend, swell and pinch, uneven facets, a crown of uneven points (faceted normals).
+- **TRAILS**: half the vortex motes trail a comet tail (four copies, each a moment behind, fading and shrinking).
+- **THE BEAT**: on each beat the light, the crystal's size, the vortex's spread and brightness, the crystal's and spirals' SPIN all flare together
+  with the shockwave (`fl = 1 + pulse * 1.8`). Shipped unverified.
+
 ## m2168 -- THE GARDEN's cliffs: one rock, not a tiled picture (Nov 1 2026)
 His (a phone screenshot of the summit's cliff from the shrine): *"this green texture looks kind of janky -- I don't know if it's the texture itself
 or the way it's applied."* The WAY: (1) one scale of `garden_rock` (7 m) repeated across long FLAT faces -- the same ledges every 7 m; (2) the
