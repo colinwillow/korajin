@@ -36,7 +36,6 @@ its TEXTURES to have loaded (a texture still loading when the boot's own warm ra
 `renderer.compile` on the Garden with everything shown, and builds the footstep grids. Headless: 205 ms, 47/47 textures, 42 grids.
 `mel.stepSurf` / `mel.STEPSURF` / `mel.ssProbe(x, z, y)` for testing. **Shipped unverified.**
 
-## m15XX -- the song actually plays on the title / start menu now (Nov 2 2026)
 ## m2218 -- the song actually plays on the title / start menu now (Nov 2 2026)
 *"The splash shows, I press start to go to the level picker with the sideways scrolling thing -- and no music plays there."* Two faults. (1)
 `musicStep` (the fade) was called from the GAME's frame loop, which does not run while the title / start menu is up -- the song started at gain 0
