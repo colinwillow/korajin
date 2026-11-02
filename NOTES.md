@@ -17,6 +17,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2243 -- THE GARDEN: he wakes in the hammock (Nov 2 2026)
+
+*"Use the laying pose for the hammock too."* (via main; the intro reel ends on this shot.) The Garden starts with him ASLEEP in the hammock:
+`gdnSleepStart` (from the spawn `put`, once) puts him at `hammock.bed`, along the span (`sleep.flip` turns him end for end), and `p.sleep` owns the
+body (`gdnSleepStep`, after the hero drop in stepPlayer). The pose is `lay` -- Male_Laying_Pose_2, on his back, legs crossed, hands behind his head,
+rendered on Grumbo first (m2241's bake). He SWAYS with the sling (the same angle `hammockG` swings by, about its span axis, pivoting at the
+spreader height) and BREATHES (the lotus's breath, slower, on Spine1/Spine2). FIT: `gdnSleepPose` (after the mixer) measures 17 body points against
+the cloth's own height function (`gdnClothY`, the sling's sag formula, now carried in `bed` with its axes) and carries him up or down so the worst
+clears it by `clear` .06 m (spine and head padded more) -- measured worst .096 m at rest, nothing through the cloth in the renders.
+THE WAKE: the first left-stick push past `push` .3 -> over `out` 1.1 s the `lay` weight blends to his idle while he is lifted out in a small arc to
+`side` 1.3 m beside the sling (the side nearer the spawn's facing point, on real ground) and turned to face the garden; then control is his.
+Headless: pushed -> standing on the lawn (y .00 = ground) after 1.0 game s. `GARDEN.wakeClip` set skips all of this (his roll-out, later).
+FOUND ON THE WAY: the hammock CLOTH and spreader bars were INVISIBLE: the boot's small-thing cull (`perfRegSmall`, m418) registers every mesh under
+3.5 m radius at 220 m by LAYER, the boot camera sits far off when it runs, and these were left on layer 1 until he came near. Renders hammock_34 /
+hammock_side. **Shipped unverified.**
+
 ## m2242 -- THE INTRO, TAKE 2: his real script (no Hollow), every shot on its line, the great bell rings on "their echoes" (Nov 2 2026)
 Main, from Colin: take 2 (`audio/voice/korajin_intro_02.mp3`, 50.6 s) replaces the test script entirely -- no Hollow, no darkness.
 - **RE-MEASURED** (silencedetect -38 dB, .3 s): every segment agrees with main's list. The two long breaths have their own short pauses, and the
