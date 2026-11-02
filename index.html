@@ -5787,7 +5787,7 @@ const SFX = {
     foot_CUTS: [1, 2, 3, 4, 5, 6].flatMap(n => ['audio/footsteps/step_' + n + '_l.mp3', 'audio/footsteps/step_' + n + '_r.mp3']),
     foot_NEW: ['audio/footsteps/step3_1_l.mp3', 'audio/footsteps/step3_1_r.mp3'],
     foot_SNOW: [1, 2, 3, 4].flatMap(n => ['audio/footsteps_snow/cut/snow_' + n + '_l.mp3', 'audio/footsteps_snow/cut/snow_' + n + '_r.mp3']),
-    // m15XX: SURFACE STEPS (audio/steps, see CREDITS.txt) -- picked per footfall by what is under his feet (`stepSurf`)
+    // m2180: SURFACE STEPS (audio/steps, see CREDITS.txt) -- picked per footfall by what is under his feet (`stepSurf`)
     foot_GRASS: [1, 2, 3, 4].map(n => 'audio/steps/grass_' + n + '.mp3'), foot_WOOD: [1, 2, 3, 4].map(n => 'audio/steps/wood_' + n + '.mp3'),
     foot_STONE: [1, 2, 3, 4].map(n => 'audio/steps/stone_' + n + '.mp3'), foot_SAND: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/sand_' + n + '.mp3'),
     foot_METAL: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/metal_' + n + '.mp3'), foot_WATER: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/water_' + n + '.mp3'),
@@ -6051,7 +6051,7 @@ function strideNow(sp) {
 // call is byte-for-byte what it was. **The rate already means weight here** -- `r0`/`r1` are
 // "heavier is lower" across his speed range -- so a small body is the same idea on the same
 // term rather than a new one, which is the metal clangs' rule for the third time this week.
-// m15XX: SURFACE FOOTSTEPS (his: "walking through water, sand, grass, wood, metal -- a decision tree; brushing through bushes"). On each of HIS
+// m2180: SURFACE FOOTSTEPS (his: "walking through water, sand, grass, wood, metal -- a decision tree; brushing through bushes"). On each of HIS
 // footfalls a short ray down from his knees finds the ground mesh, and its SURFACE is read in this order: a tag a builder set
 // (`userData.surf` = 'grass' | 'wood' | 'stone' | 'sand' | 'metal' | 'water' | 'snow' | 'plant', on the mesh or its material), then the mesh /
 // material / parent NAME, then a see-through material (water) or a metal one, then its COLOUR (vertex colour at the hit face, else the
@@ -6110,7 +6110,7 @@ function footSnd(sp, top, x, z, left, gk, rk) {
   // reservoir pick is one pass and allocates nothing, which matters six times a second; and
   // with nothing decoded for this foot `i` stays undefined and `snd`'s own random roll takes
   // over, which is m136's fallback generalised rather than a second rule.
-  const surf = stepSurf(x, z, u), set = surf || STEP.set;     // m15XX: the surface under HIS feet picks the bank; anything else (bodies, no hit) keeps the picked set
+  const surf = stepSurf(x, z, u), set = surf || STEP.set;     // m2180: the surface under HIS feet picks the bank; anything else (bodies, no hit) keeps the picked set
   const buf = SFX.buf['foot_' + set], n = (buf && buf.length) || 0, pairs = n >> 1;
   let pick, seen = 0;
   if (pairs) {

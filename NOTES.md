@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- SURFACE FOOTSTEPS: grass, stone, wood, sand, metal, water (+ a leaf rustle through plants) (Nov 2 2026)
+## m2180 -- SURFACE FOOTSTEPS: grass, stone, wood, sand, metal, water (+ a leaf rustle through plants) (Nov 2 2026)
 *"Sound effects for walking through water, on sand, grass, wood and metal -- all those options and a decision tree; and brushing through bushes."*
 He allowed kenney.nl / opengameart.org / freesound / suno in the environment. Sources (all REAL recordings, credits in `audio/steps/CREDITS.txt`):
 Kenney Impact Sounds (grass, wood, concrete -> stone; CC0), Fantozzi's sand steps (CC0), qubodup's 20 dry-leaf rustles (CC0), congusbongus'
