@@ -1,0 +1,3 @@
+start_draw_* -- Kenney "RPG Audio" (drawKnife1-3), CC0. https://kenney.nl/assets/rpg-audio
+tap_*, go_*  -- Kenney "Interface Sounds" (select_001/002, confirmation_001), CC0. https://kenney.nl/assets/interface-sounds
+Levelled only (start -4 dBFS peak, taps -12, go -10). No other processing.

@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2192 -- the START tap draws a blade; the song starts with it; menu taps and entering a world have sounds (Nov 2 2026)
+*"A sword noise or something interesting when you push the start button -- and when you push it that song should start playing; sounds for the
+menus and transitions."* Kenney CC0 (`audio/ui`, CREDITS.txt, added to bump's DIRS), levelled only: `ui_start` = RPG Audio's drawKnife 1-3 (a
+blade drawn), `ui_tap` = Interface Sounds select_001/002 (every start-menu button), `ui_go` = confirmation_001 (entering a world). The splash's tap
+is the touch that builds the context, so the start sound retries for ~0.7 s until a buffer has decoded. MUSIC: `musicWant` now also plays
+`MUSIC.menu` while the start menu (#start.on) is up -- the same key as the garden's ('garden', the one song so far), so walking from the menu into
+the garden does not restart it. More songs = more `MUSIC.tracks` keys (title / menu / dark / prologue) when he makes them. Shipped unverified.
+
 ## m2191 -- THE GARDEN: the bridges leave from the EDGE, measured; the posts take the ropes (Nov 2 2026)
 
 His phone shot of m2182: *"the runs of the bridge are still going through the side of the cliff; the rails' ends are floating instead of attaching
