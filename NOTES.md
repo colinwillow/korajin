@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the vertical wall run: hips back 40 deg, chest upright (Nov 2 2026)
+*"The vertical wall run is basically just the running animation -- his hips need to rotate back maybe 45 degrees, the torso still straight up and
+down, the legs bent."* The RUN look (m1836, TOOLS > UP LOOK: RUN) pitches the whole drawn body back `upHip` about his right axis, pivot at the feet,
+and turns the spine forward by `upHip x upTorso` so the chest stays upright. Two faults: `upHip` was .35 (20 deg) -> **.7 (40 deg)**; and
+`upTorso` was a DUPLICATE KEY in the same `Object.assign(WRUN, ...)` -- 1 for this look, then .32 later for the IK solve's spine -- and the
+later one won, so the chest only came back a third of the tilt and leaned with the legs. The look has its own key now, `upHipTorso` 1.
+Shipped unverified.
+
 ## m2170 -- a wall run up a face has a HEIGHT BUDGET from his speed (Nov 2 2026)
 *"He can run almost indefinitely up a wall -- he can run up an entire temple. It needs a limit so you run up, then jump over to the other
 wall."* Each face he catches gets a climb budget `WRUN.climbBase + climbPerV x his speed in`, capped at `climbCap` (2 + .45 v, cap 6.5 m:
