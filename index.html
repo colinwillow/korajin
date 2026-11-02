@@ -16679,7 +16679,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
   { const F = Z.fence; for (const [id, a0, a1] of F.arcs) { const pts = []; for (let a = a0; a <= a1 + .01; a += 1) { const p = rimAt(a); pts.push([p[0] * F.inset, p[2] * F.inset]); }
       const posts = [pts[0]]; let acc = 0; for (let i = 1; i < pts.length; i++) { acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if (acc >= F.step) { posts.push(pts[i]); acc = 0; } }
       for (let i = 0; i < posts.length; i++) { const [x, z] = posts[i], ox = x / Math.hypot(x, z), oz = z / Math.hypot(x, z);
-        put(new THREE.BoxGeometry(.34, 1.25, .34).rotateY(Math.atan2(ox, oz)).translate(x, .62, z), M.stone); put(new THREE.BoxGeometry(.44, .12, .44).rotateY(Math.atan2(ox, oz)).translate(x, 1.31, z), M.stone);
+        put(new THREE.BoxGeometry(.34, 1.85, .34).rotateY(Math.atan2(ox, oz)).translate(x, .32, z), M.stone); put(new THREE.BoxGeometry(.48, .22, .48).rotateY(Math.atan2(ox, oz)).translate(x, .02, z), M.stone);     /* m2270 CRAFT 3: SEATED -- the post runs .6 m into the ground on a footing (the lawn dips toward the rim) */ put(new THREE.BoxGeometry(.44, .12, .44).rotateY(Math.atan2(ox, oz)).translate(x, 1.31, z), M.stone);
         put(new THREE.OctahedronGeometry(.13, 0).scale(.75, 1.25, .35).rotateY(Math.atan2(ox, oz)).translate(x + ox * .18, .82, z + oz * .18), M.jade); put(new THREE.OctahedronGeometry(.13, 0).scale(.75, 1.25, .35).rotateY(Math.atan2(ox, oz)).translate(x - ox * .18, .82, z - oz * .18), M.jade);
         if (i) { const [x0, z0] = posts[i - 1], L = Math.hypot(x - x0, z - z0), yaw = Math.atan2(x - x0, z - z0); for (const yy of [.55, 1.05]) put(new THREE.CylinderGeometry(.055, .055, L, 6).rotateX(Math.PI / 2).rotateY(yaw).translate((x + x0) / 2, yy, (z + z0) / 2), M.wood);
           BOXES.push(obox((x + x0) / 2, (z + z0) / 2, L / 2 + .15, .14, Math.atan2(z - z0, x - x0), Y0 - 1, Y0 + 1.25)); } }
@@ -16962,7 +16962,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     for (const [f0, f1] of C.fence || []) { const i0 = Math.round(f0 * (outer.length - 1)), i1 = Math.round(f1 * (outer.length - 1)), pts = [];
       for (let i = i0; i <= i1; i++) { const p = outer[i], L = Math.hypot(p[0] - cx, p[2] - cz) || 1; pts.push([p[0] - (p[0] - cx) / L * 1.1, p[2] - (p[2] - cz) / L * 1.1]); }
       const posts = [pts[0]]; let acc = 0; for (let i = 1; i < pts.length; i++) { acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if (acc > 2.4) { posts.push(pts[i]); acc = 0; } }
-      for (let i = 0; i < posts.length; i++) { const [x, z] = posts[i]; if (lines.some(Ln => nearLine(x, z, Ln.pl, Ln.w + .4))) { posts[i] = null; continue; } put(new THREE.BoxGeometry(.2, 1.1, .2).translate(x, H + .55, z), M.dark, into);
+      for (let i = 0; i < posts.length; i++) { const [x, z] = posts[i]; if (lines.some(Ln => nearLine(x, z, Ln.pl, Ln.w + .4))) { posts[i] = null; continue; } put(new THREE.BoxGeometry(.2, 1.7, .2).translate(x, H + .25, z), M.dark, into);     /* m2270: sunk .6 m, never hovering */
         if (i && posts[i - 1]) { const [x0, z0] = posts[i - 1], L = Math.hypot(x - x0, z - z0), yaw = Math.atan2(x - x0, z - z0); for (const yy of [.5, .95]) put(new THREE.BoxGeometry(.07, .09, L).rotateY(yaw).translate((x + x0) / 2, H + yy, (z + z0) / 2), M.wood, into);
           BOXES.push(obox((x + x0) / 2, (z + z0) / 2, L / 2 + .1, .12, Math.atan2(z - z0, x - x0), Y0 + H - 1, Y0 + H + 1.1)); } } }
     // plants: over the rock top, clear of the paths, water, structures and trunks
@@ -17488,7 +17488,7 @@ function gdnBridges(g) { const Z = GARDEN, Y0 = Z.top, M = gdnMats(), posts = []
       for (const sd of [-1, 1]) { const x = P[0] + nx * sd * (B.w / 2 + .1) - ux * .12, z = P[2] + nz * sd * (B.w / 2 + .1) - uz * .12, rl = ROPEB.rail;
         posts.push(new THREE.CylinderGeometry(.13, .16, 1.9, 8).translate(x, P[1] + .95, z), new THREE.ConeGeometry(.2, .3, 8).translate(x, P[1] + 2.0, z));
         for (const hy of [rl - .02, .0]) for (const dy of [-.05, .05]) ropesG.push(new THREE.TorusGeometry(.165, .035, 5, 12).rotateX(Math.PI / 2).translate(x, P[1] + hy + dy, z));
-        lamps.push(new THREE.CylinderGeometry(.12, .12, .26, 8).translate(x - ux * .28, P[1] + 1.55, z - uz * .28)); gdnBox(x, z, .15, .15, Y0 + P[1] - 1, Y0 + P[1] + 1.9);
+        lamps.push(new THREE.CylinderGeometry(.12, .12, .26, 8).translate(x - ux * .28, P[1] + 1.55, z - uz * .28)); posts.push(new THREE.BoxGeometry(.05, .05, .3).rotateY(Math.atan2(-ux, -uz)).translate(x - ux * .14, P[1] + 1.74, z - uz * .14), new THREE.CylinderGeometry(.008, .008, .08, 4).translate(x - ux * .28, P[1] + 1.71, z - uz * .28));     /* m2270: a bracket arm off the post and a short cord -- the lamp was hanging from nothing */ gdnBox(x, z, .15, .15, Y0 + P[1] - 1, Y0 + P[1] + 1.9);
         Z.lanterns.push(['bridge_lamp', x - ux * .28, z - uz * .28, P[1] - .17]); } }
     Z.parts.push({ id: B.id, kind: 'bridge', a: B.a, b: B.b, from: A, to: C, len: +span.L.toFixed(1), hang: span.hang });
     for (const [P, Q] of [[A, C], [C, A]]) { const L = Math.hypot(Q[0] - P[0], Q[2] - P[2]); ends.push({ x: P[0], y: P[1], z: P[2], ux: (Q[0] - P[0]) / L, uz: (Q[2] - P[2]) / L, w: B.w }); } }
