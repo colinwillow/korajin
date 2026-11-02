@@ -17412,9 +17412,15 @@ const LOTUS = { on: 1, w: 0, ease: .9, hands: 'mudra', thigh: [.80, -.12, .58], 
 try { const v = localStorage.getItem('mel.lotus.hands'); if (v === 'lap' || v === 'mudra' || v === 'spread') LOTUS.hands = v; } catch (e) {}
 function gdnBreath(t) { const L = LOTUS; return Math.sin(t * 2 * Math.PI / L.breath) * .8 + Math.sin(t * 2 * Math.PI / L.breath2 + 1.3) * .2; }
 const _ltA = new THREE.Vector3(), _ltB = new THREE.Vector3(), _ltC = new THREE.Vector3(), _ltQ = new THREE.Quaternion(), _ltQ2 = new THREE.Quaternion(), _ltQ3 = new THREE.Quaternion(), _ltI = new THREE.Quaternion();
-function ltDir(bone, child, dir, w) { if (!bone || !child || w <= 0) return; bone.getWorldPosition(_ltA); child.getWorldPosition(_ltB); const v = _ltB.sub(_ltA); if (v.lengthSq() < 1e-10) return;
+// m2245 THE EXORCIST SPINE (his: "his back is arching and he goes through the hammock -- one of his spine bones keeps rotating like 45 degrees").
+// `lay` (Male_Laying_Pose_2) is ONE KEY: three's PropertyMixer only writes a bone when its blended value CHANGES, so it never rewrote his spine, and
+// the breathing turn premultiplied on top STACKED every frame -- m204's landmine exactly. Every bone the lotus or the sleep touches is now saved the
+// first time it is touched in a frame (`ltKeep`) and put back by `ltUndo` just before the next mixer update.
+const LTKEEP = new Map(); function ltKeep(b) { if (b && !LTKEEP.has(b)) LTKEEP.set(b, b.quaternion.clone()); }
+function ltUndo() { if (!LTKEEP.size) return; for (const [b, q] of LTKEEP) b.quaternion.copy(q); LTKEEP.clear(); }
+function ltDir(bone, child, dir, w) { if (!bone || !child || w <= 0) return; ltKeep(bone); bone.getWorldPosition(_ltA); child.getWorldPosition(_ltB); const v = _ltB.sub(_ltA); if (v.lengthSq() < 1e-10) return;
   _ltQ2.setFromUnitVectors(v.normalize(), _ltC.copy(dir).normalize()); _ltQ2.slerp(_ltI, 1 - w); bone.getWorldQuaternion(_ltQ); _ltQ.premultiply(_ltQ2); bone.parent.getWorldQuaternion(_ltQ3).invert(); bone.quaternion.copy(_ltQ3.multiply(_ltQ)); bone.updateMatrixWorld(true); }
-function ltTurn(bone, axis, deg) { if (!bone || !deg) return; _ltQ2.setFromAxisAngle(axis, deg * Math.PI / 180); bone.getWorldQuaternion(_ltQ); _ltQ.premultiply(_ltQ2); bone.parent.getWorldQuaternion(_ltQ3).invert(); bone.quaternion.copy(_ltQ3.multiply(_ltQ)); bone.updateMatrixWorld(true); }
+function ltTurn(bone, axis, deg) { if (!bone || !deg) return; ltKeep(bone); _ltQ2.setFromAxisAngle(axis, deg * Math.PI / 180); bone.getWorldQuaternion(_ltQ); _ltQ.premultiply(_ltQ2); bone.parent.getWorldQuaternion(_ltQ3).invert(); bone.quaternion.copy(_ltQ3.multiply(_ltQ)); bone.updateMatrixWorld(true); }
 function ltArm(up, mid, end, T, pole, w) { if (!up || !mid || !end) return; const A = up.getWorldPosition(new THREE.Vector3()), B = mid.getWorldPosition(new THREE.Vector3()), C = end.getWorldPosition(new THREE.Vector3());
   const a = A.distanceTo(B), b = B.distanceTo(C), d = T.clone().sub(A), dl = Math.max(1e-4, Math.min(d.length(), (a + b) * .995)), n = d.normalize(), x = (a * a - b * b + dl * dl) / (2 * dl), h = Math.sqrt(Math.max(0, a * a - x * x));
   const pl = pole.clone().addScaledVector(n, -pole.dot(n)).normalize(), E = A.clone().addScaledVector(n, x).addScaledVector(pl, h), F = A.clone().addScaledVector(n, dl);
@@ -17424,7 +17430,7 @@ function ltArm(up, mid, end, T, pole, w) { if (!up || !mid || !end) return; cons
 function ltSpread(w) { const L = LOTUS, a = rig.actions && rig.actions.spread; if (!a) return false; if (!L.spreadQ) { L.spreadQ = [];
     for (const tr of a.getClip().tracks) { const m = /^(.*)\.quaternion$/.exec(tr.name); if (!m || !/(Shoulder|Arm|ForeArm|Hand)/.test(m[1])) continue; const b = rig.bones[m[1]] || rig.bones[m[1].replace(/^.*[|:]/, '')]; if (!b) continue;
       L.spreadQ.push([b, new THREE.Quaternion(tr.values[0], tr.values[1], tr.values[2], tr.values[3])]); } }
-  if (!L.spreadQ.length) return false; for (const [b, q] of L.spreadQ) { b.quaternion.slerp(q, w); } rig.root.updateMatrixWorld(true); return true; }
+  if (!L.spreadQ.length) return false; for (const [b, q] of L.spreadQ) { ltKeep(b); b.quaternion.slerp(q, w); } rig.root.updateMatrixWorld(true); return true; }
 function gdnLotus(dt) { const L = LOTUS, p = player, B = rig.bones; if (!L.on || !B || !rig.root) return; L.w += ((p.meditPose ? 1 : 0) - L.w) * (1 - Math.exp(-dt / (L.ease * .5))); if (L.w < .002) return;
   const w = L.w * L.w * (3 - 2 * L.w), t = (GARDEN.on && GARDEN.on.t) || performance.now() / 1000, bn = n => B['mixamorig_' + n]; rig.root.updateMatrixWorld(true);
   const q = rig.root.getWorldQuaternion(new THREE.Quaternion()), F = new THREE.Vector3(0, 0, 1).applyQuaternion(q).setY(0).normalize(), U = new THREE.Vector3(0, 1, 0), Lf = new THREE.Vector3().crossVectors(U, F).normalize();     /* his left: +X when he faces +Z */
@@ -65613,7 +65619,7 @@ function frameBody() {
     stepMorph(dt);
     _pt = pT('body', _pt);
     rigAnim(dt); bowSync(dt);     // m1744: every copy of the bow's draw at the draw's own time
-    bladeUndo();          // her edits come off before the mixer, in reverse (m271)
+    bladeUndo(); ltUndo();     // her edits come off before the mixer, in reverse (m271); m2245: and the lotus / hammock's (one-key poses are never rewritten)
     spineUndo();
     coverArmUndo();       // m1020
     rig.mixer.update(dt);
