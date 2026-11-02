@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2190 -- THE TITLE LOOP pass 2: depth, haze, a fuller far layer, shafts, sky lanterns (Nov 2 2026)
+*"Okay start but definitely very early."* m2188's loop on the phone was mostly empty peach between Grumbo and the sky. Here is what this pass adds,
+every piece in the `LOOPBG` table (stable ids, seeded scatter, a pure builder):
+- **AERIAL HAZE**: fog 30..1250 m (it was 90..2600), so the layers read as distances: ground crisp, mid barely touched, far isles half
+  washed, and a new **DEEP ridge** (`deep_peak_a..e`, the clouds band, 1300-1500 m) almost gone into the sky.
+- **A fuller far layer**: 12 seeded small isles between the named ones, each with trees, a third of them with a Jinra fall; falls are wider
+  (`s*.22`). A second, nearer row of **cloud sea** puffs (150-380 m, y -34..-16) and a mid row, so the sea reads under the islands.
+- **SUN SHAFTS**: 11 additive quads fanned round the sun, fixed (the sun is at infinity, so it does not slide), each breathing on its own;
+  alpha .03-.05. The cloud floor no longer writes depth, so a shaft fades over the sea instead of being cut flat at the horizon (the first try did that).
+- **SKY LANTERNS** (`life.lanterns` 14): warm points rising slowly 80-280 m out, swaying, in the same Points pool (no new draw). Mint motes are
+  bigger (.09-.19 m).
+- **Mid**: a red TORII on terrace A (`mid_torii`, a curved kasagi), another willow and two more cherries. **Ground**: 110 small flowers (pink,
+  white, yellow -- not mint, not gold coins) and grass PATCHES in the colour. **Near**: a cherry BOUGH (`near_branch`) that hangs into the top of
+  the frame as it passes.
+- Measured, headless: 25 draw calls (was 23), ~346k tris drawn (111k built x up to 3 copies). Renders: phone x2, 1800x800.
+- Box moved: none (the title screen is a new piece). Open: his look; times of day and the element worlds (`time` / `theme`). **Shipped unverified.**
+
 ## m2189 -- THE GARDEN: far isles pass 2 -- hills on top, eroded rims, upright, nearer and bigger (Nov 2 2026)
 
 His phone shots: the snow-peaked one with irregular crags "looks good"; the rest "see how flat the tops are -- upside-down cones or pyramids",
