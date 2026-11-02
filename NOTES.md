@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2242 -- THE INTRO, TAKE 2: his real script (no Hollow), every shot on its line, the great bell rings on "their echoes" (Nov 2 2026)
+Main, from Colin: take 2 (`audio/voice/korajin_intro_02.mp3`, 50.6 s) replaces the test script entirely -- no Hollow, no darkness.
+- **RE-MEASURED** (silencedetect -38 dB, .3 s): every segment agrees with main's list. The two long breaths have their own short pauses, and the
+  crawl splits there: "...lived among these skies," 18.82-23.29 / "protected by..." 23.60-27.07, and "...the floating kingdoms," 27.64-30.63 /
+  "keeping watch..." 30.98-34.66. "was Grumbo." is the big held beat (49.36 to the end, 51.6).
+- **SHOTS** (all `REELS.intro` data): clouds (fade up, push in) / temple (the summit's pagoda from BELOW, the chunk's underside tapering into
+  the sky) / rivers (the west fall, a slow drift down its face) / sweep (the orbit, r 80 at +48) / bell (down to the great bell, arriving at
+  27.6) / ring (held on the bell, swinging) / kingdoms (pull out over the isles, fov 44 -> 54) / descend / sword (a low angle on the rusty sword on
+  its peg, 1 m off it, looking up) / reveal (the hammock, from over the sling) / grumbo (close, held, then the 2.4 s ease into play).
+- **CUES** (`cues: [[t, name, gain]]`, `REELCUE`): `bell` swings the Garden's great bell and gives its three strikes (the same as walking in
+  under it) at 27.75 and, softer, at 31.3. The garden code's bell state is only written (`swing`, `ring`, `cd`); its step does the rest.
+- **The seen key is now `mel.reel.intro2`**, so a phone that saw take 1 plays take 2 once by itself.
+- **Fixed after renders**: the temple was a speck (moved in); the bell was behind the shrine's roofs, then under the crawl (now in the upper
+  third, and the shot ARRIVES before the first ring); the sword shot was inside the willow's roots (now 1 m off the blade).
+- **OPEN**: Grumbo is not in the hammock yet (the garden worker), so reveal / grumbo frame an empty sling; no snore puff and no mint ripple off
+  the bell yet (both would be `cues`). **Shipped unverified.**
+
 ## m2241 -- THE LOTUS: a third hands option, SPREAD (Nov 2 2026)
 
 Main's addendum: better source clips from the Forge catalog. The bake (`agoblin_meditate.glb`, `tools/forge.cjs`, profile in the session) now
