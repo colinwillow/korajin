@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2208 -- THE TITLE LOOP: an ACES colour grade, a warm RIM light, butterflies, mist banks between the layers (Nov 2 2026)
+*"Keep going!! More detail, render as beauty, and art direction."*
+- **THE GRADE**: the loop renders through ACES filmic tone mapping at exposure 1.18 (`LOOPBG.grade`). It was compared side by side on the
+  phone with no tone mapping and with AgX: ACES is the richest (deeper greens and reds, the sky keeps its glow, a little more contrast);
+  AgX greyed it out. `?loopgrade=none|aces|agx` overrides it to compare on the device.
+- **THE RIM** (`LOOPBG.rim`): a warm directional light from BEHIND the scene (the sun's side), so every silhouette -- him, the mammoth, the
+  trees, the isles' lips -- catches a warm edge. It follows the season's sun (off in rain, storm and night).
+- **BUTTERFLIES** (`life.butterflies` 26, the same Points pool; kind 8+flap in the point shader): two wing pairs drawn in the fragment
+  shader, opening and closing at 9-14 Hz, in orange, blue, yellow, white and pink, wandering loops over his isle and the terraces.
+  Summer has the most, spring many, autumn a few.
+- **MIST BANKS** (`kind: 'mist'`): his cloud art at 38% opacity, drifting between the mid terraces and among the far isles, tinted with
+  the season. One draw per band.
+- Measured, headless: 101 draw calls. Render: summer at 1400x620 (the blossom tunnel and trees gone lush green).
+- **Shipped unverified.**
+
 ## m2207 -- the flying ship's lanterns are paper (Nov 2 2026)
 
 The unpainted-object pass reaches the ship (`shipMake`, shared: every zone that shows it gets this). Its hull, sails and roofs were already
