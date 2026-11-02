@@ -16139,7 +16139,7 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
     clump: uvm('dome_clump', { alphaTest: .42, side: THREE.DoubleSide, roughness: .85, color: 0xe4ffc8 }), fern: uvm('garden_fern', { alphaTest: .4, side: THREE.DoubleSide, roughness: .85 }),
     flowers: uvm('garden_flowers', { alphaTest: .4, side: THREE.DoubleSide, roughness: .85 }),
     jade: new THREE.MeshStandardMaterial({ color: 0x0f5a48, emissive: 0x35ffc0, emissiveIntensity: 1.5, roughness: .3 }),
-    lamp: new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffc860, emissiveIntensity: 1.35, roughness: .6 }),
+    lamp: new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffd28a, emissiveIntensity: 1.5, emissiveMap: texGet('garden_lantern'), roughness: .6 }),     // m2198: glowing rice paper in a wooden lattice, not a flat orange
     crystal: triMat('garden_crystal', { scale: .9, rough: .15, metal: .1, bump: .6, color: 0xf0e0ff }),
     rope: new THREE.MeshStandardMaterial({ color: 0xcbb48a, roughness: .95 }) };
   M.blossom = triMat('garden_blossom', { scale: 2.0, rough: .9, bump: .8 }); M.blossomCard = uvm('garden_blossom_card', { alphaTest: .4, side: THREE.DoubleSide, roughness: .85 });
@@ -16282,7 +16282,7 @@ function gdnDisc(x, z, r, y0, y1) { const N = Math.max(3, Math.ceil(r * 2 / 1.1)
     const dd = (d + d2) / 2 > .3 ? Math.min(d2, d + .25) : 0; if (dd > .05) BOXES.push({ minx: x + a, maxx: x + b, miny: y0, maxy: y1, minz: z - dd, maxz: z + dd }); } }
 // THE BUILDER -- a pure function of GARDEN: fills G (the island-local group) and the colliders; returns parts
 function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 = Z.top, d2r = Math.PI / 180, parts = Z.parts; parts.length = 0;
-  const MG = new Map(), KEEP = new Set([M.vein, M.veinGlow, M.jinCard, M.blossomCard, M.awning, M.sand, M.roof, M.hammock, M.banner_red, M.banner_teal, M.vine, M.ivy, M.clump, M.fern, M.flowers, M.water, M.fall, M.pot]);
+  const MG = new Map(), KEEP = new Set([M.vein, M.veinGlow, M.jinCard, M.blossomCard, M.awning, M.sand, M.roof, M.hammock, M.banner_red, M.banner_teal, M.vine, M.ivy, M.clump, M.fern, M.flowers, M.water, M.fall, M.pot, M.lamp]);
   const put = (geo, m, into) => { const key = into || 'main'; if (!MG.has(key)) MG.set(key, new Map()); const B = MG.get(key); if (!B.has(m)) B.set(m, []); let q = geo.index ? geo.toNonIndexed() : geo;
       const keep = ['position', 'normal']; if (KEEP.has(m)) keep.push('uv'); if (m.userData.sw) keep.push('aSw'); if (m === M.rock) keep.push('color');
       for (const k of Object.keys(q.attributes)) if (!keep.includes(k)) q.deleteAttribute(k);
@@ -17253,7 +17253,7 @@ function gdnBridges(g) { const Z = GARDEN, Y0 = Z.top, M = gdnMats(), posts = []
       const br = new THREE.CylinderGeometry(.55, .12, 1.3, 5, 1).scale(E.w + .5, 1, 1).translate(0, -.95, -.35); br.rotateY(yaw); sill.push(br.translate(E.x, E.y, E.z)); }     /* the landing's lip runs to the anchor; a stone corbel under it */
     Z.notchCut = cut; }
   const strip = q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (k !== 'position' && k !== 'normal') q.deleteAttribute(k); return q; };
-  if (posts.length) { const o = new THREE.Mesh(mergeGeometries(posts.map(strip)), M.wood); o.position.y = Y0; o.castShadow = true; g.add(o); const l = new THREE.Mesh(mergeGeometries(lamps.map(strip)), M.lamp); l.position.y = Y0; g.add(l); }
+  if (posts.length) { const o = new THREE.Mesh(mergeGeometries(posts.map(strip)), M.wood); o.position.y = Y0; o.castShadow = true; g.add(o); const l = new THREE.Mesh(mergeGeometries(lamps.map(q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(k)) q.deleteAttribute(k); return q; })), M.lamp); l.position.y = Y0; g.add(l); }
   if (ropesG.length) { const o = new THREE.Mesh(mergeGeometries(ropesG.map(strip)), rspMats().straw); o.position.y = Y0; o.name = 'garden_bridge_lashing'; g.add(o); }
   if (sill.length) { const o = new THREE.Mesh(mergeGeometries(sill.map(strip)), M.stone); o.position.y = Y0; o.receiveShadow = true; o.name = 'garden_bridge_sills'; g.add(o); }
   boxGrid(); }
@@ -17305,16 +17305,18 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   // pale against the painted lawn. Here every 'grass' record becomes three crossed cards of his painted clump (`garden_clump`, M.clump), one draw.
   // m2195 and the plant system's flat-coloured STONES / BOULDERS / FERNS likewise: the Garden's own painted rock (smooth blobs on `garden_rock`,
   // triplanar) and its painted fern cards
-  const rocksG = [], fernG = [], RS = gdnRnd(Z.seed + 77);
+  const rocksG = [], fernG = [], flowG = [], RS = gdnRnd(Z.seed + 77);
   try { const M = gdnMats(), cards = []; const take = L => (L || []).filter(r => { const s = r.s || 1, y = r.y - Z.top;
       if (r.kind === 'stones') { const n = 2 + Math.floor(RS() * 3); for (let k = 0; k < n; k++) { const a = RS() * 6.3, d = k ? .2 + RS() * .35 : 0, rr = (k ? .1 + RS() * .1 : .17 + RS() * .1) * s; rocksG.push(gdnBlob(RS, r.x + Math.cos(a) * d * s, y + rr * .3, r.z + Math.sin(a) * d * s, rr, .6, 1)); } return false; }
       if (r.kind === 'boulder') { rocksG.push(gdnBlob(RS, r.x, y + .25 * s, r.z, .7 * s, .7, 1)); return false; }
       if (r.kind === 'fern') { for (const q of dmtCards(RS, r.x, y + .38 * s, r.z, 1.0 * s, .8 * s, 3, 0)) fernG.push(q); return false; }
+      if (r.kind === 'flowers') { for (const q of dmtCards(RS, r.x, y + .27 * s, r.z, .8 * s, .6 * s, 3, 0)) flowG.push(q); return false; }     /* m2198: his painted flowers, not the vertex-coloured bush */
       if (r.kind !== 'grass') return true;
       for (let k = 0; k < 3; k++) { const q = new THREE.PlaneGeometry(.95 * s, .85 * s).translate(0, .425 * s - .04, 0).rotateY((r.yaw || 0) + k * Math.PI / 3); cards.push(q.translate(r.x, r.y - Z.top, r.z)); } return false; });
     Z.plantRec = take(Z.plantRec); Z.isleRec = take(Z.isleRec);
     const strip = q => { q = q.index ? q.toNonIndexed() : q; for (const k of Object.keys(q.attributes)) if (!['position', 'normal', 'uv'].includes(k)) q.deleteAttribute(k); if (!q.attributes.uv) q.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(q.attributes.position.count * 2), 2)); return q; };
     if (rocksG.length) { const o = new THREE.Mesh(mergeGeometries(rocksG.map(strip)), M.pebble); o.position.y = Z.top; o.castShadow = o.receiveShadow = true; o.name = 'garden_stones'; g.add(o); }
+    if (flowG.length) { const o = new THREE.Mesh(mergeGeometries(flowG.map(strip)), M.flowers); o.position.y = Z.top; o.name = 'garden_flower_cards'; g.add(o); Z.flowerCards = flowG.length / 3; }
     if (fernG.length) { const o = new THREE.Mesh(mergeGeometries(fernG.map(strip)), M.fern); o.position.y = Z.top; o.name = 'garden_fern_cards'; g.add(o); }
     if (cards.length) { const o = new THREE.Mesh(mergeGeometries(cards.map(q => { q.deleteAttribute('normal'); q.computeVertexNormals(); return q; })), M.tuft); o.position.y = Z.top; o.name = 'garden_grass_cards'; g.add(o); Z.grassCards = cards.length / 3; } } catch (e) { note('GARDEN GRASS ' + e.message); }
   const cell0 = PLANT.cell; PLANT.cell = 72;     // m2161: fewer, bigger plant cells here (each kind x cell is a draw)

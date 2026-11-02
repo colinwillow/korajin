@@ -17,6 +17,7 @@ PROMPTS = {
   'water': "Top-down shallow glowing magical JINRA water: luminous mint and turquoise water with bright caustic light ripples, soft swirls and sparkles, a few pale pebbles visible below, stylised hand-painted.",
   'blossom': "Dense canopy of PINK CHERRY BLOSSOMS seen close up, countless small five-petal sakura flowers in soft pink, rose and white with a few tiny green leaves and dark twig hints, sunlit, filling the whole square.",
   'jinra_crystal': "Close-up of a luminous magical BLUE power crystal surface: sharp faceted planes in deep sapphire, electric cyan and pale ice-white, glowing from within, fine light veins and inner sparkles, mystical energy.",
+  'lantern': "Glowing paper LANTERN panel: warm cream-gold rice paper lit from behind, soft fibres and a faint painted plum-blossom silhouette, divided by a thin dark-brown wooden lattice into a regular grid of tall panes. Square-on, evenly lit.",
   'wood': "Weathered warm brown carved WOOD planks running vertically with soft grain, slightly worn, with faint red lacquer remains in the grain, temple timber.",
 }
 SINGLES = {
