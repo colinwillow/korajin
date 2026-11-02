@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2265 -- THE INTRO's sword shot reads (his m2260 feedback, images/feedback/m2260/intro_unreadable_sword.png) (Nov 2 2026)
+*"Considerable strength"* was an extreme close-up against the willow bark and he could not tell what it was (CRAFT.md rule 5: shots must read).
+The shot is now 3.3 m off the blade, front-on (along the sword's own facing), fov 46: the WHOLE sword on its peg against the trunk, the hammock's
+edge in at the top, drifting slowly from the left third toward the middle (truck, -.08 m/s) so the crawl never sits on the hilt. Rendered at
+37.8 / 40 s. Nothing else in the intro was touched (he will redo it once the world's pieces exist). **Shipped unverified.**
+
 ## m2264 -- REAL PLAY: with GOD off he has LIVES -- lose them all and it is GAME OVER, back to the level's start (Nov 2 2026)
 *"If it's NOT on, he's taking damage. He has life and LIVES, which eventually end in a GAME OVER, and the game over basically puts you back at the
 beginning of the level."* `LIFE` (beside `HEALTH`) holds every number: `lives` 3, `inv` 2.2 s untouchable after a respawn, `downT`, `overT`.
@@ -28,7 +34,6 @@ beginning of the level."* `LIFE` (beside `HEALTH`) holds every number: `lives` 3
 - HUD: the lives as cream diamond pips left of the health bar, PLAY only; the bar is always up in PLAY.
 - HOOK, NOT BUILT: `LIFE.pool` ('hp') is the one name the death test reads -- Jinra as health swaps it.
 - NOT done: enemies are not reset by a GAME OVER (the level is not rebuilt -- a reload would be). Unverified on a phone.
-
 ## m2263 -- THE RINGS + WHAT HE OWNS: one layout for every pad button; GOD off = only what the save has earned (Nov 2 2026)
 *"If there's only ONE option it should span the whole space, and the THICKNESS stays the same. Two buttons: the same space, divided in two. A third
 goes above -- a second ring. Why is the backpack floating up there?"* + *"When you start the game you're just the guy -- no backpack, no sword, no
