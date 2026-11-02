@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2212 -- THE TITLE LOOP: dry-stone retaining walls on the terraces, a stair to the temple, foam on every fall (Nov 2 2026)
+From his garden screenshots (the terraced stone walls):
+- **RETAINING WALLS**: along each mid terrace's FRONT rim (the rim points facing the camera), a dry-stone wall segment between neighbouring rim
+  points (1.5 m, `stone_blocks`), with a capstone, and the ivy hangs over it.
+- **A STONE STAIR** (`kind: 'stair'`, 12 steps riding the terrace's own height) up to the temple, with a stone lantern at each corner.
+- **FOAM** where every fall (Jinra and water) tips over its lip: a flattened white puff card.
+- Render: summer at 1400x620. **Shipped unverified.**
+
 ## m2211 -- THE TITLE LOOP: the terrace tops dressed; a darker night (Nov 2 2026)
 A beauty sheet of all seven seasons on the phone (same moment, him on the bridge) read well -- spring pink, summer lush, rain and storm grey
 (the bolt through the frame), autumn orange, winter snowed in, night under the moon -- and showed two weak spots:
