@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2248 -- no ledge-hangs off rocks: `noLedge` (Nov 2 2026)
+
+Main's heads-up (a collision worker is building a triangle collider; his complaint includes "rocks with box colliders he ledge-hangs off"). `ledgeFind`
+now skips any box with `noLedge`. The Garden tags: every boulder box (rim and chunks), and every automatic wall (`gdnWalls`) whose cell was raised by
+an ORGANIC face (cliff / rock / pebble / bark / moss, by material or its map) -- 508 of 1,384; such cells no longer merge into a run with built
+ones. Stone walls, terraces, the house and the fences still offer ledges. Builders elsewhere: set `box.noLedge = 1` on any collider over something
+organic. **Shipped unverified.**
+
 ## m2247 -- THE HAMMOCK: the Exorcist spine (m204's landmine, again) (Nov 2 2026)
 
 *"Instead of lying there his back is arching and he goes through the hammock as it swings. One of his spine bones keeps rotating like 45 degrees --
