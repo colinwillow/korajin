@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the sound button is a drawn temple bell, not the generic speaker emoji (Nov 2 2026)
+*"A little icon in the upper right that looks like the generic speaker sound icon -- super out of place, ugly. Make our own or not have it."* The
+m1879 button (mute toggle; after the app was away, the iOS TAP FOR SOUND wake) drew 🔊 / 🔈 / 🔇 on a blue chip and a yellow banner. Now `SNDBELL`:
+an inline SVG temple bell in cream ink with a red stripe, on a dark ink circle with a red rim; muted = the bell struck through in red; the wake state
+is the same ink pill (bell + TAP FOR SOUND in the brush face, a slow pulse). Behaviour unchanged. Shipped unverified.
+
 ## m2258 -- one start: the loading card wears the second poster; the intro's tap card only when sound is really locked (Nov 2 2026)
 *"The start screen kind of shows up twice -- the same image, and after selecting the prologue there's another start button. There should only be one
 start button; the other should be something other than start, with a different image."* (1) The boot / LOADING card used `korajin_title_01` -- the
