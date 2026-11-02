@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- THE SHUTTERS: picking a level closes two ink panels over the menu before the heavy build, so nothing freezes in view (Nov 2 2026)
+*"After you choose the prologue the screen just freezes for like five seconds while it loads, and it doesn't say loading -- design fun, cool
+transitional states in and out of the menus, so it doesn't freeze the graphic; that's what the loading screen is for."* The in-place entry (m2228)
+runs `arenaStage()` (the garden's synchronous build) the moment the menu is dismissed -- the main thread is busy for seconds and the last frame
+(the menu) sits there. Now `enter` first calls `shutterClose`: two dark ink panels with red edges slide together over the menu (with the temple
+bell), a turning emblem (a CSS transform animation -- the compositor keeps it moving while the page is busy) sits in the middle; after the panels
+meet AND two frames have painted, the build runs behind them; the first loading report (`setBoot`, > .6 s after closing) opens them onto the
+loading card. 12 s with no report opens them anyway. The reload path (other worlds) closes them before `location.replace` too. Shipped unverified.
+
 ## m2254 -- footsteps: the leaf rustle only when a plant is really round his legs; a real grass step; green tiles are stone (Nov 2 2026)
 *"The grass sound plays on anything moderately grass-like -- tiles with some green running through them -- and it sounds like brushing past a bush,
 not walking on grass (dirt squish). Reserve it for when you literally touch a plant. Tile, stone, metal, wood, plank shouldn't get it."* Three causes:
