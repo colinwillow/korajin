@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2178 -- THE GARDEN: materials cut down -- one material per look, the tint baked into vertex colours (Nov 2 2026)
+
+*"If it has that many unique materials it doesn't seem like it needs that many, we could probably cut that way down."* He was right: most
+of the garden's materials differed ONLY by colour (every plain prop, every lantern glow, the ship's painted parts), and a material is a draw
+call per piece it touches. `gdnConsolidate(root, keep)` groups MeshStandard materials by everything EXCEPT tint (map, side, transparency,
+emissive-ness), bakes each mesh's colour into a vertex-colour attribute (`gdnTintGeo`; linear, like the far isles), and hands every mesh
+in the group ONE shared white base material with `vertexColors` on. Every piece is then re-merged per material (`gdnMergeStatic`), and so is
+the ship (`Z.shipRepaint`, `Z.shipMerge`; flags and wings kept apart because they move; the heart, cloud cards and glow are kept out).
+**Measured, headless, game camera:** spawn 204 -> 197 calls (159 -> 153 without shadows), the three-chunk overview ~290 -> 278; 110
+meshes repainted. Honest reading: it is a small cut in calls, because m2176 had already merged per piece -- what it mostly removes is
+material COUNT (shader programs and state changes), not draws. Renders: open / home / heart colours read the same as before.
+Box moved: none on P1's list (performance). Still open: P1's sign-off; more heart passes; detail on the homestead and summit chunks.
+**Shipped unverified.**
+
 ## m2176 -- THE GARDEN: thinning the draws (measured, not guessed) (Nov 2 2026)
 His earlier: *"we're probably going to have to weed or merge things, thin things out."* MEASURED first (headless, the game's own camera at the
 spawn, `renderer.info` with the shadow map on and off): ~204 draws = ~159 main pass + ~45 shadow pass; the widest cluster shot ~290. Where they went:
