@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2210 -- THE TITLE LOOP: the keel of his isle dressed (Jinra crystals, moss curtains, hung lanterns); footstep dust (Nov 2 2026)
+*"Keep going -- more detail."* The phone frame shows a lot of the underside of his isle, and it was bare rock with roots.
+- **THE KEEL** (`keel(a, t)` reads a point on the walkisle's own rock rings): 9 clusters of JINRA CRYSTALS grown out of it, pointing down and
+  out (mint, because they are Jinra; each cluster one halo); 16 MOSS CURTAINS (ivy cards 1.6-4 m) hanging off the rock; three little paper
+  LANTERNS on cords under the lip.
+- **FOOTSTEP DUST** (`life.dust` 24, the Points pool): a puff of three motes at his feet every step (two per 1.4 s walk cycle, scaled to his
+  speed), drifting back with the ground, growing and fading. None in the rain, half in snow.
+- The two flower POTS that stood in front of the path (z +1.6) hid his legs as he passed; they stand behind it now.
+- Renders: phone, night and spring, him in the blossom tunnel. **Shipped unverified.**
 ## m2209 -- THE GARDEN: boulders that are rocks; a paddy that is a paddy (Nov 2 2026)
 
 BOULDERS ("look like beanbags": a smooth `gdnBlob` with a second flattened moss blob on it). `gdnBoulder`: a sphere pushed about by noise, CUT by
