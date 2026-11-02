@@ -29,8 +29,8 @@ clears it by `clear` .06 m (spine and head padded more) -- measured worst .096 m
 THE WAKE: the first left-stick push past `push` .3 -> over `out` 1.1 s the `lay` weight blends to his idle while he is lifted out in a small arc to
 `side` 1.3 m beside the sling (the side nearer the spawn's facing point, on real ground) and turned to face the garden; then control is his.
 Headless: pushed -> standing on the lawn (y .00 = ground) after 1.0 game s. `GARDEN.wakeClip` set skips all of this (his roll-out, later).
-FOUND ON THE WAY: the hammock CLOTH and spreader bars were INVISIBLE: the boot's small-thing cull (`perfRegSmall`, m418) registers every mesh under
-3.5 m radius at 220 m by LAYER, the boot camera sits far off when it runs, and these were left on layer 1 until he came near. Renders hammock_34 /
+(Headless note: the cloth rendered INVISIBLE at first -- not a game bug: the intro reel was holding the GAME camera ~300 m off, and the small-
+thing cull (`perfRegSmall`, by layer, 220 m) follows the game camera, not the harness's. Ending the reel first (`mel.reelEnd`) shows it.) Renders hammock_34 /
 hammock_side. **Shipped unverified.**
 
 ## m2242 -- THE INTRO, TAKE 2: his real script (no Hollow), every shot on its line, the great bell rings on "their echoes" (Nov 2 2026)
