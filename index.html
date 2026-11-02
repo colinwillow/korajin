@@ -16058,6 +16058,7 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   // THE JINRA BEAM (his, via the main session: "show the player hands-on that Jinra makes things float -- the rule the whole fall depends on"): a mint
   // column rising from a stone spring basin. m2183: an UPDRAFT -- walk in and it lifts him to `lift` m over the pad (`spring`, capped `up`/`down` m/s),
   // control his own; left alone `idleT` s he meditates (`clip`: 'meditate' = Sitting_Idle, 'sit_cross' = Male_Sitting_Pose_9). `drag` stills him when idle.
+  wade: { sink: .16, amp0: .35, fullAt: 4, lag: .45 },     // m2184: in the water -- the drawn sink, the wake's amplitude at rest and at `fullAt` m/s, the trailing ring's lag (s)
   beam: { id: 'jinra_beam', at: [-17.6, -9.4], r: 1.15, lift: 3.0, h: 10, clip: 'meditate', spring: 1.6, up: 4.5, down: 2.5, ease: 3.0, drag: 1.4, idleT: .7 },
   ship: { id: 'flying_ship', chunk: 'chunk_home', a: 80, off: 21, bob: .12 },
   // (m2161: run DIAGONALLY across the cracks, so a 4 m and a 6 m climb stay a walkable 17-18 degrees)
@@ -16135,15 +16136,18 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
   M.rock.vertexColors = true; M.crystal.emissive = new THREE.Color(0x6a2cd8); M.crystal.emissiveIntensity = .75; M.crystal.flatShading = true; for (const k of ['vine', 'ivy', 'banner_red', 'banner_teal']) M[k].userData.sw = 1;
   M.flag.polygonOffset = true; M.flag.polygonOffsetFactor = -1; M.flag.polygonOffsetUnits = -2;
   // THE JINRA WATER: glowing mint, flowing along `uv.y` (metres down the stream), brighter at the banks; `uGlow` is P2's drain
-  const wtex = texGet('garden_water'); U.uRip = U.uRip || { value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()] };
-  M.water = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4, uniforms: { uTime: U.uTime, uGlow: U.uGlow, uMap: { value: wtex }, uRip: U.uRip },
+  const wtex = texGet('garden_water'); U.uRip = U.uRip || { value: [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()] }; U.uWake = U.uWake || { value: new THREE.Vector3(0, 0, 0) }; U.uWake2 = U.uWake2 || { value: new THREE.Vector3(0, 0, 0) };
+  M.water = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4, uniforms: { uTime: U.uTime, uGlow: U.uGlow, uMap: { value: wtex }, uRip: U.uRip, uWake: U.uWake, uWake2: U.uWake2 },
     vertexShader: 'attribute float aFl; varying vec2 vU; varying vec3 vW; varying float vF; void main() { vU = uv; vF = aFl; vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
-    fragmentShader: TEMPLEGLSL_N + `uniform float uTime, uGlow; uniform sampler2D uMap; uniform vec3 uRip[3]; varying vec2 vU; varying vec3 vW; varying float vF; void main() {
+    fragmentShader: TEMPLEGLSL_N + `uniform float uTime, uGlow; uniform sampler2D uMap; uniform vec3 uRip[3], uWake, uWake2; varying vec2 vU; varying vec3 vW; varying float vF; void main() {
       vec2 p = vF > .5 ? vec2(vU.x * 1.6, vU.y * .55 - uTime * .9) : vW.xz * .3 + vec2(uTime * .03, uTime * .02);
+      vec2 wd = vW.xz - uWake.xy; float wl = length(wd), wl2 = length(vW.xz - uWake2.xy); p += wd / max(wl, .05) * uWake.z * exp(-wl * 2.4) * .22;     /* m2184: pushed away from his legs */
       float n = tN(p * 2.0), n2 = tN(p * 5.3 + 5.1 + uTime * .3), edge = vF > .5 ? pow(abs(vU.x * 2.0 - 1.0), 3.0) : 0.0;
       vec3 tx = texture2D(uMap, p * .5 + vec2(n * .06, 0.0)).rgb, tx2 = texture2D(uMap, p * .31 + vec2(.37, uTime * .02) - n2 * .05).rgb;
       vec3 c = mix(tx, tx2, .5) * vec3(.85, 1.05, 1.0);
       float rip = 0.0; for (int i = 0; i < 3; i++) { float d = length(vW.xz - uRip[i].xy); rip += uRip[i].z * smoothstep(.25, 0.0, abs(fract(d * .9 - uTime * .8) - .5) - .3) * smoothstep(2.4, .2, d); }
+      rip += uWake.z * (smoothstep(.24, 0.0, abs(fract(wl * 1.5 - uTime * 1.5) - .5) - .26) * smoothstep(2.3, .3, wl) * 1.7 + smoothstep(.62, .3, wl + tN(vW.xz * 9.0 + uTime * 2.0) * .14) * 2.4)
+           + uWake2.z * smoothstep(.22, 0.0, abs(fract(wl2 * 1.4 - uTime * 1.1) - .5) - .3) * smoothstep(1.3, .2, wl2);     /* the collar of foam, its rings, the trailing ring */
       float glint = pow(max(0.0, tN(vW.xz * 6.0 + vec2(uTime * 1.7, -uTime * 1.1)) * tN(vW.xz * 7.3 - vec2(uTime * 1.3, uTime * 1.9))), 6.0) * 26.0;
       c = mix(c, vec3(.9, 1.0, .97), clamp(edge * .55 + rip * .55 + smoothstep(.72, .9, n2) * .25, 0.0, 1.0)); c += vec3(1.0, .98, .9) * glint;
       c *= mix(.35, 1.3, uGlow); gl_FragColor = vec4(c, .9);
@@ -16170,6 +16174,11 @@ function gdnMats() { const Z = GARDEN; if (Z.M) return Z.M; const U = Z.U = Z.U 
         { vec2 q = vSW.xz; float d = length(q - uC), best = 99.0; for (int i = 0; i < 3; i++) best = min(best, length(q - uS[i].xy) - uS[i].z);
           float r = best < 1.1 ? best : d; float w = .5 + .5 * cos(r * 6.2832 * 3.2); diffuseColor.rgb *= .8 + .26 * w; }`); };
     M.sand.customProgramCacheKey = () => 'gdnSand'; }
+  // m2184 WHAT HIS FEET ARE ON (the surface footsteps, m2180): the garden's materials say it outright -- the consolidation and the merges rename
+  // meshes, and pale stone paving reads as SAND by colour. Plants are walked through (a rustle on top).
+  { const SF = { lawn: 'grass', moss: 'grass', rock: 'stone', cliff: 'stone', pebble: 'stone', cyclo: 'stone', stone: 'stone', white: 'stone', jade: 'stone', crystal: 'stone',
+      wood: 'wood', bark: 'wood', rope: 'wood', lacquer: 'wood', bronze: 'metal', gold: 'metal', fern: 'plant', clump: 'plant', flowers: 'plant', ivy: 'plant', vine: 'plant', leaves: 'plant' };
+    for (const [k, m] of Object.entries(M)) { if (!m || !m.userData) continue; const t = SF[k] || (/water|pool|stream|fall|spring/.test(k) ? 'water' : /sand|zen|rake/.test(k) ? 'sand' : null); if (t) m.userData.surf = t; } }
   return (Z.M = M); }
 // ---- shared shapes ----
 // a smooth lumpy blob (a rock, a moss cushion, a leaf mass): an indexed sphere pushed about by smooth noise -- no shards
@@ -17258,6 +17267,16 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
     Hh.outer.scale.setScalar(1 + pu * .12); Hh.arcT -= dt; if (Hh.arcT <= 0) { Hh.arcT = .07; Hh.arcStep(.07, t, Hh.cg.position.y, pu); } }     // the homestead's waterwheel, turned by its cascade
   if (Z.U.uPx) Z.U.uPx.value = renderer.domElement.height * camera.projectionMatrix.elements[5] / 2;
   const p = player, ly = p.pos.y - Z.top;
+  // m2184 WADING (his: "when you walk through the water you need to push the water around, maybe drop down slightly"). In a pool or a stream his
+  // drawn body sinks `WADE.sink` (eased; the collider stays on the bed) and the water shader gets his WAKE: a collar of foam round his legs, rings
+  // spreading off them, the surface pushed outward (the texture lookup bent away from him), all scaled by his speed -- and a second, smaller one
+  // trailing behind where he was. (The splash of each step is the WATER footstep bank.)
+  { const W = Z.wade, x = p.pos.x, z = p.pos.z; let inW = false; for (const P2 of Z.pools) if (Math.hypot(x - P2.at[0], z - P2.at[1]) < P2.r) inW = true;
+    if (!inW) for (const S of Z.streams) { const q = S.pts; for (let i = 0; i + 1 < q.length && !inW; i++) { const ax = q[i][0], az = q[i][1], bx = q[i + 1][0], bz = q[i + 1][1], dx = bx - ax, dz = bz - az, l2 = dx * dx + dz * dz, u = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / (l2 || 1)));
+      if (Math.hypot(x - ax - dx * u, z - az - dz * u) < S.w / 2 + .1) inW = true; } }
+    inW = inW && Math.abs(ly) < .6; Z.inWater = inW; const sp = Math.hypot(p.vel.x, p.vel.z), amp = inW ? W.amp0 + Math.min(1, sp / W.fullAt) * (1 - W.amp0) : 0;
+    p.wadeYd = damp(p.wadeYd || 0, inW && p.grounded ? -W.sink : 0, .08, dt); const U = Z.U;
+    if (U.uWake) { const a = U.uWake.value, b = U.uWake2.value; a.x = x; a.y = z; a.z += (amp - a.z) * (1 - Math.exp(-5 * dt)); const kb = 1 - Math.exp(-dt / W.lag); b.x += (x - b.x) * kb; b.y += (z - b.y) * kb; b.z += (amp * .6 - b.z) * (1 - Math.exp(-2.5 * dt)); } }
   if ((O.dT = (O.dT || 0) - dt) <= 0) { O.dT = .25; const c = camera.position, far = Z.detailFar || 60, sf = Z.shadowFar || 40;     // m2170: small detail hides when far; an island's pieces cast only when he is near
     for (const D of Z.detail || []) D.o.visible = Math.hypot(c.x - D.c.x, c.y - Z.top - D.c.y, c.z - D.c.z) - D.r < far;
     for (const D of Z.casters || []) D.o.castShadow = Math.hypot(p.pos.x - D.c.x, p.pos.z - D.c.z) - D.r < sf;
@@ -65159,6 +65178,7 @@ function frameBody() {
     // THE LEAP'S LIFT (m193), eased so a gait change cannot pop him down
     player.leapYd = damp(player.leapYd || 0, player.leapY || 0, .03, dt);
     rig.root.position.y += player.leapYd;
+  if (GARDEN.on) rig.root.position.y += player.wadeYd || 0;     // m2184: wading in the Garden's water, drawn a little lower
     rig.root.position.y += flowArc(dt);     // m1086: a FLOW lunge past `leapAt` is a leap
     // HE STANDS ON THE DECK, so he is lifted by its measured height -- his COLLIDER stays on
     // the ground, which is right: the board is a picture and the man is the body.
