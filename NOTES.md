@@ -17,6 +17,64 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2265 -- THE INTRO's sword shot reads (his m2260 feedback, images/feedback/m2260/intro_unreadable_sword.png) (Nov 2 2026)
+*"Considerable strength"* was an extreme close-up against the willow bark and he could not tell what it was (CRAFT.md rule 5: shots must read).
+The shot is now 3.3 m off the blade, front-on (along the sword's own facing), fov 46: the WHOLE sword on its peg against the trunk, the hammock's
+edge in at the top, drifting slowly from the left third toward the middle (truck, -.08 m/s) so the crawl never sits on the hilt. Rendered at
+37.8 / 40 s. Nothing else in the intro was touched (he will redo it once the world's pieces exist). **Shipped unverified.**
+
+## m2264 -- REAL PLAY: with GOD off he has LIVES -- lose them all and it is GAME OVER, back to the level's start (Nov 2 2026)
+*"If it's NOT on, he's taking damage. He has life and LIVES, which eventually end in a GAME OVER, and the game over basically puts you back at the
+beginning of the level."* `LIFE` (beside `HEALTH`) holds every number: `lives` 3, `inv` 2.2 s untouchable after a respawn, `downT`, `overT`.
+- `lifeStep` (frame loop, beside `juiceStep`): the level's start is where he stands .6 s into it (the garden's hammock included); hp at zero with
+  GOD off -> `lifeLose`: a LIFE LOST card and back to `LIFE.cp` (set by `lifeCheckpoint(x,y,z,h)` -- the hook for JINRA_POWER.md's shrines) or
+  the start, full hp, blinking while untouchable (`playerHurt0` takes no damage then). At zero lives: the GAME OVER card (title cream on red),
+  then the start again with full lives. Not in a versus duel (that has its own KO). GOD flipped on mid-death clears it.
+- `lifeFall()`: the garden's fall respawn (`gdnStep`, Z.falls) costs a life too; the garden keeps doing the putting-back.
+- HUD: the lives as cream diamond pips left of the health bar, PLAY only; the bar is always up in PLAY.
+- HOOK, NOT BUILT: `LIFE.pool` ('hp') is the one name the death test reads -- Jinra as health swaps it.
+- NOT done: enemies are not reset by a GAME OVER (the level is not rebuilt -- a reload would be). Unverified on a phone.
+## m2263 -- THE RINGS + WHAT HE OWNS: one layout for every pad button; GOD off = only what the save has earned (Nov 2 2026)
+*"If there's only ONE option it should span the whole space, and the THICKNESS stays the same. Two buttons: the same space, divided in two. A third
+goes above -- a second ring. Why is the backpack floating up there?"* + *"When you start the game you're just the guy -- no backpack, no sword, no
+bow. If god mode is off you have what you'd have in the prologue and level one."* Design + DONE WHEN: `UI_RINGS.md`.
+- `OWN` / `SAVE.own` (in `mel.prog`): `grant(k, quiet)` / `revoke(k)` / `ownHas(k)` / `ownAll(on)`; GOD on = all. `gearHas` asks `ownHas` FIRST
+  (OWN.slot maps katana->sword, bow, launcher/blaster->gun), so kitPick, the old wheel and the quick-draw all refuse unowned kit. `ownSync` puts
+  away an unowned weapon, takes off an unowned shield / wing suit; `applySlot` refuses an unowned slot (a draw in flight when the weapon was
+  revoked landed anyway -- caught in the headless run).
+- **`GOD` + its stored-switch block MOVED UP beside `SAVE`** (after the `?fresh` wipe): the first `gearSync` runs at module scope and now reads it.
+- `RINGS` / `ringPut` / `ringsStep` / `ringLayout`: groups fill rings inside-out (`cap` 2; the blade's STEEL|FIRE|JIN is one ring of 3), equal
+  division of a fixed arc, constant thickness `w`, outer rings keep the inner arc LENGTH and are clamped on screen, re-flow tweened .18 s.
+  RIGHT: SWORD | BOW-or-GUN (owned), HANDS a ring up only with two weapons. LEFT: BACKPACK first (`bagFirst`, stays put), then the drawn
+  weapon's own choices (BOW|GUN, owned arrows, owned blade elements). Tap the drawn weapon again = away (m2057's rule, kept). The dial only
+  with a choice, pointing at the drawn segment's middle. Palette: ink glass + cream rim; title RED = selected; dashed/faded = off (an empty
+  bag); MINT = Jinra only. Old rows untouched for QUICK DRAW off / `RINGS.on = 0` (`mel.rings` '0').
+- Headless (arena, phone landscape): GOD on = BACKPACK on the primary left ring, SWORD|BOW + HANDS on the right; PLAY fresh = no buttons;
+  sword granted = SWORD alone across the whole arc, no HANDS; sword+bow = halves + HANDS; backpack alone = primary ring.
+- Moves boxes 1-8 of UI_RINGS (not ticked: his phone). Open: build 2 (hp / lives / GAME OVER), the prologue's sword pickup (garden worker).
+## m2260 -- the sound button is a drawn temple bell, not the generic speaker emoji (Nov 2 2026)
+*"A little icon in the upper right that looks like the generic speaker sound icon -- super out of place, ugly. Make our own or not have it."* The
+m1879 button (mute toggle; after the app was away, the iOS TAP FOR SOUND wake) drew 🔊 / 🔈 / 🔇 on a blue chip and a yellow banner. Now `SNDBELL`:
+an inline SVG temple bell in cream ink with a red stripe, on a dark ink circle with a red rim; muted = the bell struck through in red; the wake state
+is the same ink pill (bell + TAP FOR SOUND in the brush face, a slow pulse). Behaviour unchanged. Shipped unverified.
+
+## m2258 -- one start: the loading card wears the second poster; the intro's tap card only when sound is really locked (Nov 2 2026)
+*"The start screen kind of shows up twice -- the same image, and after selecting the prologue there's another start button. There should only be one
+start button; the other should be something other than start, with a different image."* (1) The boot / LOADING card used `korajin_title_01` -- the
+splash's own poster -- so the load looked like the title again; it wears `korajin_title_02` now. (2) The intro reel opens on a black "TAP TO
+BEGIN" card whenever `SFX.ctx` is not 'running'; the context unlocked at the title can be suspended by the time the garden is up, so it now tries
+`resume()` and waits .6 s before asking, and the card (when it must show, e.g. a direct link with no touch yet) says TAP TO HEAR THE TALE, not
+another "start". Shipped unverified. His looping videos for the title and the loading card: next, when he sends them.
+
+## m2256 -- THE SHUTTERS: picking a level closes two ink panels over the menu before the heavy build, so nothing freezes in view (Nov 2 2026)
+*"After you choose the prologue the screen just freezes for like five seconds while it loads, and it doesn't say loading -- design fun, cool
+transitional states in and out of the menus, so it doesn't freeze the graphic; that's what the loading screen is for."* The in-place entry (m2228)
+runs `arenaStage()` (the garden's synchronous build) the moment the menu is dismissed -- the main thread is busy for seconds and the last frame
+(the menu) sits there. Now `enter` first calls `shutterClose`: two dark ink panels with red edges slide together over the menu (with the temple
+bell), a turning emblem (a CSS transform animation -- the compositor keeps it moving while the page is busy) sits in the middle; after the panels
+meet AND two frames have painted, the build runs behind them; the first loading report (`setBoot`, > .6 s after closing) opens them onto the
+loading card. 12 s with no report opens them anyway. The reload path (other worlds) closes them before `location.replace` too. Shipped unverified.
+
 ## m2254 -- footsteps: the leaf rustle only when a plant is really round his legs; a real grass step; green tiles are stone (Nov 2 2026)
 *"The grass sound plays on anything moderately grass-like -- tiles with some green running through them -- and it sounds like brushing past a bush,
 not walking on grass (dirt squish). Reserve it for when you literally touch a plant. Tile, stone, metal, wood, plank shouldn't get it."* Three causes:
