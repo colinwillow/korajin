@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2226 -- THE TITLE LOOP: floating isles are ROCK, not pencils (Nov 2 2026)
+*"Those floating islands come to an extremely pointy tip... not a pencil tip sharpened at the bottom -- like a rock. Organic, rocky, bulky
+structures, no flat tops, everything irregular, good silhouettes."*
+- Every loop isle used `gdnIsleGeo`, whose keel tapers ring by ring to ONE vertex (plus cone drips): a pencil. The loop now has its own
+  `loopIsle`. It keeps the garden's TOP (lawn, lip, hills, `surf` for placement) on a keel only .28 deep and hangs a ROCK MASS under it
+  (`loopRockGeo`): 3-5 OVERLAPPING LOBES (subdivided icosahedra, three octaves of `ghNoise3` displacement, each its own size, offset and
+  lean), with strata LEDGES stepping in down the sides, a flattened BLUNT bottom, warm-to-cold colour with banding and moss near the top,
+  and two BROKEN CHUNKS drifting below. Far isles, terraces, the river isle, the castle, the dark tower, the snow isle, the canyon,
+  the near floaters and the peaks all go through it (the garden's own isles are untouched).
+- His own walk isle's keel no longer narrows to a blade (it ends at ~46% width, lumpy), and six rock lobes hang under it.
+- Renders: phone (the Olmec's rock: a bulky ledged mass) and 1400x620 (small isles as chunky rocks). ~116 draw calls. **Shipped unverified.**
+
 ## m2224 -- the first start tap has its sound (a plain <audio> in the tap); no second splash after the menu (Nov 2 2026)
 *"There's still no sound when you click start on the first screen... it shows the same picture twice, I tap start through it twice."* The m2192 start
 sound went through WebAudio: the splash's tap is also the touch that BIRTHS the context, so the files were still decoding and the sound was lost.
