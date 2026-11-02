@@ -5786,7 +5786,12 @@ const SFX = {
     foot_ORIG: ['audio/footsteps/footstep_l.mp3', 'audio/footsteps/footstep_r.mp3', 'audio/footsteps/footstep_2_l.mp3', 'audio/footsteps/footstep_2_r.mp3'],
     foot_CUTS: [1, 2, 3, 4, 5, 6].flatMap(n => ['audio/footsteps/step_' + n + '_l.mp3', 'audio/footsteps/step_' + n + '_r.mp3']),
     foot_NEW: ['audio/footsteps/step3_1_l.mp3', 'audio/footsteps/step3_1_r.mp3'],
-    foot_SNOW: [1, 2, 3, 4].flatMap(n => ['audio/footsteps_snow/cut/snow_' + n + '_l.mp3', 'audio/footsteps_snow/cut/snow_' + n + '_r.mp3']),     // m2013: HIS snow recording, cut into 8 steps (see NOTES)
+    foot_SNOW: [1, 2, 3, 4].flatMap(n => ['audio/footsteps_snow/cut/snow_' + n + '_l.mp3', 'audio/footsteps_snow/cut/snow_' + n + '_r.mp3']),
+    // m15XX: SURFACE STEPS (audio/steps, see CREDITS.txt) -- picked per footfall by what is under his feet (`stepSurf`)
+    foot_GRASS: [1, 2, 3, 4].map(n => 'audio/steps/grass_' + n + '.mp3'), foot_WOOD: [1, 2, 3, 4].map(n => 'audio/steps/wood_' + n + '.mp3'),
+    foot_STONE: [1, 2, 3, 4].map(n => 'audio/steps/stone_' + n + '.mp3'), foot_SAND: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/sand_' + n + '.mp3'),
+    foot_METAL: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/metal_' + n + '.mp3'), foot_WATER: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/water_' + n + '.mp3'),
+    rustle: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/rustle_' + n + '.mp3'),     // m2013: HIS snow recording, cut into 8 steps (see NOTES)
     foot_LAND: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_b_2.mp3'],     /* m1872: HIS LANDING, as footsteps (pairs: a left, b right); m1875: + two variant pairs */
     // m1875: BODY CONTACTS (`contactSnd`) -- his landing and three variations of each half (1: -8% pitch, lowpass 2.6k, heavier; 2: +8%, lighter;
     // 3: -3%, treble -4 dB, softer)
@@ -6046,6 +6051,53 @@ function strideNow(sp) {
 // call is byte-for-byte what it was. **The rate already means weight here** -- `r0`/`r1` are
 // "heavier is lower" across his speed range -- so a small body is the same idea on the same
 // term rather than a new one, which is the metal clangs' rule for the third time this week.
+// m15XX: SURFACE FOOTSTEPS (his: "walking through water, sand, grass, wood, metal -- a decision tree; brushing through bushes"). On each of HIS
+// footfalls a short ray down from his knees finds the ground mesh, and its SURFACE is read in this order: a tag a builder set
+// (`userData.surf` = 'grass' | 'wood' | 'stone' | 'sand' | 'metal' | 'water' | 'snow' | 'plant', on the mesh or its material), then the mesh /
+// material / parent NAME, then a see-through material (water) or a metal one, then its COLOUR (vertex colour at the hit face, else the
+// texture's average times the material colour) by hue. White reads as snow only where the zone already plays snow. Plants are walked
+// THROUGH: within reach of one (tagged or named bush / fern / reed / flower / leaf...) a leaf RUSTLE plays on top of the step.
+// The near-mesh list is rebuilt every `every` s (static, visible meshes within `near` m; skinned bodies and his own rig skipped).
+const STEPSURF = { on: 1, every: 1.5, near: 7, plantR: .85, last: '', t: -9, list: [], plants: [], tex: new WeakMap() };
+const _ssRay = new THREE.Raycaster(), _ssO = new THREE.Vector3(), _ssD = new THREE.Vector3(0, -1, 0), _ssC = new THREE.Color(), _ssS = new THREE.Sphere(), _ssM = new THREE.Matrix4(), _ssP = new THREE.Vector3();
+const SSRX = [['WATER', /water|stream|pond|river|lake|creek|spring_pool|pool/], ['WOOD', /wood|plank|bridge|deck|timber|log|board|pier|dock|ladder|boat|ship/], ['METAL', /metal|iron|steel|bronze|brass|copper|grate|grating/],
+  ['SAND', /sand|beach|dune|desert/], ['SNOW', /snow|ice|frost/], ['STONE', /stone|rock|cliff|slab|stair|cobble|tile|brick|marble|plinth|pagoda|temple|shrine|paving|flag/], ['GRASS', /grass|lawn|moss|turf|meadow|soil|dirt|mud/]];     /* names that say nothing (terrain, ground, garden, floor) fall through to the colour */
+const SSPLANT = /bush|fern|shrub|reed|flower|plant|foliage|hedge|leaf|leaves|ivy|vine|bamboo|tallgrass|grass_?card|weed|crop|veg/;
+function ssWalk(o, fn) { if (!o.visible || o === rig.root) return; fn(o); const c = o.children; for (let i = 0; i < c.length; i++) ssWalk(c[i], fn); }
+function stepSurfList() { const S = STEPSURF, p = player, L = S.list, PL = S.plants; L.length = 0; PL.length = 0;
+  ssWalk(scene, o => { if (!o.isMesh || o.isSkinnedMesh || !o.geometry) return; const g = o.geometry;
+    const nm = ((o.name || '') + ' ' + ((o.material && o.material.name) || '') + ' ' + ((o.parent && o.parent.name) || '')).toLowerCase(), plant = (o.userData.surf || (o.material && o.material.userData && o.material.userData.surf)) === 'plant' || SSPLANT.test(nm);
+    if (o.isInstancedMesh) { if (!g.boundingSphere) g.computeBoundingSphere(); const r0 = g.boundingSphere.radius, n = Math.min(o.count, 4000); let any = 0;
+      for (let i = 0; i < n; i++) { o.getMatrixAt(i, _ssM); _ssM.premultiply(o.matrixWorld); _ssP.setFromMatrixPosition(_ssM); const r = r0 * _ssM.getMaxScaleOnAxis(); const dd = Math.hypot(_ssP.x - p.pos.x, _ssP.z - p.pos.z) - r; if (dd > S.near) continue; any = 1; if (plant) PL.push({ x: _ssP.x, y: _ssP.y, z: _ssP.z, r }); }
+      if (any && !plant) L.push(o); return; }
+    if (!g.boundingSphere) g.computeBoundingSphere(); _ssS.copy(g.boundingSphere).applyMatrix4(o.matrixWorld);
+    if (Math.hypot(_ssS.center.x - p.pos.x, _ssS.center.z - p.pos.z) - _ssS.radius > S.near) return;
+    if (plant) PL.push({ x: _ssS.center.x, y: _ssS.center.y, z: _ssS.center.z, r: _ssS.radius }); else L.push(o); }); }
+function ssTexAvg(t) { const S = STEPSURF; if (S.tex.has(t)) return S.tex.get(t); let c = null;
+  try { const im = t.image; if (im && (im.width || im.videoWidth) && !t.isCompressedTexture && !t.isDataTexture) { const cv = document.createElement('canvas'); cv.width = cv.height = 8; const x = cv.getContext('2d', { willReadFrequently: true }); x.drawImage(im, 0, 0, 8, 8); const d = x.getImageData(0, 0, 8, 8).data; let r = 0, gg = 0, b = 0; for (let i = 0; i < d.length; i += 4) { r += d[i]; gg += d[i + 1]; b += d[i + 2]; } const k = 1 / (64 * 255); c = new THREE.Color(r * k, gg * k, b * k); } } catch (e) { c = null; }
+  S.tex.set(t, c); return c; }
+function ssClassify(h) { const o = h.object, m = Array.isArray(o.material) ? o.material[(h.face && h.face.materialIndex) || 0] : o.material;
+  const tag = o.userData.surf || (m && m.userData && m.userData.surf); if (tag) return String(tag).toUpperCase();
+  const nm = ((o.name || '') + ' ' + ((m && m.name) || '') + ' ' + ((o.parent && o.parent.name) || '')).toLowerCase();
+  for (const [k, re] of SSRX) if (re.test(nm)) return k === 'SNOW' && STEP.set !== 'SNOW' ? 'STONE' : k;
+  if (m && m.transparent && m.opacity < .95) return 'WATER';
+  if (m && m.metalness > .6) return 'METAL';
+  _ssC.setRGB(1, 1, 1); let have = 0; const ca = o.geometry.attributes.color;
+  if (m && m.vertexColors && ca && h.face) { _ssC.setRGB(ca.getX(h.face.a), ca.getY(h.face.a), ca.getZ(h.face.a)); have = 1; }
+  else if (m && m.map) { const a = ssTexAvg(m.map); if (a) { _ssC.copy(a); have = 1; } }
+  if (m && m.color) { _ssC.multiply(m.color); have = 1; } if (!have) return 'STONE';
+  const hsl = {}; _ssC.getHSL(hsl); const hu = hsl.h * 360, sa = hsl.s, li = hsl.l;
+  if (sa < .14 || li < .06) return li > .82 && STEP.set === 'SNOW' ? 'SNOW' : 'STONE';
+  if (hu >= 65 && hu < 170) return 'GRASS';
+  if (hu >= 18 && hu < 60) return li > .55 && sa < .6 ? 'SAND' : 'WOOD';
+  if (hu >= 170 && hu < 200 && sa > .4 && li > .45) return 'WATER';
+  return 'STONE'; }
+function stepSurf(x, z, u) { const S = STEPSURF, p = player; if (!S.on || !rig.root || Math.hypot(x - p.pos.x, z - p.pos.z) > .6) return '';
+  const now = performance.now() / 1000; if (now - S.t > S.every) { S.t = now; stepSurfList(); }
+  for (const P of S.plants) if (Math.hypot(P.x - p.pos.x, P.z - p.pos.z) < P.r * S.plantR + .25 && p.pos.y < P.y + P.r && p.pos.y > P.y - P.r - .5) { snd('rustle', { g: .3 + .35 * (u || 0), r: .9 + Math.random() * .2, x, z }); break; }
+  _ssO.set(p.pos.x, p.pos.y + .6, p.pos.z); _ssRay.set(_ssO, _ssD); _ssRay.far = 1.5; const hits = _ssRay.intersectObjects(S.list, false);
+  let k = ''; for (const h of hits) { k = ssClassify(h); if (k !== 'PLANT') break; k = ''; }
+  const b = k && SFX.buf['foot_' + k]; if (!b || b.filter(Boolean).length < 2) k = ''; S.last = k; return k; }
 function footSnd(sp, top, x, z, left, gk, rk) {
   const u = clamp((sp - STEP.at) / Math.max(.1, top - STEP.at), 0, 1);
   // **WHICH FOOT PICKS THE FILE (m136).** `SFX.buf.foot` is the exact list `snd` indexes, so
@@ -6058,7 +6110,8 @@ function footSnd(sp, top, x, z, left, gk, rk) {
   // reservoir pick is one pass and allocates nothing, which matters six times a second; and
   // with nothing decoded for this foot `i` stays undefined and `snd`'s own random roll takes
   // over, which is m136's fallback generalised rather than a second rule.
-  const buf = SFX.buf['foot_' + STEP.set], n = (buf && buf.length) || 0, pairs = n >> 1;
+  const surf = stepSurf(x, z, u), set = surf || STEP.set;     // m15XX: the surface under HIS feet picks the bank; anything else (bodies, no hit) keeps the picked set
+  const buf = SFX.buf['foot_' + set], n = (buf && buf.length) || 0, pairs = n >> 1;
   let pick, seen = 0;
   if (pairs) {
     const f = left ? 0 : 1;
@@ -6075,11 +6128,11 @@ function footSnd(sp, top, x, z, left, gk, rk) {
   // the FRONT: these four put their footfall 70 to 174 ms in, so trimming to the onset leaves a
   // 94 ms spread across a bank whose whole job is to be interchangeable. `align` starts each
   // one `SFX.lead` before its own peak instead, and `att` is the 3 ms ramp that costs.
-  if (STEP.set === 'LAND') { const Ld = STEP.land;     // m1872 (his: "the noise when he lands sounds good -- make footsteps out of it, various tones"): played as the landing is -- from its peak, a percussive decay -- but lighter: pitch walk -> sprint `r0`..`r1`, rolled +-`jit`/2 per step (the tones), a shorter tail
-    snd('foot', { g: (Ld.g0 + (Ld.g1 - Ld.g0) * u) * (gk == null ? 1 : gk), r: (Ld.r0 + (Ld.r1 - Ld.r0) * u) * (1 + (Math.random() - .5) * Ld.jit) * (rk == null ? 1 : rk),
+  if (STEP.set === 'LAND' && !surf) { const Ld = STEP.land;     // m1872 (his: "the noise when he lands sounds good -- make footsteps out of it, various tones"): played as the landing is -- from its peak, a percussive decay -- but lighter: pitch walk -> sprint `r0`..`r1`, rolled +-`jit`/2 per step (the tones), a shorter tail
+    snd('foot_' + set, { g: (Ld.g0 + (Ld.g1 - Ld.g0) * u) * (gk == null ? 1 : gk), r: (Ld.r0 + (Ld.r1 - Ld.r0) * u) * (1 + (Math.random() - .5) * Ld.jit) * (rk == null ? 1 : rk),
                   i: pick, cut: 1, att: .003, dec: Ld.dec0 + (Ld.dec1 - Ld.dec0) * u, x, z }); return; }
-  if (STEP.tone === 'RAW') { snd('foot', { g: (STEP.g0 + (STEP.g1 - STEP.g0) * u) * (gk == null ? 1 : gk), i: pick, whole: 1, x, z }); return; }     // m1870: RAW = his file untouched -- from its first sample, its own pitch, no wobble, no filter, no trim
-  snd('foot', { g: (STEP.g0 + (STEP.g1 - STEP.g0) * u) * (gk == null ? 1 : gk),
+  if (STEP.tone === 'RAW') { snd('foot_' + set, { g: (STEP.g0 + (STEP.g1 - STEP.g0) * u) * (gk == null ? 1 : gk), i: pick, whole: 1, x, z }); return; }     // m1870: RAW = his file untouched -- from its first sample, its own pitch, no wobble, no filter, no trim
+  snd('foot_' + set, { g: (STEP.g0 + (STEP.g1 - STEP.g0) * u) * (gk == null ? 1 : gk),
                 r: (STEP.r0 + (STEP.r1 - STEP.r0) * u) * (left ? 1 + STEP.alt : 1 - STEP.alt)
                    * (rk == null ? 1 : rk)
                    * (1 + (Math.random() - .5) * STEP.jit),

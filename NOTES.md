@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- SURFACE FOOTSTEPS: grass, stone, wood, sand, metal, water (+ a leaf rustle through plants) (Nov 2 2026)
+*"Sound effects for walking through water, on sand, grass, wood and metal -- all those options and a decision tree; and brushing through bushes."*
+He allowed kenney.nl / opengameart.org / freesound / suno in the environment. Sources (all REAL recordings, credits in `audio/steps/CREDITS.txt`):
+Kenney Impact Sounds (grass, wood, concrete -> stone; CC0), Fantozzi's sand steps (CC0), qubodup's 20 dry-leaf rustles (CC0), congusbongus'
+"footsteps on different surfaces" metal + water (CC-BY 3.0 -- CREDIT REQUIRED in the game's credits). Each trimmed of lead silence, cut to .7 s
+with a fade, mono, LEVELLED to a -9 dBFS peak (rustles -12) -- no pitch tricks, so nothing of the old blown-out / robotic sound.
+Banks `foot_GRASS / WOOD / STONE / SAND / METAL / WATER` + `rustle` (audio/steps, added to bump's DIRS). `footSnd` asks `stepSurf` on HIS
+footfalls only: a ray down from his knees into the near static meshes (list rebuilt every 1.5 s, skinned bodies and his rig skipped) and the hit
+read in order -- `userData.surf` tag (mesh or material) -> name words (SSRX) -> see-through = water / metalness > .6 = metal -> COLOUR (vertex
+colour at the face, else the texture's 8x8 average x material colour) by hue: green grass, tan/brown wood or light tan sand, grey stone, white =
+snow only where the zone already plays snow. No hit / a bank not decoded -> the picked set as before (bodies keep it too). PLANTS (tagged
+'plant' or named bush/fern/reed/flower/leaf...) are walked through: within reach a rustle plays on top. `mel` has no handle yet; STEPSURF.last is
+the last surface. Builders: tag a mesh `userData.surf = 'wood'` etc. when its name and colour would mislead. Shipped unverified.
+
 ## m2179 -- THE GARDEN: the far floating islands rebuilt (Nov 2 2026)
 
 *"These background floating islands are crazy so so bad, they need so much attention."* They were `templeRock` lumps in ONE flat olive, lollipop
