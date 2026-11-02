@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- THE SHUTTERS: picking a level closes two ink panels over the menu before the heavy build, so nothing freezes in view (Nov 2 2026)
+## m2256 -- THE SHUTTERS: picking a level closes two ink panels over the menu before the heavy build, so nothing freezes in view (Nov 2 2026)
 *"After you choose the prologue the screen just freezes for like five seconds while it loads, and it doesn't say loading -- design fun, cool
 transitional states in and out of the menus, so it doesn't freeze the graphic; that's what the loading screen is for."* The in-place entry (m2228)
 runs `arenaStage()` (the garden's synchronous build) the moment the menu is dismissed -- the main thread is busy for seconds and the last frame

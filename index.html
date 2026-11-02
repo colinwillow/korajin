@@ -147,7 +147,7 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
   transition: opacity .5s ease; padding: 24px;
 }
 #boot.gone { opacity: 0; pointer-events: none; }
-/* m15XX: THE SHUTTERS (his: "after you choose the prologue the screen just freezes for five seconds -- design fun transitional states in and out of the
+/* m2256: THE SHUTTERS (his: "after you choose the prologue the screen just freezes for five seconds -- design fun transitional states in and out of the
    menus"): two ink panels close over the menu (a temple bell), the heavy build runs behind them while the emblem keeps turning -- a CSS transform
    animation runs on the compositor, so it moves even while the page is busy -- and they open onto the loading card as soon as loading reports. */
 #shutter { position: fixed; inset: 0; z-index: 35; pointer-events: none; overflow: hidden; }
@@ -5600,7 +5600,7 @@ function bootWarm() {
 // m2215 (his: "the loading subtext says 'loading the alien', 'loading zap' -- stuff from the old game; nothing is called an alien here"): the card
 // shows KORAJIN's own lines, stepped by how far the load has got; the file-by-file label stays in `PROG.label` for debugging. A failure still says so.
 const BOOTLINES = ['waking the garden', 'gathering Jinra', 'raising the islands', 'hanging the lanterns', 'tuning the great bell', 'sharpening the blade', 'calling the wind', 'almost there'];
-// m15XX: the shutters (CSS above). Close -> wait for the panels to meet and for two frames to PAINT -> run `then` (the heavy build). Open on the first
+// m2256: the shutters (CSS above). Close -> wait for the panels to meet and for two frames to PAINT -> run `then` (the heavy build). Open on the first
 // loading report (`setBoot`), or after `SHUT.max` s whatever happens.
 const SHUT = { closed: 0, max: 12 };
 function shutterEl() { let e = document.getElementById('shutter'); if (!e) { e = document.createElement('div'); e.id = 'shutter'; e.innerHTML = '<i class="l"></i><i class="r"></i><b></b>'; document.body.appendChild(e); } return e; }
@@ -5609,7 +5609,7 @@ function shutterClose(then) { const e = shutterEl(); void e.offsetWidth; e.class
   setTimeout(shutterOpen, SHUT.max * 1000); }
 function shutterOpen() { if (!SHUT.closed) return; SHUT.closed = 0; const e = document.getElementById('shutter'); if (e) e.classList.remove('shut'); }
 function setBoot(label, frac) {
-  if (SHUT.closed && performance.now() - SHUT.t0 > 600) shutterOpen();     // m15XX: loading has begun reporting -- open onto the card
+  if (SHUT.closed && performance.now() - SHUT.t0 > 600) shutterOpen();     // m2256: loading has begun reporting -- open onto the card
   PROG.label = label;
   const p = clamp((PROG.done + clamp(frac || 0, 0, 1)) / PROG.total, 0, 1);
   if (bootMsg) bootMsg.textContent = /could not|fail|error/i.test(label) ? label : label === 'go' ? 'ready' : BOOTLINES[Math.min(BOOTLINES.length - 1, Math.floor(p * BOOTLINES.length))];
@@ -71240,7 +71240,7 @@ function startGate() {
   if (skip || !el || !el.appendChild) return Promise.resolve();
   return new Promise(go => {
     const enter = (w, extra) => { try { snd('ui_go', { g: .55 }); } catch (err) {}     // m2192
-      if (!enter.shut) { enter.shut = 1; shutterClose(() => enter(w, extra)); return; }     // m15XX: close the shutters first, THEN do the heavy part behind them
+      if (!enter.shut) { enter.shut = 1; shutterClose(() => enter(w, extra)); return; }     // m2256: close the shutters first, THEN do the heavy part behind them
       if (stage) { stage.dispose(); stage = null; }
       try { sessionStorage.setItem(START.key, '1'); sessionStorage.setItem(WORLD.store, w); } catch (e) {}
       if (w === WORLD.now && !extra) { el.classList.remove('on'); go(); return; }
