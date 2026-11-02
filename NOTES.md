@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2235 -- THE GARDEN: the lotus, and a meditation that breathes (Nov 2 2026)
+
+*"A better lotus pose, and an idle form of meditation, so when he's floating there's a little movement -- it just looks better."* (via main) The
+Forge library has no lotus (main searched it), so `gdnLotus` SOLVES it on top of the seated clip, after the mixer (beside `katLeftGrip`), in his
+body frame from `rig.root` (forward, left, world up). Per bone it aims the bone at its child along a target direction (`ltDir`, a world-space
+swing blended by the weight): spine bones toward upright with a `lean` .1 forward, the neck a little forward; thighs out wide and forward
+(`thigh` [.8 out, -.12 down, .58 fwd]), shins crossed back over the other leg (`shin` [-.86 across, .05, .3]), the left stacked `stack` above;
+feet across. Arms by a pole-vector two-bone solve (`ltArm`, elbows out and back) to the knees (MUDRA, palms resting) or cupped in the LAP --
+TOOLS > MEDITATION > LOTUS HANDS (remembered). THE LIFE, on unrelated periods so it never loops: breath (5.4 s + 11.7 s) lifting the chest and the
+shoulders, a torso sway (9.3 + 13.1 s, 1.6 deg), the head settling (7.7 s, 2.2 deg) and riding the breath, and the beam's float bob now follows the
+same breath (`bob` .12 m, up on the in-breath). Eases in/out with `p.meditPose` (`ease` .9 s, smoothstepped).
+HEAD: the solve alone left his chin UP (side render); `headDown` 28 deg about his left (PLUS tips it down -- checked both signs on renders).
+Renders front / side / 3-4 at his real proportions, shield hidden: legs read crossed, hands on the knees, nothing through the legs that shows.
+`mel.LOTUS` / `mel.rig` live. **Shipped unverified.**
+
 ## m2233 -- THE TITLE LOOP: falls that POUR from somewhere; ivy clear of the rock; the Jinra Stone and its beam; guard towers; an erupting snow volcano; foreground clouds (Nov 2 2026)
 His phone screenshots: *"are these beams of light or streams? If waterfalls, they don't look like they're coming out of anything... the hanging plants
 intersect the ground planes... add detail: a beam of light from a temple, the magical Jinra stone from the prologue that keeps the island floating,
