@@ -6141,7 +6141,7 @@ function stepSurfList() { const S = STEPSURF, p = player, L = S.list, PL = S.pla
     if (!g.boundingSphere) g.computeBoundingSphere(); _ssS.copy(g.boundingSphere).applyMatrix4(o.matrixWorld);
     if (Math.hypot(_ssS.center.x - p.pos.x, _ssS.center.z - p.pos.z) - _ssS.radius > S.near) return;
     if (plant) { if (_ssS.radius < 1.2) PL.push({ x: _ssS.center.x, y: _ssS.center.y, z: _ssS.center.z, r: _ssS.radius }); else PL.push({ cells: ssPlantCells(o) }); } else L.push(o); }); }
-// m15XX (his: "it plays the plant sound on anything moderately grass-like -- reserve it for when you literally touch a plant"): a MERGED plant mesh
+// m2254 (his: "it plays the plant sound on anything moderately grass-like -- reserve it for when you literally touch a plant"): a MERGED plant mesh
 // (a whole bed of ferns as one mesh) has a bounding sphere the size of the lawn, so "inside its sphere" was every step. Its leaves are binned once into
 // `ssCellK` m cells, each with the lowest and highest leaf height there; a step rustles only in a cell whose leaves reach above his shins.
 const ssCellK = .5;
@@ -6186,13 +6186,13 @@ function ssClassify(h) { const o = h.object, m = Array.isArray(o.material) ? o.m
   if (m && m.color) { _ssC.multiply(m.color); have = 1; } if (!have) return 'STONE';
   const hsl = {}; _ssC.getHSL(hsl); const hu = hsl.h * 360, sa = hsl.s, li = hsl.l;
   if (sa < .14 || li < .06) return li > .82 && STEP.set === 'SNOW' ? 'SNOW' : 'STONE';
-  if (hu >= 70 && hu < 165 && sa > .3 && li > .12 && li < .6 && !m.map) return 'GRASS';     // m15XX: colour says GRASS only for a plainly green, untextured surface -- a tile with green running through it is STONE (tag a real lawn `surf: 'grass'`)
+  if (hu >= 70 && hu < 165 && sa > .3 && li > .12 && li < .6 && !m.map) return 'GRASS';     // m2254: colour says GRASS only for a plainly green, untextured surface -- a tile with green running through it is STONE (tag a real lawn `surf: 'grass'`)
   if (hu >= 18 && hu < 60) return li > .55 && sa < .6 ? 'SAND' : 'WOOD';
   if (hu >= 170 && hu < 200 && sa > .4 && li > .45) return 'WATER';
   return 'STONE'; }
 function stepSurf(x, z, u) { const S = STEPSURF, p = player; if (!S.on || !rig.root || Math.hypot(x - p.pos.x, z - p.pos.z) > .6) return '';
   const now = performance.now() / 1000; if (now - S.t > S.every && (now - S.t > 6 || Math.hypot(p.pos.x - (S.lx || 1e9), p.pos.z - (S.lz || 1e9)) > 2.5)) { S.t = now; S.lx = p.pos.x; S.lz = p.pos.z; stepSurfList(); }     // m2213: rebuilt only after he has moved 2.5 m (or every 6 s)
-  if (ssInPlant(p.pos.x, p.pos.y, p.pos.z)) snd('rustle', { g: .3 + .35 * (u || 0), r: .9 + Math.random() * .2, x, z });     // m15XX: only when a plant's leaves are really round his legs
+  if (ssInPlant(p.pos.x, p.pos.y, p.pos.z)) snd('rustle', { g: .3 + .35 * (u || 0), r: .9 + Math.random() * .2, x, z });     // m2254: only when a plant's leaves are really round his legs
   // m2214 THE HITCH (his: "choppy, like every ~30 frames it waits"): this ray went through every triangle of every mesh whose bounds reached him -- in
   // the Garden 64 meshes, 490k triangles, 67 ms on a desktop, on EVERY FOOTFALL. A big static mesh now answers from a cached grid of its triangles
   // over x/z (`ssGrid`): a straight-down ray reads the few under his feet. Small, instanced and moving meshes still take the Raycaster.

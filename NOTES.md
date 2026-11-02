@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- footsteps: the leaf rustle only when a plant is really round his legs; a real grass step; green tiles are stone (Nov 2 2026)
+## m2254 -- footsteps: the leaf rustle only when a plant is really round his legs; a real grass step; green tiles are stone (Nov 2 2026)
 *"The grass sound plays on anything moderately grass-like -- tiles with some green running through them -- and it sounds like brushing past a bush,
 not walking on grass (dirt squish). Reserve it for when you literally touch a plant. Tile, stone, metal, wood, plank shouldn't get it."* Three causes:
 (1) the RUSTLE: a MERGED plant mesh (a bed of ferns as one mesh) was tested by its bounding sphere -- the size of the lawn -- so nearly every step on
