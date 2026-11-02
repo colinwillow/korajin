@@ -17,6 +17,31 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2198 -- THE TITLE LOOP pass 5: painted plant CARDS, the mammoth he leads, the katana on his back, bamboo, ivy (Nov 2 2026)
+*"That bush just looks like a ball with a texture on it, let's put literal leaves on there... the willow, the cherry blossom... I want our hero
+to have the sword on his back... maybe he's leading the mammoth behind him... ivy, bamboo."* (His long list: P5 is plants + hero.
+The big background set pieces are P6; storms / fairies / villagers / a creek are P7.)
+- **FOLIAGE IS HIS PAINTED CARDS** (`loopFolAtlas`, 2048x1024 from garden_blossom_card / garden_fern / dome_clump / garden_flowers / dome_tuft /
+  dome_cushion / dome_ivy / garden_vine). One alpha-tested material per band, so foliage is one draw a band. Each card is a quad in the camera's
+  plane, turned a little: the camera never turns, so every card always reads as a plant. `aF` carries the season tint class and a SWAY
+  weight (standing cards sway at the top, hanging ones -- ivy, willow strands -- at the bottom). The season tints and the winter frost apply.
+  - bushes: clusters of 4-8 clump / cushion / flower cards (`bush`), on the mid terraces and round the isle's back rim.
+  - CHERRY (`cherryT`): a gnarled trunk with four limbs and 30 blossom cards, darker underneath. Autumn turns them orange-red.
+  - WILLOW: a bent trunk with three limbs, a leaf crown and 30 hanging VINE cards that swing.
+  - ROUND tree: clump cards. Ferns, tufts and flowers are cards too; tufts in front of the path are half size so his legs show.
+  - IVY hangs off his isle's front lip (34 strands) and off the mid terraces' front rims.
+  - BAMBOO (`kind: 'bamboo'`): jointed culms (a node ring every segment) with leaf sprays at the upper nodes. Two groves mid, one on his isle.
+- **THE MAMMOTH** (`LOOPBG.beast`, models/creatures/mammoth.glb -- his armoured war mammoth) walks behind him at 2.3 m on `Walk_F_IP`.
+  Its pace comes from its own planted feet (`loopGait4`: its four lowest bones, 0.99 m/s), time-scaled every frame to his walk (x0.855). A
+  ROPE runs from his right hand to its head and sags as it slackens. He walks at x +.75 so the pair fits.
+- **THE KATANA ON HIS BACK**: `katanaScene()` parented to mixamorig_Spine2. Its rest pose is solved in WORLD terms (`dir`: the blade points down
+  and back; `off`: .2 m behind the spine), so it rides every frame of the walk.
+- **THE LENS WIDENS ON A NARROW SCREEN** (`cam.minHalfW` 2.7 m either side of him at his depth): ~30 deg on a phone, 18 on a wide screen.
+  The phone sees the mammoth and far more of the sky. The lens shift went .49 -> .38, and his isle is 3.6 m deep (it was 7).
+- Measured, headless: 71 draw calls, ~421k tris drawn. Renders: phone (spring) and a zoom on him + the mammoth (winter).
+- Open: P6 (Red Hollows home / castle range, the temple beaming into the sky, dark towers, a mountain range with rivers, the dragon), P7.
+  **Shipped unverified.**
+
 ## m2197 -- THE GARDEN: the pots made over; the last flat-coloured plants painted (Nov 2 2026)
 
 *"This pot needs a full makeover ... there are some unpainted objects -- keep texturing things that need it, and extra geometry or modelling."*
