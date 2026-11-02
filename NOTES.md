@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2269 -- CRAFT PASS 3 (the Garden): hanging ivy and vines droop (Nov 2 2026)
+
+CRAFT.md rule 1 (his: "ivy hanging from the tree sticking straight out"; "anything organic with a 100% straight edge"). Every hanging card in the
+Garden -- rim ivy, terrace and tier ivy, the trees' vines, the arch ivy, the chunk rims (8 builders) -- was `PlaneGeometry(w, len, 1, 3-5)`
+dropped plumb: a flat rectangle. They now come from `gdnHang(w, len)`: 10 rows, TAPERING to 40% at the tip, a SAG out from the anchor and back
+(~8% of its length), a side-to-side wander growing toward the tip and a small twist, each strand phased by its own length so neighbours differ.
+`swOf` (the wind sway) still runs on them after. (The dome temple's ivy, line ~16039, is another zone's and untouched.) Renders craft3_rimivy /
+craft3_trees. Rules checked: 1 (ivy / vines). Still open: rule 3 -- railings, posts, stairs and attachments seated (next). **Shipped unverified.**
+
 ## m2268 -- CRAFT PASS 2 (the Garden): falls leave the lip in an ARC (Nov 2 2026)
 
 CRAFT.md rule 2 (his: "water coming out of a hill as a straight line"). `gdnFall`'s outward offset was `out x sqrt(min(1, drop/6)) + 2.5 v` -- on a
