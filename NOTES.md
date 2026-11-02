@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- a wall run up a face has a HEIGHT BUDGET from his speed (Nov 2 2026)
+## m2170 -- a wall run up a face has a HEIGHT BUDGET from his speed (Nov 2 2026)
 *"He can run almost indefinitely up a wall -- he can run up an entire temple. It needs a limit so you run up, then jump over to the other
 wall."* Each face he catches gets a climb budget `WRUN.climbBase + climbPerV x his speed in`, capped at `climbCap` (2 + .45 v, cap 6.5 m:
 a walk-in ~3.3 m, a run ~5.2, a sprint ~6). It is set on the FIRST catch of a face and KEPT across re-catches of the same face (the re-catch
