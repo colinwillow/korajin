@@ -17,6 +17,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2200 -- THE TITLE LOOP pass 7: a STORM season with lightning, fairies, villagers at work, a river isle (Nov 2 2026)
+*"Magic, thunder, storms... some village people doing stuff... a creek, a river, stuff passing... fairies."*
+- **THE STORM** joins the cycle after the rain (spring, summer, rain, STORM, autumn, winter; 6 x 35 s). The sky goes dark and grey, the light
+  drops, wind 1.9, rain at full. **LIGHTNING** (`bolt` .45 strikes a second): a forked bolt 400-900 m out (one additive ribbon, rebuilt
+  per strike, a main channel with branches), plus a FLASH that lights the sky and the hemi light and dies away in a fraction of a second.
+  `LOOPBGRUN.strike()` fires one.
+- **FAIRIES** (`life.fairies` 46, the same Points pool): gold and violet glints circling plants on his isle and the mid terraces, twinkling,
+  riding the world. Spring and summer have the most, autumn some, winter a few; none in rain or storm. (Violet and gold, not mint.)
+- **VILLAGERS AT WORK** (`kind: 'villager'`, `LOOPBG.villager` = the toad wanderer, loaded ONCE and skeleton-cloned per villager per copy):
+  one GATHERING (pick_up), one at sword KATA (katana_combo), one ASLEEP under the willow (laying_down), and one FISHING off the terrace
+  edge: his seated clip, a rod, a line 9 m down into the clouds and a glowing float. They ride the mid band in three copies like everything else.
+- **THE RIVER ISLE** (`mid_river`): a long flat floating isle between his isle and the terraces, with a white-water river along it (the water
+  flow shader) that falls off both ends, reeds (tuft cards), bank stones, bushes and ivy.
+- **`gdnIsleGeo` grew HILLS and CRAGS in a concurrent garden build (m2186)**, which turned the terraces into tall humps and threw the river
+  isle's reeds into the sky. The loop now passes `hill: 0` for the river isle, castle and dark tower, and `.25` for the terraces; the far
+  isles keep their hills.
+- Measured, headless: 91 draw calls (the 12 villager copies are most of the new ones), ~670k tris drawn.
+- Open: thunder SOUND (no audio here yet), a night / the moon, more villager kinds (only the toad is loaded, to keep the title light), his look.
+  **Shipped unverified.**
+
 ## m2199 -- THE TITLE LOOP pass 6: the mountain range + rivers + volcano, a floating castle, a dark tower, the temple's sky pillar, his hut, the lightning dragon (Nov 2 2026)
 *"Cool stuff in the background -- magic, thunder, storms, a temple beaming up into the sky... a mountain range... a dragon flying... dark towers... take the
 building from the Red Hollows, our hero's home, the floating castle range... a fire somewhere... more flying stuff, different levels."*
