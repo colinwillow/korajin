@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2241 -- THE LOTUS: a third hands option, SPREAD (Nov 2 2026)
+
+Main's addendum: better source clips from the Forge catalog. The bake (`agoblin_meditate.glb`, `tools/forge.cjs`, profile in the session) now
+carries `lotus` (Sitting_4), `spread` (Male_Dynamic_Pose_1), `spread0` (Male_Dynamic_Pose) and `lay` (Male_Laying_Pose_2), all loaded by HANIM.
+RENDERED ON GRUMBO before trusting the catalog: Sitting_4 ("Sitting Cross Legged") is NOT cross-legged on him -- knees drawn up, legs hanging, arms
+round them -- so the lotus base stays `meditate` (the solve sets legs, spine and arms itself anyway). Male_Dynamic_Pose_1 floats with the arms
+spread low and open, as described; Male_Laying_Pose_2 lies on his back with crossed legs (the hammock's, next).
+SPREAD (his pick): `ltSpread` reads every Shoulder/Arm/ForeArm/Hand/finger bone's FIRST key off the `spread` clip (32 bones) and slerps it in by the
+lotus weight, in place of the knee / lap arm solve; the legs, spine, breath and sway are the lotus's. TOOLS > MEDITATION > LOTUS HANDS cycles
+KNEES / LAP / SPREAD. Renders lotus_spread_front / _34. **Shipped unverified.**
+
 ## m2240 -- THE GARDEN: spawned enemies land on the island (Nov 2 2026)
 
 *"Whenever I try to spawn an enemy in the floating clouds they just aren't up on the cliffs."* (via main; he wants to film fights there.) Every
