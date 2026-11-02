@@ -16524,7 +16524,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
   // a lip of moss and a fringe of hanging ivy round the rim, a few ledges of grass
   for (let i = 0; i < rim.length; i++) { const [x, , z] = rim[i], [x2, , z2] = rim[(i + 1) % rim.length], a = Math.atan2(x + x2, z + z2), L = Math.hypot(x2 - x, z2 - z);
     put(gdnBlob(R, (x + x2) / 2 * 1.0, -.25, (z + z2) / 2 * 1.0, L * .62, .35, 1), M.moss);
-    for (let k = 0; k < 2; k++) { const u = R(), px = x + (x2 - x) * u, pz = z + (z2 - z) * u, len = 2.5 + R() * 4.5, q = new THREE.PlaneGeometry(1.4, len, 1, 4).translate(0, -len / 2, 0);
+    for (let k = 0; k < 2; k++) { const u = R(), px = x + (x2 - x) * u, pz = z + (z2 - z) * u, len = 2.5 + R() * 4.5, q = gdnHang(1.4, len);
       swOf(q, 0, len); q.rotateY(a + (R() - .5) * .5); put(q.translate(px * 1.035, -.15, pz * 1.035), M.ivy); } }
   // ---- THE TERRACE + STAIR: the shrine's knoll, a mossy cyclopean drum 2.4 m high, a paved top; eight .30 risers up its front ----
   const TE = Z.terrace, [tx, tz] = TE.at, TH = TE.h, S = Z.stair, sz0 = tz + TE.r - .1, szEnd = sz0 + S.tread * S.n;
@@ -16534,7 +16534,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     put(gdnBlobDisc(tx, tz, TE.r - .05, TH + .03, R, 40), M.flag, 'shrine');
     for (let i = 0; i < 22; i++) { const a = i / 22 * Math.PI * 2 + R() * .1; if (Math.abs(Math.atan2(Math.sin(a), Math.cos(a)) - Math.PI / 2) < .35) continue;
       put(gdnBlob(R, tx + Math.cos(a) * (TE.r + .05), TH + .05, tz + Math.sin(a) * (TE.r + .05), .5 + R() * .45, .45, 1), M.moss, 'shrine');
-      if (R() < .7) { const len = 1.2 + R() * 1.6, q = new THREE.PlaneGeometry(1.1, len, 1, 3).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); put(q.translate(tx + Math.cos(a) * (TE.r + .32), TH + .02, tz + Math.sin(a) * (TE.r + .32)), M.ivy, 'shrine'); } }
+      if (R() < .7) { const len = 1.2 + R() * 1.6, q = gdnHang(1.1, len); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); put(q.translate(tx + Math.cos(a) * (TE.r + .32), TH + .02, tz + Math.sin(a) * (TE.r + .32)), M.ivy, 'shrine'); } }
     disc(tx, tz, TE.r - .1, -1, TH); part(TE.id, 'terrace', { x: tx, z: tz, r: TE.r, top: TH });
     for (let k = 1; k <= S.n; k++) { const y = TH - S.rise * k, z0 = sz0 + S.tread * (k - 1) - .02, z1 = sz0 + S.tread * k;
       put(new THREE.BoxGeometry(S.hw * 2, y + .2, z1 - z0).translate(tx, (y - .2) / 2, (z0 + z1) / 2), M.stone, 'shrine'); box(tx, (z0 + z1) / 2, S.hw, (z1 - z0) / 2, -1, y); }
@@ -16629,7 +16629,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       if (T.blossom) (Z.petalAt = Z.petalAt || []).push([bx, byy, bz, br]);
       const nv = T.blossom ? 0 : Math.round(br * 4.2); for (let i = 0; i < nv; i++) { const a = Rt() * Math.PI * 2, rr = br * (.7 + Rt() * .45), dd = Math.hypot(bx - x, bz - z), out = dd > .5 ? Math.max(0, Math.cos(a - Math.atan2(bz - z, bx - x))) : 1;
         const len = (1.3 + Rt() * 2.2 + out * Rt() * 3.4) * (h / 9), vx = bx + Math.cos(a) * rr, vz = bz + Math.sin(a) * rr, vy = byy - br * .2;
-        const q = new THREE.PlaneGeometry(1.2 * k, len, 1, 5).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(Rt() * Math.PI); put(q.translate(vx, vy, vz), M.vine, into); } }
+        const q = gdnHang(1.2 * k, len); swOf(q, 0, len); q.rotateY(Rt() * Math.PI); put(q.translate(vx, vy, vz), M.vine, into); } }
     Z.treeAt[T.id] = { x, z, by, top: top.y, curve: tb.curve };
     BOXES.push(obox(x, z, r0 * .85, r0 * .85, 0, Y0 + by - 1, Y0 + by + h * .7)); BOXES.push(obox(x, z, r0 * .85, r0 * .85, Math.PI / 4, Y0 + by - 1, Y0 + by + h * .7)); part(T.id, 'tree', { x, z, h }); };
   for (const T of Z.trees) gdnTreeAt(T, T.base ? 'lookout' : 'main');
@@ -16718,7 +16718,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     { const wall = new THREE.CylinderGeometry(TT.r, TT.r + .3, TY + .4, 28, 2), Pp = wall.attributes.position; for (let i = 0; i < Pp.count; i++) { const k = 1 + (RH() - .5) * .03; Pp.setX(i, Pp.getX(i) * k); Pp.setZ(i, Pp.getZ(i) * k); }
       wall.computeVertexNormals(); P(wall.translate(tx, iy + TY / 2 - .2, tz), M.pebble); P(gdnBlobDisc(tx, tz, TT.r - .02, top + .01, RH, 36), M.lawn);
       for (let i = 0; i < 20; i++) { const a = i / 20 * 6.283; P(gdnBlob(RH, tx + Math.cos(a) * TT.r, top + .02, tz + Math.sin(a) * TT.r, .45 + RH() * .3, .4, 0), M.moss);
-        if (RH() < .6) { const len = 1 + RH() * 1.4, q = new THREE.PlaneGeometry(1.0, len, 1, 3).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); P(q.translate(tx + Math.cos(a) * (TT.r + .25), top, tz + Math.sin(a) * (TT.r + .25)), M.ivy); } }
+        if (RH() < .6) { const len = 1 + RH() * 1.4, q = gdnHang(1.0, len); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); P(q.translate(tx + Math.cos(a) * (TT.r + .25), top, tz + Math.sin(a) * (TT.r + .25)), M.ivy); } }
       gdnDisc(tx, tz, TT.r - .1, Y0 + iy - 1, Y0 + top); for (let i = 0; i < TT.r * 6; i++) { const a = RH() * 6.283, rr = Math.sqrt(RH()) * (TT.r - .8), x = tx + Math.cos(a) * rr, z = tz + Math.sin(a) * rr;
         if (Math.hypot(x - H.house.at[0], z - H.house.at[1]) < 4.2 || Math.hypot(x - H.deck.at[0], z - H.deck.at[1]) < 2.8 || Math.abs(x - H.stair.x) < 1.4) continue; (Z.isleRec = Z.isleRec || []).push({ kind: RH() < .5 ? 'flowers' : 'grass', x, y: Y0 + top, z, s: .7 + RH() * .5, yaw: RH() * 6.3 }); }
       part(IS.id + '_terrace', 'terrace', { x: tx, z: tz, r: TT.r, top: TY }); }
@@ -16794,7 +16794,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     { const wall = new THREE.CylinderGeometry(T.r, T.r + .4, TY + .4, 30, 3), Pp = wall.attributes.position; for (let i = 0; i < Pp.count; i++) { const k = 1 + (RS() - .5) * .03; Pp.setX(i, Pp.getX(i) * k); Pp.setZ(i, Pp.getZ(i) * k); }
       wall.computeVertexNormals(); P(wall.translate(tx, H + TY / 2 - .2, tz), M.cyclo); P(new THREE.CylinderGeometry(T.r + .12, T.r + .05, .26, 48).translate(tx, top - .1, tz), M.stone); P(gdnBlobDisc(tx, tz, T.r - .05, top + .03, RS, 40), M.flag);
       for (let i = 0; i < 22; i++) { const a = i / 22 * 6.283; if (Math.abs(Math.cos(a)) > .97 && Math.cos(a) > 0) continue; P(gdnBlob(RS, tx + Math.cos(a) * T.r, top + .04, tz + Math.sin(a) * T.r, .45 + RS() * .3, .45, 0), M.moss);
-        if (RS() < .65) { const len = 1.2 + RS() * 1.8, q = new THREE.PlaneGeometry(1.0, len, 1, 3).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); P(q.translate(tx + Math.cos(a) * (T.r + .3), top, tz + Math.sin(a) * (T.r + .3)), M.ivy); } }
+        if (RS() < .65) { const len = 1.2 + RS() * 1.8, q = gdnHang(1.0, len); swOf(q, 0, len); q.rotateY(Math.PI / 2 - a); P(q.translate(tx + Math.cos(a) * (T.r + .3), top, tz + Math.sin(a) * (T.r + .3)), M.ivy); } }
       gdnDisc(tx, tz, T.r - .1, Y0 + H - 1, Y0 + top); part(C.id + '_terrace', 'terrace', { x: tx, z: tz, top: TY }); }
     // the stair runs EAST (+x) off the terrace toward the ledge path: ten .30 risers, stone cheeks, lanterns at its foot
     { const St = S.stair, x0 = tx + T.r - .15; for (let k = 1; k <= St.n; k++) { const y = TY - .3 * k, xa = x0 + St.tread * (k - 1) - .02, xb = x0 + St.tread * k;
@@ -16863,7 +16863,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     for (let i = 0; i < rk.tris.length; i += 3) tris.push(rk.tris[i], rk.tris[i + 1] + Y0, rk.tris[i + 2]); Z.isleAt[IS.id] = { x: ix, y: iy, z: iz, rim: rk.rim };
     for (let i = 0; i < rk.rim.length; i++) { const [x, , z] = rk.rim[i], [x2, , z2] = rk.rim[(i + 1) % rk.rim.length], a = Math.atan2(x + x2 - 2 * ix, z + z2 - 2 * iz), L = Math.hypot(x2 - x, z2 - z);
       put(gdnBlob(RI, (x + x2) / 2, iy - .25, (z + z2) / 2, L * .62, .35, 1), M.moss, into);
-      const u = RI(), px = x + (x2 - x) * u, pz = z + (z2 - z) * u, len = 2.5 + RI() * 4, q = new THREE.PlaneGeometry(1.4, len, 1, 4).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(a); put(q.translate(ix + (px - ix) * 1.035, iy - .15, iz + (pz - iz) * 1.035), M.ivy, into); }
+      const u = RI(), px = x + (x2 - x) * u, pz = z + (z2 - z) * u, len = 2.5 + RI() * 4, q = gdnHang(1.4, len); swOf(q, 0, len); q.rotateY(a); put(q.translate(ix + (px - ix) * 1.035, iy - .15, iz + (pz - iz) * 1.035), M.ivy, into); }
     if (IS.blocks) for (let i = 0; i < rk.rim.length; i += 1) { const [x, , z] = rk.rim[i], w = 1.6 + RI() * 1.4, h = 2.5 + RI() * 7, a = Math.atan2(x - ix, z - iz);     // the ref's blocky stone underside: columns hung under the rim
       put(new THREE.BoxGeometry(w, h, w * .9).rotateY(a).translate(ix + (x - ix) * .96, iy - .4 - h / 2, iz + (z - iz) * .96), M.pebble, into); }
     for (const deg of IS.fall || []) { const lp = rk.rim[Math.round(rk.rim.length * deg / 360) % rk.rim.length], L = Math.hypot(lp[0] - ix, lp[2] - iz), ux = (lp[0] - ix) / L, uz = (lp[2] - iz) / L;
@@ -16898,7 +16898,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       for (let i = 0; i <= 12; i++) { const u = i / 12, a = Math.PI * u; arc.push(new THREE.Vector3(x + nx * -Math.cos(a) * sp, y + 2.5 + Math.sin(a) * .7, z + nz * -Math.cos(a) * sp)); }
       P(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(arc), 20, .06, 5, false), M.dark);
       for (let i = 0; i < 9; i++) { const p = arc[1 + Math.floor(RP() * 11)]; for (const q of dmtCards(RP, p.x, p.y - .05, p.z, .9, .7, 2, 0)) P(q, RP() < .5 ? M.flowers : M.blossomCard); }
-      for (let i = 0; i < 4; i++) { const p = arc[1 + Math.floor(RP() * 11)], len = .8 + RP() * 1.4, q = new THREE.PlaneGeometry(.7, len, 1, 3).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(yw); P(q.translate(p.x, p.y, p.z), M.ivy); }
+      for (let i = 0; i < 4; i++) { const p = arc[1 + Math.floor(RP() * 11)], len = .8 + RP() * 1.4, q = gdnHang(.7, len); swOf(q, 0, len); q.rotateY(yw); P(q.translate(p.x, p.y, p.z), M.ivy); }
       part('arch_' + into + '_' + x, 'arch', { x, z }); }
     for (const [x, z] of Pr.pots || []) { const big = RP() < .4, s2 = big ? 1.3 : 1, pt = gdnPot(x, y, z, .62 * s2, RP); P(pt.pot, M.pot); P(pt.soil, M.soil);
       for (const q of dmtCards(RP, x, pt.top + .22, z, .6 * s2, .55 * s2, 2, 0)) P(q, RP() < .55 ? M.flowers : M.fern); } };
@@ -16920,7 +16920,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     // the lip: moss along every edge, ivy hanging off it, stone columns hung under the rim (his ref's blocky underside)
     for (let i = 0; i < poly.length; i++) { const [x0, , z0] = poly[i], [x2, , z2] = poly[(i + 1) % poly.length], L = Math.hypot(x2 - x0, z2 - z0), a = Math.atan2(z2 - z0, x2 - x0), n = Math.max(1, Math.round(L / 1.7));
       for (let k = 0; k < n; k++) { const u = (k + .5) / n, x = x0 + (x2 - x0) * u, z = z0 + (z2 - z0) * u; put(gdnBlob(RC, x, H - .22, z, .75 + RC() * .35, .4, 0), M.moss, into);
-        if (RC() < .55) { const len = 1.8 + RC() * 4, q = new THREE.PlaneGeometry(1.4, len, 1, 4).translate(0, -len / 2, 0); swOf(q, 0, len); q.rotateY(-a); put(q.translate(x, H - .15, z), M.ivy, into); }
+        if (RC() < .55) { const len = 1.8 + RC() * 4, q = gdnHang(1.4, len); swOf(q, 0, len); q.rotateY(-a); put(q.translate(x, H - .15, z), M.ivy, into); }
       } }     /* m2168: no lumps hung on the face (smooth ovals on a textured cliff read as bubbles) -- the fractured geometry carries it */
     // water: pools, streams that run to the edge and FALL (into a crack or off the outer face), cut where they leave the rock
     const lines = [], wet = []; for (const P2 of (C.pools || []).concat(C.pond ? [C.pond] : [])) { const [px, pz] = P2.at, yy = (P2.y || 0) + H; (Z.isleWater = Z.isleWater || []).push(gdnBlobDisc(px, pz, P2.r, yy + .07, RC, 22, 0)); put(gdnBlobDisc(px, pz, P2.r + .5, yy + .03, RC, 22), M.pebble, into);
@@ -17084,6 +17084,14 @@ function gdnMetalEnv(root) { const Z = GARDEN, M = Z.M; if (!M) return; const ma
   const apply = () => { if (!Z.envTex) { const src = texGet(Z.sky.pano), tx = src.clone(); tx.mapping = THREE.EquirectangularReflectionMapping; tx.needsUpdate = true; const pm = new THREE.PMREMGenerator(renderer); Z.envTex = pm.fromEquirectangular(tx).texture; pm.dispose(); }
     for (const m of mats) { m.envMap = Z.envTex; m.envMapIntensity = 1.1; m.needsUpdate = true; } Z.metalEnv = mats.size; };
   const im = texGet(Z.sky.pano).image; if (im && (im.width || im.naturalWidth)) apply(); else { let n = 0; const iv = setInterval(() => { const i2 = texGet(Z.sky.pano).image; if ((i2 && (i2.width || i2.naturalWidth)) || ++n > 100) { clearInterval(iv); try { apply(); } catch (e) { note('GARDEN ENV ' + e.message); } } }, 150); } }
+// m2269 CRAFT 3 (his: "ivy hanging from the tree sticking straight out"; CRAFT.md rule 1, organic things are never straight): a hanging card of ivy or
+// vine is no longer a flat rectangle dropped plumb. `gdnHang(w, len)` builds it on 10 rows and bends it: it TAPERS to the tip (to 40%), SAGS out from
+// its anchor and back (a catenary-like bulge, ~8% of its length), wanders side to side a little more toward the tip, and twists a few degrees --
+// every strand its own phase (seeded by its length), so no two side by side match. Local: anchor at y 0, hanging to y = -len, facing +z.
+function gdnHang(w, len) { const g = new THREE.PlaneGeometry(w, len, 2, 10).translate(0, -len / 2, 0), P = g.attributes.position, ph = (len * 7.31) % 6.28, tw = ((len * 3.7) % 1 - .5) * .5;
+  for (let i = 0; i < P.count; i++) { const x0 = P.getX(i), t = Math.min(1, -P.getY(i) / len), x = x0 * (1 - .6 * t) + Math.sin(t * 2.6 + ph) * .1 * len * t, z = .08 * len * Math.sin(Math.PI * Math.min(1, t * 1.15)) + Math.cos(t * 2.1 + ph) * .04 * len * t;
+    const a = tw * t; P.setXYZ(i, x * Math.cos(a) - z * Math.sin(a), P.getY(i) * (1 - .04 * t), x * Math.sin(a) + z * Math.cos(a)); }
+  g.computeVertexNormals(); return g; }
 function gdnPaint(q, fn) { const P = q.attributes.position, c = new Float32Array(P.count * 3); for (let i = 0; i < P.count; i++) c.set(fn(P.getX(i), P.getY(i), P.getZ(i)), i * 3); q.setAttribute('color', new THREE.BufferAttribute(c, 3)); return q; }
 // a tapered tube along points (a hanging root): radius r at the top to a point, colour top to tip
 function gdnTaper(pts, r, n, c0, c1) { const C = new THREE.CatmullRomCurve3(pts), S = 12, pos = [], col = [], idx = [], T = new THREE.Vector3(), Nn = new THREE.Vector3(), Bn = new THREE.Vector3(), up = new THREE.Vector3(1, 0, 0);
