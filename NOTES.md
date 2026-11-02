@@ -17,6 +17,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2232 -- THE TITLE LOOP: his fix list -- mammoth feet, a flowing cape, no upward "streams", a cleaner underside, real ropes, no junk rocks (Nov 2 2026)
+His list, item by item:
+- **The mammoth's front feet float and its stride sinks through the ground.** The clip bobs its body. FOOT LOCK (`BS.feet`, `BS.foot0`):
+  its four lowest bones at rest are its feet. Every frame (after the mixer, before the bridge pitch) the LOWEST foot is put back at its rest
+  height in the pivot's frame (smoothed, 18/s), so whichever foot is planted is on the ground. Its trunk now springs too (`trunkStep`, the
+  game's own). **Its bad skin weights (parts bending that should not) are the asset's rig, not fixable here** -- that is a re-rig in Blender.
+- **The mammoth walked through things.** It walks ON THE PATH now (z 0, behind him in x), which is kept clear; it was on the lane where the
+  toro, pots, crystals and lantern poles stand.
+- **The cape does not flow.** The loop never ran his SPRINGS. `loopSprings` runs the game's rule on his `cape_*` / `hair_*` bones (82 on
+  Grumbo), plus a WIND: he walks through still air, so the air streams past him backward at his walk speed plus the season's wind and gusts.
+  Close-up render: the cape trails off his shoulders.
+- **"A stream of water flowing upward"** was the pagoda's 420 m Jinra PILLAR. **"A river in the far background flowing up, like blue
+  rope"** was the mountain range's river ribbons (flat strips on a slope read as rope). Both are gone.
+- **The brown underside of his isle looks messy (polygon lines).** The hard strata bands (.86/1.08 stripes with a .72 dark edge) read as
+  facets; it is now a soft continuous variation. The rock lobes under it are finer (icosa detail 4).
+- **"Super long skinny toothpick" pieces** were the 14 ROOTS off his isle's lip and its 7 cone DRIPS. Both are gone.
+- **The bridge's rope rails were 1 px lines**: they are instanced 3.2 cm CYLINDERS now (rails and hangers), still following the sag.
+- **"Junk rock just there" beside the floating isles**: the BROKEN CHUNKS under each isle (`shardsR`) and the 8 `drift` rocks. Both are gone.
+- ~117 draw calls. **Shipped unverified.**
+
 ## m2231 -- THE GARDEN: sides are solid (automatic walls) (Nov 2 2026)
 
 *"A bunch of areas where I can walk through the side of colliders that should be solid. Most things work from the top but sides are very often a
