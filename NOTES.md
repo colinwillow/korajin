@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the title screen waits until the game is READY; the theme starts there; sword / wood / bell UI sounds (Nov 2 2026)
+## m2213 -- the title screen waits until the game is READY; the theme starts there; sword / wood / bell UI sounds (Nov 2 2026)
 *"It says TAP TO START, then later after the menu it says TAP TO START and I tap like 25 times -- it shouldn't say push to start if it's not ready;
 out of service it should just be loading longer."* The splash took its tap at once while the module was still loading. Now its label reads
 LOADING nn% (the boot card's bar, underneath it) and pulses, a tap before ready does NOTHING, and TAP TO START appears on `KJ_READY` / the
