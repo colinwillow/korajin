@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2239 -- THE GARDEN: spawned enemies land on the island (Nov 2 2026)
+
+*"Whenever I try to spawn an enemy in the floating clouds they just aren't up on the cliffs."* (via main; he wants to film fights there.) Every
+spawn used the arena's fixed spot (`ARENA.spawnAt`, the stadium doors) at y 0 -- the Forge floor, 120 m under the Garden. `gdnSpawnSpot(clear, k)`:
+a ring of candidates ahead of him (6-11 m, fanning round, offset per k), each walkable within 2.5 m of his height, ground all round it out to
+`clear` (big kinds get more), no box at chest height overlapping it (`boxesNear` hands back a whole grid cell -- overlap tested). Used by
+`arenaSpawn` (clear from the kind's height; NO stadium doors in the Garden; the beam pillar and ring at the spot's height via `arenaBeam`'s new y0),
+`spiderAdd` and `guardAdd`. Beasts (`beastStep`) walk `groundAt` in the Garden as if homed (was y 0 unless `d.home`), and their death sink and
+fly-down land on their own `floorY`, not 0.
+Headless: MAMMOTH / WARBOSS / HICK / CALF and the big + small spiders all on the lawn (y 0.00 vs ground 0.00, spiders .05) after their AI ran
+(mammoth and calf mid-`cRun`). Render spw. `mel.arenaSpawn` / `mel.gdnSpawnSpot` / `mel.DUMMIES` live. **Shipped unverified.**
+
 ## m2236 -- REELS: the cut-scene player, and the PROLOGUE INTRO (his narration, the crawl, ten shots, the Hollow) (Nov 2 2026)
 His brief: *"a test prologue narration -- cinematic camera pans and zooms of the world, then finally Grumbo sleeping in the hammock; text going up
 the screen, almost like the Star Wars prologue, with this guy narrating; the music playing under it."* CINEMA.md's REELS, built.
