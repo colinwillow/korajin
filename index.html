@@ -35998,7 +35998,7 @@ function shipMake(vis, air) {
   // m1386 (pass 6): THE SHARED LIBRARY's painted maps (`triMat`, triplanar in world space: the hull's boards run fore and aft on its sides, the deck's
   // timber fore and aft on top) -- the ship keeps only its own lacquer and its crested sail canvas
   const wood = triMat('wood_planks', { scale: 3, color: 0xd8c0b0 }), deckM = triMat('wood_timber', { scale: 2.6 }), red = MT(0xffffff, .55, 'ship_lacquer.jpg', 2.2, { side: THREE.DoubleSide }), gold = triMat('bronze', { scale: 1.4, metal: .75, rough: .32, color: 0xffe6b0 }), dark = triMat('wood_planks', { scale: 2.2, color: 0x7a6658 }), bronze = triMat('bronze', { scale: 1.1, metal: .7, rough: .35 }),
-    lamp = M(0xff7a3a, .4, { emissive: 0xff5a1a, emissiveIntensity: 1.6 }), eye = new THREE.MeshBasicMaterial({ color: 0x5affe0, toneMapped: false }), roofM = triMat('roof_tiles', { scale: 2.2, rough: .55 }), rope = M(0xc9b07a, 1);
+    lamp = M(0x000000, .4, { emissive: 0xffb070, emissiveIntensity: 1.9, emissiveMap: texGet('garden_lantern') }), eye = new THREE.MeshBasicMaterial({ color: 0x5affe0, toneMapped: false }), roofM = triMat('roof_tiles', { scale: 2.2, rough: .55 }), rope = M(0xc9b07a, 1); lamp.userData.uvS = .45;     /* m2205: one lattice panel per lantern face */
   const sailM = M(0xffffff, .85, { map: TX('ship_sail.jpg'), side: THREE.DoubleSide }), sails = [];     // the sails keep their own 0..1 UVs (the crest is centred on each)
   const wUV = (q, S) => { const P = q.attributes.position, Nn = q.attributes.normal, uv = new Float32Array(P.count * 2); for (let i = 0; i < P.count; i++) { const ax = Math.abs(Nn.getX(i)), ay = Math.abs(Nn.getY(i)), az = Math.abs(Nn.getZ(i)), x = P.getX(i), y = P.getY(i), z = P.getZ(i);
       if (ay >= ax && ay >= az) { uv[i * 2] = z / S; uv[i * 2 + 1] = x / S; } else if (ax >= az) { uv[i * 2] = z / S; uv[i * 2 + 1] = y / S; } else { uv[i * 2] = x / S; uv[i * 2 + 1] = y / S; } } q.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); };
@@ -36202,7 +36202,7 @@ function shipMake(vis, air) {
   // m1393 (pass 8): the GALLEY CHIMNEY on the forecastle, a bronze stack with a rain cap, smoking
   const chimney = [1.8, fy + 3.1, fz0 + 2]; { put(new THREE.CylinderGeometry(.28, .32, 3, 10).translate(chimney[0], fy + 1.5, chimney[2]), bronze); put(new THREE.ConeGeometry(.5, .35, 10).translate(chimney[0], fy + 3.3, chimney[2]), dark); for (const y of [fy + .6, fy + 2.2]) put(new THREE.TorusGeometry(.32, .05, 5, 12).rotateX(Math.PI / 2).translate(chimney[0], y, chimney[2]), gold); O.boxes.push({ minx: chimney[0] - .35, maxx: chimney[0] + .35, miny: fy, maxy: fy + 3, minz: chimney[2] - .35, maxz: chimney[2] + .35 }); }
   // strings of paper lanterns sagging between the masts and down to the castle (`bldCable`)
-  { const lm = M(0xffb070, .5, { emissive: 0xff7a2a, emissiveIntensity: 1.8 }), [m0, m1, m2] = masts, hy = (m, f) => m[1] + m[2] * f;
+  { const lm = M(0x000000, .5, { emissive: 0xffc890, emissiveIntensity: 2.0, emissiveMap: texGet('garden_lantern') }); lm.userData.uvS = .45;     /* m2205: paper lanterns, his garden's lattice paper */ const _lm = lm, [m0, m1, m2] = masts, hy = (m, f) => m[1] + m[2] * f;
     bldCable(g, [0, hy(m0, .55), m0[0]], [0, hy(m1, .55), m1[0]], 1.4, 6, lm); bldCable(g, [0, hy(m2, .6), m2[0]], [0, hy(m0, .45), m0[0]], 1.2, 5, lm);
     for (const sx of [-1, 1]) bldCable(g, [0, hy(m0, .35), m0[0]], [sx * (halfW(.25) - .3), Math.max(dY + 1.1, gun(.25)) + 1, L / 2 * .25], 1, 4, lm); }
   // a banner off the stern (m1378: a real one, on a pole, stirring with the rest)
