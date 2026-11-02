@@ -36,6 +36,36 @@ the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` 
 MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
 minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
 
+## m2249 -- THE COLLIDER AUDIT: `npm run colaudit [zone]`, what is DRAWN against what COLLIDES (Nov 2 2026)
+
+*"Whenever we make complex geometry, especially organic, the colliders are horrendous ... I wish there was a general solution -- go fix it
+all."* Part 1 of 2: the MEASURE, so no spot needs a screenshot. `tools/colaudit.mjs` boots the shipped page headless (the `shot`/`moves`
+pattern), waits for the zone, and in the page compares the RENDER triangles of every solid mesh (leaves, water, cards, glow, sky, fx,
+transparent and the hidden are left out by a name/material test) with the shipped `groundAt` and `BOXES`:
+- GROUND every .5 m: HOLE = a drawn walkable top (up-facing, under 50 deg, 1.2 m drawn headroom) with no collider within .15 m and within
+  3.2 m of it (a jump) or nothing at all (the void); GHOST = a collider floor (each `groundAt` layer, top down) with nothing drawn within .6 m;
+  MISMATCH = the two .15-.6 m apart. A drawn top more than 3.2 m over the collider under it is counted apart (`high`: a mast, an envelope).
+- WALLS every 1 m from a standable cell, 8 rays at knee (.45) and chest (1.1): WALK-THROUGH = drawn within .7 m, no collider within .35 m past
+  it; INVISIBLE = the reverse. LEDGES: every box `ledgeFind`'s own filters take (minus the hands band), each top edge every .5 m, reachable
+  from below: GOOD = a drawn near-flat top at the lip (n.y > .85, within .2 m) AND a drawn steep face under it; anything else is BAD.
+- Out: `shots/colaudit/<zone>.png` (top-down; grey = drawn height; red hole, magenta ghost, yellow mismatch, orange walk-through, cyan
+  invisible, blue bad ledge) and `<zone>.json` (counts, 60 ranked clusters with coordinates, the meshes to blame). ~55 s a zone.
+  `COLAUDIT_EVAL='...'` runs an expression in the booted page (`__ca` is the handle). The garden's picture is `docs/colaudit/garden_boxes.png`.
+
+**THE GARDEN, BOXES (the shipped collider), m2248's code:**
+    98 solid meshes (70 left out), 199,326 drawn triangles; the collider is 1,973 boxes (1,363 of them `gdnWalls`' raster strips) + 236 tris
+    walkable drawn tops 30,548 -> HOLES 2,474   MISMATCH 990   GHOST floors 3,266
+    walls: WALK-THROUGH 133   INVISIBLE 743      ledges: BAD 1,545 / good 190     (1,223 clusters)
+    biggest: the flying ship -- 1,324 hole cells round (72.8, 128.9, 14.6): its hull is 61 m long (z -21.7..39.8) and its deck boxes cover
+      z -1.6..28.6, so the bow, the stern castle and the raised decks are drawn with nothing under them; then holes on the summit (31.9,
+      126.8, -11.7) and (-38.8, 125.3, -29); mismatch on the summit stone (42.3, 130.6, -10); ghost floors round the shrine knoll
+      (-5.6, 120.7, -12), (8.6, 123, -15.7) and the summit (3.2, 130.1, -44.9); bad ledges on the summit (43.3, 126, -12.2), (-12.3, 135, -49)
+    to blame: the ship (1,688 hole / 233 ledge / 136 walk-through samples), the summit and home chunks' rock and stone, the roofs.
+**What this moves:** nothing in the game -- it is the measure. **Open:** part 2, the MESH collider (real triangles for ground, walls and
+ledges) behind TOOLS > COLLIDER, garden first, judged by these same numbers; then akatani / snow / arena / the ship through the same tool
+(their `ZONES` rows have `ready: 'true'` and a guessed rect -- check them on the first run). **Shipped unverified** (the tool runs; the game
+is unchanged).
+
 ## m2244 -- THE INTRO's last two shots, re-aimed with Grumbo IN the hammock (the garden worker's m2243 sleep) (Nov 2 2026)
 - With him actually lying there, `reveal` and `grumbo` framed his boots and his shield from the foot end. Measured on the live rig: his head is at
   bed-local (across -.09, up 1.07, along +.35), face up and toward his feet. Both shots now come from over his chest, across the sling, looking

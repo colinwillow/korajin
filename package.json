@@ -30,7 +30,8 @@
     "worlds": "node tools/worlds.mjs",
     "worlds:boot": "node tools/worlds.mjs --boot",
     "forge": "node tools/forge.cjs",
-    "moves": "node tools/moves.mjs"
+    "moves": "node tools/moves.mjs",
+    "colaudit": "node tools/colaudit.mjs"
   },
   "type": "module",
   "devDependencies": {
