@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the start menu is a WHEEL (centre = selected, a tink per step, tap the lit one to enter); Korajin's own loading lines (Nov 2 2026)
+## m2215 -- the start menu is a WHEEL (centre = selected, a tink per step, tap the lit one to enter); Korajin's own loading lines (Nov 2 2026)
 *"Scroll, and whatever is in the middle of the screen is selected; it should click / tink as the highlight moves; an advance noise; the top one or two
 always look selected."* `korajin()` marks #start `.kjwheel`: on scroll (one rAF) the button nearest the screen's middle line gets `.sel` (lit, jade
 edge, a TAP TO ENTER tag), the rest dim to .42 at .94 scale; `.main` (The Arena) no longer looks lit when it isn't. Each change of highlight plays

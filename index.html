@@ -219,7 +219,7 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #start .go:active { transform: scale(.98); background: #ffffff1c; }
 #start .row { display: flex; gap: 8px; width: min(92vw, 420px); }
 #start .row .go { flex: 1; }
-#start.kjwheel { scroll-snap-type: y proximity; }     /* m15XX: THE WHEEL */
+#start.kjwheel { scroll-snap-type: y proximity; }     /* m2215: THE WHEEL */
 #start.kjwheel .go { scroll-snap-align: center; opacity: .42; transform: scale(.94); transition: opacity .15s, transform .15s, border-color .15s, background .15s; position: relative; }
 #start.kjwheel .go.main { background: #ffffff0d; border-color: #ffffff1f; }
 #start.kjwheel .go.sel { opacity: 1; transform: scale(1.02); border-color: #7affd8aa; background: linear-gradient(135deg, #1d3a36cc, #2a1d3dcc); box-shadow: 0 0 0 1px #7affd855, 0 8px 30px #0008; }
@@ -5546,7 +5546,7 @@ function bootWarm() {
   for (const o of hid) o.visible = false;
   console.log('[melee] boot warm: ' + renderer.info.programs.length + ' programs, ' + tex.size + ' textures uploaded, ' + hid.length + ' hidden shown for the compile, ' + (performance.now() - t0).toFixed(0) + ' ms');
 }
-// m15XX (his: "the loading subtext says 'loading the alien', 'loading zap' -- stuff from the old game; nothing is called an alien here"): the card
+// m2215 (his: "the loading subtext says 'loading the alien', 'loading zap' -- stuff from the old game; nothing is called an alien here"): the card
 // shows KORAJIN's own lines, stepped by how far the load has got; the file-by-file label stays in `PROG.label` for debugging. A failure still says so.
 const BOOTLINES = ['waking the garden', 'gathering Jinra', 'raising the islands', 'hanging the lanterns', 'tuning the great bell', 'sharpening the blade', 'calling the wind', 'almost there'];
 function setBoot(label, frac) {
@@ -70554,7 +70554,7 @@ function startGate() {
     const add = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; el.appendChild(e); return e; };
     const btn = (parent, t, d, f, cls) => { const b = document.createElement('button'); b.className = 'go' + (cls ? ' ' + cls : ''); b.innerHTML = '<b>' + t + '</b>' + (d ? '<small>' + d + '</small>' : '');
       b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation();
-        if (el.classList.contains('kjwheel') && !b.classList.contains('sel')) { b.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }     // m15XX: a tap on a dimmed one brings it to the middle; a tap on the highlighted one goes
+        if (el.classList.contains('kjwheel') && !b.classList.contains('sel')) { b.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }     // m2215: a tap on a dimmed one brings it to the middle; a tap on the highlighted one goes
         if (!el.classList.contains('kjwheel')) { try { snd('ui_tap', { g: .5 }); } catch (err) {} } f(); }); parent.appendChild(b); return b; };     // m2192: a tap sound
     // m1104: THE TITLE PICKER. *"This repo could hold multiple games... the first screen could be a title picker, and then you either pick Zap and
     // Clancy or you pick Korajin."* KORAJIN (KORAJIN.md) is Grumbo -- the alien goblin with the katana -- in the arena; ZAP & CLANCY is the menu
@@ -70597,7 +70597,7 @@ function startGate() {
       btn(el, 'Akatani -- the Ember Canyon', 'His home (renamed from the Red Hollows): the canyon, the river, the hut. (Being built.)', () => go('home'));
       btn(el, 'White Box', 'An empty floor to try a move on.', () => go('test'));
       add('div', 'bld', 'BUILD ' + BUILD); add('div', 'kjpad');
-      // m15XX (his: "scroll, and whatever is in the middle of the screen is selected -- it clicks / tinks as the highlight moves, and the top ones
+      // m2215 (his: "scroll, and whatever is in the middle of the screen is selected -- it clicks / tinks as the highlight moves, and the top ones
       // shouldn't always look selected"): THE WHEEL. The button nearest the screen's middle line is `.sel` (lit, a TAP TO ENTER tag); the rest are
       // dimmed. Each change of highlight plays `ui_tick`; a tap on a dimmed button scrolls it to the middle; a tap on the lit one enters (the bell).
       el.classList.add('kjwheel'); const items = [...el.querySelectorAll('.go')]; let sel = null, armed = 0, raf = 0;
