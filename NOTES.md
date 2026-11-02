@@ -17,6 +17,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2263 -- THE RINGS + WHAT HE OWNS: one layout for every pad button; GOD off = only what the save has earned (Nov 2 2026)
+*"If there's only ONE option it should span the whole space, and the THICKNESS stays the same. Two buttons: the same space, divided in two. A third
+goes above -- a second ring. Why is the backpack floating up there?"* + *"When you start the game you're just the guy -- no backpack, no sword, no
+bow. If god mode is off you have what you'd have in the prologue and level one."* Design + DONE WHEN: `UI_RINGS.md`.
+- `OWN` / `SAVE.own` (in `mel.prog`): `grant(k, quiet)` / `revoke(k)` / `ownHas(k)` / `ownAll(on)`; GOD on = all. `gearHas` asks `ownHas` FIRST
+  (OWN.slot maps katana->sword, bow, launcher/blaster->gun), so kitPick, the old wheel and the quick-draw all refuse unowned kit. `ownSync` puts
+  away an unowned weapon, takes off an unowned shield / wing suit; `applySlot` refuses an unowned slot (a draw in flight when the weapon was
+  revoked landed anyway -- caught in the headless run).
+- **`GOD` + its stored-switch block MOVED UP beside `SAVE`** (after the `?fresh` wipe): the first `gearSync` runs at module scope and now reads it.
+- `RINGS` / `ringPut` / `ringsStep` / `ringLayout`: groups fill rings inside-out (`cap` 2; the blade's STEEL|FIRE|JIN is one ring of 3), equal
+  division of a fixed arc, constant thickness `w`, outer rings keep the inner arc LENGTH and are clamped on screen, re-flow tweened .18 s.
+  RIGHT: SWORD | BOW-or-GUN (owned), HANDS a ring up only with two weapons. LEFT: BACKPACK first (`bagFirst`, stays put), then the drawn
+  weapon's own choices (BOW|GUN, owned arrows, owned blade elements). Tap the drawn weapon again = away (m2057's rule, kept). The dial only
+  with a choice, pointing at the drawn segment's middle. Palette: ink glass + cream rim; title RED = selected; dashed/faded = off (an empty
+  bag); MINT = Jinra only. Old rows untouched for QUICK DRAW off / `RINGS.on = 0` (`mel.rings` '0').
+- Headless (arena, phone landscape): GOD on = BACKPACK on the primary left ring, SWORD|BOW + HANDS on the right; PLAY fresh = no buttons;
+  sword granted = SWORD alone across the whole arc, no HANDS; sword+bow = halves + HANDS; backpack alone = primary ring.
+- Moves boxes 1-8 of UI_RINGS (not ticked: his phone). Open: build 2 (hp / lives / GAME OVER), the prologue's sword pickup (garden worker).
 ## m2260 -- the sound button is a drawn temple bell, not the generic speaker emoji (Nov 2 2026)
 *"A little icon in the upper right that looks like the generic speaker sound icon -- super out of place, ugly. Make our own or not have it."* The
 m1879 button (mute toggle; after the app was away, the iOS TAP FOR SOUND wake) drew 🔊 / 🔈 / 🔇 on a blue chip and a yellow banner. Now `SNDBELL`:

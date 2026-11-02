@@ -13,6 +13,8 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   bare body -> rig + weapon bones -> `armorfit.py`). The arena in `colinwillow/culture_war` (`duel.html`) is the fight lab.
 
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
+- [ ] **UI RINGS + REAL PLAY -- OPEN (his, Nov 2).** `UI_RINGS.md`: what he owns (`OWN`, grant/revoke, GOD = all), one ring layout for every pad
+      button, then hp / lives / GAME OVER with GOD off. m2263 the rings + ownership; next the lives.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),
       four directional attacks on the right flick, guard + parry + lock-on on the pull-down hold, charge -> lunge -> spin.
       Builds a-e in the spec.
