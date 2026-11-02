@@ -16777,7 +16777,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
     { const [bx2, bz2] = H.banner; P(new THREE.CylinderGeometry(.08, .1, 6.2, 8).translate(bx2, top + 3.1, bz2), M.dark); P(new THREE.CylinderGeometry(.04, .04, 1.4, 6).rotateZ(Math.PI / 2).translate(bx2 - .65, top + 6.0, bz2), M.dark);
       const q = new THREE.PlaneGeometry(1.1, 2.8, 1, 8).translate(0, -1.4, 0); swOf(q, 0, 2.8); P(q.translate(bx2 - .7, top + 5.95, bz2), M.banner_red); bx(bx2, bz2, .12, .12, TY - 1, TY + 6); }
     for (const [x, z] of H.barrels) { const yb = Math.hypot(x - tx, z - tz) < TT.r ? top : iy; P(new THREE.CylinderGeometry(.32, .3, .8, 12).translate(x, yb + .4, z), M.wood); for (const yy of [.15, .65]) P(new THREE.TorusGeometry(.32, .025, 4, 14).rotateX(Math.PI / 2).translate(x, yb + yy, z), M.dark); }
-    for (const [x, z] of H.pots) { const yb = Math.hypot(x - tx, z - tz) < TT.r ? top : iy; const pt = gdnPot(x, yb, z, .62, RH); P(pt.pot, M.pot); P(pt.soil, M.soil); P(gdnBlob(RH, x, pt.top + .2, z, .28, .8, 0), RH() < .5 ? M.leaves : M.blossom); }
+    for (const [x, z] of H.pots) { const yb = Math.hypot(x - tx, z - tz) < TT.r ? top : iy; (Z.potRec = Z.potRec || []).push({ x, y: yb, z, H: .62, w: 1 + (RH() - .5) * .16, yaw: RH() * 6.3, top: RH() < .5 ? 0 : 1 }); }     // m2275: breakable
     part(IS.id + '_home', 'homestead', { x: ix, z: iz }); };
   // ---- THE SUMMIT's own rows: the stone terrace and its stair, the three-storey pagoda, the spring and its cascade, the bell gate, the viewing deck,
   // prayer flags strung between poles ----
@@ -16892,8 +16892,7 @@ function gdnBuild(G) { const Z = GARDEN, M = gdnMats(), R = gdnRnd(Z.seed), Y0 =
       for (let i = 0; i < 9; i++) { const p = arc[1 + Math.floor(RP() * 11)]; for (const q of dmtCards(RP, p.x, p.y - .05, p.z, .9, .7, 2, 0)) P(q, RP() < .5 ? M.flowers : M.blossomCard); }
       for (let i = 0; i < 4; i++) { const p = arc[1 + Math.floor(RP() * 11)], len = .8 + RP() * 1.4, q = gdnHang(.7, len); swOf(q, 0, len); q.rotateY(yw); P(q.translate(p.x, p.y, p.z), M.ivy); }
       part('arch_' + into + '_' + x, 'arch', { x, z }); }
-    for (const [x, z] of Pr.pots || []) { const big = RP() < .4, s2 = big ? 1.3 : 1, pt = gdnPot(x, y, z, .62 * s2, RP); P(pt.pot, M.pot); P(pt.soil, M.soil);
-      for (const q of dmtCards(RP, x, pt.top + .22, z, .6 * s2, .55 * s2, 2, 0)) P(q, RP() < .55 ? M.flowers : M.fern); } };
+    for (const [x, z] of Pr.pots || []) { const big = RP() < .4, s2 = big ? 1.3 : 1; (Z.potRec = Z.potRec || []).push({ x, y, z, H: .62 * s2, w: 1 + (RP() - .5) * .16, yaw: RP() * 6.3, top: RP() < .55 ? 0 : 1 }); } };     // m2275: breakable -- built by gdnPots
   gdnProps(Z.props, 0, 'main', gdnRnd(Z.seed + 33));
   // ---- THE CHUNKS: crescents of the same rock round the garden's rim (GARDEN.chunks), each its own piece ----
   const rimRad = deg => { let a = deg * d2r; a = Math.atan2(Math.sin(a), Math.cos(a)); const N = rim.length; let best = 0, bd = 9; for (let i = 0; i < N; i++) { let d = Math.abs(Math.atan2(rim[i][0], rim[i][2]) - a); d = Math.min(d, 6.2832 - d); if (d < bd) { bd = d; best = i; } }
@@ -17089,6 +17088,45 @@ function gdnHang(w, len) { const g = new THREE.PlaneGeometry(w, len, 2, 10).tran
   for (let i = 0; i < P.count; i++) { const x0 = P.getX(i), t = Math.min(1, -P.getY(i) / len), x = x0 * (1 - .6 * t) + Math.sin(t * 2.6 + ph) * .1 * len * t, z = .08 * len * Math.sin(Math.PI * Math.min(1, t * 1.15)) + Math.cos(t * 2.1 + ph) * .04 * len * t;
     const a = tw * t; P.setXYZ(i, x * Math.cos(a) - z * Math.sin(a), P.getY(i) * (1 - .04 * t), x * Math.sin(a) + z * Math.cos(a)); }
   g.computeVertexNormals(); return g; }
+// m2275 THE POTS BREAK (his: "the pots should be able to break"). Every garden pot is an INSTANCE now (`gdnPots`: four instanced draws -- the pot, its
+// soil, a flower top and a fern top -- for all of them) and a BREAK entry, so every blow that already breaks the city's crates breaks a pot: the
+// bolt, a melee swing or a katana cut (`brkBlast`, the one door), an arrow (`arrowStep`, now through `brkBlast` too), and a hard roll or a dash
+// into one (`gdnStep`). `brkBreak` hands a pot to `gdnPotBreak`: the instances go to zero scale, its collider box goes, and ~11 SHARDS of its own
+// curved terracotta (one pooled InstancedMesh, `POTS.n` shards for the whole garden) fly the way the blow went, tumble, bounce on the real ground
+// and shrink away; a puff of clay dust, the crack, and sometimes a doubloon or a wisp of Jinra (JINRA_POWER: collectables in pots).
+const POTS = { hp: 12, n: 160, shards: 11, life: 3.2, go: .7, g: 15, bounce: .3, coin: .3, jin: .35, rollAt: 6.5, list: [], live: [] };
+function gdnPots(G) { const Z = GARDEN, M = gdnMats(), R = Z.potRec || []; if (!R.length) return; const n = R.length, base = gdnPot(0, 0, 0, 1, () => .5);
+  const mk = (geo, mat, cs) => { const m = new THREE.InstancedMesh(geo, mat, n); m.castShadow = !!cs; m.receiveShadow = true; m.frustumCulled = false; G.add(m); return m; };
+  const flo = mergeGeometries(dmtCards(gdnRnd(5), 0, 0, 0, .62, .56, 2, 0).map(q => { q = q.index ? q.toNonIndexed() : q; return q; })), fer = mergeGeometries(dmtCards(gdnRnd(6), 0, 0, 0, .66, .6, 3, 0).map(q => { q = q.index ? q.toNonIndexed() : q; return q; }));
+  const I = { pot: mk(base.pot, M.pot, 1), soil: mk(base.soil, M.soil), flo: mk(flo, M.flowers), fer: mk(fer, M.fern) }; Z.potG = I; const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), V = new THREE.Vector3(), S = new THREE.Vector3(), Z0 = new THREE.Matrix4().makeScale(0, 0, 0);
+  for (let i = 0; i < n; i++) { const r = R[i]; q.setFromAxisAngle(V.set(0, 1, 0), r.yaw); m4.compose(V.set(r.x, r.y, r.z), q, S.set(r.H * r.w, r.H, r.H * r.w)); I.pot.setMatrixAt(i, m4); I.soil.setMatrixAt(i, m4);
+    const s2 = r.H / .62; m4.compose(V.set(r.x, r.y + r.H * .87 + .22 * s2, r.z), q, S.set(s2, s2, s2)); I.flo.setMatrixAt(i, r.top ? Z0 : m4); I.fer.setMatrixAt(i, r.top ? m4 : Z0);
+    const box = { minx: r.x - r.H * .45, maxx: r.x + r.H * .45, miny: Z.top + r.y - .2, maxy: Z.top + r.y + r.H, minz: r.z - r.H * .45, maxz: r.z + r.H * .45 }; BOXES.push(box);
+    BREAK.push({ pot: i, rec: r, cx: r.x, cy: Z.top + r.y + r.H * .5, cz: r.z, rad: r.H * .45, hp: POTS.hp, hp0: POTS.hp, box, type: 'pot', dead: 0 }); }
+  // the shard pool: a curved piece of the pot's own wall, on the pot's own texture, both sides
+  const sg = new THREE.LatheGeometry([[.36, .25], [.4, .4], [.425, .55]].map(([a, b]) => new THREE.Vector2(a, b)), 3, 0, .9).translate(-.38, -.4, 0), sm = M.pot.clone(); sm.side = THREE.DoubleSide;
+  const sh = new THREE.InstancedMesh(sg, sm, POTS.n); sh.frustumCulled = false; sh.castShadow = true; for (let i = 0; i < POTS.n; i++) sh.setMatrixAt(i, Z0); sh.instanceMatrix.needsUpdate = true; G.add(sh); I.shard = sh; POTS.k = 0;
+  boxGrid(); Z.pots = n; }
+function gdnPotBreak(b, hx, hy, hz) { const Z = GARDEN, I = Z.potG, r = b.rec, Z0 = new THREE.Matrix4().makeScale(0, 0, 0); if (!I) return;
+  for (const k of ['pot', 'soil', 'flo', 'fer']) { I[k].setMatrixAt(b.pot, Z0); I[k].instanceMatrix.needsUpdate = true; }
+  if (b.box) { if (typeof boxDel === 'function' && boxDel(b.box)) brkDirty = 1; b.box = null; }
+  let bx = 0, bz = 0; if (hx !== undefined) { bx = b.cx - hx; bz = b.cz - hz; const L = Math.hypot(bx, bz) || 1; bx /= L; bz /= L; }
+  for (let s = 0; s < POTS.shards; s++) { const a = s / POTS.shards * 6.283 + Math.random() * .5, out = 1.6 + Math.random() * 2.2, k = POTS.k = (POTS.k + 1) % POTS.n, sc = r.H * (.7 + Math.random() * .6);
+    POTS.live = POTS.live.filter(q => q.k !== k); POTS.live.push({ k, x: r.x + Math.cos(a) * r.H * .4, y: r.y + r.H * (.2 + Math.random() * .6), z: r.z + Math.sin(a) * r.H * .4, vx: Math.cos(a) * out + bx * 2.6, vy: 2.5 + Math.random() * 3.2, vz: Math.sin(a) * out + bz * 2.6,
+      q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.random() * 6, a, Math.random() * 6)), ax: new THREE.Vector3(Math.random() - .5, Math.random() - .5, Math.random() - .5).normalize(), w: 6 + Math.random() * 8, s: sc, t: 0, rest: 0 }); }
+  const wx = r.x, wy = Z.top + r.y + r.H * .4, wz = r.z;
+  try { spkBurst(wx, wy, wz, 18, { col: [.78, .6, .45], spread: 2.2, up: 1.6, size: .3, life: .9 }); spkBurst(wx, wy - .2, wz, 10, { col: [.42, .3, .2], spread: 1.4, up: .8, size: .22, life: .7 }); } catch (e) {}
+  try { snd('thud', { g: .6, r: 1.25 + Math.random() * .2, x: wx, z: wz }); } catch (e) {}
+  const u = Math.random(); try { if (u < POTS.coin && typeof coinDrop === 'function') coinDrop(scene, wx, wy + .2, wz); else if (u < POTS.coin + POTS.jin && typeof jinraEmit === 'function') jinraEmit(wx, wy + .3, wz, 6); } catch (e) {}
+  Z.potsBroken = (Z.potsBroken || 0) + 1; }
+const _ptM = new THREE.Matrix4(), _ptQ = new THREE.Quaternion(), _ptV = new THREE.Vector3(), _ptS = new THREE.Vector3();
+function gdnPotStep(dt) { const Z = GARDEN, I = Z.potG; if (!I || !I.shard || !POTS.live.length) return; const sh = I.shard;
+  for (let i = POTS.live.length - 1; i >= 0; i--) { const S = POTS.live[i]; S.t += dt;
+    if (!S.rest) { S.vy -= POTS.g * dt; const kd = Math.exp(-.6 * dt); S.vx *= kd; S.vz *= kd; S.x += S.vx * dt; S.y += S.vy * dt; S.z += S.vz * dt; _ptQ.setFromAxisAngle(S.ax, S.w * dt); S.q.premultiply(_ptQ);
+      const gy = groundAt(S.x, S.z, Z.top + S.y + .5, 1) - Z.top; if (S.y < gy + .03 && S.vy < 0) { S.y = gy + .03; S.vy = -S.vy * POTS.bounce; S.vx *= .55; S.vz *= .55; S.w *= .5; if (Math.abs(S.vy) < .6) S.rest = 1; } if (S.y < -40) S.t = 99; }
+    const k = S.t > POTS.life ? Math.max(0, 1 - (S.t - POTS.life) / POTS.go) : 1; if (k <= 0) { sh.setMatrixAt(S.k, _ptM.makeScale(0, 0, 0)); POTS.live.splice(i, 1); continue; }
+    sh.setMatrixAt(S.k, _ptM.compose(_ptV.set(S.x, S.y, S.z), S.q, _ptS.setScalar(S.s * k))); }
+  sh.instanceMatrix.needsUpdate = true; }
 function gdnPaint(q, fn) { const P = q.attributes.position, c = new Float32Array(P.count * 3); for (let i = 0; i < P.count; i++) c.set(fn(P.getX(i), P.getY(i), P.getZ(i)), i * 3); q.setAttribute('color', new THREE.BufferAttribute(c, 3)); return q; }
 // a tapered tube along points (a hanging root): radius r at the top to a point, colour top to tip
 function gdnTaper(pts, r, n, c0, c1) { const C = new THREE.CatmullRomCurve3(pts), S = 12, pos = [], col = [], idx = [], T = new THREE.Vector3(), Nn = new THREE.Vector3(), Bn = new THREE.Vector3(), up = new THREE.Vector3(1, 0, 0);
@@ -17712,11 +17750,12 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   const cell0 = PLANT.cell; PLANT.cell = 72;     // m2161: fewer, bigger plant cells here (each kind x cell is a draw)
   try { Z.plantMeshes = plantFlush(g, Z.plantRec); } catch (e) { note('GARDEN PLANTS ' + e.message); }
   try { gdnBridges(g); } catch (e) { note('GARDEN BRIDGES ' + e.message); console.error(e); }
+  try { gdnPots(G); } catch (e) { note('GARDEN POTS ' + e.message); console.error(e); }
   try { gdnShip(G); } catch (e) { note('GARDEN SHIP ' + e.message); console.error(e); }
   try { gdnBeamFx(G); } catch (e) { note('GARDEN BEAM ' + e.message); console.error(e); }
   try { if (Z.swordG) gdnMergeStatic(Z.swordG, new Set()); } catch (e) {}
   // m2177: the islands' own pieces -- every material that differs only in tint shares one, then each piece merges again (one draw per material)
-  try { const keepG = new Set([Z.shipM && Z.shipM.g, Z.pieces.heart, Z.cardM, Z.glow].filter(Boolean)); Z.repaint = gdnConsolidate(g, keepG);
+  try { const keepG = new Set([Z.shipM && Z.shipM.g, Z.pieces.heart, Z.cardM, Z.glow, ...(Z.potG ? Object.values(Z.potG) : [])].filter(Boolean)); Z.repaint = gdnConsolidate(g, keepG);
     let m0 = 0, m1 = 0; for (const [k, pg] of Object.entries(Z.pieces)) { if (!pg || keepG.has(pg) || k === 'far') continue; const [a, b] = gdnMergeStatic(pg, new Set()); m0 += a; m1 += b; } Z.remerge = [m0, m1]; } catch (e) { note('GARDEN REPAINT ' + e.message); console.error(e); }
   try { if (Z.isleRec) Z.plantMeshes = Z.plantMeshes.concat(plantFlush(g, Z.isleRec)); } catch (e) { note('GARDEN ISLE PLANTS ' + e.message); }
   PLANT.cell = cell0;
@@ -17735,7 +17774,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   const [sx, sz] = Z.spawn.at, [fx, fz] = Z.spawn.face;
   const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); if (Z.sleep && Z.sleep.on && Z.hammock.bed && !Z.wakeClip && !player.sleepDone) { gdnSleepStart(); player.sleepDone = 1; if (typeof cam !== 'undefined') cam.az = h; return; } if (player.sleep) return; player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };     // m2242: he starts asleep in the hammock
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
-  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.gdnSleepStart = gdnSleepStart; mel.reelEnd = reelEnd; mel.SPRINGS = SPRINGS; mel.gdnClothY = gdnClothY; mel.stick = stick; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
+  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.gdnSleepStart = gdnSleepStart; mel.reelEnd = reelEnd; mel.BREAK = BREAK; mel.brkBlast = brkBlast; mel.POTS = POTS; mel.SPRINGS = SPRINGS; mel.gdnClothY = gdnClothY; mel.stick = stick; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
 function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O.t += dt; Z.U.uTime.value = O.t;
   if (!O.tris) { O.tris = 1; try { bldTris(O, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } }
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
@@ -17768,6 +17807,8 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
     for (const D of Z.casters || []) D.o.castShadow = Math.hypot(p.pos.x - D.c.x, p.pos.z - D.c.z) - D.r < sf;
     if (Z.shipM) { const sp = Z.shipM.g.position, near = Math.hypot(p.pos.x - sp.x, p.pos.z - sp.z) < 45; if (near !== O.shipCast) { O.shipCast = near; Z.shipM.g.traverse(o => { if (o.isMesh && o.geometry.attributes.position.count >= 2500) o.castShadow = near; }); } }
     for (const m of Z.plantMeshes || []) if (m.castShadow || m.userData.cast0) { if (m.userData.cast0 == null) m.userData.cast0 = 1; m.geometry.boundingSphere || m.computeBoundingSphere(); const bs = m.boundingSphere || m.geometry.boundingSphere; m.castShadow = !!bs && Math.hypot(p.pos.x - bs.center.x, p.pos.z - bs.center.z) - bs.radius < sf; } }
+  gdnPotStep(dt);
+  if (Z.potG && Math.hypot(p.vel.x, p.vel.z) > POTS.rollAt) for (const b of BREAK) if (b.pot !== undefined && !b.dead && Math.hypot(b.cx - p.pos.x, b.cz - p.pos.z) < b.rad + .55 && Math.abs(b.cy - p.pos.y - .5) < 1.2) { b.dead = 1; brkBreak(b, p.pos.x, p.pos.y, p.pos.z); }     // m2275: a roll or a dash through one
   // m2267 THE RUSTY SWORD IS A PICKUP (the UI worker's grant(), m2263): walk up to it on its peg -> grant('sword') (the FOUND card) and it leaves the
   // tree. If he already owns it at load (GOD on, or a save that has it), it stays on the peg as scenery and nothing happens.
   if (Z.swordG && !O.swordDone && typeof grant === 'function') { if (O.swordOwned0 == null) O.swordOwned0 = typeof ownHas === 'function' && ownHas('sword');
@@ -20654,6 +20695,7 @@ function arrowStep(dt) {
     if (A.mine && GUARD.list.length) { const gh = guardHit(P.x, P.y, P.z); if (gh) { if (A.type === 'blast') arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); else guardBlow(gh, Math.atan2(A.v.x, A.v.z), A.pow || .7, A.dmg || 3, P.x, P.y, P.z); if (A.pl) BOW.stat.hits++; A.m.removeFromParent(); ARROWS.splice(i, 1); continue; } }     // m1732: the guardian
     if (A.mine) { let hit = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const R = d.root.position, hh = (d.K.h || 1.8);
         if (Math.abs(P.y - (R.y + hh * .5)) < hh * .55 && Math.hypot(P.x - R.x, P.z - R.z) < (d.K.r || .4) + .25) { hit = d; break; } }
+      if (!hit && BREAK.length && BRK.on && brkBlast(P.x, P.y, P.z, .15, 2)) { A.m.removeFromParent(); ARROWS.splice(i, 1); continue; }     // m2275: an arrow breaks a pot (or a crate)
       if (!hit && bldHit(P.x, P.y, P.z, .3, 3)) { A.m.removeFromParent(); ARROWS.splice(i, 1); continue; }     // m1128: a bolt sent home smashes the ballista
       if (hit && A.type === 'blast') { arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); BOW.stat.hits++; A.m.removeFromParent(); ARROWS.splice(i, 1); continue; }
       if (hit && A.type === 'fire') { burnStart(hit); BOW.stat.fires++; }
@@ -25329,6 +25371,7 @@ function brkBreak(b, hx, hy, hz) {
   // can sit inside. A hydrant keeps its body, so only the marks above the seam go.
   brkDecalOff(b, b.hyd !== undefined ? b.y + HYD.capY : -1e9);
   if (b.hyd !== undefined) return hydBreak(b, hx, hy, hz);   // his model (m215)
+  if (b.pot !== undefined) return gdnPotBreak(b, hx, hy, hz);     // m2275: a garden pot
   // **THE INSTANCE IS SCALED TO ZERO, NEVER REMOVED.** An InstancedMesh's count is fixed and
   // re-packing would renumber every slot after it -- so every other breakable of that type
   // would be pointing at the wrong object. A zero-scale matrix is a degenerate triangle, which
