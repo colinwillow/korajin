@@ -60,6 +60,15 @@ BELL SHRINE -- (1) a pagoda roof on columns with a great bronze bell, or (2) a m
 - [ ] **P4 -- THE ESCAPE** (the leap and the glide or the ride).
 - [ ] **P5 -- THE FALLEN GROUND** (the landing site, the statues, the first village voice) -> Chapter One.
 
+## THE INTRO NARRATION (his, recorded: audio/voice/korajin_intro_02.mp3, 50.6 s) -- the opening reel, before the nap
+> Long ago… high above the clouds, there existed a world untouched by time. A place where ancient temples rested upon floating mountains, where
+> rivers shimmered with the light of Jinra… the sacred energy that gave life to the heavens. For countless generations, the Korajin lived among
+> these skies, protected by the great bells of the ancient sanctuaries. Their echoes carried across the floating kingdoms, keeping watch over a
+> peace that had endured for centuries. And among those entrusted with this sacred duty… was a warrior of considerable strength… unwavering
+> courage… and a rather extraordinary talent for sleeping through it all. His name… was Grumbo.
+No Hollow in the intro (take 1 named it; he dropped it -- the Hollow arrives at the festival). Shots: clouds -> a temple on a floating mountain ->
+Jinra rivers -> a golden sweep to the great bell -> its echo across the isles -> the rusty sword -> Grumbo asleep in the hammock.
+
 ## DRAFT 4 -- "THE LAST BELL" (Nov 1 2026: ChatGPT's pitch, cut down, plus his notes). THE PLAN unless he changes it.
 His rule: *"Like a magician -- show the thing before you take it away."* So the sky world's LIFE is shown and walked before it falls.
 Lots of characters are welcome (*"I don't mind spending a dollar or two on characters"*).
