@@ -5797,7 +5797,8 @@ const SFX = {
     foot_GRASS: [1, 2, 3, 4].map(n => 'audio/steps/grass_' + n + '.mp3'), foot_WOOD: [1, 2, 3, 4].map(n => 'audio/steps/wood_' + n + '.mp3'),
     foot_STONE: [1, 2, 3, 4].map(n => 'audio/steps/stone_' + n + '.mp3'), foot_SAND: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/sand_' + n + '.mp3'),
     foot_METAL: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/metal_' + n + '.mp3'), foot_WATER: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/water_' + n + '.mp3'),
-    rustle: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/rustle_' + n + '.mp3'),     // m2013: HIS snow recording, cut into 8 steps (see NOTES)
+    rustle: [1, 2, 3, 4, 5, 6].map(n => 'audio/steps/rustle_' + n + '.mp3'),
+    ui_start: [1, 2, 3].map(n => 'audio/ui/start_draw_' + n + '.mp3'), ui_tap: ['audio/ui/tap_1.mp3', 'audio/ui/tap_2.mp3'], ui_go: ['audio/ui/go_1.mp3'],     // m15XX: the start tap (a blade drawn), menu taps, entering a world (Kenney CC0, audio/ui/CREDITS.txt)     // m2013: HIS snow recording, cut into 8 steps (see NOTES)
     foot_LAND: ['audio/hit_sounds/hit_sound_gound_01.mp3', 'audio/hit_sounds/hit_sound_ground_02.mp3', 'audio/hit_sounds/thud_a_1.mp3', 'audio/hit_sounds/thud_b_1.mp3', 'audio/hit_sounds/thud_a_2.mp3', 'audio/hit_sounds/thud_b_2.mp3'],     /* m1872: HIS LANDING, as footsteps (pairs: a left, b right); m1875: + two variant pairs */
     // m1875: BODY CONTACTS (`contactSnd`) -- his landing and three variations of each half (1: -8% pitch, lowpass 2.6k, heavier; 2: +8%, lighter;
     // 3: -3%, treble -4 dB, softer)
@@ -6337,9 +6338,12 @@ function sfxWake(ev) {
 // iOS lets a media element play only once a TOUCH has started it, and an element can feed only one AudioContext ever -- so the element is made
 // and started inside the same touch that builds (or rebuilds) the context (`musicCtx`), then left paused until a zone wants it. `musicWant`
 // names the zone's track; TOOLS > MUSIC turns it off (kept). `duck` (0..1) is the hook for cut-scenes and dialogue.
-const MUSIC = { on: 1, vol: .24, fadeIn: 4, fadeOut: 2.5, duck: 0, duckK: .4, tracks: { garden: 'audio/music/forgotten_garden.mp3' }, el: null, src: null, g: null, ctx: null, trk: '', k: 0, retry: 0 };
+const MUSIC = { on: 1, vol: .24, fadeIn: 4, fadeOut: 2.5, duck: 0, duckK: .4, tracks: { garden: 'audio/music/forgotten_garden.mp3' }, menu: 'garden',     /* m15XX: the menu's track key (one song so far -- the SAME key as the garden's, so going from the menu into the garden does not restart it) */ el: null, src: null, g: null, ctx: null, trk: '', k: 0, retry: 0 };
 try { if (localStorage.getItem('mel.music') === '0') MUSIC.on = 0; } catch (e) {}
-function musicWant() { return MUSIC.on && GARDEN.on ? 'garden' : ''; }
+function musicWant() { if (!MUSIC.on) return ''; if (GARDEN.on) return 'garden'; const st = document.getElementById('start'); return st && st.classList.contains('on') ? MUSIC.menu : ''; }     // m15XX: the start menu plays `MUSIC.menu` too (his: 'when you push the start button the song should start playing')
+// m15XX: THE START TAP draws a blade. The splash is a classic script; its tap is also the touch that builds the audio context (`sfxWake`, capture),
+// so the files are decoding as this runs -- it retries for a moment until one is ready.
+(function () { const sp = document.getElementById('splash'); if (!sp) return; sp.addEventListener('click', () => { let n = 0; const go = () => { const b = SFX.buf.ui_start; if (b && b.some(Boolean)) snd('ui_start', { g: .8 }); else if (n++ < 12) setTimeout(go, 60); }; go(); }); })();
 function musicCtx() { const M = MUSIC, c = SFX.ctx; if (!c || !SFX.bus) return; try { if (M.el) M.el.pause(); } catch (e) {}
   const el = new Audio(); el.loop = true; el.preload = 'auto'; el.setAttribute('playsinline', ''); M.trk = musicWant() || 'garden'; el.src = A(M.tracks[M.trk]);
   M.g = c.createGain(); M.g.gain.value = 0; M.src = null; try { M.src = c.createMediaElementSource(el); M.src.connect(M.g); M.g.connect(SFX.bus); } catch (e) { M.src = null; }
@@ -69996,7 +70000,7 @@ function startGate() {
   const el = document.getElementById('start');
   if (skip || !el || !el.appendChild) return Promise.resolve();
   return new Promise(go => {
-    const enter = (w, extra) => {
+    const enter = (w, extra) => { try { snd('ui_go', { g: .55 }); } catch (err) {}     // m15XX
       if (stage) { stage.dispose(); stage = null; }
       try { sessionStorage.setItem(START.key, '1'); sessionStorage.setItem(WORLD.store, w); } catch (e) {}
       if (w === WORLD.now && !extra) { el.classList.remove('on'); go(); return; }
@@ -70004,7 +70008,7 @@ function startGate() {
     };
     const add = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; el.appendChild(e); return e; };
     const btn = (parent, t, d, f, cls) => { const b = document.createElement('button'); b.className = 'go' + (cls ? ' ' + cls : ''); b.innerHTML = '<b>' + t + '</b>' + (d ? '<small>' + d + '</small>' : '');
-      b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); f(); }); parent.appendChild(b); return b; };
+      b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); try { snd('ui_tap', { g: .5 }); } catch (err) {} f(); }); parent.appendChild(b); return b; };     // m15XX: a tap sound
     // m1104: THE TITLE PICKER. *"This repo could hold multiple games... the first screen could be a title picker, and then you either pick Zap and
     // Clancy or you pick Korajin."* KORAJIN (KORAJIN.md) is Grumbo -- the alien goblin with the katana -- in the arena; ZAP & CLANCY is the menu
     // that was here. The pick is not remembered across a fresh launch, on purpose: the title screen is the front door.
