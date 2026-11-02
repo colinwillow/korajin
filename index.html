@@ -10256,16 +10256,16 @@ function beastStep(d, dt, t) {
   if (d.entering) return beastEnter(d, dt, t);
   if (d.ko && d.st !== 'cDeath') beastGo(d, 'cDeath', !fly && d.actions[C.clips.death] ? C.clips.death : '');
   if (d.st === 'cDeath') {
-    if (fly) { t[C.clips.rest[0]] = 1; setSkinScale(d, C.clips.rest[0], .3); P.y = d.fy = Math.max(0, (d.fy === undefined ? P.y : d.fy) - dt * 6); L.rotation.z = Math.min(1.2, d.t * 1.5); }
+    if (fly) { t[C.clips.rest[0]] = 1; setSkinScale(d, C.clips.rest[0], .3); P.y = d.fy = Math.max(d.floorY || 0, (d.fy === undefined ? P.y : d.fy) - dt * 6); L.rotation.z = Math.min(1.2, d.t * 1.5); }
     else t[d.cur || C.clips.idle] = 1;
     const len = fly ? 1 : skinLen(d, d.cur || C.clips.idle);
-    if (d.t > len + 1.2) { d.sink = (d.sink || 0) + dt * .9; P.y = (fly ? d.fy : 0) - d.sink; if (d.t > len + 2.8 && !d.outDone) { d.outDone = 1; L.visible = false; ARENA.gone.push(d); } }
+    if (d.t > len + 1.2) { d.sink = (d.sink || 0) + dt * .9; P.y = (fly ? d.fy : (d.floorY || 0)) - d.sink;     /* m2236: sinks from HIS floor (the Garden is 120 m up) */ if (d.t > len + 2.8 && !d.outDone) { d.outDone = 1; L.visible = false; ARENA.gone.push(d); } }
     return true;
   }
   if (fly) return beastFly(d, dt, t, dd, toP);
-  { let gy = d.home ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0;
-    if (d.home && d.st !== 'cFly' && d.floorY != null && gy < d.floorY - 1.5 && d.safe) { P.x = d.safe[0]; P.z = d.safe[1]; gy = d.floorY; }     // m2029 (his: "he flies over the edge and gets stuck down there"): a homed beast does not WALK off a drop -- he is put back on his last safe footing
-    else if (d.home && d.floorY != null && Math.abs(gy - d.floorY) < .5) d.safe = [P.x, P.z];
+  { const homed = d.home || (GARDEN.on && GARDEN.on.built); let gy = homed ? groundAt(P.x, P.z, (d.floorY != null ? d.floorY : P.y) + .8, .9) : 0;     // m2236: in the Garden every beast walks the island, not y = 0
+    if (homed && d.st !== 'cFly' && d.floorY != null && gy < d.floorY - 1.5 && d.safe) { P.x = d.safe[0]; P.z = d.safe[1]; gy = d.floorY; }     // m2029 (his: "he flies over the edge and gets stuck down there"): a homed beast does not WALK off a drop -- he is put back on his last safe footing
+    else if (homed && d.floorY != null && Math.abs(gy - d.floorY) < .5) d.safe = [P.x, P.z];
     d.floorY = d.floorY == null ? gy : (gy < d.floorY - .05 ? Math.max(gy, d.floorY - 14 * dt) : gy); P.y = d.floorY; }     // m2012: a beast with a HOME stands on what is under him (the lair is 9.5 m up)
   if (d.st !== 'cFire' && d.st !== 'cFly') d.beam = null;     // m2006: a hit ends the beam
   if (d.home && !d.sleep && d.st !== 'cFly' && d.floorY < d.home[1] - 2 && iceBeamOn(d)) { d.fly = { ph: 'up', t: 0, a: 0, back: 1 }; beastGo(d, 'cFly', C.clips.fire); return true; }     // m2024 (his: "the dragon fell off the cliff and was stuck trying to get back up"): off his cliff, he FLIES home
@@ -10325,7 +10325,7 @@ function beastFly(d, dt, t, dd, toP) {     // the mech: hover and circle, call l
   const C = beastC(d), L = d.root, P = L.position, R = ARENA.r - 1.5;
   if (d.fy === undefined) d.fy = P.y; P.y = d.fy;     // his OWN height: the body step under this pulls every body to the floor each frame
   d.wob = Math.max(0, (d.wob || 0) - dt); L.rotation.z = Math.sin(performance.now() * .02) * d.wob * .3;
-  if (d.st === 'cDown') { t[C.clips.rest[0]] = 1; P.y = d.fy = Math.max(0, d.fy - dt * 7); if (P.y <= 0 && !d.landed) { d.landed = 1; beastSlam(d, .6); }
+  if (d.st === 'cDown') { t[C.clips.rest[0]] = 1; P.y = d.fy = Math.max(d.floorY || 0, d.fy - dt * 7); if (P.y <= (d.floorY || 0) && !d.landed) { d.landed = 1; beastSlam(d, .6); }
     if (d.t >= C.dizzyT) { d.landed = 0; d.exposed = 0; beastGo(d, 'cRise'); } return true; }
   if (d.st === 'cSwoop') {
     t[C.clips.run] = 1; const u = Math.min(1, d.t / C.swoopT), a = d.sw;
@@ -17500,7 +17500,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   const [sx, sz] = Z.spawn.at, [fx, fz] = Z.spawn.face;
   const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
-  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
+  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
 function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O.t += dt; Z.U.uTime.value = O.t;
   if (!O.tris) { O.tris = 1; try { bldTris(O, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } }
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
@@ -17862,14 +17862,14 @@ function arenaArmourOff(d, a, dirH) {
 }
 
 // THE BEAM: a column of light out of the sky onto the pad, and a ring of light that runs out across the floor
-function arenaBeam(x, z, rgb, down) {
+function arenaBeam(x, z, rgb, down, y0) {
   const col = new THREE.Color(rgb[0], rgb[1], rgb[2]);
   const cyl = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 60, 24, 1, true), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
-  cyl.position.set(x, 30, z); scene.add(cyl);
+  cyl.position.set(x, (y0 || 0) + 30, z); scene.add(cyl);
   const core = new THREE.Mesh(new THREE.CylinderGeometry(.35, .35, 60, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
   core.position.copy(cyl.position); scene.add(core);
   const ring = new THREE.Mesh(new THREE.RingGeometry(.86, 1, 64), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
-  ring.rotation.x = -Math.PI / 2; ring.position.set(x, .06, z); scene.add(ring);
+  ring.rotation.x = -Math.PI / 2; ring.position.set(x, (y0 || 0) + .06, z); scene.add(ring);
   ARENA.fx.push({ cyl, core, ring, x, z, rgb, t: 0, dur: down ? ARENA.beamT : ARENA.outT, down, burst: 0 });
   snd('plasma', { g: 1, r: down ? .55 : .7, x, z });
 }
@@ -17897,15 +17897,26 @@ function arenaGlow(d, k, col) {
     const E = m.userData.arE; m.emissive.copy(E.c).lerp(col || MPH_WHITE, k); m.emissiveIntensity = E.i + k * 2.4; }
 }
 
+// m2236 SPAWNS ON THE ISLAND (his: "whenever I try to spawn an enemy in the floating clouds they just aren't up on the cliffs" -- he wants to film fights
+// in the Garden). Every spawn placed by a fixed arena spot or a ring round the player lands, in the Garden, on a spot of the ISLAND in front of him:
+// a ring of candidates 5-11 m out (ahead first, then fanning round), each must be walkable within 2.5 m of his height AND have ground all round it
+// out to `clear` m (a big one needs room), and no box at chest height there. Null when the Garden is off (the caller's own spot stands).
+function gdnSpawnSpot(clear, k) { if (!(GARDEN.on && GARDEN.on.built)) return null; const p = player, py = p.pos.y, h = p.faceH || 0, NB = [], c = Math.max(1, clear || 1.5);
+  const ok = (x, z) => { const gy = groundAt(x, z, py + 2.5, 5); if (Math.abs(gy - py) > 2.5) return null;
+    for (let a = 0; a < 8; a++) { const xx = x + Math.sin(a * Math.PI / 4) * c, zz = z + Math.cos(a * Math.PI / 4) * c; if (Math.abs(groundAt(xx, zz, gy + 1, 1.5) - gy) > 1) return null; }
+    const q = c * .6; for (const b of boxesNear(x - q, x + q, z - q, z + q, NB)) if (b.maxy > gy + .6 && b.miny < gy + 1.6 && b.maxx > x - q && b.minx < x + q && b.maxz > z - q && b.minz < z + q) return null; return gy; };     /* boxesNear hands back the whole grid cell: overlap tested here */
+  const off = (k || 0) * .55; for (const r of [6 + c, 8 + c, 5 + c, 10 + c, 4 + c]) for (const da of [0, .45, -.45, .9, -.9, 1.4, -1.4, 2, -2, 2.6, -2.6, Math.PI]) { const a = h + da + off, x = p.pos.x + Math.sin(a) * r, z = p.pos.z + Math.cos(a) * r, gy = ok(x, z); if (gy != null) return [x, gy, z]; }
+  return null; }
 async function arenaSpawn(key) {
   const A = ARENA.kinds[key]; if (!A || ARENA.busy) return;
   ARENA.busy = 1; arenaUi();
   try {
     const K = await arenaLoad(key);
-    const door = ARENA.door.entry === 'DOORS' && !A.civ ? arenaDoorPick() : -1;
-    let [x, z] = ARENA.spawnAt; if (door >= 0) { const a = door * Math.PI / 2 + (ARENA.door.aOff || 0); x = Math.sin(a) * ARENA.door.r0; z = Math.cos(a) * ARENA.door.r0; }
-    if (door < 0) arenaBeam(x, z, A.beam, 1);
-    const d = bodySpawn(K.P, K, x, z, 0);
+    const door = ARENA.door.entry === 'DOORS' && !A.civ && !(GARDEN.on && GARDEN.on.built) ? arenaDoorPick() : -1;     // m2236: no stadium doors in the Garden
+    let [x, z] = ARENA.spawnAt; const gSp = !RGN.on && door < 0 ? gdnSpawnSpot(Math.max(1.4, (K.h || 2) * (K.creature ? .9 : .5)), ARENA.live.length) : null; if (gSp) { x = gSp[0]; z = gSp[2]; }     // m2236
+    if (door >= 0) { const a = door * Math.PI / 2 + (ARENA.door.aOff || 0); x = Math.sin(a) * ARENA.door.r0; z = Math.cos(a) * ARENA.door.r0; }
+    if (door < 0) arenaBeam(x, z, A.beam, 1, gSp ? gSp[1] : 0);
+    const d = bodySpawn(K.P, K, x, z, gSp ? gSp[1] + .5 : 0);
     arenaArm(d); arenaArmour(d);
     if (A.katana) arenaKatana(d, A); else if (!A.civ && !A.noShield) arenaShieldMake(d);
     foeBar(d);
@@ -19955,7 +19966,7 @@ function spiderSpawn(P, x, z, h, y, k = 1, nLegs = 6) { const m = skeletonClone(
       const S = { root, m, mesh, mats, bn, rest, legs, stumps: [], k, n0: legs.length, t: Math.random() * 3, y0: root.position.y, hp: SPIDER.hp, acc: 0, cut: [], st: 'walk', stT: 0, cool: 1 + Math.random() * 2, hitCd: 0, flash: 0, kx: 0, kz: 0, recoil: 0, pitch: 0, lift: 0, vy: 0, air: 0, ax: 0, az: 0, front: 0, dead: 0 }; SPIDER.list.push(S); return S; }
 async function spiderAdd() { try { const P = await spiderLoad(), p = player;
     const sm = SPIDER.small, a0 = Math.atan2(-p.pos.x, -p.pos.z);     // m1736: one big six-legged spider and `small.n` small four-legged ones round it
-    for (let k = 0; k <= sm.n; k++) { const a = a0 + (k ? (k % 2 ? .7 : -.7) * Math.ceil(k / 2) : 0), r = k ? 10 : 13, x = p.pos.x + Math.sin(a) * r, z = p.pos.z + Math.cos(a) * r; spiderSpawn(P, x, z, Math.atan2(p.pos.x - x, p.pos.z - z), null, k ? sm.k : 1, k ? sm.legs : 6); }
+    for (let k = 0; k <= sm.n; k++) { const a = a0 + (k ? (k % 2 ? .7 : -.7) * Math.ceil(k / 2) : 0), r = k ? 10 : 13, S0 = gdnSpawnSpot(k ? 2 : 4, k), x = S0 ? S0[0] : p.pos.x + Math.sin(a) * r, z = S0 ? S0[2] : p.pos.z + Math.cos(a) * r; spiderSpawn(P, x, z, Math.atan2(p.pos.x - x, p.pos.z - z), S0 ? S0[1] : null, k ? sm.k : 1, k ? sm.legs : 6); }     /* m2236: on the Garden's island */
     snd('clang', { g: .5, r: .5 }); } catch (e) { console.error('[melee] spider', e); note('SPIDER FAILED ' + e.message); } }
 function spiderClear() { if (STATUE.g) statueClear(); for (const S of SPIDER.list) S.root.removeFromParent(); SPIDER.list.length = 0; for (const G of SPIDER.globs) G.m.removeFromParent(); SPIDER.globs.length = 0; }
 function spiderMid(S, v) { const R = S.root.position; return v.set(R.x, R.y + S.lift + SPIDER.P.h * S.k * .5, R.z); }
@@ -20184,7 +20195,7 @@ function guardPlay(G, k, fade = .25) { const a = G.act[k]; if (!a) return; if (G
   a.reset(); a.setEffectiveTimeScale(1); a.setEffectiveWeight(1); a.play(); if (fade > 0 && G.cur && G.cur !== k) { G.act[G.cur].fadeOut(fade); a.fadeIn(fade); } else if (G.cur && G.cur !== k) G.act[G.cur].stop(); G.cur = k; }
 function guardDur(G, k) { const a = G.act[k]; return a ? a.getClip().duration : 1; }
 async function guardAdd(Z = GUARD) { try { const P = await guardLoad(Z), p = player, a = p.faceH, n = Z.n || 1;
-    for (let i = 0; i < n; i++) { const aa = a + (i - (n - 1) / 2) * .5, r = Z.spawnR || 14, x = p.pos.x + Math.sin(aa) * r, z = p.pos.z + Math.cos(aa) * r; guardSpawn(P, x, z, Math.atan2(p.pos.x - x, p.pos.z - z) + (Z.wander && i ? Math.random() * 3 : 0), Z.statueN == null || i < Z.statueN ? 1 : 0, Z); }
+    for (let i = 0; i < n; i++) { const aa = a + (i - (n - 1) / 2) * .5, r = Z.spawnR || 14, S0 = gdnSpawnSpot(1.6, i), x = S0 ? S0[0] : p.pos.x + Math.sin(aa) * r, z = S0 ? S0[2] : p.pos.z + Math.cos(aa) * r; guardSpawn(P, x, z, Math.atan2(p.pos.x - x, p.pos.z - z) + (Z.wander && i ? Math.random() * 3 : 0), Z.statueN == null || i < Z.statueN ? 1 : 0, Z); }
     snd('clang', { g: .5, r: .4 }); } catch (e) { console.error('[melee] guardian', e); note('GUARDIAN FAILED ' + e.message); } }
 function guardClear(Z) { for (const G of GUARD.list.slice()) if (!Z || G.Z === Z) { G.root.removeFromParent(); GUARD.list.splice(GUARD.list.indexOf(G), 1); } if (Z && Z !== GUARD) return; for (const R of GUARD.rocks) R.m.removeFromParent(); GUARD.rocks.length = 0; }
 function guardMid(G, v) { const R = G.root.position; return v.set(R.x, R.y + G.Z.P.h * .5, R.z); }
