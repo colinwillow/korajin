@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2191 -- THE GARDEN: the bridges leave from the EDGE, measured; the posts take the ropes (Nov 2 2026)
+
+His phone shot of m2182: *"the runs of the bridge are still going through the side of the cliff; the rails' ends are floating instead of attaching
+to the wooden post."* MEASURED, not guessed (harness: every bottom-rope node, a ray down from 25 m onto the island meshes): 7/46 and 8/62 nodes
+INSIDE the islands, up to 1.1 m under the lawn -- the anchors sat .9 m inland and the deck sagged under the grass before reaching the cliff.
+`gdnBridges` now walks each end along the span over the DRAWN island (lawn / cliff / rock / paving meshes, matched by MAP too -- a re-tinted lawn is
+another material until the consolidation; not the moss lip, the notch takes it), rays from y+3 down 4.5, across BOTH rope lines and the middle; the
+EDGE is where 1.5 m of open air begins (a pool in the lawn is not it), searched up to 90% of the span; the anchor goes `edgeOut` .3 m past it at
+the lawn's OWN height there (a summit edge stands ~1 m over its chunk's H). Routes re-picked for the longest open span: garden->home `rim:62` ->
+`inner:chunk_home:100` (11.6 m), home->summit [36,4,-28] -> [10,10,-38] (9.2 m). Result: **0/40 and 0/32 nodes inside**.
+The landing: a stone slab 2.6 m running inland from the anchor plus a stone CORBEL under its lip. The POSTS stand exactly at each side's rope ends
+(half-width + .1, .12 behind the anchor) with rope LASHINGS at deck and rail height (`garden_bridge_lashing`, one draw); lamps hang on the land side.
+Renders brA / brB / br1c. **Shipped unverified.**
+
 ## m2190 -- THE TITLE LOOP pass 2: depth, haze, a fuller far layer, shafts, sky lanterns (Nov 2 2026)
 *"Okay start but definitely very early."* m2188's loop on the phone was mostly empty peach between Grumbo and the sky. Here is what this pass adds,
 every piece in the `LOOPBG` table (stable ids, seeded scatter, a pure builder):
