@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the start screen MOVES: his animated poster as a looping video (AV1 / HEVC / H.264) (Nov 3 2026)
+*"A moving version of the start image -- remove the audio, anything that increases the file size."* His clip: 8.04 s, 1080x1920 H.264 + AAC, 17.2
+MB. Re-cut to LOOP (720x1280, 24 fps, no audio): starts at 1.0 s and the last second cross-fades into the first (ffmpeg xfade) -> 7.0 s; first vs
+last frame mean diff 3.9/255. Three encodes in `video/`: title_loop_av1.mp4 (SVT-AV1 crf 38, 993 KB), _hevc.mp4 (x265 crf 29, hvc1, 764 KB),
+_h264.mp4 (main crf 26, 990 KB), all +faststart. The splash (Korajin) adds a muted / looping / playsinline <video> over the poster with the
+three <source>s in that order (AV1 for iPhone 15 Pro+, HEVC for most iPhones, H.264 for everything); it fades in only on 'playing', so the poster
+is the first paint and the fallback. Landscape: contain, like the poster. Cache-busted with ?b=<build>. Shipped unverified. Second video (the
+loading screen) next.
+
 ## m2286 -- the boom at every prologue load was MY life code; Grumbo's skin is in the chip and guarded (Nov 3 2026)
 Via main, from his iPhone: *"every time I load the prologue there are explosions and noises at the beginning, then it goes to me"* and *"Grumbo is
 black again, in the intro and in play"* (after m2281's texture reload).

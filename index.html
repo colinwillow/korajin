@@ -191,8 +191,9 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
   touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 #splash.gone { opacity: 0; pointer-events: none; }
 #splash img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; pointer-events: none; }
+#splash video.vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; pointer-events: none; opacity: 0; transition: opacity .6s ease; } #splash video.vid.on { opacity: 1; }     /* m15XX */
 #splash img.blur { filter: blur(22px) brightness(.4); transform: scale(1.12); display: none; }
-@media (min-aspect-ratio: 3/4) { #splash img.main { object-fit: contain; } #splash img.blur { display: block; } }
+@media (min-aspect-ratio: 3/4) { #splash img.main, #splash video.vid { object-fit: contain; } #splash img.blur { display: block; } }
 #splash .kjtap.wait { opacity: .8; font-size: 19px; animation: kjpulse 1.4s ease-in-out infinite; } @keyframes kjpulse { 50% { opacity: .45; } }     /* m2213 */
 #splash .kjtap.zt { font-size: 18px; }
 #splash .kjtap { position: absolute; left: 0; right: 0; margin: 0 auto; width: max-content; bottom: calc(7% + env(safe-area-inset-bottom)); padding: 16px 48px 18px 50px;     /* m1319: centred by margin, not transform */
@@ -1070,6 +1071,12 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
   // event: the start menu is up, or the world finished loading and warming), and a tap before that does nothing. 90 s with no word = let him in.
   const t = document.createElement('div'); t.className = 'kjtap' + (kj ? '' : ' zt'); el.appendChild(t);
   if (kj) { img.alt = 'Korajin'; glow.style.display = 'none'; }
+  // m15XX (his: "a moving version of the start image -- compress it, remove the audio"): the poster stays as the first paint and the fallback; his
+  // 8 s loop plays over it once it is actually PLAYING (fades in). Three encodes, the phone takes the first it can play: AV1 (iPhone 15 Pro+),
+  // HEVC (most iPhones), H.264 (everything). Re-cut so it loops: the last second cross-fades into the first (7 s, 720x1280, no audio, ~1 MB each).
+  if (kj) { try { const v = document.createElement('video'); v.className = 'main vid'; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.preload = 'auto';
+    for (const [f, t] of [['av1', 'video/mp4; codecs="av01.0.05M.08"'], ['hevc', 'video/mp4; codecs="hvc1"'], ['h264', 'video/mp4; codecs="avc1.4D401F"']]) { const so = document.createElement('source'); so.src = 'video/title_loop_' + f + '.mp4?b=' + bn; so.type = t; v.appendChild(so); }
+    v.addEventListener('playing', () => v.classList.add('on'), { once: true }); img.after(v); const pl = v.play(); if (pl && pl.catch) pl.catch(() => {}); } catch (e) {} }
   const bar = () => { const b = document.querySelector('#boot .bar i'); return b ? parseFloat(b.style.width) || 0 : 0; };
   const label = () => { if (window.KJ_READY) { t.textContent = 'TAP TO START'; t.classList.remove('wait'); if (!kj) t.style.display = 'none'; return; } t.classList.add('wait'); t.textContent = 'LOADING ' + Math.round(bar()) + '%'; };
   label(); const tick = setInterval(() => { label(); if (window.KJ_READY) clearInterval(tick); }, 250);
