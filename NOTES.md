@@ -50,7 +50,7 @@ His: *"four or five times the size of the hero, kind of a long boat, futuristic 
   as a second hull; the boat does not move yet (pass 5).
 - **Caught on the strip / render:** the roof floated .2 m over its posts (fixed, CRAFT 3); the spawn camera looked through the posts (spawn moved forward).
 - **Cost: the boat is ~26 draw calls, and again in the mirror.** Merge it into 3-4 materials next build if his phone feels it. Tris +13k.
-## m23XX -- NIGHT 8: THE BLACK WEDGE was a SHOOTING STAR's NaN (Nov 3 2026)
+## m2333 -- NIGHT 8: THE BLACK WEDGE was a SHOOTING STAR's NaN (Nov 3 2026)
 His report (images/feedback/m2325/garden_night_black_wedge.png): *"a big black wedge overlaps the sky, the starfield around it; sometimes the hero goes
 completely or partly black"* -- same spot, one shot fine, one not. **Root:** m2321's meteor streak fell off as `exp(-b*b / 5e-6 / (1 + (head - a) * 30))`.
 Ahead of the meteor's head (`a > head + 1/30`) that divisor is NEGATIVE, the exponent goes to +INF, and INF x the mask's 0 = **NaN**; NaN blends BLACK.
