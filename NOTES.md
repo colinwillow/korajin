@@ -19,6 +19,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2386 -- FIX: m2385 was a BLANK PAGE (a `//` comment ate a closing brace) (Nov 3 2026)
+m2385 appended a `//` comment in the MIDDLE of a one-line arrow function in `L.setNight`, so the rest of the line -- the torii glow and the closing `};` --
+became comment and the module did not parse ("Unexpected end of input"). `npm run check` SAID so (0 boot ok) and the push went anyway because the
+check's result was only counted, not gated. Now a block comment. m2385's notes stand. **Gate the push on the check, never just print it.** Shipped unverified.
+
 ## m2385 -- THE LAKE at night, his m2376 notes 1-3: veins not speckles, runes that ride the hull, no trail dots (Nov 3 2026)
 1. **Rock speckles -> VEINS.** The `nightGlow` crack mask on the canyon (scale 1.3 = cells under a metre) read as purple PIXEL NOISE in the distance and
    SHIMMERED as the lens moved (sub-pixel detail, aliasing). It is off the terrain; the terrain shader draws its own night VEINS: Voronoi edges on ~8 m
