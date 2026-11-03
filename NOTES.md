@@ -17,6 +17,39 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2332 -- THE HAMMOCK EXIT: a real get-up, not a slide (Nov 3 2026)
+His report (relayed): *"he does this kind of weird slide where there's no animation"* getting out of the hammock.
+- **Clip:** Mixamo `Getting_Up` (82 f, 2.7 s) baked by the Forge onto Grumbo as `wake` in `agoblin_meditate.glb`. It was picked by MEASURING the Hips
+  track of every get-up in the library (`clipprobe.cjs`): it is the one that starts ON HIS BACK with the head the same way as `lay`
+  (Male_Laying_Pose_2), ends standing facing +Z, and drifts only 5 cm. Getting_Up_2 and Stand_Up_2 also start on the back but run 8 s and end turned.
+- **State:** `gdnSleepStep` drives the clip's time itself (`Q.ct`, timeScale 0). The weights go lay -> wake -> idle and sum to 1 (`blendIn` .12, `blendOut` .88).
+  Over the clip he turns 90 degrees to the side of the sling nearer the garden (`turn`), so his legs swing over the edge. He is carried off the cloth
+  (`move`) and drops to the ground (`drop`). The pivot is his hips, because the Hips track sits at xz 0.
+- **Root motion:** the clip keeps its Hips HEIGHT (that is the sitting up and the standing). The 5 cm of drift is left in. Position is ours.
+- **Hammock:** the swing is kicked at the push. A bigger kick comes when his weight leaves (`uh` > .45), so the sling swings back up behind him.
+- **Cloth:** the FIT keeps running during the get-up, only for bones still over the cloth, and only ever lifts him. The hair/sash clamp already runs while `player.sleep`.
+- **TOOLS > HAMMOCK EXIT:** ONE PUSH (default: one push plays it through) or HOLD THE STICK (holding advances it; let go before `commit` .62 and he settles
+  back down). This is his taste call.
+- If the clip has not loaded, he falls back to the old carry, so he is never stuck in the sling.
+- Shipped unverified. Moves no sandbox box. Open: whether the pose reads, the side he picks, and the timing fractions (all in `GARDEN.sleep`).
+
+## m2331 -- THE LAKE: the BOAT JETS button back in TOOLS > LOOK (Nov 3 2026)
+m2330's rebase kept the other side's TOOLS line and dropped the button (the handler was in). Restored. Shipped unverified.
+
+## m2330 -- THE LAKE pass 2: the longboat (WATER.md) (Nov 3 2026)
+His: *"four or five times the size of the hero, kind of a long boat, futuristic but also Japanese style, maybe some jets, maybe not."*
+- **Built in LAKELIB** (`L.boat`, row `W.boat` in SC_LAKE): an 8.4 x 2.0 m hull lofted from sections (pointed ends, prow sheer sweeping up), vertex-painted
+  vermilion lacquer with a dark sheer band, a gold line at the gunwale and the waterline; a brushed-metal rail (metalness .5 + an emissive floor:
+  CRAFT 4), a Jinra line each side (`O.jin` = JPAL.glow), a plank deck (canvas texture), a shelter of four posts INTO a wood-under / tile-over roof
+  with upturned eaves and gold ridge, a prow that curls back with a paper lantern on a cord from its tip (CRAFT 3), a stern curl and a steering oar.
+- **Buoyancy off the drawn waves:** `L.waveAt` at four hull points -> heave, pitch, roll, damped (`B.step`). On the mirror layer, so it reflects.
+- **He stands on it:** `groundAt` takes `boat.deckAt` (tilts with pitch/roll); `lakeWall` keeps him inside the gunwale below deck + .75 (a jump clears
+  it). `lakeBuild` spawns him on the deck facing the bow and sets the ENTRY row's `at` there, so the entrance lands ON the deck. Headless game render:
+  him on the deck at (-67.8, .3, 56.6).
+- **TOOLS > LOOK > BOAT JETS** (`mel.lakejets`, default OFF -- his taste call): two nacelles on struts with Jinra rings. Not built: the floating ship
+  as a second hull; the boat does not move yet (pass 5).
+- **Caught on the strip / render:** the roof floated .2 m over its posts (fixed, CRAFT 3); the spawn camera looked through the posts (spawn moved forward).
+- **Cost: the boat is ~26 draw calls, and again in the mirror.** Merge it into 3-4 materials next build if his phone feels it. Tris +13k.
 ## m23XX -- NIGHT 8: THE BLACK WEDGE was a SHOOTING STAR's NaN (Nov 3 2026)
 His report (images/feedback/m2325/garden_night_black_wedge.png): *"a big black wedge overlaps the sky, the starfield around it; sometimes the hero goes
 completely or partly black"* -- same spot, one shot fine, one not. **Root:** m2321's meteor streak fell off as `exp(-b*b / 5e-6 / (1 + (head - a) * 30))`.
@@ -237,6 +270,25 @@ variable changes everything glowing that way, we can easily change fire particle
   boot threw `reading 'glow'` -- they prepend the `jinpal` script now. `syntax` checks `<script id=..>` too.
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
+
+## m2329 -- GOOP FX ON THE REAL MOVES: TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX) (Nov 3 2026)
+Relayed from Colin: *"I haven't seen those in game -- I imagine the attacks glowing and I don't see anything glowing."* He wants the goop on the
+real moves NOW (his call ahead of the lab sign-off; the switch is the A/B). One `FX` for the whole game (`goopFx`), stepped every frame by
+`goopStep` next to `bladeTrail` in `arenaStep`; the library does no work at all when nothing is alive (one flush to empty, then returns).
+- **KATANA TRAIL** (`goopBlade`, from `bladeTrail`): a goop SHEET from 30% up the blade to the tip off the real `heroSword` base/tip, two sub-steps
+  per frame, shedding blobs (by blade speed, `GOOP.bladeK`), sparks and arcs. The old ribbon and its Jin motes are skipped while ON.
+- **BLADE FIRE** (red / Jin, the "two flames"): `goopBladeFire` -- goop seeps up off the edge (tip-weighted), lingers, drips, with an arc crawling
+  the blade; 16/s idle, 45/s swinging. The flame tongues are skipped while ON.
+- **HITS** (`meleeHit`): a goop burst along his line to the hit, scaled by the blow's `k` (the body flash stays).
+- **ARROWS** (his, `A.pl`): a thin goop trail + motes; when it hits or sticks, a burst (`GOOP.arw` ends the trail).
+- **DODGES** (roll / cartwheel / flips, on the rising edge): a small splash ring and a body trail for .42 s. **LANDINGS**: over 1.5x
+  `MOVE.hardLand` (and every hero drop) the goop SLAM; over .75x a splash. **CHARGE RELEASE**: a burst 1 m ahead at chest height. **WHIRLWIND**:
+  the spiral.
+- Colours: the Jinra palette (`JPAL`), so VIOLET / MINT / JADE follow TOOLS > LOOK > JINRA COLOUR. `GOOP.pulse` (0..1, decays at 4/s) is exposed
+  for the NIGHT worker's body glow, so the hero glow and the goop can fire as one thing. Ground under the goop is the last floor he stood on.
+- The lab no longer steps FX itself, and its own landing slam is gone (the landing hook catches the hero drop).
+- Checked: `npm run check` 4 boot ok; the lab boot fires every move + a hit + a dodge through `goopStep`. Not seen on a real swing:
+  no harness here builds his skin. Whole-piece: this is his explicit call to wire before the sign-off; the FX box stays open. Shipped unverified.
 
 ## m2310 -- FX reads THE JINRA PALETTE: no FX colour table; `fxCols` derives the goop from a JPAL row; VIOLET tuned (Nov 3 2026)
 From main and the Jinra-colour worker: Colin wants every Jinra glow on ONE variable, so the FX Lab's own switch must READ `JPAL`, not keep a copy;
