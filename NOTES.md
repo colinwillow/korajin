@@ -17,6 +17,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 9: the stars glow MORE (Nov 3 2026)
+His ask (relayed): *"stars glow more -- brighter, bigger bright ones with a soft glow, more twinkle."* The sky's bright layer is now `starG`: a hot core,
+a soft bloom halo (two falloffs) and faint four-point spikes, all sized in PIXELS (`fwidth`), twinkling deeper (`twinkle` .6 -> .85); the whole field
+x`stars.gain` 1.45 (`uStarK`). **Two wrong first tries, both from the cell the star lives in:** a halo wider than its hashed cell is CUT by the cell
+walls (squares and triangles all over the sky), and a max-norm fade window is itself a square -- the window is ROUND now and dies .28 from the centre,
+which is inside the nearest wall (the centre sits .3 from it). Density .035 of cells at scale 70. images/feedback/m2329/stars_glow.jpg. Shipped unverified.
+
 ## m2332 -- THE HAMMOCK EXIT: a real get-up, not a slide (Nov 3 2026)
 His report (relayed): *"he does this kind of weird slide where there's no animation"* getting out of the hammock.
 - **Clip:** Mixamo `Getting_Up` (82 f, 2.7 s) baked by the Forge onto Grumbo as `wake` in `agoblin_meditate.glb`. It was picked by MEASURING the Hips
