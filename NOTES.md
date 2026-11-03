@@ -307,7 +307,7 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
-## m2330 -- GOOP on the UNARMED moves and the ACROBATICS: limb trails, slides, the blink; the switch is TOOLS > GOOP FX (Nov 3 2026)
+## m2338 -- GOOP on the UNARMED moves and the ACROBATICS: limb trails, slides, the blink; the switch is TOOLS > GOOP FX (Nov 3 2026)
 Relayed from Colin: *"The effects on melee, slams, sword attacks and bow and arrow look SO good."* Then fill the gaps: every unarmed swipe / flick
 punch, kick and combo, the handsprings, the teleport / blink, the left-stick flips and dodges, the slides; light for jabs, heavy for finishers.
 - **LIMB TRAILS** (`goopLimbs`): the handsprings, flip kicks and punches are all `p.melee` clips, so ONE rule covers them. While an unarmed strike,

@@ -52,7 +52,7 @@ stand-in path (a blade arc, a fist line, a foot arc, a helix, a projectile) -- t
 - [ ] His pick of palette (MINT / PURPLE / SOLAR) -- or "keep all three".
 - [ ] **His sign-off on the look, on his phone.**
 - [x] **m2329 (his call: "I haven't seen those in game")**: wired into the katana trail, blade fire, hits, arrows, dodges, landings, charge
-      release and whirlwind behind TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX). m2330: the unarmed strikes, handsprings, flips/dodges, slides and the
+      release and whirlwind behind TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX). m2338: the unarmed strikes, handsprings, flips/dodges, slides and the
       blink (limb trails scaled light -> heavy); the switch is TOOLS > GOOP FX.
 - [ ] (was) THEN, one at a time and asking first: replace the sword's two flame effects; then punch, kick, slam/landing, spin, teleport, handspring,
       arrows -- each its own build.
