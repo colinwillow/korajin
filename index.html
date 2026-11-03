@@ -13049,6 +13049,8 @@ function nightSet(m) { const N = NIGHT; N.mode = m; try { localStorage.setItem('
 //   veins   finer, branching vein lines, brighter toward the object's TOP (tips of leaves, crowns of plants: its own bounding box)
 //   tips    only the top of the object (bud tips, crystal points)
 //   all     the whole surface (lantern paper, a lamp's glass)
+//   inscribe ONE line of the script down an object's own +Y (a blade, a post, a hem): `width` = half its breadth across local Z, `y0`..`y1` its run,
+//            `cavity` (re-used) = a bend: the line's centre is at z = cavity * y^2
 // role: 'glow' | 'core' | 'deep' | 'spark' (JPAL) | 'accent' (NIGHT.accent, purple) | 'mix' (Jinra, with accent cells when BOTH is on).
 // ONE draw added: none -- it is a term in the material's own shader. Each distinct (material, mask) compiles one program variant.
 const NGLOW = { accent: 0xa46bff, both: (() => { try { return localStorage.getItem('mel.nglow') !== 'ONE'; } catch (e) { return true; } })(), atlas: null, n: 0, mats: new Set(), miss: 0,
@@ -13098,7 +13100,7 @@ function nightGlow(m, o = {}) { if (!m || m.userData.ng) return m; const G = NGL
   const col = new THREE.Color(role === 'accent' ? G.accent : (JPAL[role] != null ? JPAL[role] : JPAL.glow));
   const U = { uNgC: { value: col }, uNgS: { value: new THREE.Vector4(o.scale || (kind === 'runes' ? 2.2 : kind === 'veins' ? 6 : 1.6), o.density == null ? .35 : o.density, o.strength == null ? 2.2 : o.strength, o.pulse == null ? .6 : o.pulse) },
     uNgB: { value: new THREE.Vector4(o.width || (kind === 'veins' ? .06 : .08), o.cavity == null ? .6 : o.cavity, o.y0 == null ? 0 : o.y0, o.y1 == null ? 1 : o.y1) } };
-  if (kind === 'runes') nightRunes();
+  if (kind === 'runes' || kind === 'inscribe') nightRunes();
   m.userData.ng = { kind, U }; G.mats.add(m); G.n++;
   const ob = m.onBeforeCompile, ok = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null;
   m.customProgramCacheKey = () => (ok ? ok() : '') + '|ng-' + kind + '-' + role;
@@ -13115,6 +13117,10 @@ function nightGlow(m, o = {}) { if (!m || m.userData.ng) return m; const G = NGL
         ngm = smoothstep(uNgB.x, 0.0, e) * (.25 + .75 * ty * ty) + smoothstep(.82, 1.0, ty) * .6;
         ngc = (uNgBoth > .5 && ngH(floor(vNgW.xz * .7) + 4.4) > .55) ? uNgA : uNgC;`,
       tips: `float ty = clamp((vNgL.y - uNgB.z) / max(1e-3, uNgB.w - uNgB.z), 0.0, 1.0); ngm = smoothstep(.6, 1.0, ty); ngc = uNgC;`,
+      inscribe: `float h = uNgB.x, L = h * 2.3, yy = vNgL.y - uNgB.z; vec2 f = vec2((vNgL.z - uNgB.y * vNgL.y * vNgL.y + h) / (2.0 * h), fract(yy / L)); float cl = floor(yy / L);
+        float ins = step(0.0, yy) * step(vNgL.y, uNgB.w) * step(0.0, f.x) * step(f.x, 1.0);
+        float gi = floor(ngH(vec2(cl, 7.7)) * 64.0); vec2 au = (vec2(mod(gi, 8.0), floor(gi / 8.0)) + mix(vec2(.06), vec2(.94), vec2(f.x, 1.0 - f.y))) / 8.0;
+        vec2 cq = vec2(vNgL.z / (2.0 * h), -vNgL.y / L) / 8.0 * .88; vec2 gg = textureGrad(uNgAtlas, au, dFdx(cq), dFdy(cq)).rg; ngm = ins * (gg.r + gg.g * .55); ngc = uNgC;`,     /* continuous gradients: no mip seam at the cell edges */
       all: `ngm = 1.0; ngc = uNgC;` }[kind];
     sh.vertexShader = 'varying vec3 vNgW, vNgN, vNgL;\n' + sh.vertexShader.replace('#include <project_vertex>', `#include <project_vertex>
       { vec4 ngw = vec4(transformed, 1.0); vec3 ngn = objectNormal;
@@ -23551,6 +23557,7 @@ function katanaScene() {
   bg.translate(0, 0, -.275); bg.rotateZ(Math.PI / 2); bg.rotateY(Math.PI / 2);     // length along +Y, width along Z, thin along X
   const P = bg.attributes.position; for (let i = 0; i < P.count; i++) { const y = P.getY(i); P.setZ(i, P.getZ(i) - .0009 * y * y); }
   bg.computeVertexNormals(); const blade = new THREE.Mesh(bg, steel); blade.position.y = 11.3; root.add(blade);
+  if (NIGHT.mode !== 'DAY') nightGlow(steel, { mask: 'inscribe', role: 'glow', width: 1.15, cavity: -.0009, y0: 3, y1: 55, strength: 2.6, pulse: .8 });     /* cavity = the blade's own bend (z -= .0009 y^2, below): the line follows it */     // NIGHT.md: the blade's script, down the middle of the steel, lit only after dark
   const g = new THREE.Group(); g.add(root); return g;
 }
 // THE MEGA SWORD (the orc's): the katana's frame and mount, so every katana move, the guard, the trail and the left hand's grip work

@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 4: the katana's blade carries a line of the script at night (Nov 3 2026)
+His ask: *"His sword will have ancient symbol writing on it that glows at night."* A new `nightGlow` mask, **`inscribe`**: ONE line of the script
+down an object's own +Y, `width` = half its breadth across local Z, `y0..y1` its run, and (re-using `cavity`) a BEND -- the katana's blade is curved
+(`z -= .0009 y^2` in `katanaScene`) and the first render showed the line sliding off one edge toward the tip; with the bend it sits down the middle.
+Sampled with continuous gradients (the first try drew a dotted mip seam at every glyph's edge). Applied to `katanaScene`'s steel when TIME is not DAY
+(Jinra glow, 2.6, a slow pulse). Checked in a close render (the katana slot would not equip headless -- ownership -- so the hidden blade was shown for
+the shot). **Open:** the arm cloth (the hero is one material: it needs a mask from his texture), the mega sword and his own sword GLB, and the steel
+reads nearly black at night (the environment drops to .22) -- CRAFT says metals never go black; a moon-tinted env floor is the next fix. Shipped unverified.
+
 ## m2323 -- NIGHT 3: THE NIGHT GLOW -- `nightGlow`, the alien script, cracks and veins; the snow lights up after dark (Nov 3 2026)
 His ask: *"Japanese-looking alien symbols on stuff that you don't see in the day -- on the wood, in the sand, on the rocks, in the crevices; plants that
 are plain in the day have parts that glow at night."* NIGHT.md box 4, and box 5's first zone.
