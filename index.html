@@ -71995,7 +71995,7 @@ function startGate() {
       // shouldn't always look selected"): THE WHEEL. The button nearest the screen's middle line is `.sel` (lit, a TAP TO ENTER tag); the rest are
       // dimmed. Each change of highlight plays `ui_tick`; a tap on a dimmed button scrolls it to the middle; a tap on the lit one enters (the bell).
       el.classList.add('kjwheel'); const items = [...el.querySelectorAll('.go')]; let sel = null, armed = 0, raf = 0;
-      // m15XX (his: "the picker should stay in the bottom third -- when you scroll, the top part goes up and fades out, so the upper two-thirds stays the scene"):
+      // m2303 (his: "the picker should stay in the bottom third -- when you scroll, the top part goes up and fades out, so the upper two-thirds stays the scene"):
       // the selection line is at 78% of the screen (scroll-padding-top 56vh puts the snap centre there); anything above ~60% fades to nothing by ~42%.
       const pick = () => { raf = 0; if (!el.isConnected) return; const H = innerHeight, cy = H * .78; let best = null, bd = 1e9;
         for (const b of items) { if (!b.isConnected) continue; const q = b.getBoundingClientRect(), y = q.top + q.height / 2, d = Math.abs(y - cy); b.style.setProperty('--fade', Math.max(0, Math.min(1, (y - H * .42) / (H * .18))).toFixed(3)); if (d < bd) { bd = d; best = b; } }

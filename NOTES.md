@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the level picker lives in the bottom third; items fade out as they rise; the arrow sits in the list (Nov 3 2026)
+## m2303 -- the level picker lives in the bottom third; items fade out as they rise; the arrow sits in the list (Nov 3 2026)
 *"The little arrow is intersecting the menu when you first pull it up. And the picker should stay in the bottom third -- when you scroll, the top part
 goes up and fades out, so you still see the upper two-thirds as the scene; you're just picking in the bottom third."* The wheel's selection line
 moved from 50% to 78% of the screen (`pick`: cy = .78 H) and `scroll-padding-top: 56vh` makes the snap centre (and `scrollIntoView({block:'center'})`)
