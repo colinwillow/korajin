@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2322 -- the entrance: the beacon level and the village, from the contact sheet (Nov 3 2026)
+The m2320 sheet: the BEACON level still stood him against the sign and the start light column with a rock in the lens -- now 10 m back, up on the
+rise at (140.7, 4, -36.2), looking down the course (sign, column, course ahead; the canyon wall behind). The VILLAGE's flipped lens side was blocked
+at .9 m (verify run) -- back to the default side, which the search had passed. Still open: the SHIP has a rope coil at his feet (prop, harmless).
+Shipped unverified.
+
 ## m2320 -- THE ENTRANCE, step 2: every zone's landing audited headless and the bad ones moved; the Sky Temple builds again (Nov 3 2026)
 His: *"you often spawn in a really random spot, with stuff in the camera's way. The spawn must be ART DIRECTED. The snow zone's spawn is occluded."*
 - **The audit** (scratch tool, the `shot` pattern): each zone booted headless; once the entrance has picked its landing it renders the ENTRANCE lens
