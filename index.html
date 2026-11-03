@@ -147,7 +147,7 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
   transition: opacity .5s ease; padding: 24px;
 }
 #boot.gone { opacity: 0; pointer-events: none; }
-#boot video.bvid, #boot .bvshade { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }     /* m15XX: the moving loading poster */
+#boot video.bvid, #boot .bvshade { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }     /* m2289: the moving loading poster */
 #boot video.bvid { object-fit: cover; opacity: 0; transition: opacity .6s ease; } #boot video.bvid.on { opacity: 1; }
 #boot .bvshade { background: linear-gradient(180deg, #0c0706b0 0%, #0c070680 40%, #0c0706e6 85%); }
 #boot > :not(video):not(.bvshade) { position: relative; z-index: 1; }
@@ -1053,7 +1053,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
 (function () { const b = document.getElementById('boot'); if (!b) return; let kj = false; try { kj = localStorage.getItem('mel.game') === 'korajin'; } catch (e) {}
   if (kj) { b.dataset.g = 'kj'; document.getElementById('bootT').textContent = 'KORAJIN'; document.getElementById('bootSub').textContent = 'コラジン · the Jin wakes';
     b.style.backgroundImage = 'linear-gradient(180deg, #0c0706d0 0%, #0c0706a8 40%, #0c0706f2 85%), url(images/korajin/korajin_title_02.webp?b=' + ((document.getElementById('bootBuild') || {}).textContent || '') + ')';
-    // m15XX (his: "for now this will be the second one -- remove the audio"): the LOADING card's poster, moving -- the same three encodes as the start
+    // m2289 (his: "for now this will be the second one -- remove the audio"): the LOADING card's poster, moving -- the same three encodes as the start
     // screen (AV1 / HEVC / H.264, a 7 s seamless loop, ~1 MB each), under the card's own dark gradient so the words stay readable; it fades in on 'playing'.
     try { const bn2 = (document.getElementById('bootBuild') || {}).textContent || '', v = document.createElement('video'); v.className = 'bvid'; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.preload = 'auto';
       for (const [f, t] of [['av1', 'video/mp4; codecs="av01.0.05M.08"'], ['hevc', 'video/mp4; codecs="hvc1"'], ['h264', 'video/mp4; codecs="avc1.4D401F"']]) { const so = document.createElement('source'); so.src = 'video/load_loop_' + f + '.mp4?b=' + bn2; so.type = t; v.appendChild(so); }

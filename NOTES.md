@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the LOADING screen moves too: his second animated poster, looping under the card (Nov 3 2026)
+## m2289 -- the LOADING screen moves too: his second animated poster, looping under the card (Nov 3 2026)
 *"For now this will be the second one (I have another I like better, once its sword is fixed) -- remove the audio."* Same treatment as m2287: 8.04
 s 1080x1920 (16 MB) -> a 7 s seamless loop (last second cross-faded into the first), 720x1280, no audio; video/load_loop_av1.mp4 (938 KB),
 _hevc.mp4 (735 KB), _h264.mp4 (958 KB). The Korajin boot card prepends a muted looping <video> (the three sources, AV1 -> HEVC -> H.264) plus
