@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2347 -- THE JINRA BEAM AS RISING FLUID, pass 1 (Nov 3 2026)
+His (relayed): *"it should feel like FLUID going up and down rather than just a cylinder that's glowing."* `gdnBeamFx` is rebuilt. It is 4 draws (was 2),
+all animated on the GPU:
+- **SHEETS:** three nested open tubes. Their walls ripple and swell with travelling waves, with a flared churning foot and a tapering top. Domain-warped
+  flow streaks pour upward, each layer at its own speed, with a fresnel sheen on the edges and a hot core.
+- **STRANDS:** six ribbons twist round the column, with bright dashes running up them. Half twist the other way.
+- **DROPLETS:** 170 blobs, each with a highlight. 70% stream up; 30% are thrown out of the column, fall back on a parabola and land at its foot.
+- **THE SPRING:** a churning disc with ripples running out, plus a low crown of splash.
+- **Colours:** JPAL core / body / deep, the goop's palette. `uOn` (he is inside) tightens it round him and speeds it up.
+- **Tunables:** `GARDEN.beam.fx`: flow, swirl, glow, strands, twist, drops, fall.
+Shipped unverified. A frame strip follows. Watch the phone frame rate: three double-sided additive layers is more overdraw than the old two.
+
 ## m2346 -- THE START LOGO STAYS IN FRAME<!--mine-->; petals and a shine round it
 His (screenshot m2338): with the wheel showing, the KORAJIN logo was pushed off the top of the screen. It was IN THE SCROLL (a flex child of
 `#start`), so scrolling the wheel scrolled it away. Now `.loopmark` is `position: fixed` under `env(safe-area-inset-top)`, width
