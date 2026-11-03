@@ -18,6 +18,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2380 -- the katana charge's own sounds: a rising shimmer, a bell at full, a soft lock-on, a breath on release (TOOLS > KATANA > K-HUM / K-FULL / K-LOCK / K-GO)
+His words (Nov 3): *"the sounds for the katana charge and the lock-on came from my old game and don't fit -- I want something beautiful, cool,
+interesting that matches."*
+- What they were: the arm was `swoosh` slowed to .5, the top-out `HCHG.snd` 'ready' (`powerup_01`, Robits), the lock `metal_ping_01`, PART AIM's
+  step a `clang` at 2.4, the release `swoosh` at .72.
+- Now `audio/katana/` (12 files, 192 KB, CC0 from OpenGameArt, `CREDITS.txt`; trimmed, faded, mono, -9 dBFS peak; the folder is in `bump.mjs` DIRS).
+  Picked by analysis: median spectral flatness <= .0024 for every tonal slot (the whooshes are breath, .17-.19, on purpose). Four slots, A/B/C each:
+  - **bed** (`kcBed`, ticked at the top of `stepPlayer`): a seamless loop (crossfaded, tiled x3, looped T..2T so a decoder's offset cannot open a
+    seam) from the arm to the end of the charge, climbing x.82 -> x1.22 and .35 -> 1 of `g` with the charge; any end (release, hit, swap, knock-down)
+    fades it in ~.15 s. A magical_3 / B health_restore / C Cure6.
+  - **full** (both top-out edges, the held-up one and `kaimHold`'s): A bell_ding3 (low bowl) / B bell arpeggio / C soft gong.
+  - **lock**: the charge locking a threat (`chLock`, new), a target lock (`findLock`), PART AIM steps (softer, x1.25). A bell_ding1 / B bell_ding2 / C Cure3.
+  - **go** (`chargeRelease` with a blade): A / B two breaths of "Air Whoosh" / C magical_7.
+  A non-blade charge (the hammer) keeps its old sounds. The bow has no charge sound to replace (its draw is silent); the gun's saw synth is not a katana sound.
+- Levels under the hits (`KCSND.g`: bed .2, full .42, lock .28, go .55); nothing ducked. Each TOOLS tap previews the pick; remembered (`mel.kcsnd`).
+- Not heard here -- his ear picks. Box moved: none (sound pass on the katana charge). Open: his A/B/C picks and the levels.
+
 ## m2378 -- the katana charge CREEPS again (m1968's run-while-charging is off by default; TOOLS > KATANA > CHARGE MOVE)
 His words (Nov 3): *"When I press up on the right stick with the katana out and charge, he used to go slowly from side to side -- cautiously going left
 and right. Now he can basically RUN while charging. I never asked for that and it looks crazy: the strafe left/right clip plays and the locomotion is

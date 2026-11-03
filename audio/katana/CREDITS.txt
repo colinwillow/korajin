@@ -1,0 +1,15 @@
+Katana charge / lock-on sounds (trimmed, faded, mono, levelled to -9 dBFS peak). All CC0 -- no credit required.
+Picked by analysis: tonal and smooth (median spectral flatness <= .0024), except the release whooshes, which are breath (noise) on purpose.
+kc_bed_a  (the charge's rising shimmer, a seamless loop of 0.85 s, tiled x3) -- "Magic Spell SFX" magical_3, CC0. https://opengameart.org/content/magic-spell-sfx
+kc_bed_b  (loop 0.50 s) -- "Magic Words & Healing Sound Effect" health_restore, CC0. https://opengameart.org/content/magic-words-healing-sound-effect
+kc_bed_c  (loop 0.55 s) -- "Cure Magic" Cure6, CC0. https://opengameart.org/content/cure-magic
+kc_full_a (full charge) -- "Bell dings/chimes" bell_ding3, CC0. https://opengameart.org/content/bell-dingschimes
+kc_full_b -- "Bell Arpeggio 24" 24.wav, CC0. https://opengameart.org/content/bell-arpeggio-24
+kc_full_c -- "100 CC0 SFX" gong_01, CC0. https://opengameart.org/content/100-cc0-sfx
+kc_lock_a (lock-on) -- "Bell dings/chimes" bell_ding1, CC0. https://opengameart.org/content/bell-dingschimes
+kc_lock_b -- "Bell dings/chimes" bell_ding2, CC0. https://opengameart.org/content/bell-dingschimes
+kc_lock_c -- "Cure Magic" Cure3, CC0. https://opengameart.org/content/cure-magic
+kc_go_a   (release) -- "Air Whoosh" whoosh2 (1.05-1.85 s), CC0. https://opengameart.org/content/air-whoosh
+kc_go_b   -- "Air Whoosh" whoosh2 (2.15-2.95 s, x1.15), CC0. https://opengameart.org/content/air-whoosh
+kc_go_c   -- "Magic Spell SFX" magical_7, CC0. https://opengameart.org/content/magic-spell-sfx
+Defaults: A for every slot. TOOLS > KATANA > K-HUM / K-FULL / K-LOCK / K-GO cycle A / B / C (each tap previews it).
