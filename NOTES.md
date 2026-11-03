@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2308 -- THE JINRA PALETTE, part 2: the shade tail -- ~160 hand-picked jade shades now follow the pick (Nov 3 2026)
+- Every Jinra SHADE found by a hue sweep (135-200 deg, saturated) was read in context and either wrapped or left: `JPAL.shift(0x..)` for hex,
+  `JPAL.rgb([..])` for spark/mote arrays, `JPAL.v3([..])` spliced into GLSL strings (quote-aware: template literals get `${}`, quoted
+  strings get `' + .. + '`). The lists -- routed and LEFT (ice, water, grass, the aurora, UI cyan, tech neon, the green fire) -- are in
+  `JINRA_COLOUR.md`. Under MINT all three are identity, so the default look does not move.
+- **`shift` and `rgb` are MEMOISED** -- `gfireStep` calls `JPAL.rgb` per particle per frame, and an HSL round trip per call was a cost.
+  Callers get a SHARED array: do not mutate what `JPAL.rgb` returns.
+- The garden's lines (`willowMats`, `willowLeafPads`, `gdnMats`, `gdnHeart`, `gdnBeamFx`, `gdnGlow`, `hwFallMat`) were wrapped only -- no
+  value changed; the garden worker was told.
+- Ticks no sandbox box. Shipped unverified.
+
 ## m2307 -- THE JINRA PALETTE: one table for the colour of the Jinra, three presets, a TOOLS switch (Nov 3 2026)
 His ask: *"find where the colour of the JINRA is, and standardise it so we can swap it and try different looks... a purple-blue jade... if one
 variable changes everything glowing that way, we can easily change fire particles, glowing veins, etc."* Read `JINRA_COLOUR.md`.

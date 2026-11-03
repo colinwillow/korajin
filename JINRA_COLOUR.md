@@ -36,15 +36,33 @@ motes (`plantPart` jin share), the sword shed/bless sparks, arena beams, the che
 cone and glint, the chalice liquid + `glowSprite`, the Jin glint texture's gradient, crystals, monitors, lamps, the menu's TAP TO ENTER and
 selected-entry border, the right-pad mount pulse, the rings' `.seg.jin` (fill now `--jin-deep`, text `--jin-core`).
 
-**Still literal (the shade tail -- to route with `JPAL.shift`)** -- teal/mint hexes by count, as of m2307, with the call on each:
+**Routed in m2308 (the shade tail, ~160 more sites, via `JPAL.shift` / `JPAL.rgb` / `JPAL.v3`):**
+- **hex shades:** the snow village (`vilMats` band glyphs, jade paint, jade glass; the lamp/hut light pools `SVKP`/`svkHalo`/`svkShrines`/
+  `svkPoolRim`/`svkShrine`), the forge's crystals, the waterfall shrine's crystal (`wfrsBuild`), the GARDEN (`willowMats` temple jade, the
+  glowing film, the pool, the circuit glyphs, `willowLeafPads`, `gdnMats` emissives and `jinLeaves`, `gdnHeart` core), the hall's `jin`, the
+  watchtower, pagoda (cores, the Jin chain), shrine (plate, crystal, veil), the rope course (`jin`, ofuda, knots), `TTEX.jade`, `TEMPLE_SKINS`,
+  the temple seal, the ice door, the ships' eyes / whale / serpent glow, the guardian pagoda, the wings' eye and glow, the level builder's
+  crystal / brazier / glow, the restore rigs, the Jinra vessels, the refinery swirl / lamps / beads, the cave crystals and lamp, the floating
+  island's Jin column, the colossus core and veins, the title loop's `LOOPBG.jinra` pair.
+- **rgb arrays (sparks, motes, beams):** village rise motes, `WFALL.glowA`, `RSHRINE.jade`/`rune`, `bldJinraMotes`, dragon orb + taming,
+  `gdnGlow` (all garden glow points), debris jinra, `gfireStep`'s TURQUOISE fire and `TURQ`, `killBlast`, statue wake, the spider / guard cuts,
+  bow + arrow blast, `BARC.col`, the braziers (watchtower, ghouse, ramp, keep, barracks), arena beams, fisl, teahouse, opag, temple,
+  court, `arrowIgnite`, sign break, the peak's age, the restore syncs, `hwFallMat` (THE GARDEN / HOME FALLS: deep + light), lifts, refinery
+  mist, caves, the Jinra shop.
+- **shaders** (`JPAL.v3([...])` spliced into the GLSL string): the forge's crystal flow, the willow's emissive, the dojo's tear, the garden
+  `veinGlow` and stream, `gdnBeamFx` beam + points, `templeBeamMat`, the refinery swirl, the title loop recolour.
 
-| hex | n | what | call |
-|---|---|---|---|
-| 46e0ff | 21 | zap's `--sky` UI cyan, hover meter, map border, some FX | **LEAVE** (UI cyan, not Jinra) unless a site is Jinra |
-| 39f0ff / 5ff2ff / 7ff0ff / 3fe8ff | ~36 | electric cyan: bolts, ice, shield, tech screens | per site: ice/shield LEAVE, Jinra beams ROUTE |
-| 5ee8ff | 8 | (13713-13837) | per site |
-| 60ffc0 / 6dffc0 / 5affe0 / 3ff0d8 / 2de0b0 / 30d0a0 / 9affd8 / b6ffd8 ... | ~60 | Jinra jade shades: streams, water, veins, crystals, motes | ROUTE |
-| 3ad08a / 38c890 / 18b45f / 4dff9a | few | grass / leaf greens | LEAVE |
-| `#b6ffd8` / `#39ff88` in the CSS | 6 | debug-key "on" state | LEAVE (debug UI) |
+**LEFT ALONE, ON PURPOSE (not Jinra):**
+| what | where |
+|---|---|
+| zap's `--sky` UI cyan `46e0ff`, hover meter, map border, debug keys `#b6ffd8`/`#39ff88` | CSS, HUD |
+| ice / frost / shield `1a6a80` `d6f2ff` `cfeeff`, ice beam | `shieldBuild`, `iceFreeze`, `snowCliffs`, `snowKitIce`, `cellRoomStage` |
+| plain water `3f9cc4`, hot spring water, sea `ISLE`, bath/court/opag water, mill falls | village, baths, `gmillBuild` |
+| the aurora's emerald `1ef06a` | `NIGHTSKY` |
+| grass / leaves / moss / awnings `3ad08a` `5ad1a0` `38c890` | `chunkBuild`, `txMats`, `TDPROPS`, `kgMats` |
+| tech neon cyan (courses, zoom rings, turrets, drones, robots' eyes, ramps) `39f0ff` `3fe8ff` `5ff2ff` eyes | course/zoom/turret/zramp/swrk |
+| the green fire palette and OSARI neon green (a different fire), DNA gun greens, the jackal's beam | `gfireStep` (non-tq), `OSARI`, `DNABALL`, `stepBolts` |
+| UI colour coding (level builder roles, gym boxes, layout beats, mantle/hurdle arrows) | `LB`, `GYM`, `TLAY`, arrows |
+| inherited Zap/Weirdport/hoth/alien world | `WP`, `hoth*`, `wf*`, `ROSTER` |
 
-**Never Jinra (leave):** grass, leaves, moss, the aurora's emerald, ice, water that is just water, the zap-inherited `--sky` UI cyan, debug UI.
+If one of these turns out to be Jinra on the phone, wrap it: `JPAL.shift(0x..)` / `JPAL.rgb([..])`.
