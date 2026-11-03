@@ -19,6 +19,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2390 -- THE LAKE: the boat, detail pass 2; the climb's interact reach (Nov 3 2026)
+- **The boat:** a scalloped red cloth VALANCE hangs from every edge of the roof (rounded scallops with a cusp every 4 segments -- the first try was a
+  sawtooth; CRAFT 1); two cushioned BENCHES along the sides under the roof and a lacquer CHEST with gold corners at its bow end; three glowing CHEVRONS
+  on each cheek of the bow (JPAL, object space -- tubes in the boat's frame); the hull below the waterline is a deep teal-black lacquer (was brown).
+- **Interact registry (the UI worker's, m2382):** `lake.climb` said "in reach" anywhere in the water -- it uses `lakeClimbSpot()` now (beside the side,
+  between the cheeks, within `climbR`) and puts its rune on the rail there. `lake.helm` / `lake.helmoff` already matched the walk-up. The top-of-screen
+  helm hint is off (the pad's own "TAP: TAKE THE HELM" says it). Shipped unverified.
+
 ## m2389 -- THE LAKE: the boat, detail pass 1 (his m2376 note 6) (Nov 3 2026)
 His: *"remove the long paddle/motor stick off the stern; fill the roof's missing fabric; a cooler FUTURISTIC-RETRO longboat."*
 - The steering oar off the stern: GONE. In its place two STERN LANTERNS on lacquer posts with gold crooks and cords (the prow lantern's material, so they
