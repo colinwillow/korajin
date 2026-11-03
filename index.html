@@ -12785,8 +12785,8 @@ const NIGHT = { mode: (() => { const ok = ['DAY', 'DUSK', 'NIGHT', 'CYCLE']; try
   pal: { sunK: .28, sunCol: 0x9cb6ff, hemiK: .3, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .72, bgK: .1, envK: .42,     /* CRAFT: metals never go black -- the reflections stay at .42 of the day's (m2326; .22 read black on the katana) */
    
     duskSun: 0xff8a4a, duskFog: 0xb86a78, duskHemi: 0xd08a9a, duskK: .55 },
-  zones: { snow: { aurora: 1, pal: 'snow' }, snowkit: { aurora: 1, pal: 'snow' } },
-  pals: { snow: { sunK: .3, sunCol: 0x9cb6ff, hemiK: .2, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .62, bgK: 0, envK: .3 } },     // m2318: the snow's m2298 night numbers (NIGHTSKY.lightK), now a row
+  zones: { snow: { aurora: 1, pal: 'snow' }, snowkit: { aurora: 1, pal: 'snow' }, garden: { sky: 'garden_sky', pal: 'garden' } },
+  pals: { garden: { expK: .6, sunK: .24, hemiK: .26 }, snow: { sunK: .3, sunCol: 0x9cb6ff, hemiK: .2, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .62, bgK: 0, envK: .3 } },     // m2318: the snow's m2298 night numbers (NIGHTSKY.lightK), now a row
   meteor: { every: 7, dur: .9, len: .32 },     // shooting stars: one slot every `every` s per lane (3 lanes), streaking `len` rad in `dur` s
   sky: null, save: null };
 // SC_NIGHT:END
@@ -13033,7 +13033,8 @@ function nightPre() { const N = NIGHT, dt = nightStep(), f = N.f; N.applied = 0;
   S.fog = scene.fog || null; if (S.fog) { S.fc.copy(S.fog.color); S.fog.color.lerp(C.setHex(P.duskFog), d * .6).lerp(C.setHex(P.fog), k); }
   S.bg = scene.background && scene.background.isColor ? scene.background : null; if (S.bg) { S.bc.copy(S.bg); S.bg.lerp(C.setHex(P.duskFog), d * .6).lerp(C.setHex(P.bg), k); }
   const G = nightSkyGlobal(); if (G) { G.visible = true; const NS = NIGHTSKY; NS.U.uFade.value = Math.min(1, k * 1.15); NS.U.uT.value += dt; NS.U.uDusk.value = N.dusk;
-    if (S.fog) NS.U.uHor.value.copy(S.fog.color); G.position.copy(camera.position); G.scale.setScalar(camera.far * .9 / NS.sky.r);     /* to the far plane: a 700 m dome drew over the garden's far isles */
+    if (S.fog) NS.U.uHor.value.copy(S.fog.color); G.position.copy(camera.position); let rr = camera.far * .9; if (R.sky) { const zs = N.zsky && N.zsky.name === R.sky && N.zsky.parent ? N.zsky : (N.zsky = scene.getObjectByName(R.sky) || null); if (zs && zs.geometry) { if (!zs.geometry.boundingSphere) zs.geometry.computeBoundingSphere(); rr = Math.min(rr, zs.geometry.boundingSphere.radius * zs.scale.x * .95); } }
+    G.scale.setScalar(rr / NS.sky.r);     /* to the far plane (a 700 m dome drew over the garden's far isles), or just INSIDE a zone's own sky sphere (row `sky`: its name) so the night fades over it */
     const au = !!R.aurora; if (NS.auMesh) NS.auMesh.visible = au; if (NS.auPts) NS.auPts.visible = au; } }
 function nightPost() { const N = NIGHT, S = N.save; if (!N.applied || !S) return; N.applied = 0;
   sun.intensity = S.si; sun.color.copy(S.sc); hemi.intensity = S.hi; hemi.color.copy(S.hc); hemi.groundColor.copy(S.hg); renderer.toneMappingExposure = S.ex;
@@ -13115,7 +13116,7 @@ function nightGlow(m, o = {}) { if (!m || m.userData.ng) return m; const G = NGL
         float cav = mix(1.0, smoothstep(.5, .08, lu), uNgB.y); ngm = smoothstep(uNgB.x, 0.0, e) * cav * step(.25, ngH(floor(q) + .7));
         ngc = (uNgBoth > .5 && ngH(floor(q * .5) + 2.3) > .7) ? uNgA : uNgC;`,
       veins: `vec2 q = ngPlane() * uNgS.x; float e = min(ngVor(q), ngVor(q * 2.3 + 1.7) * 1.6); float ty = clamp((vNgL.y - uNgB.z) / max(1e-3, uNgB.w - uNgB.z), 0.0, 1.0);
-        ngm = smoothstep(uNgB.x, 0.0, e) * (.25 + .75 * ty * ty) + smoothstep(.82, 1.0, ty) * .6;
+        ngm = (smoothstep(uNgB.x, 0.0, e) * (.25 + .75 * ty * ty) + smoothstep(.82, 1.0, ty) * .6) * step(1.0 - uNgS.y, ngH(floor(q * .18) + 6.1));     /* density = the share of patches that glow (a net over everything read as wireframe) */
         ngc = (uNgBoth > .5 && ngH(floor(vNgW.xz * .7) + 4.4) > .55) ? uNgA : uNgC;`,
       tips: `float ty = clamp((vNgL.y - uNgB.z) / max(1e-3, uNgB.w - uNgB.z), 0.0, 1.0); ngm = smoothstep(.6, 1.0, ty); ngc = uNgC;`,
       inscribe: `float h = uNgB.x, L = h * 2.3, yy = vNgL.y - uNgB.z; vec2 f = vec2((vNgL.z - uNgB.y * vNgL.y * vNgL.y + h) / (2.0 * h), fract(yy / L)); float cl = floor(yy / L);
@@ -13150,7 +13151,7 @@ function snowNightGlow() { const V = SNOWVIL.M, G = NGLOW, rockSet = new Set(Obj
     { under: 'ice_look_stone', o: { mask: 'runes', role: 'mix', density: .32, scale: 2.2, strength: 2.4 } },
     { under: 'ice_look_rock', o: { mask: 'cracks', role: 'mix', scale: 1.2, width: .07, cavity: .3, strength: 2.8 } },
     { under: 'wfall', vc: 1, o: { mask: 'cracks', role: 'mix', scale: 1.1, width: .06, cavity: .35, strength: 2.6 } },
-    { under: 'snowflora', vc: 1, o: { mask: 'veins', role: 'mix', scale: 7, width: .05, strength: 2.2 }, box: 1 } ]);
+    { under: 'snowflora', vc: 1, o: { mask: 'veins', role: 'mix', scale: 7, width: .05, density: .7, strength: 2.2 }, box: 1 } ]);
   NIGHT.snowGlow = n; }
 // apply nightGlow to every material under a named root (the nearest ancestors' names); `vc` = vertex-coloured only; `box` = the mesh's own y bounds for veins / tips
 function nightGlowGroups(root, rules) { let n = 0; root.traverse(o => { if (!o.isMesh || o.isSkinnedMesh) return; let p = o, names = ''; for (let i = 0; p && i < 5; i++, p = p.parent) names += '<' + (p.name || '');
@@ -13164,7 +13165,7 @@ function nightGlowGroups(root, rules) { let n = 0; root.traverse(o => { if (!o.i
 function gardenNightGlow(root) { const Z = GARDEN, M = Z.M; if (!M || !root) return 0; const live = new Set(), skip = new Set([M.bronze, M.gold, M.bellGold, M.lamp, M.vein, M.veinGlow, typeof GDNV !== 'undefined' ? GDNV.plain : null, typeof GDNV !== 'undefined' ? GDNV.glow : null]);
   root.traverse(o => { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m && live.add(m)); });
   const wide = { y0: -1e4, y1: 1e4 }, rules = [
-    [['leaves', 'jinLeaves', 'fern', 'clump', 'tuft', 'ivy', 'vine'], Object.assign({ mask: 'veins', role: 'mix', scale: 6, width: .05, strength: 1.8 }, wide)],
+    [['leaves', 'jinLeaves', 'fern', 'clump', 'tuft', 'ivy', 'vine'], Object.assign({ mask: 'veins', role: 'mix', scale: 3.2, width: .035, density: .3, strength: 1.6 }, wide)],
     [['blossom', 'flowers'], { mask: 'all', role: 'accent', strength: .5, pulse: 1 }],
     [['stone', 'white', 'cyclo'], { mask: 'runes', role: 'mix', density: .3, scale: 2.4, strength: 2.4 }],
     [['rock', 'cliff'], { mask: 'cracks', role: 'mix', scale: 1.2, width: .07, cavity: .3, strength: 2.6 }],

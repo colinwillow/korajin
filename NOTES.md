@@ -17,6 +17,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 7: the garden's night reaches its sky; the veins are patches, not a net (Nov 3 2026)
+The m2327 garden sheet (day / dusk / night) showed two faults: the night hardly darkened it -- the garden's sky is its OWN opaque 2200 m sphere
+(`garden_sky`, a ShaderMaterial outside the tonemapper) and the shared dome sat behind it at the far plane -- and the leaf veins covered every
+willow card like a wireframe. Now a zone row can name its sky (`NIGHT.zones.garden.sky = 'garden_sky'`) and the dome is drawn just INSIDE it (.95
+of its radius), fading over it; the garden has its own `pals.garden` (sun .24, hemi .26, exposure .6). Veins have a `density` gate (the share of
+patches that glow): the garden's leaves .3 at scale 3.2, width .035; the snow flora .7. Shipped unverified (the re-render is running).
+
 ## m2327 -- NIGHT 6: the prologue garden comes alive at night (Nov 3 2026)
 NIGHT.md box 5b, agreed with the garden's session first (its answers: chain the hooks and keys, run after the WHOLE build -- gdnConsolidate /
 gdnMergeStatic / gdnMetalEnv -- take the materials actually on the meshes, never GDNV.plain / GDNV.glow, leave the env-mapped metals alone).
