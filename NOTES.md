@@ -19,6 +19,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2397 -- the katana charge's start is a ONE-SHOT now (K-START A steel readied / B low breath swell / C deep hum-swell); m2380's loop is gone
+His (Nov 3) on m2380's K-HUM: *"like a synth flute"* -- and he does not want something that repeats.
+- The looping bed (`kcBed`, the three `kc_bed_*` files) is deleted. `kcArmTick` (top of `stepPlayer`) plays `kc_arm` ONCE on the charge's arm edge
+  (blade, `chargeT` past `WEAP.armT`), nothing after. TOOLS > KATANA > K-START A / B / C (the old K-HUM button), each tap previews.
+- New CC0 candidates (`audio/katana/CREDITS.txt`; trimmed, faded, mono, -9 dBFS): **A** steel being readied -- a sword scrape-ring
+  ("Weapons and Apparel SFX Library", lowpassed 6.5k so it is not a hiss); **B** a low breath swell (the "Air Whoosh" rise, x0.8); **C** a deep
+  hum-swell that ENDS (gong_01 at x0.72, reversed, trimmed to 0.92 s so its peak lands on the full charge at ~0.91 s after the arm).
+  None is a pad or a flute: A is metal, B breath, C a struck bell played backwards.
+- K-FULL / K-LOCK / K-GO unchanged. `KCSND.g.arm` .42 (under the hits).
+- Not heard here -- his ear picks. Box moved: none (sound pass).
+
 ## m2394 -- THE START TRANSITION, TAKE 5: one jump-flip on his own clip, the petals shed from him<!--mine-->
 His notes on take 4, via the parent:
 - "he just launches up into the air -- doesn't look like he jumped -- and then once he's in the air he does a flip, instead of his momentum
