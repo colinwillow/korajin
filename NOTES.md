@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 6: the prologue garden comes alive at night (Nov 3 2026)
+NIGHT.md box 5b, agreed with the garden's session first (its answers: chain the hooks and keys, run after the WHOLE build -- gdnConsolidate /
+gdnMergeStatic / gdnMetalEnv -- take the materials actually on the meshes, never GDNV.plain / GDNV.glow, leave the env-mapped metals alone).
+- `gardenNightGlow` runs once from `gdnStep`, 1.5 s wall-clock after the garden is built, only when TIME is not DAY, on `GARDEN.M` materials that
+  are LIVE on a mesh: leaves / jinLeaves / fern / clump / tuft / ivy / vine -> veins (their sway splice is chained, not replaced), blossom /
+  flowers -> a faint violet breath, stone / white / cyclo -> the script, rock / cliff -> cracks, pot -> glyphs (the breakable clones keep their own).
+  The lanterns (M.lamp) and the veins that already glow are left as they are: the dark makes them read.
+- **The star dome now scales to the far plane** (it capped at 700 m and would have painted over the garden's far isles at night, camera.far 2600).
+- Still open: the other zones, the hero's arm cloth, his sign-off. Shipped unverified.
+
 ## m2326 -- NIGHT 5: metals keep their shine at night (CRAFT: metals never go black) (Nov 3 2026)
 The m2325 close render of the katana showed its steel near-black at night: the overlay scaled the environment (image) light to .22 of the day's,
 and in the snow to 0. `NIGHT.pal.envK` .22 -> .42 and `NIGHT.pals.snow.envK` 0 -> .3, so steel, gold and bronze keep a reflection under the moon.

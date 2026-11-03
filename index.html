@@ -13033,7 +13033,7 @@ function nightPre() { const N = NIGHT, dt = nightStep(), f = N.f; N.applied = 0;
   S.fog = scene.fog || null; if (S.fog) { S.fc.copy(S.fog.color); S.fog.color.lerp(C.setHex(P.duskFog), d * .6).lerp(C.setHex(P.fog), k); }
   S.bg = scene.background && scene.background.isColor ? scene.background : null; if (S.bg) { S.bc.copy(S.bg); S.bg.lerp(C.setHex(P.duskFog), d * .6).lerp(C.setHex(P.bg), k); }
   const G = nightSkyGlobal(); if (G) { G.visible = true; const NS = NIGHTSKY; NS.U.uFade.value = Math.min(1, k * 1.15); NS.U.uT.value += dt; NS.U.uDusk.value = N.dusk;
-    if (S.fog) NS.U.uHor.value.copy(S.fog.color); G.position.copy(camera.position); G.scale.setScalar(Math.min(1, camera.far * .9 / NS.sky.r));
+    if (S.fog) NS.U.uHor.value.copy(S.fog.color); G.position.copy(camera.position); G.scale.setScalar(camera.far * .9 / NS.sky.r);     /* to the far plane: a 700 m dome drew over the garden's far isles */
     const au = !!R.aurora; if (NS.auMesh) NS.auMesh.visible = au; if (NS.auPts) NS.auPts.visible = au; } }
 function nightPost() { const N = NIGHT, S = N.save; if (!N.applied || !S) return; N.applied = 0;
   sun.intensity = S.si; sun.color.copy(S.sc); hemi.intensity = S.hi; hemi.color.copy(S.hc); hemi.groundColor.copy(S.hg); renderer.toneMappingExposure = S.ex;
@@ -13158,6 +13158,19 @@ function nightGlowGroups(root, rules) { let n = 0; root.traverse(o => { if (!o.i
       for (const m of ms) { if (!m || m.userData.ng || !m.isMeshStandardMaterial || (r.vc && !m.vertexColors)) continue; let oo = r.o;
         if (r.box) { o.geometry.computeBoundingBox(); const b = o.geometry.boundingBox; oo = Object.assign({}, r.o, { y0: b.min.y, y1: b.max.y }); }
         nightGlow(m, oo); n++; } break; } }); return n; }
+// THE GARDEN AT NIGHT (NIGHT.md 5b; agreed with the garden's session): only the materials ON SCREEN (the build swaps some for shared ones), never
+// GDNV.plain / GDNV.glow (shared by everything plain) or the env-mapped metals. Leaves and plants vein, blossoms and flowers breathe violet, the temple
+// stone carries the script, the rock and cliff their cracks, the pots a few glyphs. The lanterns (M.lamp) already glow: the dark makes them read.
+function gardenNightGlow(root) { const Z = GARDEN, M = Z.M; if (!M || !root) return 0; const live = new Set(), skip = new Set([M.bronze, M.gold, M.bellGold, M.lamp, M.vein, M.veinGlow, typeof GDNV !== 'undefined' ? GDNV.plain : null, typeof GDNV !== 'undefined' ? GDNV.glow : null]);
+  root.traverse(o => { if (!o.isMesh) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m && live.add(m)); });
+  const wide = { y0: -1e4, y1: 1e4 }, rules = [
+    [['leaves', 'jinLeaves', 'fern', 'clump', 'tuft', 'ivy', 'vine'], Object.assign({ mask: 'veins', role: 'mix', scale: 6, width: .05, strength: 1.8 }, wide)],
+    [['blossom', 'flowers'], { mask: 'all', role: 'accent', strength: .5, pulse: 1 }],
+    [['stone', 'white', 'cyclo'], { mask: 'runes', role: 'mix', density: .3, scale: 2.4, strength: 2.4 }],
+    [['rock', 'cliff'], { mask: 'cracks', role: 'mix', scale: 1.2, width: .07, cavity: .3, strength: 2.6 }],
+    [['pot'], { mask: 'runes', role: 'glow', density: .5, scale: 6, strength: 2 }] ];
+  let n = 0; for (const [keys, o] of rules) for (const k of keys) { const m = M[k]; if (!m || skip.has(m) || !live.has(m) || !m.isMeshStandardMaterial) continue; nightGlow(m, o); n++; }
+  NIGHT.gardenGlow = n; return n; }
 // NIGHT_GLOW:END
 // m2125 (his: "there are a lot of parts of the map where the snow doesn't react to me... if it's snowy the ground should react"): the PACK grew from
 // 160 m (res 640, .25 m texels, a 400-quad mesh) to 320 m (res 960, .33 m texels, a 560-quad mesh, .57 m) -- it now reaches the waterfall (x -140).
@@ -18575,6 +18588,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
   setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.gdnSleepStart = gdnSleepStart; mel.reelEnd = reelEnd; mel.BREAK = BREAK; mel.brkBlast = brkBlast; mel.PROPB = PROPB; mel.KICK = KICK; mel.kickHit = kickHit; mel.SMASH = SMASH; mel.smashHit = smashHit; mel.PSHARD = PSHARD; mel.BLDG = BLDG; mel.SPRINGS = SPRINGS; mel.gdnClothY = gdnClothY; mel.stick = stick; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
 function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O.t += dt; Z.U.uTime.value = O.t;
+  if (NIGHT.mode !== 'DAY' && !O.ngAt) O.ngAt = performance.now() + 1500; if (O.ngAt > 0 && performance.now() > O.ngAt) { O.ngAt = -1; try { gardenNightGlow(O.g); } catch (e) { note('GARDEN NIGHT ' + e.message); } }     // NIGHT.md: once, after the whole build (consolidate / merge / metal env) has settled
   if (!O.tris) { O.tris = 1; try { bldTris(O, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } }
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
   if (Z.bridgeList && Z.bridgeList.length) rspStep(dt);
