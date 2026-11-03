@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2286 -- the boom at every prologue load was MY life code; Grumbo's skin is in the chip and guarded (Nov 3 2026)
+Via main, from his iPhone: *"every time I load the prologue there are explosions and noises at the beginning, then it goes to me"* and *"Grumbo is
+black again, in the intro and in play"* (after m2281's texture reload).
+- THE BOOM, MEASURED (scratch `bootprobe.mjs`: the shipped page with `snd` / big `spkBurst` / `brkBlast` / `camShake` logged, `?w=forge&zone=garden
+  &god=0&fresh`): at 49.3 s -- 13 s BEFORE the boot card went -- `snd boom`, `GARDEN.falls` 1, `LIFE.n` 1, lives 3 -> 2. The frame runs behind the
+  loading card; he dropped before the garden's floor existed, the garden caught the fall, and m2264's `lifeFall` charged a life with its boom.
+  `LIFE.start` (the level's start) was also taken .6 s into those FRAMES, i.e. mid-load. Fix: the start is taken only once the boot card is gone, no
+  reel is playing and his feet are down; `lifeFall` does nothing before that. (GOD on never had this -- if he sees explosions with GOD on it is
+  something else, and the probe's god=1 run is the next look.)
+- `HSKIN` / `hskinStep` (every .5 s, in the chip): `SKIN <type> <ok<w> | mip | NOPX | NOMAP | SWAP> c<colour> e<emissive>x<k>`, `fix<n>`,
+  `CTX<lost>/<restored>`. A material he loaded WITH a map that later has none gets it back (and its emissive map); a colour gone to black gets its
+  loaded colour back. A bad state is also a `note` (the minimised chip's +N). If he is black and it reads `ok2048 cffffff`, the image is in and the
+  GPU upload or the lighting is the cause -- that screenshot settles it. Not fixed: nothing here can see a texture that UPLOADED black.
+
 ## m2283 -- title screen: smaller logo, no season chip (auto only), a pulsing SCROLL hint (Nov 3 2026)
 *"The title is maybe a little big. I like not seeing the level selector -- but we need a little pulsing scroll thing in the bottom third, an arrow;
 pressed, it brings the first selection (Prologue) to the middle. Get rid of the debug season button, just auto-cycle."* `img.looplogo` 88vw/560 ->
