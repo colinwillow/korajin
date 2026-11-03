@@ -17,7 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2316 -- NIGHT 1: THE NIGHT CORE: one night factor for every zone, TOOLS > TIME (Nov 3 2026)
+## m2316 -- THE LOTUS FLOATS: a slow bob, drift and rock while he meditates (Nov 3 2026)
+
+*"When he goes on the pad that floats him up he does a nice bobbing and undulating -- but as soon as he goes into the lotus he's completely still. I
+want him to bob while meditating: very slowly up and down, and sway a bit."* (via main) MEASURED first: meditating, his POSITION did bob (pos.y
+over a .24 m range in 8 s, the breath-driven `beam.bob`) -- but the camera follows his position, so a bob of the whole player is invisible on
+screen; the undulation he liked in the air is the air CLIP's own. Nothing was freezing it. So the float is now drawn on the BODY, relative to the
+lens: `gdnLotus` computes `LOTUS.dy` (rise and sink `floatY` .14 m on 5.2 s + 8.7 s) and `dx` (a `floatX` .05 m side drift on 6.3 s), applied to the
+rig root after its position is copied (beside the wading sink, so it is the one place that offsets the drawn body), and ROCKS the whole body from
+the hips (`ltTurn` on Hips: a `rockDeg` 3.5 deg roll on 7.1 s, a 2.1 deg pitch on 9.7 s; restored by `ltUndo`). All scaled by the lotus weight
+(smoothstepped, `ease` .9 s), so it fades in and out with the pose -- no pop. The breath, sway and head settle (m2235) still run on top; every hand
+option is unaffected. **Shipped unverified.**
+## m2317 -- NIGHT 1: THE NIGHT CORE: one night factor for every zone, TOOLS > TIME (Nov 3 2026)
 His ask (NIGHT.md): *"every scene, when it goes to night, things start to glow... cycles from day to night."* This build is box 1 of NIGHT.md.
 - **`NIGHT`** (SC_NIGHT): `mode` DAY / DUSK / NIGHT / CYCLE (TOOLS > TIME, `mel.time`; `?night=1|0`, `?time=day|dusk|night|cycle`), `f` 0..1 written
   ONLY by `nightStep`, `dusk` = 4f(1-f) (the warm in-between), `cycle` 240 s. The snow's `SNOWNIGHT.on` is now `NIGHT.mode === 'NIGHT'`; the old
