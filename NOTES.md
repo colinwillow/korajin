@@ -72,7 +72,7 @@ THE EMBLEM FREEZE (ROADMAP, his list):
 - I did NOT re-schedule the boot loads (yielding between them). With the compositor spin it should not be needed for the spinner; say if the
   bar/text still hitch.
 Shipped unverified.
-## m23XX -- NIGHT 22: the cracks are FINE and on his SKIN only -- the hue windows MEASURED off his texture (Nov 3 2026)
+## m2403 -- NIGHT 22: the cracks are FINE and on his SKIN only -- the hue windows MEASURED off his texture (Nov 3 2026)
 His words: *"m2398 cracks are too fat and run over his clothes -- smaller and finer, like the earlier look, on his skin only."* Cells ~9 cm (11 / 5.5 / 11 per
 m, still upright), AA'd lines. **The skin window was guessed twice and caught nothing, so it was MEASURED**: a raycast at his face, chest, belly, arms and
 cloak, the hit's UV sampled in his own texture, converted to linear (`mel` probe, recorded here): skin r > .6, g/r .44-.66, b/r .14-.30; orange trims g/r
