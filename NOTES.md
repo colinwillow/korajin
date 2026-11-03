@@ -19,6 +19,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2382 -- ONE INTERACT REGISTRY: the right stick glows Jinra whenever something is usable, a rune floats over it, a tap does it (Nov 3 2026)
+*"The right stick should basically always GLOW when you can interact with something -- e.g. to show you can take the boat's helm. Maybe also a
+subtle outline or something in the scene showing what you can interact with."* (via main)
+- `INTERACT` + `interactAdd({ id, pos, r, dy, label, can, act, near, pri })` / `interactRemove(id)` / `interactNow()` (beside `pickTap`).
+  `interactStep` (frame, beside `lifeStep`) picks the one in reach (highest `pri`, then nearest); `#padR.iact` = the Jinra pulse (`--jin-glow`),
+  the pad's hint reads `TAP: <label>`; a small additive Jinra ring-and-diamond sprite bobs 1 m over its `pos` (TOOLS > LOOK > INTERACT CUE: RUNE /
+  OFF, `mel.icue`). The right TAP runs `interactTap()` FIRST in the chain (after 3D AIM), so a tap is the jump only when nothing is in reach.
+- UNIFIED: the older prompts that already lit the right pad (`pick`, `talk`, `mount`, `port`, `samp`) also set `iact`, so they all wear the same pulse.
+- Registered: the Lake's helm (`lake.helm`, rune over the helm spot), leaving it (`lake.helmoff`), climbing aboard from the water (`lake.climb`);
+  each act is the existing `lakeTap`, so nothing about the boat changed. The garden (hammock, lotus pad) and the Lake worker were sent the API.
+- Shipped unverified; `npm run check` 4 boot ok. Not done: an in-scene OUTLINE (a rim on the target's own mesh) -- the rune is the cue for now.
+
 ## m2381 -- THE LAKE: the treading-water height matches the swim (his m2376 report) (Nov 3 2026)
 His: *"the treading-water idle sits too high compared to the actual swim"* (tread: waterline at his knees; swim: at his shoulders, right).
 MEASURED off the baked Hips translation in `agoblin_swim.glb` (armature units; standing rest = 48.2 ~ .9 m): `swim_idle` (Treading_Water) mean 48.8 --
