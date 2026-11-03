@@ -39,7 +39,7 @@ library)."*
   door's button. The entrance's is `entrance` now.
 - Rendered headless in the arena (frame strip sent): rip, peel, him through it, seal, fall, the sigil written by touchdown, the goop slam, crouch,
   rise, the lens home. Slow-mo and the audited spots unchanged. Shipped unverified.
-## m23XX -- NIGHT 15: `nightScene(..., { lightsOwned: false })` -- the title keeps ONE writer for its light (Nov 3 2026)
+## m2353 -- NIGHT 15: `nightScene(..., { lightsOwned: false })` -- the title keeps ONE writer for its light (Nov 3 2026)
 The title worker's facts: LOOPBG already has a NIGHT season (`LOOPBG.seasons.night`: tints, key / fill, fog, glowK 1.7, stars, moon) inside its own
 weather cycle; an overlay blending lights and fog on top of it would be night-on-night and a fight with storm / rain. So `lightsOwned: false` makes
 `pre` touch NO light, fog, background or exposure -- it only sets `NH.f` (the day..night factor, NIGHT.tf) and `NH.dusk`, places the star dome and
