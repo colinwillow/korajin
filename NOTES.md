@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 10: GLOWING FLORA and his glowing FOOTSTEPS -- the garden first (Nov 3 2026)
+His ask (relayed): *"tiny glowing plants -- glowing mushrooms, ferns with glowing fronds, little bushes with glowing petals or tips, specks in the grass that
+glow"* and the one he loves most, *"grass and flora brightening around his feet as he walks at night"*. A night-only layer of its own (NIGHT_FLORA),
+no zone builder touched; asked the garden's session first (its answers are in the m2327 entry; the reserved areas are honoured through `gdnReserved`).
+- **3 draws**: MUSHROOMS (one InstancedMesh of clusters of 3-6, bent stems, caps whose gills and spot rings glow, per-cluster colour from JPAL or the
+  violet accent), FERN sprigs (one InstancedMesh, five arching fronds each, midrib + dotted leaflet edge + tips glowing) and SPECKS (one Points, 700
+  motes in a 16 m ring round him, twinkling; the far ones are re-seeded round him 40 a frame, on `groundAt`). Garden: 54 clusters + 80 ferns in 45 m
+  (327 instances).
+- **His footsteps**: the last 8 footfalls (`NFLORA.U.uTrail`, one every .18 s when he moves, fading over 2.4 s) light everything within `footR` 2.6 m
+  -- the specks swell and lift, the mushrooms and ferns flare. Shared GLSL `nfFoot` (any night material can read it).
+- A zone opts in with `flora: { R, clusters, ferns, ready(), ok(x, y, z) }` on its NIGHT row. The garden's waits on its glow pass (WALL CLOCK -- the
+  garden's own `t` crawls headless and the first try never built).
+- Also: crack glow has a `density` gate now (the garden cliff read as chicken wire): garden cliff .28 at width .035; the snow's .6.
+- Open: the other zones' flora rows, petals on bushes (the existing flowers breathe violet from m2327), his sign-off. Shipped unverified.
+
 ## m2335 -- THE LAKE pass 3: the water round the boat -- the wake (WATER.md) (Nov 3 2026)
 His: *"I want the water deforming around a boat."* A wake needs it MOVING, so the boat now CRUISES (until pass 5 gives him the stick): a lane at u = 22 down
 the canyon and back (clear of all three stacks), turning round at |z| > 600, 4.5 m/s, banking INTO its turns (`B.bankDot` = up . inside, asserted > 0

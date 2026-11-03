@@ -12785,7 +12785,7 @@ const NIGHT = { mode: (() => { const ok = ['DAY', 'DUSK', 'NIGHT', 'CYCLE']; try
   pal: { sunK: .28, sunCol: 0x9cb6ff, hemiK: .3, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .72, bgK: .1, envK: .42,     /* CRAFT: metals never go black -- the reflections stay at .42 of the day's (m2326; .22 read black on the katana) */
    
     duskSun: 0xff8a4a, duskFog: 0xb86a78, duskHemi: 0xd08a9a, duskK: .55 },
-  zones: { snow: { aurora: 1, pal: 'snow' }, snowkit: { aurora: 1, pal: 'snow' }, garden: { sky: 'garden_sky', pal: 'garden' } },
+  zones: { snow: { aurora: 1, pal: 'snow' }, snowkit: { aurora: 1, pal: 'snow' }, garden: { sky: 'garden_sky', pal: 'garden', flora: { R: 45, clusters: 54, ferns: 80, ready: () => !!(GARDEN.on && GARDEN.on.built && GARDEN.on.ngAt === -1),     /* after the garden glow pass (1.5 s wall clock after the build) */ ok: (x, y, z) => !gdnReserved(x, y, z, 1.2) } } },
   pals: { garden: { expK: .6, sunK: .24, hemiK: .26 }, snow: { sunK: .3, sunCol: 0x9cb6ff, hemiK: .2, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .62, bgK: 0, envK: .3 } },     // m2318: the snow's m2298 night numbers (NIGHTSKY.lightK), now a row
   meteor: { every: 7, dur: .9, len: .32 },     // shooting stars: one slot every `every` s per lane (3 lanes), streaking `len` rad in `dur` s
   sky: null, save: null };
@@ -13024,7 +13024,7 @@ function nightStep() { const N = NIGHT, now = performance.now(), dt = N.last ? M
 function nightZone() { try { return NIGHT.zones[entryKey()] || {}; } catch (e) { return {}; } }
 function nightSkyGlobal() { const N = NIGHT, NS = NIGHTSKY; if (N.sky) return N.sky;     // ONE sky for every zone (the snow's night asks for it too)
   const G = new THREE.Group(); G.renderOrder = -1; nightSkyBuild(G); scene.add(G); N.sky = G; return G; }
-function nightPre() { const N = NIGHT, dt = nightStep(), f = N.f; N.applied = 0; nightGlowStep(dt);
+function nightPre() { const N = NIGHT, dt = nightStep(), f = N.f; N.applied = 0; nightGlowStep(dt); try { nightFloraStep(nightZone(), dt); } catch (e) { if (!N.floraErr) { N.floraErr = 1; note('NIGHT FLORA ' + e.message); } }
   const R = nightZone(), own = R.own && R.own(), k = f * (R.k == null ? 1 : R.k);
   if (k <= .002 || own) { if (N.sky) N.sky.visible = false; return; }
   N.applied = 1; const P = R.pal ? Object.assign({}, N.pal, N.pals[R.pal]) : N.pal, S = N.save || (N.save = { sc: new THREE.Color(), hc: new THREE.Color(), hg: new THREE.Color(), fc: new THREE.Color(), bc: new THREE.Color(), c: new THREE.Color() });
@@ -13121,7 +13121,7 @@ function nightGlow(m, o = {}) { if (!m || m.userData.ng) return m; const G = NGL
         vec2 gg = textureGrad(uNgAtlas, au, dFdx(q) * .11, dFdy(q) * .11).rg; ngm = on * (gg.r + gg.g * .5);
         ngc = (uNgBoth > .5 && ngH(cl + 9.1) > .62) ? uNgA : uNgC;`,
       cracks: `vec2 q = ngPlane() * uNgS.x; float e = ngVor(q); float lu = dot(diffuseColor.rgb, vec3(.3, .59, .11));
-        float cav = mix(1.0, smoothstep(.5, .08, lu), uNgB.y); ngm = smoothstep(uNgB.x, 0.0, e) * cav * step(.25, ngH(floor(q) + .7));
+        float cav = mix(1.0, smoothstep(.5, .08, lu), uNgB.y); ngm = smoothstep(uNgB.x, 0.0, e) * cav * step(1.0 - uNgS.y, ngH(floor(q * .5) + .7));     /* density = the share of crack patches lit (all of them read as chicken wire on the garden cliff) */
         ngc = (uNgBoth > .5 && ngH(floor(q * .5) + 2.3) > .7) ? uNgA : uNgC;`,
       veins: `vec2 q = ngPlane() * uNgS.x; float e = min(ngVor(q), ngVor(q * 2.3 + 1.7) * 1.6); float ty = clamp((vNgL.y - uNgB.z) / max(1e-3, uNgB.w - uNgB.z), 0.0, 1.0);
         ngm = (smoothstep(uNgB.x, 0.0, e) * (.25 + .75 * ty * ty) + smoothstep(.82, 1.0, ty) * .6) * step(1.0 - uNgS.y, ngH(floor(q * .18) + 6.1));     /* density = the share of patches that glow (a net over everything read as wireframe) */
@@ -13151,14 +13151,14 @@ function nightGlowStep(dt) { const G = NGLOW, f = Math.max(0, NIGHT.f), g = Math
 function snowNightGlow() { const V = SNOWVIL.M, G = NGLOW, rockSet = new Set(Object.values(ROCK.mats || {})); let n = 0;
   if (V) { for (const k of ['stone', 'stoneD', 'pave']) if (V[k]) { nightGlow(V[k], { mask: 'runes', role: 'mix', density: .3, scale: 2.4, strength: 2.4 }); n++; }
     for (const k of ['wood', 'door']) if (V[k]) { nightGlow(V[k], { mask: 'runes', role: 'mix', density: .22, scale: 3.2, strength: 2.0 }); n++; } }
-  rockSet.forEach(m => { nightGlow(m, { mask: 'cracks', role: 'mix', scale: 1.4, width: .07, cavity: .3, strength: 2.6 }); n++; });
+  rockSet.forEach(m => { nightGlow(m, { mask: 'cracks', role: 'mix', scale: 1.4, width: .07, cavity: .3, density: .6, strength: 2.6 }); n++; });
   if (SNOWZ.mesh) { nightGlow(SNOWZ.mesh.material, { mask: 'runes', role: 'glow', density: .06, scale: .9, strength: 1.3, pulse: 1 }); n++; }
   // by group (the zone's builders name their roots): the ice temple's stone carries the script and its rock the cracks, the waterfall's
   // vertex-coloured rock the cracks, the snow flora veins and tips (each a merged mesh: its own bounds are the plant's height)
   n += nightGlowGroups(scene, [
     { under: 'ice_look_stone', o: { mask: 'runes', role: 'mix', density: .32, scale: 2.2, strength: 2.4 } },
-    { under: 'ice_look_rock', o: { mask: 'cracks', role: 'mix', scale: 1.2, width: .07, cavity: .3, strength: 2.8 } },
-    { under: 'wfall', vc: 1, o: { mask: 'cracks', role: 'mix', scale: 1.1, width: .06, cavity: .35, strength: 2.6 } },
+    { under: 'ice_look_rock', o: { mask: 'cracks', role: 'mix', scale: 1.2, width: .07, cavity: .3, density: .6, strength: 2.8 } },
+    { under: 'wfall', vc: 1, o: { mask: 'cracks', role: 'mix', scale: 1.1, width: .06, cavity: .35, density: .6, strength: 2.6 } },
     { under: 'snowflora', vc: 1, o: { mask: 'veins', role: 'mix', scale: 7, width: .05, density: .7, strength: 2.2 }, box: 1 } ]);
   NIGHT.snowGlow = n; }
 // apply nightGlow to every material under a named root (the nearest ancestors' names); `vc` = vertex-coloured only; `box` = the mesh's own y bounds for veins / tips
@@ -13176,11 +13176,94 @@ function gardenNightGlow(root) { const Z = GARDEN, M = Z.M; if (!M || !root) ret
     [['leaves', 'jinLeaves', 'fern', 'clump', 'tuft', 'ivy', 'vine'], Object.assign({ mask: 'veins', role: 'mix', scale: 3.2, width: .035, density: .3, strength: 1.6 }, wide)],
     [['blossom', 'flowers'], { mask: 'all', role: 'accent', strength: .5, pulse: 1 }],
     [['stone', 'white', 'cyclo'], { mask: 'runes', role: 'mix', density: .3, scale: 2.4, strength: 2.4 }],
-    [['rock', 'cliff'], { mask: 'cracks', role: 'mix', scale: 1.2, width: .07, cavity: .3, strength: 2.6 }],
+    [['rock', 'cliff'], { mask: 'cracks', role: 'mix', scale: .9, width: .035, cavity: .45, density: .28, strength: 2.2 }],
     [['pot'], { mask: 'runes', role: 'glow', density: .5, scale: 6, strength: 2 }] ];
   let n = 0; for (const [keys, o] of rules) for (const k of keys) { const m = M[k]; if (!m || skip.has(m) || !live.has(m) || !m.isMeshStandardMaterial) continue; nightGlow(m, o); n++; }
   NIGHT.gardenGlow = n; return n; }
 // NIGHT_GLOW:END
+// NIGHT_FLORA:START -- NIGHT.md 3/4 (his, relayed: "tiny glowing plants -- glowing mushrooms, ferns with glowing fronds, little bushes with glowing petals
+// or tips, little specks in the grass that glow" and, the one he loves most, "grass and flora brightening around his feet as he walks at night").
+// A night-only layer of its OWN (no zone builder changes): 3 draws --
+//   MUSHROOMS  one InstancedMesh: clusters of 3-6 (stem + cap; the gills and cap spots carry the glow), per-cluster colour from JPAL / the accent
+//   FERNS      one InstancedMesh: sprigs of 5 arching fronds; the midrib, a dotted leaflet edge and the tips glow
+//   SPECKS     one Points round him (`specks` of them in `R` m): motes in the grass, twinkling; the far ones are re-seeded round him a few a frame
+// and his FEET: the last 8 footfalls (`trail`, aged) brighten everything within `footR` -- grass, mushrooms and ferns light up where he walks.
+// A zone opts in with a row in NIGHT.zones: `flora: { R, clusters, ferns, ok(x, y, z) }` (centre = where he stands when it builds).
+const NFLORA = { specks: 700, R: 16, footR: 2.6, footK: 2.2, trailDt: .18, built: null,
+  U: { uTrail: { value: Array.from({ length: 8 }, () => new THREE.Vector4(0, -1e4, 0, 0)) }, uFootR: { value: 2.6 }, uPx: { value: 600 } } };
+const NFLORA_GLSL = `uniform vec4 uTrail[8]; uniform float uFootR;
+float nfFoot(vec3 w) { float k = 0.0; for (int i = 0; i < 8; i++) { vec4 t = uTrail[i]; vec3 d = w - t.xyz; k = max(k, t.w * smoothstep(uFootR, uFootR * .25, length(d))); } return k; }`;
+function nfGround(x, z, cy) { let h; try { h = groundAt(x, z, cy + 12, 0); } catch (e) { return null; } return (h == null || !isFinite(h) || Math.abs(h - cy) > 14) ? null : h; }
+function nfMat(col, glowK) { const G = NGLOW, m = new THREE.MeshStandardMaterial({ color: col, roughness: .75, metalness: 0 });
+  m.customProgramCacheKey = () => 'nflora'; m.onBeforeCompile = sh => { Object.assign(sh.uniforms, G.U, NFLORA.U, { uNfK: { value: glowK } });
+    sh.vertexShader = 'attribute float aG; attribute vec3 aC; varying float vG; varying vec3 vC, vNfW;\n' + sh.vertexShader.replace('#include <project_vertex>', `#include <project_vertex>
+      vG = aG; vC = aC; vec4 nfw = vec4(transformed, 1.0);
+      #ifdef USE_INSTANCING
+        nfw = instanceMatrix * nfw;
+      #endif
+      vNfW = (modelMatrix * nfw).xyz;`);
+    sh.fragmentShader = 'uniform float uNgF, uNgT, uNfK; varying float vG; varying vec3 vC, vNfW;\n' + NFLORA_GLSL + '\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      { float pu = .7 + .3 * sin(uNgT * 1.7 + dot(vNfW, vec3(1.3, .7, 1.1))); float ft = nfFoot(vNfW);
+        totalEmissiveRadiance += vC * vG * uNgF * (uNfK * pu + ft * ${NFLORA.footK.toFixed(2)}); }`); };
+  return m; }
+function nfGeoSet(geo, g, c) { const n = geo.attributes.position.count; geo.setAttribute('aG', new THREE.Float32BufferAttribute(new Float32Array(n).fill(g), 1)); return geo; }
+// a mushroom of unit height: a slightly bent stem and a cap whose UNDERSIDE (the gills) and a ring of spots glow
+function nfMushGeo() { const parts = [];
+  const st = new THREE.CylinderGeometry(.06, .09, .7, 7, 3); st.translate(0, .35, 0); { const P = st.attributes.position; for (let i = 0; i < P.count; i++) { const y = P.getY(i); P.setX(i, P.getX(i) + .06 * y * y); } }
+  parts.push(nfGeoSet(st, .12));
+  const cap = new THREE.SphereGeometry(.32, 12, 6, 0, Math.PI * 2, 0, Math.PI * .5); cap.scale(1, .55, 1); cap.translate(.04, .66, 0);
+  { const P = cap.attributes.position, A = new Float32Array(P.count); for (let i = 0; i < P.count; i++) { const x = P.getX(i) - .04, z = P.getZ(i), y = P.getY(i) - .66, a = Math.atan2(z, x);
+      A[i] = .9 + .9 * Math.pow(Math.max(0, Math.sin(a * 5) * Math.sin(y * 30)), 2) + (y < .03 ? .6 : 0); } cap.setAttribute('aG', new THREE.BufferAttribute(A, 1)); }
+  parts.push(cap);
+  const gill = new THREE.CircleGeometry(.3, 12); gill.rotateX(Math.PI / 2); gill.translate(.04, .655, 0); parts.push(nfGeoSet(gill, 1.3));
+  const g = _mergeGeos(parts.map(p => { p.deleteAttribute('uv'); return p.index ? p.toNonIndexed() : p; }), false); return g; }
+// a fern sprig of unit height: 5 fronds arching out and down; each a tapered strip, its midrib, a dotted leaflet edge and its tip glow
+function nfFernGeo() { const P = [], A = [], seg = 8;
+  for (let f = 0; f < 5; f++) { const yaw = f / 5 * Math.PI * 2 + .3, L = .8 + .25 * Math.sin(f * 2.1), lift = .9 - .15 * f % 3, cy = Math.cos(yaw), sy = Math.sin(yaw);
+    const pt = (t, s) => { const r = t * L, h = Math.sin(t * Math.PI * .85) * lift * .7 - t * t * .25, w = (1 - t) * .12 + .02; return [cy * r - sy * s * w, h, sy * r + cy * s * w]; };
+    for (let i = 0; i < seg; i++) { const t0 = i / seg, t1 = (i + 1) / seg, q = [pt(t0, -1), pt(t0, 1), pt(t1, 1), pt(t1, -1)];
+      const g0 = .25 + (i % 2 ? .9 : .2) + (t0 > .7 ? .8 : 0), g1 = .25 + (i % 2 ? .2 : .9) + (t1 > .7 ? .8 : 0), gm = 1.1;
+      for (const [a, b, c] of [[0, 1, 2], [0, 2, 3]]) for (const k of [a, b, c]) { P.push(...q[k]); A.push(k === 0 || k === 1 ? (k === 0 ? g0 : g0) : g1); } } }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('aG', new THREE.Float32BufferAttribute(A, 1)); g.computeVertexNormals(); return g; }
+function nightFloraBuild(row) { const F = NFLORA; if (F.built) return F.built; const o = row.flora || {}, c = player.pos.clone(), R = o.R || 40, ok = o.ok || (() => true);
+  const G = new THREE.Group(); G.name = 'night_flora'; const pal = () => { const r = Math.random(); return new THREE.Color(r < .5 ? JPAL.glow : r < .75 ? (NGLOW.both ? NGLOW.accent : JPAL.core) : JPAL.spark); };
+  const spot = () => { for (let t = 0; t < 12; t++) { const a = Math.random() * 6.283, d = Math.sqrt(Math.random()) * R, x = c.x + Math.sin(a) * d, z = c.z + Math.cos(a) * d, y = nfGround(x, z, c.y);
+      if (y != null && ok(x, y, z)) return [x, y, z]; } return null; };
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), s3 = new THREE.Vector3(), p3 = new THREE.Vector3();
+  const inst = (geo, mat, rows) => { const n = rows.length; if (!n) return null; const im = new THREE.InstancedMesh(geo, mat, n), AC = new Float32Array(n * 3);
+    rows.forEach((r, i) => { e.set(r.tx || 0, r.ry, r.tz || 0); q.setFromEuler(e); m4.compose(p3.set(r.x, r.y, r.z), q, s3.setScalar(r.s)); im.setMatrixAt(i, m4); AC[i * 3] = r.c.r; AC[i * 3 + 1] = r.c.g; AC[i * 3 + 2] = r.c.b; });
+    im.geometry = geo.clone(); im.geometry.setAttribute('aC', new THREE.InstancedBufferAttribute(AC, 3)); im.frustumCulled = false; im.castShadow = false; im.receiveShadow = true; G.add(im); return im; };
+  const mush = [], fern = [];
+  for (let k = 0; k < (o.clusters || 46); k++) { const at = spot(); if (!at) continue; const col = pal(), n = 3 + (Math.random() * 4 | 0), big = .26 + Math.random() * .38;
+    for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, d = Math.random() * .35, x = at[0] + Math.sin(a) * d, z = at[2] + Math.cos(a) * d, y = nfGround(x, z, at[1]); if (y == null) continue;
+      mush.push({ x, y: y - .01, z, s: big * (.45 + Math.random() * .7), ry: Math.random() * 6.283, tx: (Math.random() - .5) * .3, tz: (Math.random() - .5) * .3, c: col }); } }
+  for (let k = 0; k < (o.ferns || 70); k++) { const at = spot(); if (!at) continue; fern.push({ x: at[0], y: at[1] - .02, z: at[2], s: .35 + Math.random() * .45, ry: Math.random() * 6.283, c: pal() }); }
+  const mm = inst(nfMushGeo(), nfMat(0xe8dccf, 3.2), mush), fm = inst(nfFernGeo(), nfMat(0x4e7a3e, 1.1), fern);
+  if (fm) fm.material.side = THREE.DoubleSide;
+  // the SPECKS: a Points round him; aS = seed, colour per point
+  const N = F.specks, SP = new Float32Array(N * 3), SS = new Float32Array(N), SC = new Float32Array(N * 3); const sg = new THREE.BufferGeometry();
+  sg.setAttribute('position', new THREE.BufferAttribute(SP, 3)); sg.setAttribute('aS', new THREE.BufferAttribute(SS, 1)); sg.setAttribute('aC', new THREE.BufferAttribute(SC, 3));
+  const SU = Object.assign({}, NGLOW.U, F.U);
+  const sm = new THREE.ShaderMaterial({ uniforms: SU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+    vertexShader: `attribute float aS; attribute vec3 aC; uniform float uNgT, uNgF, uPx; varying vec3 vC; varying float vA; ${NFLORA_GLSL}
+      void main() { vec3 p = position; float ft = nfFoot(p); p.y += .03 + ft * .12 * (.5 + .5 * sin(uNgT * 3.0 + aS * 9.0)); vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        float tw = pow(.5 + .5 * sin(uNgT * (1.0 + fract(aS * 7.3) * 2.0) + aS * 40.0), 3.0); vA = uNgF * (.25 + .75 * tw + ft * 2.5) * step(-1e3, position.y);
+        vC = aC; gl_PointSize = (.05 + ft * .04) * uPx / max(.2, -mv.z); gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: 'varying vec3 vC; varying float vA; void main() { vec2 d = gl_PointCoord - .5; float r = dot(d, d) * 4.0; if (r > 1.0) discard; gl_FragColor = vec4(vC * vA * (1.0 - r) * (1.0 - r) * 1.8, 1.0); }' });
+  const pts = new THREE.Points(sg, sm); pts.frustumCulled = false; G.add(pts);
+  const seed = i => { for (let t = 0; t < 6; t++) { const a = Math.random() * 6.283, d = Math.sqrt(Math.random()) * F.R, x = player.pos.x + Math.sin(a) * d, z = player.pos.z + Math.cos(a) * d, y = nfGround(x, z, player.pos.y);
+      if (y == null) continue; SP[i * 3] = x; SP[i * 3 + 1] = y; SP[i * 3 + 2] = z; SS[i] = Math.random() * 100; const cc = pal(); SC[i * 3] = cc.r; SC[i * 3 + 1] = cc.g; SC[i * 3 + 2] = cc.b; return; }
+    SP[i * 3 + 1] = -1e4; };
+  for (let i = 0; i < N; i++) seed(i); sg.attributes.position.needsUpdate = true; sg.attributes.aC.needsUpdate = true;
+  scene.add(G); F.built = { G, mm, fm, pts, seed, SP, sg, i: 0, tT: 0, n: mush.length + fern.length, last: player.pos.clone() }; return F.built; }
+// per frame from nightPre: the trail, the uPx, a few far specks re-seeded round him. `row` = his zone's NIGHT row
+function nightFloraStep(row, dt) { const F = NFLORA; if (!row.flora || NIGHT.mode === 'DAY') return; if (!F.built && row.flora.ready && !row.flora.ready()) return; const B = F.built || nightFloraBuild(row); if (!B) return;
+  F.U.uPx.value = renderer.domElement.height / (2 * Math.tan(camera.fov * Math.PI / 360)); F.U.uFootR.value = F.footR;
+  const T = F.U.uTrail.value; for (const t of T) t.w = Math.max(0, t.w - dt / 2.4);     // a footfall's light fades over 2.4 s
+  const p = player.pos; if ((B.tT -= dt) <= 0 && B.last.distanceToSquared(p) > .16) { B.tT = F.trailDt; B.last.copy(p); let o = T[0]; for (const t of T) if (t.w < o.w) o = t; o.set(p.x, p.y, p.z, 1); }
+  const far2 = F.R * F.R * 1.2; let moved = 0; for (let k = 0; k < 40; k++) { const i = B.i = (B.i + 1) % F.specks, dx = B.SP[i * 3] - p.x, dz = B.SP[i * 3 + 2] - p.z; if (dx * dx + dz * dz > far2 || B.SP[i * 3 + 1] < -1e3) { B.seed(i); moved = 1; } }
+  if (moved) { B.sg.attributes.position.needsUpdate = true; B.sg.attributes.aC.needsUpdate = true; } }
+// NIGHT_FLORA:END
 // m2125 (his: "there are a lot of parts of the map where the snow doesn't react to me... if it's snowy the ground should react"): the PACK grew from
 // 160 m (res 640, .25 m texels, a 400-quad mesh) to 320 m (res 960, .33 m texels, a 560-quad mesh, .57 m) -- it now reaches the waterfall (x -140).
 // The upload when it changes is ~.9 MB (was .4). If it costs frames on the phone: back to 160 / 640 / 400, or the follow-him pack (a window that moves).
@@ -71716,7 +71799,7 @@ async function init() {
 
 // the console handle. Every tuning object is live, so a number can be moved on the phone
 // without a rebuild and without a push.
-window.melee = window.mel = { LAKEZ, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
+window.melee = window.mel = { LAKEZ, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, NFLORA, nightFloraBuild, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
   // PROGRESS (m276): `mel.SAVE` is the save; the setters write it through; `mel.progReset()` is a new game
   // TALK (m277): `mel.TALK` live; `mel.TALKS` the scripts by kind; `mel.talk` the state
   TALK, TALKS, talk,
