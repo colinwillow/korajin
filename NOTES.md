@@ -17,6 +17,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2352 -- THE ENTRANCE, take 2: space RIPS open, no pad (a light sigil draws itself), and the Jinra goop shockwave (Nov 3 2026)
+His notes (via main): *"NO LITERAL PAD -- if anything marks the landing, it is a circle of LIGHT that DRAWS ITSELF on the ground, glowing linework with
+the invented alien script tracing round in rings just before he lands, then fading. THE PORTAL is the key part: a purple-pink portal where THE FABRIC
+OF SPACE RIPS OPEN -- a jagged tear that splits and peels apart, edges glowing hot pink to violet, crackling, warping what's behind; he comes THROUGH
+it, then the tear seals shut and disappears leaving a little wisp of smoke. Not a round disc. Then he slams and a JINRA SHOCKWAVE goes out (the goop
+library)."*
+- **The tear** (`entryPortal` / `ENTRYFS_T` / `entryPortalStep`): one 5 x 9 m plane over the landing, turned square to the lens, tilted .2 rad; one
+  shader. The rip RUNS along its length first (a white-hot crackling seam, `uLen`, .35 s), then PEELS apart on a jagged centre line with an
+  overshoot (`uOpen`, to .8 s); inside, the other side -- a deep violet void, a slow nebula, twinkling pin stars; the lips burn hot pink to violet
+  and crackle; round them a rippling halo fakes the warp (no post chain to refract with). Arcs crawl off the lips; pink sparks drip. He drops
+  through at 1.0 s; .3 s later it SEALS (width, then length) with a violet wisp of smoke and a soft swoosh. The round vortex, its cloud ring, the
+  light beam and the screen-flash strength are gone/down.
+- **No pad.** `entryPad` is deleted. **The LANDING SIGIL** (`entrySigil`, `ENTRYFS_S`): one flat additive disc (r 2.3) -- during the fall the outer
+  ring TRACES round, the band of 22 glyphs from the NIGHT script's 64-glyph atlas (`nightRunes`) writes itself glyph by glyph, the inner ring traces
+  back the other way and the spokes and core close it; impact flashes it, it fades over 1.7 s. TOOLS > LANDING SIGIL on/off (`mel.entrySigil`),
+  default on; a row's `sigil: 0` drops it in one zone.
+- **The shockwave is the goop library's own `slam`** (FXLIB, Jinra palette): `goopStep` already fires it on any hero-drop landing; `entryImpact`
+  fires it itself when GOOP is off. The violet slam ring is gone. The surface kick-up stays.
+- **Bug fixed:** my TOOLS action `entry` (m2312) shared its name with the arena DOOR toggle (`ARENA.door.entry`), so the earlier else-if swallowed the
+  door's button. The entrance's is `entrance` now.
+- Rendered headless in the arena (frame strip sent): rip, peel, him through it, seal, fall, the sigil written by touchdown, the goop slam, crouch,
+  rise, the lens home. Slow-mo and the audited spots unchanged. Shipped unverified.
+
 ## m2350 -- THE JINRA BEAM AS FLUID, pass 2 (Nov 3 2026)
 Pass 1's renders showed three problems:
 - **The top washed out to near-white against the sky.** The fade is now `pow(1-y, 1.7)`, the sheen is lighter, and thin areas lean on the deep colour.
