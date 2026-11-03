@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- a video format the phone can't play is no longer a "FAILED TO LOAD" crash screen (Nov 3 2026)
+His screenshot: the crash overlay "FAILED TO LOAD .../video/title_loop_av1.mp4?b=m2294" over the splash. The page-level `error` listener (capture,
+line ~55) shows the crash card for ANY element with a `src` whose load fails -- and a <source> the browser cannot decode (AV1 on an iPhone without
+AV1) fires exactly that, before the browser quietly moves to the next <source> (HEVC, then H.264). Media elements (VIDEO / SOURCE / AUDIO / TRACK)
+are now ignored by that listener; the poster stays until a format plays. Shipped unverified.
+
 ## m2294 -- BREAKABLES AND KICKABLES ARE GAME-WIDE (step 1: the shared system + the Garden) (Nov 3 2026)
 
 *"ALL pots in EVERY level should break ... and if it's a pot or a SMALL ROCK, you should be able to kick it around or break it."* (via main)
