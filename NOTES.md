@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2378 -- the katana charge CREEPS again (m1968's run-while-charging is off by default; TOOLS > KATANA > CHARGE MOVE)
+His words (Nov 3): *"When I press up on the right stick with the katana out and charge, he used to go slowly from side to side -- cautiously going left
+and right. Now he can basically RUN while charging. I never asked for that and it looks crazy: the strafe left/right clip plays and the locomotion is
+faster than the animation."*
+- Found with `git log -S CHRUN`: m1968 (his Oct 31 "maintain the run" ask) lifted the `GAIT.aimRunRef` 2.3 m/s cap off a katana charge in EVERY direction,
+  but only gave the FORWARD case run legs -- sideways he travelled at up to 7.2 m/s on the katana strafe clips, whose rate clamps at `GAIT.tsHi` 1.6:
+  the feet skated.
+- Now `CHRUN.keep` 0 by default (TOOLS > KATANA > CHARGE MOVE: CAREFUL / RUN (m1968), remembered as `mel.kat.chrun`). CAREFUL: charging with the katana,
+  `wantSp` <= `CHRUN.slow` 1.5 m/s x stick, and never past the MEASURED ref (`KATANA.legRef`) of the walk/strafe clip that direction plays x `CHRUN.rate`
+  1.0 -- so the clip runs at (at most) its own pace. No run legs blend in (`rk` needs `keep`). The release (lunge / whirlwind / high leap off the left
+  stick) is untouched. `mel.CHRUN` is live.
+- Not verified on a device. Box moved: none (a regression fix on the katana charge). Open: whether 1.5 feels right is his -- `mel.CHRUN.slow`.
+
 ## m2377 -- the title's Grumbo glow passes his mesh<!--mine-->
 NIGHT worker's note: the title loop's `heroGlowMat(m, geo)` passed no mesh, so `heroGlowSpan` had to find his skinned mesh by material. It now
 passes the hero mesh `q` as the third argument, so the glow span is exact. Shipped unverified.
