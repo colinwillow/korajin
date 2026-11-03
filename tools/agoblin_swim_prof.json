@@ -1,0 +1,80 @@
+{
+ "v": 1,
+ "character": "models/characters/alien_goblin_game.glb",
+ "exclude": [],
+ "layers": {
+  "feet": 0,
+  "ground": 0,
+  "clear": 0,
+  "toes": 0,
+  "handAlign": 1
+ },
+ "adjust": {
+  "stance": 1,
+  "arms": 0,
+  "elbows": 0,
+  "lean": 0,
+  "toeIn": 0,
+  "knees": 0,
+  "wrists": 45
+ },
+ "hands": {
+  "Right": {
+   "pose": "relaxed"
+  },
+  "Left": {
+   "pose": "relaxed"
+  },
+  "amt": 0.35,
+  "noise": {
+   "amt": 3,
+   "hz": 0.5
+  }
+ },
+ "clips": [
+  {
+   "role": "swim_idle",
+   "stem": "Treading_Water",
+   "name": "Treading_Water"
+  },
+  {
+   "role": "swim",
+   "stem": "Swimming",
+   "name": "Swimming"
+  },
+  {
+   "role": "swim_float",
+   "stem": "Floating",
+   "name": "Floating"
+  },
+  {
+   "role": "swim_edge",
+   "stem": "Swimming_To_Edge",
+   "name": "Swimming_To_Edge",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "climb_top",
+   "stem": "Climbing_To_Top",
+   "name": "Climbing_To_Top",
+   "edit": {
+    "inPlace": 1
+   }
+  },
+  {
+   "role": "dive",
+   "stem": "Standing_Dive_Forward",
+   "name": "Standing_Dive_Forward"
+  },
+  {
+   "role": "run_dive",
+   "stem": "Run_To_Dive",
+   "name": "Run_To_Dive",
+   "edit": {
+    "inPlace": 1
+   }
+  }
+ ]
+}

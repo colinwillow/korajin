@@ -17,6 +17,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2365 -- THE LAKE: SWIMMING -- jump off the boat, swim, climb back aboard (Nov 3 2026)
+His: *"he RUNS ON the water -- make him swim."* The clips are his own Forge library (colinwillow/retarget-anims): `node tools/forge.cjs
+models/characters/alien_goblin_game.glb tools/agoblin_swim_prof.json models/characters/anims/agoblin_swim.glb --lib ../retarget-anims/library/clips`
+-> 7 clips, 0.93 MB, loaded by HANIM: `swim_idle` (Treading_Water), `swim` (Swimming), `swim_float` (Floating), `swim_edge` (Swimming_To_Edge, in place),
+`climb_top` (Climbing_To_Top, in place), `dive` (Standing_Dive_Forward), `run_dive` (Run_To_Dive, in place). The profile is the agoblin one with the
+foot / ground / toe layers OFF (they would pin his feet to a floor that is not there). The raw Mixamo files stay in that repo.
+- **The floor:** in the Lake there is no floor at y = 0 any more -- the bed is the floor (`groundAt` base -1e3 when `LAKEZ.on`), so he walks into the
+  shallows on the sand and the water deepens round him.
+- **Into the water (`lakeSwimIn`):** where the bed is more than `deep` 1.25 m under the surface and he is below it (walked in, or fell / jumped off the
+  boat), `p.swim` takes the body with a SPLASH sized by his fall and a plunge that bobs him back up.
+- **Swimming (`lakeSwimStep`):** held `sink` .62 m under the drawn surface (`L.waveAt` -- he bobs with the waves), the stick swims him at `speed` 2.1 m/s,
+  x`fast` 1.7 at full stick, turning to face where he goes; the hull and the stacks push him off; where the bed comes up within `stand` .95 m he stands
+  and wades out. `swim` plays faster with speed; `swim_idle` treads.
+- **Climb aboard (`lakeClimbGo`, TAP RIGHT):** beside the hull (within `climbR` 1.5 m of the side, between the cheeks) he plays `climb_top` over 2.2 s,
+  carried in the boat's frame, rising to the deck then stepping in; elsewhere a tip says swim closer.
+- **The water round him:** rings and broken foam (`L.setSwim` -> `uSwim`), and they GLOW at night (the bioluminescence). Splash droplets are round
+  now (they were squares up close).
+- Game test (headless): dropped 2 m off the hull -> `swim` (swim_idle); tap -> `climb_top` -> on the deck (inHull, y = deck). Not yet: the DIVE clips
+  (the jump off the deck is a fall), `swim_float`. Shipped unverified.
+
 ## m2364 -- the vertical wall run EASES out: gravity fights him, the apex falls out of his speed, then the sit or the slide (Nov 3 2026)
 *"The VERTICAL wall run that we capped -- I don't like that it just suddenly stops. It runs up and then just hits a wall. I want it to be a velocity
 thing ... it EASES from how fast you're going, as if gravity is fighting him -- he slows down, and then he falls into a sit or slides down."*
