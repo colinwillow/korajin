@@ -98,7 +98,7 @@ walked the WHOLE scene (the snow is thousands of objects) every 3 s for ever, lo
 its clouds late) and every 30 s after. The GPU side (the dome's fbm, the glow masks on the snowpack) is being profiled headless frame by frame with
 each night piece toggled -- part 2. Shipped unverified.
 
-## m23XX -- NIGHT 25: glow in PIECES (never a wave of solid colour) + NIGHT SKY quality (snow perf, part 2) (Nov 3 2026)
+## m2408 -- NIGHT 25: glow in PIECES (never a wave of solid colour) + NIGHT SKY quality (snow perf, part 2) (Nov 3 2026)
 **His words (images/feedback/m2404/quills_full_glow.jpg):** *"his quills periodically flood with an almost complete glow... I like glow in PIECES: the tips,
 scales, cracks, splotches. Pulses brighten the pattern, never wash the surface."* One splotch / scale pattern on his own body (`pat`, value noise at
 ~6 cm); the quill band is pattern ONLY (the dev view, `uHgDbg` 5, showed the height band covering his whole head on the head mesh), the orange tips
