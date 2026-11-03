@@ -317,6 +317,21 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
+## m2338 -- GOOP on the UNARMED moves and the ACROBATICS: limb trails, slides, the blink; the switch is TOOLS > GOOP FX (Nov 3 2026)
+Relayed from Colin: *"The effects on melee, slams, sword attacks and bow and arrow look SO good."* Then fill the gaps: every unarmed swipe / flick
+punch, kick and combo, the handsprings, the teleport / blink, the left-stick flips and dodges, the slides; light for jabs, heavy for finishers.
+- **LIMB TRAILS** (`goopLimbs`): the handsprings, flip kicks and punches are all `p.melee` clips, so ONE rule covers them. While an unarmed strike,
+  a cartwheel / side flip / backflip dodge (`p.cart`), an air flip, a roll, a slide or a tornado is live, each hand and toe (`mixamorig_*Hand`,
+  `*ToeBase`) moving faster than `GOOP.limbOn` 3.6 m/s RELATIVE TO THE HIPS lays a goop ribbon (half-step sub-sampled) and sheds blobs by speed;
+  it ends after .1 s under `limbOff` 2.4. Hip-relative, so running never trips it. **Weight**: `heavy` = 1 + .3 per combo step (`meleeIx`, max 3)
+  + .5 for a `KATANA.finishers` name -- the ribbon's width, life and shedding scale with it, so a jab is a flick and a finisher is fat and wet.
+- **SLIDES**: a splash ring where it starts, then goop skids off his feet along the floor (36/s). **BLINK** (`blinkGo`): a goop burst where he
+  leaves and where he lands, three arcs between, a splash under him (`goopBlink`).
+- The impacts are still `meleeHit`'s goop burst (m2329), scaled by the blow. `GOOP.pulse` gets a small kick (.18 x heavy) while limbs stream.
+- **The switch moved to its own header: TOOLS > GOOP FX** (it covers unarmed now), same `mel.goop`.
+- Wall slides: there is no wall-slide state of their own here (wall RUNS are `p.wrun`); not dressed.
+- Checked: 4 boot ok + the lab boot. Not seen on his skin (no harness builds it). Shipped unverified.
+
 ## m2329 -- GOOP FX ON THE REAL MOVES: TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX) (Nov 3 2026)
 Relayed from Colin: *"I haven't seen those in game -- I imagine the attacks glowing and I don't see anything glowing."* He wants the goop on the
 real moves NOW (his call ahead of the lab sign-off; the switch is the A/B). One `FX` for the whole game (`goopFx`), stepped every frame by
