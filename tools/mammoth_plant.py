@@ -1,4 +1,4 @@
-# THE MAMMOTH'S FEET (Korajin m2347). The cow clips roll the hoof up to ~70 deg (a slender cow hoof); on the mammoth's half-metre pad that swings
+# THE MAMMOTH'S FEET (Korajin m2358). The cow clips roll the hoof up to ~70 deg (a slender cow hoof); on the mammoth's half-metre pad that swings
 # the pad 30-40 cm under the ground. Per clip, per frame: keep the pad FLAT while the foot is planted (and only part of the roll in the swing),
 # two-bone IK the thigh + shin so the pad's lowest point sits on y=0 (+ the swing lift the clip had), and raise the body only where a leg cannot
 # reach. The hips' own bob is the cow's and is kept.

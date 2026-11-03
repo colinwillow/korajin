@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2357 -- THE MAMMOTH'S FEET: planted on the ground in every clip; the title loop's foot lock is gone (Nov 3 2026)
+## m2358 -- THE MAMMOTH'S FEET: planted on the ground in every clip; the title loop's foot lock is gone (Nov 3 2026)
 *"From the side view on the start screen his footsteps are very odd: he steps, then his feet go down and THROUGH the ground... it makes me wonder if
 a hip translation that was supposed to go with the animation was removed... he kind of looks like he floats on the main menu."*
 - **The hips were never dropped.** `mammoth_cow.py` puts the mammoth ON the cow's own armature, so the clips are the cow's keys verbatim:
