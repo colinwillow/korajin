@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- BLACK GRUMBO, the likely cause: WebKit ImageBitmaps; textures decode as plain images on iPhone now. Snow steps turned down (Nov 3 2026)
+## m2301 -- BLACK GRUMBO, the likely cause: WebKit ImageBitmaps; textures decode as plain images on iPhone now. Snow steps turned down (Nov 3 2026)
 *"I'm getting really tired of the character loading as a black thing."* (Snowfield screenshot, chip minimised.) His GLB has ONE 2048 WebP
 (alien_goblin_game.glb: goblin / cape / hair materials share it). GLTFLoader decodes textures with `ImageBitmapLoader` unless the UA reads as
 Safari < 17 -- and a HOME-SCREEN app's UA has no "Safari" token, so on his phone it always took the ImageBitmap path. WebKit's ImageBitmaps
