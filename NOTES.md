@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2363 -- the entrance, plainer: the play camera all the way, no slow motion, no flash, quieter (Nov 3 2026)
+His: *"I don't think I should've called it cinematic. I don't want slow-mo, and I don't like the angle -- what I wanted is the same perspective the
+whole time, like the original: he falls from the sky, hits the ground and does the Spider-Man stance. All I was adding is a portal that opens that
+he falls out of. Not a new camera shot, not crazy sound effects, not slow-mo. A little sound is fine if it's beautiful."*
+- `ENTRY.cine` 0 (the default): no entrance lens (`entryCam` not called -- the play camera follows him down exactly as the m1953 hero drop did), no
+  slow motion (`slowK` 1), no screen flash, the hero drop's own shake and thud. `cine: 1` brings the old version back whole.
+- The portal still opens round him where he appears (H over the landing). The play camera looks DOWN on it from just behind him, so a dead-flat
+  disc read edge-on: it is tipped `lean` .45 rad toward the camera (yawed to face it each frame) -- still a ring above the landing, seen at an angle.
+- Sounds quieter: open .55, through .6, seal .45, no boom; the music dips to .3 instead of .5. The flip, the sigil, the goop shockwave, the surface
+  kick-up and the audited landing spots are unchanged. Shipped unverified.
+
 ## m2362 -- the entrance's tear lies FLAT, and the portal has its own sounds (no electricity) (Nov 3 2026)
 His: *"I would make it horizontal instead of vertical -- like an abstract ring, parallel to the ground, that opens and you fall out of it. And I don't
 like the electric sound effects: they linger too much, and the electricity is not really what I'm going for."*
