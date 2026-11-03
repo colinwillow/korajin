@@ -17,6 +17,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2313 -- the entrance, tuned off its own frame strip (Nov 3 2026)
+The m2312 strip (arena, headless) showed the portal's core blown to a white disc and the landing lens 8.5 m out (he was small in the frame). The vortex
+core / body / rim gains came down (2.4 -> 1.25, 1.5 -> .95, 1.4 -> 1.1) and the glow sprite with them, so it reads violet with a bright eye. The default
+lens is [.6, 6.2, 1.25] (was [.62, 8.5, 1.5]). Step 2 (every zone's landing audited) is rendering. Shipped unverified.
+
 ## m2312 -- THE ENTRANCE: every zone, he drops out of a violet portal in the sky, flips, and lands in slow motion (Nov 3 2026)
 His ask: *"every zone you spawn into: he TELEPORTS out of the sky. A powerful purple, electric, cloudy PORTAL opens; he falls out of it, FLIPS, and lands
 in a Spider-Man / superhero SLAM pose, slightly in SLOW MOTION, and the ground kicks up -- in the snow zone, snow particles fly up."* Step 1 of 2 (the
