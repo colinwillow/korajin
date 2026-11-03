@@ -17,6 +17,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2293 -- THE TRANSITION, take 2: a visible leap and a CHERRY-BLOSSOM STORM; slow seasons; heavy snow; a glowing purple night (Nov 3 2026)
+His notes on m2280 (relayed from main): *"kind of 2D; the stuff comes out of nowhere; I don't really get to see him jump... his favourite: cherry
+blossom petals, glowing, carried on the wind across the screen, maybe mixed with a few Jinra motes, building into a sweep that covers the
+screen, then clears."* Plus: the seasons cycle SLOW, the snow more intense, the night glowing purple and blue.
+- **THE LEAP READS**: launch 10 m/s against 4 m/s2 (it was 14 / 5), so he is IN SHOT, rising, for ~0.55 s before anything covers him; the
+  camera follows him up by .45 of his height. `dur` 1.9 s (was 1.15). It still finishes before `shutterClose`'s heavy build.
+- **THE PETAL STORM IS 3D, IN THE SCENE** (`LOOPBG.leap.storm`, `stormStep`): 1,400 glowing petal quads (a soft teardrop with a notch, canvas
+  texture, not tone-mapped so they glow), 13% Jinra motes, blown in from screen-LEFT on the wind at every depth from 26 m behind him to
+  right in front of the lens (biased near). Each rides undulating gusts (two sines on y, a lazy one on z) and tumbles on its own axis. One
+  InstancedMesh; every petal's path is a pure function of time, so a frame can be pinned.
+- **THE SWEEP** (2D on top, only for a FULL cover; `loopSwirl` rewritten): a blossom-pink band blown across in the wind's direction. Its FRONT
+  covers (by 1.0 s), the menu is swapped for the boot card under it (1.02 s), and its TAIL clears to the right (to 1.86 s). The band itself is
+  130 BIG soft drifting petals over a gradient, not a flat fill, and 420 smaller ones ride its front, tumbling (their width flips) and blowing off
+  over the loading screen. Every timing, count, size and colour is in `LOOPBG.leap`.
+- **SEASONS**: each holds 75 s and cross-fades over 22 s (was 28 / 7), about 11 minutes for the round. (The chip is main's to remove, in its build.)
+- **SNOW**: 620 flakes (was 200), larger (.08-.2 m) and falling faster.
+- **NIGHT GLOWS**: a violet-blue fill light (0x7a4cff at x2.2, a new per-season `fillCol` / `fillK`), the moonlight bluer-violet, the sky and fog
+  deeper violet, and every GLOW and every Jinra flow lifted x1.7 (`glowK`: `MAT.glow.color`, the flow shader's new `uG`).
+- Strip rendered at ten moments (`swirl.hold`): crouch, the leap with the first petals, the storm thickening round him, the sweep's front, full
+  cover, the tail clearing to the loading screen. **Shipped unverified.**
+## m15XX -- the loading video is released when the card goes (Nov 3 2026)
 ## m2291 -- the loading video is released when the card goes (Nov 3 2026)
 His screenshot (the loading card with the yellow TAP FOR SOUND and "BUILD M2227") was an OLD cached build -- the button's look changed at m2261,
 the loading video at m2289. His "it seemed to crash, then started loading again" is consistent with iOS reloading a tab short of memory, so: once
