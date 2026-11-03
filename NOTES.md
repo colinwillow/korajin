@@ -30,7 +30,7 @@ His (Nov 3) on m2380's K-HUM: *"like a synth flute"* -- and he does not want som
   None is a pad or a flute: A is metal, B breath, C a struck bell played backwards.
 - K-FULL / K-LOCK / K-GO unchanged. `KCSND.g.arm` .42 (under the hits).
 - Not heard here -- his ear picks. Box moved: none (sound pass).
-## m23XX -- NIGHT 21: his cracks are LINES again -- the crack scale was the rig's units all along (Nov 3 2026)
+## m2398 -- NIGHT 21: his cracks are LINES again -- the crack scale was the rig's units all along (Nov 3 2026)
 His report (images/feedback/m2376/hero_glow_dots.jpg): *"scattered tiny bright dots over his body -- looks like pixels -- instead of the glowing cracked-skin
 lines I liked, which emanated upward."* The skinned `transformed` is in the RIG's units, not the geometry box's: the crack scale has to be the mesh's own
 WORLD scale (`matrixWorld.getMaxScaleOnAxis()`, .0134 on Grumbo), measured with the height span. m2348's look he liked came from an ACCIDENT -- the shared
