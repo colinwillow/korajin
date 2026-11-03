@@ -166,7 +166,7 @@ src = (html.match(/<script id="jinpal">([\s\S]*?)<\/script>/) || [0, ''])[1] + '
 // AND IT STEPS FRAMES (Worker B, m1442: homeStep threw a ReferenceError on EVERY frame and the gate, which built but never stepped, passed it).
 if (_w === 'home') src += '\nglobalThis.__bootWorld = async () => { await buildHome(); ctxRender = () => {}; for (let i = 0; i < 8; i++) { last = performance.now() - 16; frameBody(); if (HOME.live) homeStep(1 / 60); } };     /* homeStep sits behind rig.ready, which never comes here */\n';
 // m2309: MEL_WORLD='forge&zone=fxlab' builds THE FX LAB and steps it with every move fired (FX.md)
-if (/zone=fxlab/.test(_w)) src += '\nglobalThis.__bootWorld = async () => { fxlabBuild(); for (const n of FX.names) fxlabFire(n); for (let i = 0; i < 40; i++) fxlabStep(1 / 60); };';
+if (/zone=fxlab/.test(_w)) src += '\nglobalThis.__bootWorld = async () => { fxlabBuild(); for (const n of FX.names) fxlabFire(n); goopHit(0, 1, 2, 1); goopDodge(); for (let i = 0; i < 40; i++) { fxlabStep(1 / 60); goopStep(1 / 60); } };';
 // m2318: MEL_WORLD='forge&zone=lake' builds THE LAKE (WATER.md), stands him on the beach and runs the waves
 if (/zone=lake/.test(_w)) src += '\nglobalThis.__bootWorld = async () => { lakeBuild(); for (let i = 0; i < 30; i++) lakeStep(1 / 60); if (!LAKEZ.on) throw new Error("THE LAKE did not build"); const w = LAKEZ.L.waveAt(0, 0, 1); console.log("[melee] the lake: spawn " + LAKEZ.L.spawn.map(v => v.toFixed(1)).join(",") + ", ground there " + groundAt(LAKEZ.L.spawn[0], LAKEZ.L.spawn[2], 50, 99).toFixed(2) + ", wave at 0,0 " + w.y.toFixed(3) + ", " + JSON.stringify(LAKEZ.L.count())); };';
 const f = path.join(TMP, 'boot.mjs');
