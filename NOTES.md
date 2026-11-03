@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2371 -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
+## m2372 (m2371 + fix) -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
 His: *"I don't really love the default text that we use for the story prologue."* Step 1 of two (step 2, an invented Korajin script that dissolves
 into the reading text, waits on his pick here).
 - **The looks:** `REELFONT` has seven, each a free Google font plus a colour, shadow or glow, and a REVEAL that writes the line in letter by letter as
@@ -32,6 +32,8 @@ into the reading text, waits on his pick here).
 - **Jinra words:** Jinra, Korajin and Grumbo glow in the JPAL colour.
 - **His switch:** the "Aa" key bottom-left ON the reel steps through them live, and the crawl re-measures its lines in the new face (`O.ys = null`).
   The same is in TOOLS > PROLOGUE > TALE FONT, kept in `mel.reel.font`. A line upcoming is blank, a line past keeps its letters (`past`).
+**m2371 WAS A BLANK PAGE** for about a minute: a stash-pop conflict was committed with its markers still in it (the gate said SYNTAX FAIL and the
+commit chain ran on with `;`). It was fixed in place, and this bump makes the good build tell itself apart. Never chain commit after `npm run check` with `;`; use `&&`.
 Shipped unverified. A phone-size headless screenshot of each look follows.
 
 ## m2369 -- THE LAKE: TEXTURES on the rock, sand, deck and water (his ask) (Nov 3 2026)
