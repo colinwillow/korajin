@@ -17,6 +17,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2368 -- THE MAMMOTH REWEIGHTED: rigid tusks and head, drapes / saddle / tassels on the body, legs keep only their own chain (Nov 3 2026)
+*"Parts like the tusks on his head should be rigidly rigged, and maybe some parts near the front / his chest. New weighting could probably be
+better for him."* What the heat weights (`mammoth_cow.py`) actually were, measured per region: the side TUSKS 89% on the cow's EAR bones
+(`ear_2_L/R` -- they flapped with the ear clips), the head spikes 48% `neck_02` + 39% ears, the SADDLE 31% on the static `root_bone`, the
+flank DRAPES 83% on the front thighs (they flew out to the ground on every stride), the tail TASSELS 77% on the hind shins, the chest band on
+the shoulder bones.
+- **`tools/mammoth_weights.py` weights by region, in the rest pose** (run after `mammoth_plant.py`, on the draco-stripped file): HEAD 100%
+  `head` (rigid, with the tusks fading into the neck over 16 cm at their root); BODY a 1D blend along the spine by y (Spine_05 .. Spine_01 ..
+  neck_01 / neck_02 .. head, the neck bending over half a metre; the low chest stays on Spine_01); TRUNK a 1D blend down z (head .. trunk_4);
+  TAIL a 1D blend back along y, with the fins high over the tail root kept on the body; LEGS a column round each MEASURED foot, keeping the
+  heat weights but only onto that leg's own chain (+ its shoulder) -- every low vertex near its foot (pads, claws, cuffs) wholly that leg; the
+  25 LOOSE PARTS (rings, bells, tassels, found by welding the UV seams: 3,625 seam islands -> 26 real ones) 100% to the one bone their top
+  vertex hangs from, the tail tassels to the tail bone over them. Max 4 influences.
+- **Why the legs keep heat:** the cow's leg bones sit 20-40 cm BEHIND his leg columns (the fit slid each chain so the hoof TIP lands on his
+  foot). A clean split by height swings the column round the wrong pivot -- the first version tore the front leg into a slab. Heat spreads
+  it and reads right; what went is the smear (the front thigh on the back knee, the legs on the drapes).
+- Checked headless: renders of Walk / Idle_2 (the head turn) / Attack, a stretched-edge count per clip (edges over 2x rest and 6 cm) to find
+  every seam (head/neck, chest, tail root, the toe claws first landing in the head region -- all fixed), and the feet re-measured: Walk
+  -0.001..+0.010, Run airborne beat +0.099, Idle / Attack within 1-2 mm -- the m2358 planting holds. 6.6 MB, texture byte-identical.
+- Open: the CLOTH springs (drapes, tassels) are next -- they ride the body rigidly now; the back fins are on the body / tail blend, not each on
+  one bone. Shipped unverified.
+
 ## m2367 -- THE LAKE: glowing shore plants at night (the NIGHT worker's flora layer) (Nov 3 2026)
 His: *"add glowing plants."* `NIGHT.zones.lake.flora` (the NIGHT worker's API): 44 mushroom clusters, 64 ferns and the grass specks that follow him, scattered
 in a 70 m radius round the west beach (`L.spawn`), only on sand and gentle ground (`ok`: 0.25-6 m up, slope under .3), never in the water or up a bluff;
