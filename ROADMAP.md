@@ -23,7 +23,8 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   - [x] m2318 pass 1: WATER.md, the water shader (Gerstner, depth, mirror, glitter, shore foam), the canyon + stacks, `npm run lakestrip`.
   - [x] m2330 pass 2: the longboat (8.4 m, lacquer + brushed metal + Jinra line, shelter, prow lantern), buoyancy off `L.waveAt`, he stands on the deck, TOOLS > BOAT JETS (off).
   - [x] m2335 pass 3: the wake -- Kelvin wedge off the boat's path, bow wave + side trough, hull/arm/churn foam, bow spray; the boat cruises a lane (TOOLS > BOAT: CRUISE / MOORED) and carries him.
-  - [ ] 4 the place (falls, shrine, islets, cherries, mist, rays, petals); 5 sailing; his sign-off.
+  - [x] m2340 pass 4a: the air -- 12 cherry trees (beaches, ledges, stack tops), petals that fall FROM them, land and ride the waves, mist banks, god rays.
+  - [ ] 4b the falls (from a source), the shrine / torii on a bluff, islets above; 5 sailing; his sign-off.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),
       four directional attacks on the right flick, guard + parry + lock-on on the pull-down hold, charge -> lunge -> spin.
       Builds a-e in the spec.
