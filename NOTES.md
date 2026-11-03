@@ -63,7 +63,7 @@ subtle radial fake motion blur, or nothing"*.
   the spawn / door / death code that toggles it is untouched; the shared plane is skipped by the body-removal dispose. `HRING.on = 0` = no gauge.
 - `ninjaLines` behind `SPEEDFX.mode`: OFF (default) | BLUR (a masked backdrop blur on the screen's edge, by the same sprint weight) | LINES (the old
   streaks). Shipped unverified; check 4 boot ok. Not looked at: the ring's size on the mammoth (`d.K.r` is its hit radius).
-## m23XX -- NIGHT 23: the MAMMOTH glows like Grumbo -- material-side only (Nov 3 2026)
+## m2405 -- NIGHT 23: the MAMMOTH glows like Grumbo -- material-side only (Nov 3 2026)
 His words: *"the MAMMOTH should glow like Grumbo: his cloth drapes / flags and a little of his skin, same hues (purple Jinra + orange ember). Do NOT touch his
 rig / weights -- glow only."* The HERO_GLOW material on his skinned mesh (no rig, weight or geometry change), applied by `creatureGlowScan` (DUMMIES with
 `K.creature` in `CGLOW`), with two new per-material uniforms: `uHgP` (a body's mask PROFILE: orange g/r window, skin floor -- the orange brightness floor
