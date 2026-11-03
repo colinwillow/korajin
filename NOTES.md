@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2309 -- THE JINRA PALETTE, part 3: the canvas-texture colours (Nov 3 2026)
+## m2311 -- THE JINRA PALETTE, part 3: the canvas-texture colours (Nov 3 2026)
 - 18 mint CSS strings inside canvas textures now follow the pick (`JPAL.css(0x..)`, `JPAL.rgba(0x.., a)`): the village glow gradient
   (`vilTex`), the garden glyph strip (`willowMats`), the Jin glint sprite (`dojoGlintTex` -- it was mint UNDER a tint, so a violet tint
   over a mint texture came out grey), the rope course's ofuda (`_rbC`), the serpent's skin (`shipSerpentTex`), the level builder's tech
