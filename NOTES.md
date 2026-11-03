@@ -73,7 +73,7 @@ mammoth's opens to .04), fur darker. First pass (floor .15) lit the whole beast 
 ember, Jinra cracks on tusks and feet, the rest his own colours. images/feedback/m2329/mammoth_glow.jpg (night, off / on). Headless the arena's menu
 pauses the frame loop, so the scan was called by hand for the render; in play `heroGlowStep` runs it every second. Shipped unverified.
 
-## m23XX -- NIGHT 24: snow night perf, part 1 -- the cloud scan stops walking the whole scene every 3 s (Nov 3 2026)
+## m2406 -- NIGHT 24: snow night perf, part 1 -- the cloud scan stops walking the whole scene every 3 s (Nov 3 2026)
 His report: *"snow world: weather off + dusk -> night starts chugging (maybe the glow)."* First, the CPU hitch I know is mine: `nightCloudStep`
 walked the WHOLE scene (the snow is thousands of objects) every 3 s for ever, looking for clouds. Now every 3 s for the first 8 scans (a zone builds
 its clouds late) and every 30 s after. The GPU side (the dome's fbm, the glow masks on the snowpack) is being profiled headless frame by frame with
