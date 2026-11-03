@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- BLACK GRUMBO, the likely cause: WebKit ImageBitmaps; textures decode as plain images on iPhone now. Snow steps turned down (Nov 3 2026)
+*"I'm getting really tired of the character loading as a black thing."* (Snowfield screenshot, chip minimised.) His GLB has ONE 2048 WebP
+(alien_goblin_game.glb: goblin / cape / hair materials share it). GLTFLoader decodes textures with `ImageBitmapLoader` unless the UA reads as
+Safari < 17 -- and a HOME-SCREEN app's UA has no "Safari" token, so on his phone it always took the ImageBitmap path. WebKit's ImageBitmaps
+from `createImageBitmap` are known to come back blank or be released under memory pressure (a hot phone, a heavy zone) -> the texture uploads
+nothing -> black. `glbTexBad` (m2278) passed because the bitmap HAS a width. vendor/GLTFLoader.js now uses the plain `TextureLoader`
+(HTMLImageElement) on ANY iOS / WebKit-without-Chrome; the import URL carries `?k=webkitimg1` so phones fetch the patched file. The chip's SKIN
+token (m2286) stays to confirm. *"The snow footsteps sound blown out."* His snow cuts peaked at -3.6 dB (every other step set is levelled to
+-9 / -11): -6 dB on all eight (now -10 dB peak); and in the snow zone any light untagged ground classifies as SNOW (pale-blue snow had been
+falling to stone / water by colour). Shipped unverified.
+
 ## m2299 -- the first level sits at the bottom again; the scroll hint is a small arrow that actually fades (Nov 3 2026)
 *"The screen isn't balanced while the buttons are off screen -- have the first one at the bottom like it used to be. The scroll indicator doesn't go
 away when you scroll; with the buttons at the bottom you don't really need it -- a little arrow that goes away."* (1) `.loopgap` gives back what

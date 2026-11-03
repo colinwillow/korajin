@@ -1178,7 +1178,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
 
 <script type="module">
 import * as THREE from 'three';
-import { GLTFLoader } from './vendor/GLTFLoader.js';
+import { GLTFLoader } from './vendor/GLTFLoader.js?k=webkitimg1';
 import { DRACOLoader } from './vendor/DRACOLoader.js';
 // **KTX2, WHICH IS ABOUT RESIDENT MEMORY AND NOT ABOUT DOWNLOAD SIZE (m158).** A WebP in a GLB
 // is compressed on the WIRE and the GPU holds it as full RGBA with mips; a KTX2 stays
@@ -6354,6 +6354,7 @@ function ssClassify(h) { const o = h.object, m = Array.isArray(o.material) ? o.m
   else if (m && m.map) { const a = ssTexAvg(m.map); if (a) { _ssC.copy(a); have = 1; } }
   if (m && m.color) { _ssC.multiply(m.color); have = 1; } if (!have) return 'STONE';
   const hsl = {}; _ssC.getHSL(hsl); const hu = hsl.h * 360, sa = hsl.s, li = hsl.l;
+  if (STEP.set === 'SNOW' && li > .55 && !(hu >= 18 && hu < 60 && sa > .3)) return 'SNOW';     // m15XX: in the snow zone, any light untagged ground is snow (pale blue snow read as stone or water before)
   if (sa < .14 || li < .06) return li > .82 && STEP.set === 'SNOW' ? 'SNOW' : 'STONE';
   if (hu >= 70 && hu < 165 && sa > .3 && li > .12 && li < .6 && !m.map) return 'GRASS';     // m2254: colour says GRASS only for a plainly green, untextured surface -- a tile with green running through it is STONE (tag a real lawn `surf: 'grass'`)
   if (hu >= 18 && hu < 60) return li > .55 && sa < .6 ? 'SAND' : 'WOOD';

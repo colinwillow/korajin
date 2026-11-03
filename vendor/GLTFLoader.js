@@ -2673,7 +2673,10 @@ class GLTFParser {
 
 		}
 
-		if ( typeof createImageBitmap === 'undefined' || ( isSafari && safariVersion < 17 ) || ( isFirefox && firefoxVersion < 98 ) ) {
+		// KORAJIN m15XX: ANY WebKit / iOS (a home-screen app's user agent has no 'Safari' token, so the check above missed it) decodes textures as plain
+		// images, not ImageBitmaps -- WebKit's ImageBitmaps came back blank or were dropped under memory pressure: the hero rendered BLACK.
+		const isWebKitIOS = typeof navigator !== 'undefined' && ( /iP(hone|ad|od)/.test( navigator.userAgent ) || ( /Macintosh/.test( navigator.userAgent ) && navigator.maxTouchPoints > 1 ) || ( /AppleWebKit/.test( navigator.userAgent ) && ! /Chrome|Chromium|Android/.test( navigator.userAgent ) ) );
+		if ( typeof createImageBitmap === 'undefined' || isWebKitIOS || ( isSafari && safariVersion < 17 ) || ( isFirefox && firefoxVersion < 98 ) ) {
 
 			this.textureLoader = new TextureLoader( this.options.manager );
 
