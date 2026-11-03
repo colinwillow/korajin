@@ -228,6 +228,25 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
+## m2311 -- GOOP FX ON THE REAL MOVES: TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX) (Nov 3 2026)
+Relayed from Colin: *"I haven't seen those in game -- I imagine the attacks glowing and I don't see anything glowing."* He wants the goop on the
+real moves NOW (his call ahead of the lab sign-off; the switch is the A/B). One `FX` for the whole game (`goopFx`), stepped every frame by
+`goopStep` next to `bladeTrail` in `arenaStep`; the library does no work at all when nothing is alive (one flush to empty, then returns).
+- **KATANA TRAIL** (`goopBlade`, from `bladeTrail`): a goop SHEET from 30% up the blade to the tip off the real `heroSword` base/tip, two sub-steps
+  per frame, shedding blobs (by blade speed, `GOOP.bladeK`), sparks and arcs. The old ribbon and its Jin motes are skipped while ON.
+- **BLADE FIRE** (red / Jin, the "two flames"): `goopBladeFire` -- goop seeps up off the edge (tip-weighted), lingers, drips, with an arc crawling
+  the blade; 16/s idle, 45/s swinging. The flame tongues are skipped while ON.
+- **HITS** (`meleeHit`): a goop burst along his line to the hit, scaled by the blow's `k` (the body flash stays).
+- **ARROWS** (his, `A.pl`): a thin goop trail + motes; when it hits or sticks, a burst (`GOOP.arw` ends the trail).
+- **DODGES** (roll / cartwheel / flips, on the rising edge): a small splash ring and a body trail for .42 s. **LANDINGS**: over 1.5x
+  `MOVE.hardLand` (and every hero drop) the goop SLAM; over .75x a splash. **CHARGE RELEASE**: a burst 1 m ahead at chest height. **WHIRLWIND**:
+  the spiral.
+- Colours: the Jinra palette (`JPAL`), so VIOLET / MINT / JADE follow TOOLS > LOOK > JINRA COLOUR. `GOOP.pulse` (0..1, decays at 4/s) is exposed
+  for the NIGHT worker's body glow, so the hero glow and the goop can fire as one thing. Ground under the goop is the last floor he stood on.
+- The lab no longer steps FX itself, and its own landing slam is gone (the landing hook catches the hero drop).
+- Checked: `npm run check` 4 boot ok; the lab boot fires every move + a hit + a dodge through `goopStep`. Not seen on a real swing:
+  no harness here builds his skin. Whole-piece: this is his explicit call to wire before the sign-off; the FX box stays open. Shipped unverified.
+
 ## m2310 -- FX reads THE JINRA PALETTE: no FX colour table; `fxCols` derives the goop from a JPAL row; VIOLET tuned (Nov 3 2026)
 From main and the Jinra-colour worker: Colin wants every Jinra glow on ONE variable, so the FX Lab's own switch must READ `JPAL`, not keep a copy;
 and he leans toward violet into electric blue, so the goop has to read well in VIOLET too. `FXPAL` (MINT / PURPLE / SOLAR) is GONE.
