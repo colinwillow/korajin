@@ -75,7 +75,7 @@ night in the SERVED text only): landscape 1280x600 and portrait 420x860. Shipped
   two carry cherries (tree rows `islet:`), so petals come off them too.
 - Caught on the strip: the falls camera sat inside the north stack; the first falls were 3 m wide on a 140 m bluff (a thread) -- now 7-16.
 - Cost over m2340: +9 draws, +21k tris. Shipped unverified.
-## m23XX -- NIGHT 13: GRUMBO ALIVE -- cracks, a travelling shimmer, the cloak emblem; faint at rest, flaring with the goop (Nov 3 2026)
+## m2348 -- NIGHT 13: GRUMBO ALIVE -- cracks, a travelling shimmer, the cloak emblem; faint at rest, flaring with the goop (Nov 3 2026)
 His words (relayed): *"parts of him glowing -- little cracks or shimmers of purple on his skin or his armour, or the orange symbol on his cloak"*, always
 a little alive, stronger at night, flaring on Jinra / collecting / attacking. HERO_GLOW v2 on his one material (chained hook, key `|herog2`):
 - **cracks**: a 3D voronoi edge in his OWN skinned space (`transformed`, scaled to metres off his geometry's height) so they ride every pose; thin
