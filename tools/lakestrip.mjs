@@ -31,7 +31,7 @@ const res = await pg.evaluate(([code, o]) => { const THREE = window.THREE, t0 = 
   sun.position.copy(Li.dir).multiplyScalar(100); scene.add(hemi, sun); hemi.layers.enable(Li.layer); sun.layers.enable(Li.layer);     // the mirror sees layer `Li.layer` only, and three culls LIGHTS by layer too
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(.32, 1.1, 6, 12), new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .7 })); body.position.set(L.spawn[0], L.spawn[1] + .87, L.spawn[2]); scene.add(body);
   if (o.cruise && L.boat) L.boat.setMode('cruise');     // the wake needs a moving boat (pass 3)
-  for (let i = 0; i < Math.round(o.t * 30); i++) L.step(1 / 30);
+  for (let i = 0; i < Math.round(o.t * 30); i++) { if (L.boat) L.WU.uCam.value.set(L.boat.x, 4, L.boat.z); L.step(1 / 30); }     // the petals live round the lens: hold it at the boat
   const list = o.shots.length ? L.W.shots.filter(s => o.shots.includes(s.id)) : L.W.shots, cols = Math.min(o.cols, list.length), rows = Math.ceil(list.length / cols);
   const out = document.createElement('canvas'); out.width = cols * W; out.height = rows * (H + 20) + 22; const c2 = out.getContext('2d'); c2.fillStyle = '#000'; c2.fillRect(0, 0, out.width, out.height); c2.font = '12px monospace';
   let calls = 0, tris = 0, worst = 0;

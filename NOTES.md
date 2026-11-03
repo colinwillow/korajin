@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2340 -- THE LAKE pass 4a: the air -- cherry trees, petals, mist, god rays (WATER.md) (Nov 3 2026)
+His: *"floating mist, god rays, cherry blossom petals, really beautiful and harmonious."* Split pass 4: the air first (4a), the falls / shrine / islets next (4b).
+- **Cherry trees (`W.trees`, 12 rows):** placed by TIER, not by hand-typed height (VERTICALITY): `treeAt` walks out from the water's edge and finds the
+  flat runs -- tier 0 the beach, 1.. the bluff's ledges -- or a stack's cap (the south and north stacks wear one). Each is built from its id's hash:
+  a leaning, curving, tapered trunk with a root flare that meets the ground (CRAFT 1, 3), 5-7 drooping branches, lumpy blossom clouds (pink, paler on
+  top, deeper beneath, an emissive floor). `W.treeK` 2.3: true-size cherries vanished at canyon scale on the first strip. Bark + blossom = 2 draws
+  (also in the mirror), 37,824 tris.
+- **Petals (`L.petals`, 900 instanced, 1 draw):** they come FROM the canopies near the lens (or upwind, drifted from one out of sight), fall with a
+  flutter and a tumble on `W.wind`, LAND when they reach `L.waveAt` and then RIDE it (height and tilt of the drawn surface), drift, get pushed aside
+  by the moving hull, and sink after `float` s; anything that meets sand, rock or the boat goes. They live in a 50 m radius round the lens -- the first
+  try spread 700 over 150 m (one per 100 m2) and none could be seen.
+- **Mist (`W.mist`, 34 banks, 1 draw)** -- cylindrical billboards low on the water, alpha fading to nothing AT the water (no hard line), noise-torn,
+  brighter toward the sun. **God rays (`W.rays`, 16 shafts, 1 draw)** -- additive striated billboards along the sun's own line, strongest looking
+  into the sun, faded near the lens. No post chain.
+- Cost over m2335: +5 draws (+2 in the mirror), +38k tris, petal CPU ~900 x waveAt per frame. CRAFT checked on the strip: 1 (trunks/branches curve
+  and taper), 3 (root flare in the ground), 5. Shipped unverified.
+
 ## m2339 -- NIGHT 11: HIS JINRA GLOW -- the purple on Grumbo's own texture lights on Jinra contact and on every attack (Nov 3 2026)
 His ask (relayed): *"pick the PURPLE already on Grumbo's texture and make those parts GLOW when he is in contact with Jinra -- in a stream, in a geyser,
 collecting Jinra, and when he attacks; colour via JPAL."* HERO_GLOW block: a hue mask spliced into his OWN material (chained hook + key, no new
