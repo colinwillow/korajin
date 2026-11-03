@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2369 -- THE LAKE: TEXTURES on the rock, sand, deck and water (his ask) (Nov 3 2026)
+His: *"paint some textures for the water and the rocks -- we probably have some already, so reuse them."* All reused, no new files:
+- **The canyon / stacks / islets (one material):** `hollows_cliff` (red columns) and `hollows_rock` (strata) BIPLANAR on the steep faces (projected on the
+  XY and ZY planes, blended by the normal: nothing stretches); `hollows_sand` on the flats and `hollows_pebble` along the waterline. Each map is divided
+  by its own mean colour (measured off an 8x8 draw at load), so it adds DETAIL over the canyon's colours and the palette holds; its brightness drives
+  a screen-space BUMP. Nothing is textured until every map has loaded (`L.ready`; CRAFT 4). First strip: the strata map at 13 m stacked on the
+  procedural strata into candy stripes -- 24 m tiles at .55 now.
+- **The deck:** `garden_wood` (vertical planks) replaces the canvas planks.
+- **The water:** a TILING noise normal map built at load (128x128, periodic lattice, no file), three layers scrolling across each other -- smoother and
+  cheaper than the six noise calls per pixel it replaced.
+- Cost: 4 maps resident (~22 MB as RGBA; KTX2 later if it matters), 4-6 texture reads per terrain pixel. Draws unchanged (23-27). Shipped unverified.
+
 ## m2368 -- THE MAMMOTH REWEIGHTED: rigid tusks and head, drapes / saddle / tassels on the body, legs keep only their own chain (Nov 3 2026)
 *"Parts like the tusks on his head should be rigidly rigged, and maybe some parts near the front / his chest. New weighting could probably be
 better for him."* What the heat weights (`mammoth_cow.py`) actually were, measured per region: the side TUSKS 89% on the cow's EAR bones
