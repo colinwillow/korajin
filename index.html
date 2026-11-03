@@ -17988,7 +17988,7 @@ function gdnWalls() { const Z = GARDEN, t0 = performance.now(), cs = .5, R = Z.w
 // periods so it never visibly loops: a breath (~5.4 s) lifting the chest and shoulders, a torso sway, the head settling and lifting -- and the float
 // bob in the beam rides the same breath (up on the in-breath). It eases in over `ease` s when he settles and out when he moves.
 const LOTUS = { on: 1, w: 0, ease: .9, hands: 'mudra', thigh: [.80, -.12, .58], shin: [-.86, .05, .30], stack: .11, foot: .25, spineK: .75, headF: .1, headDown: 28, lean: .1,
-  breath: 5.4, breath2: 11.7, sway: 9.3, sway2: 13.1, nod: 7.7, chest: 3.2, shoulder: 2.4, swayDeg: 1.6, nodDeg: 2.2, bob: .12 };
+  breath: 5.4, breath2: 11.7, floatY: .14, floatX: .05, rockDeg: 3.5, dy: 0, dx: 0, sway: 9.3, sway2: 13.1, nod: 7.7, chest: 3.2, shoulder: 2.4, swayDeg: 1.6, nodDeg: 2.2, bob: .12 };
 try { const v = localStorage.getItem('mel.lotus.hands'); if (v === 'lap' || v === 'mudra' || v === 'spread') LOTUS.hands = v; } catch (e) {}
 function gdnBreath(t) { const L = LOTUS; return Math.sin(t * 2 * Math.PI / L.breath) * .8 + Math.sin(t * 2 * Math.PI / L.breath2 + 1.3) * .2; }
 const _ltA = new THREE.Vector3(), _ltB = new THREE.Vector3(), _ltC = new THREE.Vector3(), _ltQ = new THREE.Quaternion(), _ltQ2 = new THREE.Quaternion(), _ltQ3 = new THREE.Quaternion(), _ltI = new THREE.Quaternion();
@@ -18018,6 +18018,14 @@ function gdnLotus(dt) { const L = LOTUS, p = player, B = rig.bones; if (!L.on ||
   // the spine: lengthened toward upright, then the breath and the sway
   for (const [a, c] of [['Spine', 'Spine1'], ['Spine1', 'Spine2'], ['Spine2', 'Neck'], ['Neck', 'Head']]) ltDir(bn(a), bn(c), V(0, 1, a === 'Neck' ? L.headF : L.lean), w * L.spineK);
   const br = gdnBreath(t), sw = Math.sin(t * 2 * Math.PI / L.sway) * .7 + Math.sin(t * 2 * Math.PI / L.sway2 + 2.1) * .3, nd = Math.sin(t * 2 * Math.PI / L.nod + .7);
+  // m2310 HE FLOATS WHILE HE MEDITATES (his: "as soon as he goes into the lotus he's completely still -- I want him to bob very slowly up and down, and
+  // sway a bit"). Measured: his BODY was bobbing (pos.y over ~.24 m) -- but the camera follows his position, so a bob of the whole player reads as
+  // stillness; the air pose's undulation he liked is the clip's own. So the float is now DRAWN on the body, relative to the lens: the rig rises and
+  // sinks `floatY` m (two slow periods, 5.2 s and 8.7 s), drifts a few cm side to side, and the whole body ROCKS from the hips (`rockDeg`, a roll on
+  // 7.1 s and a pitch on 9.7 s), all scaled by the lotus weight so it eases in and out with the pose.
+  { const a1 = Math.sin(t * 2 * Math.PI / 5.2), a2 = Math.sin(t * 2 * Math.PI / 8.7 + 1.1), a3 = Math.sin(t * 2 * Math.PI / 6.3 + .4);
+    L.dy = w * L.floatY * (a1 * .7 + a2 * .3); L.dx = w * L.floatX * a3; L.Fx = F.x; L.Fz = F.z;
+    ltTurn(bn('Hips'), F, w * L.rockDeg * Math.sin(t * 2 * Math.PI / 7.1 + .3)); ltTurn(bn('Hips'), Lf, w * L.rockDeg * .6 * Math.sin(t * 2 * Math.PI / 9.7 + 2)); }
   ltTurn(bn('Spine'), F, sw * L.swayDeg * w); ltTurn(bn('Spine2'), Lf, -br * L.chest * .5 * w); ltTurn(bn('Head'), Lf, (L.headDown + nd * L.nodDeg + br * .6) * w);     /* PLUS about his left tips the face down (side renders: minus raised the chin) */
   ltTurn(bn('LeftShoulder'), F, -br * L.shoulder * .5 * w); ltTurn(bn('RightShoulder'), F, br * L.shoulder * .5 * w);
   // the legs: thigh out and forward, shin crossed back over, the left stacked above the right
@@ -66987,7 +66995,8 @@ function frameBody() {
     // THE LEAP'S LIFT (m193), eased so a gait change cannot pop him down
     player.leapYd = damp(player.leapYd || 0, player.leapY || 0, .03, dt);
     rig.root.position.y += player.leapYd;
-  if (GARDEN.on) rig.root.position.y += player.wadeYd || 0;     // m2184: wading in the Garden's water, drawn a little lower
+  if (GARDEN.on) rig.root.position.y += player.wadeYd || 0;
+  if (GARDEN.on && LOTUS.w > .002) { rig.root.position.y += LOTUS.dy || 0; rig.root.position.x += (LOTUS.dx || 0) * -(LOTUS.Fz || 0); rig.root.position.z += (LOTUS.dx || 0) * (LOTUS.Fx || 0); }     // m2310: the meditation float, drawn on the body (the lens follows his position)     // m2184: wading in the Garden's water, drawn a little lower
     rig.root.position.y += flowArc(dt);     // m1086: a FLOW lunge past `leapAt` is a leap
     // HE STANDS ON THE DECK, so he is lifted by its measured height -- his COLLIDER stays on
     // the ground, which is right: the board is a picture and the man is the body.
