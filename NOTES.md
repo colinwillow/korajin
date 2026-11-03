@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 11: HIS JINRA GLOW -- the purple on Grumbo's own texture lights on Jinra contact and on every attack (Nov 3 2026)
+His ask (relayed): *"pick the PURPLE already on Grumbo's texture and make those parts GLOW when he is in contact with Jinra -- in a stream, in a geyser,
+collecting Jinra, and when he attacks; colour via JPAL."* HERO_GLOW block: a hue mask spliced into his OWN material (chained hook + key, no new
+texture) -- where the sampled albedo is violet-to-magenta (red and blue over green, saturated) an emissive in `JPAL.glow` x `HEROGLOW.k`, x1.7 at night.
+ONE writer: `heroGlowStep` (from nightPre). Sources: `heroGlowPulse(s)` (meleeGo .75, fireBolt .55, collected wisps .35 + .05 each -- a flare that
+decays) and `heroGlowHold(s)` (a zone calls it every frame while he is IN a Jinra stream / geyser -- the zones' own code wires that; told the
+FX worker, whose goop on attacks should read as the same thing: asked which JPAL role its goop uses). images/feedback/m2329/hero_glow_off_on.jpg
+(top off, bottom held full via `mel.HEROGLOW.test = 1`): the face band, the arm markings and the back of the head light; **his quills do not yet**
+(their purple is dark and desaturated for the mask) -- the next tuning. Shipped unverified.
+
 ## m2337 -- NIGHT 10: GLOWING FLORA and his glowing FOOTSTEPS -- the garden first (Nov 3 2026)
 His ask (relayed): *"tiny glowing plants -- glowing mushrooms, ferns with glowing fronds, little bushes with glowing petals or tips, specks in the grass that
 glow"* and the one he loves most, *"grass and flora brightening around his feet as he walks at night"*. A night-only layer of its own (NIGHT_FLORA),

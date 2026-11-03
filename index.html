@@ -13024,7 +13024,7 @@ function nightStep() { const N = NIGHT, now = performance.now(), dt = N.last ? M
 function nightZone() { try { return NIGHT.zones[entryKey()] || {}; } catch (e) { return {}; } }
 function nightSkyGlobal() { const N = NIGHT, NS = NIGHTSKY; if (N.sky) return N.sky;     // ONE sky for every zone (the snow's night asks for it too)
   const G = new THREE.Group(); G.renderOrder = -1; nightSkyBuild(G); scene.add(G); N.sky = G; return G; }
-function nightPre() { const N = NIGHT, dt = nightStep(), f = N.f; N.applied = 0; nightGlowStep(dt); try { nightFloraStep(nightZone(), dt); } catch (e) { if (!N.floraErr) { N.floraErr = 1; note('NIGHT FLORA ' + e.message); } }
+function nightPre() { const N = NIGHT, dt = nightStep(), f = N.f; N.applied = 0; nightGlowStep(dt); try { heroGlowStep(dt); } catch (e) {} try { nightFloraStep(nightZone(), dt); } catch (e) { if (!N.floraErr) { N.floraErr = 1; note('NIGHT FLORA ' + e.message); } }
   const R = nightZone(), own = R.own && R.own(), k = f * (R.k == null ? 1 : R.k);
   if (k <= .002 || own) { if (N.sky) N.sky.visible = false; return; }
   N.applied = 1; const P = R.pal ? Object.assign({}, N.pal, N.pals[R.pal]) : N.pal, S = N.save || (N.save = { sc: new THREE.Color(), hc: new THREE.Color(), hg: new THREE.Color(), fc: new THREE.Color(), bc: new THREE.Color(), c: new THREE.Color() });
@@ -13181,6 +13181,30 @@ function gardenNightGlow(root) { const Z = GARDEN, M = Z.M; if (!M || !root) ret
   let n = 0; for (const [keys, o] of rules) for (const k of keys) { const m = M[k]; if (!m || skip.has(m) || !live.has(m) || !m.isMeshStandardMaterial) continue; nightGlow(m, o); n++; }
   NIGHT.gardenGlow = n; return n; }
 // NIGHT_GLOW:END
+// HERO_GLOW:START -- the hero's JINRA GLOW (his, relayed: "pick the PURPLE already on Grumbo's texture and make those parts GLOW when he is in contact with
+// Jinra: standing in a Jinra stream, inside a geyser, collecting Jinra, and when he attacks"; day AND night, brighter at night). A hue mask on his OWN
+// material (no new texture): where the sampled albedo is purple (red and blue both over green, saturated) an emissive term in JPAL.glow (it follows the
+// Jinra preset) x `HEROGLOW.k`. ONE writer of k: `heroGlowStep` (called from nightPre, every frame). Sources:
+//   heroGlowPulse(s)  a flare that decays (attack: meleeGo .75, fireBolt .55; collecting wisps: .35 + .05 a wisp)
+//   heroGlowHold(s)   call it EVERY FRAME while he is in contact (a Jinra stream, a geyser): holds k at s at least -- for the zones' own code
+// `mel.HEROGLOW.test = 1` holds it full (to look at the mask).
+const HEROGLOW = { k: 0, pulse: 0, hold: 0, decay: 2.4, gain: 3.4, nightK: .7, test: 0, mats: new WeakSet(), scanT: 0, U: { uHg: { value: 0 }, uHgC: { value: new THREE.Color(JPAL.glow) } } };
+function heroGlowPulse(s) { const H = HEROGLOW; H.pulse = Math.min(1.2, Math.max(H.pulse, s)); }
+function heroGlowHold(s) { const H = HEROGLOW; H.hold = Math.max(H.hold, s); }
+function heroGlowMat(m) { const H = HEROGLOW; if (!m || H.mats.has(m) || !(m.isMeshStandardMaterial || m.isMeshPhysicalMaterial)) return; H.mats.add(m);
+  const ob = m.onBeforeCompile, ok = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null; m.customProgramCacheKey = () => (ok ? ok() : '') + '|herog';
+  m.onBeforeCompile = (sh, r) => { if (ob) ob.call(m, sh, r); Object.assign(sh.uniforms, H.U); if (sh.fragmentShader.indexOf('#include <emissivemap_fragment>') < 0) return;
+    sh.fragmentShader = 'uniform float uHg; uniform vec3 uHgC;\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      if (uHg > .001) { vec3 a = diffuseColor.rgb; float mx = max(a.r, max(a.g, a.b)), mn = min(a.r, min(a.g, a.b)), sat = (mx - mn) / max(mx, 1e-3);
+        float pur = smoothstep(.02, .12, min(a.r, a.b) - a.g) * smoothstep(.2, .45, sat) * smoothstep(.22, .6, a.b / max(a.r, 1e-3));     /* violet to magenta (his quills are pink-purple: red over blue) */
+        totalEmissiveRadiance += uHgC * pur * uHg * (.6 + .4 * mx / max(mx, .2)); }`); };
+  m.needsUpdate = true; }
+function heroGlowStep(dt) { const H = HEROGLOW;
+  if ((H.scanT -= dt) <= 0 && rig.root) { H.scanT = 1; rig.root.traverse(o => { if (o.isSkinnedMesh || o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(heroGlowMat); }); }
+  H.pulse *= Math.exp(-dt * H.decay); const tg = H.test ? 1 : Math.max(H.pulse, H.hold); H.hold = 0;
+  H.k += (tg - H.k) * (1 - Math.exp(-dt * (tg > H.k ? 18 : 6)));
+  H.U.uHg.value = H.k * H.gain * (1 + H.nightK * Math.max(0, NIGHT.f)); H.U.uHgC.value.setHex(JPAL.glow); }
+// HERO_GLOW:END
 // NIGHT_FLORA:START -- NIGHT.md 3/4 (his, relayed: "tiny glowing plants -- glowing mushrooms, ferns with glowing fronds, little bushes with glowing petals
 // or tips, little specks in the grass that glow" and, the one he loves most, "grass and flora brightening around his feet as he walks at night").
 // A night-only layer of its OWN (no zone builder changes): 3 draws --
@@ -24939,7 +24963,7 @@ function dnaCatch(x, z, r) {
   }
   return best;
 }
-function fireBolt(chg) {
+function fireBolt(chg) { try { heroGlowPulse(.55); } catch (e) {}     // HERO_GLOW
   const m = muzzleWorld().clone();
   cowFright(m.x, m.z, COW.fearR);              // m329: a shot sets any herd within earshot running
   const a = aimTarget();
@@ -28819,7 +28843,7 @@ function jinraStep(dt) { const J = JINRA, p = player.pos;
     else { const tx = p.x - w.x, ty = p.y + 1.1 - w.y, tz = p.z - w.z, d = Math.hypot(tx, ty, tz), sp = J.home * Math.min(1, (w.t - J.rise) * 1.5) + 2;
       if (d < .5) { J.w.splice(i, 1); got++; continue; } w.x += tx / d * sp * dt; w.y += ty / d * sp * dt; w.z += tz / d * sp * dt; }
     if (w.t > 0) A.setXYZ(n++, w.x, w.y, w.z); }
-  if (got) { J.n += got; try { localStorage.setItem('mel.jinra', J.n); } catch (e) {} if (!(J.chimeT > 0)) { snd('ready', { g: .22 }); J.chimeT = .12; } }
+  if (got) { try { heroGlowPulse(.35 + .05 * got); } catch (e) {} J.n += got; try { localStorage.setItem('mel.jinra', J.n); } catch (e) {} if (!(J.chimeT > 0)) { snd('ready', { g: .22 }); J.chimeT = .12; } }
   J.chimeT = (J.chimeT || 0) - dt; A.needsUpdate = true; J.pts.geometry.setDrawRange(0, n); }
 const JIN = { hex: JPAL.glow, col: JPAL.glowRgb, shed: 26, bless: 0, blessT: 20, blessX: 4 };     // m1432: `bless` s left of an altar's blessing: the blade sheds `blessX` x
 try { BTRAIL.jin = localStorage.getItem('mel.btrail') === 'blue' ? 0 : 1; } catch (e) { BTRAIL.jin = 1; }
@@ -29305,7 +29329,7 @@ function kickGo(h, spinNm) {
   p.vel.x = Math.sin(h) * p.melV; p.vel.z = Math.cos(h) * p.melV;
 }
 
-function meleeGo(h) {
+function meleeGo(h) { try { heroGlowPulse(.75); } catch (e) {}     // HERO_GLOW: the body flares with the strike
   const p = player;
   if (p.knock) return;                  // out of a knock-down: the get-up is not his to cancel
   // m1009: A SWING FROM COVER BREAKS COVER. Cover returns before the melee is ever stepped, so a flick in it started a swing that
@@ -71799,7 +71823,7 @@ async function init() {
 
 // the console handle. Every tuning object is live, so a number can be moved on the phone
 // without a rebuild and without a push.
-window.melee = window.mel = { LAKEZ, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, NFLORA, nightFloraBuild, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
+window.melee = window.mel = { LAKEZ, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, NFLORA, nightFloraBuild, HEROGLOW, heroGlowPulse, heroGlowHold, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
   // PROGRESS (m276): `mel.SAVE` is the save; the setters write it through; `mel.progReset()` is a new game
   // TALK (m277): `mel.TALK` live; `mel.TALKS` the scripts by kind; `mel.talk` the state
   TALK, TALKS, talk,
