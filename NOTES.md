@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2378 -- the katana charge CREEPS again (m1968's run-while-charging is off by default; TOOLS > KATANA > CHARGE MOVE)
+His words (Nov 3): *"When I press up on the right stick with the katana out and charge, he used to go slowly from side to side -- cautiously going left
+and right. Now he can basically RUN while charging. I never asked for that and it looks crazy: the strafe left/right clip plays and the locomotion is
+faster than the animation."*
+- Found with `git log -S CHRUN`: m1968 (his Oct 31 "maintain the run" ask) lifted the `GAIT.aimRunRef` 2.3 m/s cap off a katana charge in EVERY direction,
+  but only gave the FORWARD case run legs -- sideways he travelled at up to 7.2 m/s on the katana strafe clips, whose rate clamps at `GAIT.tsHi` 1.6:
+  the feet skated.
+- Now `CHRUN.keep` 0 by default (TOOLS > KATANA > CHARGE MOVE: CAREFUL / RUN (m1968), remembered as `mel.kat.chrun`). CAREFUL: charging with the katana,
+  `wantSp` <= `CHRUN.slow` 1.5 m/s x stick, and never past the MEASURED ref (`KATANA.legRef`) of the walk/strafe clip that direction plays x `CHRUN.rate`
+  1.0 -- so the clip runs at (at most) its own pace. No run legs blend in (`rk` needs `keep`). The release (lunge / whirlwind / high leap off the left
+  stick) is untouched. `mel.CHRUN` is live.
+- Not verified on a device. Box moved: none (a regression fix on the katana charge). Open: whether 1.5 feels right is his -- `mel.CHRUN.slow`.
+
+## m2377 -- the title's Grumbo glow passes his mesh<!--mine-->
+NIGHT worker's note: the title loop's `heroGlowMat(m, geo)` passed no mesh, so `heroGlowSpan` had to find his skinned mesh by material. It now
+passes the hero mesh `q` as the third argument, so the glow span is exact. Shipped unverified.
 ## m23XX -- NIGHT 19: Grumbo TWO-TONE -- his own orange glows ember beside the Jinra purple (Nov 3 2026)
 His words (relayed): *"the ORANGE symbol on his cape should glow -- and some pieces of his clothing, maybe armour, the tips of his hair that are a little
 orange too. The orange AND the purple."* A second hue mask (`ora`): orange to amber, BRIGHT, not purple -- the cape emblem, the trims, the quill tips --
@@ -214,7 +231,7 @@ His: *"nighttime looks great, daytime phenomenal, dusk amazing -- keep going wit
    a small hint says TAP RIGHT: TAKE THE HELM when he is near it. At the helm the tap does not jump.
 5. Swimming: next build (his clips are in colinwillow/retarget-anims). His wishlist is in WATER.md. Shipped unverified.
 
-## m2360 -- THE TITLE GOES DAY > DUSK > NIGHT: time of day on top of the seasons<!--mine-->
+## m2360 -- THE TITLE GOES DAY > DUSK > NIGHT: time of day on top of the seasons
 His request, via the parent and the NIGHT worker: the title backdrop cycles day > dusk > night, where things glow, with the star sky. At night
 the clouds are deep blue-violet, not white.
 - NIGHT LEFT `LOOPBG.cycle.order`. It is now TIME OF DAY (`LOOPBG.tod`), driven by NIGHT's clock:
@@ -267,7 +284,7 @@ a hip translation that was supposed to go with the animation was removed... he k
   back leg -- 14% `thigh_f_L` on the back-left knee), the CLOTH springs (drapes, tassels), and the tail tassels that hang below the ground.
   Shipped unverified.
 
-## m2356 -- TAKE 4b: the petal ring closes on the emblem; he stays in frame<!--mine-->
+## m2356 -- TAKE 4b: the petal ring closes on the emblem; he stays in frame
 The m2349 strip showed two faults:
 - Grumbo climbed out of the top of the frame.
 - The petals made a loose donut about twice the emblem's size that never closed in.
@@ -347,7 +364,7 @@ Pass 1's renders showed three problems:
 - **The spring sat UNDER the basin's water.** It now sits just above it.
 Shipped unverified. A frame strip with him inside follows.
 
-## m2349 -- THE START TRANSITION, TAKE 4<!--mine-->: an organic petal swirl, a smooth jump and flip, no sword
+## m2349 -- THE START TRANSITION, TAKE 4: an organic petal swirl, a smooth jump and flip, no sword
 His notes on m2306: "a good start but could be much more interesting". He wanted the petals to travel gracefully round and into the emblem, the
 jump and flip smooth and cinematic, and said of the sword: "I could take it or leave it". So the draw, the slash, the blade trail and the arc are
 OUT (`leapStep` no longer touches them; the katana stays on his back).
@@ -392,7 +409,7 @@ all animated on the GPU:
 - **Tunables:** `GARDEN.beam.fx`: flow, swirl, glow, strands, twist, drops, fall.
 Shipped unverified. A frame strip follows. Watch the phone frame rate: three double-sided additive layers is more overdraw than the old two.
 
-## m2346 -- THE START LOGO STAYS IN FRAME<!--mine-->; petals and a shine round it
+## m2346 -- THE START LOGO STAYS IN FRAME; petals and a shine round it
 His (screenshot m2338): with the wheel showing, the KORAJIN logo was pushed off the top of the screen. It was IN THE SCROLL (a flex child of
 `#start`), so scrolling the wheel scrolled it away. Now `.loopmark` is `position: fixed` under `env(safe-area-inset-top)`, width
 `min(66vw, 400px, 58vh)` so a landscape phone keeps it in the top third; `.loopgap` is `calc(75vh - 40px)` (the old gap plus the logo it no
