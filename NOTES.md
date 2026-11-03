@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2309 -- THE JINRA PALETTE, part 3: the canvas-texture colours (Nov 3 2026)
+- 18 mint CSS strings inside canvas textures now follow the pick (`JPAL.css(0x..)`, `JPAL.rgba(0x.., a)`): the village glow gradient
+  (`vilTex`), the garden glyph strip (`willowMats`), the Jin glint sprite (`dojoGlintTex` -- it was mint UNDER a tint, so a violet tint
+  over a mint texture came out grey), the rope course's ofuda (`_rbC`), the serpent's skin (`shipSerpentTex`), the level builder's tech
+  and sign textures, the refinery's teal banners (`gjinraTex`), the title loop's `LOOPBG` mint. Leaf textures stay green. Unverified.
+
 ## m2308 -- THE JINRA PALETTE, part 2: the shade tail -- ~160 hand-picked jade shades now follow the pick (Nov 3 2026)
 - Every Jinra SHADE found by a hue sweep (135-200 deg, saturated) was read in context and either wrapped or left: `JPAL.shift(0x..)` for hex,
   `JPAL.rgb([..])` for spark/mote arrays, `JPAL.v3([..])` spliced into GLSL strings (quote-aware: template literals get `${}`, quoted

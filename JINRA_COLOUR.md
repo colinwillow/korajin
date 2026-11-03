@@ -52,6 +52,9 @@ selected-entry border, the right-pad mount pulse, the rings' `.seg.jin` (fill no
 - **shaders** (`JPAL.v3([...])` spliced into the GLSL string): the forge's crystal flow, the willow's emissive, the dojo's tear, the garden
   `veinGlow` and stream, `gdnBeamFx` beam + points, `templeBeamMat`, the refinery swirl, the title loop recolour.
 
+**Routed in m2309 (canvas textures, `JPAL.css` / `JPAL.rgba`):** `vilTex`, the garden glyph strip, `dojoGlintTex`, `_rbC` (ofuda), `shipSerpentTex`,
+`lbTechTex`, `lbSignMat`, `gjinraTex` (refinery banners), `LOOPBG.mint`. Leaf textures (`willowLeafTex`, `willowLeafPadTex`) stay green.
+
 **LEFT ALONE, ON PURPOSE (not Jinra):**
 | what | where |
 |---|---|
