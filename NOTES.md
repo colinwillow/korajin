@@ -19,6 +19,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2381 -- THE LAKE: the treading-water height matches the swim (his m2376 report) (Nov 3 2026)
+His: *"the treading-water idle sits too high compared to the actual swim"* (tread: waterline at his knees; swim: at his shoulders, right).
+MEASURED off the baked Hips translation in `agoblin_swim.glb` (armature units; standing rest = 48.2 ~ .9 m): `swim_idle` (Treading_Water) mean 48.8 --
+UPRIGHT, so at the one m2365 depth (.62 m under the surface) the water stopped below his hips; `swim` (Swimming) mean 33.4 -- lying flat, .62 m is
+right. So each clip has its OWN depth, `LAKEZ.swim.sinkClip` = { swim_idle: 1.35 (shoulders ~1.4 m over his feet), swim: .62 }, chosen by the same
+speed threshold as the clip (`moveAt` .35) and EASED (`sinkHL` .3 s half-life) so the cross-fade has no pop; the bob on `L.waveAt` is unchanged and the
+climb starts from wherever the depth is. (Other baked heights for later: float 63.6, swim_edge 70.6, dive 7-44, run_dive 45-98.) Shipped unverified.
+
 ## m2380 -- the katana charge's own sounds: a rising shimmer, a bell at full, a soft lock-on, a breath on release (TOOLS > KATANA > K-HUM / K-FULL / K-LOCK / K-GO)
 His words (Nov 3): *"the sounds for the katana charge and the lock-on came from my old game and don't fit -- I want something beautiful, cool,
 interesting that matches."*
