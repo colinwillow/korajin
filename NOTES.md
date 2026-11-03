@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the game won't start with Grumbo's texture missing: check and reload it (Nov 3 2026)
+## m2278 -- the game won't start with Grumbo's texture missing: check and reload it (Nov 3 2026)
 *"My phone was heating up, shoddy service -- it loaded but his texture didn't, and it just played anyway; he was black in the intro."* A GLB can
 arrive whole while an image inside it fails to decode (weak connection, a hot phone short of memory). After the character loads, `glbTexBad(g)`
 checks every material: a map with no pixels (no width / no mipmaps), or a material whose file declares a baseColorTexture but came in without a map.
