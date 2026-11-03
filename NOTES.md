@@ -17,6 +17,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2349 -- THE START TRANSITION, TAKE 4<!--mine-->: an organic petal swirl, a smooth jump and flip, no sword
+His notes on m2306: "a good start but could be much more interesting". He wanted the petals to travel gracefully round and into the emblem, the
+jump and flip smooth and cinematic, and said of the sword: "I could take it or leave it". So the draw, the slash, the blade trail and the arc are
+OUT (`leapStep` no longer touches them; the katana stays on his back).
+- THE BODY (`LOOPBG.leap`): a DESIGNED curve, not physics.
+  - Crouch: eases down and back, quintic.
+  - Rise: ease-out to `rise.h` 2.3 m.
+  - Hang: drifts up `hang.drift` with no apex and no fall.
+  - Flip: one turn about the hips on a quintic ease (zero angular velocity at both ends), plus a small lean into the take-off.
+  - Poses: crossfades only, landing_soft -> in_air -> tuck -> in_air.
+  - Camera: follows a DAMPED copy of the height (`st.leap.cy`, `camEase`) rather than the height itself.
+- THE PETALS (`loopSwirl`, rewritten; table `leap.petals`): 300 petals plus 22 NEAR ones.
+  - Entry: staggered births from the windward edge, the sky, and his feet (kicked up at the jump).
+  - Gust: CURL eddies from a stream function. The field is divergence-free, so petals curl round each other instead of bunching.
+  - Vortex: from `vortex` [.55, 1.85] the gust hands over to a vortex round the emblem. Each petal is held at its own orbit radius, and the
+    radius then tightens (`tight`) into the emblem as the card fades in (`coverAt` 2.3).
+  - Burst: at `burst` 2.55 the petals spread outward and fade.
+  - Depth: z gives size, speed and alpha. Near petals are big and soft (a shadow-only blur: canvas `filter` is not on every iPhone) and tumble
+    across the lens. Every petal flips about its own long axis.
+- Duration: `dur` 3.1 s.
+Shipped unverified; the strip is still rendering.
+
 ## m2347 -- THE JINRA BEAM AS RISING FLUID, pass 1 (Nov 3 2026)
 His (relayed): *"it should feel like FLUID going up and down rather than just a cylinder that's glowing."* `gdnBeamFx` is rebuilt. It is 4 draws (was 2),
 all animated on the GPU:
