@@ -17,6 +17,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2357 -- THE MAMMOTH'S FEET: planted on the ground in every clip; the title loop's foot lock is gone (Nov 3 2026)
+*"From the side view on the start screen his footsteps are very odd: he steps, then his feet go down and THROUGH the ground... it makes me wonder if
+a hip translation that was supposed to go with the animation was removed... he kind of looks like he floats on the main menu."*
+- **The hips were never dropped.** `mammoth_cow.py` puts the mammoth ON the cow's own armature, so the clips are the cow's keys verbatim:
+  Spine_base keeps its location track (z 0..2.4 cm on Walk_F_IP) and the spine heads bob 1.031..1.074 m. Nothing to restore.
+- **What sinks is the hoof ROLL.** Measured per frame on the deformed mesh (pip `bpy` 5.2, headless -- no Blender binary in the container): on
+  Walk_F_IP frame 3 the front-left ankle bone is 3 cm under its rest height, but the hoof bone has rolled ~70 deg (the cow's toe-off) and the
+  mammoth's half-metre PAD, skinned to it, swings 39 cm under the ground. Before, lowest pad per clip: Walk -0.39, Trot -0.30, Run -0.34,
+  Attack_F_IP -0.35, Idle_4 -0.30, Turn_L -0.26 m. (A first reading counted the trunk tip as a front foot -- the clusters now take |x| > .25.)
+- **`tools/mammoth_plant.py` re-bakes every grounded clip** (all but Jump / Fall / Death / Lie / Swim): the pad is kept FLAT while the foot is
+  planted (45% of the cow's roll survives at full swing lift), the thigh + shin are two-bone IK'd so the pad's lowest vertex sits on y=0 plus
+  the lift the clip had (ankle height over its 30th percentile), corrected twice off the measured pad, and the body only comes DOWN where a leg
+  cannot reach (max 3.7 cm, the strafe runs). After, re-measured on the shipped (draco'd) file: Walk -0.001..+0.011, Trot -0.002..+0.056,
+  Run 0..+0.099 (its airborne beat), Idle / Eat / Attack / Turn all within 1-2 mm. Rest pose, bone names and the 2048 webp are byte-identical;
+  6.7 MB (was 4.3 -- every frame keyed, then resampled).
+- **The title loop's FOOT LOCK is removed.** It lifted the whole body each frame to put the lowest hoof-tip BONE at rest height, which lifted
+  him off the pads that were sinking -- the float. The clip plants itself now.
+- **The ride's clip rates are measured** (`MAMR.ref`): the planted pad's backward speed .87 / 2.52 / 4.77 m/s authored x 4.4/2.1 =
+  Walk 1.83, Trot 5.29, Run 10.0 m/s (were 2.4 / 5.2 / 8.5 typed), so his feet do not skate under him.
+- Open (next builds, same mammoth): the REWEIGHT (tusks / head plates / chest plates rigid; the heat weights smear the front thigh onto the
+  back leg -- 14% `thigh_f_L` on the back-left knee), the CLOTH springs (drapes, tassels), and the tail tassels that hang below the ground.
+  Shipped unverified.
+
 ## m2356 -- TAKE 4b: the petal ring closes on the emblem; he stays in frame<!--mine-->
 The m2349 strip showed two faults:
 - Grumbo climbed out of the top of the frame.
