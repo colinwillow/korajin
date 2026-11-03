@@ -19,6 +19,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2393 -- THE MAMMOTH'S CLOTH: spring chains in the four drapes, a pendulum in every ring / bell / tassel, a body he cannot sink cloth into (Nov 3 2026)
+*"Parts of him like the cloth should be dynamically rigged, kind of like Grumbo's cape."*
+- **`tools/mammoth_cloth.py`** (after `mammoth_weights.py`, on the draco-stripped file): the DRAPES are found by the cloth's own red-orange in
+  the 2048 texture (+ one ring of mesh neighbours for the hems), in four boxes (front / rear, each flank), minus anything a leg bone carries
+  (the leg wraps share the colour -- the first pass put a front leg on a drape chain and it smeared into a slab under his belly, seen on the
+  title loop and fixed). Each panel gets a 3-bone `cloth_<k>_<j>` chain down its hanging line from Spine_01 / Spine_02; the top quarter stays
+  on the body (sewn to the saddle), below it the cloth goes to the chain by height. Every hanging LOOSE part (24 of the 25 rings / bells /
+  tassels) gets ONE pendulum bone, top vertex to bottom, the part 100% on it, under the bone it hung from. And `cloth_body`: an empty under
+  Spine_03 whose scale is his body ellipsoid (centre 0, .108, .879; radii .705 / .599 / .314 authored).
+- **`clothStep`** (index.html, called from `trunkStep`, so the ridden mammoth, the calves and the title loop all have it): verlet per segment
+  like the trunk and his cape -- inertia, pull to rest, gravity, drag, a bend limit (`CLOTH.drape` / `CLOTH.pend`) -- every tip pushed back
+  OUTSIDE the ellipsoid (its node's world matrix, so it rides his spine and his scale). `d.wind` is the air: the title loop sets it from the
+  walk speed + the season's wind, so the drapes trail back as his cape does. `CLOTH.on = 0` is the A/B.
+- **`tools/mammoth_pack.mjs`** drops the cloth bones' sampled rest channels (14,400 of them -- no clip keys them; 9.1 MB -> 6.6 MB) before draco.
+- Checked headless: the title loop in Chromium (SwiftShader, webdriver flag off so the start screen runs) -- the drapes hang and trail, the
+  rings swing, no cloth error in the console. The ride itself was not driven headless (same `trunkStep` path). Shipped unverified.
+- The pipeline end to end: `mammoth_undraco.mjs` -> `mammoth_plant.py` -> `mammoth_weights.py` -> `mammoth_cloth.py` -> `mammoth_pack.mjs`.
+
 ## m2392 -- the wall run's slowdown is ONE RAMP, not steps (Nov 3 2026)
 His, on m2364: *"it doesn't feel like he slows down -- it's a step function: he runs, then steps down to slower, then steps down and stops."*
 Distance fine; a bit more height is OK. What made the steps (all in the clip rate, plus a kink in the brake):
