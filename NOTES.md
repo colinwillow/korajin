@@ -19,6 +19,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2389 -- THE LAKE: the boat, detail pass 1 (his m2376 note 6) (Nov 3 2026)
+His: *"remove the long paddle/motor stick off the stern; fill the roof's missing fabric; a cooler FUTURISTIC-RETRO longboat."*
+- The steering oar off the stern: GONE. In its place two STERN LANTERNS on lacquer posts with gold crooks and cords (the prow lantern's material, so they
+  come up at night too).
+- The roof: both layers double-sided (it vanished from some angles) and a dark FASCIA band all round the gap between them (CRAFT 3: closed).
+- Sculpted lines: a brushed-metal STRAKE each side sweeping up toward the bow, a second, low Jinra line at the waterline, a chrome CUTWATER up the stem.
+- The jets (still his switch): lacquer cowls over the intakes and fairings into the hull, so they read as part of the boat.
+Everything merges per material as before (boat draws unchanged). Shipped unverified.
+
 ## m2388 -- THE LAKE: walk to the wheel, hands on it (his m2376 note 5: "tapping at the helm teleports him") (Nov 3 2026)
 - **The walk:** TAP RIGHT near the wheel and he WALKS there (`LAKEZ.helmWalk`): in the boat's frame (the boat may be moving), eased over .3-1.1 s by the
   distance, turning to face the wheel then the bow, his own walk playing (`p.speed`). Headless game: from 1.6 m off, `walk` true and his boat-local spot
