@@ -19,6 +19,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2394 -- THE START TRANSITION, TAKE 5: one jump-flip on his own clip, the petals shed from him<!--mine-->
+His notes on take 4, via the parent:
+- "he just launches up into the air -- doesn't look like he jumped -- and then once he's in the air he does a flip, instead of his momentum
+  carrying it"
+- "the petals are supposed to spiral out of him and his motion"
+THE JUMP:
+- His `backflip` clip IS the jump, measured off its Hips track (`tools`-free: a 20-line GLB read of the rotation keys). It holds the crouch and
+  the push-off, then a full backward turn that is fastest right after take-off and eases out: -16 deg at .3 of the clip, -162 at .5, -284 at
+  .6, -363 at .9. (`front_flip` is an in-place 0.87 s turn with no anticipation; `tuck` and `flip_pose` are static.) So there is NO root spin
+  any more: take 3 and 4 spun the root on top of a clip.
+- The root adds only a BALLISTIC arc from the clip's take-off frame (`takeoff` .62 s): up to `h` 1.7 m at `apex` .8 s, a lighter fall after
+  (`float`), drifting back the way a backflip goes (`back`).
+- The camera follows a damped copy of the height.
+THE PETALS:
+- Born from his hands, feet and hips on screen (`bones`, projected each frame), from take-off along the arc. They inherit his screen velocity
+  (`inherit`), so they trail it like a ribbon.
+- With age they join a HELIX whose centre is HIM: a tilted vortex with its own spin direction mix that grows (`grow`). The centre travels to
+  the emblem over `travel` [1.0, 2.05], then tightens into it (`tight`), bursts at 2.55 and is done at 3.0.
+- The screen-edge gust is gone.
+- Tested alone (blank page, fake clock, a fake hero on the arc), on the median petal radius from the emblem: 241 at the first emissions,
+  68-93 during the orbit, out at the burst.
+Shipped unverified.
+
 ## m2393 -- THE MAMMOTH'S CLOTH: spring chains in the four drapes, a pendulum in every ring / bell / tassel, a body he cannot sink cloth into (Nov 3 2026)
 *"Parts of him like the cloth should be dynamically rigged, kind of like Grumbo's cape."*
 - **`tools/mammoth_cloth.py`** (after `mammoth_weights.py`, on the draco-stripped file): the DRAPES are found by the cloth's own red-orange in

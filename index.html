@@ -73376,16 +73376,18 @@ const LOOPBG = {
   //  5 1.08-1.50 SPIRAL: the petals spiral onto the exact screen point of the loading card's EMBLEM (`#boot .kjw`), tightening to a RING round it,
   //    while the menu fades out over the boot card (`coverAt`, `fadeIn`) so the emblem appears in the ring
   //  6 1.50-2.20 BURST: the ring flashes and the petals scatter out and clear
-  // m2347 TAKE 4 (his: 'more interesting -- an ORGANIC swirl, petals travelling gracefully round and into the emblem; the jump and flip smooth
-  // and cinematic, no snaps; the sword I could take or leave'): no draw, no slash. A DESIGNED curve, not physics: crouch (eased), rise (ease-out),
-  // a HANG at the top while the flip turns on a quintic ease through the `tuck` pose, then `in_air` and a slow drift up as the petals close in.
-  leap: { dur: 3.1, crouch: { to: .42, depth: .2 }, rise: { at: .42, to: 1.05, h: 1.6 }, hang: { drift: .2 }, camFollow: .8, camEase: 2.6, hipY: .7,
-    clips: { crouch: ['landing_soft', .55, .3], rise: ['in_air', 1, .28], flip: ['tuck', 1, .22], hang: ['in_air', .6, .35] },
-    flip: { at: .78, end: 1.62, turns: 1, lean: .18 },
-    petals: { n: 300, near: 22, enter: [0, .9], gust: [520, -40], curl: [.0042, .0057, 1.1, 120], vortex: [.55, 1.85], orbit: [.75, 1.7], spin: 2.1, tight: [1.7, 2.45, .3], tilt: .5,
-      burst: 2.55, end: 3.0, size: [4, 15], nearSize: [38, 78], mintK: .06, kick: 26,
-      cols: ['#ffe2ec', '#ffb8d0', '#ff9cc0', '#ffffff', '#ffc9da'], mint: '#b8ffe6', ringGlow: '#ffd3e4' },
-    coverAt: 2.3, fadeIn: .5 },
+  // m2378 TAKE 5 (his: 'he just launches up -- doesn't look like he jumped -- and then once he's in the air he does a flip, instead of his momentum
+  // carrying it'; 'the petals are supposed to spiral out of him and his motion'): ONE motion. His own `backflip` clip IS the jump -- the crouch,
+  // the push-off and a full backward turn of the hips that is fastest just after take-off and eases out (measured off the clip: -16 deg at .3,
+  // -162 at .5, -284 at .6, -363 at .9 of it). The root adds only the BALLISTIC arc from the clip's take-off frame (`takeoff`): up to `h` at `apex`
+  // seconds, a lighter fall after (`float`), and drifting back the way a backflip goes (`back`). No root spin. The petals are SHED from his hands,
+  // feet and hips from take-off along the arc, trail it like a ribbon, wind into a helix round HIM that grows, and the helix travels to the emblem.
+  leap: { dur: 3.1, clip: 'backflip', ts: 1, fade: .25, takeoff: .62, h: 1.7, apex: .8, float: .5, back: .7, camFollow: .8, camEase: 2.6,
+    bones: ['mixamorig_LeftHand', 'mixamorig_RightHand', 'mixamorig_LeftFoot', 'mixamorig_RightFoot', 'mixamorig_Hips', 'mixamorig_Spine2'],
+    petals: { n: 300, near: 18, emit: [.55, 1.75], first: 70, inherit: .55, spread: 130, trail: .35, grow: [.4, 1.25], orbit: [.6, 1.9], spin: 2.3, tilt: .45,
+      travel: [1.0, 2.05], tight: [1.75, 2.45, .3], burst: 2.55, end: 3.0, size: [4, 14], nearSize: [30, 64], mintK: .06, curl: [.0042, .0057, 1.1, 60],
+      cols: ['#ffe2ec', '#ffb8d0', '#ff9cc0', '#ffffff', '#ffc9da'], mint: '#b8ffe6' },
+    coverAt: 2.25, fadeIn: .5 },
   haloDay: .28,     // how strong the glow halos are by day (a season's `halo` overrides)
   cycle: { order: ['spring', 'summer', 'rain', 'storm', 'autumn', 'winter'], hold: 75, blend: 22 },     // m2357: NIGHT left the season list -- it is TIME OF DAY now (`tod`), on top of whatever season it is
   // m2357 (his: 'the title should go day > dusk > night, where things glow'): TIME OF DAY is NIGHT's clock (`nightScene(..., { lightsOwned: false })`:
@@ -73851,42 +73853,40 @@ function loopSwirl(L, clock, emits, onCover, onEnd) { const W0 = innerWidth, H0 
   // THE TARGET: the boot card's EMBLEM, measured where it will be (the card is laid out, only transparent)
   let Ex = W0 / 2, Ey = H0 * .42, Er = 60; try { const e = document.querySelector('#boot .kjw'); if (e) { const r = e.getBoundingClientRect(); if (r.width > 4) { Ex = r.left + r.width / 2; Ey = r.top + r.height / 2; Er = r.width / 2; } } } catch (e) {}
   const RR = Er * 1.25, sm = (a, b, v) => { const k = Math.max(0, Math.min(1, (v - a) / (b - a))); return k * k * (3 - 2 * k); }, R0 = Math.random, S = Math.max(W0, H0) / 844;
-  // THE PETALS: born on a staggered clock across `enter`, mostly from the windward (left) edge and the sky, a few kicked up from his feet; each has a
-  // DEPTH z (far: small, slow, faint -- near: big, soft, fast, tumbling past the lens) and its own orbit radius and spin phase
-  const P = []; for (let i = 0; i < Sp.n + Sp.near; i++) { const near = i >= Sp.n, z = near ? 1.2 + R0() * .6 : Math.pow(R0(), 1.4), src = near ? 0 : R0();
-    const p = { near, z, t0: Sp.enter[0] + (Sp.enter[1] - Sp.enter[0]) * Math.pow(R0(), .8) + (near ? R0() * 1.2 : 0), k: (R0() * spr.length) | 0, mint: !near && R0() < Sp.mintK, s: near ? Sp.nearSize[0] + R0() * (Sp.nearSize[1] - Sp.nearSize[0]) : (Sp.size[0] + (Sp.size[1] - Sp.size[0]) * z) * S,
-      orb: RR * (Sp.orbit[0] + (Sp.orbit[1] - Sp.orbit[0]) * Math.pow(R0(), .7)) * (near ? 2.4 : 1), ph: R0() * 6.283, fl: R0() * 6.283, vf: 2 + R0() * 5, ro: R0() * 6.283, vr: (R0() - .5) * 4, x: 0, y: 0, vx: 0, vy: 0, born: 0, kick: src > .9, sky: src > .62 && src <= .9 };
+  // THE PETALS: born on a staggered clock over `emit` (a first handful AT take-off), each AT one of his hands / feet / hips, inheriting his motion
+  const P = []; for (let i = 0; i < Sp.n + Sp.near; i++) { const near = i >= Sp.n, z = near ? 1.2 + R0() * .6 : Math.pow(R0(), 1.3);
+    const p = { near, z, t0: i < Sp.first ? Sp.emit[0] + R0() * .12 : Sp.emit[0] + (Sp.emit[1] - Sp.emit[0]) * Math.pow(R0(), 1.15), k: (R0() * spr.length) | 0, mint: !near && R0() < Sp.mintK,
+      s: near ? Sp.nearSize[0] + R0() * (Sp.nearSize[1] - Sp.nearSize[0]) : (Sp.size[0] + (Sp.size[1] - Sp.size[0]) * z) * S, orb: RR * (Sp.orbit[0] + (Sp.orbit[1] - Sp.orbit[0]) * Math.pow(R0(), .7)) * (near ? 2.2 : 1),
+      ph: R0() * 6.283, fl: R0() * 6.283, vf: 2 + R0() * 5, ro: R0() * 6.283, vr: (R0() - .5) * 4, x: 0, y: 0, vx: 0, vy: 0, born: 0, part: (R0() * 6) | 0, dir: R0() < .82 ? 1 : -1 };
     P.push(p); }
-  const spawn = p => { const h = emits.hero; p.born = 1;
-    if (p.kick && h) { p.x = h[0] + (R0() - .5) * 40; p.y = h[1] + 40 + R0() * 30; p.vx = (R0() - .3) * 160; p.vy = -120 - R0() * 200; }
-    else if (p.sky) { p.x = R0() * W0 * .7 - W0 * .1; p.y = -30 - R0() * 60; p.vx = Sp.gust[0] * .5; p.vy = 80; }
-    else { p.x = -40 - R0() * 120; p.y = H0 * (.08 + R0() * .85); p.vx = Sp.gust[0] * (.7 + R0() * .5); p.vy = Sp.gust[1] * R0(); } if (p.near) { p.x = -p.s * 1.5; p.y = H0 * (.1 + R0() * .8); p.vx = Sp.gust[0] * 1.8; } };
-  // THE FLOW: a gust with CURL EDDIES (a divergence-free field off a stream function, so petals curl round each other instead of bunching), handing
-  // over to a VORTEX round the emblem that holds each petal at its own radius, then TIGHTENS into it
+  let hx = W0 / 2, hy = H0 * .6, hvx = 0, hvy = 0;     // HIM on screen, and how he is moving there
+  const spawn = p => { const pt = (emits.parts && emits.parts[p.part % emits.parts.length]) || [hx, hy]; p.born = 1; p.x = pt[0] + (R0() - .5) * 14; p.y = pt[1] + (R0() - .5) * 14;
+    const a = R0() * 6.283, sp = Sp.spread * (.4 + R0()); p.vx = hvx * Sp.inherit + Math.cos(a) * sp; p.vy = hvy * Sp.inherit + Math.sin(a) * sp - 40; if (p.near) { p.vx *= 1.6; p.vy *= 1.6; } };
   const Cu = Sp.curl, psi = (px, py, t) => Math.sin(px * Cu[0] + t * Cu[2]) * Math.cos(py * Cu[1] - t * Cu[2] * .7) + .6 * Math.sin((px + py) * Cu[0] * 1.9 - t * Cu[2] * 1.3) + .35 * Math.cos((px - py * 1.4) * Cu[1] * 2.6 + t * .9);
   let covered = 0, done = 0, lt = 0; loopSwirl.dbg = { Ex, Ey, Er, RR, P };
-  const step = () => { if (done) return; const t = loopSwirl.hold != null ? loopSwirl.hold * L.dur : clock(), DT = Math.max(0, Math.min(.5, t - lt)), nS = Math.min(16, Math.ceil(DT / .025)), dt = nS ? DT / nS : 0; lt = t;     /* SUBSTEPS: a dropped frame must not lose flight time */ x.clearRect(0, 0, W0, H0);
-    const wv = sm(Sp.vortex[0], Sp.vortex[1], t), tg = sm(Sp.tight[0], Sp.tight[1], t), bst = t > Sp.burst, fade = 1 - sm(Sp.burst + .1, Sp.end, t), flash = Math.exp(-Math.pow((t - Sp.burst) / .09, 2));
-    // the RING's glow: it gathers with the vortex and flashes as the emblem resolves
-    if (wv > 0) { const g = x.createRadialGradient(Ex, Ey, RR * .3, Ex, Ey, RR * 1.9), a = (.28 * wv * (1 - .5 * tg) + .55 * flash) * (bst ? fade : 1); g.addColorStop(0, 'rgba(255,220,232,' + (a * .6).toFixed(3) + ')'); g.addColorStop(.45, 'rgba(255,180,210,' + a.toFixed(3) + ')'); g.addColorStop(1, 'rgba(255,170,200,0)'); x.fillStyle = g; x.fillRect(Ex - RR * 2, Ey - RR * 2, RR * 4, RR * 4); }
+  const step = () => { if (done) return; const t = loopSwirl.hold != null ? loopSwirl.hold * L.dur : clock(), DT = Math.max(0, Math.min(.5, t - lt)), nS = Math.min(16, Math.ceil(DT / .025)), dt = nS ? DT / nS : 0; lt = t;     /* SUBSTEPS: a dropped frame must not lose flight time */
+    x.clearRect(0, 0, W0, H0);
+    if (emits.hero) { const [nx, ny] = emits.hero; if (DT > 0) { hvx += ((nx - hx) / DT - hvx) * Math.min(1, DT * 8); hvy += ((ny - hy) / DT - hvy) * Math.min(1, DT * 8); } hx = nx; hy = ny; }
+    // THE VORTEX CENTRE: on HIM, then travelling to the emblem; the helix GROWS out of him as it goes, then TIGHTENS into the emblem
+    const mv = sm(Sp.travel[0], Sp.travel[1], t), Cx = hx + (Ex - hx) * mv, Cy = hy + (Ey - hy) * mv, tg = sm(Sp.tight[0], Sp.tight[1], t), bst = t > Sp.burst, fade = 1 - sm(Sp.burst + .1, Sp.end, t), flash = Math.exp(-Math.pow((t - Sp.burst) / .09, 2));
+    if (mv > .3) { const g = x.createRadialGradient(Ex, Ey, RR * .3, Ex, Ey, RR * 1.9), a = (.3 * sm(.3, 1, mv) * (1 - .5 * tg) + .55 * flash) * (bst ? fade : 1); g.addColorStop(0, 'rgba(255,220,232,' + (a * .6).toFixed(3) + ')'); g.addColorStop(.45, 'rgba(255,180,210,' + a.toFixed(3) + ')'); g.addColorStop(1, 'rgba(255,170,200,0)'); x.fillStyle = g; x.fillRect(Ex - RR * 2, Ey - RR * 2, RR * 4, RR * 4); }
     P.sort((a, b) => a.z - b.z);
-    for (const p of P) { if (t < p.t0) continue; if (!p.born) spawn(p); const tt = t - p.t0; let dx, dy, r; for (let si = 0; si < Math.max(1, nS); si++) { dx = p.x - Ex; dy = p.y - Ey; r = Math.hypot(dx, dy) || 1;
-      // the target velocity: gust + curl, blended into the orbit (tangential spin + a spring to its radius, which shrinks as it tightens)
-      const e = 1.5, cux = (psi(p.x, p.y + e, t) - psi(p.x, p.y - e, t)) / (2 * e), cuy = -(psi(p.x + e, p.y, t) - psi(p.x - e, p.y, t)) / (2 * e), par = .4 + .8 * p.z;
-      let tx = (Sp.gust[0] * (1 - .35 * sm(.3, 1, t)) + cux * Cu[3] * 60) * par, ty = (Sp.gust[1] + 40 * Math.sin(t * 1.7 + p.ph) + cuy * Cu[3] * 60) * par;
-      const ro = p.orb * (1 - tg * (1 - Sp.tight[2])) * (1 + .1 * Math.sin(t * 2.3 + p.ph)), om = Sp.spin * (1 + .9 * tg) * (RR / Math.max(ro, RR * .3)) ** .5 * (p.near ? .55 : 1);
-      const tl = 1 - Sp.tilt * wv, oy = dy / tl, orr = Math.hypot(dx, oy) || 1, vt = om * Math.max(ro, Math.min(orr, ro * 2.2)) * (1 + .15 * Math.sin(p.ph * 3));     /* the orbit is a TILTED ring (worked in its own plane, squashed onto the screen): petals pass behind and in front of the emblem */
-      const vx2 = -oy / orr * vt + dx / orr * (ro - orr) * 4.2 + cux * Cu[3] * 14, vy2 = (dx / orr * vt + oy / orr * (ro - orr) * 4.2) * tl + cuy * Cu[3] * 14;
-      let w = wv * (p.near ? .55 : 1); if (bst) { tx = dx / r * (300 + 500 * p.z) + -dy / r * 200; ty = dy / r * (300 + 500 * p.z) + dx / r * 200; w = 0; }
-      const gx = tx + (vx2 - tx) * w, gy = ty + (vy2 - ty) * w, kk = 1 - Math.exp(-(p.near ? 1.6 : 2.4 + 2 * wv) * dt);
-      p.vx += (gx - p.vx) * kk; p.vy += (gy - p.vy) * kk + (p.kick && tt < .6 ? 260 * dt : 0); p.x += p.vx * dt; p.y += p.vy * dt;
-      if (!wv && p.x > W0 + 60) { p.x = -40; p.y = H0 * (.1 + R0() * .8); } p.fl += p.vf * dt * (1 + .5 * wv); p.ro += p.vr * dt; }
-      if (p.near && p.x > W0 + p.s * 2 && wv > .5) continue;
-      // the TUMBLE: a flip about the petal's own long axis (the face narrows and darkens as it turns away) and a slow spin
-      const fx = Math.cos(p.fl), al = Math.min(1, tt * 3) * fade * (p.near ? .55 * (1 - tg) : .55 + .45 * Math.min(1, p.z + .3)) * (tg > .6 && !bst ? 1 - .55 * sm(.6, 1, tg) * (r < RR * .6 ? 1 : 0) : 1); if (al < .01) continue;
-      const bk = wv > .2 && !bst && !p.near ? sm(0, -.6, (p.y - Ey) / Math.max(1, Math.hypot(p.x - Ex, (p.y - Ey) * 2))) * wv : 0;     /* the far side of the ring */
+    for (const p of P) { if (t < p.t0) continue; if (!p.born) spawn(p); const tt = t - p.t0; let dx, dy, r = 1;
+      for (let si = 0; si < Math.max(1, nS); si++) { dx = p.x - Cx; dy = p.y - Cy;
+        const e = 1.5, cux = (psi(p.x, p.y + e, t) - psi(p.x, p.y - e, t)) / (2 * e), cuy = -(psi(p.x + e, p.y, t) - psi(p.x - e, p.y, t)) / (2 * e), age = t - p.t0;
+        // the RIBBON first (it keeps the motion it was shed with, slowing, curling), then the HELIX takes it (weight grows with its age)
+        const wv = sm(Sp.trail * .3, Sp.trail * 1.6, age) * (p.near ? .5 : 1), gr = Sp.grow[0] + (Sp.grow[1] - Sp.grow[0]) * sm(0, 1.1, age), ro = p.orb * gr * (1 - tg * (1 - Sp.tight[2])) * (1 + .12 * Math.sin(t * 2.3 + p.ph));
+        const tl = 1 - Sp.tilt, oy = dy / tl, orr = Math.hypot(dx, oy) || 1, om = Sp.spin * p.dir * (1 + .8 * tg) * Math.pow(RR / Math.max(ro, RR * .3), .5) * (p.near ? .6 : 1), vt = om * Math.max(ro, Math.min(orr, ro * 2.2));
+        let gx = -oy / orr * vt + dx / orr * (ro - orr) * 4 + cux * Cu[3] * 14 + (Cx - (p.cx0 == null ? Cx : p.cx0)) / Math.max(dt, 1e-3) * 0, gy = (dx / orr * vt + oy / orr * (ro - orr) * 4) * tl + cuy * Cu[3] * 14;
+        gx += (Ex - hx) * (Sp.travel[1] > t && t > Sp.travel[0] ? 1 / (Sp.travel[1] - Sp.travel[0]) : 0) * .9; gy += (Ey - hy) * (Sp.travel[1] > t && t > Sp.travel[0] ? 1 / (Sp.travel[1] - Sp.travel[0]) : 0) * .9;     /* ride the centre's travel */
+        let w = wv; if (bst) { gx = dx / (Math.hypot(dx, dy) || 1) * (300 + 500 * p.z) - dy / (Math.hypot(dx, dy) || 1) * 200; gy = dy / (Math.hypot(dx, dy) || 1) * (300 + 500 * p.z) + dx / (Math.hypot(dx, dy) || 1) * 200; w = 1; }
+        const tx = p.vx * Math.exp(-1.2 * dt) + cux * Cu[3] * 40 * dt, ty = p.vy * Math.exp(-1.2 * dt) + cuy * Cu[3] * 40 * dt + 30 * dt, kk = 1 - Math.exp(-(2.6 + 2 * w) * dt);
+        p.vx = tx + (gx - tx) * kk * w; p.vy = ty + (gy - ty) * kk * w; p.x += p.vx * dt; p.y += p.vy * dt; p.fl += p.vf * dt * (1 + .5 * w); p.ro += p.vr * dt; r = Math.hypot(p.x - Ex, p.y - Ey); }
+      if (p.near) p.s *= 1 + DT * .35;     // the near ones come at the lens
+      const fx = Math.cos(p.fl), al = Math.min(1, tt * 5) * fade * (p.near ? .55 * (1 - tg) : .6 + .4 * Math.min(1, p.z + .3)) * (tg > .6 && !bst ? 1 - .55 * sm(.6, 1, tg) * (r < RR * .6 ? 1 : 0) : 1); if (al < .01) continue;
+      const bk = mv > .2 && !bst && !p.near ? sm(0, -.6, (p.y - Cy) / Math.max(1, Math.hypot(p.x - Cx, (p.y - Cy) * 2))) * mv : 0;     /* the far side of the helix */
       x.save(); x.globalAlpha = al * (1 - .55 * bk); x.translate(p.x, p.y); if (bk) x.scale(1 - .4 * bk, 1 - .4 * bk); x.rotate(p.ro + Math.atan2(p.vy, p.vx) * .5); x.scale(Math.max(.12, Math.abs(fx)), 1);
-      const im = p.mint ? mint : p.near || p.z < .18 ? soft[p.k] : spr[p.k], sz = p.s * (p.mint ? .7 : 1); if (fx < 0 && !p.mint) x.globalAlpha = al * .8; x.drawImage(im, -sz, -sz, sz * 2, sz * 2); x.restore(); }
+      const im = p.mint ? mint : p.near || p.z < .18 ? soft[p.k] : spr[p.k], sz = p.s * (p.mint ? .7 : 1); if (fx < 0 && !p.mint) x.globalAlpha *= .8; x.drawImage(im, -sz, -sz, sz * 2, sz * 2); x.restore(); }
     if (!covered && t >= L.coverAt) { covered = 1; try { onCover && onCover(); } catch (e) { console.warn('[melee] leap cover', e); } }
     if (t >= L.dur && loopSwirl.hold == null) { done = 1; cv.remove(); try { onEnd && onEnd(); } catch (e) { console.warn('[melee] leap end', e); } return; }
     requestAnimationFrame(step); };
@@ -74284,24 +74284,17 @@ function loopBg(host) { const T = LOOPBG, P = T.pal[T.time] || T.pal.dusk, C = T
   let TRL = null; const trailMesh = () => { if (TRL) return TRL; const n = T.leap.trail.n, g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 2 * 3), 3)); g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(n * 2 * 4), 4));
     const idx = []; for (let i = 0; i < n - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } g.setIndex(idx);
     const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, toneMapped: false, fog: false })); m.frustumCulled = false; m.renderOrder = 30; S.add(m); TRL = { m, s: [] }; return TRL; };
-  const leapStep = dt => { const Lp = st.leap, TL = T.leap; Lp.t = loopSwirl.hold != null ? loopSwirl.hold * TL.dur : Lp.t + dt; const t = Lp.t, cl = v => Math.max(0, Math.min(1, v)),
-      q5 = v => { v = cl(v); return v * v * v * (v * (v * 6 - 15) + 10); }, eo = v => 1 - Math.pow(1 - cl(v), 3);
-    // the POSE: crossfades only (no clip ever starts at full weight), each beat once
-    const beat = (k, at) => { if (Lp['b_' + k] || t < at) return; Lp['b_' + k] = 1; const c = TL.clips[k]; if (c) playA(c[0], c[1], c[2]); };
-    beat('crouch', 0); beat('rise', TL.rise.at - .06); beat('flip', TL.flip.at - .1); beat('hang', TL.flip.end - .12);
-    // the HEIGHT: a crouch that eases down and back, an ease-out rise, a hang that keeps drifting up (no apex snap, no fall)
-    const C = TL.crouch, R = TL.rise; let y;
-    if (t < C.to) y = -C.depth * Math.sin(Math.PI * q5(t / C.to)); else y = R.h * eo((t - R.at) / (R.to - R.at)) * (t < R.at ? 0 : 1) + TL.hang.drift * q5((t - R.to) / (TL.dur - R.to));
-    if (t < R.at) y = Math.min(y, 0);
-    // the FLIP: one turn on a quintic ease about his hips (zero velocity at both ends -- the 'clean flip'), with a little lean into the take-off
-    const F = TL.flip, fa = -Math.PI * 2 * F.turns * q5((t - F.at) / (F.end - F.at)) + F.lean * Math.sin(Math.PI * cl((t - C.to * .5) / (F.at - C.to * .5)));
-    qF.setFromAxisAngle(vZ, fa); W.root.quaternion.copy(qF).multiply(qY);
-    pv.set(0, TL.hipY, 0); pv2.copy(pv).applyQuaternion(qF); W.root.position.y += y + (pv.y - pv2.y); W.root.position.x = (T.walker.x || 0) + (pv.x - pv2.x);
+  const leapStep = dt => { const Lp = st.leap, TL = T.leap; Lp.t = loopSwirl.hold != null ? loopSwirl.hold * TL.dur : Lp.t + dt; const t = Lp.t;
+    if (!Lp.b) { Lp.b = 1; playA(TL.clip, TL.ts, TL.fade); Lp.bn = TL.bones.map(n => W.root.getObjectByName(n)).filter(Boolean); }
+    // the ARC: ballistic from the clip's own take-off (zero before it -- the crouch and the push-off are the clip's), a lighter fall after the apex
+    const tt = t - TL.takeoff, g = 2 * TL.h / (TL.apex * TL.apex), v = g * TL.apex; let y = 0;
+    if (tt > 0) y = tt < TL.apex ? v * tt - .5 * g * tt * tt : TL.h - .5 * g * TL.float * (tt - TL.apex) * (tt - TL.apex);
+    W.root.quaternion.copy(qY); W.root.position.y += y; W.root.position.x = (T.walker.x || 0) - TL.back * Math.max(0, tt);
     shadow.material.opacity = .35 * Math.max(0, 1 - y / 2.5); Lp.y = y;
-    // the CAMERA eases after him (a damped follow, never locked)
     Lp.cy = (Lp.cy || 0) + (y - (Lp.cy || 0)) * (1 - Math.exp(-TL.camEase * Math.max(dt, loopSwirl.hold != null ? .05 : 0)));
-    // where he is on screen, for the petals he kicks up and the ones that wrap him
-    if (Lp.sp) { const r = cv.getBoundingClientRect(), v = W.root.position.clone().add(pv).project(cam); Lp.sp.hero = [r.left + (v.x * .5 + .5) * r.width, r.top + (-v.y * .5 + .5) * r.height]; } };
+    // where his hands, feet and hips are ON SCREEN -- the petals are shed from them
+    if (Lp.sp) { W.root.updateMatrixWorld(true); const r = cv.getBoundingClientRect(), q = new THREE.Vector3(), pr = o => { o.getWorldPosition(q).project(cam); return [r.left + (q.x * .5 + .5) * r.width, r.top + (-q.y * .5 + .5) * r.height]; };
+      Lp.sp.parts = Lp.bn.map(pr); const h = Lp.sp.parts[4] || pr(W.root); Lp.sp.hero = h; } };
   const api = { T, W, st, frame, NH, leap: (onCover, onEnd) => { if (st.leap) return; st.leap = { t: 0, y: 0, vy: 0, fired: 0 }; let px = innerWidth / 2, py = innerHeight * .55;
       try { const v = (W.root ? W.root.position.clone() : new THREE.Vector3()).add(new THREE.Vector3(0, .8, 0)).project(cam), r = cv.getBoundingClientRect(); px = r.left + (v.x * .5 + .5) * r.width; py = r.top + (-v.y * .5 + .5) * r.height; } catch (e) {}
       st.leap.sp = []; loopSwirl(T.leap, () => st.leap ? st.leap.t : 0, st.leap.sp, onCover, onEnd); },
