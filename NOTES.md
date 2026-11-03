@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2371 -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
+His: *"I don't really love the default text that we use for the story prologue."* Step 1 of two (step 2, an invented Korajin script that dissolves
+into the reading text, waits on his pick here).
+- **The looks:** `REELFONT` has seven, each a free Google font plus a colour, shadow or glow, and a REVEAL that writes the line in letter by letter as
+  the voice reaches it. Every letter is its own span, words stay whole, and the stagger is `--i`.
+  - MINCHO (Shippori Mincho, ink out of a blur), the new default
+  - BRUSH (Yuji Syuku, a stroke from the left)
+  - CARVED (Cinzel, rise)
+  - STORY (Kaisei Decol, ink)
+  - ANTIQUE (Zen Antique, rise)
+  - POSTER (Dela Gothic One, pop)
+  - MARKER (the old one, whole-line fade)
+- **Jinra words:** Jinra, Korajin and Grumbo glow in the JPAL colour.
+- **His switch:** the "Aa" key bottom-left ON the reel steps through them live, and the crawl re-measures its lines in the new face (`O.ys = null`).
+  The same is in TOOLS > PROLOGUE > TALE FONT, kept in `mel.reel.font`. A line upcoming is blank, a line past keeps its letters (`past`).
+Shipped unverified. A phone-size headless screenshot of each look follows.
+
 ## m2369 -- THE LAKE: TEXTURES on the rock, sand, deck and water (his ask) (Nov 3 2026)
 His: *"paint some textures for the water and the rocks -- we probably have some already, so reuse them."* All reused, no new files:
 - **The canyon / stacks / islets (one material):** `hollows_cliff` (red columns) and `hollows_rock` (strata) BIPLANAR on the steep faces (projected on the
