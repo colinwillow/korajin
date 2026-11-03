@@ -1,0 +1,7 @@
+Portal sounds (trimmed, faded, mono, levelled to -9 dBFS peak). All CC0 -- no credit required.
+portal_open_a, portal_seal_a  -- "Magic Spell SFX" (magical_1 / magical_6), CC0. https://opengameart.org/content/magic-spell-sfx
+portal_open_b, portal_seal_c  -- "Cure Magic" (Cure7 / Cure4), CC0. https://opengameart.org/content/cure-magic
+portal_open_c                 -- "4 Space / Portal Sounds" (3.mp3, 2.9-4.4 s window), CC0. https://opengameart.org/content/4-space-portal-sounds
+portal_through_a, portal_seal_b (reversed) -- "Portal sound" (porta.ogg), CC0. https://opengameart.org/content/portal-sound
+portal_through_b              -- "Teleport" by fins (freesound 172206), CC0. https://opengameart.org/content/teleport
+Defaults: open_a / through_a / seal_a. b/c are alternates for Colin to pick by ear.
