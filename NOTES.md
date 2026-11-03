@@ -20,6 +20,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2402 -- TAKE 5c: the turn is his momentum (the clip is only the crouch and the push-off)<!--mine-->
+The m2399 strip showed the loop could not fix it. `backflip` does most of its turn between .4 and .6 of the clip, and by .7-.8 his legs are out
+for the LANDING. So he still read as STANDING in the air before the loop came in.
+Now (`leap.spin`):
+- The clip plays the crouch and the push-off only.
+- At the take-off frame he crossfades (.26 s) into `tuck`, and the TURN is driven at the root about his hips: w(t) = w0 e^(-t/tau) + w1
+  (9 rad/s easing to a steady 4.2). It is fastest at take-off, as momentum, and the angle is the integral, so it is continuous from 0.
+- It is a BACKflip: his up turns toward -X (he faces +X).
+- `leap.loop` (m2399) is gone.
+Shipped unverified; the strip is rendering.
+
 ## m2401 -- the entrance portal: smaller, near-flat, a swirling pink spiral inside, a clearer sound, both swappable (Nov 3 2026)
 His (via main): *"he LIKES the fall + slam now. The portal: SMALLER; NOT black inside -- a swirling purple-pink spiral / particles; near-parallel to the
 ground, a thin oval seen almost edge-on (a little of the circle still visible). He doesn't like the current sounds -- wants a clear portal-opening
