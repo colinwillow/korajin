@@ -17,6 +17,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2298 -- THE NIGHT SKY: stars, the Milky Way, a giant ringed moon, the aurora, and TORCHES in the Snowfield (Nov 3 2026)
+His ask: *"a sky of stars -- a nice galaxy, maybe a giant alien moon -- in the SNOW scene, with a nighttime AURORA BOREALIS, and a switch so I can see
+it; and TORCHES lighting up parts of it. A seed to start making nighttime."* SNOWNIGHT (TOOLS > SNOW > TIME: NIGHT, `?time=night`) is now this.
+All of it is one table, `NIGHTSKY` (SC_NIGHTSKY markers), and the `NIGHT_SKY` block that replaced m2018's `snowNightBuild` / `snowNightStep`.
+- **The sky** is ONE dome shader round the camera (r 700, no image): a gradient matched to the fog at the horizon, two layers of hashed stars
+  (AA'd by fwidth) plus a sparse bright layer, slow twinkle, the MILKY WAY (fbm band on a great circle, warm core, violet edges, dark dust lanes,
+  extra stars in it), and the GIANT MOON as an analytic sphere: two crater scales, violet maria, a gibbous lit face with a warm terminator, a faint
+  dark side, an atmosphere rim and glow, a tilted RING that goes in front of and behind it and takes its shadow, and a small rust second moon.
+  `NIGHTSKY.sky.pano` is the hook for a painted panorama (equirect; the dome paints it under the moon).
+- **The aurora**: three folded curtains merged into ONE mesh (rays drifting, a magenta hem, an emerald body -- kept off the Jinra mint 0x7affd8 --
+  violet tops, folds waving, pulses running along) and a sparkle Points along them. The hemi light leans to its colour as it breathes (the snow tint).
+- **Moonlight**: the directional light comes FROM the drawn moon (raised to 30 deg for sane shadows), cold blue, dimmer than m2018 (`lightK`) so the
+  torches read. The snow shader glints where it mirrors the moon.
+- **Torches**: 20 rows with stable ids (bridge, gate, path, square, both terrace stairs, the longhouse door, the crag, the bathhouse, the spring).
+  Posts merged to one mesh (stone footing half in the pack, tapered pole, bronze bands, bowl, prongs); flames as ONE Points draw (procedural
+  flame + halo, flicker); sparks and smoke from the shared pools within 40 m of him; the WARM POOL ON THE SNOW is projected inside the snow's own
+  shader (follows the drifts; no decal draw); 3 PointLights handed to the nearest torches each frame.
+- **Draws**: dome, aurora, sparkle, posts, flames = 5 -- the m2018 stars + four curtains were 5, so net 0 (measured: hiding dome/aurora/flames 122 -> 119).
+  The 3 PointLights are the real cost on the phone; `NIGHTSKY.torch.lights` 0 removes them.
+- Rendered headless at night: wide from behind the longhouse (village, aurora, ringed moon), the north sky, the gate torches close and from the
+  bridge. CRAFT: posts stand on footings sunk in the pack (3), bronze carries a warm emissive floor (4). Not done: LOOPBG's night does not share the
+  dome yet. Shipped unverified.
+
 ## m2297 -- BREAKABLES GAME-WIDE, step 2: every zone's smashables shatter and drop (Nov 3 2026)
 
 Found on the way: there was ALREADY a game-wide smashable system -- m1141's `SMASH` / `smashAdd` (29 call sites: the shrine's sake barrels and

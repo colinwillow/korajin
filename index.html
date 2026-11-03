@@ -1045,7 +1045,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
   <div class="sub" id="bootSub"></div>
   <div class="msg" id="bootMsg">loading</div>
   <div class="bar"><i id="bootBar"></i></div>
-  <div class="bld">BUILD <span id="bootBuild">m2297</span></div>
+  <div class="bld">BUILD <span id="bootBuild">m2298</span></div>
 </div>
 <script>
 // m1320: THE BOOT CARD SAYS WHICH GAME IS LOADING. *"It still says Weirdport and we're not even on that game. We could stylize the loading
@@ -1062,7 +1062,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
       const sh = document.createElement('div'); sh.className = 'bvshade'; v.addEventListener('playing', () => v.classList.add('on'), { once: true }); b.prepend(sh); b.prepend(v); const pl = v.play(); if (pl && pl.catch) pl.catch(() => {}); } catch (e) {} } })();     // m2258: the LOADING card wears the second poster -- the splash keeps the first (his: 'we don't use the same image twice')
 </script>
 
-<div class="chip" id="build"><b id="buildN">m2297</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
+<div class="chip" id="build"><b id="buildN">m2298</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
 <div id="splash" aria-label="tap to start"><img class="blur" alt=""><img class="main" alt="Zap and Clancy"><div class="glow"></div><div class="bn"></div></div>
 <script>
 // m879 (STEER 02:22): THE SPLASH, before the module (so it shows on the first paint, while the boot carries on behind it). The image's
@@ -1192,7 +1192,7 @@ import { KTX2Loader } from './vendor/KTX2Loader.js';
 import { clone as skeletonClone } from './vendor/SkeletonUtils.js';
 import { mergeGeometries as _mergeGeos } from './vendor/BufferGeometryUtils.js';
 
-const BUILD = 'm2297';
+const BUILD = 'm2298';
 /* ASSETS:START */
 const ASSETS = {"textures/bronze.webp":"bdb5b1c0","textures/dome_banner.webp":"a45add1e","textures/dome_bark.webp":"fb0d16fd","textures/dome_clump.webp":"c1c1a6b8","textures/dome_cobble.webp":"1679cf07","textures/dome_cushion.webp":"d1923b5f","textures/dome_cyclo.webp":"9a8ec8c4","textures/dome_door.webp":"bfc435fd","textures/dome_gem.webp":"e5c4d5d9","textures/dome_gold.webp":"bcdc15e7","textures/dome_grass.webp":"5e209ee3","textures/dome_ivy.webp":"c89dc304","textures/dome_leaves.webp":"7177812d","textures/dome_moss.webp":"f826b682","textures/dome_relief.webp":"4d91574b","textures/dome_smooth.webp":"572d0f5e","textures/dome_stone.webp":"5a30ba9b","textures/dome_tuft.webp":"8141f322","textures/garden_awning.webp":"6193efc8","textures/garden_banner_red.webp":"2aebfd9b","textures/garden_banner_teal.webp":"7512c2b8","textures/garden_blossom.webp":"37b3de85","textures/garden_blossom_card.webp":"dfaa5d14","textures/garden_cloud.webp":"5f2ab760","textures/garden_cloud_bank.webp":"3cc1fc57","textures/garden_cloud_tower.webp":"1e274a7a","textures/garden_cloud_wisp.webp":"af500526","textures/garden_clouds.webp":"eb9e32ce","textures/garden_crystal.webp":"030910bf","textures/garden_fern.webp":"5a23e89a","textures/garden_flag.webp":"09cff172","textures/garden_flowers.webp":"d2e3124f","textures/garden_hammock.webp":"e3b1a6a0","textures/garden_jinra_crystal.webp":"a8d5591e","textures/garden_jinra_flame.webp":"dc513783","textures/garden_jinra_runes.webp":"767488c0","textures/garden_jinra_swirl.webp":"7c3e5772","textures/garden_lantern.webp":"efd86072","textures/garden_lawn.webp":"082a0332","textures/garden_pot.webp":"061b0972","textures/garden_rock.webp":"b9df9367","textures/garden_roof.webp":"a9f5304b","textures/garden_sand.webp":"325c6a60","textures/garden_sky.webp":"2e0058a2","textures/garden_vine.webp":"00d060eb","textures/garden_water.webp":"da1edfcc","textures/garden_wood.webp":"6cd0d3d9","textures/hollows_cliff.webp":"afd42c1e","textures/hollows_cream.webp":"3e412dd3","textures/hollows_leaves.webp":"09c66339","textures/hollows_pebble.webp":"49006598","textures/hollows_rock.webp":"a6d17614","textures/hollows_sand.webp":"b977d1fc","textures/ice_banner.webp":"fe145f59","textures/ice_stone.webp":"c1889752","textures/jinra_adobe.webp":"c94ac8eb","textures/jinra_iron.webp":"d00651c1","textures/jinra_teal.webp":"4f1000b2","textures/marble.webp":"53c3d802","textures/red_cloth.webp":"82877ebd","textures/roof_tiles.webp":"bc0a6ac0","textures/sandstone.webp":"4d991588","textures/sky_sunset_01.webp":"db9645b5","textures/sky_sunset_02.webp":"385ca84e","textures/snow_bark.webp":"238a9743","textures/snow_ice.webp":"3b4e4405","textures/snow_needles.webp":"764b48a2","textures/snow_rock.webp":"71d1c6db","textures/snow_snow.webp":"fefa935b","textures/stone_blocks.webp":"419e5209","textures/svk_ashlar.webp":"6f6a247d","textures/svk_band.webp":"748c5ec4","textures/svk_banner.webp":"8e765d3a","textures/svk_glyph.webp":"1f852b02","textures/svk_hexstone.webp":"c917b8f9","textures/svk_jinstone.webp":"7473678d","textures/svk_jinwood.webp":"809b50d0","textures/svk_paving.webp":"bbc7d4d3","textures/svk_planks.webp":"e6d34955","textures/svk_shell.webp":"a822cea9","textures/svk_stone.webp":"367cb102","textures/svk_thatch.webp":"8f36bcdd","textures/svk_timber.webp":"e4c792ee","textures/temple_banner.webp":"f356ed38","textures/temple_bark.webp":"0b407ebe","textures/temple_carpet.webp":"9b3a2df9","textures/temple_frond.webp":"c4e424d9","textures/temple_glyph.webp":"2ff2a87e","textures/temple_gold.webp":"63c94d47","textures/temple_jade.webp":"338e5694","textures/temple_lacquer.webp":"d469819f","textures/temple_paving.webp":"baa24e2f","textures/temple_planks.webp":"046e23cf","textures/temple_rock.webp":"67d14316","textures/temple_rope.webp":"75b11f94","textures/temple_sky_dawn.webp":"459fafc8","textures/temple_sky_day.webp":"a5094225","textures/temple_sky_storm.webp":"fe1837cb","textures/temple_wall.webp":"ec010c84","textures/temple_weave.webp":"927b8a35","textures/wood_planks.webp":"c8b25167","textures/wood_timber.webp":"dc42d865","models/alien_lizard.glb":"faffcf4c","models/alien_lizard_ktx2.glb":"05da2a20","models/skate.glb":"0c612d5e","models/skateboard.glb":"5ba93796","models/characters/alien_antenna_game.glb":"f3ccf328","models/characters/alien_antenna_game_ktx2.glb":"28afac8c","models/characters/alien_female_purple.glb":"1c73eef1","models/characters/alien_female_purple_ktx2.glb":"fc914afb","models/characters/alien_goblin.glb":"3e91bffb","models/characters/alien_goblin_chains.glb":"e72d1550","models/characters/alien_goblin_game.glb":"cfabd926","models/characters/alien_grey_medium.glb":"5a779e8e","models/characters/alien_grey_medium_ktx2.glb":"61600c3e","models/characters/alien_rollerskate_blue.glb":"abf0917c","models/characters/alien_rollerskate_blue_ktx2.glb":"e9a7948a","models/characters/alien_warrior.glb":"f5cc9c49","models/characters/alien_warrior_ktx2.glb":"a13fb7b6","models/characters/beautiful_asian.glb":"910f6565","models/characters/beautiful_asian_ktx2.glb":"35281eef","models/characters/beautiful_blonde.glb":"edddc421","models/characters/beautiful_blonde_ktx2.glb":"89cf3899","models/characters/brute_warboss_armor.glb":"cc5c7936","models/characters/ceo_alien.glb":"844dc3a7","models/characters/ceo_human.glb":"ec289865","models/characters/clancy.glb":"4b9d271f","models/characters/clancy_ktx2.glb":"74edbc6e","models/characters/colin.glb":"99d38b7d","models/characters/colin_ktx2.glb":"35040f87","models/characters/contruction_worker.glb":"8bd3d7ce","models/characters/contruction_worker_ktx2.glb":"3df8c344","models/characters/dummy_officer.glb":"724965ac","models/characters/dummy_officer_ktx2.glb":"db640cda","models/characters/fat_activist_01.glb":"3c566fee","models/characters/fat_activist_01_ktx2.glb":"b9328df4","models/characters/fat_biker_01.glb":"576b7cf5","models/characters/fat_biker_01_ktx2.glb":"7142cfad","models/characters/fat_biker_02.glb":"ab5d7ec7","models/characters/fat_biker_02_ktx2.glb":"28cec6cc","models/characters/fat_hippie.glb":"f09a260d","models/characters/fat_hippie_ktx2.glb":"0be745a4","models/characters/fat_hipster.glb":"9cf45ffb","models/characters/fat_hipster_ktx2.glb":"18106ff3","models/characters/fat_secret_service.glb":"6d546fb0","models/characters/fat_secret_service_ktx2.glb":"a23a304e","models/characters/fat_trump.glb":"5de6bc56","models/characters/fat_trump_ktx2.glb":"a0ddaf4d","models/characters/firefighter.glb":"ebde005d","models/characters/firefighter_ktx2.glb":"ccf93c96","models/characters/goblin_game.glb":"db1cf0e0","models/characters/hick_skinny.glb":"1ebe78e8","models/characters/hick_skinny_ktx2.glb":"1e93f0ed","models/characters/hobo_01.glb":"34e80b1d","models/characters/hobo_01_ktx2.glb":"69497677","models/characters/jack.glb":"ab009b9b","models/characters/jack_ktx2.glb":"1f4c9f7f","models/characters/jackal_game.glb":"f8c9256d","models/characters/moussa.glb":"6d80b1cf","models/characters/moussa_ktx2.glb":"66e040f8","models/characters/orc_game.glb":"d9aa816d","models/characters/osari_bowman_game.glb":"2ee424af","models/characters/proxy_ceo.bin":"6eca0c34","models/characters/proxy_ceo.jpg":"fadc9d0a","models/characters/proxy_ceo.json":"e62a7975","models/characters/proxy_ceo_alien.bin":"be247ecc","models/characters/proxy_ceo_alien.jpg":"8f8bf8fc","models/characters/proxy_ceo_alien.json":"eb23e28f","models/characters/proxy_hick.bin":"4485560e","models/characters/proxy_hick.jpg":"8c331965","models/characters/proxy_hick.json":"d85a0d36","models/characters/proxy_zap.bin":"dd7b300e","models/characters/proxy_zap.jpg":"2e7330ae","models/characters/proxy_zap.json":"b3b42754","models/characters/proxy_zap2.bin":"51088f46","models/characters/proxy_zap2.jpg":"a954a815","models/characters/proxy_zap2.json":"5c50abb7","models/characters/rept_heavy_armor.glb":"934661c7","models/characters/samurai_game.glb":"c7940015","models/characters/toad_wanderer_game.glb":"2efc31c4","models/characters/xray_skeleton.glb":"46480317","models/characters/zap.glb":"5e5cca54","models/characters/zap_02.glb":"4ff12de0","models/characters/zap_02_lib.glb":"e23d91da","models/characters/zap_ktx2.glb":"4b29d886","models/characters/zoar.glb":"423a9de9","models/characters/zoar_game.glb":"d20a3736","models/vehicles/dump_truck.glb":"d870dc18","models/vehicles/dump_truck_ktx2.glb":"21ee7059","models/vehicles/motorcycle_fatboy.glb":"9ed9be28","models/weapons/alien_antenna_blaster_game.glb":"54083b44","models/weapons/alien_antenna_hammer_game.glb":"707b8a27","models/weapons/alien_launcher.glb":"ba8ab96a","models/weapons/hammer.glb":"3335fdf2","models/weapons/shield_brute.glb":"c6e5593f","models/weapons/spikey_mace.glb":"dcd43acd","models/weapons/w_brute_cleaver.glb":"07a97580","models/weapons/w_rept_maul.glb":"84c3a1a4","models/buildings/alien_base_01.glb":"d9b9fd7f","models/buildings/alien_base_01_ktx2.glb":"6cbbfef2","models/buildings/korajin_bld_01.glb":"edf3178e","models/towers/alien_tower_01.glb":"98d23375","models/towers/alien_tower_01_ktx2.glb":"47597651","models/streets/modular_streets_kit.glb":"6a4bcaa5","models/toon_city/impact_marks.json":"2b616620","models/toon_city/impact_marks_atlas.ktx2":"efe0840e","models/toon_city/impact_marks_atlas.png":"490ed049","models/toon_city/toon_city_breakables.glb":"29bddbc8","models/toon_city/toon_city_collision.glb":"fb3a693f","models/toon_city/toon_city_obb.json":"81c18a47","models/toon_city/toon_city_visual.glb":"5df62285","models/toon_city/toon_city_visual_ktx2.glb":"cf080531","models/toon_city/weirdkit_tint.js":"f6e9d802","models/toon_city_kit/toon_city_collision.glb":"5540a364","models/toon_city_kit/toon_city_kit_buildings.glb":"590e53f0","models/toon_city_kit/toon_city_kit_buildings_ktx2.glb":"e6dff3a3","models/toon_city_kit/toon_city_kit_pieces.glb":"8232bd6f","models/toon_city_kit/toon_city_kit_twins.glb":"fcc9fdfc","models/toon_city_kit/toon_city_visual.glb":"45cf2957","models/toon_city_kit/toon_city_visual_ktx2.glb":"f26a6984","models/toon_city_kit/weirdkit_detile.js":"dd05bd70","models/characters/morph/shapes.bin":"4e680384","models/characters/morph/shapes.json":"abfc949d","models/characters/forged/alien_female_purple.glb":"0308860e","models/characters/forged/alien_goblin_game.glb":"11f44bc1","models/characters/forged/alien_rollerskate_blue.glb":"bcccc63f","models/characters/forged/alien_warrior.glb":"a067d5ab","models/characters/forged/beautiful_asian.glb":"f1c7baa5","models/characters/forged/beautiful_blonde.glb":"f83172bd","models/characters/forged/brute_warboss_armor.glb":"dc15dc94","models/characters/forged/ceo_alien.glb":"20659ac3","models/characters/forged/ceo_human.glb":"326d9e7e","models/characters/forged/clancy.glb":"19fabcce","models/characters/forged/contruction_worker.glb":"99fe1a17","models/characters/forged/dummy_officer.glb":"87a11843","models/characters/forged/fat_activist_01.glb":"6546645c","models/characters/forged/fat_biker_01.glb":"943f38ea","models/characters/forged/fat_biker_02.glb":"5d63a0cf","models/characters/forged/fat_hippie.glb":"ff0539ba","models/characters/forged/fat_hipster.glb":"792b92d8","models/characters/forged/fat_secret_service.glb":"7c29d1da","models/characters/forged/firefighter.glb":"20410689","models/characters/forged/goblin_game.glb":"3c813462","models/characters/forged/hick_skinny.glb":"d9232022","models/characters/forged/hobo_01.glb":"37d266c9","models/characters/forged/index.json":"7ac38412","models/characters/forged/jack.glb":"712b6241","models/characters/forged/moussa.glb":"74d19c70","models/characters/forged/orc_game.glb":"7bf3c227","models/characters/forged/osari_archer.glb":"bf2f27f5","models/characters/forged/rept_heavy_armor.glb":"01e631b0","models/characters/forged/samurai_archer.glb":"04db413e","models/characters/forged/samurai_game.glb":"a946c148","models/characters/forged/stone_guardian.glb":"8a9ff43d","models/characters/forged/stone_olmec.glb":"be0ae8f6","models/characters/forged/zap.glb":"10eda718","models/characters/forged/zap_02.glb":"fd513cea","models/characters/forged/zap_02_lib.glb":"fd513cea","models/characters/forged/zoar_game.glb":"b032a28e","models/characters/anims/agoblin_meditate.glb":"e2618dbe","models/characters/anims/toad_sage.glb":"10cc522d","models/characters/anims/wall_side.glb":"089d3dc7","levels/blockout_sample.glb":"ee8a0f57","levels/hamlet_d1.bin":"5bb698c2","levels/index.json":"2c8499e1","levels/region_6.bin":"085f2591","levels/region_6.json":"5236372c","levels/sample_two_towers.json":"e2466683","images/crack_sprite_01.ktx2":"4aa55fde","images/crack_sprite_01.png":"16b52e8c","images/fire_sprites_01.ktx2":"922e1191","images/fire_sprites_01.png":"f87e2696","images/fire_sprites_02.ktx2":"e0cbfe1d","images/fire_sprites_02.png":"b373a6fd","images/fire_sprites_03.ktx2":"4fbbb985","images/fire_sprites_03.png":"7eece336","images/geyser_sprites_01.png":"b6325470","images/hdri_game.ktx2":"0feb5c79","images/hdri_game.png":"dac55f41","images/serpent_eye.webp":"b764e90d","images/serpent_fin.webp":"a592c818","images/serpent_skin.webp":"f7e0e45d","images/ship_lacquer.jpg":"51b8e6e5","images/ship_sail.jpg":"9d04714c","images/snow_sky.webp":"e0c34c2d","images/splash_zap_n_clancy.webp":"52a9d8a4","images/water_sprites_01.ktx2":"326924c5","images/water_sprites_01.png":"31e12659","audio/blaster_sound_01.mp3":"40d99583","audio/blaster_sound_02.mp3":"4bd7bb7c","audio/box_break_01.mp3":"e4127980","audio/electricity_beam_01.mp3":"986db8c9","audio/explosion_small.mp3":"f154a537","audio/metal_clang_01.mp3":"a333bd27","audio/metal_clang_02.mp3":"1e3ebbd6","audio/metal_clang_03.mp3":"afe44812","audio/metal_ping_01.mp3":"8ffca1a0","audio/plasma_canon.mp3":"e32c324d","audio/powerup_01.mp3":"48fbbe08","audio/swoosh_01.mp3":"193db185","audio/swoosh_02.mp3":"19145e70","audio/swoosh_03.mp3":"544fdffb","audio/swoosh_04.mp3":"843bee5d","audio/plasma_sounds/plasma_01.mp3":"e71c010f","audio/plasma_sounds/plasma_02.mp3":"ac3b1c75","audio/plasma_sounds/plasma_03.mp3":"eaa59355","audio/plasma_sounds/plasma_04.mp3":"bc7865e0","audio/plasma_sounds/plasma_05.mp3":"1d821cd0","audio/plasma_sounds/plasma_06.mp3":"cb979fbe","audio/plasma_sounds/plasma_hit.mp3":"30e5af5c","audio/alien_orc_grunt_sounds/alien_orc_grunt_01.mp3":"d6f4b343","audio/alien_orc_grunt_sounds/alien_orc_grunt_02.mp3":"78afc603","audio/alien_orc_grunt_sounds/alien_orc_grunt_03.mp3":"972c524a","audio/alien_orc_grunt_sounds/alien_orc_grunt_04.mp3":"b0ce76eb","audio/alien_orc_grunt_sounds/alien_orc_grunt_05.mp3":"1f0ba1f4","audio/alien_orc_grunt_sounds/alien_orc_grunt_06.mp3":"4f749866","audio/alien_orc_grunt_sounds/alien_orc_grunt_07.mp3":"dcf75925","audio/hit_sounds/hit_sound_01.mp3":"befaa2be","audio/hit_sounds/hit_sound_02.mp3":"73bc4433","audio/hit_sounds/hit_sound_03.mp3":"24b181e4","audio/hit_sounds/hit_sound_gound_01.mp3":"86ee2674","audio/hit_sounds/hit_sound_ground_02.mp3":"8a7cac73","audio/hit_sounds/hit_sound_plasma_01.mp3":"9abc0202","audio/hit_sounds/hit_sound_plasma_02.mp3":"6aaf0fe5","audio/hit_sounds/thud_a_1.mp3":"3e526f73","audio/hit_sounds/thud_a_2.mp3":"e99874e5","audio/hit_sounds/thud_a_3.mp3":"7aaaea7d","audio/hit_sounds/thud_b_1.mp3":"c6e4c4f4","audio/hit_sounds/thud_b_2.mp3":"db6b7fbb","audio/hit_sounds/thud_b_3.mp3":"5c7909e3","audio/creature_noises/creature_noise_01.mp3":"cbcc6ee7","audio/creature_noises/creature_noise_02.mp3":"201a8247","audio/creature_noises/creature_noise_03.mp3":"97680811","audio/creature_noises/creature_noise_04.mp3":"6f734df2","audio/creature_noises/creature_noise_05.mp3":"6f736441","audio/creature_noises/creature_noise_06.mp3":"992712e9","audio/creature_noises/creature_noise_07.mp3":"d9ad04b3","audio/footsteps/footstep_2_l.mp3":"abeabfbe","audio/footsteps/footstep_2_r.mp3":"7dd16046","audio/footsteps/footstep_3_L.mp3":"bc044ed9","audio/footsteps/footstep_3_R.mp3":"49c6f23d","audio/footsteps/footstep_l.mp3":"b66e579b","audio/footsteps/footstep_r.mp3":"96e13433","audio/footsteps/footsteps.mp3":"8ee73ccb","audio/footsteps/step3_1_l.mp3":"a855262e","audio/footsteps/step3_1_r.mp3":"1ea0a2b4","audio/footsteps/step3_2_l.mp3":"43ef40dd","audio/footsteps/step3_2_r.mp3":"91cfe687","audio/footsteps/step3_3_l.mp3":"56ff6eb2","audio/footsteps/step3_3_r.mp3":"0e73e8e3","audio/footsteps/step3_4_l.mp3":"26c965fd","audio/footsteps/step3_4_r.mp3":"c3110fbb","audio/footsteps/step_1_l.mp3":"f7efc3d9","audio/footsteps/step_1_r.mp3":"b236bde4","audio/footsteps/step_2_l.mp3":"0e397d22","audio/footsteps/step_2_r.mp3":"2392717c","audio/footsteps/step_3_l.mp3":"364d26a3","audio/footsteps/step_3_r.mp3":"8434aa01","audio/footsteps/step_4_l.mp3":"1fb763a6","audio/footsteps/step_4_r.mp3":"74f5aff2","audio/footsteps/step_5_l.mp3":"8619ec0e","audio/footsteps/step_5_r.mp3":"eff2c01e","audio/footsteps/step_6_l.mp3":"553ba89d","audio/footsteps/step_6_r.mp3":"f2fec766","audio/footsteps_snow/cut/snow_1_l.mp3":"aa3d5f06","audio/footsteps_snow/cut/snow_1_r.mp3":"8cf29d4b","audio/footsteps_snow/cut/snow_2_l.mp3":"2e2d5197","audio/footsteps_snow/cut/snow_2_r.mp3":"51ab8c34","audio/footsteps_snow/cut/snow_3_l.mp3":"4a16321c","audio/footsteps_snow/cut/snow_3_r.mp3":"2a77bf77","audio/footsteps_snow/cut/snow_4_l.mp3":"984d75e0","audio/footsteps_snow/cut/snow_4_r.mp3":"c9998642","audio/steps/grass_1.mp3":"aa9dcb4c","audio/steps/grass_2.mp3":"19d1a359","audio/steps/grass_3.mp3":"058341e0","audio/steps/grass_4.mp3":"3111ae90","audio/steps/metal_1.mp3":"71e474bf","audio/steps/metal_2.mp3":"6c51c9f5","audio/steps/metal_3.mp3":"1781bed4","audio/steps/metal_4.mp3":"aee7b99d","audio/steps/metal_5.mp3":"dba70524","audio/steps/metal_6.mp3":"f1d7a18a","audio/steps/rustle_1.mp3":"9dd271aa","audio/steps/rustle_2.mp3":"41696f76","audio/steps/rustle_3.mp3":"da17b02c","audio/steps/rustle_4.mp3":"4e9a4451","audio/steps/rustle_5.mp3":"ee911bc6","audio/steps/rustle_6.mp3":"af76d88b","audio/steps/sand_1.mp3":"be494ed1","audio/steps/sand_2.mp3":"33e96de8","audio/steps/sand_3.mp3":"bcef3396","audio/steps/sand_4.mp3":"e339c214","audio/steps/sand_5.mp3":"b65c5cd7","audio/steps/sand_6.mp3":"2598249e","audio/steps/stone_1.mp3":"d58c055c","audio/steps/stone_2.mp3":"8b20f2aa","audio/steps/stone_3.mp3":"b707af84","audio/steps/stone_4.mp3":"7417f8d1","audio/steps/water_1.mp3":"1323a529","audio/steps/water_2.mp3":"98ec63be","audio/steps/water_3.mp3":"0d9f507d","audio/steps/water_4.mp3":"43a07b4d","audio/steps/water_5.mp3":"af74047d","audio/steps/water_6.mp3":"13f8846a","audio/steps/wood_1.mp3":"45305153","audio/steps/wood_2.mp3":"c384dc8c","audio/steps/wood_3.mp3":"52e69344","audio/steps/wood_4.mp3":"69632057","audio/music/forgotten_garden.mp3":"da0acb09","audio/ui/go_1.mp3":"bf81d6d4","audio/ui/start_draw_1.mp3":"8b89a363","audio/ui/start_draw_2.mp3":"7da4c5a1","audio/ui/start_draw_3.mp3":"cbebfcd1","audio/ui/start_tap.mp3":"74ab7463","audio/ui/tap_1.mp3":"ce6bbcfc","audio/ui/tap_2.mp3":"6bf441ff","audio/ui/tick_1.mp3":"e20e61a0","audio/ui/tick_2.mp3":"a4505000","audio/voice/korajin_intro_01.mp3":"0a618686","audio/voice/korajin_intro_02.mp3":"2249eeb1","audio/voice/korajin_intro_03.mp3":"8f12ef6f","models/props/prop_hydrant.glb":"f157fee9","models/props/prop_hydrant_collision.glb":"0bbfc4d2","models/creatures/3_headed_dog.glb":"9263480a","models/creatures/blue_dragon.glb":"d72f4da7","models/creatures/mammoth.glb":"0bd2b2d8","models/creatures/mech_lightning_dragon.glb":"5935bb67","models/creatures/osari_spider.glb":"6c38e031","models/creatures/stone_guardian.glb":"ad47ade1","models/creatures/stone_olmec.glb":"da3e8cbd"};
 /* ASSETS:END */
@@ -12710,31 +12710,216 @@ function snowSkyHold() { const S = SNOWSKY, Z = SNOWZ; if (!S.on || !S.tex || SN
   if (S.env && scene.environment !== S.env) { scene.environment = S.env; scene.environmentIntensity = S.envK; } }
 const SNOWNIGHT = { on: (() => { try { const m = /[?&]time=(day|night)/i.exec(location.search); if (m) return m[1].toLowerCase() === 'night'; return localStorage.getItem('mel.snowtime') === 'NIGHT'; } catch (e) { return false; } })(),
   bg: 0x0b1428, fog: 0x101a30, exposure: .7, sun: .35, sunCol: 0x9fb8ff, hemi: .35, hemiCol: 0x6a80c0, hemiGround: 0x1a2440, peaks: .3, stars: 1400, g: null, U: null };
-function snowNightBuild(g) { const N = SNOWNIGHT, Z = SNOWZ; if (!N.on) return;
-  scene.background = new THREE.Color(N.bg); if (scene.fog) { scene.fog.color.setHex(N.fog); scene.fog.near = 30; scene.fog.far = 300; }
-  sun.intensity = (Z.day0 ? Z.day0.sun : sun.intensity) * N.sun; sun.color.setHex(N.sunCol); hemi.intensity = (Z.day0 ? Z.day0.hemi : hemi.intensity) * N.hemi; hemi.color.setHex(N.hemiCol); hemi.groundColor.setHex(N.hemiGround);
-  const G = new THREE.Group(); G.renderOrder = -1;
-  { const n = N.stars, P = new Float32Array(n * 3), S = new Float32Array(n), A = new Float32Array(n); for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, e = Math.asin(Math.pow(Math.random(), .7)), r = 620;
-      P[i * 3] = Math.cos(a) * Math.cos(e) * r; P[i * 3 + 1] = Math.sin(e) * r + 20; P[i * 3 + 2] = Math.sin(a) * Math.cos(e) * r; S[i] = .9 + Math.random() * 2.2; A[i] = .4 + Math.random() * .6; }
-    const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(P, 3)); sg.setAttribute('aSize', new THREE.BufferAttribute(S, 1)); sg.setAttribute('aA', new THREE.BufferAttribute(A, 1));
-    const sm = new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 } }, transparent: true, depthWrite: false, fog: false,
-      vertexShader: 'attribute float aSize; attribute float aA; uniform float uT; varying float vA; void main() { vA = aA * (.65 + .35 * sin(uT * 2.0 + position.x * .05)); gl_PointSize = aSize; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-      fragmentShader: 'varying float vA; void main() { vec2 d = gl_PointCoord - .5; float r = dot(d, d) * 4.0; if (r > 1.0) discard; gl_FragColor = vec4(vec3(.85, .9, 1.0), vA * (1.0 - r)); }' });
-    const st = new THREE.Points(sg, sm); st.frustumCulled = false; G.add(st); N.starM = sm; }
-  N.U = { uT: { value: 0 } };
-  const am = new THREE.ShaderMaterial({ uniforms: N.U, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false,
-    vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-    fragmentShader: `uniform float uT; varying vec2 vUv; float h(float x) { return fract(sin(x * 127.1) * 43758.5); } float n1(float x) { float i = floor(x), f = fract(x); return mix(h(i), h(i + 1.0), f * f * (3.0 - 2.0 * f)); }
-      void main() { float x = vUv.x * 40.0 + uT * .6, rays = n1(x) * .6 + n1(x * 2.7 - uT * .9) * .4; rays = pow(rays, 2.2);
-        float hem = smoothstep(0.0, .12, vUv.y) * (1.0 - smoothstep(.55, 1.0, vUv.y)), breathe = .6 + .4 * sin(uT * .35 + vUv.x * 6.0);
-        vec3 c = mix(vec3(.15, 1.0, .55), vec3(.2, .85, .95), smoothstep(.1, .45, vUv.y)); c = mix(c, vec3(.6, .3, 1.0), smoothstep(.45, .9, vUv.y));
-        gl_FragColor = vec4(c, rays * hem * breathe * .75); }` });
-  for (let k = 0; k < 4; k++) { const W = 420 + k * 60, H = 110 + k * 15, geo = new THREE.PlaneGeometry(W, H, 80, 1); const P = geo.attributes.position;
-    for (let i = 0; i < P.count; i++) { const x = P.getX(i), u = x / W; P.setZ(i, Math.sin(u * 5.5 + k * 1.7) * 45 + Math.cos(u * 2.3 + k) * 30 - u * u * 120); P.setY(i, P.getY(i) + Math.sin(u * 3 + k) * 12); }
-    const m = new THREE.Mesh(geo, am); m.position.set((k - 1.5) * 70, 150 + k * 22, -420 - k * 40); m.rotation.x = .25; m.frustumCulled = false; m.renderOrder = -1; G.add(m); }
-  g.add(G); N.g = G; }
-function snowNightStep(dt) { const N = SNOWNIGHT; if (!N.g) return; if (!(scene.background && scene.background.isColor)) scene.background = new THREE.Color(scene.fog ? scene.fog.color : N.bg);     /* measured: the forge's sky image loads late (skyBake) and replaced the night sky with day -- held here */
-  if (scene.environment) scene.environment = null; if (N.exp0 == null) { N.exp0 = renderer.toneMappingExposure; renderer.toneMappingExposure = N.exp0 * N.exposure; }     /* measured: the sky image also LIT the scene (image-based light) -- at night it is off, and the exposure lowered */ N.U.uT.value += dt; if (N.starM) N.starM.uniforms.uT.value += dt; N.g.position.set(camera.position.x, 0, camera.position.z); }
+// NIGHT_SKY:START -- m2298 (Colin, Nov 3 2026: "a sky of stars -- a nice galaxy, maybe a giant alien moon -- in the SNOW scene, with a nighttime AURORA
+// BOREALIS, and a switch so I can see it; and TORCHES lighting up parts of it. A seed to start making nighttime"). The Snowfield's NIGHT (SNOWNIGHT,
+// TOOLS > SNOW > TIME) is now this, all procedural and in-engine (no image), data in ONE table:
+//   the SKY     one dome (a sphere round the camera, one draw): a deep gradient matched to the fog at the horizon, two layers of STARS (hashed
+//               cells on the sphere, AA by fwidth, a few big bright ones, slow twinkle), the MILKY WAY (a band on a great circle: fbm glow, a
+//               warm core, blue-violet edges, dark DUST LANES, extra stars in it), and the GIANT MOON -- an analytic sphere in the shader: two scales
+//               of craters, violet maria, a lit gibbous face with a warm terminator, a faint dark side, an atmosphere rim, a tilted RING that
+//               passes in front of and behind it and takes its shadow, and a small rust-amber second moon. `pano` is the hook: name an
+//               equirect image and the dome paints it under the moon.
+//   the AURORA  three long folded curtains merged into ONE mesh (one draw): rays drifting along them, a magenta hem, an EMERALD body (kept
+//               off the Jinra mint 0x7affd8), violet and magenta tops, folds that wave slowly, pulses running along; plus a sparkle of
+//               particles along the hems (one Points). It tints the snow: the hemi light leans to its colour as it breathes.
+//   the MOON    the scene's directional light comes FROM the drawn moon (raised to 30 deg so shadows stay sane), cold blue; the snow
+//   LIGHT       glints where it mirrors the moon to the eye (in the snow's own shader, no draw).
+//   TORCHES     `torches` -- stable ids, one row each -- through the village, its paths, the gate, the stairs, the bridge and the spring: posts
+//               merged into one mesh, flames as ONE Points draw (procedural flame + halo per sprite), sparks rising and smoke from the shared
+//               pools near him, a WARM POOL ON THE SNOW projected inside the snow's shader (it follows the drifts; no decal draw), and `lights`
+//               real PointLights (3) handed to the torches nearest him each frame. Everything flickers.
+// Draws added: dome 1 + aurora 1 + sparkle 1 + posts 1 + flames 1 = 5 (the old stars + four curtains were 5). `?time=night` or TOOLS > SNOW > TIME.
+// SC_NIGHTSKY:START
+const NIGHTSKY = {
+  sky: { r: 700, zen: 0x02040c, hor: 0x101a30, pano: '' },     // pano: '' or an equirect image path (his painted panorama swaps in here)
+  stars: { dens: .55, bright: .05, twinkle: .6 },
+  band: { n: [.38, .55, .74], w: .19, core: .07 },     // the Milky Way's great circle (its normal) and half-widths
+  moon: { dir: [.62, .36, -.72], r: .2, light: [.85, .38, .3], ring: [.25, 1, .3], ring0: 1.45, ring1: 2.5, col: 0xf2dccb, mare: 0x5a4688, glow: 0x9fa8ff,
+    m2: { dir: [-.46, .43, -.77], r: .045, col: 0xd98a5a } },
+  aurora: { y: 175, dist: 470, h: [150, 125, 110], curls: [[-420, 0, 380, -140], [-300, -110, 460, -60], [-460, 60, 260, 30]], seeds: [1.3, 4.7, 8.1], amp: 26,
+    hem: 0xff3a9a, body: 0x1ef06a, top: 0x8a46ff, gain: 2.6, tint: .25, sparks: 260 },
+  lightK: { moon: .3, col: 0x9cb6ff, hemi: .2, hemiCol: 0x4a62b0, exposure: .62 },
+  torch: { h: 2.3, flame: .62, col: 0xff9a40, pool: 4.5, poolK: 1.4, lights: 3, lightI: 9, lightD: 13, sparkR: 40 },
+  torches: [
+    { id: 'torch_bridge_01', at: [4.5, 0, 11.7] }, { id: 'torch_bridge_02', at: [2.7, 0, 9.5] }, { id: 'torch_bridge_03', at: [-1.5, 0, 16.9] }, { id: 'torch_bridge_04', at: [-3.3, 0, 14.7] },
+    { id: 'torch_gate_01', at: [-3.2, 0, 19.8] }, { id: 'torch_gate_02', at: [-7.2, 0, 16.4] },
+    { id: 'torch_path_01', at: [-7.7, 0, 23.4] },
+    { id: 'torch_square_01', at: [-11.8, 0, 30.5] }, { id: 'torch_square_02', at: [-16.4, 0, 39.3] },
+    { id: 'torch_stair1_01', at: [-24.0, 1.5, 45.0] }, { id: 'torch_stair1_02', at: [-19.0, 1.5, 45.0] },
+    { id: 'torch_stair2_01', at: [-24.0, 3.3, 59.0] },
+    { id: 'torch_long_01', at: [-25.3, 3.3, 61.6] }, { id: 'torch_long_02', at: [-20.7, 3.3, 61.6] },
+    { id: 'torch_crag_01', at: [-12.0, 7.5, 63.2] }, { id: 'torch_crag_02', at: [-6.5, 7.5, 66.5] },
+    { id: 'torch_bath_01', at: [2.6, 0, 45.4] }, { id: 'torch_bath_02', at: [7.4, 0, 45.4] },
+    { id: 'torch_spring_01', at: [2.0, 0, 64.8] }, { id: 'torch_spring_02', at: [10.6, 0, 68.6] } ] };
+// SC_NIGHTSKY:END
+const NIGHT_GLSL = `float nh13(vec3 p) { p = fract(p * vec3(.1031, .1030, .0973)); p += dot(p, p.yxz + 33.33); return fract((p.x + p.y) * p.z); }
+vec3 nh33(vec3 p) { p = fract(p * vec3(.1031, .1030, .0973)); p += dot(p, p.yxz + 33.33); return fract((p.xxy + p.yxx) * p.zyx); }
+float nvn(vec3 p) { vec3 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(mix(nh13(i), nh13(i + vec3(1, 0, 0)), f.x), mix(nh13(i + vec3(0, 1, 0)), nh13(i + vec3(1, 1, 0)), f.x), f.y),
+             mix(mix(nh13(i + vec3(0, 0, 1)), nh13(i + vec3(1, 0, 1)), f.x), mix(nh13(i + vec3(0, 1, 1)), nh13(i + vec3(1, 1, 1)), f.x), f.y), f.z); }
+float nfbm(vec3 p) { float a = .5, s = 0.0; for (int i = 0; i < 4; i++) { s += a * nvn(p); p = p * 2.07 + vec3(1.7, 9.2, 3.1); a *= .5; } return s; }`;
+function nightSkyBuild(G) { const NS = NIGHTSKY, M = NS.moon, V3 = (a) => new THREE.Vector3(a[0], a[1], a[2]).normalize();
+  const md = V3(M.dir), up = new THREE.Vector3(0, 1, 0), side = new THREE.Vector3().crossVectors(md, up).normalize(), mu = new THREE.Vector3().crossVectors(side, md).normalize();
+  const ml = side.clone().multiplyScalar(M.light[0]).addScaledVector(mu, M.light[1]).addScaledVector(md, -M.light[2]).normalize();     // gibbous: lit from the side, a little toward us
+  const lin = h => new THREE.Color(h);
+  const U = NS.U = { uT: { value: 0 }, uZen: { value: lin(NS.sky.zen) }, uHor: { value: lin(NS.sky.hor) }, uMoon: { value: md }, uMoonR: { value: Math.sin(M.r) }, uMoonL: { value: ml },
+    uRingN: { value: V3(M.ring) }, uRing: { value: new THREE.Vector2(M.ring0, M.ring1) }, uMoonC: { value: lin(M.col) }, uMare: { value: lin(M.mare) }, uGlow: { value: lin(M.glow) },
+    uM2: { value: V3(M.m2.dir) }, uM2R: { value: Math.sin(M.m2.r) }, uM2C: { value: lin(M.m2.col) }, uBand: { value: V3(NS.band.n) }, uBandW: { value: new THREE.Vector2(NS.band.w, NS.band.core) },
+    uStar: { value: new THREE.Vector3(NS.stars.dens, NS.stars.bright, NS.stars.twinkle) }, uPano: { value: null }, uPanoK: { value: 0 } };
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(NS.sky.r, 48, 24), new THREE.ShaderMaterial({ uniforms: U, side: THREE.BackSide, depthWrite: false, fog: false,
+    vertexShader: 'varying vec3 vD; void main() { vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `uniform float uT; uniform vec3 uZen, uHor, uMoon, uMoonL, uRingN, uMoonC, uMare, uGlow, uM2, uM2C, uBand, uStar; uniform float uMoonR, uM2R, uPanoK; uniform vec2 uRing, uBandW; uniform sampler2D uPano; varying vec3 vD;
+      ${NIGHT_GLSL}
+      float starL(vec3 d, float sc, float dens, float sz, float seed) { vec3 p = d * sc + seed, i = floor(p), f = fract(p); vec3 r = nh33(i); if (r.z > dens) return 0.0;
+        vec3 c = .3 + .4 * nh33(i + 17.3); float s = max(sz, length(fwidth(p)) * .55), dd = length(f - c), tw = 1.0 - uStar.z * .5 + uStar.z * .5 * sin(uT * (1.0 + r.y * 2.0) + r.x * 40.0);
+        return exp(-dd * dd / (s * s)) * (.25 + .75 * r.x * r.x) * tw * min(1.0, sz / s * 1.6); }
+      void main() { vec3 d = normalize(vD); float y = d.y;
+        vec3 col = mix(uHor, uZen, smoothstep(-.02, .55, y));
+        if (uPanoK > 0.0) { vec2 pu = vec2(atan(d.z, d.x) / 6.2832 + .5, asin(clamp(d.y, -1.0, 1.0)) / 3.1416 + .5); col = mix(col, texture2D(uPano, pu).rgb, uPanoK); }
+        else {
+          float b = dot(d, uBand), n = nfbm(d * 3.2), bw = uBandW.x * (.65 + .7 * n), band = exp(-b * b / (bw * bw)), core = exp(-b * b / (uBandW.y * uBandW.y)) * smoothstep(.3, .7, n);
+          float dust = smoothstep(.42, .66, nfbm(d * 7.0 + 3.1)) * exp(-b * b / (uBandW.y * uBandW.y * 2.2));
+          vec3 mw = mix(vec3(.10, .12, .32), vec3(.34, .22, .40), smoothstep(.3, .8, n)) * band * .55 + vec3(.95, .74, .55) * core * .5;
+          mw *= 1.0 - dust * .85; col += mw * smoothstep(-.05, .2, y);
+          float st = starL(d, 210.0, uStar.x * .5, .09, 0.0) + starL(d, 420.0, uStar.x * (.35 + band * .6), .07, 11.0) * (.5 + band) + starL(d, 90.0, uStar.y, .07, 23.0) * 2.4;
+          vec3 sc = mix(vec3(.75, .82, 1.0), vec3(1.0, .86, .7), nh13(floor(d * 210.0)));
+          col += sc * st * smoothstep(-.02, .12, y) * (1.0 - dust * .7); }
+        // the GIANT MOON: a sphere of radius R at unit distance along uMoon
+        float R = uMoonR, tc = dot(d, uMoon); vec3 pc = d * tc - uMoon; float pr = length(pc), tHit = 1e9; vec3 moonC = vec3(0.0); float moonA = 0.0;
+        if (tc > 0.0 && pr < R) { tHit = tc - sqrt(R * R - pr * pr); vec3 nn = normalize(d * tHit - uMoon);
+          float mar = smoothstep(.42, .6, nfbm(nn * 2.4 + 5.0)); vec3 alb = mix(uMoonC, uMare, mar * .9);
+          float cr = 0.0; for (int k = 0; k < 2; k++) { float sc2 = k == 0 ? 4.0 : 11.0; vec3 p = nn * sc2, i = floor(p), f = fract(p); vec3 h = nh33(i + float(k) * 7.0);
+            vec3 c = .3 + .4 * nh33(i + 3.7); float rr = .12 + .16 * h.x, q = length(f - c) / rr; cr += (h.y > .45 ? (smoothstep(1.0, .7, q) * -.35 + smoothstep(.75, 1.0, q) * smoothstep(1.25, 1.0, q) * .3) : 0.0); }
+          alb *= .85 + .3 * nvn(nn * 22.0); alb *= 1.0 + cr;
+          float ndl = dot(nn, uMoonL), lit = smoothstep(-.06, .25, ndl);
+          vec3 term = mix(vec3(1.0, .62, .45), vec3(1.0), smoothstep(.0, .35, ndl));
+          moonC = alb * lit * term * .95 + alb * vec3(.05, .06, .12) * (1.0 - lit) + uGlow * pow(1.0 - max(0.0, dot(nn, -d)), 3.0) * .35; moonA = 1.0; }
+        // its ring: the plane through the moon's centre, normal uRingN; under the moon or over it by depth, and in its shadow where the sphere blocks the light
+        float dn = dot(d, uRingN); vec3 ringC = vec3(0.0); float ringA = 0.0, tR = 1e9;
+        if (abs(dn) > 1e-4) { tR = dot(uMoon, uRingN) / dn; vec3 P = d * tR - uMoon; float q = length(P) / R;
+          if (tR > 0.0 && q > uRing.x && q < uRing.y) { float u2 = (q - uRing.x) / (uRing.y - uRing.x);
+            float bands = .55 + .45 * sin(u2 * 46.0) * sin(u2 * 13.0 + 1.0); bands *= smoothstep(0.0, .06, u2) * smoothstep(1.0, .85, u2) * (u2 > .52 && u2 < .58 ? .15 : 1.0);
+            float s = dot(P, uMoonL); vec3 perp = P - uMoonL * s; float shade = (s < 0.0 && length(perp) < R) ? .12 : 1.0;
+            ringC = mix(vec3(.75, .68, .82), vec3(.95, .85, .7), u2) * shade * (.55 + .2 * abs(dot(uRingN, uMoonL))); ringA = bands * .8; } }
+        vec3 glowC = uGlow * (exp(-max(0.0, acos(clamp(tc, -1.0, 1.0)) - asin(R)) * 9.0) * .22 + exp(-acos(clamp(tc, -1.0, 1.0)) * 2.2) * .06);
+        col += glowC * smoothstep(-.1, .1, y);
+        if (tR < tHit) { col = mix(col, moonC, moonA); col = mix(col, ringC, ringA); } else { col = mix(col, ringC, ringA); col = mix(col, moonC, moonA); }
+        // the small second moon, rust-amber, lit from the same side
+        float t2 = dot(d, uM2); vec3 p2 = d * t2 - uM2; float r2 = length(p2);
+        if (t2 > 0.0 && r2 < uM2R) { vec3 n2 = normalize(d * (t2 - sqrt(uM2R * uM2R - r2 * r2)) - uM2); float l2 = smoothstep(-.05, .3, dot(n2, uMoonL));
+          col = uM2C * (.75 + .5 * nvn(n2 * 7.0)) * (l2 + .04); }
+        col += uM2C * exp(-max(0.0, acos(clamp(t2, -1.0, 1.0)) - asin(uM2R)) * 90.0) * .08;
+        col = mix(col, uHor, smoothstep(.04, -.08, y) * (1.0 - moonA));
+        gl_FragColor = vec4(col, 1.0);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }` }));
+  dome.frustumCulled = false; dome.renderOrder = -3; G.add(dome); NS.dome = dome;
+  if (NS.sky.pano) new THREE.TextureLoader().load(A(NS.sky.pano), t => { t.colorSpace = THREE.SRGBColorSpace; U.uPano.value = t; U.uPanoK.value = 1; }, undefined, () => note('NO NIGHT PANO'));
+  // THE AURORA: three folded curtains, one geometry. Each is a polyline in xz (curls: x0 z0 x1 z1 offsets, then bent by its seed), 160 columns x 1 row.
+  { const AU = NS.aurora, P = [], UV = [], SD = [], IX = []; let base = 0; const spark = [];
+    AU.curls.forEach((c, k) => { const n = 160, H = AU.h[k], s = AU.seeds[k];
+      for (let i = 0; i <= n; i++) { const u = i / n, x = c[0] + (c[2] - c[0]) * u + Math.sin(u * 5.1 + s) * 60, z = -AU.dist + c[1] + (c[3] - c[1]) * u + Math.sin(u * 7.3 + s * 2) * 55 + Math.cos(u * 3.1 + s) * 40, y0 = AU.y + k * 28 + Math.sin(u * 4 + s) * 18;
+        P.push(x, y0, z, x, y0 + H, z); UV.push(u, 0, u, 1); SD.push(s, s);
+        if (i < n) { const a = base + i * 2; IX.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } }
+      base += (n + 1) * 2; });
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(UV, 2)); geo.setAttribute('aSeed', new THREE.Float32BufferAttribute(SD, 1)); geo.setIndex(IX);
+    NS.AU = { uT: U.uT, uHem: { value: lin(AU.hem) }, uBody: { value: lin(AU.body) }, uTop: { value: lin(AU.top) }, uAmp: { value: AU.amp }, uGain: { value: AU.gain } };
+    const am = new THREE.ShaderMaterial({ uniforms: NS.AU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false,
+      vertexShader: `attribute float aSeed; uniform float uT, uAmp; varying vec2 vUv; varying float vS, vFold; void main() { vUv = uv; vS = aSeed; vec3 p = position;
+        float ph = uv.x * 18.0 + aSeed * 3.0 + uT * .16, w = sin(ph) * .6 + sin(uv.x * 41.0 - uT * .23 + aSeed) * .4; vFold = abs(cos(ph));
+        p.z += w * uAmp * (.35 + uv.y * .9); p.x += sin(uv.x * 9.0 + uT * .11 + aSeed) * uAmp * .5 * uv.y; p.y += sin(uv.x * 6.0 + uT * .08 + aSeed) * 10.0;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }`,
+      fragmentShader: `uniform float uT, uGain; uniform vec3 uHem, uBody, uTop; varying vec2 vUv; varying float vS, vFold;
+        float ah(float x) { return fract(sin(x * 127.1) * 43758.5); } float an(float x) { float i = floor(x), f = fract(x); return mix(ah(i), ah(i + 1.0), f * f * (3.0 - 2.0 * f)); }
+        void main() { float x = vUv.x * 260.0 + vS * 50.0, v = vUv.y;
+          float rays = an(x * .9 + uT * .35) * .55 + an(x * 2.7 - uT * .6) * .3 + an(x * 7.3 + uT * .9) * .15; rays = pow(rays, 1.7);
+          float hem = smoothstep(0.0, .05, v) * pow(1.0 - v, 1.4), pulse = .55 + .45 * sin(vUv.x * 21.0 - uT * .45 + vS) * sin(vUv.x * 7.0 + uT * .17), ends = smoothstep(0.0, .1, vUv.x) * smoothstep(1.0, .88, vUv.x);
+          vec3 c = mix(uHem, uBody, smoothstep(.0, .09, v)); c = mix(c, uTop, smoothstep(.32, .78, v)); c = mix(c, uHem * .8 + uTop * .4, smoothstep(.8, 1.0, v));
+          float a = rays * hem * pulse * ends * (.55 + .7 * pow(vFold, 6.0)) * uGain;
+          gl_FragColor = vec4(c * a, a);
+          #include <colorspace_fragment>
+        }` });
+    const au = new THREE.Mesh(geo, am); au.frustumCulled = false; au.renderOrder = -2; G.add(au); NS.auMesh = au;
+    // the SPARKLE: points along the hems, twinkling, in the curtains' colours
+    const ns = AU.sparks, SP = new Float32Array(ns * 3), SA = new Float32Array(ns), SC = new Float32Array(ns * 3), c0 = lin(AU.body), c1 = lin(AU.top), c2 = lin(AU.hem), tc = new THREE.Color();
+    for (let i = 0; i < ns; i++) { const k = i % 3, c = AU.curls[k], s = AU.seeds[k], u = Math.random(), v = Math.pow(Math.random(), 1.6) * .7, H = AU.h[k];
+      const x = c[0] + (c[2] - c[0]) * u + Math.sin(u * 5.1 + s) * 60, z = -AU.dist + c[1] + (c[3] - c[1]) * u + Math.sin(u * 7.3 + s * 2) * 55 + Math.cos(u * 3.1 + s) * 40, y0 = AU.y + k * 28 + Math.sin(u * 4 + s) * 18;
+      SP[i * 3] = x; SP[i * 3 + 1] = y0 + v * H; SP[i * 3 + 2] = z; SA[i] = Math.random() * 100; tc.copy(v < .05 ? c2 : v < .4 ? c0 : c1); SC[i * 3] = tc.r; SC[i * 3 + 1] = tc.g; SC[i * 3 + 2] = tc.b; }
+    const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(SP, 3)); sg.setAttribute('aPh', new THREE.BufferAttribute(SA, 1)); sg.setAttribute('color', new THREE.BufferAttribute(SC, 3));
+    const sm = new THREE.ShaderMaterial({ uniforms: { uT: U.uT }, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false, vertexColors: true,
+      vertexShader: 'attribute float aPh; uniform float uT; varying float vA; varying vec3 vC; void main() { vC = color; vA = pow(max(0.0, sin(uT * (.6 + fract(aPh) * 1.4) + aPh)), 6.0); vec3 p = position; p.y += sin(uT * .3 + aPh) * 4.0; gl_PointSize = 2.0 + 3.0 * vA; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }',
+      fragmentShader: 'varying float vA; varying vec3 vC; void main() { vec2 d = gl_PointCoord - .5; float r = dot(d, d) * 4.0; if (r > 1.0) discard; gl_FragColor = vec4(mix(vC, vec3(1.0), .5) * vA * (1.0 - r), 1.0); }' });
+    const spts = new THREE.Points(sg, sm); spts.frustumCulled = false; spts.renderOrder = -2; G.add(spts); }
+  return { md, ml }; }
+function nightTorchBuild(g) { const NS = NIGHTSKY, T = NS.torch, L = NS.torches, rows = [];
+  const cw = new THREE.Color(0x3a2618), cb = new THREE.Color(0x9a6a34), cs = new THREE.Color(0x5a5866), parts = [];
+  const put = (geo, col, x, y, z, ry) => { geo = geo.toNonIndexed(); if (ry) geo.rotateY(ry); geo.translate(x, y, z); const n = geo.attributes.position.count, C = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) { C[i * 3] = col.r; C[i * 3 + 1] = col.g; C[i * 3 + 2] = col.b; } geo.setAttribute('color', new THREE.BufferAttribute(C, 3)); geo.deleteAttribute('uv'); parts.push(geo); };
+  for (const t of L) { const [x, y, z] = t.at, h = T.h, s = (t.id.length * 7 + x * 13 + z * 5) % 6.283;
+    put(new THREE.CylinderGeometry(.34, .44, .5, 7), cs, x, y + .1, z, s);                 // a stone footing, half sunk in the pack
+    put(new THREE.CylinderGeometry(.055, .085, h, 6), cw, x, y + h / 2, z, s);             // the pole, tapered
+    put(new THREE.TorusGeometry(.085, .025, 5, 8).rotateX(Math.PI / 2), cb, x, y + h * .55, z, 0);     // two bronze bands
+    put(new THREE.TorusGeometry(.075, .022, 5, 8).rotateX(Math.PI / 2), cb, x, y + h - .12, z, 0);
+    put(new THREE.CylinderGeometry(.24, .08, .26, 8, 1, true), cb, x, y + h + .1, z, s);     // the bowl
+    put(new THREE.TorusGeometry(.24, .03, 5, 10).rotateX(Math.PI / 2), cb, x, y + h + .23, z, 0);
+    for (let k = 0; k < 3; k++) { const a = s + k * 2.094; put(new THREE.BoxGeometry(.03, .34, .03), cb, x + Math.sin(a) * .2, y + h + .4, z + Math.cos(a) * .2, 0); }     // the cage's three prongs
+    rows.push({ id: t.id, x, y: y + h + .25, z, ph: Math.random() * 100, k: 1 }); }
+  const geo = _mergeGeos(parts, false); parts.forEach(p => p.dispose());
+  const posts = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .7, metalness: .1, emissive: 0x4a2410, emissiveIntensity: .8 })); posts.castShadow = true; posts.receiveShadow = true; g.add(posts);
+  // the FLAMES: one Points, each sprite a flame and its halo (world-sized), flickering
+  const n = rows.length, P = new Float32Array(n * 3), S = new Float32Array(n); rows.forEach((r, i) => { P[i * 3] = r.x; P[i * 3 + 1] = r.y + T.flame * .3; P[i * 3 + 2] = r.z; S[i] = r.ph; });
+  const fg = new THREE.BufferGeometry(); fg.setAttribute('position', new THREE.BufferAttribute(P, 3)); fg.setAttribute('aS', new THREE.BufferAttribute(S, 1));
+  const FU = { uT: NS.U.uT, uPx: { value: 600 }, uSz: { value: T.flame * 2.2 }, uCol: { value: new THREE.Color(T.col) } };
+  const fm = new THREE.ShaderMaterial({ uniforms: FU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+    vertexShader: 'attribute float aS; uniform float uPx, uSz; varying float vS; void main() { vS = aS; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = uSz * uPx / max(.1, -mv.z); gl_Position = projectionMatrix * mv; }',
+    fragmentShader: `uniform float uT; uniform vec3 uCol; varying float vS;
+      float fh(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); } float fn(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fh(i), fh(i + vec2(1, 0)), f.x), mix(fh(i + vec2(0, 1)), fh(i + vec2(1, 1)), f.x), f.y); }
+      void main() { vec2 q = vec2(gl_PointCoord.x - .5, (1.0 - gl_PointCoord.y) - .3); float t = uT * 3.2 + vS;
+        float h = q.y / .42, wob = (fn(vec2(q.y * 7.0 - t * 1.6, vS)) - .5) * .16 * max(0.0, h) + sin(t * 1.3 + q.y * 9.0) * .02 * max(0.0, h); float x = q.x - wob;
+        float w = .13 * pow(max(0.0, 1.0 - h), .7) * smoothstep(-.12, .03, q.y) * (.85 + .3 * fn(vec2(t * .7, vS)));
+        float lick = fn(vec2(x * 14.0, q.y * 9.0 - t * 2.2)); float body = smoothstep(w, w * .25, abs(x)) * step(-.12, q.y) * (h < 1.0 ? 1.0 : 0.0) * (.65 + .55 * lick);
+        float core = smoothstep(w * .55, 0.0, abs(x)) * smoothstep(.7, .1, h) * step(-.08, q.y);
+        float fl = .85 + .15 * sin(t * 4.1) * sin(t * 2.3 + 1.0), halo = exp(-dot(q - vec2(0.0, .05), q - vec2(0.0, .05)) * 22.0) * .45 * fl;
+        vec3 c = mix(vec3(1.0, .25, .05), uCol, smoothstep(.0, .5, body)) * body * 1.4 + vec3(1.0, .92, .7) * core * 1.2 + uCol * halo;
+        gl_FragColor = vec4(c, 1.0); }` });
+  const fl = new THREE.Points(fg, fm); fl.frustumCulled = false; g.add(fl);
+  const lights = []; for (let i = 0; i < T.lights; i++) { const l = new THREE.PointLight(T.col, 0, T.lightD, 1.6); l.position.set(rows[i] ? rows[i].x : 0, -50, rows[i] ? rows[i].z : 0); g.add(l); lights.push(l); }
+  NS.T = { rows, posts, fl, FU, lights, sT: 0, U: null };
+  return rows; }
+// the snow's own shader learns the night: warm pools under the torches (they follow the drifts) and glints where the snow mirrors the moon
+function nightSnowPatch(rows, md) { const Z = SNOWZ, NS = NIGHTSKY, T = NS.torch; if (!Z.mesh) return; const m = Z.mesh.material, ob = m.onBeforeCompile, MAX = 24, arr = [];
+  for (let i = 0; i < MAX; i++) { const r = rows[i]; arr.push(r ? new THREE.Vector4(r.x, r.y, r.z, 1) : new THREE.Vector4(0, -999, 0, 0)); }
+  const NU = { uTorch: { value: arr }, uTorchC: { value: new THREE.Color(T.col) }, uPool: { value: new THREE.Vector2(T.pool, T.poolK) }, uMoonD: { value: md.clone() } }; NS.T.U = NU;
+  m.customProgramCacheKey = () => 'snowpack-night'; m.onBeforeCompile = (sh, r) => { ob(sh, r); Object.assign(sh.uniforms, NU);
+    sh.fragmentShader = 'uniform vec4 uTorch[' + MAX + ']; uniform vec3 uTorchC; uniform vec2 uPool; uniform vec3 uMoonD;\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      { vec3 tw = vec3(0.0); for (int i = 0; i < ${MAX}; i++) { vec4 t = uTorch[i]; vec3 dv = vSW - t.xyz; float d2 = dot(dv.xz, dv.xz) + dv.y * dv.y * .6; tw += uTorchC * t.w / (1.0 + d2 / (uPool.x * uPool.x * .1)) * smoothstep(uPool.x * uPool.x, uPool.x * uPool.x * .15, d2); }
+        totalEmissiveRadiance += min(tw, vec3(1.2)) * uPool.y * diffuseColor.rgb * vec3(1.0, .72, .45);
+        vec3 mv = normalize((viewMatrix * vec4(uMoonD, 0.0)).xyz), hv = normalize(mv + normalize(vViewPosition)); float sp = pow(max(0.0, dot(normal, hv)), 24.0);
+        float gh = snH(floor(vSW.xz * 26.0) + 7.3); totalEmissiveRadiance += vec3(.75, .85, 1.0) * step(.985, gh) * sp * 2.2 * smoothstep(55.0, 6.0, length(cameraPosition - vSW)); }`); };
+  m.needsUpdate = true; }
+function snowNightBuild(g) { const N = SNOWNIGHT, Z = SNOWZ, NS = NIGHTSKY, LK = NS.lightK; if (!N.on) return;
+  scene.background = new THREE.Color(N.bg); if (scene.fog) { scene.fog.color.setHex(NS.sky.hor); scene.fog.near = 30; scene.fog.far = 300; }
+  const G = new THREE.Group(); G.renderOrder = -1; const { md } = nightSkyBuild(G); g.add(G); N.g = G;
+  // MOONLIGHT: the light comes from the drawn moon (raised to 30 deg so its shadows stay short enough to read), cold blue
+  { const L0 = Math.hypot(_sunOff.x, _sunOff.y, _sunOff.z) || 20, ld = new THREE.Vector3(md.x, Math.max(md.y, .5), md.z).normalize(); _sunOff.copy(ld).multiplyScalar(L0); sun.position.copy(_sunOff); }
+  sun.intensity = (Z.day0 ? Z.day0.sun : sun.intensity) * LK.moon; sun.color.setHex(LK.col); hemi.intensity = (Z.day0 ? Z.day0.hemi : hemi.intensity) * LK.hemi; hemi.color.setHex(LK.hemiCol); hemi.groundColor.setHex(N.hemiGround);
+  NS.hemi0 = hemi.color.clone(); NS.auC = new THREE.Color(NS.aurora.body).lerp(new THREE.Color(NS.aurora.top), .35);
+  const rows = nightTorchBuild(g); nightSnowPatch(rows, md); }
+function snowNightStep(dt) { const N = SNOWNIGHT, NS = NIGHTSKY; if (!N.g) return; if (!(scene.background && scene.background.isColor)) scene.background = new THREE.Color(scene.fog ? scene.fog.color : N.bg);     /* measured: the forge's sky image loads late (skyBake) and replaced the night sky with day -- held here */
+  if (scene.environment) scene.environment = null; if (N.exp0 == null) { N.exp0 = renderer.toneMappingExposure; renderer.toneMappingExposure = N.exp0 * NS.lightK.exposure; }     /* measured: the sky image also LIT the scene (image-based light) -- at night it is off, and the exposure lowered */
+  const t = (NS.U.uT.value += dt); N.g.position.copy(camera.position);
+  // the aurora tints the snow: the sky light leans to its colour as it breathes
+  hemi.color.copy(NS.hemi0).lerp(NS.auC, NS.aurora.tint * (.55 + .45 * Math.sin(t * .21) * Math.sin(t * .13 + 1)));
+  const T = NS.T; if (!T) return; const p = player.pos, TK = NS.torch;
+  T.FU.uPx.value = renderer.domElement.height / (2 * Math.tan(camera.fov * Math.PI / 360));
+  for (let i = 0; i < T.rows.length; i++) { const r = T.rows[i]; r.k = .82 + .1 * Math.sin(t * 9.1 + r.ph) + .08 * Math.sin(t * 23.7 + r.ph * 2.3); r.d2 = (r.x - p.x) ** 2 + (r.z - p.z) ** 2; if (T.U && T.U.uTorch.value[i]) T.U.uTorch.value[i].w = r.k; }
+  const near = T.rows.slice().sort((a, b) => a.d2 - b.d2);
+  T.lights.forEach((l, i) => { const r = near[i]; if (!r) { l.intensity = 0; return; } l.position.set(r.x, r.y + .35, r.z); l.intensity = TK.lightI * r.k; });
+  if ((T.sT -= dt) <= 0) { T.sT = .09; for (const r of near) { if (r.d2 > TK.sparkR * TK.sparkR) break;
+      if (Math.random() < .5) spk(r.x + (Math.random() - .5) * .2, r.y + .3, r.z + (Math.random() - .5) * .2, (Math.random() - .5) * .5, 1.4 + Math.random() * 1.4, (Math.random() - .5) * .5, .05 + Math.random() * .04, .7 + Math.random() * .6, [1, .55 + Math.random() * .25, .2]);
+      if (Math.random() < .08) smokeAt(r.x, r.y + .9, r.z, .5, 1.6, [.22, .21, .24]); } } }
+// NIGHT_SKY:END
 // m2125 (his: "there are a lot of parts of the map where the snow doesn't react to me... if it's snowy the ground should react"): the PACK grew from
 // 160 m (res 640, .25 m texels, a 400-quad mesh) to 320 m (res 960, .33 m texels, a 560-quad mesh, .57 m) -- it now reaches the waterfall (x -140).
 // The upload when it changes is ~.9 MB (was .4). If it costs frames on the phone: back to 160 / 640 / 400, or the follow-him pack (a window that moves).
