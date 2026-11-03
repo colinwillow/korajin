@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2375 -- THE LAKE: his wishlist 1 -- arches to sail under, the island of the great glowing tree (Nov 3 2026)
+His: *"rocks and natural arches you sail UNDER; islands with big GLOWING trees."*
+- **Arches (`W.arches`, 2 rows: feet A / B in canyon space, apex `h`, thickness `r`):** each is two tapered tubes from a foot on the BED (thick) up past
+  the apex (thin), overlapping so there is no seam (the first strip had a crack at the top -- CRAFT 3), bowed a little sideways, rock-noise displaced,
+  in the canyon's own textured strata material, baked sun. Each FOOT is pushed into `W.stacks` as a `leg` (no body): so it gets the drowned skirt, the
+  foam rim in the water shader, and is an obstacle to the boat and the swimmer for free. `arch_reach` spans the lane 30 m up; `arch_long` lies along
+  the west side. 1 draw (+1 in the mirror).
+- **The great tree (`tree_great` on the island `isle_great`, a 9 m stack):** the tree builder with `great: 1` -- k 4.8 (~25 m), JADE leaf clouds
+  (detail 3, its own material) and six hanging TENDRILS per branch (tapered, drooping, from a real point on the branch -- CRAFT 1, 3). Both carry the
+  Jinra glow as emission, which `L.setNight` raises from .12 / .25 by day to ~1.7 / 3.4 at night. 2 draws.
+- Cost: 30 draws worst shot (from 27), +19k tris. Shipped unverified.
+
 ## m2374 -- the entrance's portal, sized for the play camera (Nov 3 2026)
 Rendered m2363 headless: on the play camera (5 m behind him, a little above) the 9 m tear at his own height FILLED THE SCREEN -- the camera sat on top
 of it. Now (when `ENTRY.cine` is 0) the portal is half size (`pScale` .5), centred `pOff` 1.5 m over where he appears, and tipped `lean` .9 rad toward
