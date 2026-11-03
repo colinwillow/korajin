@@ -20,6 +20,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 22: the cracks are FINE and on his SKIN only -- the hue windows MEASURED off his texture (Nov 3 2026)
+His words: *"m2398 cracks are too fat and run over his clothes -- smaller and finer, like the earlier look, on his skin only."* Cells ~9 cm (11 / 5.5 / 11 per
+m, still upright), AA'd lines. **The skin window was guessed twice and caught nothing, so it was MEASURED**: a raycast at his face, chest, belly, arms and
+cloak, the hit's UV sampled in his own texture, converted to linear (`mel` probe, recorded here): skin r > .6, g/r .44-.66, b/r .14-.30; orange trims g/r
+~.21, b/r ~.04; the red cloak g/r < .1. The skin mask is that box; and the ORANGE mask's g/r window (to .62) had been lighting his skin orange -- it ends
+at .4 now. `mel.HEROGLOW.U.uHgDbg` = 1 paints the skin mask, 2 / 3 the g/r and b/r (a dev view). images/feedback/m2329/hero_cracks_skin.jpg
+(skin mask, night rest, three moments of the shimmer at full). Shipped unverified.
+
 ## m2397 -- the katana charge's start is a ONE-SHOT now (K-START A steel readied / B low breath swell / C deep hum-swell); m2380's loop is gone
 His (Nov 3) on m2380's K-HUM: *"like a synth flute"* -- and he does not want something that repeats.
 - The looping bed (`kcBed`, the three `kc_bed_*` files) is deleted. `kcArmTick` (top of `stepPlayer`) plays `kc_arm` ONCE on the charge's arm edge
