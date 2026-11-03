@@ -34,7 +34,8 @@
     "colaudit": "node tools/colaudit.mjs",
     "walktest": "node tools/walktest.mjs",
     "fxstrip": "node tools/fxstrip.mjs",
-    "nightshot": "node tools/nightshot.mjs"
+    "nightshot": "node tools/nightshot.mjs",
+    "lakestrip": "node tools/lakestrip.mjs"
   },
   "type": "module",
   "devDependencies": {

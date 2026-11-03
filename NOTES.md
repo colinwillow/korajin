@@ -17,6 +17,49 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2320 -- THE ENTRANCE, step 2: every zone's landing audited headless and the bad ones moved; the Sky Temple builds again (Nov 3 2026)
+His: *"you often spawn in a really random spot, with stuff in the camera's way. The spawn must be ART DIRECTED. The snow zone's spawn is occluded."*
+- **The audit** (scratch tool, the `shot` pattern): each zone booted headless; once the entrance has picked its landing it renders the ENTRANCE lens
+  and the PLAY lens at it, and casts rays lens -> his chest, lens -> the portal, and straight up the drop. Then a SEARCH round the spawn (rings 0-25 m,
+  16 bearings): flat ground (6 probes within .15 m), nothing within 1 m of his chest, the drop clear to the portal, both lenses clear; ranked by
+  openness. The pick in each moved row was then LOOKED AT (contact sheets) -- the rays cannot see see-through things (the marker/beacon light columns).
+- **Moved** (`ENTRY.rows`, absolute coords): SNOW out from behind the gate wall to (2.8, 6.9) -- open snow, the peaks and the sunset behind him;
+  AKATANI (14.6, 20.1) out of the boulders; REGION / VILLAGE 3 m off the marker pillar that ran up through him; the SHIP to (3, -.5) beside the mast
+  with the lens raised behind his shoulder (the forecastle filled the old one); the CELLS RF / C1 / CT off the walls they backed onto; LEVEL 1 and the
+  BEACON level back from the start light column. White Box: the lens on the other side (a crowd stands on the first). Clear as they were: arena, forge,
+  wall park, duel pit, proving ground, rope course, forest temple, dragon, temple layout, blockout. Garden: the prologue (exempt).
+- `entryKey` now tells the cells (`cell:RF`...) and the levels (`lvl:1`, `lvl:beacon`) apart -- one row each.
+- **THE SKY TEMPLE DID NOT BUILD AT ALL on main** (found by the audit: it stood at the forge default): `templeMake`'s spire merge came back NULL (the
+  pieces disagreed on their attribute sets) and `new THREE.Mesh(null)` threw inside `templeBuild` every time. The pieces are trimmed to their common
+  attributes first; built headless: `ok`.
+- Pads are a rune disc everywhere (`ENTRY.pad`); a row's `pad: 0` drops it. Shipped unverified.
+## m2319 -- THE LAKE: the NIGHT is planned (WATER.md NIGHT), glow tags in SC_LAKE (Nov 3 2026)
+His night ask (relayed): stars, Milky Way, a planet, glowing runes on wood / sand / rock cracks, glowing plants and lanterns, bioluminescent water.
+WATER.md now has a NIGHT section: the sky and the switch are the shared night core's (m2317, NIGHT.md); the lake reads `NIGHT.f` in its own
+dome and water and does the bioluminescence. `W.stacks[].glow` / `W.glow` tag the surfaces for `nightGlow`. Data only, nothing drawn changes. Shipped unverified.
+
+## m2318 -- THE LAKE, pass 1: the water shader and the first canyon (WATER.md) (Nov 3 2026)
+His ask: *"an extraordinarily beautiful water scene... spend a lot of time on the water shader... a lake in a canyon, giant rock bluffs, then a
+beach... I just want it to look absolutely gorgeous."* New sandbox **KORAJIN > The Lake** (`?w=forge&zone=lake`, `LAKEZ`), spec + DONE WHEN in
+`WATER.md`. Box moved: none ticked yet (the water reads well on the strip; his phone has not seen it). Open: boat, wake, the place, sailing, sign-off.
+- **One library, `lakeMake`, between `LAKELIB:START/END`**; rows (waves, ripples, stacks, spawn, the strip's cameras) between `SC_LAKE`.
+  `npm run lakestrip [shot..] [--mirror=0]` renders the SHIPPED text -> `shots/lake_all.png`.
+- **The water:** 6 Gerstner waves on a camera-following POLAR grid (rings x1.033, 192 segments, 2.5 m -> 3.2 km; each wave fades where the grid
+  can't carry it) + 5 fragment ripples + a warped noise normal. The SAME table in JS: `L.waveAt(x, z, t)` (the boat's buoyancy, pass 2).
+  **The bed does the transparency**: the terrain shader absorbs by path length under the level and gets caustics; the surface is premultiplied
+  (mirror x Fresnel, glitter, crest scatter, foam). **The mirror** is one render target at half res (Reflector's oblique-plane maths, layer 3).
+  Shore foam + sun-on-water from `L.hTex` (half-float bed height + baked sun visibility); stack rims from `uStk`.
+- **The canyon:** a 240x440 height grid in canyon space (columns dense over the bluffs), tiered sandstone strata + varnish streaks in the
+  shader, sun visibility BAKED per vertex (the bluffs shadow the canyon). Three sea stacks are their own lathe meshes (a heightfield made cones).
+- **Three bugs the strip caught:** the grid's ring triangles were wound face-down (culled -- the water was invisible); **three culls LIGHTS by
+  layer**, so the mirror camera rendered the cliffs black until the sun/hemi/rim/bounce went on layer 3 (`lakeStage` does it); and in the GAME
+  the sky bake's `skyFogOnly` re-greyed the fog (measured f2f4f7) and `stepLightX` reset the rim -- `SKY.fog = 0` and LIGHTX's numbers in
+  `lakeStage`. The terrain has `envMapIntensity 0` (the arena's white image light washed it).
+- **Budget (strip):** 4 draws + 3 in the mirror (terrain, stacks, sky; water), 209,842 terrain + 21,504 stack + 85,824 water tris; build
+  ~0.8 s on the desktop. TOOLS > LOOK > LAKE MIRROR: OFF = analytic sky only (no second pass) for a slow phone.
+- **Ground:** beaches and bluffs via `groundAt` / `lakeWall`; over open water he walks on the forge's y = 0 (the boat is pass 2). ENTRY row `lake`.
+- CRAFT checked on the strip: 1 (stacks and strata not straight -- the cliffs' tier lines are still long and even), 4 (no black: the mirror
+  was black, fixed), 5 (six framings). Shipped unverified on the phone.
 ## m2318 -- NIGHT 2: the sky gets its dust of stars and SHOOTING STARS; the snow's night runs on the shared factor (Nov 3 2026)
 - **The sky** (one dome, still one draw): a fourth, fine star layer (scale 900, densest in the Milky Way band) for the "hundreds of millions", three
   lanes of **shooting stars** (one slot every `NIGHT.meteor.every` 7 s per lane, a .32 rad streak over .9 s with a fading tail, hashed per slot), and

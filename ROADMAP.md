@@ -18,6 +18,10 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 - [ ] **FX -- OPEN (his, Nov 3).** `FX.md`: the goop (oily, blobby, electric, fluid) for every move, perfected in KORAJIN > The FX Lab first.
   - [x] m2309 FX.md, the library (5 blocks, 8 draws), the lab + ENTRY row, `npm run fxstrip`.
   - [ ] iteration passes on the strips (rings as goop bands, tearing ribbons, stronger sheen); his phone; his palette; his sign-off; then the sword's flames.
+- [ ] **THE LAKE -- OPEN (his, Nov 3).** `WATER.md`: an extraordinarily beautiful canyon lake -- the water shader first, then a Japanese-futuristic
+      longboat he stands in, the water deforming round it, mist / god rays / petals, sailing. Aesthetics only (the monster is later). KORAJIN > The Lake.
+  - [x] m2318 pass 1: WATER.md, the water shader (Gerstner, depth, mirror, glitter, shore foam), the canyon + stacks, `npm run lakestrip`.
+  - [ ] pass 2 the boat (buoyancy off `L.waveAt`, TOOLS > BOAT JETS default off); 3 the wake; 4 the place (falls, shrine, islets, cherries, mist, rays, petals); 5 sailing; his sign-off.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),
       four directional attacks on the right flick, guard + parry + lock-on on the pull-down hold, charge -> lunge -> spin.
       Builds a-e in the spec.
