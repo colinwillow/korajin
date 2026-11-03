@@ -41,6 +41,24 @@ THE PETALS:
 - Tested alone (blank page, fake clock, a fake hero on the arc), on the median petal radius from the emblem: 241 at the first emissions,
   68-93 during the orbit, out at the burst.
 Shipped unverified.
+## m2396 -- THE MAMMOTH REVERTED to his original file (m2358 / m2368 / m2393 undone) (Nov 3 2026)
+Colin on his phone after those builds: *the face and TRUNK deform badly, the FRONT LEGS get super stretchy / thin when he steps, and the gait
+looks unchanged -- "steps up into the air as if onto the first stair, then pushes down to the ground".* He may redo the rig by hand.
+- **Did the game load the new file? Yes, everywhere.** One path for all three users -- the title loop (`LOOPBG.beast.file`), the ride and the
+  calves (`ARENA.kinds.MAMMOTH` / `CALF`) all name `models/creatures/mammoth.glb`; `loadGLB` goes through `A(ktx2Twin(url))` (no `_ktx2` twin
+  of it exists, so it is the file itself); the ASSETS hash moved with every build and matched the file on disk (m2393: c3083e07 = sha1); no
+  service worker, no second copy anywhere in the repo. So what he saw WAS the new rig, not a cached old one.
+- **What went wrong, measured after the fact:** m2368's TRUNK region (y < -0.95, z < 1.22, |x| < .36) also swept up the lower FACE, and put it
+  on the trunk bones, which `trunkStep` springs -- the face deformed with the trunk. And m2358's leg IK alone stretches the legs more than the
+  cow clips did: worst-frame stretched edges (over 2x rest and 6 cm) original vs m2358: Walk 46 -> 58, Trot 61 -> 64, Run 72 -> 86, Attack 51
+  -> 53 (sums 226 -> 300, 250 -> 297). The pad-on-y=0 numbers were real, but they did not change the stair-step shape of the stride he is
+  describing (the swing lift, which the bake KEPT), and the price was thinner front legs.
+- **Reverted:** `models/creatures/mammoth.glb` is byte-for-byte the pre-m2358 file (sha 0bd2b2d8, 4.3 MB); the title loop's FOOT LOCK is back
+  exactly as it was; the cloth code (`clothStep`, `CLOTH`, the title-loop wind on the mammoth) is gone -- it was built on the m2368 weights.
+  KEPT: `MAMR.ref` (1.83 / 5.29 / 10.0) -- the planted ankle's measured speed, which the bake did not touch, so it holds for the original
+  clips too. The `tools/mammoth_*` scripts stay as a record; nothing runs them.
+- Lessons: a stretched-edge count went UP and I shipped anyway because the renders looked better at the frames I picked -- the count was the
+  honest signal. And a "trunk" region typed as a box needs checking against the FACE, not just the trunk. Shipped unverified.
 
 ## m2393 -- THE MAMMOTH'S CLOTH: spring chains in the four drapes, a pendulum in every ring / bell / tassel, a body he cannot sink cloth into (Nov 3 2026)
 *"Parts of him like the cloth should be dynamically rigged, kind of like Grumbo's cape."*
