@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 8: THE BLACK WEDGE was a SHOOTING STAR's NaN (Nov 3 2026)
+His report (images/feedback/m2325/garden_night_black_wedge.png): *"a big black wedge overlaps the sky, the starfield around it; sometimes the hero goes
+completely or partly black"* -- same spot, one shot fine, one not. **Root:** m2321's meteor streak fell off as `exp(-b*b / 5e-6 / (1 + (head - a) * 30))`.
+Ahead of the meteor's head (`a > head + 1/30`) that divisor is NEGATIVE, the exponent goes to +INF, and INF x the mask's 0 = **NaN**; NaN blends BLACK.
+The region is a straight-edged wedge in the sky (a half-plane past the head, opening with |b|), alive only while a meteor flies (so "sometimes"), and
+anything blended over it -- the clouds, and his transparent-pass materials (0 x NaN is still NaN at full alpha) -- went black too. Reproduced headless
+with meteors forced on (`uMet.x = 1`): images/feedback/m2329/meteor_nan_before.jpg shows the wedges with a streak at each apex; after the fix
+(`max(0, head - a)` and the whole term gated to the streak's own run) meteor_nan_after.jpg has none and the streaks still fly.
+**Lesson:** a falloff divisor in a shader must be clamped positive; `x * 0` does not save you from an INF. Shipped unverified on the phone.
+
 ## m2328 -- NIGHT 7: the garden's night reaches its sky; the veins are patches, not a net (Nov 3 2026)
 The m2327 garden sheet (day / dusk / night) showed two faults: the night hardly darkened it -- the garden's sky is its OWN opaque 2200 m sphere
 (`garden_sky`, a ShaderMaterial outside the tonemapper) and the shared dome sat behind it at the far plane -- and the leaf veins covered every
