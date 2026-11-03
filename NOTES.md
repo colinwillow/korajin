@@ -54,6 +54,16 @@ subtle radial fake motion blur, or nothing"*.
   the spawn / door / death code that toggles it is untouched; the shared plane is skipped by the body-removal dispose. `HRING.on = 0` = no gauge.
 - `ninjaLines` behind `SPEEDFX.mode`: OFF (default) | BLUR (a masked backdrop blur on the screen's edge, by the same sprint weight) | LINES (the old
   streaks). Shipped unverified; check 4 boot ok. Not looked at: the ring's size on the mammoth (`d.K.r` is its hit radius).
+## m23XX -- NIGHT 23: the MAMMOTH glows like Grumbo -- material-side only (Nov 3 2026)
+His words: *"the MAMMOTH should glow like Grumbo: his cloth drapes / flags and a little of his skin, same hues (purple Jinra + orange ember). Do NOT touch his
+rig / weights -- glow only."* The HERO_GLOW material on his skinned mesh (no rig, weight or geometry change), applied by `creatureGlowScan` (DUMMIES with
+`K.creature` in `CGLOW`), with two new per-material uniforms: `uHgP` (a body's mask PROFILE: orange g/r window, skin floor -- the orange brightness floor
+scales with it -- and gain) and its OWN `uHg` level (always a little alive, more at night; it does not flare with Grumbo's attacks).
+**Profile measured off his atlas** (sampled headless): drapes red-orange g/r ~.1-.2 (Grumbo's window stops at .11 to keep HIS red cloak out, so the
+mammoth's opens to .04), fur darker. First pass (floor .15) lit the whole beast orange; `CGLOW.mammoth.prof` [.04, .4, .27, .55]: the drapes and spines
+ember, Jinra cracks on tusks and feet, the rest his own colours. images/feedback/m2329/mammoth_glow.jpg (night, off / on). Headless the arena's menu
+pauses the frame loop, so the scan was called by hand for the render; in play `heroGlowStep` runs it every second. Shipped unverified.
+
 ## m2399 -- TAKE 5b: no ground pose in the air (the flip carries on); the loading emblem keeps turning while loads block<!--mine-->
 His note on take 5: "much better". But after the backflip ends he is still in the air in the clip's landed pose.
 THE FLIP CARRIES ON (`leap.loop`):
