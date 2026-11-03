@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m23XX -- NIGHT 11: HIS JINRA GLOW -- the purple on Grumbo's own texture lights on Jinra contact and on every attack (Nov 3 2026)
+## m2339 -- NIGHT 11: HIS JINRA GLOW -- the purple on Grumbo's own texture lights on Jinra contact and on every attack (Nov 3 2026)
 His ask (relayed): *"pick the PURPLE already on Grumbo's texture and make those parts GLOW when he is in contact with Jinra -- in a stream, in a geyser,
 collecting Jinra, and when he attacks; colour via JPAL."* HERO_GLOW block: a hue mask spliced into his OWN material (chained hook + key, no new
 texture) -- where the sampled albedo is violet-to-magenta (red and blue over green, saturated) an emissive in `JPAL.glow` x `HEROGLOW.k`, x1.7 at night.
