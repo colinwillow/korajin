@@ -20,6 +20,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2399 -- TAKE 5b: no ground pose in the air (the flip carries on); the loading emblem keeps turning while loads block<!--mine-->
+His note on take 5: "much better". But after the backflip ends he is still in the air in the clip's landed pose.
+THE FLIP CARRIES ON (`leap.loop`):
+- At `at` .8 of the clip he is still turning (hips -332 deg). There it crossfades (`fade` .22) into a SECOND copy of `backflip` from `from` .3,
+  the take-off frame at -16 deg: the same angle less one turn, and the slerp keeps the same direction.
+- It repeats every .5 of the clip, alternating two `clone()`s (an action cannot crossfade into itself), so the landing frames never play in the
+  air.
+- The apex is a touch higher, so the momentum carries it: `h` 1.7 -> 2.1 at `apex` .8 -> 1.0.
+THE EMBLEM FREEZE (ROADMAP, his list):
+- The rotation was a CSS animation on an SVG `<g class="spin">` INSIDE `.kjw`. Animations inside an SVG are main-thread, so every heavy load
+  (a GLB parse, a shader compile) stopped it.
+- The WHOLE `.kjw` box turns now (`will-change: transform`). A transform animation on an HTML-level box is run by the compositor and keeps
+  turning while the main thread is busy.
+- The pip's pulse is still an SVG animation; it is a small pulse, not the spin.
+- The swirl's target radius is taken from the computed width: the rect of a turning square is up to 1.41x its size.
+- I did NOT re-schedule the boot loads (yielding between them). With the compositor spin it should not be needed for the spinner; say if the
+  bar/text still hitch.
+Shipped unverified.
+
 ## m2397 -- the katana charge's start is a ONE-SHOT now (K-START A steel readied / B low breath swell / C deep hum-swell); m2380's loop is gone
 His (Nov 3) on m2380's K-HUM: *"like a synth flute"* -- and he does not want something that repeats.
 - The looping bed (`kcBed`, the three `kc_bed_*` files) is deleted. `kcArmTick` (top of `stepPlayer`) plays `kc_arm` ONCE on the charge's arm edge
@@ -38,7 +57,7 @@ uniform held a weapon's 1.75/60.7 = .029, close to the right number; m2370 made 
 dots. Now: ~30 cm cells stretched UPRIGHT (3.4, 1.6, 3.4 per m) so the cracks run up him, an AA'd line (`fwidth`, never under ~a pixel), 60% of patches,
 the shimmer still travelling feet to head. images/feedback/m2329/hero_cracks_lines.jpg (three moments of the shimmer, held full). Shipped unverified.
 
-## m2394 -- THE START TRANSITION, TAKE 5: one jump-flip on his own clip, the petals shed from him<!--mine-->
+## m2394 -- THE START TRANSITION, TAKE 5: one jump-flip on his own clip, the petals shed from him
 His notes on take 4, via the parent:
 - "he just launches up into the air -- doesn't look like he jumped -- and then once he's in the air he does a flip, instead of his momentum
   carrying it"
@@ -247,7 +266,7 @@ faster than the animation."*
   stick) is untouched. `mel.CHRUN` is live.
 - Not verified on a device. Box moved: none (a regression fix on the katana charge). Open: whether 1.5 feels right is his -- `mel.CHRUN.slow`.
 
-## m2377 -- the title's Grumbo glow passes his mesh<!--mine-->
+## m2377 -- the title's Grumbo glow passes his mesh
 NIGHT worker's note: the title loop's `heroGlowMat(m, geo)` passed no mesh, so `heroGlowSpan` had to find his skinned mesh by material. It now
 passes the hero mesh `q` as the third argument, so the glow span is exact. Shipped unverified.
 ## m2379 -- NIGHT 19: Grumbo TWO-TONE -- his own orange glows ember beside the Jinra purple (Nov 3 2026)
