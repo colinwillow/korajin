@@ -20,6 +20,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2400 -- health is a RING at the feet, not a green bar overhead; the speed spikes are gone (TOOLS > LOOK > SPEED FX) (Nov 3 2026)
+Via main: *"remove the green bar floating over the mammoth and over everyone -- artful health: a thin ring around the creature's feet that appears
+when it's hit, shows the remaining health as an arc, and fades out after a moment"* and *"the speed spikes round the screen edge -- remove; at most a
+subtle radial fake motion blur, or nothing"*.
+- `foeBar` / `foeBarStep` (the one place every body's bar was made) now build `HRING`: a flat additive shader ring on the ground at his feet,
+  `HRING.r` x his body radius (`d.K.r`); the remaining health is a bright Jinra arc (`JPAL.glowRgb`), the lost part a faint red trace, the edge
+  wobbles like goop. Shown only when hp DROPS (`d.barHp`), held `hold` 1.8 s, faded over `fade` .6; never while entering. Same `d.bar.g` handle, so
+  the spawn / door / death code that toggles it is untouched; the shared plane is skipped by the body-removal dispose. `HRING.on = 0` = no gauge.
+- `ninjaLines` behind `SPEEDFX.mode`: OFF (default) | BLUR (a masked backdrop blur on the screen's edge, by the same sprint weight) | LINES (the old
+  streaks). Shipped unverified; check 4 boot ok. Not looked at: the ring's size on the mammoth (`d.K.r` is its hit radius).
 ## m2399 -- TAKE 5b: no ground pose in the air (the flip carries on); the loading emblem keeps turning while loads block<!--mine-->
 His note on take 5: "much better". But after the backflip ends he is still in the air in the clip's landed pose.
 THE FLIP CARRIES ON (`leap.loop`):
