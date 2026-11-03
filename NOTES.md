@@ -17,6 +17,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2367 -- THE LAKE: glowing shore plants at night (the NIGHT worker's flora layer) (Nov 3 2026)
+His: *"add glowing plants."* `NIGHT.zones.lake.flora` (the NIGHT worker's API): 44 mushroom clusters, 64 ferns and the grass specks that follow him, scattered
+in a 70 m radius round the west beach (`L.spawn`), only on sand and gentle ground (`ok`: 0.25-6 m up, slope under .3), never in the water or up a bluff;
+built 1.5 s (wall clock) after the zone stands him, only when TIME is not DAY; his footsteps light them. 3 draws at night, none by day. Shipped unverified.
+
 ## m2365 -- THE LAKE: SWIMMING -- jump off the boat, swim, climb back aboard (Nov 3 2026)
 His: *"he RUNS ON the water -- make him swim."* The clips are his own Forge library (colinwillow/retarget-anims): `node tools/forge.cjs
 models/characters/alien_goblin_game.glb tools/agoblin_swim_prof.json models/characters/anims/agoblin_swim.glb --lib ../retarget-anims/library/clips`
