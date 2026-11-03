@@ -17,6 +17,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2329 -- THE HAMMOCK EXIT: a real get-up, not a slide (Nov 3 2026)
+His report (relayed): *"he does this kind of weird slide where there's no animation"* getting out of the hammock.
+- **Clip:** Mixamo `Getting_Up` (82 f, 2.7 s) baked by the Forge onto Grumbo as `wake` in `agoblin_meditate.glb`. It was picked by MEASURING the Hips
+  track of every get-up in the library (`clipprobe.cjs`): it is the one that starts ON HIS BACK with the head the same way as `lay`
+  (Male_Laying_Pose_2), ends standing facing +Z, and drifts only 5 cm. Getting_Up_2 and Stand_Up_2 also start on the back but run 8 s and end turned.
+- **State:** `gdnSleepStep` drives the clip's time itself (`Q.ct`, timeScale 0). The weights go lay -> wake -> idle and sum to 1 (`blendIn` .12, `blendOut` .88).
+  Over the clip he turns 90 degrees to the side of the sling nearer the garden (`turn`), so his legs swing over the edge. He is carried off the cloth
+  (`move`) and drops to the ground (`drop`). The pivot is his hips, because the Hips track sits at xz 0.
+- **Root motion:** the clip keeps its Hips HEIGHT (that is the sitting up and the standing). The 5 cm of drift is left in. Position is ours.
+- **Hammock:** the swing is kicked at the push. A bigger kick comes when his weight leaves (`uh` > .45), so the sling swings back up behind him.
+- **Cloth:** the FIT keeps running during the get-up, only for bones still over the cloth, and only ever lifts him. The hair/sash clamp already runs while `player.sleep`.
+- **TOOLS > HAMMOCK EXIT:** ONE PUSH (default: one push plays it through) or HOLD THE STICK (holding advances it; let go before `commit` .62 and he settles
+  back down). This is his taste call.
+- If the clip has not loaded, he falls back to the old carry, so he is never stuck in the sling.
+- Shipped unverified. Moves no sandbox box. Open: whether the pose reads, the side he picks, and the timing fractions (all in `GARDEN.sleep`).
+
 ## m2328 -- NIGHT 7: the garden's night reaches its sky; the veins are patches, not a net (Nov 3 2026)
 The m2327 garden sheet (day / dusk / night) showed two faults: the night hardly darkened it -- the garden's sky is its OWN opaque 2200 m sphere
 (`garden_sky`, a ShaderMaterial outside the tonemapper) and the shared dome sat behind it at the far plane -- and the leaf veins covered every
