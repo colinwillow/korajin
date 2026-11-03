@@ -17,6 +17,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 5: metals keep their shine at night (CRAFT: metals never go black) (Nov 3 2026)
+The m2325 close render of the katana showed its steel near-black at night: the overlay scaled the environment (image) light to .22 of the day's,
+and in the snow to 0. `NIGHT.pal.envK` .22 -> .42 and `NIGHT.pals.snow.envK` 0 -> .3, so steel, gold and bronze keep a reflection under the moon.
+Taste dial: `mel.NIGHT.pal.envK` live. Shipped unverified.
+
 ## m2324 -- THE LAKE: the nightGlow API noted in WATER.md (Nov 3 2026)
 Docs only: the night worker's `nightGlow` (m2323) recipes for the boat wood, sand and stacks, for the lake's night pass. Shipped unverified.
 ## m2325 -- NIGHT 4: the katana's blade carries a line of the script at night (Nov 3 2026)

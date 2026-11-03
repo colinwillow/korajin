@@ -12782,10 +12782,11 @@ const NIGHT = { mode: (() => { const ok = ['DAY', 'DUSK', 'NIGHT', 'CYCLE']; try
       m = /[?&]time=(day|dusk|night|cycle)\b/i.exec(q); if (m) return m[1].toUpperCase(); const v = localStorage.getItem('mel.time'); if (ok.includes(v)) return v;
       return localStorage.getItem('mel.snowtime') === 'NIGHT' ? 'NIGHT' : 'DAY'; } catch (e) { return 'DAY'; } })(),
   order: ['DAY', 'DUSK', 'NIGHT', 'CYCLE'], f: -1, dusk: 0, t: 0, cycle: 240, ease: 1.6, last: 0, applied: 0,
-  pal: { sunK: .28, sunCol: 0x9cb6ff, hemiK: .3, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .72, bgK: .1, envK: .22,
+  pal: { sunK: .28, sunCol: 0x9cb6ff, hemiK: .3, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .72, bgK: .1, envK: .42,     /* CRAFT: metals never go black -- the reflections stay at .42 of the day's (m2326; .22 read black on the katana) */
+   
     duskSun: 0xff8a4a, duskFog: 0xb86a78, duskHemi: 0xd08a9a, duskK: .55 },
   zones: { snow: { aurora: 1, pal: 'snow' }, snowkit: { aurora: 1, pal: 'snow' } },
-  pals: { snow: { sunK: .3, sunCol: 0x9cb6ff, hemiK: .2, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .62, bgK: 0, envK: 0 } },     // m2318: the snow's m2298 night numbers (NIGHTSKY.lightK), now a row
+  pals: { snow: { sunK: .3, sunCol: 0x9cb6ff, hemiK: .2, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .62, bgK: 0, envK: .3 } },     // m2318: the snow's m2298 night numbers (NIGHTSKY.lightK), now a row
   meteor: { every: 7, dur: .9, len: .32 },     // shooting stars: one slot every `every` s per lane (3 lanes), streaking `len` rad in `dur` s
   sky: null, save: null };
 // SC_NIGHT:END
