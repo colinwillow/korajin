@@ -12,6 +12,20 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 - Characters and armour come from the pipeline in `colinwillow/blender-addons` (armoured model -> Tripo segment ->
   bare body -> rig + weapon bones -> `armorfit.py`). The arena in `colinwillow/culture_war` (`duel.html`) is the fight lab.
 
+## COLIN'S LIST (Nov 3 2026, end of his week's credits -- the backlog to pick up next, in his words)
+- [ ] **Katana charge sound**: none of the K-HUM picks (synth-flute feel); he wants a ONE-SHOT (not a loop) and something else entirely. Try more.
+- [ ] **Grumbo grunts** (Link-style effort grunts on swings, jumps, hits): a deep grunt guy. He may record new ones; the alien orc grunts are the enemies' for now.
+- [ ] **Vertical wall run** still steps down (run -> slower -> stop). Wants a continuous RAMP, gravity/friction-like; maybe allow a bit more height so it isn't so quick.
+- [ ] **Enemy splits**: the temple walkers / temple guards and others were split the primitive way (odd triangles at feet, faces, jaws). Redo them with the
+      better Tripo segment split, like the one guy that was done right.
+- [ ] **Bosses much harder; melee much more sophisticated; the game harder** -- "I can just dominate everything."
+- [ ] **Mammoth**: after m2358/m2368 the face and trunk deform badly, front legs stretch thin on a step, and the gait still "steps up onto a stair and pushes down"
+      on his phone. He may redo the rig by hand. Check the shipped file is the one loaded, and do not ship more weighting without his look.
+- [ ] **Night everywhere**: spice up every level for dusk/night -- glowing plants, glowing decals on things that don't glow yet.
+- [ ] **Enemies glow**: parts of every bad guy glow (their green and spot colours), runes/writing on them.
+- [ ] **Custom weapons**: the sword and the bow are plain -- decoration, runes, glow. The bow especially.
+- [ ] **Glider wings**: glowing parts.
+
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
 - [ ] **UI RINGS + REAL PLAY -- OPEN (his, Nov 2).** `UI_RINGS.md`: what he owns (`OWN`, grant/revoke, GOD = all), one ring layout for every pad
       button, then hp / lives / GAME OVER with GOD off. m2263 the rings + ownership; next the lives.
