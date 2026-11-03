@@ -20,6 +20,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2407 -- the entrance portal: UPRIGHT, see-through and warped, and he comes THROUGH it (a threshold); no floor symbols (Nov 3 2026)
+His notes: *"He doesn't look like he comes through the portal -- he is there before it shows up, you can see him behind it; it looks like a plane trying
+to cover him. No warping, no bending; the hole should look like a portal to somewhere else, a worm hole. Try perpendicular to the ground so he comes
+out the side."* Then: *"Still a dark centre -- I want it just see-through, warped; he passes a threshold from not visible to visible. Get rid of the
+symbols on the floor. (The goop slam ring is closest to the portal I'm picturing.)"*
+- **Upright**: the portal stands `pDist` 3.4 m ahead of the landing, `pH` 3.6 up, turned `pYaw` .5 off square to the play camera; `pScale` .48.
+- **Through it**: he is held just BEHIND its face (`run.S`), then THROWN out of it in an arc onto the landing (`flyT` .85 s; `D.vx/vz` in the fall),
+  facing the way he flies (he lands facing the camera). **THE THRESHOLD**: one clip plane (`ENTRY.clip`) on every material under his rig, set at the
+  portal's face as he leaves -- only the part of him that has come through is drawn. Armed once behind the boot card (a program change), then parked
+  1e6 m away between entrances so nothing recompiles.
+- **Seen before it opened** was the spawn invulnerability BLINK (`LIFE`) writing `rig.root.visible` every frame over the entrance's hide. The model is
+  hidden one level down (`rig.model`) and the root as well.
+- **See-through and warped**: a half-res snapshot of the scene without the portal (or him), refreshed every `bgEvery` 2 frames only while it is open,
+  is drawn THROUGH the hole swirled and pulled toward its centre, and bent round the lip (lens pull, noise shimmer, a little chromatic split);
+  colour-matched (Neutral tone map + sRGB). The lip is a wobbly glowing line (the goop ring's look) in violet / pink; the corona streaks are lighter.
+  Without the snapshot (an error), the wormhole tunnel shows instead.
+- **No floor symbols**: the landing sigil is OFF by default (TOOLS > LANDING SIGIL brings it back).
+- Rendered headless (arena, play camera): the seam, the warped see-through hole, him half out of it, sealed, slam, rise. Shipped unverified.
+
 ## m2404 -- the entrance portal, after his references: a rounded hole with a corona of streaks (Nov 3 2026)
 His two reference frames (a portal from his VFX work): an irregular ROUNDED hole, a white-hot pink lip, wispy streaks pouring OUTWARD round it like a
 corona -- magenta and violet with cyan glints -- and a dim glowing violet inside (the other side), not black. `ENTRYFS_T` is rewritten to that: the
