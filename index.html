@@ -12790,6 +12790,8 @@ function snowSkyHold() { const S = SNOWSKY, Z = SNOWZ; if (!S.on || !S.tex) retu
 const NIGHT = { mode: (() => { const ok = ['DAY', 'DUSK', 'NIGHT', 'CYCLE']; try { const q = location.search; let m = /[?&]night=([01])\b/.exec(q); if (m) return m[1] === '1' ? 'NIGHT' : 'DAY';
       m = /[?&]time=(day|dusk|night|cycle)\b/i.exec(q); if (m) return m[1].toUpperCase(); const v = localStorage.getItem('mel.time'); if (ok.includes(v)) return v;
       return localStorage.getItem('mel.snowtime') === 'NIGHT' ? 'NIGHT' : 'DAY'; } catch (e) { return 'DAY'; } })(),
+  user: (() => { try { return /[?&](night|time)=/.test(location.search) || !!localStorage.getItem('mel.time') || localStorage.getItem('mel.snowtime') === 'NIGHT'; } catch (e) { return false; } })(),     // did HE set TOOLS > TIME? (the title respects it)
+  title: { cycle: 75, t: 0 }, tf: 0, titleAt: -1e9,     // m2349: the title backdrop's own day > dusk > night > dawn loop (when he has not set TIME)
   order: ['DAY', 'DUSK', 'NIGHT', 'CYCLE'], f: -1, dusk: 0, t: 0, cycle: 240, ease: 1.6, last: 0, applied: 0,
   pal: { sunK: .28, sunCol: 0x9cb6ff, hemiK: .3, hemiCol: 0x4a62b0, hemiGnd: 0x1a2440, fog: 0x101a30, bg: 0x0b1428, expK: .72, bgK: .1, envK: .42,     /* CRAFT: metals never go black -- the reflections stay at .42 of the day's (m2326; .22 read black on the katana) */
    
@@ -13058,7 +13060,11 @@ function nightTarget() { const N = NIGHT; if (N.mode === 'DAY') return 0; if (N.
   const ph = (N.t / N.cycle) % 1, raw = .5 - .5 * Math.cos(ph * 6.2832); return raw <= .2 ? 0 : raw >= .8 ? 1 : (raw - .2) / .6 * (raw - .2) / .6 * (3 - 2 * (raw - .2) / .6); }
 function nightStep() { const N = NIGHT, now = performance.now(), dt = N.last ? Math.min(.1, (now - N.last) / 1000) : 0; N.last = now; N.t += dt;
   const tg = nightTarget(); N.f = N.f < 0 ? tg : N.f + (tg - N.f) * (1 - Math.exp(-dt * N.ease)); if (Math.abs(N.f - tg) < 1e-4) N.f = tg;
-  N.dusk = 4 * N.f * (1 - N.f); return dt; }
+  N.dusk = 4 * N.f * (1 - N.f);
+  { const T = N.title; T.t += dt; if (N.user) N.tf = Math.max(0, N.f); else { const ph = (T.t / T.cycle) % 1, raw = .5 - .5 * Math.cos(ph * 6.2832), u = Math.min(1, Math.max(0, (raw - .15) / .7)); N.tf = u * u * (3 - 2 * u); } }
+  return dt; }
+// the night factor the glow layers read: the title's while the title is drawing (nightScene), else the game's
+function nightF() { const N = NIGHT; return performance.now() - N.titleAt < 600 ? N.tf : Math.max(0, N.f); }
 function nightZone() { try { return NIGHT.zones[entryKey()] || {}; } catch (e) { return {}; } }
 function nightSkyGlobal() { const N = NIGHT, NS = NIGHTSKY; if (N.sky) return N.sky;     // ONE sky for every zone (the snow's night asks for it too)
   const G = new THREE.Group(); G.renderOrder = -1; nightSkyBuild(G); scene.add(G); N.sky = G; return G; }
@@ -13088,6 +13094,36 @@ function nightPost() { const N = NIGHT, S = N.save; if (!N.applied || !S) return
   scene.backgroundIntensity = S.bi; scene.environmentIntensity = S.ei; if (S.fog) S.fog.color.copy(S.fc); if (S.bg) S.bg.copy(S.bc); }
 function nightSet(m) { const N = NIGHT; N.mode = m; try { localStorage.setItem('mel.time', m); localStorage.removeItem('mel.snowtime'); } catch (e) {} N.t = 0; }
 // NIGHT_CORE:END
+// NIGHT_SCENE:START -- m2349 (his: "the title screen should go from day to dusk to night, where things glow"). The night for a scene that is NOT the game's
+// (the title backdrop, LOOPBG -- its owner wires it, this file does not touch loopBg):
+//   const NH = nightScene(S, cam, { lights: [...], hero: root, sky: mesh, renderer: R });  then per frame  NH.pre(dt); R.render(S, cam); NH.post();
+// `pre` blends the given lights / S.fog / a colour background / the exposure toward NIGHT.pal by NIGHT.tf (a 75 s day > dusk > night > dawn loop from
+// DAY, or his TOOLS > TIME when he has set it) and `post` hands every value back. It adds the shared star dome (the game's MATERIAL, +1 draw), glows
+// `hero` (the hue / crack / emblem glow) and drives the glow layers. `NH.dispose()` takes the dome out.
+function nightScene(S, cam, o = {}) { const N = NIGHT, NS = NIGHTSKY; nightSkyGlobal(); const H = { lights: (o.lights || []).filter(Boolean), sky: o.sky || null, R: o.renderer || null, sv: [], dome: null, on: 1 };
+  if (NS.dome) { const d = new THREE.Mesh(NS.dome.geometry, NS.dome.material); d.frustumCulled = false; d.renderOrder = -3; d.name = 'night_dome_title'; S.add(d); H.dome = d; }
+  if (o.hero) o.hero.traverse(q => { if (q.isMesh) (Array.isArray(q.material) ? q.material : [q.material]).forEach(m => heroGlowMat(m, q.geometry)); });
+  if (o.glow) for (const [m, opt] of o.glow) nightGlow(m, opt);
+  const C = new THREE.Color();
+  H.pre = (dt) => { if (!H.on) return; N.titleAt = performance.now(); const d2 = nightStep(); nightGlowStep(d2); try { heroGlowStep(d2); } catch (e) {}
+    const k = N.tf, P = N.pal, L = (a, b) => a + (b - a) * k, du = 4 * k * (1 - k) * P.duskK; H.sv.length = 0;
+    for (const l of H.lights) { const e = { l, i: l.intensity, c: l.color.clone(), g: l.groundColor ? l.groundColor.clone() : null }; H.sv.push(e);
+      if (l.isPointLight || l.isSpotLight) continue;
+      if (l.isHemisphereLight) { l.intensity *= L(1, P.hemiK); l.color.lerp(C.setHex(P.duskHemi), du * .5).lerp(C.setHex(P.hemiCol), k); l.groundColor.lerp(C.setHex(P.hemiGnd), k); }
+      else if (l.isAmbientLight) { l.intensity *= L(1, P.hemiK); l.color.lerp(C.setHex(P.hemiCol), k); }
+      else { l.intensity *= L(1, P.sunK); l.color.lerp(C.setHex(P.duskSun), du).lerp(C.setHex(P.sunCol), k); } }
+    H.fog = S.fog ? S.fog.color.clone() : null; if (S.fog) S.fog.color.lerp(C.setHex(P.duskFog), du * .6).lerp(C.setHex(P.fog), k);
+    H.bg = S.background && S.background.isColor ? S.background.clone() : null; if (H.bg) S.background.lerp(C.setHex(P.duskFog), du * .6).lerp(C.setHex(P.bg), k);
+    H.bi = S.backgroundIntensity; H.ei = S.environmentIntensity; S.backgroundIntensity = (H.bi == null ? 1 : H.bi) * L(1, P.bgK); S.environmentIntensity = (H.ei == null ? 1 : H.ei) * L(1, P.envK);
+    if (H.R) { H.ex = H.R.toneMappingExposure; H.R.toneMappingExposure *= L(1, P.expK); }
+    if (H.dome && NS.U) { H.dome.visible = k > .002; NS.U.uFade.value = Math.min(1, k * 1.15); NS.U.uT.value += d2; NS.U.uDusk.value = 4 * k * (1 - k); if (S.fog) NS.U.uHor.value.copy(S.fog.color);
+      H.dome.position.copy(cam.position); let rr = cam.far * .9; if (H.sky && H.sky.geometry) { if (!H.sky.geometry.boundingSphere) H.sky.geometry.computeBoundingSphere(); rr = Math.min(rr, H.sky.geometry.boundingSphere.radius * H.sky.scale.x * .95); }
+      H.dome.scale.setScalar(rr / NS.sky.r); } };
+  H.post = () => { for (const e of H.sv) { e.l.intensity = e.i; e.l.color.copy(e.c); if (e.g) e.l.groundColor.copy(e.g); } H.sv.length = 0;
+    if (H.fog && S.fog) S.fog.color.copy(H.fog); if (H.bg && S.background && S.background.isColor) S.background.copy(H.bg); S.backgroundIntensity = H.bi; S.environmentIntensity = H.ei; if (H.R && H.ex != null) H.R.toneMappingExposure = H.ex; };
+  H.dispose = () => { H.on = 0; if (H.dome) H.dome.removeFromParent(); };
+  return H; }
+// NIGHT_SCENE:END
 // NIGHT_GLOW:START -- NIGHT.md box 4: the night-glow layer. `nightGlow(material, { mask, role, strength, pulse, scale, density, width })` adds an
 // emissive term x the night (exactly 0 by day) to an EXISTING material through onBeforeCompile (chained after any splice it already has), so a
 // model's day look is untouched. Masks (world-space, so they need no uvs):
@@ -13183,7 +13219,7 @@ function nightGlow(m, o = {}) { if (!m || m.userData.ng) return m; const G = NGL
         totalEmissiveRadiance += ngc * ngm * uNgS.z * pu * uNgF; }`); };
   m.needsUpdate = true; return m; }
 // called from nightPre (the writer of NIGHT.f): the glow reads the night through ONE shared uniform, eased so dusk shows the first runes
-function nightGlowStep(dt) { const G = NGLOW, f = Math.max(0, NIGHT.f), g = Math.min(1, Math.max(0, (f - .2) / .6));
+function nightGlowStep(dt) { const G = NGLOW, f = nightF(), g = Math.min(1, Math.max(0, (f - .2) / .6));
   G.U.uNgF.value = g * g * (3 - 2 * g); G.U.uNgT.value += dt; G.U.uNgA.value.setHex(G.accent); G.U.uNgBoth.value = G.both ? 1 : 0; }
 // THE SNOW AT NIGHT (NIGHT.md 5a): the village's stone and wood carry the script, the rocks their cracks, the snowpack a few drifting lines
 function snowNightGlow() { const V = SNOWVIL.M, G = NGLOW, rockSet = new Set(Object.values(ROCK.mats || {})); let n = 0;
@@ -13251,7 +13287,7 @@ function heroGlowMat(m, geo) { const H = HEROGLOW; if (!m || H.mats.has(m) || !(
   m.needsUpdate = true; }
 function heroGlowStep(dt) { const H = HEROGLOW;
   if ((H.scanT -= dt) <= 0 && rig.root) { H.scanT = 1; rig.root.traverse(o => { if (o.isSkinnedMesh || o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => heroGlowMat(m, o.geometry)); }); }
-  H.pulse *= Math.exp(-dt * H.decay); const nf = Math.max(0, NIGHT.f), gp = (typeof GOOP !== 'undefined' && GOOP.on && GOOP.pulse) || 0;     // the FX worker's goop pulse: read, never written
+  H.pulse *= Math.exp(-dt * H.decay); const nf = nightF(), gp = (typeof GOOP !== 'undefined' && GOOP.on && GOOP.pulse) || 0;     // the FX worker's goop pulse: read, never written
   const tg = H.test ? 1 : Math.max(H.pulse, H.hold, gp, H.rest + (H.restNight - H.rest) * nf); H.hold = 0;     // always a little alive at rest; more at night
   H.k += (tg - H.k) * (1 - Math.exp(-dt * (tg > H.k ? 18 : 6)));
   H.U.uHg.value = H.k * H.gain * (1 + H.nightK * nf); H.U.uHgT.value += dt; H.U.uHgX.value.set(H.cracks, H.emblem); heroGlowCol(H.U.uHgC.value); }
@@ -72171,7 +72207,7 @@ async function init() {
 
 // the console handle. Every tuning object is live, so a number can be moved on the phone
 // without a rebuild and without a push.
-window.melee = window.mel = { LAKEZ, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, NFLORA, nightFloraBuild, HEROGLOW, heroGlowPulse, heroGlowHold, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
+window.melee = window.mel = { LAKEZ, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, NFLORA, nightFloraBuild, nightScene, nightF, HEROGLOW, heroGlowPulse, heroGlowHold, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
   // PROGRESS (m276): `mel.SAVE` is the save; the setters write it through; `mel.progReset()` is a new game
   // TALK (m277): `mel.TALK` live; `mel.TALKS` the scripts by kind; `mel.talk` the state
   TALK, TALKS, talk,

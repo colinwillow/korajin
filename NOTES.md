@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 14: `nightScene` -- the night for a scene that is not the game's (the TITLE backdrop's hook) (Nov 3 2026)
+His words (relayed): *"the title screen should go from day to dusk to night, where things glow -- the star sky and the planets, so it naturally cycles."*
+The title backdrop (LOOPBG) is its own renderer / scene / lights and the title worker is mid-change in it, so this build is the HOOK, not the wiring
+(messaged; it calls it): `const NH = nightScene(S, cam, { lights, hero, sky, renderer, glow })`, then `NH.pre(dt); R.render(S, cam); NH.post();`.
+- `NIGHT.tf` (written in `nightStep`, still the one writer): a 75 s loop DAY > dusk > NIGHT > dawn from day -- or his TOOLS > TIME when he has set it
+  (`NIGHT.user`: a `?night` / `?time` / stored `mel.time`). `nightF()` is what the glow layers read: the title's factor while the title draws, else
+  the game's.
+- `pre` blends the given lights (point / spot left lit), S.fog, a colour background, background / environment intensity and the exposure toward
+  NIGHT.pal, and `post` restores every one; the shared star dome joins S as a second MESH on the game's material (+1 draw; tucked inside `sky` if
+  given); `hero` gets the HERO_GLOW material; `glow: [[mat, opts]]` runs nightGlow.
+Tested headless on a throwaway scene: day / dusk / night frames, and the light and fog values back to the day after `post`. Shipped unverified.
+
 ## m2347 -- THE JINRA BEAM AS RISING FLUID, pass 1 (Nov 3 2026)
 His (relayed): *"it should feel like FLUID going up and down rather than just a cylinder that's glowing."* `gdnBeamFx` is rebuilt. It is 4 draws (was 2),
 all animated on the GPU:
