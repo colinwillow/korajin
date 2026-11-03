@@ -19,6 +19,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2384 -- the garden's taps in the interact registry (Nov 3 2026)
+Asked by the UI/play-state worker (registry m2382). `gdnInteract()` runs once after the garden builds:
+- **LIE DOWN** (`garden.hammock`, pri 1): within 1.6 m of the bed and standing, a tap puts him back in the hammock (`gdnSleepStart`). A push gets him
+  up again through the m2332 exit.
+- **MEDITATE** (`garden.beam`, pri 2): floating in the Jinra column and not already in the pose, a tap goes straight into the lotus (`beamIdle` 99).
+  It no longer needs the .7 s wait.
+- **RING THE BELL** (`garden.bell`): within 2.4 m, a tap rings it a little harder. Walking into it still rings it; both go through the shared `gdnBellRing`.
+- The SWORD stays a walk-over pickup (he never asked for a tap).
+- None is offered while the intro reel plays.
+Shipped unverified.
+
 ## m2382 -- ONE INTERACT REGISTRY: the right stick glows Jinra whenever something is usable, a rune floats over it, a tap does it (Nov 3 2026)
 *"The right stick should basically always GLOW when you can interact with something -- e.g. to show you can take the boat's helm. Maybe also a
 subtle outline or something in the scene showing what you can interact with."* (via main)
