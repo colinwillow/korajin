@@ -61,7 +61,7 @@ into the reading text, waits on his pick here).
 **m2371 WAS A BLANK PAGE** for about a minute: a stash-pop conflict was committed with its markers still in it (the gate said SYNTAX FAIL and the
 commit chain ran on with `;`). It was fixed in place, and this bump makes the good build tell itself apart. Never chain commit after `npm run check` with `;`; use `&&`.
 Shipped unverified. A phone-size headless screenshot of each look follows.
-## m23XX -- NIGHT 18: the AURORA over the garden and glowing MOTES among the clouds (Nov 3 2026)
+## m2376 -- NIGHT 18: the AURORA over the garden and glowing MOTES among the clouds (Nov 3 2026)
 His ask (relayed with the clouds): *"where it adds magic, an aurora band or drifting glowing particles behind / among them."*
 - The garden's NIGHT row takes `aurora: 1`: the snow's three folded curtains (m2298, one mesh + its sparkle) hang in the garden sky behind the isles and
   clouds (scaled with the dome inside `garden_sky`, so ~1.4 km out and 500-1200 m up), and the hemi leans to their colour as they breathe.
