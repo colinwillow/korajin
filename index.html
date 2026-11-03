@@ -54,7 +54,7 @@ try { localStorage.setItem('mel.game', 'korajin'); if (!localStorage.getItem('me
   window.__crash = show;
   addEventListener('error', function (e) {
     if (e && e.target && e.target !== window && e.target.src !== undefined) {
-      // m15XX: a <video>/<source>/<audio> that fails is NOT a crash -- the browser simply tries the next format (AV1 -> HEVC -> H.264) and the poster stays
+      // m2295: a <video>/<source>/<audio> that fails is NOT a crash -- the browser simply tries the next format (AV1 -> HEVC -> H.264) and the poster stays
       if (/^(VIDEO|SOURCE|AUDIO|TRACK)$/.test(e.target.tagName || '')) return;
       show('FAILED TO LOAD\n' + (e.target.src || e.target.href || e.target.tagName));
       return;
