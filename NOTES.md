@@ -19,6 +19,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 21: his cracks are LINES again -- the crack scale was the rig's units all along (Nov 3 2026)
+His report (images/feedback/m2376/hero_glow_dots.jpg): *"scattered tiny bright dots over his body -- looks like pixels -- instead of the glowing cracked-skin
+lines I liked, which emanated upward."* The skinned `transformed` is in the RIG's units, not the geometry box's: the crack scale has to be the mesh's own
+WORLD scale (`matrixWorld.getMaxScaleOnAxis()`, .0134 on Grumbo), measured with the height span. m2348's look he liked came from an ACCIDENT -- the shared
+uniform held a weapon's 1.75/60.7 = .029, close to the right number; m2370 made it per material from the geometry box (1.48), 110x too fine: sub-pixel
+dots. Now: ~30 cm cells stretched UPRIGHT (3.4, 1.6, 3.4 per m) so the cracks run up him, an AA'd line (`fwidth`, never under ~a pixel), 60% of patches,
+the shimmer still travelling feet to head. images/feedback/m2329/hero_cracks_lines.jpg (three moments of the shimmer, held full). Shipped unverified.
+
 ## m2394 -- THE START TRANSITION, TAKE 5: one jump-flip on his own clip, the petals shed from him<!--mine-->
 His notes on take 4, via the parent:
 - "he just launches up into the air -- doesn't look like he jumped -- and then once he's in the air he does a flip, instead of his momentum
