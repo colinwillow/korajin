@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2346 -- THE START LOGO STAYS IN FRAME<!--mine-->; petals and a shine round it
+His (screenshot m2338): with the wheel showing, the KORAJIN logo was pushed off the top of the screen. It was IN THE SCROLL (a flex child of
+`#start`), so scrolling the wheel scrolled it away. Now `.loopmark` is `position: fixed` under `env(safe-area-inset-top)`, width
+`min(66vw, 400px, 58vh)` so a landscape phone keeps it in the top third; `.loopgap` is `calc(75vh - 40px)` (the old gap plus the logo it no
+longer has to make room for), so the first level still sits at the bottom. Life, kept subtle: a soft pink glow breathing behind it (`kjglow`),
+a light band through the logo's own alpha every 7.5 s (`.shine`, the logo as a CSS mask), and `loopMark` -- a small canvas of 14 cherry petals
+drifting across and past it (`loopMark.T`; a function property, not a const, because the start page can build before that line evaluates).
+Rendered 390x844 portrait at scroll 0 and 900 (logo at y 20..147 both times) and 844x390 landscape. Shipped unverified.
+
 ## m2345 -- THE JINRA LIFT: the float never dies, and he sways in the pose (Nov 3 2026)
 His (relayed): *"before the meditation pose he does the perfect oscillation... if you stop moving he slows down and stops going up and down. I want him going up
 and down, oscillating and slightly rotating, specifically when he's in the pose."*
