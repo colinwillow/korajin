@@ -33,7 +33,8 @@
     "moves": "node tools/moves.mjs",
     "colaudit": "node tools/colaudit.mjs",
     "walktest": "node tools/walktest.mjs",
-    "fxstrip": "node tools/fxstrip.mjs"
+    "fxstrip": "node tools/fxstrip.mjs",
+    "nightshot": "node tools/nightshot.mjs"
   },
   "type": "module",
   "devDependencies": {

@@ -17,6 +17,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2316 -- NIGHT 1: THE NIGHT CORE: one night factor for every zone, TOOLS > TIME (Nov 3 2026)
+His ask (NIGHT.md): *"every scene, when it goes to night, things start to glow... cycles from day to night."* This build is box 1 of NIGHT.md.
+- **`NIGHT`** (SC_NIGHT): `mode` DAY / DUSK / NIGHT / CYCLE (TOOLS > TIME, `mel.time`; `?night=1|0`, `?time=day|dusk|night|cycle`), `f` 0..1 written
+  ONLY by `nightStep`, `dusk` = 4f(1-f) (the warm in-between), `cycle` 240 s. The snow's `SNOWNIGHT.on` is now `NIGHT.mode === 'NIGHT'`; the old
+  TOOLS > SNOW > TIME button is gone (its action is an alias) and `mel.snowtime` NIGHT migrates to `mel.time`.
+- **The overlay, not a rewrite:** `nightPre` / `nightPost` wrap `ctxRender`'s draw -- the sun, hemi, every other directional / hemi / ambient light
+  in the scene (the forge has three fills: found by a probe, they kept the floor white at night), fog colour, a colour background, background and
+  environment intensity and the exposure are blended to `NIGHT.pal` for the draw and handed back after it. So no zone's lighting is fought (ONE
+  WRITER holds: zones keep writing their day; the night is applied on top) and CYCLE can move. Point / spot lights (lamps) are left lit.
+- **The sky:** the m2298 dome (`nightSkyBuild`) is shared now: built lazily outside the snow, faded in by `f` (`uFade`, transparent), horizon
+  matched to the blended fog, scaled to `camera.far`; the aurora only where a zone row says `aurora` (snow). The snow's own night says `own`.
+- `npm run nightshot [zone ...]`: boots each zone at day / dusk / night, renders through the overlay, prints draws / tris, tiles a contact sheet.
+  Forge: day 9 draws 15k tris, night 10 draws 17k (+1: the dome).
+- Still open (NIGHT.md): a denser sky + shooting stars + the planet, the snow on the shared factor, `nightGlow` + the rune atlas, the hero's
+  runes, the zone passes, his sign-off. Shipped unverified.
+
 ## m2315 -- the entrance waits for the zone (Nov 3 2026)
 The spawn audit caught the temple and the snow dropping him at the forge's default (0, 0, 8): `entryWatch` fired on "grounded for .25 s" before the
 zone had built and put him at ITS spawn. Each zone row now has a `ready()` (WPARK / DUELZ / PROVE / ROPEB / TEMPLEZ / DOMET / SHIPZ / DRAGZ .on, SNOWZ.on,
