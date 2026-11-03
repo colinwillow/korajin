@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m23XX -- NIGHT 10: GLOWING FLORA and his glowing FOOTSTEPS -- the garden first (Nov 3 2026)
+## m2337 -- NIGHT 10: GLOWING FLORA and his glowing FOOTSTEPS -- the garden first (Nov 3 2026)
 His ask (relayed): *"tiny glowing plants -- glowing mushrooms, ferns with glowing fronds, little bushes with glowing petals or tips, specks in the grass that
 glow"* and the one he loves most, *"grass and flora brightening around his feet as he walks at night"*. A night-only layer of its own (NIGHT_FLORA),
 no zone builder touched; asked the garden's session first (its answers are in the m2327 entry; the reserved areas are honoured through `gdnReserved`).
