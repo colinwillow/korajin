@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2282 -- THE GARDEN: trunks wound outward; pot plants no longer black (Nov 3 2026)
+
+From the collider worker (measured): "the willow trunks' geometry is wound INSIDE OUT -- every face normal points back at the axis." Proved by the
+frame: `gdnTube` pushed (a, b, a+1) with b one ring along T and a+1 a step round toward B, so the face normal is T x B = -N, INWARD. Every tube
+-- willow trunks, their root flares and branches, the vein tracks' hosts -- drew its far inside wall and lit backwards. Now (a, a+1, b /
+a+1, b+1, b). Render trees: solid, lit trunks.
+FOUND ON THE SAME RENDER, MINE (m2275): the pots' plant tops drew BLACK. `gdnConsolidate` had turned the shared `M.fern` / `M.flowers` to
+vertex colours, and the new instanced geometries had no colour attribute. Every pot geometry (and the shard) now carries white vertex colours.
+(The worker's "pot rasterised into a permanent wall box near (-7.5, 1.0)" is the main lawn's BENCH, bench_main_-7.6 -- correctly solid.)
+**Shipped unverified.**
+
 ## m2280 -- THE START MENU TO THE LOADING SCREEN: Grumbo LEAPS and a JINRA SWIRL wipes the screen (Nov 3 2026)
 *"Something artistic that transitions from the start menu to the loading screen. Maybe he jumps up in the air off the home screen, or the Jinra
 makes a cool particle swirl that swishes the screen over to the loading screen."* (Relayed from the main session.)
