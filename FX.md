@@ -44,9 +44,9 @@ slash (sword) · punch · kick · slam (and landings) · spin / spiral · telepo
 stand-in path (a blade arc, a fist line, a foot arc, a helix, a projectile) -- the real moves are wired only after the look is signed.
 
 ## DONE WHEN
-- [x] FX.md written (m2308).
-- [x] The lab exists with its ENTRY row (portal, hero drop, goop slam), buttons for every move, HIM / DUMMY, SLOW, PALETTE, LOOP (m2308).
-- [x] All five blocks built, pooled, 8 draw calls (m2308: strips in NOTES).
+- [x] FX.md written (m2309).
+- [x] The lab exists with its ENTRY row (portal, hero drop, goop slam), buttons for every move, HIM / DUMMY, SLOW, PALETTE, LOOP (m2309).
+- [x] All five blocks built, pooled, 8 draw calls (m2309: strips in NOTES).
 - [ ] Every move iterated in strips (normal and slow) until they read as ONE language -- several passes, each in NOTES with the strip.
 - [ ] Measured on HIS phone: the lab's stat line (FX ms, DC) with LOOP on, no visible frame drop.
 - [ ] His pick of palette (MINT / PURPLE / SOLAR) -- or "keep all three".
