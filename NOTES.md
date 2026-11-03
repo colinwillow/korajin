@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the loading video is released when the card goes (Nov 3 2026)
+## m2291 -- the loading video is released when the card goes (Nov 3 2026)
 His screenshot (the loading card with the yellow TAP FOR SOUND and "BUILD M2227") was an OLD cached build -- the button's look changed at m2261,
 the loading video at m2289. His "it seemed to crash, then started loading again" is consistent with iOS reloading a tab short of memory, so: once
 the boot card has faded, its <video> is paused, its sources removed and the element dropped (`load()` on an empty source frees the decoder).
