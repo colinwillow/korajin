@@ -17,6 +17,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2312 -- THE ENTRANCE: every zone, he drops out of a violet portal in the sky, flips, and lands in slow motion (Nov 3 2026)
+His ask: *"every zone you spawn into: he TELEPORTS out of the sky. A powerful purple, electric, cloudy PORTAL opens; he falls out of it, FLIPS, and lands
+in a Spider-Man / superhero SLAM pose, slightly in SLOW MOTION, and the ground kicks up -- in the snow zone, snow particles fly up."* Step 1 of 2 (the
+entrance; step 2 audits every zone's landing spot and camera). It GROWS the m1953 hero drop rather than writing a second one:
+- `ENTRY` (SC_ENTRY markers) -- one row per zone key (`entryKey`: `?zone=`, `region`/`village`, `lvl`, else the world). Row: `at` (landing; omitted =
+  the zone's own spawn), `yaw`, `cam` [az, d, h] (the entrance lens round his front), `pad` ('rune' | 'stone' | 0), `H`, `skip()`.
+- `entryWatch` fires ONCE per zone per page, after the zone has stood him on the ground for `settle` s; the in-place menu entry changes the key, so it
+  fires there too. A fall respawn never retriggers. **The PROLOGUE is exempt** (`player.sleep` / a reel / the garden row's `skip`).
+- Sequence: hidden and held in the portal while the boot card is up ('wait'), the PORTAL opens (`entryPortal`: an additive swirling vortex disc, a slower
+  storm-cloud ring, six crackling arc ribbons rebuilt every 50-100 ms, a glow sprite, violet wisps off the smoke pool, a screen flash, zap + boom +
+  swoosh), he drops out with a light beam, does ONE forward flip about his middle (`entryPose`), `fall_hero` -> `land_hero` (the library still has no
+  true superhero landing; m1953's pick, one hand down, knee bent, is kept). SLOW MOTION: `entryTime` (multiplied into the frame dt beside
+  `arenaTime`) eases to .28 for the last .16 game s before impact (~.57 s real) and .12 after (~.43 s real). IMPACT (`entryImpact`): the surface off
+  `stepSurf` (pad hidden while it reads) -- SNOW / STONE / GRASS (+petals) / WATER (+spray) / SAND / WOOD / METAL kick-ups, the slam ring in violet,
+  the snow blast in snow, a big shake, boom + thud. The lens (`entryCam`) is low, three-quarter front, tilting down with him, and blends into the
+  play camera after control returns. A tap skips it.
+- The pad: a stone disc set flush in the ground with a violet rune ring (no collider needed). The colour is one constant (`ENTRY.col` / `hot`).
+- The temple's own `heroDrop` call is gone (its row has H 20); TOOLS > HERO DROP now plays the whole entrance where he stands.
+- TOOLS > MOVE > ENTRANCE ON/OFF (`mel.entry`), `?entry=0` / `?entry=1`.
+- Still open: the landing spots and cameras are the zones' own until step 2's audit (the snow spawn is the known occluded one). Shipped unverified.
 ## m2311 -- THE JINRA PALETTE, part 3: the canvas-texture colours (Nov 3 2026)
 - 18 mint CSS strings inside canvas textures now follow the pick (`JPAL.css(0x..)`, `JPAL.rgba(0x.., a)`): the village glow gradient
   (`vilTex`), the garden glyph strip (`willowMats`), the Jin glint sprite (`dojoGlintTex` -- it was mint UNDER a tint, so a violet tint
