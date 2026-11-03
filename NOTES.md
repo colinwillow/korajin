@@ -17,6 +17,31 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2364 -- the vertical wall run EASES out: gravity fights him, the apex falls out of his speed, then the sit or the slide (Nov 3 2026)
+*"The VERTICAL wall run that we capped -- I don't like that it just suddenly stops. It runs up and then just hits a wall. I want it to be a velocity
+thing ... it EASES from how fast you're going, as if gravity is fighting him -- he slows down, and then he falls into a sit or slides down."*
+What was wrong: m2170's budget was a CLAMP (`vy = min(vy, left x 4)` in the last .8 m) on top of m1833's grip (no gravity for .35 s) -- so he ran
+at nearly full speed and then braked in a fraction of a second at the top.
+- **The brake (`stepWrun`, the `arc === 'up'` branch):** from the catch his climb loses `WRUN.upG` (6) m/s^2, or MORE when the face's budget is
+  nearer than his speed would carry him: `v^2 / (2 x left)`, the one constant braking that reaches 0 m/s exactly at the budget's top. So the apex is
+  v^2/2g from his entry speed (entry unchanged: run speed + approach angle, `arcUpMin`/`entryK`/`riseK`) and never passes m2170's budget -- a sprint
+  still tops out ~6 m, a walk-in ~3.3, the same routes. Nothing clamps. `climbCap` 0 = m1833's grip-then-`vG`, as before.
+- **The legs slow with him (`wrunUpEase`):** every up-run clip rate (the RUN look's `CLIPS.run`, `wall_up`'s halves, `wall_up`) keeps its cadence
+  above `upSlowV` (3 m/s of climb) and scales in proportion to his climb under it, so the feet slow with the body rather than skating; 0 at the top.
+- **He leans back as he loses it (`wrunPose`):** `upSlowLean` (.2 rad) x the lost share, NOT torso-compensated (the chest goes too), eased.
+- **The top:** under `upApexV` (.4 m/s) he HANGS `upHang` (.22 s) while the last speed eases out; then the LEFT STICK picks: toward the wall
+  (`tin > upSitIn`) = the SIT (the existing perch/slide kind, facing out -- the turn round is carried by the drawn yaw, `p.turnOff`, over
+  `upSitTurn`, no pop); anything else = the SLIDE DOWN THE FACE: still facing the wall, the clip frozen mid-stride, the hips easing to
+  `upSlideHip`, friction `upSlideG` holding the fall to `upSlideV` (4.5 m/s), a scrape swoosh and dust off his feet at the face (`wrunScuff`,
+  `upDust`/s; goop blobs with TOOLS > GOOP FX). The jump off works at every point (velMode's tap, unchanged); the stick pulled hard away lets go.
+- m1888's let-go-to-perch now only applies while he is still CLIMBING (`!R.apex`) -- otherwise letting go at the top would always be the perch.
+- The other runs (diagonal, side) lost m2170's clamp too: they brake smoothly into the budget top (`need - upG` extra, only when needed).
+- One writer: `p.vel.y` is still written only inside `stepWrun`; `R.hipS`/`R.leanS` only in `wrunPose`. All numbers live on `mel.WRUN`.
+- THE WHOLE-PIECE RULE: this reworks an existing piece (the wall run), it does not build on an unsigned one. Open: his look on the phone.
+- TEST: KORAJIN > The Wall Park (`?w=forge&zone=wall`, the Ninja Gym), the yellow B TALL FACES ahead of spawn (8 / 14 / 22 m). Sprint straight
+  at the 14 m face holding up: he should slow to a stop around 6 m, legs slowing, leaning back; keep holding UP = he settles into the sit; let go
+  at the top = he slides down the face with dust. Walk in instead: a lower, shorter climb. Shipped unverified.
+
 ## m2363 -- the entrance, plainer: the play camera all the way, no slow motion, no flash, quieter (Nov 3 2026)
 His: *"I don't think I should've called it cinematic. I don't want slow-mo, and I don't like the angle -- what I wanted is the same perspective the
 whole time, like the original: he falls from the sky, hits the ground and does the Spider-Man stance. All I was adding is a portal that opens that
