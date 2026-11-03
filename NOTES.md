@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2335 -- THE LAKE pass 3: the water round the boat -- the wake (WATER.md) (Nov 3 2026)
+His: *"I want the water deforming around a boat."* A wake needs it MOVING, so the boat now CRUISES (until pass 5 gives him the stick): a lane at u = 22 down
+the canyon and back (clear of all three stacks), turning round at |z| > 600, 4.5 m/s, banking INTO its turns (`B.bankDot` = up . inside, asserted > 0
+by the lake boot gate: measured .092 at .219 rad/s) and lifting its bow with speed. It waits moored until the entrance has landed him, and the deck
+CARRIES him (`lakeStep`: his spot in the boat's frame before the step, back into the world after; his facing turns with it). Headless game: boat at
+1.09 m/s, cruising, him still inHull. TOOLS > LOOK > BOAT: CRUISE / MOORED (`mel.lakecruise`). `mel.LAKEZ` is live.
+- **The wake (`lkWake`, shared by the water's vertex and fragment shaders):** a trail of the BOW's past positions (24 x .45 s, `uTr`: x, z, path length,
+  age), so each water point gets (s along the path, d off it) and the Kelvin wedge FOLLOWS the turns: transverse + divergent waves inside a 19.5-degree
+  wedge, fading with age and to nothing before the trail ends; the bow wave and side trough in the hull's frame; foam at the hull line (`lkHullD`,
+  the hull's real taper), the arm crests and the centre churn behind the stern, broken by noise. The wake's slope comes off its height's screen
+  derivatives (no extra wake evaluations). Water inside the hull is discarded. Spray: 260 additive droplets off the bow cheeks at speed (1 draw).
+- **Looked at, top-down in debug colour first** (the shape before the shading): the V, the churn and the bow wave were right; the trail's end drew a
+  hard arc (faded now), and the foam thresholds turned the arms into blobs and the hull into a white plate (thinned and broken).
+- Not yet: foam where the hull meets the water at REST is a faint line only; no wake from jets; bioluminescence (NIGHT pass). Shipped unverified.
+
 ## m2332 -- THE HAMMOCK EXIT: a real get-up, not a slide (Nov 3 2026)
 His report (relayed): *"he does this kind of weird slide where there's no animation"* getting out of the hammock.
 - **Clip:** Mixamo `Getting_Up` (82 f, 2.7 s) baked by the Forge onto Grumbo as `wake` in `agoblin_meditate.glb`. It was picked by MEASURING the Hips
