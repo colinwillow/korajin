@@ -32,7 +32,8 @@
     "forge": "node tools/forge.cjs",
     "moves": "node tools/moves.mjs",
     "colaudit": "node tools/colaudit.mjs",
-    "walktest": "node tools/walktest.mjs"
+    "walktest": "node tools/walktest.mjs",
+    "fxstrip": "node tools/fxstrip.mjs"
   },
   "type": "module",
   "devDependencies": {

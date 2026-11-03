@@ -15,6 +15,9 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
 - [ ] **UI RINGS + REAL PLAY -- OPEN (his, Nov 2).** `UI_RINGS.md`: what he owns (`OWN`, grant/revoke, GOD = all), one ring layout for every pad
       button, then hp / lives / GAME OVER with GOD off. m2263 the rings + ownership; next the lives.
+- [ ] **FX -- OPEN (his, Nov 3).** `FX.md`: the goop (oily, blobby, electric, fluid) for every move, perfected in KORAJIN > The FX Lab first.
+  - [x] m2307 FX.md, the library (5 blocks, 8 draws), the lab + ENTRY row, `npm run fxstrip`.
+  - [ ] iteration passes on the strips (rings as goop bands, tearing ribbons, stronger sheen); his phone; his palette; his sign-off; then the sword's flames.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),
       four directional attacks on the right flick, guard + parry + lock-on on the pull-down hold, charge -> lunge -> spin.
       Builds a-e in the spec.

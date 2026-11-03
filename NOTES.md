@@ -45,6 +45,31 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
+## m2307 -- THE FX LAB, step 1: FX.md, the goop library (5 blocks, 8 draw calls), the lab zone with its ENTRY row (Nov 3 2026)
+His ask: *"less like flames: a mix of oily, BLOBBY, ELECTRIC GOOP that is also somewhat FLUID and flame-like ... the same amazing, refined particle
+stuff"* on every move. A NEW PIECE under the whole-piece rule, so: `FX.md` (the look, the blocks, the phone budget, the moves, DONE WHEN) and the
+sandbox, **KORAJIN > The FX Lab** (`?w=forge&zone=fxlab`, `FXLAB`, in `ZONEWANT`). Nothing in a real move is touched yet -- that waits for his sign-off.
+- **THE LIBRARY** (`fxLibMake(THREE, scene, camera)` + `FXPAL`, between `FXLIB:START/END`, a pure builder): GOOP BLOBS (2 draws: oily
+  normal-blended body with a dark rim, an iridescent band and a wet highlight + additive hot core with a per-sprite fake glow; wobble, stretch
+  along velocity, split into two and drip as they die), FLUID RIBBONS (2: camera-facing or blade SHEETS; scrolling noise tears the tail and the
+  tail sheds blobs), ELECTRIC ARCS (1: jittered, re-rolled at 30 Hz, and crawling between nearby blobs on their own), SPARKS (1: velocity
+  streaks), RINGS (2: ground or billboard, noise-torn). **8 draw calls constant.** A scheduler runs each move as a small script over time.
+- **THE MOVES** (stand-in paths): slash (sheet trail with sub-steps -- a 60 Hz swing is only ~12 samples and read faceted), punch, kick, slam,
+  spin (3 helices), teleport (implode -> flash -> column -> reappear 5 m ahead; in the lab it moves him), handspring, arrow (trail + hit).
+- **Emission is per SECOND, not per frame** (`em`): the first slow-motion strip had 313 blobs against 106 now, because x.25 is 4x the frames.
+- **THE LAB**: dark dome + dark floor (glow reads on dark), the dummy post at (0, -1), dark blocks at 1 / 2.2 / 3.6 m; big buttons for each move,
+  ON: HIM / DUMMY, SLOW x1 / .25 / .1 (the FX clock), PALETTE MINT / PURPLE / SOLAR (remembered), LOOP, and a stat line (FX draws, counts, FX ms, DC).
+  **ENTRY row** (`FXLAB.entry`): a purple portal disc 15 m up, `heroDrop` from 14 m, and a goop SLAM where he lands. Slow-mo of the entrance is
+  not built (no global time scale).
+- **`npm run fxstrip`** lifts the shipped FXLIB text into headless Chromium (stand-in capsule his height, the dummy) and renders a row per move.
+  `MEL_WORLD='forge&zone=fxlab' node tools/boot.mjs` builds the lab, fires every move and steps it: boot ok.
+- Strips (all moves MINT / PURPLE, slow x.25 SOLAR): calls 11 (8 FX + 3 scene), peak 153 blobs, worst sim+upload 2.4-4.5 ms on SwiftShader.
+- **Read of the strips, for the next pass:** blobs now read as goop (rounder outline after dropping the 9th harmonic -- they were shards); the
+  punch/kick hits read well. Still wrong: RINGS read as thin wobbly LINES rather than goop (want a thicker oily band with blobs riding it), the
+  handspring/spin ribbons read as plain tubes (want more tearing and drips), and the iridescence is faint at strip size.
+- Moves the box: FX.md, the lab, the five blocks. Open: the iteration passes, his phone measurement, his palette pick, his sign-off.
+  Shipped unverified.
+
 ## m2306 -- THE TRANSITION, take 3: a choreographed shot -- draw, leap, flip, spin-slash; the petals come OFF THE BLADE and spiral into the loading card's EMBLEM (Nov 3 2026)
 His note on take 2 (relayed from main): *"the jump is very linear -- does it flip? I want it more interesting, art-directed."* Direction: he draws his
 sword, leaps, flips, slashes at the apex; the particles come from the sword, spiral, and converge on the boot card's sun-wheel emblem, which
