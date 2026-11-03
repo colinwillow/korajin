@@ -229,7 +229,7 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #start .kjpad { height: 42vh; flex: none; }
 #start .kjscroll { position: fixed; left: 50%; bottom: calc(14vh + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 3; background: none; border: 0; padding: 10px 18px;
   display: flex; flex-direction: column; align-items: center; gap: 4px; color: #f4e7cf; font: 400 15px 'Permanent Marker', var(--disp), sans-serif; letter-spacing: .16em; text-transform: uppercase;
-  text-shadow: 2px 2px 0 #1a0b12; animation: kjFadeP 1.8s ease-in-out infinite; transition: opacity .3s; cursor: pointer; }     /* m15XX */
+  text-shadow: 2px 2px 0 #1a0b12; animation: kjFadeP 1.8s ease-in-out infinite; transition: opacity .3s; cursor: pointer; }     /* m2283 */
 #start .kjscroll i { width: 16px; height: 16px; border-right: 3px solid #f4e7cf; border-bottom: 3px solid #c8242c; transform: rotate(45deg); animation: kjBob 1.4s ease-in-out infinite; }
 #start .kjscroll.gone { opacity: 0; pointer-events: none; }
 @keyframes kjBob { 50% { transform: translateY(6px) rotate(45deg); } }
@@ -71642,8 +71642,8 @@ function startGate() {
       // m2188: THE TITLE LOOP (`LOOPBG`) -- Grumbo walking in place through the parallax garden; the poster is the fallback when WebGL is not there
       try { const host = add('div', 'loopbg'); add('div', 'loopshade'); stage = loopBg(host); } catch (e) { console.warn('[melee] title loop', e); stage = null; while (el.firstChild) el.removeChild(el.firstChild); }
       if (stage) { el.style.backgroundImage = ''; { const lg = add('img', 'looplogo'); lg.alt = 'KORAJIN · GRUMBO'; lg.src = 'images/korajin/korajin_logo.webp?b=' + BUILD; }     /* m2276: his title logo (brush KORAJIN, GRUMBO, the katakana and the seal) replaces the placeholder text */ add('div', 'loopgap');
-        try { stage.wx('auto'); } catch (e) {}     // m15XX (his: 'get rid of the season button -- just auto-cycle through them'): no chip; always AUTO
-        { const hint = add('button', 'kjscroll', '<span>scroll</span><i></i>');     // m15XX: the SCROLL hint -- pulses in the bottom third; a tap brings the first level (the Prologue) to the middle
+        try { stage.wx('auto'); } catch (e) {}     // m2283 (his: 'get rid of the season button -- just auto-cycle through them'): no chip; always AUTO
+        { const hint = add('button', 'kjscroll', '<span>scroll</span><i></i>');     // m2283: the SCROLL hint -- pulses in the bottom third; a tap brings the first level (the Prologue) to the middle
           hint.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); const f = el.querySelector('.go'); if (f) f.scrollIntoView({ block: 'center', behavior: 'smooth' }); });
           el.addEventListener('scroll', () => { hint.classList.toggle('gone', el.scrollTop > 40); }, { passive: true }); } }
       else { el.style.backgroundImage = 'linear-gradient(#07080c00, #07080c00 26%, #07080cbb 46%, #07080cee), url(images/korajin/korajin_title_02.webp?b=' + BUILD + ')';

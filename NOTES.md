@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- title screen: smaller logo, no season chip (auto only), a pulsing SCROLL hint (Nov 3 2026)
+## m2283 -- title screen: smaller logo, no season chip (auto only), a pulsing SCROLL hint (Nov 3 2026)
 *"The title is maybe a little big. I like not seeing the level selector -- but we need a little pulsing scroll thing in the bottom third, an arrow;
 pressed, it brings the first selection (Prologue) to the middle. Get rid of the debug season button, just auto-cycle."* `img.looplogo` 88vw/560 ->
 66vw/400 px. The season chip (`loopwx`) is gone; the loop is set to AUTO on build. `.kjscroll`: "SCROLL" in the brush face over a cream/red
