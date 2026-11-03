@@ -41,7 +41,7 @@ one optional second accent (purple) -- a switch for ONE or BOTH.
 - [x] (m2321) the shared night sky: dense layered stars that twinkle, the Milky Way, shooting stars, the big planet; the snow uses it
 - [x] (m2323) `nightGlow` + the alien rune atlas; zero glow by day (checked in a DAY render: the snow sheet)
 - [ ] crack glow on rocks, bioluminescent plant parts, lanterns that light at dusk; ONE / BOTH accent switch
-- [ ] the sword's runes (m2324: the katana's blade carries one line of the script, close render checked) and the arm cloth (open: the hero is one material, it needs a mask from his texture) glow at night
+- [ ] the sword's runes (m2325: the katana's blade carries one line of the script, close render checked) and the arm cloth (open: the hero is one material, it needs a mask from his texture) glow at night
 - [ ] the snow pushed; the garden; then the other zones, each with a DAY / NIGHT contact sheet
 - [ ] phone-fast: draw calls and tris reported per zone, the night adds a handful of draws at most
 - [ ] **his sign-off, on his phone**
