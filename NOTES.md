@@ -45,6 +45,18 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
+## m2310 -- FX reads THE JINRA PALETTE: no FX colour table; `fxCols` derives the goop from a JPAL row; VIOLET tuned (Nov 3 2026)
+From main and the Jinra-colour worker: Colin wants every Jinra glow on ONE variable, so the FX Lab's own switch must READ `JPAL`, not keep a copy;
+and he leans toward violet into electric blue, so the goop has to read well in VIOLET too. `FXPAL` (MINT / PURPLE / SOLAR) is GONE.
+`fxCols(row)` maps a `JINRA_PRESETS` row to the FX roles: core, body, rim = deep x.16, sheen = the glow +-60 deg + spark, arc, spark.
+`fxLibMake` starts on `JPAL.pick`; `FX.pal(name)` takes a preset name. The lab's button is now **JINRA** (MINT / VIOLET / JADE), and it SETS
+`mel.jin`, so it is the same variable as TOOLS > LOOK > JINRA COLOUR: the goop changes at once, the world on the next load (a tip says so).
+**VIOLET read washed out at first**: its glow role 0x7a7cff is a soft lavender, and as a goop body under a white core it came out pale. The body is
+now the glow's HUE at full saturation (lightness .5-.58), and the additive core went from x1.5 to x1.25 (its fake glow from x1 to x1.3). In the
+strips VIOLET now reads as rich violet into electric blue with the petrol sheen showing; MINT and JADE are checked too. `npm run fxstrip` lifts
+the SC_JINRA block as well (`--pal=VIOLET|MINT|JADE`). `MEL_WORLD='forge&zone=fxlab'` boot: ok. Box moved: none (palette plumbing);
+still open: the goop passes, his phone, his sign-off. Shipped unverified.
+
 ## m2309 -- THE FX LAB, step 1: FX.md, the goop library (5 blocks, 8 draw calls), the lab zone with its ENTRY row (Nov 3 2026)
 His ask: *"less like flames: a mix of oily, BLOBBY, ELECTRIC GOOP that is also somewhat FLUID and flame-like ... the same amazing, refined particle
 stuff"* on every move. A NEW PIECE under the whole-piece rule, so: `FX.md` (the look, the blocks, the phone budget, the moves, DONE WHEN) and the

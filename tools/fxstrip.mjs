@@ -1,4 +1,4 @@
-// npm run fxstrip [move ...] [--slow=.25] [--pal=MINT] [--src=index.html] [--out=dir] -- FRAME STRIPS of the FX library (FX.md).
+// npm run fxstrip [move ...] [--slow=.25] [--pal=MINT|VIOLET|JADE] [--src=index.html] [--out=dir] -- FRAME STRIPS of the FX library (FX.md).
 // Lifts the SHIPPED text between `// FXLIB:START` and `// FXLIB:END` (never a copy), runs it in headless Chromium on a dark floor with a
 // stand-in body (a 1.25 m capsule, his height) and the lab's dummy post, fires each move at fixed 60 Hz steps and grabs frames at set
 // moments. One PNG per run: a row per move, a column per moment, plus the draw calls and the worst FX frame time it measured.
@@ -13,9 +13,10 @@ if (!pw) { console.error('no playwright'); process.exit(1); }
 const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k + '=')); return a ? a.split('=')[1] : d; };
 const src = fs.readFileSync(path.resolve(ROOT, arg('src', 'index.html')), 'utf8');
 const m = /\/\/ FXLIB:START[\s\S]*?\/\/ FXLIB:END/.exec(src); if (!m) { console.error('no FXLIB markers'); process.exit(1); }
+const jm = /\/\* SC_JINRA:START \*\/[\s\S]*?\/\* SC_JINRA:END \*\//.exec(src); if (!jm) { console.error('no SC_JINRA markers'); process.exit(1); }     // THE JINRA PALETTE, also shipped text
 const moves = process.argv.slice(2).filter(x => !x.startsWith('--'));
 const OUT = arg('out', path.join(ROOT, 'shots')); fs.mkdirSync(OUT, { recursive: true });
-const opts = { slow: +arg('slow', 1), pal: arg('pal', 'MINT'), moves, times: (arg('t', '') || '').split(',').filter(Boolean).map(Number), W: +arg('w', 360), H: +arg('h', 270) };
+const opts = { slow: +arg('slow', 1), pal: arg('pal', 'MINT').toUpperCase(), moves, times: (arg('t', '') || '').split(',').filter(Boolean).map(Number), W: +arg('w', 360), H: +arg('h', 270) };
 const page = `<!doctype html><html><head><script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script></head><body style="margin:0;background:#000">
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; window.ready = 1;</script></body></html>`;
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); if (u === '/' || u === '/fx.html') { r.writeHead(200, { 'content-type': 'text/html' }); return r.end(page); }
@@ -24,7 +25,7 @@ await new Promise(go => srv.listen(0, go)); const port = srv.address().port;
 const br = await pw.chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const pg = await br.newPage(); pg.on('pageerror', e => console.error('PAGE', e.message)); pg.on('console', c => { if (c.type() === 'error') console.error('CONSOLE', c.text()); });
 await pg.goto(`http://localhost:${port}/fx.html`); await pg.waitForFunction('window.ready');
-const res = await pg.evaluate(([code, o]) => { const THREE = window.THREE;
+const res = await pg.evaluate(([code, jin, o]) => { const THREE = window.THREE; new Function(jin)();
   const make = new Function('THREE', 'scene', 'camera', code + '\nreturn fxLibMake(THREE, scene, camera);');
   const W = o.W, H = o.H, R = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); R.setSize(W, H); R.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0x07080c); const cam = new THREE.PerspectiveCamera(55, W / H, .1, 200);
@@ -47,7 +48,7 @@ const res = await pg.evaluate(([code, o]) => { const THREE = window.THREE;
       if (t >= ts[k] - 1e-6) { R.render(scene, cam); calls = Math.max(calls, R.info.render.calls); c2.drawImage(R.domElement, k * W, 22 + row * (H + 18) + 18);
         c2.fillStyle = '#9ff'; c2.fillText((k ? '' : name.toUpperCase() + '  ') + (ts[k] * o.slow).toFixed(2) + 's', k * W + 6, 22 + row * (H + 18) + 13); k++; } } });
   c2.fillStyle = '#fff'; c2.fillText('FX STRIP  palette ' + o.pal + '  slow x' + o.slow + '  calls<=' + calls + '  peak blobs ' + peak.blobs + ' sparks ' + peak.sparks + '  worst sim+upload ' + worst.toFixed(2) + ' ms (swiftshader)', 6, 15);
-  return { png: out.toDataURL('image/png'), calls, worst, peak }; }, [m[0], opts]);
+  return { png: out.toDataURL('image/png'), calls, worst, peak }; }, [m[0], jm[0], opts]);
 const file = path.join(OUT, 'fx_' + (moves.join('_') || 'all') + '_' + opts.pal.toLowerCase() + (opts.slow !== 1 ? '_slow' : '') + '.png');
 fs.writeFileSync(file, Buffer.from(res.png.split(',')[1], 'base64'));
 console.log(file, 'calls', res.calls, 'worst ms', res.worst.toFixed(2), 'peak', JSON.stringify(res.peak));

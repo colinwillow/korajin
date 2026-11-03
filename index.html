@@ -35225,20 +35225,26 @@ function proveStep() { const Z = PROVE, p = player; if (!Z.on) return;
 //   FLUID RIBBONS (2: the same body/core split along a strip; scrolling noise tears the tail into holes and the tail sheds real blobs),
 //   ELECTRIC ARCS (1: jittered strips re-rolled 30 times a second, plus arcs that crawl between live blobs on their own),
 //   SPARKS + MOTES (1: streaks stretched along their own screen velocity), RINGS (2: ground or camera-facing, wobbled, splashing goop).
-// EVERY COLOUR IS IN `FXPAL` -- a palette switch re-tints everything already in the air. No post chain: the glow is faked per sprite.
-const FXPAL = {
-  MINT:   { core: [.86, 1, .95], body: [.16, .95, .74], rim: [.015, .13, .12], s0: [.25, .55, 1], s1: [.85, .35, 1], s2: [.45, 1, .55], arc: [.75, 1, 1], spark: [.9, 1, .96] },
-  PURPLE: { core: [1, .9, 1], body: [.62, .26, 1], rim: [.06, .015, .13], s0: [1, .35, .78], s1: [.3, .55, 1], s2: [.55, 1, .9], arc: [.88, .78, 1], spark: [1, .92, 1] },
-  SOLAR:  { core: [1, 1, .84], body: [1, .5, .1], rim: [.14, .04, .015], s0: [1, .2, .42], s1: [1, .86, .3], s2: [.55, .3, 1], arc: [1, .95, .72], spark: [1, .95, .8] } };
+// EVERY COLOUR COMES FROM THE JINRA PALETTE (`fxCols`) -- a palette switch re-tints everything already in the air. No post chain: the glow is faked per sprite.
+// THE COLOURS ARE NOT HERE (m2310): they are THE JINRA PALETTE (`JPAL`, window.JINRA_PRESETS, JINRA_COLOUR.md). `fxCols(row)` derives the FX roles from
+// one preset row -- core, body = glow, the oily rim = deep darkened, spark, and the petrol SHEEN as the glow turned +-60 deg round the wheel plus
+// the spark -- so every preset (MINT, VIOLET-BLUE, JADE-TEAL, and any row added there) dresses the goop with no second table.
+function fxCols(P) { const rgb = h => [((h >> 16) & 255) / 255, ((h >> 8) & 255) / 255, (h & 255) / 255];
+  const hue = (h, d, sat0, lo, hi) => { const [r, g, b] = rgb(h), mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, c = mx - mn; let H = 0;
+    if (c) H = mx === r ? ((g - b) / c) % 6 : mx === g ? (b - r) / c + 2 : (r - g) / c + 4; H = ((H * 60 + d) % 360 + 360) % 360; const sat = sat0 || .95, L = Math.min(hi || .62, Math.max(lo || .5, l));
+    const C = (1 - Math.abs(2 * L - 1)) * sat, X = C * (1 - Math.abs((H / 60) % 2 - 1)), m = L - C / 2, k = Math.floor(H / 60), T = [[C, X, 0], [X, C, 0], [0, C, X], [0, X, C], [X, 0, C], [C, 0, X]][k];
+    return T.map(v => v + m); };
+  const core = rgb(P.core), spark = rgb(P.spark);
+  return { core, body: hue(P.glow, 0, 1, .5, .58), rim: rgb(P.deep).map(v => v * .16), s0: hue(P.glow, 60), s1: hue(P.glow, -60), s2: spark, arc: core.map((v, i) => (v + spark[i]) / 2), spark }; }
 function fxLibMake(THREE, scene, camera) {
   const V3 = THREE.Vector3, rnd = (a, b) => a + Math.random() * (b - a), TAU = Math.PI * 2;
   const S = { pal: 'MINT', k: 1, t: 0, gy: () => 0, crawl: 7, max: { blob: 420, spark: 220, ring: 24, rib: 2400, arc: 900 } };
   const U = { uT: { value: 0 }, uCore: { value: new THREE.Color() }, uBody: { value: new THREE.Color() }, uRim: { value: new THREE.Color() },
     uS0: { value: new THREE.Color() }, uS1: { value: new THREE.Color() }, uS2: { value: new THREE.Color() }, uArc: { value: new THREE.Color() }, uSpark: { value: new THREE.Color() } };
-  function pal(n) { const P = FXPAL[n] || FXPAL.MINT; S.pal = FXPAL[n] ? n : 'MINT';
+  function pal(n) { const T = S.presets || (typeof window !== 'undefined' && window.JINRA_PRESETS) || {}, row = T[n] || T.MINT; if (!row) return S.pal; const P = fxCols(row); S.pal = T[n] ? n : 'MINT';
     U.uCore.value.setRGB(...P.core); U.uBody.value.setRGB(...P.body); U.uRim.value.setRGB(...P.rim); U.uS0.value.setRGB(...P.s0); U.uS1.value.setRGB(...P.s1); U.uS2.value.setRGB(...P.s2);
     U.uArc.value.setRGB(...P.arc); U.uSpark.value.setRGB(...P.spark); return S.pal; }
-  pal('MINT');
+  pal((typeof window !== 'undefined' && window.JPAL && window.JPAL.pick) || 'MINT');
   const GL = `uniform float uT; uniform vec3 uCore, uBody, uRim, uS0, uS1, uS2, uArc, uSpark;
     float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
     float vn(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
@@ -35269,7 +35275,7 @@ function fxLibMake(THREE, scene, camera) {
   const blobAdd = mk(BLOB_VS, BLOB_HEAD + `void main() { float r = length(vP), th = atan(vP.y, vP.x), s = vM.x; float e = 1. + wob(th, s) * (.75 + vL * 1.3), d = r / e;
       float heat = vM.y, fl = .82 + .18 * sin(uT * 61. + s * 40.), core = exp(-d * d * 5.5) * heat * fl;
       float glow = exp(-max(d - .8, 0.) * 3.2) * (1. - smoothstep(1.2, 1.9, d)) * (.18 + .3 * heat);
-      vec3 col = uCore * core * 1.5 + uBody * glow; gl_FragColor = vec4(col * vM.w, 1.); }`, 1, 21);
+      vec3 col = uCore * core * 1.25 + uBody * glow * 1.3; gl_FragColor = vec4(col * vM.w, 1.); }`, 1, 21);
   blobBody.uniforms = Object.assign({ uSp: { value: 1.25 } }, U); blobAdd.uniforms = Object.assign({ uSp: { value: 1.9 } }, U);
   const BP = quadPool(S.max.blob, [['iP', 4], ['iV', 4], ['iM', 4]]); put(BP.g, blobBody);
   const BPa = { g: new THREE.InstancedBufferGeometry() }; BPa.g.index = BP.g.index; for (const k of ['position', 'iP', 'iV', 'iM']) BPa.g.setAttribute(k, BP.g.getAttribute(k)); BPa.g.instanceCount = 0; put(BPa.g, blobAdd);
@@ -35482,7 +35488,7 @@ function fxLibMake(THREE, scene, camera) {
 // FXLIB:END
 // m2309: THE FX LAB (FX.md) -- KORAJIN > The FX Lab, `?w=forge&zone=fxlab`. A dark floor under a dark dome (glow reads best on dark), the dummy
 // post 8 m ahead of him, three dark blocks at 1, 2.2 and 3.6 m to jump off, and a panel of big buttons: each fires one move's FX on HIM or on the
-// DUMMY, SLOW (x1 / x.25 / x.1, the FX clock only), PALETTE (MINT / PURPLE / SOLAR -- `FXPAL`, remembered) and LOOP (every move in turn).
+// DUMMY, SLOW (x1 / x.25 / x.1, the FX clock only), JINRA (the game's ONE Jinra palette, `JPAL`: MINT / VIOLET / JADE, saved as `mel.jin`) and LOOP (every move in turn).
 // ENTRY row (CLAUDE.md, the entrance rule): a purple sky portal over `at`, the hero drop from `H` m, and a goop SLAM where he lands.
 const FXLAB = { want: 0, on: null, entry: { at: [0, 0, 7], h: Math.PI, H: 14 }, dummy: [0, -1], on2: 'HIM', slows: [1, .25, .1], loop: 0, loopT: 0, loopI: 0, ms: 0 };
 try { if (/[?&]zone=fxlab\b/.test(location.search)) FXLAB.want = 1; } catch (e) {}
@@ -35496,10 +35502,7 @@ function fxlabBuild() { const Z = FXLAB; Z.want = 2; if (Z.on) return; const g =
   box(8, 11, 1, 2, 5); box(9, 12, 2.2, -4, -1); box(-12, -9, 3.6, -2, 1);     // three heights to jump off (VERTICALITY: below, level, above)
   const [dx, dz] = Z.dummy, post = new THREE.Mesh(new THREE.CylinderGeometry(.32, .4, 1.9, 20), new THREE.MeshStandardMaterial({ color: 0x3a3e48, roughness: .8 })); post.position.set(dx, .95, dz); post.castShadow = true; g.add(post);
   BOXES.push({ minx: dx - .35, maxx: dx + .35, miny: 0, maxy: 1.9, minz: dz - .35, maxz: dz + .35 });
-  try { const J = window.JPAL, c = h => [((h >> 16) & 255) / 255, ((h >> 8) & 255) / 255, (h & 255) / 255];     // FX follows THE JINRA PALETTE (m2307, JPAL): the JINRA row is built from it
-    if (J && J.glow != null) { const sh = J.pick === 'MINT' ? FXPAL.MINT : FXPAL.PURPLE, dp = c(J.deep); FXPAL.JINRA = Object.assign({}, sh, { core: c(J.core), body: c(J.glow), rim: dp.map(v => v * .14), spark: c(J.spark), arc: c(J.core).map((v, i) => (v + c(J.spark)[i]) / 2) });
-      for (const k of Object.keys(FXPAL)) if (k !== 'JINRA') { const v = FXPAL[k]; delete FXPAL[k]; FXPAL[k] = v; } } } catch (e) {}     // JINRA first in the cycle
-  if (!FX) FX = fxLibMake(THREE, scene, camera); try { FX.pal(localStorage.getItem('mel.fxpal') || (FXPAL.JINRA ? 'JINRA' : 'MINT')); } catch (e) {}
+  if (!FX) FX = fxLibMake(THREE, scene, camera);     // it starts on the game's own Jinra pick (`JPAL.pick`)
   const E = Z.entry, p = player; p.pos.set(E.at[0], E.at[1], E.at[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = E.h; cam.az = E.h;
   const pm = new THREE.Mesh(new THREE.CircleGeometry(2.4, 48), new THREE.MeshBasicMaterial({ color: 0xa040ff, transparent: true, opacity: .9, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false, side: THREE.DoubleSide }));
   pm.rotation.x = -Math.PI / 2; pm.position.set(E.at[0], E.at[1] + E.H + 1, E.at[2]); g.add(pm); Z.portal = { m: pm, t: 0 }; Z.drop = 0;
@@ -35509,7 +35512,8 @@ function fxlabBuild() { const Z = FXLAB; Z.want = 2; if (Z.on) return; const g =
   for (const n of FX.names) B(n.toUpperCase(), () => fxlabFire(n));
   B('ON: ' + Z.on2, b => { Z.on2 = Z.on2 === 'HIM' ? 'DUMMY' : 'HIM'; b.textContent = 'ON: ' + Z.on2; }, 96);
   B('SLOW x1', b => { const i = (Z.slows.indexOf(FX.S.k) + 1) % Z.slows.length; FX.S.k = Z.slows[i]; b.textContent = 'SLOW x' + FX.S.k; }, 90);
-  B('PALETTE ' + FX.S.pal, b => { const L = Object.keys(FXPAL), n = L[(L.indexOf(FX.S.pal) + 1) % L.length]; FX.pal(n); try { localStorage.setItem('mel.fxpal', n); } catch (e) {} b.textContent = 'PALETTE ' + n; }, 120);
+  B('JINRA ' + FX.S.pal, b => { const L = window.JINRA_ORDER || Object.keys(window.JINRA_PRESETS || {}), n = L[(L.indexOf(FX.S.pal) + 1) % L.length]; FX.pal(n);     // the ONE Jinra table: the lab
+    try { localStorage.setItem('mel.jin', n); } catch (e) {} b.textContent = 'JINRA ' + n; tipShow('Jinra ' + n + ' -- the goop now; the rest of the world on the next load.', 3); }, 120);     // switches it, the world follows on reload
   B('LOOP OFF', b => { Z.loop = !Z.loop; Z.loopT = 0; b.textContent = Z.loop ? 'LOOP ON' : 'LOOP OFF'; }, 90);
   const st = document.createElement('div'); st.style.cssText = 'width:100%;text-align:center;color:#8fd;font:600 11px ui-monospace,monospace;text-shadow:0 1px 2px #000;pointer-events:none'; el.appendChild(st); Z.st = st;
   document.body.appendChild(el); Z.el = el; Z.on = { g }; boxGrid(); }

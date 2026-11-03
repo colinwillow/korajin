@@ -30,7 +30,7 @@ shipped text (headless, a stand-in capsule his height).
 | RINGS | 2 | shockwaves on the ground or facing the camera, wobbled, torn by noise, with goop splashing out |
 
 **No post-processing chain** (there is none in this game and it costs fill on a phone): every glow is faked inside its own sprite.
-**Palette**: every colour is in `FXPAL`; its first row, `JINRA`, is BUILT from THE JINRA PALETTE (`JPAL`, JINRA_COLOUR.md) so one Jinra pick drives the goop too, and the lab defaults to it. The FX-only rows -- `MINT` (Jinra today), `PURPLE` (Jinra may become purple), `SOLAR` (a third option). Switching re-tints
+**Palette**: FX has NO colour table of its own. Every colour comes from THE JINRA PALETTE (`JPAL` / `window.JINRA_PRESETS`, JINRA_COLOUR.md): `fxCols(row)` derives the FX roles from one preset row -- core, the goop body (the glow's hue at full saturation: the glow role is soft and read washed-out as goop), the oily rim (deep, darkened), spark, and the petrol sheen (the glow turned +-60 deg, plus the spark). The lab's JINRA button cycles MINT / VIOLET / JADE and saves `mel.jin`, so the goop changes now and the world follows on the next load. A new look is a new row in `JINRA_PRESETS`, never a table here.
 everything already in the air.
 
 ## PHONE BUDGET
