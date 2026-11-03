@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2374 -- the entrance's portal, sized for the play camera (Nov 3 2026)
+Rendered m2363 headless: on the play camera (5 m behind him, a little above) the 9 m tear at his own height FILLED THE SCREEN -- the camera sat on top
+of it. Now (when `ENTRY.cine` is 0) the portal is half size (`pScale` .5), centred `pOff` 1.5 m over where he appears, and tipped `lean` .9 rad toward
+the camera: the rip runs and peels open up in the frame, he drops out of its underside, the camera follows him down, it seals above. Frame strip
+sent. Shipped unverified.
+
 ## m2373 (m2371 + fix) -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
 ## m2372 -- THE LAKE: the DIVE off the deck (Nov 3 2026)
 When he leaves the deck (a jump or a step off; within .5 s of last standing on it), is clear of the hull and over water deeper than `swim.deep`, `p.lkDive`
