@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2307 -- THE JINRA PALETTE: one table for the colour of the Jinra, three presets, a TOOLS switch (Nov 3 2026)
+His ask: *"find where the colour of the JINRA is, and standardise it so we can swap it and try different looks... a purple-blue jade... if one
+variable changes everything glowing that way, we can easily change fire particles, glowing veins, etc."* Read `JINRA_COLOUR.md`.
+- **THE TABLE** is in the HEAD (`<script id="jinpal">`, `SC_JINRA` markers): roles core / glow / deep / spark / ui, presets MINT (today),
+  VIOLET (VIOLET-BLUE: violet core into electric blue), JADE (JADE-TEAL). In the head so the CSS `--jin-*` properties are right before the
+  first paint. The module reads it as `JPAL` -- **NOT `JINRA`, which the module already uses for the collected-wisp counter (m1500).**
+- **ROUTED:** every exact mint -- 69 JS sites (`0x7affd8`, `'#7affd8'`, `[.48, 1, .85]`, the glint gradient's rgba) and the CSS (`#7affd8` ->
+  `var(--jin-glow)`, the alpha forms -> `rgba(var(--jin-glow-rgb), a)`); `JIN.hex` / `JIN.col` / `JINHEX` now read `JPAL`. The menu's TAP TO
+  ENTER, its selected border and the rings' Jin segment follow it.
+- **`JPAL.shift(hex)`** carries a hand-picked mint SHADE into the active preset (by lightness: dark -> deep, mid -> glow, pale -> core); it is
+  IDENTITY under MINT, so the default look does not move. The ~60 jade shade literals (streams, garden water, veins, crystals) are the next
+  builds, system by system, listed in the doc.
+- **THE TOOLS HAD TO LEARN IT:** `boot`, `placecheck` and `sim` run the module text alone, so the head palette never ran there and the first
+  boot threw `reading 'glow'` -- they prepend the `jinpal` script now. `syntax` checks `<script id=..>` too.
+- **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
+- Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
+
 ## m2306 -- THE TRANSITION, take 3: a choreographed shot -- draw, leap, flip, spin-slash; the petals come OFF THE BLADE and spiral into the loading card's EMBLEM (Nov 3 2026)
 His note on take 2 (relayed from main): *"the jump is very linear -- does it flip? I want it more interesting, art-directed."* Direction: he draws his
 sword, leaps, flips, slashes at the apex; the particles come from the sword, spiral, and converge on the boot card's sun-wheel emblem, which

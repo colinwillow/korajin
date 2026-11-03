@@ -159,6 +159,7 @@ globalThis.Image = class { set src(v) {} addEventListener() {} };
 
 let src = m[1].replace(/(from\s*)['"]three['"]/g, `$1'${pathToFileURL(path.join(TMP, 'three-shim.mjs')).href}'`);
 src = src.replace(/(from\s*)['"]\.\/vendor\//g, `$1'${ROOT}vendor/`);
+src = (html.match(/<script id="jinpal">([\s\S]*?)<\/script>/) || [0, ''])[1] + '\n' + src;     // the JINRA palette (head script) runs ahead of the module, as on the page
 // AND THE WORLD BUILDERS ARE CALLED DIRECTLY (m1427). `init()` awaits asset loads that never resolve here, so a world's builder past
 // those awaits was never evaluated by this gate at all -- Grumbo's home threw for builds while it said boot ok. MEL_WORLD=home calls
 // `buildHome()` itself, after the module has run; its catch logs "HOME BUILD THREW", which fails the gate (below).

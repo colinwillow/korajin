@@ -22,7 +22,7 @@ while ((m = re.exec(html))) {
 }
 // and the plain scripts in the head -- the crash trap and the zoom guard, which are the two
 // things that must work when nothing else does
-const re2 = /<script>([\s\S]*?)<\/script>/g;
+const re2 = /<script(?: id="[a-z]+")?>([\s\S]*?)<\/script>/g;
 let k = 0;
 while ((m = re2.exec(html))) {
   const f = path.join(os.tmpdir(), `melee-inline-${k++}.js`);
