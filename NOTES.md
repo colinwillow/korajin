@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2297 -- BREAKABLES GAME-WIDE, step 2: every zone's smashables shatter and drop (Nov 3 2026)
+
+Found on the way: there was ALREADY a game-wide smashable system -- m1141's `SMASH` / `smashAdd` (29 call sites: the shrine's sake barrels and
+offering pots, the market's crates and fruit, the watchtower, the gatehouse, the rampart, the docks, caches ...), hit through `bldHit` (bolts,
+arrows, melee in the arena and home). They broke by VANISHING (a few chip sparks) and came back `fix` s later. Now, in `smashHit`'s break:
+- `propShatter(x, y, z, H, material, hx, hz)`: ten curved shards of the prop's OWN material (a pool of 60 per material, made on first use, world
+  space, stepped and faded by `propStep` like the pot shards) fly out and the way the blow went.
+- `propDrop`: the same 30% doubloon / 35% Jinra as the garden's pots.
+- `brkBlast` (the bolt / melee / thrown-body door) now reaches `SMASH` too (their own `cool` stops a double count), and a DASH or roll over
+  6.5 m/s through one breaks it, in any zone.
+Headless, the shrine built: 16 smashables; a sake barrel broken -> 10 straw shards live and a doubloon (render props_step2_shrine).
+NOT YET: props built straight into merged meshes in other zones (not `smashAdd`) -- the snow village, Akatani -- need registering through `propKind`
+zone by zone; and KICKABLE small rocks exist only in the Garden so far (`kickKind`). **Shipped unverified.**
+
 ## m2295 -- a video format the phone can't play is no longer a "FAILED TO LOAD" crash screen (Nov 3 2026)
 His screenshot: the crash overlay "FAILED TO LOAD .../video/title_loop_av1.mp4?b=m2294" over the splash. The page-level `error` listener (capture,
 line ~55) shows the crash card for ANY element with a `src` whose load fails -- and a <source> the browser cannot decode (AV1 on an iPhone without
