@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2343 -- THE LAKE pass 4b: the falls, the torii and shrine, the islets (WATER.md) (Nov 3 2026)
+- **The falls (`W.falls`, CRAFT 2: water comes FROM somewhere):** a SPRING pool on the west rim behind the lip; the water leaves the lip at v0 and FALLS
+  (simulated, ballistic); where an arc meets a tier's ledge it pools, runs out to the next lip and falls again, until the last arc lands in the lake --
+  six arcs measured on the strip. Each arc a ribbon that widens 7 -> 16 m, streaky, torn at the edges, brightest at the top (1 draw); the rock under it
+  dark and wet (`uWet`, terrain shader); pools with a foam rim and rings (1 draw); a mist puff at every landing; the lake churns and rings round the
+  last one (`uFall`, the water shader).
+- **The torii and shrine (`W.torii`):** found on the east rim by the same profile walk, `back` m in from the edge, facing the lake: vermilion pillars on
+  stone footings with black collars, a kasagi that sweeps up at both ends with its black cap, the nuki, the gakuzuka, two glowing stone lanterns, a
+  small hall on a stone platform behind with a red-under / black-over upswept roof. 15 m tall so it reads from the water. 4 draws (merged per material).
+- **The islets (`W.islets`, six, 74-205 m up -- VERTICALITY):** a grassy dome over an eroded hanging cone, in the canyon's own strata shader (1 draw);
+  two carry cherries (tree rows `islet:`), so petals come off them too.
+- Caught on the strip: the falls camera sat inside the north stack; the first falls were 3 m wide on a 140 m bluff (a thread) -- now 7-16.
+- Cost over m2340: +9 draws, +21k tris. Shipped unverified.
+
 ## m2341 -- the garden lights his Jinra glow: wading in the water, floating in the beam (Nov 3 2026)
 Relayed: *his purple parts glow when he steps in the stream or goes in a geyser* (HEROGLOW, m2339). The garden calls `heroGlowHold` every frame he is in contact:
 - **Water:** the wading test that already exists (`Z.inWater`: pools and streams, within .6 m of the surface) holds `GARDEN.glowWade` (.7), up to x1 at a run.
