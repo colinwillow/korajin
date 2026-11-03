@@ -124,7 +124,7 @@ like the electric sound effects: they linger too much, and the electricity is no
   file falls back to a low swoosh. The music ducks to half (`ENTRY.duck`, `MUSIC.duck` -- the reel is its other writer and never overlaps) from the
   rip until the seal has finished.
 - Shipped unverified (a render of the flat tear is in flight).
-## m23XX -- NIGHT 17: his QUILLS glow -- and the hero glow's height was wrong the whole time (Nov 3 2026)
+## m2370 -- NIGHT 17: his QUILLS glow -- and the hero glow's height was wrong the whole time (Nov 3 2026)
 His ask: the quills did not catch the glow. They are ORANGE and maroon, not purple, so the purple mask could never take them: a QUILL band now lights
 the top of him (`uHgQ` .88-.95 of his height, saturated colour only, brightest at the tips, mixed 25% to their own colour).
 **And the height under it had been wrong since m2348, found by isolating terms one at a time (quills / cracks / emblem off):**
