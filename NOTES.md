@@ -17,6 +17,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2280 -- THE START MENU TO THE LOADING SCREEN: Grumbo LEAPS and a JINRA SWIRL wipes the screen (Nov 3 2026)
+*"Something artistic that transitions from the start menu to the loading screen. Maybe he jumps up in the air off the home screen, or the Jinra
+makes a cool particle swirl that swishes the screen over to the loading screen."* (Relayed from the main session.)
+- **The order**: the pick rings the temple bell (`ui_go`, as before) -> the title loop's `leap(onCover, onEnd)` -> on COVER the menu is
+  swapped for the boot card underneath (opacity 0, no fade, hidden by the veil) -> on END `shutterClose` runs as before and the heavy build
+  starts. **It all plays and finishes BEFORE the build** (which blocks the main thread for seconds), in `LOOPBG.leap.dur` 1.15 s.
+- **THE LEAP**: he crouches (.16 s), then launches on his `ninja_jump` clip (crossfaded off the walk; `front_flip` if missing) at 14 m/s against
+  a light 5 m/s2, and the camera follows him up by half his height. His shadow fades as he rises. The height is analytic (v t - g t2/2).
+- **THE SWIRL** (`loopSwirl`, a 2D canvas over everything, z 60, removed at the end): 380 Jinra motes (mint + white, glow sprites, additive)
+  spiral out from his screen position into a VORTEX that drifts to screen centre and grows to cover it, each with a curved 5-sample trail so
+  they read as a swirl. A jade radial VEIL rises under them (18-46%), holds to 58%, then thins to reveal the loading card. Every number is in
+  `LOOPBG.leap` (durations, spin, mote count and size, veil timing, colours). Mint = Jinra only.
+- `swirl.hold` (via `LOOPBGRUN.swirl`) pins the transition at one moment, for a frame strip. Headless screenshots take seconds of real time, so
+  the live animation cannot be captured otherwise. Strip rendered at u = 0, .1, .2, .3, .4, .52, .66, .8, .93: he crouches and rises, the vortex
+  builds, the veil covers, the loading card shows through.
+- Zap & Clancy's turntable stage has no `leap`, so it falls straight to `shutterClose` as before. **Shipped unverified.**
+
 ## m2278 -- the game won't start with Grumbo's texture missing: check and reload it (Nov 3 2026)
 *"My phone was heating up, shoddy service -- it loaded but his texture didn't, and it just played anyway; he was black in the intro."* A GLB can
 arrive whole while an image inside it fails to decode (weak connection, a hot phone short of memory). After the character loads, `glbTexBad(g)`
