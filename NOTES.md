@@ -19,6 +19,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2391 -- a sprint no longer carries into the guard or the charge: he PLANTS (a .32 s skid + dust) to the stance's speed; m2378's slow cap reverted
+His correction (Nov 3) on m2378: *"It made something that was already the right speed slower, and didn't fix the actual problem."* The real bug: already
+SPRINTING, then right stick UP (charge) or DOWN (guard), he kept full sprint momentum and slid along at run speed in the guard / charge pose.
+- Cause (read in the code): AUTOSPRINT (m1809) re-set `p.ninja = 1` EVERY frame from `p.sprintAuto`, with no stance test -- `busy` only stopped the
+  run distance growing, never the flag. `p.ninja` sets `wantSp` "past every cap above", so the guard's `MOVE.blockSp` 2.4, the aim's `GAIT.aimRunRef`
+  2.3 and the charge's own legs were all overridden. Now a stance (`p.charge` / `p.block` / `p.aim` -- the bow draw and the gun aim -- / `p.center`)
+  zeroes `p.runD` and the sprint cannot re-arm until it ends (he builds the run again after).
+- THE PLANT (`STANCE`, in `stepPlayer` just before the hurt/knock zeroing): entering a stance more than `skid` .8 m/s over its speed, the excess bleeds
+  off linearly over `bleed` .32 s (`p.stCap` falls, `wantSp` follows it) with a dust puff at his feet (`dust` 14); then the stance's own cap holds.
+  Live on `mel.STANCE` (`on` 0 is the A/B; `stat.n` counts plants).
+- m2378 REVERTED to exactly the pre-m2378 behaviour: `CHRUN` keep 1 (m1968's charge-keeps-the-run), the slow cap gone, TOOLS > CHARGE MOVE removed
+  (it no longer meant anything). m2380's katana sounds are untouched.
+- Not verified on a device. Box moved: none (a fix to the guard/charge entry). Open: the skid length (`mel.STANCE.bleed`) is his.
+
 ## m2390 -- THE LAKE: the boat, detail pass 2; the climb's interact reach (Nov 3 2026)
 - **The boat:** a scalloped red cloth VALANCE hangs from every edge of the roof (rounded scallops with a cusp every 4 segments -- the first try was a
   sawtooth; CRAFT 1); two cushioned BENCHES along the sides under the roof and a lacquer CHEST with gold corners at its bow end; three glowing CHEVRONS
