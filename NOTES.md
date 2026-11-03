@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m23XX -- NIGHT 7: the garden's night reaches its sky; the veins are patches, not a net (Nov 3 2026)
+## m2328 -- NIGHT 7: the garden's night reaches its sky; the veins are patches, not a net (Nov 3 2026)
 The m2327 garden sheet (day / dusk / night) showed two faults: the night hardly darkened it -- the garden's sky is its OWN opaque 2200 m sphere
 (`garden_sky`, a ShaderMaterial outside the tonemapper) and the shared dome sat behind it at the far plane -- and the leaf veins covered every
 willow card like a wireframe. Now a zone row can name its sky (`NIGHT.zones.garden.sky = 'garden_sky'`) and the dome is drawn just INSIDE it (.95
