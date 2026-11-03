@@ -17,6 +17,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the first level sits at the bottom again; the scroll hint is a small arrow that actually fades (Nov 3 2026)
+*"The screen isn't balanced while the buttons are off screen -- have the first one at the bottom like it used to be. The scroll indicator doesn't go
+away when you scroll; with the buttons at the bottom you don't really need it -- a little arrow that goes away."* (1) `.loopgap` gives back what
+the logo added over the old text title (`min(66vw,400px)*.49 - 56px`), so the first level is at the foot of the screen again. (2) `.kjscroll`:
+just the chevron, at 3vh from the bottom; `.gone` now also sets `animation: none` -- the pulse animation (which animates opacity) was overriding
+the fade, so it never disappeared. Shipped unverified.
+
 ## m2298 -- THE NIGHT SKY: stars, the Milky Way, a giant ringed moon, the aurora, and TORCHES in the Snowfield (Nov 3 2026)
 His ask: *"a sky of stars -- a nice galaxy, maybe a giant alien moon -- in the SNOW scene, with a nighttime AURORA BOREALIS, and a switch so I can see
 it; and TORCHES lighting up parts of it. A seed to start making nighttime."* SNOWNIGHT (TOOLS > SNOW > TIME: NIGHT, `?time=night`) is now this.
