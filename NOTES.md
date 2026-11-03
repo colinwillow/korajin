@@ -45,7 +45,7 @@ OUT (`leapStep` no longer touches them; the katana stays on his back).
     across the lens. Every petal flips about its own long axis.
 - Duration: `dur` 3.1 s.
 Shipped unverified; the strip is still rendering.
-## m23XX -- NIGHT 14: `nightScene` -- the night for a scene that is not the game's (the TITLE backdrop's hook) (Nov 3 2026)
+## m2351 -- NIGHT 14: `nightScene` -- the night for a scene that is not the game's (the TITLE backdrop's hook) (Nov 3 2026)
 His words (relayed): *"the title screen should go from day to dusk to night, where things glow -- the star sky and the planets, so it naturally cycles."*
 The title backdrop (LOOPBG) is its own renderer / scene / lights and the title worker is mid-change in it, so this build is the HOOK, not the wiring
 (messaged; it calls it): `const NH = nightScene(S, cam, { lights, hero, sky, renderer, glow })`, then `NH.pre(dt); R.render(S, cam); NH.post();`.
