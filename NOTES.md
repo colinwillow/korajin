@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- his title logo on the walking title screen (Nov 3 2026)
+*"We can use this for the title on the side-walking screen instead of the placeholder text."* `images/korajin/korajin_logo.webp` (his PNG with
+alpha, 1788x880 -> 1200 wide WebP, 305 KB; the source kept as korajin_logo_src.png): the brush KORAJIN, GRUMBO, コラジン・グランボ and the red
+seal. It replaces `h1.loopt` ('KORAJIN' in text) at the top of the title loop: `img.looplogo`, min(88vw, 560px) wide, a soft drop shadow.
+Shipped unverified.
+
 ## m2275 -- THE GARDEN: the pots break (Nov 2 2026)
 
 *"The pots should be able to break."* (via main). Reused the city's breakables rather than a new system: every garden pot (23) is now an INSTANCE

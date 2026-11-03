@@ -159,6 +159,7 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #start .loopbg, #start .loopshade { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 #start .loopbg canvas { width: 100%; height: 100%; display: block; }
 #start .loopshade { background: radial-gradient(130% 85% at 50% 38%, #0000 58%, #07080c66 100%), linear-gradient(#07080c00 0%, #07080c00 70%, #07080c99 78%, #07080cdd 88%, #07080cf2); }
+#start img.looplogo { display: block; width: min(88vw, 560px); height: auto; margin: 1vh auto 0; flex: none; filter: drop-shadow(0 6px 18px #000a); pointer-events: none; }     /* m15XX */
 #start h1.loopt { margin: 1vh 0 0; font-size: 46px; text-shadow: 3px 3px 0 #c8242c, 0 0 18px #0006; flex: none; }
 #start .loopgap { height: calc(74vh - 96px); flex: none; }
 #start .loopwx { position: fixed; right: 12px; top: calc(118px + env(safe-area-inset-top)); z-index: 2; padding: 7px 11px; border-radius: 999px; border: 1px solid #ffffff4a; background: #0b0d1666; color: #fff; font: 700 11px var(--disp), sans-serif; letter-spacing: .12em; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
@@ -71550,7 +71551,7 @@ function startGate() {
     const korajin = () => { page(); if (stage) { stage.dispose(); stage = null; }
       // m2188: THE TITLE LOOP (`LOOPBG`) -- Grumbo walking in place through the parallax garden; the poster is the fallback when WebGL is not there
       try { const host = add('div', 'loopbg'); add('div', 'loopshade'); stage = loopBg(host); } catch (e) { console.warn('[melee] title loop', e); stage = null; while (el.firstChild) el.removeChild(el.firstChild); }
-      if (stage) { el.style.backgroundImage = ''; add('h1', 'kj loopt', 'KORAJIN'); add('div', 'loopgap');
+      if (stage) { el.style.backgroundImage = ''; { const lg = add('img', 'looplogo'); lg.alt = 'KORAJIN · GRUMBO'; lg.src = 'images/korajin/korajin_logo.webp?b=' + BUILD; }     /* m15XX: his title logo (brush KORAJIN, GRUMBO, the katakana and the seal) replaces the placeholder text */ add('div', 'loopgap');
         const wxb = add('button', 'loopwx', stage.wx()), wxs = ['auto', ...LOOPBG.cycle.order];     // the SEASON chip -- AUTO walks the cycle; a tap pins the next one
         wxb.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); const cur = stage.WX.mode, nx = wxs[(wxs.indexOf(cur) + 1) % wxs.length]; wxb.textContent = stage.wx(nx); });
         const tk = setInterval(() => { if (!wxb.isConnected || !stage) { clearInterval(tk); return; } if (stage.WX.mode === 'auto') wxb.textContent = stage.wx(); }, 1000); }
