@@ -19,7 +19,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-
+## m2392 -- the wall run's slowdown is ONE RAMP, not steps (Nov 3 2026)
+His, on m2364: *"it doesn't feel like he slows down -- it's a step function: he runs, then steps down to slower, then steps down and stops."*
+Distance fine; a bit more height is OK. What made the steps (all in the clip rate, plus a kink in the brake):
+- The clip rate was `clamp(vy / ref, lo, hi)` re-clamped EVERY frame (`upClipTs` [1.8, 3.4], ref 3.2), x m2364's ease under `upSlowV` 3 m/s:
+  FLAT at 3.4 down to ~10.9 m/s, a slope to 1.8 at 5.8, FLAT again to 3 m/s, then a ramp to 0 -- run / slower / stop, exactly his three steps.
+- The brake was re-solved per frame as `max(upG, v^2/2left)` and could switch terms mid-climb (a kink in the deceleration).
+Now (`stepWrun`'s up arc, `wrunUpS`, `wrunUpRate`): the braking is fixed ONCE at the catch (`R.aUp` = max(upG, v0^2 / 2 x budget left)), so his
+speed falls on one straight line to the apex; `wrunUpS` = speed left / catch speed (1 -> 0 on that line); every run-up clip rate = the rate his
+CATCH speed earned (clamped once) x `wrunUpS`; the arms' rate and the lean (`upSlowLean` x (1 - S), eased) ride the same S. `upSlowV` is gone.
+More height, longer climb: `climbBase` 2 -> 2.5, `climbPerV` .45 -> .6, `climbCap` 6.5 -> 8.5 (a sprint ~7.5 m, a walk-in ~4), `upG` 6 -> 4.5.
+TEST as m2364: The Wall Park (`?w=forge&zone=wall`), sprint at the 14 m yellow face holding up -- one continuous slowdown, legs and lean with it.
+Note: m2364's code comments had been renumbered m2374 by a merge elsewhere; set back to m2364. Shipped unverified.
 ## m2391 -- a sprint no longer carries into the guard or the charge: he PLANTS (a .32 s skid + dust) to the stance's speed; m2378's slow cap reverted
 His correction (Nov 3) on m2378: *"It made something that was already the right speed slower, and didn't fix the actual problem."* The real bug: already
 SPRINTING, then right stick UP (charge) or DOWN (guard), he kept full sprint momentum and slid along at run speed in the guard / charge pose.
