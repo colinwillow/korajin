@@ -17,6 +17,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2354 -- THE LAKE pass 5a: THE HELM -- steer the boat, then leave it and walk the deck (Nov 3 2026)
+His: *"steering the boat is good. I also want to be able to dismount from steering and just run around on the boat... jump off the boat and swim."*
+- **A helm**: a lacquered post with a gold wheel and a Jinra hub behind the shelter (`R.helm` = [wheel z, where he stands]). Within 1.6 m of it on the deck a
+  button says **TAKE THE HELM** (top centre); at the helm it says **LEAVE THE HELM**. At the helm the boat owns his body (`p.helm`, `lakeHelmHold` returns
+  from `stepPlayer` like the dragon): he stands at the wheel facing the bow and turns with the boat; the wheel turns with the helm.
+- **Steering (left stick, or WASD):** up / down move the THROTTLE, which HOLDS (a boat lever, not a gas pedal): 8 m/s top, 15 with BOAT JETS on, 2 back;
+  left / right turn (more authority with speed, reversed going astern) -- right turns him to HIS right (boot gate: -0.46 rad from a full right).
+  It banks into the turn (m2335's rule) and lifts its bow. Aground: the bow or stern over a bed shallower than .45 m bounces it back off the slope;
+  the stacks push it out. Leave the helm and he is on foot; the boat coasts to a stop. TOOLS > BOAT: CRUISE is now OFF by default.
+- **Swimming** waits on Mixamo swim clips (tread, swim, fast swim, dive in, climb out), asked of the main session. Until then the open water is still
+  the forge's floor at y = 0 if he jumps off.
+- Headless game: at the helm with the throttle at 6, the boat ran at 4.1 m/s with him at the wheel (inHull, facing yaw 3.25 = the bow). Shipped unverified.
+
 ## m2352 -- THE ENTRANCE, take 2: space RIPS open, no pad (a light sigil draws itself), and the Jinra goop shockwave (Nov 3 2026)
 His notes (via main): *"NO LITERAL PAD -- if anything marks the landing, it is a circle of LIGHT that DRAWS ITSELF on the ground, glowing linework with
 the invented alien script tracing round in rings just before he lands, then fading. THE PORTAL is the key part: a purple-pink portal where THE FABRIC

@@ -25,7 +25,9 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   - [x] m2335 pass 3: the wake -- Kelvin wedge off the boat's path, bow wave + side trough, hull/arm/churn foam, bow spray; the boat cruises a lane (TOOLS > BOAT: CRUISE / MOORED) and carries him.
   - [x] m2340 pass 4a: the air -- 12 cherry trees (beaches, ledges, stack tops), petals that fall FROM them, land and ride the waves, mist banks, god rays.
   - [x] m2343 pass 4b: the falls (a spring on the rim, six arcs down the tiers, pools, wet rock, spray, churn on the lake), the torii + shrine on the east rim, six islets above (two with cherries).
-  - [ ] 5 sailing (the stick steers, CINEMA lens); NIGHT; his sign-off.
+  - [x] m2354 pass 5a: THE HELM -- take / leave it at the wheel; left stick steers (throttle holds), the boat runs aground and bounces off stacks; on foot on the deck when he leaves it.
+  - [ ] his asks (Nov 3): floating plants (lily pads / algae, glowing at night); the NIGHT (stars, runes, glowing plants, lanterns, bioluminescent water); clouds;
+        detail on the rocks, water and foam; SWIMMING (waits on Mixamo swim clips -- asked of the main session); the sailing lens (CINEMA); his sign-off.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),
       four directional attacks on the right flick, guard + parry + lock-on on the pull-down hold, charge -> lunge -> spin.
       Builds a-e in the spec.
