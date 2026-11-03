@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m23XX -- NIGHT 6: the prologue garden comes alive at night (Nov 3 2026)
+## m2327 -- NIGHT 6: the prologue garden comes alive at night (Nov 3 2026)
 NIGHT.md box 5b, agreed with the garden's session first (its answers: chain the hooks and keys, run after the WHOLE build -- gdnConsolidate /
 gdnMergeStatic / gdnMetalEnv -- take the materials actually on the meshes, never GDNV.plain / GDNV.glow, leave the env-mapped metals alone).
 - `gardenNightGlow` runs once from `gdnStep`, 1.5 s wall-clock after the garden is built, only when TIME is not DAY, on `GARDEN.M` materials that
