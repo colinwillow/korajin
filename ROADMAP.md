@@ -27,7 +27,8 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   - [x] m2343 pass 4b: the falls (a spring on the rim, six arcs down the tiers, pools, wet rock, spray, churn on the lake), the torii + shrine on the east rim, six islets above (two with cherries).
   - [x] m2354 pass 5a: THE HELM -- take / leave it at the wheel; left stick steers (throttle holds), the boat runs aground and bounces off stacks; on foot on the deck when he leaves it.
   - [x] m2355 floating plants: 154 lily pads in 6 sheltered coves (31 with a lotus), riding the waves and shouldered aside by the hull; a green-gold algae film in the shallows.
-  - [ ] his asks (Nov 3): the NIGHT (stars, runes, glowing plants, lanterns, bioluminescent water); clouds;
+  - [x] m2359 THE NIGHT, first pass: the shared sky inside the lake's (and in the mirror), moonlit water, bioluminescent wake / hull / falls / algae, runes on the boat and torii, cracks in the rock, veins in the pads, lanterns up.
+  - [ ] his asks (Nov 3): more NIGHT (stars framed in a shot, tuning) (stars, runes, glowing plants, lanterns, bioluminescent water); clouds;
         detail on the rocks, water and foam; SWIMMING (waits on Mixamo swim clips -- asked of the main session); the sailing lens (CINEMA); his sign-off.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),
       four directional attacks on the right flick, guard + parry + lock-on on the pull-down hold, charge -> lunge -> spin.

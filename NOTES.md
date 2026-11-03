@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2359 -- THE LAKE at NIGHT, first pass (WATER.md NIGHT; TOOLS > TIME / `?time=night`) (Nov 3 2026)
+His: *"really excited to see nighttime and some of the glowing stuff... the stars."* On the shared night core (NIGHT.md) -- nothing of the switch, the
+sky or the lighting overlay is the lake's own:
+- **NIGHT.zones.lake = `{ sky: 'lake_sky' }`** (the lake's sky dome is named so): the shared star dome sits just inside it; the lake joins that dome to the
+  mirror's layer on first sight (`lakeStep`), so the STARS AND THE PLANET ARE IN THE WATER.
+- **`L.setNight(f)`** (lib, reads NIGHT.f): the lake's own colours ease to moonlight -- the sun's tint on the water (a cold moon path now), the haze, the sky's
+  zenith; god rays and mist follow the tint; the prow and torii lanterns come up x3.2.
+- **Bioluminescence** (water shader, x NIGHT.f, Jinra glow from JPAL): the wake and the hull foam glow, sparks twinkle where the water is disturbed and in the
+  algae and the shallows, the falls' landing glows. Exactly zero by day.
+- **`nightGlow` (NIGHT.md's recipes), applied only when TIME is not DAY:** runes in the deck and the lacquer and the torii (mix), cracks in the canyon rock /
+  stacks / islets (one material) and the bark, veins in the lily pads, the blossom and lotus in the violet accent.
+- **Caught on the first render:** my capture called `renderer.render` without `nightPre`/`nightPost`, so the frame was day-lit with the glow on top -- a
+  tool fault, not the game's. Through the overlay (game render, `?time=night`, at the helm, 4 m/s): dark canyon, glowing wake and hull, runes on the hull,
+  crack light on the bed through the water. Crack glow softened a step (2.4 -> 1.9). Not yet: a framed stars-in-the-water shot. Shipped unverified.
 ## m2358 -- THE MAMMOTH'S FEET: planted on the ground in every clip; the title loop's foot lock is gone (Nov 3 2026)
 *"From the side view on the start screen his footsteps are very odd: he steps, then his feet go down and THROUGH the ground... it makes me wonder if
 a hip translation that was supposed to go with the animation was removed... he kind of looks like he floats on the main menu."*

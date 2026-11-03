@@ -47,7 +47,7 @@ and the strip can never disagree. Its placements (stacks, the shrine, the falls,
 5. **Sailing** *(m2354: the helm -- take it, steer, leave it and walk the deck; swimming waits on Mixamo swim clips)* -- left stick steers / throttles, camera in the CINEMA.md house style, walking on the deck when stopped; the ENTRY row lands him
    on the deck.
 
-## NIGHT (his, relayed Nov 3 2026 -- AFTER the day look is strong, not instead of it)
+## NIGHT *(m2359: first pass in)* (his, relayed Nov 3 2026 -- AFTER the day look is strong, not instead of it)
 *"Tons of stars, like out in the middle of nowhere -- shooting stars, the Milky Way, maybe a big planet. Things come alive at night: Japanese-looking
 alien symbols you don't see in the day glow on the boat's wood, in the sand, on the rocks, in the cracks between rocks; plants glow (Jinra
 palette); lanterns glow. Like Avatar at night."* Water at night: the stars / moon / planet in the mirror, bioluminescence in the wake and wherever
