@@ -79,6 +79,17 @@ walked the WHOLE scene (the snow is thousands of objects) every 3 s for ever, lo
 its clouds late) and every 30 s after. The GPU side (the dome's fbm, the glow masks on the snowpack) is being profiled headless frame by frame with
 each night piece toggled -- part 2. Shipped unverified.
 
+## m23XX -- NIGHT 25: glow in PIECES (never a wave of solid colour) + NIGHT SKY quality (snow perf, part 2) (Nov 3 2026)
+**His words (images/feedback/m2404/quills_full_glow.jpg):** *"his quills periodically flood with an almost complete glow... I like glow in PIECES: the tips,
+scales, cracks, splotches. Pulses brighten the pattern, never wash the surface."* One splotch / scale pattern on his own body (`pat`, value noise at
+~6 cm); the quill band is pattern ONLY (the dev view, `uHgDbg` 5, showed the height band covering his whole head on the head mesh), the orange tips
+glow through the orange mask; the PURPLE was the real flood (its .3 base x a full glow saturated his head) -- now .06 + pattern; the ORANGE likewise;
+the shimmer multiplies only the pattern and the cracks. Dev views: uHgDbg 4 pattern, 5 quill band, 6 purple. images/feedback/m2329/quills_pieces.jpg.
+**Snow perf:** profiled headless, one synced frame with each night piece off (SwiftShader -- relative only, and noisy): night 16.2 s vs day 15.4;
+no aurora 10.0; no glow 13.4. The aurora's overdraw is the big one. **TOOLS > TIME > NIGHT SKY: AUTO / HIGH / LOW** (`mel.nightq`): LOW draws one
+aurora curtain of three, no sparkle, the dome's band as one octave, no dust lanes, no finest star layer; AUTO drops to LOW once a night frame averages
+under 30 fps for 4 s (chip: `NIGHT SKY LOW (n fps)`). Shipped unverified -- the phone is the only honest frame clock.
+
 ## m2399 -- TAKE 5b: no ground pose in the air (the flip carries on); the loading emblem keeps turning while loads block<!--mine-->
 His note on take 5: "much better". But after the backflip ends he is still in the air in the clip's landed pose.
 THE FLIP CARRIES ON (`leap.loop`):
