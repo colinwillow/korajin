@@ -20,6 +20,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2401 -- the entrance portal: smaller, near-flat, a swirling pink spiral inside, a clearer sound, both swappable (Nov 3 2026)
+His (via main): *"he LIKES the fall + slam now. The portal: SMALLER; NOT black inside -- a swirling purple-pink spiral / particles; near-parallel to the
+ground, a thin oval seen almost edge-on (a little of the circle still visible). He doesn't like the current sounds -- wants a clear portal-opening
+sound; he may upload his own effect + sound later, so keep them swappable."*
+- `pScale` .5 -> .32, `lean` .9 -> .28 (near flat: the play camera sees a thin oval), `pOff` 1.6. Inside the tear is now two counter-turning
+  log-spiral arm sets in violet -> hot pink with a bright pink-white eye and twinkling motes (was a black void with stars). The lightning arcs off
+  the lips are off on the play camera (they read electric); `cine` 1 keeps them.
+- Sound: the default variant is B (the brighter, clearer opening chime swell); TOOLS > PORTAL SOUND still cycles A/B/C (a new store key, so B is
+  what he hears first).
+- SWAPPABLE: `ENTRY.sfx` names the SFX key per role (open / through / seal) -- point a role at his own file's key when he uploads it;
+  `ENTRY.make(x, y, z)` / `ENTRY.step(run, dt)` replace the tear's builder and clock wholesale (e.g. a PNG-sequence billboard), null = the tear.
+- Rendered headless (arena, play camera): rip, the spiral oval, him out of it, sealed, slam, rise. Shipped unverified.
+
 ## m2400 -- health is a RING at the feet, not a green bar overhead; the speed spikes are gone (TOOLS > LOOK > SPEED FX) (Nov 3 2026)
 Via main: *"remove the green bar floating over the mammoth and over everyone -- artful health: a thin ring around the creature's feet that appears
 when it's hit, shows the remaining health as an arc, and fades out after a moment"* and *"the speed spikes round the screen edge -- remove; at most a
