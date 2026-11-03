@@ -19,6 +19,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2388 -- THE LAKE: walk to the wheel, hands on it (his m2376 note 5: "tapping at the helm teleports him") (Nov 3 2026)
+- **The walk:** TAP RIGHT near the wheel and he WALKS there (`LAKEZ.helmWalk`): in the boat's frame (the boat may be moving), eased over .3-1.1 s by the
+  distance, turning to face the wheel then the bow, his own walk playing (`p.speed`). Headless game: from 1.6 m off, `walk` true and his boat-local spot
+  moving toward the wheel with `run_std` / walk playing.
+- **The pose:** `helm_idle` = his Forge library's Wheelbarrow_Idle (both hands forward at the waist) baked onto Grumbo (`agoblin_helm.glb`, 0.11 MB,
+  profile `tools/agoblin_helm_prof.json`), at full weight at the wheel. The wheel moved to where those hands are (deck + .9, .52 m ahead of him).
+  NOT measured: whether the hands meet the rim exactly (no skinning offline) -- the thing to look at.
+- **The wheel turns WITH the stick** (up to 2.4 rad) and comes back to centre when he lets go (was: the boat's turn rate).
+- Leaving: a tap gives him back the stick where he stands (no walk-away yet). Shipped unverified.
+
 ## m2387 -- THE LAKE: richer water (his m2376 note 4: "still reads low-poly") (Nov 3 2026)
 - **Per-pixel crest height** (`hP`, summed in the same Gerstner loop that makes the per-pixel normal): it drives the SUBSURFACE light through the wave faces
   (stronger into the sun and on faces turned to the lens) and a soft highlight along the crests -- m2335's scatter used the vertex `vCrest`, which is as
