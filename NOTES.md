@@ -17,6 +17,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2294 -- BREAKABLES AND KICKABLES ARE GAME-WIDE (step 1: the shared system + the Garden) (Nov 3 2026)
+
+*"ALL pots in EVERY level should break ... and if it's a pot or a SMALL ROCK, you should be able to kick it around or break it."* (via main)
+The Garden-only pot code (m2275) is now a shared, zone-agnostic path, stepped from the frame for every zone (`propStep`):
+- `propKind(name, parent, parts, recs, opt)`: a KIND of breakable -- one InstancedMesh per part for all its records, each record a `BREAK` entry
+  (`prop: name`) with its own box. `brkBreak` -> `propBreak`: instances to zero, box gone, shards of its own skin (`opt.shard`, pooled per kind,
+  in WORLD space) out the way the blow went, bouncing on `groundAt` and shrinking away, dust (`opt.dust`), the crack (`opt.snd`/`pitch`), a 30%
+  doubloon / 35% Jinra (`opt.coin`/`jin`). A dash or roll over 6.5 m/s through one breaks it, in any zone.
+- `kickKind(name, geometry, material, recs)`: KICKABLES -- one InstancedMesh in world space; walking into one NUDGES it (speed-scaled), running or
+  dashing kicks it, every melee swing (`kickHit` beside `brkBlast` in the strike sweep) LAUNCHES it; it rolls (turns about the axis across its
+  travel), bounces and goes to sleep; asleep bodies more than 9 m away cost nothing.
+- THE GARDEN: its 23 pots (`pot`), the homestead's 3 barrels (`barrel`, hp 24, stave shards, wood dust) and ~157 loose PEBBLES (about half the small
+  stones of each stone cluster roll free; the big ones stay merged rock). Headless: kinds {pot 23, barrel 3}, kick 157; barrel and pot broken
+  by one blow; a pebble launched 1.6 m in .25 s. Render props_step1.
+NEXT (step 2, per zone): register each zone's pots / urns / jars / barrels / crates / lanterns through `propKind`, and its small rocks through
+`kickKind` -- Akatani / home, the snow village, the arena, the ship, the forest temple (whose sake barrels and offering pots are already
+`brkBlast`-able by their own code at ~30316), the willow shrine. **Shipped unverified.**
+
 ## m2293 -- THE TRANSITION, take 2: a visible leap and a CHERRY-BLOSSOM STORM; slow seasons; heavy snow; a glowing purple night (Nov 3 2026)
 His notes on m2280 (relayed from main): *"kind of 2D; the stuff comes out of nowhere; I don't really get to see him jump... his favourite: cherry
 blossom petals, glowing, carried on the wind across the screen, maybe mixed with a few Jinra motes, building into a sweep that covers the
