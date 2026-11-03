@@ -17,6 +17,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2318 -- NIGHT 2: the sky gets its dust of stars and SHOOTING STARS; the snow's night runs on the shared factor (Nov 3 2026)
+- **The sky** (one dome, still one draw): a fourth, fine star layer (scale 900, densest in the Milky Way band) for the "hundreds of millions", three
+  lanes of **shooting stars** (one slot every `NIGHT.meteor.every` 7 s per lane, a .32 rad streak over .9 s with a fading tail, hashed per slot), and
+  a warm dusk glow on the horizon (`uDusk` = NIGHT.dusk). The giant ringed moon + rust second moon are the big planet.
+- **The snow is on the shared night now.** `SNOWNIGHT.on` = TIME is not DAY (the machinery is built); its LIGHT is the overlay with the snow's own
+  row `NIGHT.pals.snow` (m2298's numbers), the aurora tint on the hemi moved into the overlay, and the torches, flames, warm pools, snow glints and
+  sparks are all x NIGHT.f (they light from dusk: `(f - .15) / .45`). `snowNightStep` no longer writes the sun, hemi, background, environment or
+  exposure (it was a second writer of all of them). The snow sky image stays under the dome (dimmed). Moonlight direction only under TIME: NIGHT.
+- `npm run nightshot` now renders from an authored camera behind him (the live camera had clipped into a bridge). Snow day 196 draws 1790k tris.
+- Still open: `nightGlow` + runes (next), the hero, the garden and other zones, his sign-off. Shipped unverified.
+
 ## m2316 -- THE LOTUS FLOATS: a slow bob, drift and rock while he meditates (Nov 3 2026)
 
 *"When he goes on the pad that floats him up he does a nice bobbing and undulating -- but as soon as he goes into the lotus he's completely still. I

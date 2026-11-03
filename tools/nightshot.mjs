@@ -31,7 +31,8 @@ for (const z of zones) for (const t of times) {
     await page.goto(`http://127.0.0.1:${port}/index.html?${q}`, { timeout: 120000 });
     await page.waitForFunction(() => document.getElementById('boot').classList.contains('gone') && window.__shot && window.mel, null, { timeout: 240000, polling: 1000 });
     await page.waitForTimeout(settle * 1000);
-    const r = await page.evaluate(() => { const { renderer, scene, camera } = window.__shot; mel.nightPre(); renderer.render(scene, camera); const url = renderer.domElement.toDataURL('image/jpeg', .85);
+    const r = await page.evaluate(() => { const { renderer, scene, camera } = window.__shot; const P = mel.player.pos, h = (mel.player.heading || 0) + (+window.__turn || 0), fx = Math.sin(h), fz = Math.cos(h);
+      camera.position.set(P.x - fx * 7, P.y + 3.2, P.z - fz * 7); camera.lookAt(P.x + fx * 12, P.y + 3.5, P.z + fz * 12); camera.updateMatrixWorld(true); mel.nightPre(); renderer.render(scene, camera); const url = renderer.domElement.toDataURL('image/jpeg', .85);
       const i = renderer.info.render; mel.nightPost(); return { url, calls: i.calls, tris: i.triangles, f: mel.NIGHT.f, mode: mel.NIGHT.mode }; });
     const f = path.join(OUT, `night_${z}_${t}.jpg`); fs.writeFileSync(f, Buffer.from(r.url.split(',')[1], 'base64')); tiles.push({ z, t, url: r.url });
     console.log(`${z} ${t}: f ${r.f.toFixed(2)} (${r.mode}) | ${r.calls} draws, ${(r.tris / 1000).toFixed(0)}k tris -> ${f}`);
