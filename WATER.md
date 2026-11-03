@@ -1,0 +1,60 @@
+# WATER -- The Lake (a sandbox under the WHOLE-PIECE RULE)
+
+**His ask (Nov 3 2026):** *"I want to make an extraordinarily beautiful water scene. I want to spend a lot of time on the water shader. I want the
+water deforming around a boat... maybe four or five times the size of the hero, kind of a long boat, futuristic but also Japanese style, maybe
+some jets, maybe not. Water, floating mist, god rays, cherry blossom petals, really beautiful and harmonious. Eventually crazy stuff will go on (a
+giant water monster, a boss coming up), but first and foremost the aesthetics. The river or lake could be in a canyon -- giant rock bluffs on
+either side, then a beach. A model of what it would look like if you were just sailing on the water. I just want it to look absolutely gorgeous."*
+
+Where it lives: **KORAJIN > The Lake** (`?w=forge&zone=lake`, `LAKEZ`). The whole place is ONE library, `lakeMake`, between the
+`LAKELIB:START` / `LAKELIB:END` markers in `index.html`, so `npm run lakestrip` renders the SHIPPED text headless (never a copy) and the game
+and the strip can never disagree. Its placements (stacks, the shrine, the falls, the boat's start) are rows between `SC_LAKE:START` / `:END`.
+
+**No combat, no monster.** This sandbox is the LOOK. The monster is a later piece that will be BUILT ON this one only once it is signed.
+
+## THE VISION (in words)
+- **A long lake in a canyon**, golden soft morning, sun low down the canyon so the water carries a glitter path toward the lens.
+- **Bluffs** of layered sandstone on both sides (warm ochre, rose, cream bands), stepped in tiers with green ledges, 60-140 m tall, the rims
+  catching the sun; **beaches** of pale sand at their feet; **sea stacks** standing in the water with foam rings at their feet.
+- **The water**: deep teal-blue in the middle, turquoise over sand in the shallows, clear enough to see the bed (with caustics) at the edges,
+  a mirror of the lit cliffs and the sky at a grazing angle (Fresnel), sun glitter, a soft foam line where it meets sand and rock.
+- **Later**: floating mist banks, god rays (billboard shafts, no post chain), cherry trees and their petals drifting and LANDING on the water,
+  riding the waves; a waterfall that comes FROM a source and arcs (CRAFT.md 2); a torii / shrine on a bluff; floating islets above (VERTICALITY).
+- **The boat**: a longboat 7-9 m (4-5x Grumbo's 1.75 m), Japanese-futuristic -- lacquered wood + brushed metal (never black, CRAFT.md 4), an
+  upswept prow, a small roofed shelter / lantern, Jinra lines (JPAL only). Floats on the SAME wave function the shader uses. Jets on a switch.
+
+## THE WATER SHADER (pass 1)
+- **One wave function, two readers.** A sum of Gerstner waves (`W.waves`: direction, wavelength, steepness) evaluated in the vertex shader AND
+  in JS (`L.waveAt`), so the boat (pass 2) floats on exactly what is drawn.
+- **A camera-following POLAR grid**: rings that grow geometrically (`grid.r0`, `grid.N`), so cells are square and ~5 cm under the lens and
+  tens of metres at the horizon; each wave FADES OUT where the grid can no longer carry it (spacing > wavelength / 4), so nothing shimmers.
+- **The bed does the transparency.** The terrain shader knows the water level: under it, it absorbs toward the water's colour by the PATH
+  LENGTH through water (depth over the view's slope) and gets animated caustics. The water surface on top is premultiplied: it adds the
+  reflection by Fresnel, the sun glitter, the crest scatter and the foam. So the shallows show sand and the depths read teal with no second pass.
+- **Reflection** (`W.mirror`): a planar mirror of the canyon and sky at a reduced resolution (`W.rtK` of the screen), distorted by the wave
+  normal. It is the one render-to-texture, and it earns it: a canyon lake IS its reflection. TOOLS > LAKE MIRROR: OFF falls back to the analytic
+  sky (no second pass) for a slow phone.
+- **Shore foam** from a depth texture (`L.hTex`, the bed height in half floats, the same table the terrain is built from): a soft broken band
+  where the water is shallow, pulsing with the waves.
+
+## PASS PLAN (one build each; render + LOOK at every one; a contact sheet to him)
+1. **Water shader + first canyon** -- sky, bluffs, beaches, stacks, the shader, the strip tool. *(m2318)*
+2. **The boat** -- hull, deck, prow, shelter / lantern, Jinra lines; buoyancy at 4+ hull points (heave, pitch, roll) off `L.waveAt`;
+   TOOLS > BOAT JETS (default OFF); the floating ship as a second hull on a switch.
+3. **Water around the boat** -- bow wave, hull displacement, a Kelvin wake from a trail of past positions, foam where hull meets water, spray.
+4. **The place** -- the waterfall (source, arc, spray, mist), the torii / shrine on a bluff, floating islets, cherry trees; mist banks, god
+   rays, petals drifting and landing on the water.
+5. **Sailing** -- left stick steers / throttles, camera in the CINEMA.md house style, walking on the deck when stopped; the ENTRY row lands him
+   on the deck.
+
+## DONE WHEN (tick only WITH EVIDENCE in a NOTES entry)
+- [ ] The water reads as WATER at every distance: no shimmer at the horizon, no visible grid, no seams where the grid follows the lens.
+- [ ] Depth reads: turquoise over sand at the edges, the bed visible with caustics, deep teal in the middle; a foam line at every shore.
+- [ ] The canyon is mirrored in the water at a grazing angle; the sun lays a glitter path.
+- [ ] The boat floats on the drawn waves (heave, pitch, roll agree with the surface under it), lacquer and metal never black.
+- [ ] The water deforms round the boat: bow wave, wake wedge, foam at the hull, spray at speed.
+- [ ] The place: bluffs in tiers, beach, stacks, a waterfall from a source, shrine on a bluff, islets above, cherry trees, mist, god rays, petals
+      that land and ride the waves -- every one checked close against CRAFT.md.
+- [ ] He can sail it (stick steers the boat, the lens follows), and he arrives by the entrance (portal, flip, landing on the deck).
+- [ ] Runs well on his iPhone (draw calls and triangles in the NOTES entry, the mirror on and off).
+- [ ] **His sign-off on his phone.**

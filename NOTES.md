@@ -17,6 +17,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2318 -- THE LAKE, pass 1: the water shader and the first canyon (WATER.md) (Nov 3 2026)
+His ask: *"an extraordinarily beautiful water scene... spend a lot of time on the water shader... a lake in a canyon, giant rock bluffs, then a
+beach... I just want it to look absolutely gorgeous."* New sandbox **KORAJIN > The Lake** (`?w=forge&zone=lake`, `LAKEZ`), spec + DONE WHEN in
+`WATER.md`. Box moved: none ticked yet (the water reads well on the strip; his phone has not seen it). Open: boat, wake, the place, sailing, sign-off.
+- **One library, `lakeMake`, between `LAKELIB:START/END`**; rows (waves, ripples, stacks, spawn, the strip's cameras) between `SC_LAKE`.
+  `npm run lakestrip [shot..] [--mirror=0]` renders the SHIPPED text -> `shots/lake_all.png`.
+- **The water:** 6 Gerstner waves on a camera-following POLAR grid (rings x1.033, 192 segments, 2.5 m -> 3.2 km; each wave fades where the grid
+  can't carry it) + 5 fragment ripples + a warped noise normal. The SAME table in JS: `L.waveAt(x, z, t)` (the boat's buoyancy, pass 2).
+  **The bed does the transparency**: the terrain shader absorbs by path length under the level and gets caustics; the surface is premultiplied
+  (mirror x Fresnel, glitter, crest scatter, foam). **The mirror** is one render target at half res (Reflector's oblique-plane maths, layer 3).
+  Shore foam + sun-on-water from `L.hTex` (half-float bed height + baked sun visibility); stack rims from `uStk`.
+- **The canyon:** a 240x440 height grid in canyon space (columns dense over the bluffs), tiered sandstone strata + varnish streaks in the
+  shader, sun visibility BAKED per vertex (the bluffs shadow the canyon). Three sea stacks are their own lathe meshes (a heightfield made cones).
+- **Three bugs the strip caught:** the grid's ring triangles were wound face-down (culled -- the water was invisible); **three culls LIGHTS by
+  layer**, so the mirror camera rendered the cliffs black until the sun/hemi/rim/bounce went on layer 3 (`lakeStage` does it); and in the GAME
+  the sky bake's `skyFogOnly` re-greyed the fog (measured f2f4f7) and `stepLightX` reset the rim -- `SKY.fog = 0` and LIGHTX's numbers in
+  `lakeStage`. The terrain has `envMapIntensity 0` (the arena's white image light washed it).
+- **Budget (strip):** 4 draws + 3 in the mirror (terrain, stacks, sky; water), 209,842 terrain + 21,504 stack + 85,824 water tris; build
+  ~0.8 s on the desktop. TOOLS > LOOK > LAKE MIRROR: OFF = analytic sky only (no second pass) for a slow phone.
+- **Ground:** beaches and bluffs via `groundAt` / `lakeWall`; over open water he walks on the forge's y = 0 (the boat is pass 2). ENTRY row `lake`.
+- CRAFT checked on the strip: 1 (stacks and strata not straight -- the cliffs' tier lines are still long and even), 4 (no black: the mirror
+  was black, fixed), 5 (six framings). Shipped unverified on the phone.
 ## m2316 -- THE LOTUS FLOATS: a slow bob, drift and rock while he meditates (Nov 3 2026)
 
 *"When he goes on the pad that floats him up he does a nice bobbing and undulating -- but as soon as he goes into the lotus he's completely still. I
