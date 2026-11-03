@@ -63,6 +63,13 @@ the hull, petals or oars disturb the water.
   Our own shaders (sky, water) read `NGLOW.U.uNgF` (eased) / `NIGHT.f`.
 - Lands as its own pass after pass 4; until then every new placement row carries its `glow` tag.
 
+## HIS WISHLIST (his playtest of m2354, Nov 3 2026 -- later detail passes, whole-piece rule: perfect THIS sandbox first)
+- floating water plants; lily pads you PUSH THROUGH (in: m2355); sea foam; rocks and natural ARCHES you sail UNDER; islands with big GLOWING trees;
+  huge Greek / ancient temples, monuments and statues standing in the water; TEXTURES on the rock, sand, wood and water (albedo + normal, triplanar);
+  glowing plants on the shore and the islets (the NIGHT worker's flora API).
+- Longer term: water channels joining the ground-world areas through beaches and islands; things falling out of the sky into the water making big waves
+  (a cinematic); a massive sea creature or a ~600 ft statue rising out of the sea (the boss moment).
+
 ## DONE WHEN (tick only WITH EVIDENCE in a NOTES entry)
 - [ ] The water reads as WATER at every distance: no shimmer at the horizon, no visible grid, no seams where the grid follows the lens.
 - [ ] Depth reads: turquoise over sand at the edges, the bed visible with caustics, deep teal in the middle; a foam line at every shore.

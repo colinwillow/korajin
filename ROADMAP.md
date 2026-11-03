@@ -28,6 +28,8 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   - [x] m2354 pass 5a: THE HELM -- take / leave it at the wheel; left stick steers (throttle holds), the boat runs aground and bounces off stacks; on foot on the deck when he leaves it.
   - [x] m2355 floating plants: 154 lily pads in 6 sheltered coves (31 with a lotus), riding the waves and shouldered aside by the hull; a green-gold algae film in the shallows.
   - [x] m2359 THE NIGHT, first pass: the shared sky inside the lake's (and in the mirror), moonlit water, bioluminescent wake / hull / falls / algae, runes on the boat and torii, cracks in the rock, veins in the pads, lanterns up.
+  - [x] m2361 his playtest of m2354: PERF (46 -> 27 draws, 392k -> 269k tris, mirror at .34, DPR cap 1.5), smooth water (per-pixel Gerstner, wake slope off the vertex), portrait camera pulled out on the boat, TAP RIGHT takes / leaves the helm (no button).
+  - [ ] next: SWIMMING (clips in colinwillow/retarget-anims, bake via the Forge), TEXTURES (rock / sand / wood / water maps), glowing shore plants, his wishlist (WATER.md).
   - [ ] his asks (Nov 3): more NIGHT (stars framed in a shot, tuning) (stars, runes, glowing plants, lanterns, bioluminescent water); clouds;
         detail on the rocks, water and foam; SWIMMING (waits on Mixamo swim clips -- asked of the main session); the sailing lens (CINEMA); his sign-off.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),

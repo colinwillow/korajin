@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2361 -- THE LAKE: his playtest of m2354 -- PERF, smooth water, the portrait camera, TAP to take the helm (Nov 3 2026)
+His: *"nighttime looks great, daytime phenomenal, dusk amazing -- keep going with the detail."* The fix list, in his order:
+1. **PERF** (his phone hot, in the 20s). Measured on the strip, worst shot: **46 -> 27 draws, 392k -> 269k tris.** Water grid 192 -> 128 segments
+   (85k -> 37k tris); terrain 240x440 -> 200x340 (210k -> 135k); the mirror at .34 of the screen (was .5: ~half the pixels); the boat MERGED per material
+   (~26 meshes -> ~8, and again in the mirror); mist 34 -> 20 banks and smaller, rays 16 -> 10 (overdraw); petals 900 -> 600; the water fragment only
+   runs the shore foam / algae / stack rings where they can be (shallow, near); `perfMax` caps the pixel ratio at `LAKEZ.dpr` 1.5 in the Lake (the
+   auto-resolution already drops toward 1.1 under 27 fps). Not measured on his phone -- this is the thing to look at.
+2. **"You can see the triangles of the water":** the water's normal is now the Gerstner sum PER PIXEL (same table), and the wake's slope comes from the
+   vertex (two extra wake samples, interpolated smooth) -- the m2335 slope came off `dFdx` of an interpolated varying, which is CONSTANT across each
+   triangle: that was the faceting in the glitter.
+3. **Portrait camera:** on the boat (at the helm or on the deck) the boom pulls out `pullPortrait` 5.5 m in portrait, `pullLand` 1.2 in landscape (`lakeCamPull`).
+4. **No helm button:** TAP the right stick (the jump tap) near the wheel takes the helm, tap again leaves it (`lakeTap`, first in the right pad's tap);
+   a small hint says TAP RIGHT: TAKE THE HELM when he is near it. At the helm the tap does not jump.
+5. Swimming: next build (his clips are in colinwillow/retarget-anims). His wishlist is in WATER.md. Shipped unverified.
+
 ## m2360 -- THE TITLE GOES DAY > DUSK > NIGHT: time of day on top of the seasons<!--mine-->
 His request, via the parent and the NIGHT worker: the title backdrop cycles day > dusk > night, where things glow, with the star sky. At night
 the clouds are deep blue-violet, not white.
