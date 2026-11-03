@@ -5699,6 +5699,12 @@ function shutterClose(then) { const st = document.getElementById('start'); if (b
   if (st) { st.style.transition = 'opacity .45s ease'; void st.offsetWidth; st.style.opacity = '0'; } SHUT.closed = 1; SHUT.t0 = performance.now();
   setTimeout(() => requestAnimationFrame(() => requestAnimationFrame(() => { try { then && then(); } catch (err) { console.error(err); } if (st) { st.style.opacity = ''; st.style.transition = ''; } })), 480); }
 function shutterOpen() { SHUT.closed = 0; }
+// m15XX: does a loaded glTF lack a texture its file declares? (an image that failed to decode: the material's map is missing, or has no pixels)
+function glbTexBad(g) { try { const J = g.parser && g.parser.json, want = new Set(); if (J && J.materials) J.materials.forEach((m, i) => { if (m.pbrMetallicRoughness && m.pbrMetallicRoughness.baseColorTexture) want.add(m.name || i); });
+    let bad = 0; g.scene.traverse(o => { if (!o.isMesh) return; for (const m of [].concat(o.material || [])) { const mp = m.map, im = mp && mp.image;
+      if (mp && !(im && ((im.width || im.naturalWidth || 0) > 0 || (mp.mipmaps && mp.mipmaps.length)))) bad = 1;
+      if (!mp && (want.has(m.name) || [...want].some(w => typeof w === 'number'))) { if (want.has(m.name)) bad = 1; } } });
+    return !!bad; } catch (e) { return false; } }
 function setBoot(label, frac) {
   if (SHUT.closed && performance.now() - SHUT.t0 > 600) shutterOpen();     // m2256: loading has begun reporting -- open onto the card
   PROG.label = label;
@@ -69765,7 +69771,12 @@ async function init() {
   // ---- the character. There is no game without him, so a failure here is reported on the
   //      card rather than warned to a console that does not exist on a phone.
   let g;
-  try { g = await loadGLB(RIG.file, 'loading the alien'); }
+  try { g = await loadGLB(RIG.file, 'loading the alien');
+    // m15XX (his: "it loaded, but his texture didn't, and it just played anyway -- he was black in the intro"): a GLB can arrive whole while an image
+    // inside it fails to decode (a weak connection, a hot phone short of memory). Check that every texture the file declares really came in, and
+    // load it again (up to 3 more times, the card saying so) before the game is allowed to start.
+    for (let k = 0; k < 3 && glbTexBad(g); k++) { setBoot('his colours are still arriving -- retrying', 0); await new Promise(r => setTimeout(r, 900 * (k + 1))); try { g = await loadGLB(RIG.file + (RIG.file.includes('?') ? '&' : '?') + 'r=' + (k + 1), 'loading the alien'); } catch (e2) {} }
+  }
   catch (e) {
     setBoot('could not load the character', 1);
     if (window.__crash) window.__crash('CHARACTER FAILED TO LOAD\n' + RIG.file + '\n' + ((e && e.message) || e));
