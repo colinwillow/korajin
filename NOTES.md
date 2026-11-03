@@ -30,6 +30,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   two carry cherries (tree rows `islet:`), so petals come off them too.
 - Caught on the strip: the falls camera sat inside the north stack; the first falls were 3 m wide on a 140 m bluff (a thread) -- now 7-16.
 - Cost over m2340: +9 draws, +21k tris. Shipped unverified.
+## m2344 -- THE TITLE SCREEN'S NIGHT uses the game's night sky (Nov 3 2026)
+His ask: *"the title screen night doesn't use this -- should we make it?"* (m2298 left it open). The title loop (LOOPBG, its own renderer) now draws
+the shared NIGHTSKY at night: `loopNightSky(C)` clones the dome, the aurora and its sparkle (same geometry, OWN materials and uniforms, so the
+title never moves the game's `uFade`) into its scene; the season driver hands it the night weight (`(a === 'night' ? 1 - f : 0) + ...`), which fades
+the dome (`uFade`), the curtains (their additive gain) and the sparkle in, and fades the title's painted moon and point stars out by the same
+amount; the horizon follows the title's fog. The title is an 18 deg telephoto, so the m2298 moon (23 deg across) would overflow the frame: the row
+`NIGHTSKY.title` shrinks it (r .056), steers it and the small moon into view, turns the Milky Way across the frame and lowers the curtains.
+**Placement measured on renders:** to the right (+.11 / +.16) the ringed moon hid behind the painted cloud card in both orientations; upper-left
+(-.13, .055) it shows beside the logo in landscape and half-cut at the left edge in portrait, the amber moon at the right. Draws +3 on the title
+at night only (dome, curtains, sparkle; invisible otherwise). Rendered headless (the harness unmasks `navigator.webdriver` and pins the season to
+night in the SERVED text only): landscape 1280x600 and portrait 420x860. Shipped unverified.
 
 ## m2341 -- the garden lights his Jinra glow: wading in the water, floating in the beam (Nov 3 2026)
 Relayed: *his purple parts glow when he steps in the stream or goes in a geyser* (HEROGLOW, m2339). The garden calls `heroGlowHold` every frame he is in contact:

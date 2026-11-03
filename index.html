@@ -12835,7 +12835,10 @@ const NIGHTSKY = {
     { id: 'torch_long_01', at: [-25.3, 3.3, 61.6] }, { id: 'torch_long_02', at: [-20.7, 3.3, 61.6] },
     { id: 'torch_crag_01', at: [-12.0, 7.5, 63.2] }, { id: 'torch_crag_02', at: [-6.5, 7.5, 66.5] },
     { id: 'torch_bath_01', at: [2.6, 0, 45.4] }, { id: 'torch_bath_02', at: [7.4, 0, 45.4] },
-    { id: 'torch_spring_01', at: [2.0, 0, 64.8] }, { id: 'torch_spring_02', at: [10.6, 0, 68.6] } ] };
+    { id: 'torch_spring_01', at: [2.0, 0, 64.8] }, { id: 'torch_spring_02', at: [10.6, 0, 68.6] } ],
+  // the TITLE loop's night (LOOPBG, its own 18 deg telephoto): the same sky, cloned, with the moon shrunk and steered into the frame. moon / m2: [yaw, pitch]
+  // off its camera's line (-z, + = right / up); band: the Milky Way's normal, turned so it crosses the frame; auDrop: the curtains lowered (local m)
+  title: { moon: [-.13, .055], r: .056, m2: [.1, .1], r2: .016, band: [.8, .6, .06], auDrop: 165, auGain: .8, fade: .94, far: .8 } };
 // SC_NIGHTSKY:END
 const NIGHT_GLSL = `float nh13(vec3 p) { p = fract(p * vec3(.1031, .1030, .0973)); p += dot(p, p.yxz + 33.33); return fract((p.x + p.y) * p.z); }
 vec3 nh33(vec3 p) { p = fract(p * vec3(.1031, .1030, .0973)); p += dot(p, p.yxz + 33.33); return fract((p.xxy + p.yxx) * p.zyx); }
@@ -13022,6 +13025,21 @@ function snowNightStep(dt) { const N = SNOWNIGHT, NS = NIGHTSKY, f = Math.max(0,
   if (lit > .3 && (T.sT -= dt) <= 0) { T.sT = .09; for (const r of near) { if (r.d2 > TK.sparkR * TK.sparkR) break;
       if (Math.random() < .5) spk(r.x + (Math.random() - .5) * .2, r.y + .3, r.z + (Math.random() - .5) * .2, (Math.random() - .5) * .5, 1.4 + Math.random() * 1.4, (Math.random() - .5) * .5, .05 + Math.random() * .04, .7 + Math.random() * .6, [1, .55 + Math.random() * .25, .2]);
       if (Math.random() < .08) smokeAt(r.x, r.y + .9, r.z, .5, 1.6, [.22, .21, .24]); } } }
+// m2342 (his: "the title screen night doesn't use this -- should we make it?"): the TITLE loop's night uses this sky. `loopNightSky(C)` clones
+// the shared dome, aurora and sparkle (same geometry, own materials and uniforms -- the title has its own renderer and must not move the game's
+// fade) into a group for the title scene; `fade(k, fog)` takes the night weight from its season driver, `step(dt, cam)` follows the lens.
+function loopNightSky(C) { const NS = NIGHTSKY, TT = NS.title; try { nightSkyGlobal(); } catch (e) { return null; } if (!NS.dome) return null;
+  const g = new THREE.Group(), mats = [], dir = a => new THREE.Vector3(Math.sin(a[0]) * Math.cos(a[1]), Math.sin(a[1]), -Math.cos(a[0]) * Math.cos(a[1])).normalize();
+  const cl = (m, ro) => { const mat = m.material.clone(); mat.transparent = true; mats.push(mat); const c = m.isPoints ? new THREE.Points(m.geometry, mat) : new THREE.Mesh(m.geometry, mat); c.frustumCulled = false; c.renderOrder = ro; g.add(c); return c; };
+  const dome = cl(NS.dome, -9.5), U = dome.material.uniforms, md = dir(TT.moon), up = new THREE.Vector3(0, 1, 0), side = new THREE.Vector3().crossVectors(md, up).normalize(), mu = new THREE.Vector3().crossVectors(side, md).normalize(), L = NS.moon.light;
+  U.uMoon.value.copy(md); U.uMoonR.value = Math.sin(TT.r); U.uMoonL.value.copy(side).multiplyScalar(L[0]).addScaledVector(mu, L[1]).addScaledVector(md, -L[2]).normalize();
+  U.uM2.value.copy(dir(TT.m2)); U.uM2R.value = Math.sin(TT.r2); U.uBand.value.set(...TT.band).normalize();
+  let auG = null, sp = null; if (NS.auMesh) { const au = cl(NS.auMesh, -9.4); au.position.y = -TT.auDrop; auG = au.material.uniforms.uGain || null; } const g0 = auG ? auG.value * TT.auGain : 0;
+  if (NS.auPts) { sp = cl(NS.auPts, -9.4); sp.position.y = -TT.auDrop; }
+  g.scale.setScalar(C.far * TT.far / NS.sky.r); g.visible = false; let k0 = 0;
+  return { g, fade(k, fog) { k0 = k; g.visible = k > .01; U.uFade.value = k * TT.fade; if (fog) U.uHor.value.copy(fog); if (auG) auG.value = g0 * k; if (sp) sp.visible = k > .4; },     /* the curtains are additive: their gain is the fade */
+    step(dt, cam) { if (!g.visible) return; g.position.copy(cam.position); for (const m of mats) if (m.uniforms.uT) m.uniforms.uT.value += dt; },
+    get k() { return k0; } }; }
 // NIGHT_SKY:END
 // NIGHT_CORE:START -- NIGHT.md. `nightStep` is the ONE writer of NIGHT.f. `nightPre` / `nightPost` wrap the frame's render: the global sun, hemi,
 // fog, background and exposure are blended toward NIGHT.pal for the draw and handed back after it, so no zone's own lighting code is fought and the
@@ -73215,6 +73233,7 @@ function loopBg(host) { const T = LOOPBG, P = T.pal[T.time] || T.pal.dusk, C = T
   const stars = new THREE.Points(sg, new THREE.ShaderMaterial({ transparent: true, depthWrite: false, fog: false, uniforms: { uT: U.uT, uA: { value: 0 } },
     vertexShader: 'attribute float aP; uniform float uT; varying float vA; void main(){ vA = .55 + .45 * sin(uT * (1.3 + fract(aP) * 2.0) + aP * 7.0); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); gl_PointSize = 1.5 + fract(aP * 3.1) * 2.2; }',
     fragmentShader: 'uniform float uA; varying float vA; void main(){ float d = length(gl_PointCoord - .5); gl_FragColor = vec4(vec3(1.0, .97, .9), smoothstep(.5, .1, d) * vA * uA); }' })); stars.renderOrder = -9; stars.frustumCulled = false; S.add(stars);
+  const NSKY = (() => { try { const o = loopNightSky(C); if (o) S.add(o.g); return o; } catch (e) { console.warn('[melee] title night sky', e); return null; } })();     // m2342: the game's night sky (NIGHTSKY) at night
   const pm = new THREE.PMREMGenerator(R); new THREE.TextureLoader().load(A('textures/' + SK.tex + '.webp'), t => { if (st.dead) { t.dispose(); return; } t.mapping = THREE.EquirectangularReflectionMapping; t.colorSpace = THREE.SRGBColorSpace;
     const e = pm.fromEquirectangular(t).texture; S.environment = e; S.environmentIntensity = SK.env; t.dispose(); }, undefined, () => {});
   // the SUN SHAFTS: a fan of additive quads behind everything, fixed (the sun is at infinity, so it does not slide), each breathing on its own
@@ -73438,6 +73457,7 @@ function loopBg(host) { const T = LOOPBG, P = T.pal[T.time] || T.pal.dusk, C = T
     S.fog.color.copy(fogC[a]).lerp(fogC[b], f); MAT.card.color.setRGB(...l3(A.cloud, B.cloud, f)); MAT.cardNoFog.color.copy(MAT.card.color); MAT.mist.color.copy(MAT.card.color);
     if (shaftM) shaftM.material.uniforms.uI.value = l1(A.sun, B.sun, f);
     MAT.halo.opacity = l1(A.halo != null ? A.halo : T.haloDay, B.halo != null ? B.halo : T.haloDay, f); stars.material.uniforms.uA.value = l1(A.stars || 0, B.stars || 0, f); moon.material.opacity = l1(A.moon || 0, B.moon || 0, f);
+    if (NSKY) { const nk = (a === 'night' ? 1 - f : 0) + (b === 'night' ? f : 0); NSKY.fade(nk, S.fog.color); moon.material.opacity *= 1 - nk; stars.material.uniforms.uA.value *= 1 - nk; }     // m2342: the shared sky takes over the painted moon and the points
     moon.visible = moon.material.opacity > .01; stars.visible = stars.material.uniforms.uA.value > .01; key.color.copy(keyC[a]).lerp(keyC[b], f); };
   const keyC = {}, fillC = {}; for (const k in SEA) { keyC[k] = new THREE.Color(SEA[k].keyCol != null ? SEA[k].keyCol : P.key); fillC[k] = new THREE.Color(SEA[k].fillCol != null ? SEA[k].fillCol : (P.fill || 0xffffff)); }
   { const ax = -.07, ay = .08, d = 4200; moon.position.set(Math.sin(ax) * d, C.y + Math.sin(ay) * d, C.dist - Math.cos(ax) * d); moon.scale.setScalar(d * .11); }
@@ -73493,6 +73513,7 @@ function loopBg(host) { const T = LOOPBG, P = T.pal[T.time] || T.pal.dusk, C = T
     if (SHIP.g) { const H = half(C.dist - SH.at[2]); SHIP.x += (SH.vx - sp) * dt; if (SHIP.x > H.w + SHIP.len) SHIP.x = -H.w - SHIP.len - Math.random() * SH.span; if (SHIP.x < -H.w - SHIP.len - SH.span * 1.5) SHIP.x = H.w + SHIP.len;
       SHIP.g.position.set(SHIP.x, SH.at[1] + Math.sin(st.t * .6) * .5, SH.at[2]); SHIP.g.rotation.x = Math.sin(st.t * .45) * .03; SHIP.g.rotation.z = Math.sin(st.t * .6 + 1) * .025; try { SHIP.md.step(dt, st.t); } catch (e) {} }
     cam.position.set(Math.sin(st.t * .13) * .22 + Math.sin(st.t * .041) * .12, C.y + Math.sin(st.t * .19) * .09 + (st.leap ? Math.max(0, st.leap.y || 0) * T.leap.camFollow : 0), C.dist + Math.sin(st.t * .07) * .25);     // a slow HANDHELD drift: the layers breathe against each other even when nothing else moves
+    if (NSKY) NSKY.step(dt, cam);
     R.render(S, cam); };
   const loop = () => { if (st.dead) return; st.raf = requestAnimationFrame(loop); const now = performance.now(), dt = Math.min(.05, (now - st.last) / 1000); st.last = now; frame(dt); };
   size(); loop();
