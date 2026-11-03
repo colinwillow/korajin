@@ -17,6 +17,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2356 -- TAKE 4b: the petal ring closes on the emblem; he stays in frame<!--mine-->
+The m2349 strip showed two faults:
+- Grumbo climbed out of the top of the frame.
+- The petals made a loose donut about twice the emblem's size that never closed in.
+Fixes:
+- Jump: `rise.h` 2.3 -> 1.6 and `hang.drift` .35 -> .2. `camFollow` .5 -> .8, still on the damped height.
+- Swirl SUBSTEPS: `loopSwirl` clamped each frame to .05 s, so a dropped frame lost flight time. It now runs up to 16 substeps of <=25 ms.
+- Orbit:
+  - It is a TILTED ring (`petals.tilt` .5), worked in its own plane and squashed onto the screen. Petals on the far side are drawn smaller and
+    dimmer, so they pass BEHIND the emblem and in front.
+  - The spin is taken from the TARGET radius, and the radial pull rose 2.6 -> 4.2, so the ring tightens.
+  - Measured in a blank page with a fake clock (the swirl alone, no WebGL), on the median petal radius: 350 px at the gust, 124 at t=1.9,
+    83 at 2.5 (the emblem's radius is 64), then the burst out.
+- `loopSwirl.dbg` exposes the petal state.
+Shipped unverified.
 ## m23XX -- NIGHT 16: the CLOUDS sit in the night (Nov 3 2026)
 His report (images/feedback/m2341/night_clouds_too_bright.png): *"the big clouds stay bright white at night and pop out -- they could glow a little, but fit
 in more; the white glow is best kept for dusk and day."* The garden's cloud cards are an UNLIT ShaderMaterial (`gdnCards`), so no light the night
