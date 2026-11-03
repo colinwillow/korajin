@@ -19,6 +19,76 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2393 -- THE MAMMOTH'S CLOTH: spring chains in the four drapes, a pendulum in every ring / bell / tassel, a body he cannot sink cloth into (Nov 3 2026)
+*"Parts of him like the cloth should be dynamically rigged, kind of like Grumbo's cape."*
+- **`tools/mammoth_cloth.py`** (after `mammoth_weights.py`, on the draco-stripped file): the DRAPES are found by the cloth's own red-orange in
+  the 2048 texture (+ one ring of mesh neighbours for the hems), in four boxes (front / rear, each flank), minus anything a leg bone carries
+  (the leg wraps share the colour -- the first pass put a front leg on a drape chain and it smeared into a slab under his belly, seen on the
+  title loop and fixed). Each panel gets a 3-bone `cloth_<k>_<j>` chain down its hanging line from Spine_01 / Spine_02; the top quarter stays
+  on the body (sewn to the saddle), below it the cloth goes to the chain by height. Every hanging LOOSE part (24 of the 25 rings / bells /
+  tassels) gets ONE pendulum bone, top vertex to bottom, the part 100% on it, under the bone it hung from. And `cloth_body`: an empty under
+  Spine_03 whose scale is his body ellipsoid (centre 0, .108, .879; radii .705 / .599 / .314 authored).
+- **`clothStep`** (index.html, called from `trunkStep`, so the ridden mammoth, the calves and the title loop all have it): verlet per segment
+  like the trunk and his cape -- inertia, pull to rest, gravity, drag, a bend limit (`CLOTH.drape` / `CLOTH.pend`) -- every tip pushed back
+  OUTSIDE the ellipsoid (its node's world matrix, so it rides his spine and his scale). `d.wind` is the air: the title loop sets it from the
+  walk speed + the season's wind, so the drapes trail back as his cape does. `CLOTH.on = 0` is the A/B.
+- **`tools/mammoth_pack.mjs`** drops the cloth bones' sampled rest channels (14,400 of them -- no clip keys them; 9.1 MB -> 6.6 MB) before draco.
+- Checked headless: the title loop in Chromium (SwiftShader, webdriver flag off so the start screen runs) -- the drapes hang and trail, the
+  rings swing, no cloth error in the console. The ride itself was not driven headless (same `trunkStep` path). Shipped unverified.
+- The pipeline end to end: `mammoth_undraco.mjs` -> `mammoth_plant.py` -> `mammoth_weights.py` -> `mammoth_cloth.py` -> `mammoth_pack.mjs`.
+
+## m2392 -- the wall run's slowdown is ONE RAMP, not steps (Nov 3 2026)
+His, on m2364: *"it doesn't feel like he slows down -- it's a step function: he runs, then steps down to slower, then steps down and stops."*
+Distance fine; a bit more height is OK. What made the steps (all in the clip rate, plus a kink in the brake):
+- The clip rate was `clamp(vy / ref, lo, hi)` re-clamped EVERY frame (`upClipTs` [1.8, 3.4], ref 3.2), x m2364's ease under `upSlowV` 3 m/s:
+  FLAT at 3.4 down to ~10.9 m/s, a slope to 1.8 at 5.8, FLAT again to 3 m/s, then a ramp to 0 -- run / slower / stop, exactly his three steps.
+- The brake was re-solved per frame as `max(upG, v^2/2left)` and could switch terms mid-climb (a kink in the deceleration).
+Now (`stepWrun`'s up arc, `wrunUpS`, `wrunUpRate`): the braking is fixed ONCE at the catch (`R.aUp` = max(upG, v0^2 / 2 x budget left)), so his
+speed falls on one straight line to the apex; `wrunUpS` = speed left / catch speed (1 -> 0 on that line); every run-up clip rate = the rate his
+CATCH speed earned (clamped once) x `wrunUpS`; the arms' rate and the lean (`upSlowLean` x (1 - S), eased) ride the same S. `upSlowV` is gone.
+More height, longer climb: `climbBase` 2 -> 2.5, `climbPerV` .45 -> .6, `climbCap` 6.5 -> 8.5 (a sprint ~7.5 m, a walk-in ~4), `upG` 6 -> 4.5.
+TEST as m2364: The Wall Park (`?w=forge&zone=wall`), sprint at the 14 m yellow face holding up -- one continuous slowdown, legs and lean with it.
+Note: m2364's code comments had been renumbered m2374 by a merge elsewhere; set back to m2364. Shipped unverified.
+## m2391 -- a sprint no longer carries into the guard or the charge: he PLANTS (a .32 s skid + dust) to the stance's speed; m2378's slow cap reverted
+His correction (Nov 3) on m2378: *"It made something that was already the right speed slower, and didn't fix the actual problem."* The real bug: already
+SPRINTING, then right stick UP (charge) or DOWN (guard), he kept full sprint momentum and slid along at run speed in the guard / charge pose.
+- Cause (read in the code): AUTOSPRINT (m1809) re-set `p.ninja = 1` EVERY frame from `p.sprintAuto`, with no stance test -- `busy` only stopped the
+  run distance growing, never the flag. `p.ninja` sets `wantSp` "past every cap above", so the guard's `MOVE.blockSp` 2.4, the aim's `GAIT.aimRunRef`
+  2.3 and the charge's own legs were all overridden. Now a stance (`p.charge` / `p.block` / `p.aim` -- the bow draw and the gun aim -- / `p.center`)
+  zeroes `p.runD` and the sprint cannot re-arm until it ends (he builds the run again after).
+- THE PLANT (`STANCE`, in `stepPlayer` just before the hurt/knock zeroing): entering a stance more than `skid` .8 m/s over its speed, the excess bleeds
+  off linearly over `bleed` .32 s (`p.stCap` falls, `wantSp` follows it) with a dust puff at his feet (`dust` 14); then the stance's own cap holds.
+  Live on `mel.STANCE` (`on` 0 is the A/B; `stat.n` counts plants).
+- m2378 REVERTED to exactly the pre-m2378 behaviour: `CHRUN` keep 1 (m1968's charge-keeps-the-run), the slow cap gone, TOOLS > CHARGE MOVE removed
+  (it no longer meant anything). m2380's katana sounds are untouched.
+- Not verified on a device. Box moved: none (a fix to the guard/charge entry). Open: the skid length (`mel.STANCE.bleed`) is his.
+
+## m2390 -- THE LAKE: the boat, detail pass 2; the climb's interact reach (Nov 3 2026)
+- **The boat:** a scalloped red cloth VALANCE hangs from every edge of the roof (rounded scallops with a cusp every 4 segments -- the first try was a
+  sawtooth; CRAFT 1); two cushioned BENCHES along the sides under the roof and a lacquer CHEST with gold corners at its bow end; three glowing CHEVRONS
+  on each cheek of the bow (JPAL, object space -- tubes in the boat's frame); the hull below the waterline is a deep teal-black lacquer (was brown).
+- **Interact registry (the UI worker's, m2382):** `lake.climb` said "in reach" anywhere in the water -- it uses `lakeClimbSpot()` now (beside the side,
+  between the cheeks, within `climbR`) and puts its rune on the rail there. `lake.helm` / `lake.helmoff` already matched the walk-up. The top-of-screen
+  helm hint is off (the pad's own "TAP: TAKE THE HELM" says it). Shipped unverified.
+
+## m2389 -- THE LAKE: the boat, detail pass 1 (his m2376 note 6) (Nov 3 2026)
+His: *"remove the long paddle/motor stick off the stern; fill the roof's missing fabric; a cooler FUTURISTIC-RETRO longboat."*
+- The steering oar off the stern: GONE. In its place two STERN LANTERNS on lacquer posts with gold crooks and cords (the prow lantern's material, so they
+  come up at night too).
+- The roof: both layers double-sided (it vanished from some angles) and a dark FASCIA band all round the gap between them (CRAFT 3: closed).
+- Sculpted lines: a brushed-metal STRAKE each side sweeping up toward the bow, a second, low Jinra line at the waterline, a chrome CUTWATER up the stem.
+- The jets (still his switch): lacquer cowls over the intakes and fairings into the hull, so they read as part of the boat.
+Everything merges per material as before (boat draws unchanged). Shipped unverified.
+
+## m2388 -- THE LAKE: walk to the wheel, hands on it (his m2376 note 5: "tapping at the helm teleports him") (Nov 3 2026)
+- **The walk:** TAP RIGHT near the wheel and he WALKS there (`LAKEZ.helmWalk`): in the boat's frame (the boat may be moving), eased over .3-1.1 s by the
+  distance, turning to face the wheel then the bow, his own walk playing (`p.speed`). Headless game: from 1.6 m off, `walk` true and his boat-local spot
+  moving toward the wheel with `run_std` / walk playing.
+- **The pose:** `helm_idle` = his Forge library's Wheelbarrow_Idle (both hands forward at the waist) baked onto Grumbo (`agoblin_helm.glb`, 0.11 MB,
+  profile `tools/agoblin_helm_prof.json`), at full weight at the wheel. The wheel moved to where those hands are (deck + .9, .52 m ahead of him).
+  NOT measured: whether the hands meet the rim exactly (no skinning offline) -- the thing to look at.
+- **The wheel turns WITH the stick** (up to 2.4 rad) and comes back to centre when he lets go (was: the boat's turn rate).
+- Leaving: a tap gives him back the stick where he stands (no walk-away yet). Shipped unverified.
 ## m23XX -- NIGHT 20: the night SILHOUETTE plants were MY cloud tint -- and foliage gets a moonlight key (Nov 3 2026)
 His report (images/feedback/m2376/garden_night_silhouette_plants.png vs garden_dusk_same_spot.png): *"at night the ferns, bushes and grasses go to flat
 featureless silhouettes"*. Reproduced headless (images/feedback/m2329/foliage_night_before.jpg: one navy for every bush), then a RAYCAST at the bushes
