@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2355 -- THE LAKE: lily pads, lotus and algae (his ask) (Nov 3 2026)
+His: *"some plants that are floating, almost like algae or lily pads in the water."* `W.pads` (6 cluster rows, stable ids `<cluster>_<n>`): each cluster
+is scattered in a cove `out` m in from the water's edge and keeps only spots where the bed is .4-3.5 m deep. A pad is a notched, cupped, veined disc;
+20 % carry a lotus (two rings of cupped petals, a gold seed head). They ride `L.waveAt` (height and tilt), the moving hull shoulders them aside and they
+drift home. 154 pads / 31 lotus, 2 instanced draws. The algae: a green-gold film in patches in the sheltered shallows (water shader, 1-4 m deep).
+Also: the cherry blossom clouds shaded FACETED close up (`computeVertexNormals` on a non-indexed polyhedron) -- they keep their radial normals now
+(CRAFT 1). Night glow hook: `W.padGlow`. Strip shot `lilies` frames a cluster by id. Shipped unverified.
+
 ## m2354 -- THE LAKE pass 5a: THE HELM -- steer the boat, then leave it and walk the deck (Nov 3 2026)
 His: *"steering the boat is good. I also want to be able to dismount from steering and just run around on the boat... jump off the boat and swim."*
 - **A helm**: a lacquered post with a gold wheel and a Jinra hub behind the shelter (`R.helm` = [wheel z, where he stands]). Within 1.6 m of it on the deck a
