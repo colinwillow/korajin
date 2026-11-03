@@ -17,6 +17,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2350 -- THE JINRA BEAM AS FLUID, pass 2 (Nov 3 2026)
+Pass 1's renders showed three problems:
+- **The top washed out to near-white against the sky.** The fade is now `pow(1-y, 1.7)`, the sheen is lighter, and thin areas lean on the deep colour.
+- **The strands and droplets barely read.** Ribbons are 60% wider and brighter; the droplets are larger (.08 to .18) and there are more of them (230).
+- **The spring sat UNDER the basin's water.** It now sits just above it.
+Shipped unverified. A frame strip with him inside follows.
+
 ## m2349 -- THE START TRANSITION, TAKE 4<!--mine-->: an organic petal swirl, a smooth jump and flip, no sword
 His notes on m2306: "a good start but could be much more interesting". He wanted the petals to travel gracefully round and into the emblem, the
 jump and flip smooth and cinematic, and said of the sword: "I could take it or leave it". So the draw, the slash, the blade trail and the arc are
