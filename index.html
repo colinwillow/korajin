@@ -17189,6 +17189,16 @@ function propBreak(b, hx, hy, hz) { const K = PROPB.kinds[b.prop]; if (!K) retur
   const dc = K.opt.coin != null ? K.opt.coin : PROPB.coin, dj = K.opt.jin != null ? K.opt.jin : PROPB.jin, u = Math.random();
   try { if (u < dc) coinDrop(scene, b.cx, b.cy + .2, b.cz); else if (u < dc + dj) jinraEmit(b.cx, b.cy + .3, b.cz, 6); } catch (e) {}
   PROPB.broken = (PROPB.broken || 0) + 1; }
+// m2295 SHARDS FOR ANY MESH: a smashable that is not a `propKind` (every zone's `smashAdd` props -- the temple's sake barrels and offering pots, the
+// village's crates and jars ...) shatters into curved pieces of ITS OWN material, from a pool per material (made on first use, world space).
+const PSHARD = new Map(), PSHARDG = new THREE.LatheGeometry([[.36, .25], [.4, .4], [.425, .55]].map(([a, b]) => new THREE.Vector2(a, b)), 3, 0, .9).translate(-.38, -.4, 0);
+function propShatter(x, y, z, H, mat, hx, hz) { if (!mat) return; let K = PSHARD.get(mat); if (!K) { const m2 = mat.clone(); m2.side = THREE.DoubleSide; const sh = new THREE.InstancedMesh(propWhite(PSHARDG.clone()), m2, 60); sh.frustumCulled = false; sh.castShadow = true;
+    for (let i = 0; i < 60; i++) sh.setMatrixAt(i, _prkZ); scene.add(sh); K = { sh, k: 0, live: [] }; PSHARD.set(mat, K); PROPB.shards.push(K); }
+  let bx = 0, bz = 0; if (hx !== undefined) { bx = x - hx; bz = z - hz; const L = Math.hypot(bx, bz) || 1; bx /= L; bz /= L; } const sc = Math.min(1.4, H * .9);
+  for (let s = 0; s < 10; s++) { const a = s / 10 * 6.283 + Math.random() * .5, out = 1.6 + Math.random() * 2.2, k = K.k = (K.k + 1) % 60; K.live = K.live.filter(q => q.k !== k);
+    K.live.push({ k, x: x + Math.cos(a) * .25, y: y - H * .2 + Math.random() * H * .5, z: z + Math.sin(a) * .25, vx: Math.cos(a) * out + bx * 2.6, vy: 2.5 + Math.random() * 3.2, vz: Math.sin(a) * out + bz * 2.6,
+      q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.random() * 6, a, Math.random() * 6)), ax: new THREE.Vector3(Math.random() - .5, Math.random() - .5, Math.random() - .5).normalize(), w: 6 + Math.random() * 8, s: sc * (.6 + Math.random() * .6), t: 0, rest: 0 }); } }
+function propDrop(x, y, z, dc, dj) { dc = dc != null ? dc : PROPB.coin; dj = dj != null ? dj : PROPB.jin; const u = Math.random(); try { if (u < dc) coinDrop(scene, x, y + .2, z); else if (u < dc + dj) jinraEmit(x, y + .3, z, 6); } catch (e) {} }
 function kickKind(name, geo, mat, recs) { if (!recs || !recs.length) return null; const n = recs.length, im = new THREE.InstancedMesh(propWhite(geo), mat, n); im.castShadow = true; im.receiveShadow = true; im.frustumCulled = false; scene.add(im);
   const K = { name, im, list: [] }; KICK.kinds[name] = K;
   for (let i = 0; i < n; i++) { const r = recs[i], B = { K, i, x: r.x, y: r.y, z: r.z, r: r.r, s: r.s || r.r, q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.random() * 6, Math.random() * 6, Math.random() * 6)), vx: 0, vy: 0, vz: 0, sleep: 1, st: 0 };
@@ -17207,7 +17217,8 @@ function propStep(dt) { if (!(dt > 0)) return; const p = player;
     K.sh.instanceMatrix.needsUpdate = true; }
   // a dash or a roll through a breakable breaks it
   if (Math.hypot(p.vel.x, p.vel.z) > PROPB.rollAt) for (const b of BREAK) if (b.prop && !b.dead && Math.hypot(b.cx - p.pos.x, b.cz - p.pos.z) < b.rad + .55 && Math.abs(b.cy - p.pos.y - .5) < 1.2) brkBreak(b, p.pos.x, p.pos.y, p.pos.z);
-  if (!KICK.list.length) return; const sp = Math.hypot(p.vel.x, p.vel.z), dirty = new Set();
+  if (!KICK.list.length) return;
+  if (Math.hypot(p.vel.x, p.vel.z) > PROPB.rollAt && SMASH.list.length) smashHit(p.pos.x, p.pos.y + .5, p.pos.z, .5, 99);     // m2295: and through any zone's smashable const sp = Math.hypot(p.vel.x, p.vel.z), dirty = new Set();
   for (const B of KICK.list) { const dx = B.x - p.pos.x, dz = B.z - p.pos.z; if (Math.abs(dx) > KICK.near || Math.abs(dz) > KICK.near) { if (B.sleep) continue; }
     const d = Math.hypot(dx, dz); if (d < B.r + .38 && Math.abs(B.y - p.pos.y - B.r) < .8 && sp > .4) { const L = d || 1, v = sp > PROPB.rollAt ? KICK.hitV : sp * KICK.push + .6;     // walked into: nudged; run / dash: kicked
       B.vx = dx / L * v + p.vel.x * .25; B.vz = dz / L * v + p.vel.z * .25; if (sp > 3) B.vy = Math.max(B.vy, sp * .18); B.sleep = 0; B.st = 0; }
@@ -17880,7 +17891,7 @@ function gdnMake(g) { const Z = GARDEN, S = Z.sky;
   const [sx, sz] = Z.spawn.at, [fx, fz] = Z.spawn.face;
   const put = () => { try { const h = Math.atan2(fx - sx, fz - sz); if (Z.sleep && Z.sleep.on && Z.hammock.bed && !Z.wakeClip && !player.sleepDone) { gdnSleepStart(); player.sleepDone = 1; if (typeof cam !== 'undefined') cam.az = h; return; } if (player.sleep) return; player.pos.set(sx, Z.top + .1, sz); player.vel.set(0, 0, 0); player.faceH = player.heading = h; if (typeof cam !== 'undefined') cam.az = h; } catch (e) {} };     // m2242: he starts asleep in the hammock
   for (const ms of [0, 400, 1200]) setTimeout(put, ms);
-  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.gdnSleepStart = gdnSleepStart; mel.reelEnd = reelEnd; mel.BREAK = BREAK; mel.brkBlast = brkBlast; mel.PROPB = PROPB; mel.KICK = KICK; mel.kickHit = kickHit; mel.SPRINGS = SPRINGS; mel.gdnClothY = gdnClothY; mel.stick = stick; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
+  setTimeout(() => { try { if (window.mel) { mel.GARDEN = GARDEN; mel.stepSurf = stepSurf; mel.STEPSURF = STEPSURF; mel.rig = rig; mel.LOTUS = LOTUS; mel.gdnSleepStart = gdnSleepStart; mel.reelEnd = reelEnd; mel.BREAK = BREAK; mel.brkBlast = brkBlast; mel.PROPB = PROPB; mel.KICK = KICK; mel.kickHit = kickHit; mel.SMASH = SMASH; mel.smashHit = smashHit; mel.PSHARD = PSHARD; mel.BLDG = BLDG; mel.SPRINGS = SPRINGS; mel.gdnClothY = gdnClothY; mel.stick = stick; mel.arenaSpawn = arenaSpawn; mel.ARENA = ARENA; mel.DUMMIES = DUMMIES; mel.spiderAdd = spiderAdd; mel.gdnSpawnSpot = gdnSpawnSpot; mel.boxesNear = boxesNear; mel.SPIDER = SPIDER; mel.ssProbe = (x, z, y) => { const out = []; for (const o of STEPSURF.list) { const G = o.isInstancedMesh ? null : ssGrid(o); if (G) ssDown(o, G, x, z, y + .6, y - .9, out); } out.sort((a, b) => a.distance - b.distance); return out.slice(0, 3).map(h => ssClassify(h) + ':' + (h.object.name || h.object.parent.name) + ':' + (.6 - h.distance).toFixed(2)); }; } } catch (e) {} }, 0); }
 function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O.t += dt; Z.U.uTime.value = O.t;
   if (!O.tris) { O.tris = 1; try { bldTris(O, Z.tris); } catch (e) { note('GARDEN TRIS ' + e.message); } }
   if (Z.shaftM) Z.shaftM.material.uniforms.uT.value = O.t;
@@ -25476,6 +25487,7 @@ function brkDecalOff(b, above) {
   return decalOff(B, .06);
 }
 function brkBlast(x, y, z, r, dmg) {
+  if (SMASH.list.length) smashHit(x, y, z, r, (dmg || 1) * 2);     // m2295: the one door reaches every zone's smashables too (their own `cool` stops a double count)
   if (!BRK.on || !BREAK.length) return 0;
   let n = 0;
   for (const b of BREAK) {
@@ -30242,6 +30254,7 @@ function smashHit(x, y, z, rad, dmg) {
     S.cool = .25; S.hp -= Math.max(.5, dmg || 1); hit = 1; const P = S.m.position; S.m.rotation.y += (Math.random() - .5) * .3;
     if (S.hp > 0) { snd('thud', { g: .6, r: 1.25, x: P.x, z: P.z }); spkBurst(P.x, P.y, P.z, 6, { col: S.col, spread: 2, size: .08, life: .3 }); continue; }
     S.dead = 1; S.t = S.fix; S.m.visible = false; const i = BOXES.indexOf(b); if (i >= 0) BOXES.splice(i, 1); boxGrid();
+    try { let mt = S.m.material; if (!mt) S.m.traverse(o => { if (!mt && o.isMesh) mt = o.material; }); propShatter((b.minx + b.maxx) / 2, (b.miny + b.maxy) / 2, (b.minz + b.maxz) / 2, Math.max(.4, b.maxy - b.miny), Array.isArray(mt) ? mt[0] : mt, x, z); propDrop((b.minx + b.maxx) / 2, (b.miny + b.maxy) / 2, (b.minz + b.maxz) / 2); } catch (e) {}     /* m2295: every zone's smashables SHATTER into shards of their own skin, and drop (game-wide, his: ALL pots in EVERY level) */
     for (let k = 0; k < 3; k++) spkBurst(P.x, P.y, P.z, 14, { col: k ? S.col : [.95, .9, .8], spread: 5, size: .15, life: .7 });
     smokeAt(P.x, P.y, P.z, 1, 1, [.6, .55, .5]); snd('thud', { g: 1, r: .85, x: P.x, z: P.z }); snd('clang', { g: .3, r: 1.9, x: P.x, z: P.z }); camShake(.1); }
   return hit;
