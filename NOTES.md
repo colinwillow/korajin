@@ -17,6 +17,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2315 -- the entrance waits for the zone (Nov 3 2026)
+The spawn audit caught the temple and the snow dropping him at the forge's default (0, 0, 8): `entryWatch` fired on "grounded for .25 s" before the
+zone had built and put him at ITS spawn. Each zone row now has a `ready()` (WPARK / DUELZ / PROVE / ROPEB / TEMPLEZ / DOMET / SHIPZ / DRAGZ .on, SNOWZ.on,
+RGN.live, TCELL.live), the settle is .6 s, and it restarts whenever he is moved more than 1.5 m (a zone's late `setTimeout` put). Shipped unverified.
+
 ## m2314 -- THE JINRA PALETTE, part 4: the TEXTURE hue (`jinHueMat`) -- the snow village's jade crystals were green in every preset (Nov 3 2026)
 - **Found by the contact sheet, not by reading:** the snow village's crystals stayed GREEN under VIOLET and JADE although every number on
   them was routed. Their green is in the TEXTURE (`temple_jade`, `svk_glyph`), and a tint multiplies -- a violet tint over a green texel
