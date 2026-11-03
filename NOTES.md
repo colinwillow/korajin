@@ -17,6 +17,9 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2324 -- THE LAKE: the nightGlow API noted in WATER.md (Nov 3 2026)
+Docs only: the night worker's `nightGlow` (m2323) recipes for the boat wood, sand and stacks, for the lake's night pass. Shipped unverified.
+
 ## m2323 -- NIGHT 3: THE NIGHT GLOW -- `nightGlow`, the alien script, cracks and veins; the snow lights up after dark (Nov 3 2026)
 His ask: *"Japanese-looking alien symbols on stuff that you don't see in the day -- on the wood, in the sand, on the rocks, in the crevices; plants that
 are plain in the day have parts that glow at night."* NIGHT.md box 4, and box 5's first zone.
