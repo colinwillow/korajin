@@ -17,6 +17,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2306 -- THE TRANSITION, take 3: a choreographed shot -- draw, leap, flip, spin-slash; the petals come OFF THE BLADE and spiral into the loading card's EMBLEM (Nov 3 2026)
+His note on take 2 (relayed from main): *"the jump is very linear -- does it flip? I want it more interesting, art-directed."* Direction: he draws his
+sword, leaps, flips, slashes at the apex; the particles come from the sword, spiral, and converge on the boot card's sun-wheel emblem, which
+appears where they meet; then they scatter.
+- **STORYBOARD** (every number in `LOOPBG.leap`, 2.2 s, done before `shutterClose`'s heavy build):
+  1 0.00-0.30 DRAW: a dip, `katana_draw` x1.8, and the sword leaves his BACK for his HAND at .14 s (a second `katanaScene` on the rig's own
+    `weapon_root_right`, identity, hidden until then).
+  2 0.30 LAUNCH: 9 m/s against 18 m/s2, apex ~2.2 m at .8 s, then a FLOAT (gravity x.22) through the slash. The camera holds (follows .3).
+  3 0.36-0.76 FLIP: one forward flip about his HIPS (`hipY` .7: the pivot offset is compensated so he turns about his middle), `front_flip`
+    timed to the window.
+  4 0.78-1.08 SLASH: a 360 SPIN about his vertical axis with `katana_slash_3`'s strike segment (25-75% of the clip) fitted to the window. A blade
+    TRAIL in 3D (additive ribbon, hilt-to-tip) and a glowing 2D SLASH ARC tracing the tip on screen (pink glow, white core, it fades in .3 s).
+    From the blade the PETALS TEAR OFF: a burst of 140 at the first cut, then 26 a frame (16% Jinra motes), flung along the blade's motion.
+  5 1.08-1.50 SPIRAL: each petal is caught by a spiral (1.5 turns) onto the EXACT screen point of `#boot .kjw` (measured with
+    getBoundingClientRect: the card is laid out, only transparent), tightening to a RING round the emblem with a soft pink glow. At 1.12 s the menu
+    fades out (.34 s) over the boot card, so the emblem appears inside the ring.
+  6 1.50-2.20 BURST: the ring FLASHES, and the petals scatter outward and fade; the loading card is left.
+- The take-2 petal storm and the sweep are retired (`stormStep` is no longer called; its table is gone).
+- Strip: 13 moments, rendered by stepping `swirl.hold` (headless frames are slow, so the petal count in the strip is far below a phone's,
+  which emits every frame). Read: the draw, the flip, the arc, the spiral, the ring on the emblem, the burst. **Shipped unverified.**
+
 ## m2303 -- the level picker lives in the bottom third; items fade out as they rise; the arrow sits in the list (Nov 3 2026)
 *"The little arrow is intersecting the menu when you first pull it up. And the picker should stay in the bottom third -- when you scroll, the top part
 goes up and fades out, so you still see the upper two-thirds as the scene; you're just picking in the bottom third."* The wheel's selection line
