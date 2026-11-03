@@ -17,13 +17,6 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-<<<<<<< Updated upstream
-## m2322 -- the entrance: the beacon level and the village, from the contact sheet (Nov 3 2026)
-The m2320 sheet: the BEACON level still stood him against the sign and the start light column with a rock in the lens -- now 10 m back, up on the
-rise at (140.7, 4, -36.2), looking down the course (sign, column, course ahead; the canyon wall behind). The VILLAGE's flipped lens side was blocked
-at .9 m (verify run) -- back to the default side, which the search had passed. Still open: the SHIP has a rope coil at his feet (prop, harmless).
-Shipped unverified.
-=======
 ## m2323 -- NIGHT 3: THE NIGHT GLOW -- `nightGlow`, the alien script, cracks and veins; the snow lights up after dark (Nov 3 2026)
 His ask: *"Japanese-looking alien symbols on stuff that you don't see in the day -- on the wood, in the sand, on the rocks, in the crevices; plants that
 are plain in the day have parts that glow at night."* NIGHT.md box 4, and box 5's first zone.
@@ -41,7 +34,11 @@ are plain in the day have parts that glow at night."* NIGHT.md box 4, and box 5'
   (`nightGlowGroups`): the ice temple's stone (script) and rock (cracks), the waterfall's vertex-coloured rock (cracks), the snow flora (veins).
   Only built when TIME is not DAY, so the day pays nothing.
 - Still open: the hero's blade and cloth, lanterns lighting at dusk, the garden (message its worker first), other zones, his sign-off. Shipped unverified.
->>>>>>> Stashed changes
+## m2322 -- the entrance: the beacon level and the village, from the contact sheet (Nov 3 2026)
+The m2320 sheet: the BEACON level still stood him against the sign and the start light column with a rock in the lens -- now 10 m back, up on the
+rise at (140.7, 4, -36.2), looking down the course (sign, column, course ahead; the canyon wall behind). The VILLAGE's flipped lens side was blocked
+at .9 m (verify run) -- back to the default side, which the search had passed. Still open: the SHIP has a rope coil at his feet (prop, harmless).
+Shipped unverified.
 
 ## m2320 -- THE ENTRANCE, step 2: every zone's landing audited headless and the bad ones moved; the Sky Temple builds again (Nov 3 2026)
 His: *"you often spawn in a really random spot, with stuff in the camera's way. The spawn must be ART DIRECTED. The snow zone's spawn is occluded."*
