@@ -17,6 +17,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2345 -- THE JINRA LIFT: the float never dies, and he sways in the pose (Nov 3 2026)
+His (relayed): *"before the meditation pose he does the perfect oscillation... if you stop moving he slows down and stops going up and down. I want him going up
+and down, oscillating and slightly rotating, specifically when he's in the pose."*
+- **Why it died:** the lift's bob only moves his POSITION, and the camera follows his position. Held still, that reads as nothing (the same finding as m2310).
+  The motion he liked came from steering.
+- **Fix:** the float is now DRAWN on the body too, on two periods. While he is in the column and off the ground it runs at full amplitude whatever the stick does:
+  `GARDEN.beam.fly` .16 m, `flyT` 3.2 s.
+- **The pose:** he rotates slightly. A yaw sway of `yawDeg` 6 degrees in the air grows to `yawMed` 14 degrees in the lotus (`yawT` 11 s).
+- **One writer each:** `GARDEN.flt.dy` is added to the root y beside LOTUS.dy. `GARDEN.flt.yaw` is a term in the root's single yaw sum, so `drawnYaw` carries it.
+  `faceH` is not touched.
+Shipped unverified. The second half of his ask, the beam as rising FLUID, is the next build(s).
+
 ## m2344 -- THE TITLE SCREEN'S NIGHT uses the game's night sky (Nov 3 2026)
 His ask: *"the title screen night doesn't use this -- should we make it?"* (m2298 left it open). The title loop (LOOPBG, its own renderer) now draws
 the shared NIGHTSKY at night: `loopNightSky(C)` clones the dome, the aurora and its sparkle (same geometry, OWN materials and uniforms, so the
