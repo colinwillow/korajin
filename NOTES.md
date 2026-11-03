@@ -60,7 +60,7 @@ beach... I just want it to look absolutely gorgeous."* New sandbox **KORAJIN > T
 - **Ground:** beaches and bluffs via `groundAt` / `lakeWall`; over open water he walks on the forge's y = 0 (the boat is pass 2). ENTRY row `lake`.
 - CRAFT checked on the strip: 1 (stacks and strata not straight -- the cliffs' tier lines are still long and even), 4 (no black: the mirror
   was black, fixed), 5 (six framings). Shipped unverified on the phone.
-## m2318 -- NIGHT 2: the sky gets its dust of stars and SHOOTING STARS; the snow's night runs on the shared factor (Nov 3 2026)
+## m2321 -- NIGHT 2: the sky gets its dust of stars and SHOOTING STARS; the snow's night runs on the shared factor (Nov 3 2026)
 - **The sky** (one dome, still one draw): a fourth, fine star layer (scale 900, densest in the Milky Way band) for the "hundreds of millions", three
   lanes of **shooting stars** (one slot every `NIGHT.meteor.every` 7 s per lane, a .32 rad streak over .9 s with a fading tail, hashed per slot), and
   a warm dusk glow on the horizon (`uDusk` = NIGHT.dusk). The giant ringed moon + rust second moon are the big planet.
