@@ -34,7 +34,7 @@ faster than the animation."*
 ## m2377 -- the title's Grumbo glow passes his mesh<!--mine-->
 NIGHT worker's note: the title loop's `heroGlowMat(m, geo)` passed no mesh, so `heroGlowSpan` had to find his skinned mesh by material. It now
 passes the hero mesh `q` as the third argument, so the glow span is exact. Shipped unverified.
-## m23XX -- NIGHT 19: Grumbo TWO-TONE -- his own orange glows ember beside the Jinra purple (Nov 3 2026)
+## m2379 -- NIGHT 19: Grumbo TWO-TONE -- his own orange glows ember beside the Jinra purple (Nov 3 2026)
 His words (relayed): *"the ORANGE symbol on his cape should glow -- and some pieces of his clothing, maybe armour, the tips of his hair that are a little
 orange too. The orange AND the purple."* A second hue mask (`ora`): orange to amber, BRIGHT, not purple -- the cape emblem, the trims, the quill tips --
 glowing in a fixed warm EMBER (`HEROGLOW.ember` 0xff7a2a, gain `emberK` .85; not JPAL, his own accent), the quills mixing Jinra -> ember by it.
