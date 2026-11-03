@@ -51,7 +51,7 @@ stand-in path (a blade arc, a fist line, a foot arc, a helix, a projectile) -- t
 - [ ] Measured on HIS phone: the lab's stat line (FX ms, DC) with LOOP on, no visible frame drop.
 - [ ] His pick of palette (MINT / PURPLE / SOLAR) -- or "keep all three".
 - [ ] **His sign-off on the look, on his phone.**
-- [x] **m2311 (his call: "I haven't seen those in game")**: wired into the katana trail, blade fire, hits, arrows, dodges, landings, charge
+- [x] **m2329 (his call: "I haven't seen those in game")**: wired into the katana trail, blade fire, hits, arrows, dodges, landings, charge
       release and whirlwind behind TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX). Punch / kick / teleport / handspring have no
       dedicated hooks yet (hits and dodges cover them in part).
 - [ ] (was) THEN, one at a time and asking first: replace the sword's two flame effects; then punch, kick, slam/landing, spin, teleport, handspring,

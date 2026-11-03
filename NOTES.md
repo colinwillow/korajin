@@ -228,7 +228,7 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
-## m2311 -- GOOP FX ON THE REAL MOVES: TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX) (Nov 3 2026)
+## m2329 -- GOOP FX ON THE REAL MOVES: TOOLS > KATANA > GOOP FX (default ON; OFF = the old FX) (Nov 3 2026)
 Relayed from Colin: *"I haven't seen those in game -- I imagine the attacks glowing and I don't see anything glowing."* He wants the goop on the
 real moves NOW (his call ahead of the lab sign-off; the switch is the A/B). One `FX` for the whole game (`goopFx`), stepped every frame by
 `goopStep` next to `bladeTrail` in `arenaStep`; the library does no work at all when nothing is alive (one flush to empty, then returns).
