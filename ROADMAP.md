@@ -31,7 +31,9 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   - [x] m2361 his playtest of m2354: PERF (46 -> 27 draws, 392k -> 269k tris, mirror at .34, DPR cap 1.5), smooth water (per-pixel Gerstner, wake slope off the vertex), portrait camera pulled out on the boat, TAP RIGHT takes / leaves the helm (no button).
   - [x] m2365 SWIMMING: his Forge clips baked onto Grumbo; deep water is swum (tread / swim / fast), shallows waded, TAP RIGHT by the hull climbs aboard; splash, rings, night glow.
   - [x] m2369 TEXTURES: the repo's cliff / strata / sand / pebble maps as biplanar detail + bump on the canyon, stacks and islets; garden_wood on the deck; a tiling detail normal map on the water (cheaper than the noise it replaced). m2367: glowing shore plants (NIGHT flora).
-  - [ ] next: dive off the deck (dive / run_dive clips are in), his wishlist (rock / sand / wood / water maps), glowing shore plants, his wishlist (WATER.md).
+  - [x] m2372 THE DIVE: off the deck over deep water he dives (Standing_Dive_Forward; Run_To_Dive when he takes off fast), into the swim.
+  - [x] m2375 wishlist 1: two rock ARCHES to sail under (feet in the water, obstacles, foam), the island of the GREAT tree (jade, hanging tendrils, alight at night).
+  - [ ] wishlist next: temples / monuments / statues in the water, sea foam (rock / sand / wood / water maps), glowing shore plants, his wishlist (WATER.md).
   - [ ] his asks (Nov 3): more NIGHT (stars framed in a shot, tuning) (stars, runes, glowing plants, lanterns, bioluminescent water); clouds;
         detail on the rocks, water and foam; SWIMMING (waits on Mixamo swim clips -- asked of the main session); the sailing lens (CINEMA); his sign-off.
 - [ ] **SWORD -- OPEN (spec only).** `SWORD.md`: Zap with sword + shield (the library's Sword and Shield set via the Forge),

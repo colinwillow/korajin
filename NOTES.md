@@ -17,6 +17,50 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2375 -- THE LAKE: his wishlist 1 -- arches to sail under, the island of the great glowing tree (Nov 3 2026)
+His: *"rocks and natural arches you sail UNDER; islands with big GLOWING trees."*
+- **Arches (`W.arches`, 2 rows: feet A / B in canyon space, apex `h`, thickness `r`):** each is two tapered tubes from a foot on the BED (thick) up past
+  the apex (thin), overlapping so there is no seam (the first strip had a crack at the top -- CRAFT 3), bowed a little sideways, rock-noise displaced,
+  in the canyon's own textured strata material, baked sun. Each FOOT is pushed into `W.stacks` as a `leg` (no body): so it gets the drowned skirt, the
+  foam rim in the water shader, and is an obstacle to the boat and the swimmer for free. `arch_reach` spans the lane 30 m up; `arch_long` lies along
+  the west side. 1 draw (+1 in the mirror).
+- **The great tree (`tree_great` on the island `isle_great`, a 9 m stack):** the tree builder with `great: 1` -- k 4.8 (~25 m), JADE leaf clouds
+  (detail 3, its own material) and six hanging TENDRILS per branch (tapered, drooping, from a real point on the branch -- CRAFT 1, 3). Both carry the
+  Jinra glow as emission, which `L.setNight` raises from .12 / .25 by day to ~1.7 / 3.4 at night. 2 draws.
+- Cost: 30 draws worst shot (from 27), +19k tris. Shipped unverified.
+
+## m2374 -- the entrance's portal, sized for the play camera (Nov 3 2026)
+Rendered m2363 headless: on the play camera (5 m behind him, a little above) the 9 m tear at his own height FILLED THE SCREEN -- the camera sat on top
+of it. Now (when `ENTRY.cine` is 0) the portal is half size (`pScale` .5), centred `pOff` 1.5 m over where he appears, and tipped `lean` .9 rad toward
+the camera: the rip runs and peels open up in the frame, he drops out of its underside, the camera follows him down, it seals above. Frame strip
+sent. Shipped unverified.
+
+## m2373 (m2371 + fix) -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
+## m2372 -- THE LAKE: the DIVE off the deck (Nov 3 2026)
+When he leaves the deck (a jump or a step off; within .5 s of last standing on it), is clear of the hull and over water deeper than `swim.deep`, `p.lkDive`
+plays `dive` (Standing_Dive_Forward) -- or `run_dive` (Run_To_Dive) if he took off faster than 3 m/s -- from its take-off on, driven by time in the air
+(`lakeSwimAnim`), until the water takes him into the swim (the splash is sized by his fall) or he lands on something. Headless game: placed in the air off
+the side a moment after the deck -> `lkDive: dive`, the `dive` clip at full weight (SwiftShader runs the fall in slow motion, so the landing was not
+waited for). Shipped unverified.
+
+## m2371 -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
+His: *"I don't really love the default text that we use for the story prologue."* Step 1 of two (step 2, an invented Korajin script that dissolves
+into the reading text, waits on his pick here).
+- **The looks:** `REELFONT` has seven, each a free Google font plus a colour, shadow or glow, and a REVEAL that writes the line in letter by letter as
+  the voice reaches it. Every letter is its own span, words stay whole, and the stagger is `--i`.
+  - MINCHO (Shippori Mincho, ink out of a blur), the new default
+  - BRUSH (Yuji Syuku, a stroke from the left)
+  - CARVED (Cinzel, rise)
+  - STORY (Kaisei Decol, ink)
+  - ANTIQUE (Zen Antique, rise)
+  - POSTER (Dela Gothic One, pop)
+  - MARKER (the old one, whole-line fade)
+- **Jinra words:** Jinra, Korajin and Grumbo glow in the JPAL colour.
+- **His switch:** the "Aa" key bottom-left ON the reel steps through them live, and the crawl re-measures its lines in the new face (`O.ys = null`).
+  The same is in TOOLS > PROLOGUE > TALE FONT, kept in `mel.reel.font`. A line upcoming is blank, a line past keeps its letters (`past`).
+**m2371 WAS A BLANK PAGE** for about a minute: a stash-pop conflict was committed with its markers still in it (the gate said SYNTAX FAIL and the
+commit chain ran on with `;`). It was fixed in place, and this bump makes the good build tell itself apart. Never chain commit after `npm run check` with `;`; use `&&`.
+Shipped unverified. A phone-size headless screenshot of each look follows.
 ## m23XX -- NIGHT 18: the AURORA over the garden and glowing MOTES among the clouds (Nov 3 2026)
 His ask (relayed with the clouds): *"where it adds magic, an aurora band or drifting glowing particles behind / among them."*
 - The garden's NIGHT row takes `aurora: 1`: the snow's three folded curtains (m2298, one mesh + its sparkle) hang in the garden sky behind the isles and
