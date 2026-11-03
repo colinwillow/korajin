@@ -13198,22 +13198,35 @@ function gardenNightGlow(root) { const Z = GARDEN, M = Z.M; if (!M || !root) ret
 //   heroGlowPulse(s)  a flare that decays (attack: meleeGo .75, fireBolt .55; collecting wisps: .35 + .05 a wisp)
 //   heroGlowHold(s)   call it EVERY FRAME while he is in contact (a Jinra stream, a geyser): holds k at s at least -- for the zones' own code
 // `mel.HEROGLOW.test = 1` holds it full (to look at the mask).
-const HEROGLOW = { k: 0, pulse: 0, hold: 0, decay: 2.4, gain: 3.4, nightK: .7, test: 0, mats: new WeakSet(), scanT: 0, U: { uHg: { value: 0 }, uHgC: { value: new THREE.Color(JPAL.glow) } } };
+const HEROGLOW = { k: 0, pulse: 0, hold: 0, decay: 2.4, gain: 3.4, nightK: .5, test: 0, rest: .06, restNight: .16, cracks: 1, emblem: 1, mats: new WeakSet(), scanT: 0,
+  U: { uHg: { value: 0 }, uHgC: { value: new THREE.Color(JPAL.glow) }, uHgT: { value: 0 }, uHgS: { value: 1 }, uHgH: { value: new THREE.Vector2(0, 1.75) }, uHgX: { value: new THREE.Vector2(1, 1) } } };
 function heroGlowPulse(s) { const H = HEROGLOW; H.pulse = Math.min(1.2, Math.max(H.pulse, s)); }
 function heroGlowHold(s) { const H = HEROGLOW; H.hold = Math.max(H.hold, s); }
-function heroGlowMat(m) { const H = HEROGLOW; if (!m || H.mats.has(m) || !(m.isMeshStandardMaterial || m.isMeshPhysicalMaterial)) return; H.mats.add(m);
-  const ob = m.onBeforeCompile, ok = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null; m.customProgramCacheKey = () => (ok ? ok() : '') + '|herog';
+// the goop's body colour (the FX worker's `fxCols`): the glow's HUE at full saturation, lightness .54 -- so body and goop read as one material
+function heroGlowCol(c) { const h = {}; c.setHex(JPAL.glow).getHSL(h); return c.setHSL(h.h, 1, Math.min(.58, Math.max(.5, h.l))); }
+function heroGlowMat(m, geo) { const H = HEROGLOW; if (!m || H.mats.has(m) || !(m.isMeshStandardMaterial || m.isMeshPhysicalMaterial)) return; H.mats.add(m);
+  if (geo) { geo.computeBoundingBox(); const b = geo.boundingBox, ht = Math.max(1e-3, b.max.y - b.min.y); H.U.uHgS.value = 1.75 / ht; H.U.uHgH.value.set(b.min.y, b.max.y); }     // his mesh units -> metres, and his height span
+  const ob = m.onBeforeCompile, ok = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null; m.customProgramCacheKey = () => (ok ? ok() : '') + '|herog2';
   m.onBeforeCompile = (sh, r) => { if (ob) ob.call(m, sh, r); Object.assign(sh.uniforms, H.U); if (sh.fragmentShader.indexOf('#include <emissivemap_fragment>') < 0) return;
-    sh.fragmentShader = 'uniform float uHg; uniform vec3 uHgC;\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+    sh.vertexShader = 'varying vec3 vHgL;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vHgL = transformed;');
+    sh.fragmentShader = 'uniform float uHg, uHgT, uHgS; uniform vec3 uHgC; uniform vec2 uHgH, uHgX; varying vec3 vHgL;\n' + NIGHT_GLSL + '\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
       if (uHg > .001) { vec3 a = diffuseColor.rgb; float mx = max(a.r, max(a.g, a.b)), mn = min(a.r, min(a.g, a.b)), sat = (mx - mn) / max(mx, 1e-3);
-        float pur = smoothstep(.02, .12, min(a.r, a.b) - a.g) * smoothstep(.2, .45, sat) * smoothstep(.22, .6, a.b / max(a.r, 1e-3));     /* violet to magenta (his quills are pink-purple: red over blue) */
-        totalEmissiveRadiance += uHgC * pur * uHg * (.6 + .4 * mx / max(mx, .2)); }`); };
+        float pur = smoothstep(.02, .12, min(a.r, a.b) - a.g) * smoothstep(.2, .45, sat) * smoothstep(.22, .6, a.b / max(a.r, 1e-3));     /* his own purple: violet to magenta */
+        vec3 P = vHgL * uHgS; float hy = (vHgL.y - uHgH.x) / max(1e-3, uHgH.y - uHgH.x);
+        vec3 cp = P * 6.0, ci = floor(cp), cf = fract(cp); float d1 = 8.0, d2 = 8.0;     /* fine CRACKS: a 3D voronoi edge in his own space (they ride every pose) */
+        for (int z = -1; z <= 1; z++) for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) { vec3 o = vec3(float(x), float(y), float(z)), rr = o + nh33(ci + o) - cf; float q = dot(rr, rr); if (q < d1) { d2 = d1; d1 = q; } else if (q < d2) d2 = q; }
+        float cloth = smoothstep(.45, .65, a.r) * smoothstep(.5, .3, a.g / max(a.r, 1e-3)) * smoothstep(.3, .5, sat);     /* the red cloak cloth: no cracks in cloth */
+        float cr = smoothstep(.035, .0, sqrt(d2) - sqrt(d1)) * step(.72, nh13(floor(cp * .5) + 3.3)) * (1.0 - pur) * (1.0 - cloth) * uHgX.x;
+        float sh = exp(-pow((hy - (fract(uHgT * .22) * 1.5 - .25)) / .09, 2.0));     /* the SHIMMER: a slow band travelling up him */
+        float emb = smoothstep(.62, .8, a.r) * smoothstep(.3, .45, a.g) * smoothstep(.75, .55, a.g / max(a.r, 1e-3)) * smoothstep(.35, .2, a.b) * uHgX.y;     /* the cloak's orange EMBLEM */
+        totalEmissiveRadiance += uHgC * uHg * (pur * (1.0 + sh * 1.2) + cr * (.12 + sh * 2.2)) + mix(a, uHgC, .35) * emb * smoothstep(.55, .75, sat) * uHg * (.5 + sh * 1.6); }     /* at rest the cracks show mostly where the shimmer passes */`); };
   m.needsUpdate = true; }
 function heroGlowStep(dt) { const H = HEROGLOW;
-  if ((H.scanT -= dt) <= 0 && rig.root) { H.scanT = 1; rig.root.traverse(o => { if (o.isSkinnedMesh || o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(heroGlowMat); }); }
-  H.pulse *= Math.exp(-dt * H.decay); const tg = H.test ? 1 : Math.max(H.pulse, H.hold); H.hold = 0;
+  if ((H.scanT -= dt) <= 0 && rig.root) { H.scanT = 1; rig.root.traverse(o => { if (o.isSkinnedMesh || o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => heroGlowMat(m, o.geometry)); }); }
+  H.pulse *= Math.exp(-dt * H.decay); const nf = Math.max(0, NIGHT.f), gp = (typeof GOOP !== 'undefined' && GOOP.on && GOOP.pulse) || 0;     // the FX worker's goop pulse: read, never written
+  const tg = H.test ? 1 : Math.max(H.pulse, H.hold, gp, H.rest + (H.restNight - H.rest) * nf); H.hold = 0;     // always a little alive at rest; more at night
   H.k += (tg - H.k) * (1 - Math.exp(-dt * (tg > H.k ? 18 : 6)));
-  H.U.uHg.value = H.k * H.gain * (1 + H.nightK * Math.max(0, NIGHT.f)); H.U.uHgC.value.setHex(JPAL.glow); }
+  H.U.uHg.value = H.k * H.gain * (1 + H.nightK * nf); H.U.uHgT.value += dt; H.U.uHgX.value.set(H.cracks, H.emblem); heroGlowCol(H.U.uHgC.value); }
 // HERO_GLOW:END
 // NIGHT_FLORA:START -- NIGHT.md 3/4 (his, relayed: "tiny glowing plants -- glowing mushrooms, ferns with glowing fronds, little bushes with glowing petals
 // or tips, little specks in the grass that glow" and, the one he loves most, "grass and flora brightening around his feet as he walks at night").

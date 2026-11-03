@@ -17,6 +17,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 13: GRUMBO ALIVE -- cracks, a travelling shimmer, the cloak emblem; faint at rest, flaring with the goop (Nov 3 2026)
+His words (relayed): *"parts of him glowing -- little cracks or shimmers of purple on his skin or his armour, or the orange symbol on his cloak"*, always
+a little alive, stronger at night, flaring on Jinra / collecting / attacking. HERO_GLOW v2 on his one material (chained hook, key `|herog2`):
+- **cracks**: a 3D voronoi edge in his OWN skinned space (`transformed`, scaled to metres off his geometry's height) so they ride every pose; thin
+  (.035), sparse (28% of patches), never in the red cloak cloth (a cloth hue mask) nor over the purple (which glows whole);
+- **the shimmer**: a band travelling up him every ~4.5 s; at rest the cracks show mostly where it passes;
+- **the emblem**: the saturated orange on the cloak glows in its own colour mixed 35% to the Jinra colour (the gold trims catch it too, faintly);
+- **colour** = the FX worker's goop body (`heroGlowCol`: the JPAL glow hue at full saturation, lightness .5-.58), so body and goop read as one;
+- **sources**: rest .06 (day) .. .16 (night), `heroGlowPulse`, `heroGlowHold`, and **`GOOP.pulse`** (READ, gated on `GOOP.on`; the FX worker writes it).
+First render covered him in a glowing net at night rest (cracks too dense and wide, rest too high); second: images/feedback/m2329/hero_glow_v2.jpg;
+then the emblem term was cut (it blew his gold trims and pale skin white at night). Dials: `mel.HEROGLOW` rest / restNight / cracks / emblem / gain.
+Shipped unverified.
+
 ## m2341 -- the garden lights his Jinra glow: wading in the water, floating in the beam (Nov 3 2026)
 Relayed: *his purple parts glow when he steps in the stream or goes in a geyser* (HEROGLOW, m2339). The garden calls `heroGlowHold` every frame he is in contact:
 - **Water:** the wading test that already exists (`Z.inWater`: pools and streams, within .6 m of the surface) holds `GARDEN.glowWade` (.7), up to x1 at a run.
