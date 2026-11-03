@@ -17,7 +17,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m15XX -- the start screen MOVES: his animated poster as a looping video (AV1 / HEVC / H.264) (Nov 3 2026)
+## m2287 -- the start screen MOVES: his animated poster as a looping video (AV1 / HEVC / H.264) (Nov 3 2026)
 *"A moving version of the start image -- remove the audio, anything that increases the file size."* His clip: 8.04 s, 1080x1920 H.264 + AAC, 17.2
 MB. Re-cut to LOOP (720x1280, 24 fps, no audio): starts at 1.0 s and the last second cross-fades into the first (ffmpeg xfade) -> 7.0 s; first vs
 last frame mean diff 3.9/255. Three encodes in `video/`: title_loop_av1.mp4 (SVT-AV1 crf 38, 993 KB), _hevc.mp4 (x265 crf 29, hvc1, 764 KB),
