@@ -20,6 +20,58 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2402 -- TAKE 5c: the turn is his momentum (the clip is only the crouch and the push-off)<!--mine-->
+The m2399 strip showed the loop could not fix it. `backflip` does most of its turn between .4 and .6 of the clip, and by .7-.8 his legs are out
+for the LANDING. So he still read as STANDING in the air before the loop came in.
+Now (`leap.spin`):
+- The clip plays the crouch and the push-off only.
+- At the take-off frame he crossfades (.26 s) into `tuck`, and the TURN is driven at the root about his hips: w(t) = w0 e^(-t/tau) + w1
+  (9 rad/s easing to a steady 4.2). It is fastest at take-off, as momentum, and the angle is the integral, so it is continuous from 0.
+- It is a BACKflip: his up turns toward -X (he faces +X).
+- `leap.loop` (m2399) is gone.
+Shipped unverified; the strip is rendering.
+
+## m2401 -- the entrance portal: smaller, near-flat, a swirling pink spiral inside, a clearer sound, both swappable (Nov 3 2026)
+His (via main): *"he LIKES the fall + slam now. The portal: SMALLER; NOT black inside -- a swirling purple-pink spiral / particles; near-parallel to the
+ground, a thin oval seen almost edge-on (a little of the circle still visible). He doesn't like the current sounds -- wants a clear portal-opening
+sound; he may upload his own effect + sound later, so keep them swappable."*
+- `pScale` .5 -> .32, `lean` .9 -> .28 (near flat: the play camera sees a thin oval), `pOff` 1.6. Inside the tear is now two counter-turning
+  log-spiral arm sets in violet -> hot pink with a bright pink-white eye and twinkling motes (was a black void with stars). The lightning arcs off
+  the lips are off on the play camera (they read electric); `cine` 1 keeps them.
+- Sound: the default variant is B (the brighter, clearer opening chime swell); TOOLS > PORTAL SOUND still cycles A/B/C (a new store key, so B is
+  what he hears first).
+- SWAPPABLE: `ENTRY.sfx` names the SFX key per role (open / through / seal) -- point a role at his own file's key when he uploads it;
+  `ENTRY.make(x, y, z)` / `ENTRY.step(run, dt)` replace the tear's builder and clock wholesale (e.g. a PNG-sequence billboard), null = the tear.
+- Rendered headless (arena, play camera): rip, the spiral oval, him out of it, sealed, slam, rise. Shipped unverified.
+
+## m2400 -- health is a RING at the feet, not a green bar overhead; the speed spikes are gone (TOOLS > LOOK > SPEED FX) (Nov 3 2026)
+Via main: *"remove the green bar floating over the mammoth and over everyone -- artful health: a thin ring around the creature's feet that appears
+when it's hit, shows the remaining health as an arc, and fades out after a moment"* and *"the speed spikes round the screen edge -- remove; at most a
+subtle radial fake motion blur, or nothing"*.
+- `foeBar` / `foeBarStep` (the one place every body's bar was made) now build `HRING`: a flat additive shader ring on the ground at his feet,
+  `HRING.r` x his body radius (`d.K.r`); the remaining health is a bright Jinra arc (`JPAL.glowRgb`), the lost part a faint red trace, the edge
+  wobbles like goop. Shown only when hp DROPS (`d.barHp`), held `hold` 1.8 s, faded over `fade` .6; never while entering. Same `d.bar.g` handle, so
+  the spawn / door / death code that toggles it is untouched; the shared plane is skipped by the body-removal dispose. `HRING.on = 0` = no gauge.
+- `ninjaLines` behind `SPEEDFX.mode`: OFF (default) | BLUR (a masked backdrop blur on the screen's edge, by the same sprint weight) | LINES (the old
+  streaks). Shipped unverified; check 4 boot ok. Not looked at: the ring's size on the mammoth (`d.K.r` is its hit radius).
+## m2399 -- TAKE 5b: no ground pose in the air (the flip carries on); the loading emblem keeps turning while loads block<!--mine-->
+His note on take 5: "much better". But after the backflip ends he is still in the air in the clip's landed pose.
+THE FLIP CARRIES ON (`leap.loop`):
+- At `at` .8 of the clip he is still turning (hips -332 deg). There it crossfades (`fade` .22) into a SECOND copy of `backflip` from `from` .3,
+  the take-off frame at -16 deg: the same angle less one turn, and the slerp keeps the same direction.
+- It repeats every .5 of the clip, alternating two `clone()`s (an action cannot crossfade into itself), so the landing frames never play in the
+  air.
+- The apex is a touch higher, so the momentum carries it: `h` 1.7 -> 2.1 at `apex` .8 -> 1.0.
+THE EMBLEM FREEZE (ROADMAP, his list):
+- The rotation was a CSS animation on an SVG `<g class="spin">` INSIDE `.kjw`. Animations inside an SVG are main-thread, so every heavy load
+  (a GLB parse, a shader compile) stopped it.
+- The WHOLE `.kjw` box turns now (`will-change: transform`). A transform animation on an HTML-level box is run by the compositor and keeps
+  turning while the main thread is busy.
+- The pip's pulse is still an SVG animation; it is a small pulse, not the spin.
+- The swirl's target radius is taken from the computed width: the rect of a turning square is up to 1.41x its size.
+- I did NOT re-schedule the boot loads (yielding between them). With the compositor spin it should not be needed for the spinner; say if the
+  bar/text still hitch.
+Shipped unverified.
 ## m23XX -- NIGHT 22: the cracks are FINE and on his SKIN only -- the hue windows MEASURED off his texture (Nov 3 2026)
 His words: *"m2398 cracks are too fat and run over his clothes -- smaller and finer, like the earlier look, on his skin only."* Cells ~9 cm (11 / 5.5 / 11 per
 m, still upright), AA'd lines. **The skin window was guessed twice and caught nothing, so it was MEASURED**: a raycast at his face, chest, belly, arms and
@@ -46,7 +98,7 @@ uniform held a weapon's 1.75/60.7 = .029, close to the right number; m2370 made 
 dots. Now: ~30 cm cells stretched UPRIGHT (3.4, 1.6, 3.4 per m) so the cracks run up him, an AA'd line (`fwidth`, never under ~a pixel), 60% of patches,
 the shimmer still travelling feet to head. images/feedback/m2329/hero_cracks_lines.jpg (three moments of the shimmer, held full). Shipped unverified.
 
-## m2394 -- THE START TRANSITION, TAKE 5: one jump-flip on his own clip, the petals shed from him<!--mine-->
+## m2394 -- THE START TRANSITION, TAKE 5: one jump-flip on his own clip, the petals shed from him
 His notes on take 4, via the parent:
 - "he just launches up into the air -- doesn't look like he jumped -- and then once he's in the air he does a flip, instead of his momentum
   carrying it"
@@ -255,7 +307,7 @@ faster than the animation."*
   stick) is untouched. `mel.CHRUN` is live.
 - Not verified on a device. Box moved: none (a regression fix on the katana charge). Open: whether 1.5 feels right is his -- `mel.CHRUN.slow`.
 
-## m2377 -- the title's Grumbo glow passes his mesh<!--mine-->
+## m2377 -- the title's Grumbo glow passes his mesh
 NIGHT worker's note: the title loop's `heroGlowMat(m, geo)` passed no mesh, so `heroGlowSpan` had to find his skinned mesh by material. It now
 passes the hero mesh `q` as the third argument, so the glow span is exact. Shipped unverified.
 ## m2379 -- NIGHT 19: Grumbo TWO-TONE -- his own orange glows ember beside the Jinra purple (Nov 3 2026)
