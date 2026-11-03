@@ -12803,7 +12803,7 @@ const NIGHT = { mode: (() => { const ok = ['DAY', 'DUSK', 'NIGHT', 'CYCLE']; try
   zones: { lake: { sky: 'lake_sky', flora: { R: 70, clusters: 44, ferns: 64, ready: () => !!(LAKEZ.on && LAKEZ.on.wall && performance.now() - LAKEZ.on.wall > 1500),     /* m2366: the Lake's glowing shore plants (wall clock: NIGHT worker's note) */
     c: () => { const L = LAKEZ.L; return L ? L.spawn : [0, 0, 0]; },     /* round the west beach where he starts */
     ok: (x, y, z) => { const L = LAKEZ.L; if (!L) return false; const h = L.groundAt(x, z); if (h < .25 || h > 6) return false; return Math.abs(L.groundAt(x + 1, z) - L.groundAt(x - 1, z)) < .6 && Math.abs(L.groundAt(x, z + 1) - L.groundAt(x, z - 1)) < .6; },     /* on sand and gentle ground, never in the water or up a bluff */
-    ground: (x, z) => { const L = LAKEZ.L; if (!L) return null; const h = L.groundAt(x, z); return h < .2 ? null : h; } } }, snow: { aurora: 1, pal: 'snow' }, snowkit: { aurora: 1, pal: 'snow' }, garden: { sky: 'garden_sky', pal: 'garden', flora: { R: 24, clusters: 54, ferns: 80, ready: () => !!(GARDEN.on && GARDEN.on.built && GARDEN.on.ngAt === -1),     /* after the garden glow pass (1.5 s wall clock after the build) */
+    ground: (x, z) => { const L = LAKEZ.L; if (!L) return null; const h = L.groundAt(x, z); return h < .2 ? null : h; } } }, snow: { aurora: 1, pal: 'snow' }, snowkit: { aurora: 1, pal: 'snow' }, garden: { sky: 'garden_sky', pal: 'garden', aurora: 1, flora: { R: 24, clusters: 54, ferns: 80, ready: () => !!(GARDEN.on && GARDEN.on.built && GARDEN.on.ngAt === -1),     /* after the garden glow pass (1.5 s wall clock after the build) */
     c: () => { const o = GARDEN.on && GARDEN.on.G ? GARDEN.on.G.position : { x: 0, z: 0 }; return [o.x, GARDEN.top, o.z]; },     /* the island's own centre and r 24 -- the plant scatter's */
     ok: (x, y, z) => { const o = GARDEN.on && GARDEN.on.G ? GARDEN.on.G.position : { x: 0, z: 0 }; return !GARDEN.lawnFree || GARDEN.lawnFree(x - o.x, z - o.z); },     /* the garden's own lawn mask (rim, temple, stair, zen garden, trunks, hammock, beam, paths, creeks) */
     ground: (x, z) => { let h; try { h = groundAt(x, z, GARDEN.top + 4, 8); } catch (e) { return null; } return h < GARDEN.top - 3 ? null : h; } } } },
@@ -13106,7 +13106,7 @@ function nightSet(m) { const N = NIGHT; N.mode = m; try { localStorage.setItem('
 // include: by NIGHT it goes to the night palette -- deep blue-violet, a cool MOONLIT edge only on its brightest texels, a faint inner Jinra glow (`inner`)
 // -- and at DUSK its light warms; by day the term is identity. Found by a scan of the scene every 3 s (a zone builds its clouds late), WeakSet-guarded.
 // The title backdrop's clouds are its owner's (it reads NH.f).
-const NCLOUD = { re: /cloud|cards|cumulus/i, deep: 0x1a1f3e, rim: 0x9aa4e0, warm: 0xffb08a, inner: .025, done: new WeakSet(), scanT: 0, n: 0,
+const NCLOUD = { moteN: 520, moteSz: 10, motes: null, re: /cloud|cards|cumulus/i, deep: 0x1a1f3e, rim: 0x9aa4e0, warm: 0xffb08a, inner: .025, done: new WeakSet(), scanT: 0, n: 0,
   U: { uNcF: { value: 0 }, uNcD: { value: 0 }, uNcDeep: { value: new THREE.Color(0x1a1f3e) }, uNcRim: { value: new THREE.Color(0x8a9ad8) }, uNcWarm: { value: new THREE.Color(0xffb08a) }, uNcIn: { value: new THREE.Color() } } };
 function nightCloudMat(m) { const C = NCLOUD; if (!m || C.done.has(m)) return; C.done.add(m); C.n++;
   const ob = m.onBeforeCompile, ok = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null; m.customProgramCacheKey = () => (ok ? ok() : '') + '|ncloud';
@@ -13118,10 +13118,29 @@ function nightCloudMat(m) { const C = NCLOUD; if (!m || C.done.has(m)) return; C
     const e = fs.lastIndexOf('}'); return e < 0 ? fs : head + fs.slice(0, e) + body + fs.slice(e); };
   if (m.isShaderMaterial) { Object.assign(m.uniforms, C.U); m.fragmentShader = splice(m.fragmentShader); m.needsUpdate = true; return; }
   m.onBeforeCompile = (sh, r) => { if (ob) ob.call(m, sh, r); Object.assign(sh.uniforms, C.U); sh.fragmentShader = splice(sh.fragmentShader); }; m.needsUpdate = true; }
-function nightCloudStep(dt) { const C = NCLOUD, f = nightF(); C.U.uNcF.value = f; C.U.uNcD.value = 4 * f * (1 - f); C.U.uNcIn.value.setHex(JPAL.glow).multiplyScalar(C.inner);
+function nightCloudStep(dt) { const C = NCLOUD, f = nightF(); if (C.motes) { C.motes.U.uT.value += dt; C.motes.U.uPx.value = renderer.domElement.height / (2 * Math.tan(camera.fov * Math.PI / 360)); C.motes.pts.visible = f > .01; } C.U.uNcF.value = f; C.U.uNcD.value = 4 * f * (1 - f); C.U.uNcIn.value.setHex(JPAL.glow).multiplyScalar(C.inner);
   C.U.uNcDeep.value.setHex(C.deep); C.U.uNcRim.value.setHex(C.rim); C.U.uNcWarm.value.setHex(C.warm);
   if (NIGHT.mode === 'DAY') return; if ((C.scanT -= dt) > 0) return; C.scanT = 3;
-  scene.traverse(o => { if (!(o.isMesh || o.isSprite) || !C.re.test(o.name || '')) return; (Array.isArray(o.material) ? o.material : [o.material]).forEach(nightCloudMat); }); }
+  const found = []; scene.traverse(o => { if (!(o.isMesh || o.isSprite) || !C.re.test(o.name || '')) return; found.push(o); (Array.isArray(o.material) ? o.material : [o.material]).forEach(nightCloudMat); });
+  if (found.length && !C.motes) nightCloudMotes(found); }
+// m2371 (his: "where it adds magic, an aurora band or drifting glowing particles among them"): ONE Points of glowing motes seeded FROM the clouds
+// themselves (an instanced card set's own `iP` / `iS`, or a cloud mesh's bounds), drifting slowly, twinkling, x the night. +1 draw per zone.
+function nightCloudMotes(found) { const C = NCLOUD, N = C.moteN, P = [], A = [], K = [], seeds = [], v = new THREE.Vector3();
+  for (const o of found) { o.updateWorldMatrix(true, false); const g = o.geometry, iP = g && g.attributes && g.attributes.iP, iS = g && g.attributes && g.attributes.iS;
+    if (iP) { for (let i = 0; i < iP.count; i++) { v.fromBufferAttribute(iP, i).applyMatrix4(o.matrixWorld); seeds.push([v.x, v.y, v.z, iS ? Math.max(iS.getX(i), iS.getY(i)) * .45 : 30]); } }
+    else { if (g && !g.boundingSphere) g.computeBoundingSphere(); const bs = g && g.boundingSphere; if (!bs) continue; v.copy(bs.center).applyMatrix4(o.matrixWorld); const sc = o.getWorldScale(new THREE.Vector3()); seeds.push([v.x, v.y, v.z, Math.min(400, bs.radius * Math.max(sc.x, sc.z) * .6)]); } }
+  if (!seeds.length) return; const pal = [JPAL.glow, JPAL.core, NGLOW.accent, JPAL.spark], col = new THREE.Color();
+  for (let i = 0; i < N; i++) { const s0 = seeds[i % seeds.length], r = s0[3], a = Math.random() * 6.283, d = Math.sqrt(Math.random()) * r;
+    P.push(s0[0] + Math.cos(a) * d, s0[1] + (Math.random() - .3) * r * .5, s0[2] + Math.sin(a) * d); col.setHex(pal[(Math.random() * (NGLOW.both ? 4 : 2)) | 0 ]); K.push(col.r, col.g, col.b); A.push(Math.random() * 100); }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); geo.setAttribute('aC', new THREE.Float32BufferAttribute(K, 3)); geo.setAttribute('aS', new THREE.Float32BufferAttribute(A, 1));
+  const U = { uNcF: C.U.uNcF, uT: { value: 0 }, uPx: { value: 600 }, uSz: { value: C.moteSz } };
+  const m = new THREE.ShaderMaterial({ uniforms: U, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+    vertexShader: `attribute vec3 aC; attribute float aS; uniform float uT, uPx, uSz, uNcF; varying vec3 vC; varying float vA;
+      void main() { vec3 p = position + vec3(sin(uT * .05 + aS) * 14.0, sin(uT * .08 + aS * 1.7) * 5.0, cos(uT * .04 + aS * 2.3) * 14.0); vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        float tw = .35 + .65 * pow(.5 + .5 * sin(uT * (.4 + fract(aS * 3.1)) + aS * 9.0), 2.0); vA = uNcF * tw; vC = aC;
+        gl_PointSize = uSz * (.6 + .8 * fract(aS * 7.7)) * uPx / max(1.0, -mv.z); gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: 'varying vec3 vC; varying float vA; void main() { vec2 d = gl_PointCoord - .5; float r = dot(d, d) * 4.0; if (r > 1.0) discard; float k = exp(-r * 3.5); gl_FragColor = vec4(vC * vA * k * 1.6, 1.0); }' });
+  const pts = new THREE.Points(geo, m); pts.frustumCulled = false; pts.renderOrder = 2; pts.name = 'night_cloud_motes'; scene.add(pts); C.motes = { pts, U, n: seeds.length }; }
 // NIGHT_CLOUDS:END
 // NIGHT_SCENE:START -- m2349 (his: "the title screen should go from day to dusk to night, where things glow"). The night for a scene that is NOT the game's
 // (the title backdrop, LOOPBG -- its owner wires it, this file does not touch loopBg):

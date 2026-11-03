@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 18: the AURORA over the garden and glowing MOTES among the clouds (Nov 3 2026)
+His ask (relayed with the clouds): *"where it adds magic, an aurora band or drifting glowing particles behind / among them."*
+- The garden's NIGHT row takes `aurora: 1`: the snow's three folded curtains (m2298, one mesh + its sparkle) hang in the garden sky behind the isles and
+  clouds (scaled with the dome inside `garden_sky`, so ~1.4 km out and 500-1200 m up), and the hemi leans to their colour as they breathe.
+- `nightCloudMotes`: ONE Points of 520 glowing motes per zone, seeded FROM the clouds themselves (the garden's card set's own instance `iP` / `iS`; a plain
+  cloud mesh's bounds otherwise), drifting slowly, twinkling, sized 10 m in the world (6-14 m with jitter -- 3 m read as specks at cloud distance),
+  Jinra / core / spark + the violet accent, x the night (`uNcF`); hidden by day. +1 draw (+2 with the aurora).
+Render: images/feedback/m2329/aurora_cloud_motes.jpg (looking -Z, where the curtains are). Shipped unverified.
+
 ## m2369 -- THE LAKE: TEXTURES on the rock, sand, deck and water (his ask) (Nov 3 2026)
 His: *"paint some textures for the water and the rocks -- we probably have some already, so reuse them."* All reused, no new files:
 - **The canyon / stacks / islets (one material):** `hollows_cliff` (red columns) and `hollows_rock` (strata) BIPLANAR on the steep faces (projected on the
