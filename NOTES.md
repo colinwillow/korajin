@@ -20,6 +20,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2404 -- the entrance portal, after his references: a rounded hole with a corona of streaks (Nov 3 2026)
+His two reference frames (a portal from his VFX work): an irregular ROUNDED hole, a white-hot pink lip, wispy streaks pouring OUTWARD round it like a
+corona -- magenta and violet with cyan glints -- and a dim glowing violet inside (the other side), not black. `ENTRYFS_T` is rewritten to that: the
+hole is an irregular oval (low- and high-frequency noise on its radius); it opens as a thin seam (`uLen`) that widens (`uOpen`) and seals the same
+way back. Round it: domain-warped fbm in polar coordinates (seam-free across +-PI), flowing outward with time, high contrast (thin streaks), violet
+-> hot pink with cyan glints, fading out well inside the plane's edge (the first render showed the plane's square edge). Inside: dark violet to
+violet with a pink inner glow. Size `pScale` .42, still near flat (`lean` .3) on the play camera; the sigil, fall, slam and sounds are unchanged.
+Rendered headless (arena). Shipped unverified.
+
 ## m2402 -- TAKE 5c: the turn is his momentum (the clip is only the crouch and the push-off)<!--mine-->
 The m2399 strip showed the loop could not fix it. `backflip` does most of its turn between .4 and .6 of the clip, and by .7-.8 his legs are out
 for the LANDING. So he still read as STANDING in the air before the loop came in.
