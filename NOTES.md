@@ -17,6 +17,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2314 -- THE JINRA PALETTE, part 4: the TEXTURE hue (`jinHueMat`) -- the snow village's jade crystals were green in every preset (Nov 3 2026)
+- **Found by the contact sheet, not by reading:** the snow village's crystals stayed GREEN under VIOLET and JADE although every number on
+  them was routed. Their green is in the TEXTURE (`temple_jade`, `svk_glyph`), and a tint multiplies -- a violet tint over a green texel
+  is grey-brown, never violet.
+- **`jinHueMat(m)`** turns the sampled `map` / `emissiveMap` texel about the grey axis by `JPAL.hueDeg` (the preset's glow hue minus
+  mint's), spliced into `map_fragment` / `emissivemap_fragment` with its own program-cache key; it chains an existing `onBeforeCompile`.
+  Under MINT it returns the material untouched. On: the village `band` and `jade`, the willow's `temple_jade`, glowing film and circuit
+  glyph, the temple `glyph` tech. Also routed: the forge house's glowing vertex colours (`fhMake`), `jinLeaves`' emissive.
+- Re-rendered under VIOLET: the crystals read blue-violet. Shipped unverified on the phone.
+
 ## m2313 -- the entrance, tuned off its own frame strip (Nov 3 2026)
 The m2312 strip (arena, headless) showed the portal's core blown to a white disc and the landing lens 8.5 m out (he was small in the frame). The vortex
 core / body / rim gains came down (2.4 -> 1.25, 1.5 -> .95, 1.4 -> 1.1) and the glow sprite with them, so it reads violet with a bright eye. The default

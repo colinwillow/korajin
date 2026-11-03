@@ -25,6 +25,11 @@ Add a preset = one row in `JINRA_PRESETS` + its key in `JINRA_ORDER`. Nothing el
   `:root` by the head script before first paint. `--rk-jade` is `var(--jin-glow)`.
 - **Tools that run the module headless** (`boot`, `placecheck`, `sim`) prepend the `jinpal` script, as the page runs it first.
 
+## Textures
+A Jinra material whose green is IN ITS TEXTURE needs `jinHueMat(material)` as well (m2312): it hue-rotates the sampled map /
+emissiveMap in the shader by `JPAL.hueDeg`. Identity under MINT. On now: village `band` + `jade`, willow `temple_jade` / film / glyph,
+the temple `glyph`.
+
 ## The switch
 TOOLS > LOOK > `JINRA COLOUR: <name> (reloads)` cycles MINT -> VIOLET-BLUE -> JADE-TEAL, saved as `mel.jin`. `?jin=mint|violet|jade` also sets
 (and saves) it. Takes effect on reload.
