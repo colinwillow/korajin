@@ -17,6 +17,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2360 -- THE TITLE GOES DAY > DUSK > NIGHT: time of day on top of the seasons<!--mine-->
+His request, via the parent and the NIGHT worker: the title backdrop cycles day > dusk > night, where things glow, with the star sky. At night
+the clouds are deep blue-violet, not white.
+- NIGHT LEFT `LOOPBG.cycle.order`. It is now TIME OF DAY (`LOOPBG.tod`), driven by NIGHT's clock:
+  `nightScene(S, cam, { lightsOwned: false, renderer: R })`. NH.f runs 0..1 on a 75 s day > dusk > night > dawn loop, or follows his
+  TOOLS > TIME when he has set it.
+- `wxStep` lerps every season value toward `seasons.night` by NH.f: tints, sky, light, key/fill/rim, glowK (Jinra and the lamps glow brighter),
+  fog, the CLOUD colour (night [.3, .34, .52], the blue-violet rule), halo, stars, moon, the shared night sky (NSKY), and the night's
+  fairies/lanterns joining the season's fx. So a snowy night and a stormy night both exist, because snow and bolts stay the season's.
+- The dusk is `tod.dusk` at 4f(1-f): a warm sky, fog and key colour, slightly less light.
+- The title's own lights stay one writer, its season blend. NH's star dome is removed: NSKY (m2344) is already the title's night sky, and two
+  would double.
+- Grumbo gets the hero night glow (`heroGlowMat` on his skinned meshes when he loads).
+- `?loopnight=0..1` pins the time of day (`tod.force`).
+Shipped unverified.
+
 ## m2359 -- THE LAKE at NIGHT, first pass (WATER.md NIGHT; TOOLS > TIME / `?time=night`) (Nov 3 2026)
 His: *"really excited to see nighttime and some of the glowing stuff... the stars."* On the shared night core (NIGHT.md) -- nothing of the switch, the
 sky or the lighting overlay is the lake's own:
