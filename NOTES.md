@@ -17,6 +17,9 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2331 -- THE LAKE: the BOAT JETS button back in TOOLS > LOOK (Nov 3 2026)
+m2330's rebase kept the other side's TOOLS line and dropped the button (the handler was in). Restored. Shipped unverified.
+
 ## m2330 -- THE LAKE pass 2: the longboat (WATER.md) (Nov 3 2026)
 His: *"four or five times the size of the hero, kind of a long boat, futuristic but also Japanese style, maybe some jets, maybe not."*
 - **Built in LAKELIB** (`L.boat`, row `W.boat` in SC_LAKE): an 8.4 x 2.0 m hull lofted from sections (pointed ends, prow sheer sweeping up), vertex-painted
