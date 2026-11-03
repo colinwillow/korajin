@@ -70214,7 +70214,7 @@ async function init() {
   rig.ready = true;
   setBoot('go', 1); try { window.KJ_READY = 1; dispatchEvent(new Event('kjready')); } catch (e) {}     // m2213: loaded AND warmed -- now TAP TO START
   PERF.bootMs = performance.now();                  // m416: the boot, from the page's start to the card going
-  setTimeout(() => bootCard.classList.add('gone'), 260);
+  setTimeout(() => { bootCard.classList.add('gone'); setTimeout(() => { try { for (const v of bootCard.querySelectorAll('video')) { v.pause(); v.removeAttribute('src'); for (const so of v.querySelectorAll('source')) so.remove(); v.load(); v.remove(); } } catch (e) {} }, 700); }, 260);     // m15XX: the loading video is let go once the card has faded -- a phone's video decoder and its memory back to the game
 }
 
 // the console handle. Every tuning object is live, so a number can be moved on the phone
