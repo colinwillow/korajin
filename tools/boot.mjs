@@ -165,7 +165,7 @@ src = (html.match(/<script id="jinpal">([\s\S]*?)<\/script>/) || [0, ''])[1] + '
 // `buildHome()` itself, after the module has run; its catch logs "HOME BUILD THREW", which fails the gate (below).
 // AND IT STEPS FRAMES (Worker B, m1442: homeStep threw a ReferenceError on EVERY frame and the gate, which built but never stepped, passed it).
 if (_w === 'home') src += '\nglobalThis.__bootWorld = async () => { await buildHome(); ctxRender = () => {}; for (let i = 0; i < 8; i++) { last = performance.now() - 16; frameBody(); if (HOME.live) homeStep(1 / 60); } };     /* homeStep sits behind rig.ready, which never comes here */\n';
-// m2307: MEL_WORLD='forge&zone=fxlab' builds THE FX LAB and steps it with every move fired (FX.md)
+// m2308: MEL_WORLD='forge&zone=fxlab' builds THE FX LAB and steps it with every move fired (FX.md)
 if (/zone=fxlab/.test(_w)) src += '\nglobalThis.__bootWorld = async () => { fxlabBuild(); for (const n of FX.names) fxlabFire(n); for (let i = 0; i < 40; i++) fxlabStep(1 / 60); };';
 const f = path.join(TMP, 'boot.mjs');
 fs.writeFileSync(f, src);

@@ -30,7 +30,7 @@ shipped text (headless, a stand-in capsule his height).
 | RINGS | 2 | shockwaves on the ground or facing the camera, wobbled, torn by noise, with goop splashing out |
 
 **No post-processing chain** (there is none in this game and it costs fill on a phone): every glow is faked inside its own sprite.
-**Palette**: every colour is in `FXPAL` -- `MINT` (Jinra today), `PURPLE` (Jinra may become purple), `SOLAR` (a third option). Switching re-tints
+**Palette**: every colour is in `FXPAL`; its first row, `JINRA`, is BUILT from THE JINRA PALETTE (`JPAL`, JINRA_COLOUR.md) so one Jinra pick drives the goop too, and the lab defaults to it. The FX-only rows -- `MINT` (Jinra today), `PURPLE` (Jinra may become purple), `SOLAR` (a third option). Switching re-tints
 everything already in the air.
 
 ## PHONE BUDGET
@@ -44,9 +44,9 @@ slash (sword) · punch · kick · slam (and landings) · spin / spiral · telepo
 stand-in path (a blade arc, a fist line, a foot arc, a helix, a projectile) -- the real moves are wired only after the look is signed.
 
 ## DONE WHEN
-- [x] FX.md written (m2307).
-- [x] The lab exists with its ENTRY row (portal, hero drop, goop slam), buttons for every move, HIM / DUMMY, SLOW, PALETTE, LOOP (m2307).
-- [x] All five blocks built, pooled, 8 draw calls (m2307: strips in NOTES).
+- [x] FX.md written (m2308).
+- [x] The lab exists with its ENTRY row (portal, hero drop, goop slam), buttons for every move, HIM / DUMMY, SLOW, PALETTE, LOOP (m2308).
+- [x] All five blocks built, pooled, 8 draw calls (m2308: strips in NOTES).
 - [ ] Every move iterated in strips (normal and slow) until they read as ONE language -- several passes, each in NOTES with the strip.
 - [ ] Measured on HIS phone: the lab's stat line (FX ms, DC) with LOOP on, no visible frame drop.
 - [ ] His pick of palette (MINT / PURPLE / SOLAR) -- or "keep all three".

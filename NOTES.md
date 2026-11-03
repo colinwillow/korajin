@@ -45,10 +45,11 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
-## m2307 -- THE FX LAB, step 1: FX.md, the goop library (5 blocks, 8 draw calls), the lab zone with its ENTRY row (Nov 3 2026)
+## m2308 -- THE FX LAB, step 1: FX.md, the goop library (5 blocks, 8 draw calls), the lab zone with its ENTRY row (Nov 3 2026)
 His ask: *"less like flames: a mix of oily, BLOBBY, ELECTRIC GOOP that is also somewhat FLUID and flame-like ... the same amazing, refined particle
 stuff"* on every move. A NEW PIECE under the whole-piece rule, so: `FX.md` (the look, the blocks, the phone budget, the moves, DONE WHEN) and the
 sandbox, **KORAJIN > The FX Lab** (`?w=forge&zone=fxlab`, `FXLAB`, in `ZONEWANT`). Nothing in a real move is touched yet -- that waits for his sign-off.
+- **FX FOLLOWS THE JINRA PALETTE** (m2307, `JPAL`): `FXPAL.JINRA` is built from the active pick and is the lab default; MINT / PURPLE / SOLAR are FX-only rows after it.
 - **THE LIBRARY** (`fxLibMake(THREE, scene, camera)` + `FXPAL`, between `FXLIB:START/END`, a pure builder): GOOP BLOBS (2 draws: oily
   normal-blended body with a dark rim, an iridescent band and a wet highlight + additive hot core with a per-sprite fake glow; wobble, stretch
   along velocity, split into two and drip as they die), FLUID RIBBONS (2: camera-facing or blade SHEETS; scrolling noise tears the tail and the

@@ -35218,7 +35218,7 @@ function proveStep() { const Z = PROVE, p = player; if (!Z.on) return;
         Z.bk = Z.bk || {}; const b = Z.bk[kind] = Z.bk[kind] || { d: 0, up: 0 }; b.d = Math.max(b.d, d); b.up = Math.max(b.up, up);
         const bl = ['JUMP', 'DOUBLE', 'WALL'].filter(k => Z.bk[k]).map(k => k.toLowerCase() + ' ' + Z.bk[k].d.toFixed(1) + ' / ' + Z.bk[k].up.toFixed(1)).join(' &middot; ');
         Z.el.innerHTML = 'JUMP <b>' + d.toFixed(1) + ' m</b> &nbsp;&uarr; ' + up.toFixed(1) + ' m &nbsp;' + (dy >= 0 ? '+' : '') + dy.toFixed(1) + ' m' + (tag ? ' <span style="color:#7ff0d8">' + tag + '</span>' : '') + '<br><span style="opacity:.7">BEST ' + Z.best.d.toFixed(1) + ' m far &middot; ' + Z.best.up.toFixed(1) + ' m up</span><br><span style="opacity:.6;font-size:12px">far / up by kind: ' + bl + '</span>'; } } } }
-// FXLIB:START -- m2307: THE FX LIBRARY (FX.md). One language for every move: oily, blobby, electric goop that also flows like flame.
+// FXLIB:START -- m2308: THE FX LIBRARY (FX.md). One language for every move: oily, blobby, electric goop that also flows like flame.
 // `fxLibMake(THREE, scene, camera)` is a pure builder (no game globals), so `tools/fxstrip.mjs` lifts THIS text between the markers and renders
 // the strips off the shipped code. FIVE BLOCKS, each one pooled, EIGHT draw calls in all however much is on screen:
 //   GOOP BLOBS (2: an oily normal-blended body with an iridescent band and a wet highlight + an additive hot core and a per-sprite fake glow),
@@ -35480,7 +35480,7 @@ function fxLibMake(THREE, scene, camera) {
   function dispose() { for (const o of meshes) { scene.remove(o); o.geometry.dispose(); o.material.dispose(); } meshes.length = 0; }
   return { S, U, pal, step, clear, count, dispose, blob, spark, ring, trail, arc, run, moves: M, fire: (name, O, h, o) => M[name] && M[name](O, h, o), names: Object.keys(M), meshes }; }
 // FXLIB:END
-// m2307: THE FX LAB (FX.md) -- KORAJIN > The FX Lab, `?w=forge&zone=fxlab`. A dark floor under a dark dome (glow reads best on dark), the dummy
+// m2308: THE FX LAB (FX.md) -- KORAJIN > The FX Lab, `?w=forge&zone=fxlab`. A dark floor under a dark dome (glow reads best on dark), the dummy
 // post 8 m ahead of him, three dark blocks at 1, 2.2 and 3.6 m to jump off, and a panel of big buttons: each fires one move's FX on HIM or on the
 // DUMMY, SLOW (x1 / x.25 / x.1, the FX clock only), PALETTE (MINT / PURPLE / SOLAR -- `FXPAL`, remembered) and LOOP (every move in turn).
 // ENTRY row (CLAUDE.md, the entrance rule): a purple sky portal over `at`, the hero drop from `H` m, and a goop SLAM where he lands.
@@ -35496,7 +35496,10 @@ function fxlabBuild() { const Z = FXLAB; Z.want = 2; if (Z.on) return; const g =
   box(8, 11, 1, 2, 5); box(9, 12, 2.2, -4, -1); box(-12, -9, 3.6, -2, 1);     // three heights to jump off (VERTICALITY: below, level, above)
   const [dx, dz] = Z.dummy, post = new THREE.Mesh(new THREE.CylinderGeometry(.32, .4, 1.9, 20), new THREE.MeshStandardMaterial({ color: 0x3a3e48, roughness: .8 })); post.position.set(dx, .95, dz); post.castShadow = true; g.add(post);
   BOXES.push({ minx: dx - .35, maxx: dx + .35, miny: 0, maxy: 1.9, minz: dz - .35, maxz: dz + .35 });
-  if (!FX) FX = fxLibMake(THREE, scene, camera); try { FX.pal(localStorage.getItem('mel.fxpal') || 'MINT'); } catch (e) {}
+  try { const J = window.JPAL, c = h => [((h >> 16) & 255) / 255, ((h >> 8) & 255) / 255, (h & 255) / 255];     // FX follows THE JINRA PALETTE (m2307, JPAL): the JINRA row is built from it
+    if (J && J.glow != null) { const sh = J.pick === 'MINT' ? FXPAL.MINT : FXPAL.PURPLE, dp = c(J.deep); FXPAL.JINRA = Object.assign({}, sh, { core: c(J.core), body: c(J.glow), rim: dp.map(v => v * .14), spark: c(J.spark), arc: c(J.core).map((v, i) => (v + c(J.spark)[i]) / 2) });
+      for (const k of Object.keys(FXPAL)) if (k !== 'JINRA') { const v = FXPAL[k]; delete FXPAL[k]; FXPAL[k] = v; } } } catch (e) {}     // JINRA first in the cycle
+  if (!FX) FX = fxLibMake(THREE, scene, camera); try { FX.pal(localStorage.getItem('mel.fxpal') || (FXPAL.JINRA ? 'JINRA' : 'MINT')); } catch (e) {}
   const E = Z.entry, p = player; p.pos.set(E.at[0], E.at[1], E.at[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = E.h; cam.az = E.h;
   const pm = new THREE.Mesh(new THREE.CircleGeometry(2.4, 48), new THREE.MeshBasicMaterial({ color: 0xa040ff, transparent: true, opacity: .9, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false, side: THREE.DoubleSide }));
   pm.rotation.x = -Math.PI / 2; pm.position.set(E.at[0], E.at[1] + E.H + 1, E.at[2]); g.add(pm); Z.portal = { m: pm, t: 0 }; Z.drop = 0;
