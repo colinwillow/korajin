@@ -41,7 +41,7 @@ and the strip can never disagree. Its placements (stacks, the shrine, the falls,
 1. **Water shader + first canyon** -- sky, bluffs, beaches, stacks, the shader, the strip tool. *(m2318)*
 2. **The boat** -- hull, deck, prow, shelter / lantern, Jinra lines; buoyancy at 4+ hull points (heave, pitch, roll) off `L.waveAt`;
    TOOLS > BOAT JETS (default OFF); the floating ship as a second hull on a switch. *(m2330: the longboat, buoyancy, jets switch, he stands on the deck; the floating-ship hull NOT done)*
-3. **Water around the boat** -- bow wave, hull displacement, a Kelvin wake from a trail of past positions, foam where hull meets water, spray.
+3. **Water around the boat** -- bow wave, hull displacement, a Kelvin wake from a trail of past positions, foam where hull meets water, spray. *(m2335; the boat CRUISES a lane to show it -- stick steering is pass 5)*
 4. **The place** -- the waterfall (source, arc, spray, mist), the torii / shrine on a bluff, floating islets, cherry trees; mist banks, god
    rays, petals drifting and landing on the water.
 5. **Sailing** -- left stick steers / throttles, camera in the CINEMA.md house style, walking on the deck when stopped; the ENTRY row lands him
