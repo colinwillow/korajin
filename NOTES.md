@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 19: Grumbo TWO-TONE -- his own orange glows ember beside the Jinra purple (Nov 3 2026)
+His words (relayed): *"the ORANGE symbol on his cape should glow -- and some pieces of his clothing, maybe armour, the tips of his hair that are a little
+orange too. The orange AND the purple."* A second hue mask (`ora`): orange to amber, BRIGHT, not purple -- the cape emblem, the trims, the quill tips --
+glowing in a fixed warm EMBER (`HEROGLOW.ember` 0xff7a2a, gain `emberK` .85; not JPAL, his own accent), the quills mixing Jinra -> ember by it.
+Same drivers as the purple (rest .06 / night .16, attacks, Jinra, GOOP.pulse) so the two flare together.
+**`diffuseColor` is LINEAR**, and the first mask was written in sRGB ratios and caught nothing: in linear his orange is g/r ~.2-.45, the red cloak cloth
+~.08, cream skin ~.78. The second caught his brown LEATHER too (the same hue, darker) and blew out at flare: a brightness floor (linear r > .42-.62)
+and the ember term capped. images/feedback/m2329/hero_glow_twotone.jpg (day / night x rest / flare). Shipped unverified.
+
 ## m2375 -- THE LAKE: his wishlist 1 -- arches to sail under, the island of the great glowing tree (Nov 3 2026)
 His: *"rocks and natural arches you sail UNDER; islands with big GLOWING trees."*
 - **Arches (`W.arches`, 2 rows: feet A / B in canyon space, apex `h`, thickness `r`):** each is two tapered tubes from a foot on the BED (thick) up past
