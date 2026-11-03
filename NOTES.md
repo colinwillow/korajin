@@ -39,7 +39,7 @@ His: *"floating mist, god rays, cherry blossom petals, really beautiful and harm
   into the sun, faded near the lens. No post chain.
 - Cost over m2335: +5 draws (+2 in the mirror), +38k tris, petal CPU ~900 x waveAt per frame. CRAFT checked on the strip: 1 (trunks/branches curve
   and taper), 3 (root flare in the ground), 5. Shipped unverified.
-## m23XX -- NIGHT 12: NO MORE SATURN -- four ethereal SKY WORLDS on a switch; the flora on the garden's own lawn mask (Nov 3 2026)
+## m2342 -- NIGHT 12: NO MORE SATURN -- four ethereal SKY WORLDS on a switch; the flora on the garden's own lawn mask (Nov 3 2026)
 His words (relayed): *"not sold on the rings of Saturn -- too Saturn-like. Alternate worlds, nothing resembling Saturn; ethereal alien worlds rather than
 recognisable planets. A giant moon is fine, but unique."* The shared dome's ringed moon, its ring and the rust second moon are gone, and so is the SHIP
 zone's banded, ringed planet (bands cut, ring hidden: a soft pale orb). In their place `uWorld`, **TOOLS > TIME > SKY WORLD** (`mel.skyworld`, live):
