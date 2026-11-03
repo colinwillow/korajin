@@ -19,6 +19,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2385 -- THE LAKE at night, his m2376 notes 1-3: veins not speckles, runes that ride the hull, no trail dots (Nov 3 2026)
+1. **Rock speckles -> VEINS.** The `nightGlow` crack mask on the canyon (scale 1.3 = cells under a metre) read as purple PIXEL NOISE in the distance and
+   SHIMMERED as the lens moved (sub-pixel detail, aliasing). It is off the terrain; the terrain shader draws its own night VEINS: Voronoi edges on ~8 m
+   cells in the face's own plane, only 45 % of cells lit, steep rock only, anti-aliased by `fwidth` and faded where an edge gets under a pixel, faded with
+   distance (70 -> 260 m), a slow breath per cell, Jinra or violet per cell, x NIGHT.f. Stacks and islets share it.
+2. **Boat runes slid.** `nightGlow` masks are WORLD space, so on a moving hull the glyphs swam through it. `nightGlow` takes a new `local: 1` option (the
+   mask in OBJECT space; the cache key carries it; every other caller unchanged) and the hull and deck use it: the runes ride the boat.
+3. **Trail dots.** The twinkling hashed-cell sparks in the disturbed water were the "low rent" dots: gone. The wake / hull / falls / swimmer glow stays as
+   a soft field; the algae keeps a faint soft shimmer. Also at night: petals and spray dim (they read as white flecks), the cherry blossom glow is a soft
+   all-over violet (the vein mask drew blocky squares on them).
+Headless game render at night at the helm: veins as a few large lines on the bluff, runes on the hull, a soft glowing wake. Next: 4 water richness, 5 the
+helm walk + wheel pose, 6 the boat redesign. Shipped unverified.
+
 ## m2384 -- the garden's taps in the interact registry (Nov 3 2026)
 Asked by the UI/play-state worker (registry m2382). `gdnInteract()` runs once after the garden builds:
 - **LIE DOWN** (`garden.hammock`, pri 1): within 1.6 m of the bed and standing, a tap puts him back in the hammock (`gdnSleepStart`). A push gets him
