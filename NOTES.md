@@ -17,6 +17,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2319 -- THE LAKE: the NIGHT is planned (WATER.md NIGHT), glow tags in SC_LAKE (Nov 3 2026)
+His night ask (relayed): stars, Milky Way, a planet, glowing runes on wood / sand / rock cracks, glowing plants and lanterns, bioluminescent water.
+WATER.md now has a NIGHT section: the sky and the switch are the shared night core's (m2317, NIGHT.md); the lake reads `NIGHT.f` in its own
+dome and water and does the bioluminescence. `W.stacks[].glow` / `W.glow` tag the surfaces for `nightGlow`. Data only, nothing drawn changes. Shipped unverified.
+
 ## m2318 -- THE LAKE, pass 1: the water shader and the first canyon (WATER.md) (Nov 3 2026)
 His ask: *"an extraordinarily beautiful water scene... spend a lot of time on the water shader... a lake in a canyon, giant rock bluffs, then a
 beach... I just want it to look absolutely gorgeous."* New sandbox **KORAJIN > The Lake** (`?w=forge&zone=lake`, `LAKEZ`), spec + DONE WHEN in

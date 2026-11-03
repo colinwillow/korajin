@@ -47,6 +47,18 @@ and the strip can never disagree. Its placements (stacks, the shrine, the falls,
 5. **Sailing** -- left stick steers / throttles, camera in the CINEMA.md house style, walking on the deck when stopped; the ENTRY row lands him
    on the deck.
 
+## NIGHT (his, relayed Nov 3 2026 -- AFTER the day look is strong, not instead of it)
+*"Tons of stars, like out in the middle of nowhere -- shooting stars, the Milky Way, maybe a big planet. Things come alive at night: Japanese-looking
+alien symbols you don't see in the day glow on the boat's wood, in the sand, on the rocks, in the cracks between rocks; plants glow (Jinra
+palette); lanterns glow. Like Avatar at night."* Water at night: the stars / moon / planet in the mirror, bioluminescence in the wake and wherever
+the hull, petals or oars disturb the water.
+- **Not ours to build: the sky and the switch.** The game-wide night core (`NIGHT.f` 0..1, `nightPre`/`nightPost`, the shared star dome,
+  TOOLS > TIME, NIGHT.md; m2317) owns them; `nightGlow(material, { mask, role, strength, pulse })` + a rune atlas are coming from that worker.
+- **Ours:** the lake's own sky dome and water shader must READ `NIGHT.f` (the dome fades to the shared sky; the mirror then carries the stars), the
+  water's bioluminescence (wake, hull contact, petals -- pass 3's disturbance buffer drives it, scaled by `NIGHT.f`, colour from JPAL), and the
+  glow surfaces tagged in `SC_LAKE` (`glow:` on the boat wood, the stacks' cracks, the sand, plants, lanterns) so `nightGlow` can be pointed at them.
+- Lands as its own pass after pass 4; until then every new placement row carries its `glow` tag.
+
 ## DONE WHEN (tick only WITH EVIDENCE in a NOTES entry)
 - [ ] The water reads as WATER at every distance: no shimmer at the horizon, no visible grid, no seams where the grid follows the lens.
 - [ ] Depth reads: turquoise over sand at the edges, the bed visible with caustics, deep teal in the middle; a foam line at every shore.
@@ -56,5 +68,6 @@ and the strip can never disagree. Its placements (stacks, the shrine, the falls,
 - [ ] The place: bluffs in tiers, beach, stacks, a waterfall from a source, shrine on a bluff, islets above, cherry trees, mist, god rays, petals
       that land and ride the waves -- every one checked close against CRAFT.md.
 - [ ] He can sail it (stick steers the boat, the lens follows), and he arrives by the entrance (portal, flip, landing on the deck).
+- [ ] NIGHT: the shared sky in the mirror, the tagged surfaces glowing through `nightGlow`, bioluminescence where the water is disturbed.
 - [ ] Runs well on his iPhone (draw calls and triangles in the NOTES entry, the mirror on and off).
 - [ ] **His sign-off on his phone.**
