@@ -674,7 +674,7 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
-## m2339 -- THE GOOP TONE: SUBTLE is the default; TOOLS > GOOP FX > GOOP LOOK cycles FULL / SUBTLE / WHISPER (Nov 3 2026)
+## m2365 -- THE GOOP TONE: SUBTLE is the default; TOOLS > GOOP FX > GOOP LOOK cycles FULL / SUBTLE / WHISPER (Nov 3 2026)
 His: *"a little bit less capacity, maybe make some of them smaller or thinner -- the balls of liquid smaller and some of the lines thinner. They're
 just kind of aggressive right now and I love them so much, but maybe just a little bit more subtle."* One dial on the whole library (`S.T`,
 `FX.tone(name)`): `r` blob and spark size, `w` ribbon / arc / ring width (and ring reach .7 + .3w), `a` opacity, `n` the fraction emitted.

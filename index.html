@@ -22864,7 +22864,7 @@ function arenaUi() {
       else if (a === 'climbspd') { const L = CLIMB.speeds, i = L.indexOf(CLIMB.speed); CLIMB.speed = L[(i + 1) % L.length]; try { localStorage.setItem('mel.climbspd', String(CLIMB.speed)); } catch (err) {} }     // the ladder refactor: his pick
       else if (a === 'runland') { RUNLAND.mode = RUNLAND.mode === 'DIP' ? 'STOP' : 'DIP'; try { localStorage.setItem('mel.runland', RUNLAND.mode); } catch (err) {} }     // m1097
       else if (a === 'jincol') { const o = JPAL.order, k = o[(o.indexOf(JPAL.pick) + 1) % o.length]; try { localStorage.setItem('mel.jin', k); } catch (err) {} try { const u = new URL(location.href); u.searchParams.delete('jin'); location.replace(u.href); } catch (err) { location.reload(); } }     // THE JINRA COLOUR (JINRA_COLOUR.md): next preset, saved, reload
-      else if (a === 'gooptone') { const F = goopFx(), L = F.S.tones; try { localStorage.setItem('mel.goopTone', F.tone(L[(L.indexOf(F.S.tone) + 1) % L.length])); } catch (err) {} }     // m2339: FULL / SUBTLE / WHISPER
+      else if (a === 'gooptone') { const F = goopFx(), L = F.S.tones; try { localStorage.setItem('mel.goopTone', F.tone(L[(L.indexOf(F.S.tone) + 1) % L.length])); } catch (err) {} }     // m2365: FULL / SUBTLE / WHISPER
       else if (a === 'goop') { GOOP.on = GOOP.on ? 0 : 1; try { localStorage.setItem('mel.goop', GOOP.on ? '1' : '0'); } catch (err) {} if (!GOOP.on && GOOP.bt) goopBlade(0); }     // m2329: GOOP FX on / the old FX
       else if (a === 'btrail') { BTRAIL.jin = BTRAIL.jin ? 0 : 1; try { localStorage.setItem('mel.btrail', BTRAIL.jin ? 'jin' : 'blue'); } catch (err) {} if (BTRAIL.mat) BTRAIL.mat.uniforms.uC.value.setRGB(...(BTRAIL.jin ? JIN.col : BTRAIL.col)); }     // m1421
       else if (a === 'toprun') { GAIT.topRun = GAIT.topRun ? 0 : 1; try { localStorage.setItem('mel.toprun', GAIT.topRun ? '1' : '0'); } catch (err) {} runSetUse(GAIT.runSet, 0); }     // m1092
@@ -36563,7 +36563,7 @@ function fxCols(P) { const rgb = h => [((h >> 16) & 255) / 255, ((h >> 8) & 255)
   return { core, body: hue(P.glow, 0, 1, .5, .58), rim: rgb(P.deep).map(v => v * .16), s0: hue(P.glow, 60), s1: hue(P.glow, -60), s2: spark, arc: core.map((v, i) => (v + spark[i]) / 2), spark }; }
 function fxLibMake(THREE, scene, camera) {
   const V3 = THREE.Vector3, rnd = (a, b) => a + Math.random() * (b - a), TAU = Math.PI * 2;
-  // THE TONE (m2339, his: "a little less capacity... the balls of liquid smaller, the lines thinner -- a little more subtle"): one dial on
+  // THE TONE (m2365, his: "a little less capacity... the balls of liquid smaller, the lines thinner -- a little more subtle"): one dial on
   // EVERYTHING. r = blob / spark size, w = ribbon / arc / ring width, a = opacity, n = how much is emitted (a kept fraction).
   const TONES = { FULL: { r: 1, w: 1, a: 1, n: 1 }, SUBTLE: { r: .68, w: .62, a: .8, n: .6 }, WHISPER: { r: .52, w: .45, a: .65, n: .4 } };
   const S = { pal: 'MINT', k: 1, t: 0, gy: () => 0, crawl: 7, tone: 'SUBTLE', T: TONES.SUBTLE, tones: Object.keys(TONES), max: { blob: 420, spark: 220, ring: 24, rib: 2400, arc: 900 } };
