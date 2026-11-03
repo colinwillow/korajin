@@ -31,7 +31,7 @@ CARRIES him (`lakeStep`: his spot in the boat's frame before the step, back into
 - **Looked at, top-down in debug colour first** (the shape before the shading): the V, the churn and the bow wave were right; the trail's end drew a
   hard arc (faded now), and the foam thresholds turned the arms into blobs and the hull into a white plate (thinned and broken).
 - Not yet: foam where the hull meets the water at REST is a faint line only; no wake from jets; bioluminescence (NIGHT pass). Shipped unverified.
-## m23XX -- NIGHT 9: the stars glow MORE (Nov 3 2026)
+## m2336 -- NIGHT 9: the stars glow MORE (Nov 3 2026)
 His ask (relayed): *"stars glow more -- brighter, bigger bright ones with a soft glow, more twinkle."* The sky's bright layer is now `starG`: a hot core,
 a soft bloom halo (two falloffs) and faint four-point spikes, all sized in PIXELS (`fwidth`), twinkling deeper (`twinkle` .6 -> .85); the whole field
 x`stars.gain` 1.45 (`uStarK`). **Two wrong first tries, both from the cell the star lives in:** a halo wider than its hashed cell is CUT by the cell
