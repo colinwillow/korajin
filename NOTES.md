@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- title screen: smaller logo, no season chip (auto only), a pulsing SCROLL hint (Nov 3 2026)
+*"The title is maybe a little big. I like not seeing the level selector -- but we need a little pulsing scroll thing in the bottom third, an arrow;
+pressed, it brings the first selection (Prologue) to the middle. Get rid of the debug season button, just auto-cycle."* `img.looplogo` 88vw/560 ->
+66vw/400 px. The season chip (`loopwx`) is gone; the loop is set to AUTO on build. `.kjscroll`: "SCROLL" in the brush face over a cream/red
+chevron, bobbing, fading .55-1, fixed at 14vh from the bottom; tap = `scrollIntoView` of the first `.go` (the Prologue) to the centre (the wheel
+then lights it); it fades out once the menu has scrolled > 40 px. Black Grumbo + the start explosions -> the UI worker; the transition (petals),
+slower seasons, heavier snow, a glowing dark scene -> the title-loop worker. Shipped unverified.
+
 ## m2282 -- THE GARDEN: trunks wound outward; pot plants no longer black (Nov 3 2026)
 
 From the collider worker (measured): "the willow trunks' geometry is wound INSIDE OUT -- every face normal points back at the axis." Proved by the
