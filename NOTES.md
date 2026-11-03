@@ -32,7 +32,7 @@ Fixes:
     83 at 2.5 (the emblem's radius is 64), then the burst out.
 - `loopSwirl.dbg` exposes the petal state.
 Shipped unverified.
-## m23XX -- NIGHT 16: the CLOUDS sit in the night (Nov 3 2026)
+## m2357 -- NIGHT 16: the CLOUDS sit in the night (Nov 3 2026)
 His report (images/feedback/m2341/night_clouds_too_bright.png): *"the big clouds stay bright white at night and pop out -- they could glow a little, but fit
 in more; the white glow is best kept for dusk and day."* The garden's cloud cards are an UNLIT ShaderMaterial (`gdnCards`), so no light the night
 overlay dims ever reached them. NIGHT_CLOUDS: one splice before the colour-space include of every mesh / sprite named cloud / cards / cumulus (a scan
