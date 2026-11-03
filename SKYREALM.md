@@ -25,3 +25,6 @@ ship, choose a place you have been, fade, and arrive DOCKING there = the fast tr
 
 ## Characters
 Grumbo needs a face version: EYES THAT CLOSE (sleeping, blinking) and a few expressions -- his art (blend shapes / a face rig).
+
+## A NIGHT PLACE (his idea, Nov 3 2026 -- future)
+Somewhere it is really NIGHT: you carry a LANTERN to see; the light is glowing purples and blues, and Jinra lights the way.
