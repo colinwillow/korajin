@@ -17,6 +17,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2362 -- the entrance's tear lies FLAT, and the portal has its own sounds (no electricity) (Nov 3 2026)
+His: *"I would make it horizontal instead of vertical -- like an abstract ring, parallel to the ground, that opens and you fall out of it. And I don't
+like the electric sound effects: they linger too much, and the electricity is not really what I'm going for."*
+- The tear plane is laid flat over the landing (`tear.rotation.x = -PI/2`, the .2 tilt kept as a spin), 9 x 9 m, and opens wider (half-width up to
+  2.6 m): the seam still RUNS first, then PEELS into an irregular jagged oval he falls out of the underside of. The arcs droop below it; the glow
+  sits just above. The lens is unchanged (low, three-quarter front, looking up into it).
+- Sounds: every `zap` is gone from the entrance. Main pulled CC0 portal sounds (audio/portal/, CREDITS.txt, -9 dBFS): `portal_open` (A deep tonal
+  swell / B bright chime shimmer / C very deep space swell), `portal_through` (A deep whoosh / B brighter zip), `portal_seal` (A soft tonal close /
+  B the whoosh reversed / C chime close). TOOLS > PORTAL SOUND A/B/C (`mel.entrySnd`, plays the open on the tap; C uses A for the whoosh). A missing
+  file falls back to a low swoosh. The music ducks to half (`ENTRY.duck`, `MUSIC.duck` -- the reel is its other writer and never overlaps) from the
+  rip until the seal has finished.
+- Shipped unverified (a render of the flat tear is in flight).
+
 ## m2361 -- THE LAKE: his playtest of m2354 -- PERF, smooth water, the portrait camera, TAP to take the helm (Nov 3 2026)
 His: *"nighttime looks great, daytime phenomenal, dusk amazing -- keep going with the detail."* The fix list, in his order:
 1. **PERF** (his phone hot, in the 20s). Measured on the strip, worst shot: **46 -> 27 draws, 392k -> 269k tris.** Water grid 192 -> 128 segments
