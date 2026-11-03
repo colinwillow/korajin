@@ -26,6 +26,23 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 - [ ] **Custom weapons**: the sword and the bow are plain -- decoration, runes, glow. The bow especially.
 - [ ] **Glider wings**: glowing parts.
 
+- [ ] **Title backflip**: after the flip he hangs in the air in a ground pose -- keep flipping through (a touch higher so momentum carries a second flip).
+- [ ] **Hero cracks (m2398)**: now too fat/thick and run over his CLOTHES -- smaller, finer, more detail, on SKIN only.
+- [ ] **No freezes while loading**: the loading emblem stops spinning (main thread blocked). Load progressively / in a worker / spread over frames so the
+      screen never freezes. Same in game: the Sky Temple entrance spawning three enemies hitches -- preload/pre-warm (compile shaders, build rigs) ahead of time.
+- [ ] **Entrance portal**: he likes the fall + landing now. The portal: smaller; NOT black inside -- a purple-pink swirling interior (spiral/particles);
+      near-parallel to the ground (a thin oval seen from the side, a little of the circle visible). Sounds: doesn't like them -- wants a "portal opening"
+      sound; he has a portal effect + sound he made long ago (maybe a PNG sequence) he may provide.
+- [ ] **Snow footsteps** still a little crispy.
+- [ ] **Health bars**: no green bar over the mammoth (or anyone). Artful health: e.g. a ring around them that appears and fades when hit.
+- [ ] **Speed effect**: the spikes round the screen edge when running fast -- replace with a subtle (fake) motion blur, or nothing.
+- [ ] **Mammoth glow**: like Grumbo -- his cloths/flags and a little of his skin, same hues.
+- [ ] **Snow world perf**: weather off + dusk -> night starts chugging (maybe the glow). Optimise.
+- [ ] **The dream (later)**: stitch the worlds into an open world (seamless loading), explore on a dragon / flying boat / wingsuit; place temples; the story;
+      war bosses. A COLOSSUS boss ~100x his size in a cavern with a rim to run round: it slams a hand, the hand sticks, attack the hand till it pulls back,
+      then it's vulnerable -- run up its arm, hit the head; a few cycles; real strategy.
+- [ ] **Fix the enemy meshes** (the temple guys etc.) -- repeated, see the split item above.
+
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
 - [ ] **UI RINGS + REAL PLAY -- OPEN (his, Nov 2).** `UI_RINGS.md`: what he owns (`OWN`, grant/revoke, GOD = all), one ring layout for every pad
       button, then hp / lives / GAME OVER with GOD off. m2263 the rings + ownership; next the lives.
