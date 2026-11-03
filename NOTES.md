@@ -17,6 +17,8 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2324 -- THE LAKE: the nightGlow API noted in WATER.md (Nov 3 2026)
+Docs only: the night worker's `nightGlow` (m2323) recipes for the boat wood, sand and stacks, for the lake's night pass. Shipped unverified.
 ## m23XX -- NIGHT 4: the katana's blade carries a line of the script at night (Nov 3 2026)
 His ask: *"His sword will have ancient symbol writing on it that glows at night."* A new `nightGlow` mask, **`inscribe`**: ONE line of the script
 down an object's own +Y, `width` = half its breadth across local Z, `y0..y1` its run, and (re-using `cavity`) a BEND -- the katana's blade is curved

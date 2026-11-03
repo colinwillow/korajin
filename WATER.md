@@ -57,6 +57,10 @@ the hull, petals or oars disturb the water.
 - **Ours:** the lake's own sky dome and water shader must READ `NIGHT.f` (the dome fades to the shared sky; the mirror then carries the stars), the
   water's bioluminescence (wake, hull contact, petals -- pass 3's disturbance buffer drives it, scaled by `NIGHT.f`, colour from JPAL), and the
   glow surfaces tagged in `SC_LAKE` (`glow:` on the boat wood, the stacks' cracks, the sand, plants, lanterns) so `nightGlow` can be pointed at them.
+- **The API (m2323):** `nightGlow(mat, { mask: 'runes'|'cracks'|'veins'|'tips'|'all', role: 'glow'|'core'|'deep'|'spark'|'accent'|'mix', strength 2-2.8, scale, density })`,
+  spliced after `#include <emissivemap_fragment>` (keep that line in our splices), applied only when `NIGHT.mode !== 'DAY'` (as `snowNightGlow`). Boat wood:
+  `{ mask: 'runes', role: 'mix', density: .25, scale: 3 }`; sand `{ mask: 'runes', role: 'glow', density: .06, scale: .9, strength: 1.3 }`; stacks `'cracks'`.
+  Our own shaders (sky, water) read `NGLOW.U.uNgF` (eased) / `NIGHT.f`.
 - Lands as its own pass after pass 4; until then every new placement row carries its `glow` tag.
 
 ## DONE WHEN (tick only WITH EVIDENCE in a NOTES entry)
