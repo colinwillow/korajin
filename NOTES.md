@@ -19,6 +19,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2387 -- THE LAKE: richer water (his m2376 note 4: "still reads low-poly") (Nov 3 2026)
+- **Per-pixel crest height** (`hP`, summed in the same Gerstner loop that makes the per-pixel normal): it drives the SUBSURFACE light through the wave faces
+  (stronger into the sun and on faces turned to the lens) and a soft highlight along the crests -- m2335's scatter used the vertex `vCrest`, which is as
+  coarse as the grid.
+- **Wind-driven foam streaks**: the detail map's height read along the WIND (`W.wind`), stretched 13:1, kept to the crests and to slow patches, faded by
+  200 m.
+- **A fourth, fine detail-normal layer** within ~20 m of the lens.
+Draws unchanged. Shipped unverified.
+
 ## m2386 -- FIX: m2385 was a BLANK PAGE (a `//` comment ate a closing brace) (Nov 3 2026)
 m2385 appended a `//` comment in the MIDDLE of a one-line arrow function in `L.setNight`, so the rest of the line -- the torii glow and the closing `};` --
 became comment and the module did not parse ("Unexpected end of input"). `npm run check` SAID so (0 boot ok) and the push went anyway because the
