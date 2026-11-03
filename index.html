@@ -13100,27 +13100,27 @@ function nightSet(m) { const N = NIGHT; N.mode = m; try { localStorage.setItem('
 // `pre` blends the given lights / S.fog / a colour background / the exposure toward NIGHT.pal by NIGHT.tf (a 75 s day > dusk > night > dawn loop from
 // DAY, or his TOOLS > TIME when he has set it) and `post` hands every value back. It adds the shared star dome (the game's MATERIAL, +1 draw), glows
 // `hero` (the hue / crack / emblem glow) and drives the glow layers. `NH.dispose()` takes the dome out.
-function nightScene(S, cam, o = {}) { const N = NIGHT, NS = NIGHTSKY; nightSkyGlobal(); const H = { lights: (o.lights || []).filter(Boolean), sky: o.sky || null, R: o.renderer || null, sv: [], dome: null, on: 1 };
+function nightScene(S, cam, o = {}) { const N = NIGHT, NS = NIGHTSKY; nightSkyGlobal(); const H = { lights: (o.lights || []).filter(Boolean), sky: o.sky || null, R: o.renderer || null, sv: [], dome: null, on: 1, own: o.lightsOwned !== false, f: 0, dusk: 0 };     /* lightsOwned: false -- the scene keeps ONE writer for its light / fog / sky tint and reads NH.f (the title's seasons) */
   if (NS.dome) { const d = new THREE.Mesh(NS.dome.geometry, NS.dome.material); d.frustumCulled = false; d.renderOrder = -3; d.name = 'night_dome_title'; S.add(d); H.dome = d; }
   if (o.hero) o.hero.traverse(q => { if (q.isMesh) (Array.isArray(q.material) ? q.material : [q.material]).forEach(m => heroGlowMat(m, q.geometry)); });
   if (o.glow) for (const [m, opt] of o.glow) nightGlow(m, opt);
   const C = new THREE.Color();
   H.pre = (dt) => { if (!H.on) return; N.titleAt = performance.now(); const d2 = nightStep(); nightGlowStep(d2); try { heroGlowStep(d2); } catch (e) {}
-    const k = N.tf, P = N.pal, L = (a, b) => a + (b - a) * k, du = 4 * k * (1 - k) * P.duskK; H.sv.length = 0;
-    for (const l of H.lights) { const e = { l, i: l.intensity, c: l.color.clone(), g: l.groundColor ? l.groundColor.clone() : null }; H.sv.push(e);
+    const k = N.tf, P = N.pal, L = (a, b) => a + (b - a) * k, du = 4 * k * (1 - k) * P.duskK; H.sv.length = 0; H.f = k; H.dusk = 4 * k * (1 - k); H.fog = H.bg = null; H.ex = null; H.bi = S.backgroundIntensity; H.ei = S.environmentIntensity;
+    if (H.own) for (const l of H.lights) { const e = { l, i: l.intensity, c: l.color.clone(), g: l.groundColor ? l.groundColor.clone() : null }; H.sv.push(e);
       if (l.isPointLight || l.isSpotLight) continue;
       if (l.isHemisphereLight) { l.intensity *= L(1, P.hemiK); l.color.lerp(C.setHex(P.duskHemi), du * .5).lerp(C.setHex(P.hemiCol), k); l.groundColor.lerp(C.setHex(P.hemiGnd), k); }
       else if (l.isAmbientLight) { l.intensity *= L(1, P.hemiK); l.color.lerp(C.setHex(P.hemiCol), k); }
       else { l.intensity *= L(1, P.sunK); l.color.lerp(C.setHex(P.duskSun), du).lerp(C.setHex(P.sunCol), k); } }
-    H.fog = S.fog ? S.fog.color.clone() : null; if (S.fog) S.fog.color.lerp(C.setHex(P.duskFog), du * .6).lerp(C.setHex(P.fog), k);
+    if (H.own) { H.fog = S.fog ? S.fog.color.clone() : null; if (S.fog) S.fog.color.lerp(C.setHex(P.duskFog), du * .6).lerp(C.setHex(P.fog), k);
     H.bg = S.background && S.background.isColor ? S.background.clone() : null; if (H.bg) S.background.lerp(C.setHex(P.duskFog), du * .6).lerp(C.setHex(P.bg), k);
-    H.bi = S.backgroundIntensity; H.ei = S.environmentIntensity; S.backgroundIntensity = (H.bi == null ? 1 : H.bi) * L(1, P.bgK); S.environmentIntensity = (H.ei == null ? 1 : H.ei) * L(1, P.envK);
-    if (H.R) { H.ex = H.R.toneMappingExposure; H.R.toneMappingExposure *= L(1, P.expK); }
+    S.backgroundIntensity = (H.bi == null ? 1 : H.bi) * L(1, P.bgK); S.environmentIntensity = (H.ei == null ? 1 : H.ei) * L(1, P.envK);
+    if (H.R) { H.ex = H.R.toneMappingExposure; H.R.toneMappingExposure *= L(1, P.expK); } }
     if (H.dome && NS.U) { H.dome.visible = k > .002; NS.U.uFade.value = Math.min(1, k * 1.15); NS.U.uT.value += d2; NS.U.uDusk.value = 4 * k * (1 - k); if (S.fog) NS.U.uHor.value.copy(S.fog.color);
       H.dome.position.copy(cam.position); let rr = cam.far * .9; if (H.sky && H.sky.geometry) { if (!H.sky.geometry.boundingSphere) H.sky.geometry.computeBoundingSphere(); rr = Math.min(rr, H.sky.geometry.boundingSphere.radius * H.sky.scale.x * .95); }
       H.dome.scale.setScalar(rr / NS.sky.r); } };
   H.post = () => { for (const e of H.sv) { e.l.intensity = e.i; e.l.color.copy(e.c); if (e.g) e.l.groundColor.copy(e.g); } H.sv.length = 0;
-    if (H.fog && S.fog) S.fog.color.copy(H.fog); if (H.bg && S.background && S.background.isColor) S.background.copy(H.bg); S.backgroundIntensity = H.bi; S.environmentIntensity = H.ei; if (H.R && H.ex != null) H.R.toneMappingExposure = H.ex; };
+    if (H.fog && S.fog) S.fog.color.copy(H.fog); if (H.bg && S.background && S.background.isColor) S.background.copy(H.bg); if (H.own) { S.backgroundIntensity = H.bi; S.environmentIntensity = H.ei; } if (H.R && H.ex != null) H.R.toneMappingExposure = H.ex; };
   H.dispose = () => { H.on = 0; if (H.dome) H.dome.removeFromParent(); };
   return H; }
 // NIGHT_SCENE:END

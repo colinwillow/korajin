@@ -17,6 +17,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 15: `nightScene(..., { lightsOwned: false })` -- the title keeps ONE writer for its light (Nov 3 2026)
+The title worker's facts: LOOPBG already has a NIGHT season (`LOOPBG.seasons.night`: tints, key / fill, fog, glowK 1.7, stars, moon) inside its own
+weather cycle; an overlay blending lights and fog on top of it would be night-on-night and a fight with storm / rain. So `lightsOwned: false` makes
+`pre` touch NO light, fog, background or exposure -- it only sets `NH.f` (the day..night factor, NIGHT.tf) and `NH.dusk`, places the star dome and
+drives the hero glow / glow layers; the title's season blend reads NH.f as its time-of-day axis and stays the one writer. Tested headless. Shipped unverified.
+
 ## m2350 -- THE JINRA BEAM AS FLUID, pass 2 (Nov 3 2026)
 Pass 1's renders showed three problems:
 - **The top washed out to near-white against the sky.** The fade is now `pow(1-y, 1.7)`, the sheen is lighter, and thin areas lean on the deep colour.
