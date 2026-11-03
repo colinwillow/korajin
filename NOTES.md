@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2330 -- THE LAKE pass 2: the longboat (WATER.md) (Nov 3 2026)
+His: *"four or five times the size of the hero, kind of a long boat, futuristic but also Japanese style, maybe some jets, maybe not."*
+- **Built in LAKELIB** (`L.boat`, row `W.boat` in SC_LAKE): an 8.4 x 2.0 m hull lofted from sections (pointed ends, prow sheer sweeping up), vertex-painted
+  vermilion lacquer with a dark sheer band, a gold line at the gunwale and the waterline; a brushed-metal rail (metalness .5 + an emissive floor:
+  CRAFT 4), a Jinra line each side (`O.jin` = JPAL.glow), a plank deck (canvas texture), a shelter of four posts INTO a wood-under / tile-over roof
+  with upturned eaves and gold ridge, a prow that curls back with a paper lantern on a cord from its tip (CRAFT 3), a stern curl and a steering oar.
+- **Buoyancy off the drawn waves:** `L.waveAt` at four hull points -> heave, pitch, roll, damped (`B.step`). On the mirror layer, so it reflects.
+- **He stands on it:** `groundAt` takes `boat.deckAt` (tilts with pitch/roll); `lakeWall` keeps him inside the gunwale below deck + .75 (a jump clears
+  it). `lakeBuild` spawns him on the deck facing the bow and sets the ENTRY row's `at` there, so the entrance lands ON the deck. Headless game render:
+  him on the deck at (-67.8, .3, 56.6).
+- **TOOLS > LOOK > BOAT JETS** (`mel.lakejets`, default OFF -- his taste call): two nacelles on struts with Jinra rings. Not built: the floating ship
+  as a second hull; the boat does not move yet (pass 5).
+- **Caught on the strip / render:** the roof floated .2 m over its posts (fixed, CRAFT 3); the spawn camera looked through the posts (spawn moved forward).
+- **Cost: the boat is ~26 draw calls, and again in the mirror.** Merge it into 3-4 materials next build if his phone feels it. Tris +13k.
 ## m2328 -- NIGHT 7: the garden's night reaches its sky; the veins are patches, not a net (Nov 3 2026)
 The m2327 garden sheet (day / dusk / night) showed two faults: the night hardly darkened it -- the garden's sky is its OWN opaque 2200 m sphere
 (`garden_sky`, a ShaderMaterial outside the tonemapper) and the shared dome sat behind it at the far plane -- and the leaf veins covered every
