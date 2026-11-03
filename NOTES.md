@@ -17,6 +17,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m15XX -- the level picker lives in the bottom third; items fade out as they rise; the arrow sits in the list (Nov 3 2026)
+*"The little arrow is intersecting the menu when you first pull it up. And the picker should stay in the bottom third -- when you scroll, the top part
+goes up and fades out, so you still see the upper two-thirds as the scene; you're just picking in the bottom third."* The wheel's selection line
+moved from 50% to 78% of the screen (`pick`: cy = .78 H) and `scroll-padding-top: 56vh` makes the snap centre (and `scrollIntoView({block:'center'})`)
+land there too. Each button gets `--fade` = clamp((y - .42 H) / .18 H): above ~60% they dim away to nothing by ~42%, so the scene above stays clear;
+the lit one is `opacity: var(--fade)`, the rest `.42 * var(--fade)`. The bottom spacer is 18vh (the last item can reach the line). The arrow is
+no longer `position: fixed` at the screen's foot -- it sits in the list, just above the first level, and still fades on scroll. Shipped unverified.
+
 ## m2301 -- BLACK GRUMBO, the likely cause: WebKit ImageBitmaps; textures decode as plain images on iPhone now. Snow steps turned down (Nov 3 2026)
 *"I'm getting really tired of the character loading as a black thing."* (Snowfield screenshot, chip minimised.) His GLB has ONE 2048 WebP
 (alien_goblin_game.glb: goblin / cape / hair materials share it). GLTFLoader decodes textures with `ImageBitmapLoader` unless the UA reads as
