@@ -17,6 +17,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 17: his QUILLS glow -- and the hero glow's height was wrong the whole time (Nov 3 2026)
+His ask: the quills did not catch the glow. They are ORANGE and maroon, not purple, so the purple mask could never take them: a QUILL band now lights
+the top of him (`uHgQ` .88-.95 of his height, saturated colour only, brightest at the tips, mixed 25% to their own colour).
+**And the height under it had been wrong since m2348, found by isolating terms one at a time (quills / cracks / emblem off):**
+1. `uHgS` / `uHgH` were SHARED uniforms set from the LAST mesh scanned -- a weapon in other units (0..60.7 against his 0..0.98) -- so his shimmer
+   never travelled (hy was ~0 everywhere: the whole body pulsed at once) and the crack scale was the weapon's. Per material now (`MU`).
+2. The skinned `transformed` is not in the geometry's units, so a height band in it lit his whole chest. Height is in the WORLD now (`vHgY`), against
+   his POSED span measured once off the skinned vertices (`Box3.setFromObject(mesh, true)`), tracked each frame (`heroGlowSpan`).
+3. He is THREE skinned meshes (body 0-1.18, a layer .47-.99, the head 1.00-1.27 m); a span per mesh put "the top" on his chest. One span per body (the
+   union under his root).
+The hero glow now only patches SKINNED meshes (it was reaching his weapons). The title's call passes no mesh; `heroGlowSpan` finds the skinned mesh
+that wears the material (in the scene or LOOPBG.S). Render: images/feedback/m2329/hero_quills.jpg (night rest / flare). Shipped unverified.
+
 ## m2361 -- THE LAKE: his playtest of m2354 -- PERF, smooth water, the portrait camera, TAP to take the helm (Nov 3 2026)
 His: *"nighttime looks great, daytime phenomenal, dusk amazing -- keep going with the detail."* The fix list, in his order:
 1. **PERF** (his phone hot, in the 20s). Measured on the strip, worst shot: **46 -> 27 draws, 392k -> 269k tris.** Water grid 192 -> 128 segments

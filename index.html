@@ -13124,7 +13124,7 @@ function nightCloudStep(dt) { const C = NCLOUD, f = nightF(); C.U.uNcF.value = f
 // `hero` (the hue / crack / emblem glow) and drives the glow layers. `NH.dispose()` takes the dome out.
 function nightScene(S, cam, o = {}) { const N = NIGHT, NS = NIGHTSKY; nightSkyGlobal(); const H = { lights: (o.lights || []).filter(Boolean), sky: o.sky || null, R: o.renderer || null, sv: [], dome: null, on: 1, own: o.lightsOwned !== false, f: 0, dusk: 0 };     /* lightsOwned: false -- the scene keeps ONE writer for its light / fog / sky tint and reads NH.f (the title's seasons) */
   if (NS.dome) { const d = new THREE.Mesh(NS.dome.geometry, NS.dome.material); d.frustumCulled = false; d.renderOrder = -3; d.name = 'night_dome_title'; S.add(d); H.dome = d; }
-  if (o.hero) o.hero.traverse(q => { if (q.isMesh) (Array.isArray(q.material) ? q.material : [q.material]).forEach(m => heroGlowMat(m, q.geometry)); });
+  if (o.hero) o.hero.traverse(q => { if (q.isSkinnedMesh) (Array.isArray(q.material) ? q.material : [q.material]).forEach(m => heroGlowMat(m, q.geometry, q)); });
   if (o.glow) for (const [m, opt] of o.glow) nightGlow(m, opt);
   const C = new THREE.Color();
   H.pre = (dt) => { if (!H.on) return; N.titleAt = performance.now(); const d2 = nightStep(); nightGlowStep(d2); try { heroGlowStep(d2); } catch (e) {}
@@ -13284,35 +13284,53 @@ function gardenNightGlow(root) { const Z = GARDEN, M = Z.M; if (!M || !root) ret
 //   heroGlowPulse(s)  a flare that decays (attack: meleeGo .75, fireBolt .55; collecting wisps: .35 + .05 a wisp)
 //   heroGlowHold(s)   call it EVERY FRAME while he is in contact (a Jinra stream, a geyser): holds k at s at least -- for the zones' own code
 // `mel.HEROGLOW.test = 1` holds it full (to look at the mask).
-const HEROGLOW = { k: 0, pulse: 0, hold: 0, decay: 2.4, gain: 3.4, nightK: .5, test: 0, rest: .06, restNight: .16, cracks: 1, emblem: 1, mats: new WeakSet(), scanT: 0,
-  U: { uHg: { value: 0 }, uHgC: { value: new THREE.Color(JPAL.glow) }, uHgT: { value: 0 }, uHgS: { value: 1 }, uHgH: { value: new THREE.Vector2(0, 1.75) }, uHgX: { value: new THREE.Vector2(1, 1) } } };
+const HEROGLOW = { list: [], pend: [], k: 0, pulse: 0, hold: 0, decay: 2.4, gain: 3.4, nightK: .5, test: 0, rest: .06, restNight: .16, cracks: 1, emblem: 1, mats: new WeakSet(), scanT: 0,
+  U: { uHg: { value: 0 }, uHgC: { value: new THREE.Color(JPAL.glow) }, uHgT: { value: 0 }, uHgS: { value: 1 }, uHgH: { value: new THREE.Vector2(0, 1.75) }, uHgX: { value: new THREE.Vector2(1, 1) }, uHgQ: { value: new THREE.Vector3(.88, .95, 1) } } };     // uHgQ: the quills' height band (of his height span) and their gain -- `mel.HEROGLOW.U.uHgQ`
 function heroGlowPulse(s) { const H = HEROGLOW; H.pulse = Math.min(1.2, Math.max(H.pulse, s)); }
 function heroGlowHold(s) { const H = HEROGLOW; H.hold = Math.max(H.hold, s); }
 // the goop's body colour (the FX worker's `fxCols`): the glow's HUE at full saturation, lightness .54 -- so body and goop read as one material
 function heroGlowCol(c) { const h = {}; c.setHex(JPAL.glow).getHSL(h); return c.setHSL(h.h, 1, Math.min(.58, Math.max(.5, h.l))); }
-function heroGlowMat(m, geo) { const H = HEROGLOW; if (!m || H.mats.has(m) || !(m.isMeshStandardMaterial || m.isMeshPhysicalMaterial)) return; H.mats.add(m);
-  if (geo) { geo.computeBoundingBox(); const b = geo.boundingBox, ht = Math.max(1e-3, b.max.y - b.min.y); H.U.uHgS.value = 1.75 / ht; H.U.uHgH.value.set(b.min.y, b.max.y); }     // his mesh units -> metres, and his height span
-  const ob = m.onBeforeCompile, ok = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null; m.customProgramCacheKey = () => (ok ? ok() : '') + '|herog2';
-  m.onBeforeCompile = (sh, r) => { if (ob) ob.call(m, sh, r); Object.assign(sh.uniforms, H.U); if (sh.fragmentShader.indexOf('#include <emissivemap_fragment>') < 0) return;
-    sh.vertexShader = 'varying vec3 vHgL;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vHgL = transformed;');
-    sh.fragmentShader = 'uniform float uHg, uHgT, uHgS; uniform vec3 uHgC; uniform vec2 uHgH, uHgX; varying vec3 vHgL;\n' + NIGHT_GLSL + '\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+function heroGlowMat(m, geo, mesh) { const H = HEROGLOW; if (!m || H.mats.has(m) || !(m.isMeshStandardMaterial || m.isMeshPhysicalMaterial)) return; H.mats.add(m);
+  const MU = { uHgS: { value: 1 }, uHgH: { value: new THREE.Vector2(0, 1) } };     /* m2358: PER MATERIAL -- shared, the last mesh scanned (a weapon in other units, 0..60.7 against his 0..0.98) overwrote his span and scale */
+  if (geo) { geo.computeBoundingBox(); const b = geo.boundingBox, ht = Math.max(1e-3, b.max.y - b.min.y); MU.uHgS.value = 1.75 / ht; }     // his mesh units -> metres (the cracks' scale)
+  // HEIGHT in the WORLD (m2358: the skinned `transformed` is not in the geometry's units, so a height band in it lit his whole chest): his POSED span
+  // measured once off the skinned vertices, relative to his mesh's world origin, and that origin tracked each frame. No mesh given: found by material.
+  MU.uHgW = { value: new THREE.Vector2(0, 1.75) }; H.pend.push({ m, MU, mesh: mesh || null });
+  const ob = m.onBeforeCompile, ok = m.customProgramCacheKey ? m.customProgramCacheKey.bind(m) : null; m.customProgramCacheKey = () => (ok ? ok() : '') + '|herog4';
+  m.onBeforeCompile = (sh, r) => { if (ob) ob.call(m, sh, r); Object.assign(sh.uniforms, H.U, MU); if (sh.fragmentShader.indexOf('#include <emissivemap_fragment>') < 0) return;
+    sh.vertexShader = 'varying vec3 vHgL; varying float vHgY;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vHgL = transformed; vHgY = (modelMatrix * vec4(transformed, 1.0)).y;');
+    sh.fragmentShader = 'uniform float uHg, uHgT, uHgS; uniform vec3 uHgC, uHgQ; uniform vec2 uHgH, uHgX, uHgW; varying vec3 vHgL; varying float vHgY;\n' + NIGHT_GLSL + '\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
       if (uHg > .001) { vec3 a = diffuseColor.rgb; float mx = max(a.r, max(a.g, a.b)), mn = min(a.r, min(a.g, a.b)), sat = (mx - mn) / max(mx, 1e-3);
         float pur = smoothstep(.02, .12, min(a.r, a.b) - a.g) * smoothstep(.2, .45, sat) * smoothstep(.22, .6, a.b / max(a.r, 1e-3));     /* his own purple: violet to magenta */
-        vec3 P = vHgL * uHgS; float hy = (vHgL.y - uHgH.x) / max(1e-3, uHgH.y - uHgH.x);
+        vec3 P = vHgL * uHgS; float hy = (vHgY - uHgW.x) / max(1e-3, uHgW.y - uHgW.x);     /* 0 at his soles .. 1 at his quill tips, in the world */
         vec3 cp = P * 6.0, ci = floor(cp), cf = fract(cp); float d1 = 8.0, d2 = 8.0;     /* fine CRACKS: a 3D voronoi edge in his own space (they ride every pose) */
         for (int z = -1; z <= 1; z++) for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) { vec3 o = vec3(float(x), float(y), float(z)), rr = o + nh33(ci + o) - cf; float q = dot(rr, rr); if (q < d1) { d2 = d1; d1 = q; } else if (q < d2) d2 = q; }
         float cloth = smoothstep(.45, .65, a.r) * smoothstep(.5, .3, a.g / max(a.r, 1e-3)) * smoothstep(.3, .5, sat);     /* the red cloak cloth: no cracks in cloth */
         float cr = smoothstep(.035, .0, sqrt(d2) - sqrt(d1)) * step(.72, nh13(floor(cp * .5) + 3.3)) * (1.0 - pur) * (1.0 - cloth) * uHgX.x;
         float sh = exp(-pow((hy - (fract(uHgT * .22) * 1.5 - .25)) / .09, 2.0));     /* the SHIMMER: a slow band travelling up him */
+        float qu = smoothstep(uHgQ.x, uHgQ.y, hy) * smoothstep(.45, .7, sat) * (1.0 - pur) * uHgQ.z;     /* the band sits in the top few % (his head is BIG: .86 reached his shoulders); saturated only, so cream skin and bone do not take it */     /* m2358 his QUILLS: orange and maroon, not purple -- by HEIGHT (the top of him, above the face), brightest at the tips */
+        qu *= .45 + .55 * smoothstep(uHgQ.x, 1.0, hy);
         float emb = smoothstep(.62, .8, a.r) * smoothstep(.3, .45, a.g) * smoothstep(.75, .55, a.g / max(a.r, 1e-3)) * smoothstep(.35, .2, a.b) * uHgX.y;     /* the cloak's orange EMBLEM */
-        totalEmissiveRadiance += uHgC * uHg * (pur * (1.0 + sh * 1.2) + cr * (.12 + sh * 2.2)) + mix(a, uHgC, .35) * emb * smoothstep(.55, .75, sat) * uHg * (.5 + sh * 1.6); }     /* at rest the cracks show mostly where the shimmer passes */`); };
+        totalEmissiveRadiance += mix(uHgC, a * 1.6, .25) * qu * uHg * (.35 + sh * 2.0) + uHgC * uHg * (pur * (1.0 + sh * 1.2) + cr * (.12 + sh * 2.2)) + mix(a, uHgC, .35) * emb * smoothstep(.55, .75, sat) * uHg * (.5 + sh * 1.6); }     /* at rest the cracks show mostly where the shimmer passes */`); };
   m.needsUpdate = true; }
 function heroGlowStep(dt) { const H = HEROGLOW;
-  if ((H.scanT -= dt) <= 0 && rig.root) { H.scanT = 1; rig.root.traverse(o => { if (o.isSkinnedMesh || o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => heroGlowMat(m, o.geometry)); }); }
+  if ((H.scanT -= dt) <= 0 && rig.root) { H.scanT = 1; rig.root.traverse(o => { if (o.isSkinnedMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => heroGlowMat(m, o.geometry, o)); }); }
+  heroGlowSpan();
   H.pulse *= Math.exp(-dt * H.decay); const nf = nightF(), gp = (typeof GOOP !== 'undefined' && GOOP.on && GOOP.pulse) || 0;     // the FX worker's goop pulse: read, never written
   const tg = H.test ? 1 : Math.max(H.pulse, H.hold, gp, H.rest + (H.restNight - H.rest) * nf); H.hold = 0;     // always a little alive at rest; more at night
   H.k += (tg - H.k) * (1 - Math.exp(-dt * (tg > H.k ? 18 : 6)));
   H.U.uHg.value = H.k * H.gain * (1 + H.nightK * nf); H.U.uHgT.value += dt; H.U.uHgX.value.set(H.cracks, H.emblem); heroGlowCol(H.U.uHgC.value); }
+// the posed height span: pending materials find their mesh (given, or the skinned mesh in the scene that wears them), measure once; then each frame
+function heroGlowSpan() { const H = HEROGLOW;
+  if (H.pend.length) { const sc = []; for (const p of H.pend) { let me = p.mesh; if (!me) { const roots = [scene]; try { if (typeof LOOPBG !== 'undefined' && LOOPBG.S) roots.push(LOOPBG.S); } catch (e) {}
+        for (const r of roots) r.traverse(q => { if (!me && q.isSkinnedMesh && (q.material === p.m || (Array.isArray(q.material) && q.material.includes(p.m)))) me = q; }); }
+      if (!me) { if ((p.tries = (p.tries || 0) + 1) < 30) sc.push(p); continue; }
+      try { me.updateWorldMatrix(true, true); const bx = new THREE.Box3().setFromObject(me, true), oy = me.matrixWorld.elements[13]; H.list.push({ mesh: me, MU: p.MU, lo: bx.min.y - oy, hi: bx.max.y - oy }); } catch (e) {} }
+    H.pend = sc; }
+  // ONE span per body (he is three skinned meshes: 0-1.18, .47-.99 and the head 1.00-1.27 m -- a band per mesh put "the top" on his chest): the union
+  const U = new Map(); for (const e of H.list) { if (!e.mesh.parent) continue; let r = e.mesh; while (r.parent && !r.parent.isScene) r = r.parent; const oy = e.mesh.matrixWorld.elements[13];
+    const u = U.get(r) || { lo: 1e9, hi: -1e9, es: [] }; u.lo = Math.min(u.lo, oy + e.lo); u.hi = Math.max(u.hi, oy + e.hi); u.es.push(e); U.set(r, u); }
+  for (const u of U.values()) for (const e of u.es) e.MU.uHgW.value.set(u.lo, u.hi); }
 // HERO_GLOW:END
 // NIGHT_FLORA:START -- NIGHT.md 3/4 (his, relayed: "tiny glowing plants -- glowing mushrooms, ferns with glowing fronds, little bushes with glowing petals
 // or tips, little specks in the grass that glow" and, the one he loves most, "grass and flora brightening around his feet as he walks at night").
