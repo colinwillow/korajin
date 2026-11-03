@@ -17,6 +17,64 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2347 -- THE JINRA BEAM AS RISING FLUID, pass 1 (Nov 3 2026)
+His (relayed): *"it should feel like FLUID going up and down rather than just a cylinder that's glowing."* `gdnBeamFx` is rebuilt. It is 4 draws (was 2),
+all animated on the GPU:
+- **SHEETS:** three nested open tubes. Their walls ripple and swell with travelling waves, with a flared churning foot and a tapering top. Domain-warped
+  flow streaks pour upward, each layer at its own speed, with a fresnel sheen on the edges and a hot core.
+- **STRANDS:** six ribbons twist round the column, with bright dashes running up them. Half twist the other way.
+- **DROPLETS:** 170 blobs, each with a highlight. 70% stream up; 30% are thrown out of the column, fall back on a parabola and land at its foot.
+- **THE SPRING:** a churning disc with ripples running out, plus a low crown of splash.
+- **Colours:** JPAL core / body / deep, the goop's palette. `uOn` (he is inside) tightens it round him and speeds it up.
+- **Tunables:** `GARDEN.beam.fx`: flow, swirl, glow, strands, twist, drops, fall.
+Shipped unverified. A frame strip follows. Watch the phone frame rate: three double-sided additive layers is more overdraw than the old two.
+
+## m2346 -- THE START LOGO STAYS IN FRAME<!--mine-->; petals and a shine round it
+His (screenshot m2338): with the wheel showing, the KORAJIN logo was pushed off the top of the screen. It was IN THE SCROLL (a flex child of
+`#start`), so scrolling the wheel scrolled it away. Now `.loopmark` is `position: fixed` under `env(safe-area-inset-top)`, width
+`min(66vw, 400px, 58vh)` so a landscape phone keeps it in the top third; `.loopgap` is `calc(75vh - 40px)` (the old gap plus the logo it no
+longer has to make room for), so the first level still sits at the bottom. Life, kept subtle: a soft pink glow breathing behind it (`kjglow`),
+a light band through the logo's own alpha every 7.5 s (`.shine`, the logo as a CSS mask), and `loopMark` -- a small canvas of 14 cherry petals
+drifting across and past it (`loopMark.T`; a function property, not a const, because the start page can build before that line evaluates).
+Rendered 390x844 portrait at scroll 0 and 900 (logo at y 20..147 both times) and 844x390 landscape. Shipped unverified.
+
+## m2345 -- THE JINRA LIFT: the float never dies, and he sways in the pose (Nov 3 2026)
+His (relayed): *"before the meditation pose he does the perfect oscillation... if you stop moving he slows down and stops going up and down. I want him going up
+and down, oscillating and slightly rotating, specifically when he's in the pose."*
+- **Why it died:** the lift's bob only moves his POSITION, and the camera follows his position. Held still, that reads as nothing (the same finding as m2310).
+  The motion he liked came from steering.
+- **Fix:** the float is now DRAWN on the body too, on two periods. While he is in the column and off the ground it runs at full amplitude whatever the stick does:
+  `GARDEN.beam.fly` .16 m, `flyT` 3.2 s.
+- **The pose:** he rotates slightly. A yaw sway of `yawDeg` 6 degrees in the air grows to `yawMed` 14 degrees in the lotus (`yawT` 11 s).
+- **One writer each:** `GARDEN.flt.dy` is added to the root y beside LOTUS.dy. `GARDEN.flt.yaw` is a term in the root's single yaw sum, so `drawnYaw` carries it.
+  `faceH` is not touched.
+Shipped unverified. The second half of his ask, the beam as rising FLUID, is the next build(s).
+
+## m2344 -- THE TITLE SCREEN'S NIGHT uses the game's night sky (Nov 3 2026)
+His ask: *"the title screen night doesn't use this -- should we make it?"* (m2298 left it open). The title loop (LOOPBG, its own renderer) now draws
+the shared NIGHTSKY at night: `loopNightSky(C)` clones the dome, the aurora and its sparkle (same geometry, OWN materials and uniforms, so the
+title never moves the game's `uFade`) into its scene; the season driver hands it the night weight (`(a === 'night' ? 1 - f : 0) + ...`), which fades
+the dome (`uFade`), the curtains (their additive gain) and the sparkle in, and fades the title's painted moon and point stars out by the same
+amount; the horizon follows the title's fog. The title is an 18 deg telephoto, so the m2298 moon (23 deg across) would overflow the frame: the row
+`NIGHTSKY.title` shrinks it (r .056), steers it and the small moon into view, turns the Milky Way across the frame and lowers the curtains.
+**Placement measured on renders:** to the right (+.11 / +.16) the ringed moon hid behind the painted cloud card in both orientations; upper-left
+(-.13, .055) it shows beside the logo in landscape and half-cut at the left edge in portrait, the amber moon at the right. Draws +3 on the title
+at night only (dome, curtains, sparkle; invisible otherwise). Rendered headless (the harness unmasks `navigator.webdriver` and pins the season to
+night in the SERVED text only): landscape 1280x600 and portrait 420x860. Shipped unverified.
+
+## m2343 -- THE LAKE pass 4b: the falls, the torii and shrine, the islets (WATER.md) (Nov 3 2026)
+- **The falls (`W.falls`, CRAFT 2: water comes FROM somewhere):** a SPRING pool on the west rim behind the lip; the water leaves the lip at v0 and FALLS
+  (simulated, ballistic); where an arc meets a tier's ledge it pools, runs out to the next lip and falls again, until the last arc lands in the lake --
+  six arcs measured on the strip. Each arc a ribbon that widens 7 -> 16 m, streaky, torn at the edges, brightest at the top (1 draw); the rock under it
+  dark and wet (`uWet`, terrain shader); pools with a foam rim and rings (1 draw); a mist puff at every landing; the lake churns and rings round the
+  last one (`uFall`, the water shader).
+- **The torii and shrine (`W.torii`):** found on the east rim by the same profile walk, `back` m in from the edge, facing the lake: vermilion pillars on
+  stone footings with black collars, a kasagi that sweeps up at both ends with its black cap, the nuki, the gakuzuka, two glowing stone lanterns, a
+  small hall on a stone platform behind with a red-under / black-over upswept roof. 15 m tall so it reads from the water. 4 draws (merged per material).
+- **The islets (`W.islets`, six, 74-205 m up -- VERTICALITY):** a grassy dome over an eroded hanging cone, in the canyon's own strata shader (1 draw);
+  two carry cherries (tree rows `islet:`), so petals come off them too.
+- Caught on the strip: the falls camera sat inside the north stack; the first falls were 3 m wide on a 140 m bluff (a thread) -- now 7-16.
+- Cost over m2340: +9 draws, +21k tris. Shipped unverified.
 ## m23XX -- NIGHT 13: GRUMBO ALIVE -- cracks, a travelling shimmer, the cloak emblem; faint at rest, flaring with the goop (Nov 3 2026)
 His words (relayed): *"parts of him glowing -- little cracks or shimmers of purple on his skin or his armour, or the orange symbol on his cloak"*, always
 a little alive, stronger at night, flaring on Jinra / collecting / attacking. HERO_GLOW v2 on his one material (chained hook, key `|herog2`):
