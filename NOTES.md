@@ -17,6 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 16: the CLOUDS sit in the night (Nov 3 2026)
+His report (images/feedback/m2341/night_clouds_too_bright.png): *"the big clouds stay bright white at night and pop out -- they could glow a little, but fit
+in more; the white glow is best kept for dusk and day."* The garden's cloud cards are an UNLIT ShaderMaterial (`gdnCards`), so no light the night
+overlay dims ever reached them. NIGHT_CLOUDS: one splice before the colour-space include of every mesh / sprite named cloud / cards / cumulus (a scan
+every 3 s, WeakSet-guarded, only when TIME is not DAY): at night deep blue-violet, a cool moonlit edge on the brightest texels only, a faint inner
+Jinra glow (.025); at dusk the light warms (`NIGHT.dusk`); identity by day. Garden cards, the sky temple's cloud layers and the ship's cloud sprites
+(named `ship_cloud` now) take it; the title's clouds are the title worker's (it reads NH.f). Before / after: images/feedback/m2329/night_clouds_before_after.jpg.
+Dials: `mel.NCLOUD` deep / rim / warm / inner. Shipped unverified.
+
 ## m2355 -- THE LAKE: lily pads, lotus and algae (his ask) (Nov 3 2026)
 His: *"some plants that are floating, almost like algae or lily pads in the water."* `W.pads` (6 cluster rows, stable ids `<cluster>_<n>`): each cluster
 is scattered in a cove `out` m in from the water's edge and keeps only spots where the bed is .4-3.5 m deep. A pad is a notched, cupped, veined disc;
