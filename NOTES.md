@@ -19,6 +19,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 20: the night SILHOUETTE plants were MY cloud tint -- and foliage gets a moonlight key (Nov 3 2026)
+His report (images/feedback/m2376/garden_night_silhouette_plants.png vs garden_dusk_same_spot.png): *"at night the ferns, bushes and grasses go to flat
+featureless silhouettes"*. Reproduced headless (images/feedback/m2329/foliage_night_before.jpg: one navy for every bush), then a RAYCAST at the bushes
+named the cause: the garden's merged PLANT cards are named `garden_cards` too (under garden_main), and m2357's cloud night tint (/cloud|cards/) took
+them -- its night colour REPLACES the texel with deep navy, so every frond became one shade. The cloud tint now takes UNLIT materials only (shader /
+basic / sprite), which every cloud is and no plant is. After: foliage_night_after.jpg -- every frond reads.
+Also, as he asked, `nightGlow(..., { lift, rim })`: a cool moonlight key from the DRAWN moon (wrapped, so fronds turned away still separate) on the
+material's OWN albedo (scaled, never replaced), plus a sky rim for edges; on the garden's plant materials (lift 1.1, rim .9). Shipped unverified.
+**Lesson:** a name test is not a material test -- check what a regex will catch in EVERY zone before it rewrites a colour.
+
 ## m2387 -- THE LAKE: richer water (his m2376 note 4: "still reads low-poly") (Nov 3 2026)
 - **Per-pixel crest height** (`hP`, summed in the same Gerstner loop that makes the per-pixel normal): it drives the SUBSURFACE light through the wave faces
   (stronger into the sun and on faces turned to the lens) and a soft highlight along the crests -- m2335's scatter used the vertex `vCrest`, which is as
