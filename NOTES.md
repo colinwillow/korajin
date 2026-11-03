@@ -17,6 +17,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2340 -- the garden lights his Jinra glow: wading in the water, floating in the beam (Nov 3 2026)
+Relayed: *his purple parts glow when he steps in the stream or goes in a geyser* (HEROGLOW, m2339). The garden calls `heroGlowHold` every frame he is in contact:
+- **Water:** the wading test that already exists (`Z.inWater`: pools and streams, within .6 m of the surface) holds `GARDEN.glowWade` (.7), up to x1 at a run.
+- **The Jinra beam:** while he is inside its column (`Z.inBeam`, the lift) it holds `GARDEN.glowBeam` (1) x .6 at the rim, rising to x1 at the core.
+- No shared stream or geyser helper exists to wire. The other zones' geysers (snow spring, gpeak and others) belong to their own builders, so they are not touched.
+Shipped unverified.
+
 ## m2339 -- NIGHT 11: HIS JINRA GLOW -- the purple on Grumbo's own texture lights on Jinra contact and on every attack (Nov 3 2026)
 His ask (relayed): *"pick the PURPLE already on Grumbo's texture and make those parts GLOW when he is in contact with Jinra -- in a stream, in a geyser,
 collecting Jinra, and when he attacks; colour via JPAL."* HERO_GLOW block: a hue mask spliced into his OWN material (chained hook + key, no new
