@@ -28,7 +28,7 @@ rig root after its position is copied (beside the wading sink, so it is the one 
 the hips (`ltTurn` on Hips: a `rockDeg` 3.5 deg roll on 7.1 s, a 2.1 deg pitch on 9.7 s; restored by `ltUndo`). All scaled by the lotus weight
 (smoothstepped, `ease` .9 s), so it fades in and out with the pose -- no pop. The breath, sway and head settle (m2235) still run on top; every hand
 option is unaffected. **Shipped unverified.**
-## m2319 -- NIGHT 1: THE NIGHT CORE: one night factor for every zone, TOOLS > TIME (Nov 3 2026)
+## m2320 -- NIGHT 1: THE NIGHT CORE: one night factor for every zone, TOOLS > TIME (Nov 3 2026)
 His ask (NIGHT.md): *"every scene, when it goes to night, things start to glow... cycles from day to night."* This build is box 1 of NIGHT.md.
 - **`NIGHT`** (SC_NIGHT): `mode` DAY / DUSK / NIGHT / CYCLE (TOOLS > TIME, `mel.time`; `?night=1|0`, `?time=day|dusk|night|cycle`), `f` 0..1 written
   ONLY by `nightStep`, `dusk` = 4f(1-f) (the warm in-between), `cycle` 240 s. The snow's `SNOWNIGHT.on` is now `NIGHT.mode === 'NIGHT'`; the old
