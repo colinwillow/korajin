@@ -89,7 +89,7 @@ Everything merges per material as before (boat draws unchanged). Shipped unverif
   NOT measured: whether the hands meet the rim exactly (no skinning offline) -- the thing to look at.
 - **The wheel turns WITH the stick** (up to 2.4 rad) and comes back to centre when he lets go (was: the boat's turn rate).
 - Leaving: a tap gives him back the stick where he stands (no walk-away yet). Shipped unverified.
-## m23XX -- NIGHT 20: the night SILHOUETTE plants were MY cloud tint -- and foliage gets a moonlight key (Nov 3 2026)
+## m2394 -- NIGHT 20: the night SILHOUETTE plants were MY cloud tint -- and foliage gets a moonlight key (Nov 3 2026)
 His report (images/feedback/m2376/garden_night_silhouette_plants.png vs garden_dusk_same_spot.png): *"at night the ferns, bushes and grasses go to flat
 featureless silhouettes"*. Reproduced headless (images/feedback/m2329/foliage_night_before.jpg: one navy for every bush), then a RAYCAST at the bushes
 named the cause: the garden's merged PLANT cards are named `garden_cards` too (under garden_main), and m2357's cloud night tint (/cloud|cards/) took
