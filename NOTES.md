@@ -17,7 +17,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2372 (m2371 + fix) -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
+## m2373 (m2371 + fix) -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
+## m2372 -- THE LAKE: the DIVE off the deck (Nov 3 2026)
+When he leaves the deck (a jump or a step off; within .5 s of last standing on it), is clear of the hull and over water deeper than `swim.deep`, `p.lkDive`
+plays `dive` (Standing_Dive_Forward) -- or `run_dive` (Run_To_Dive) if he took off faster than 3 m/s -- from its take-off on, driven by time in the air
+(`lakeSwimAnim`), until the water takes him into the swim (the splash is sized by his fall) or he lands on something. Headless game: placed in the air off
+the side a moment after the deck -> `lkDive: dive`, the `dive` clip at full weight (SwiftShader runs the fall in slow motion, so the landing was not
+waited for). Shipped unverified.
+
+## m2371 -- THE TALE'S LETTERING: seven looks for the intro crawl, his pick (Nov 3 2026)
 His: *"I don't really love the default text that we use for the story prologue."* Step 1 of two (step 2, an invented Korajin script that dissolves
 into the reading text, waits on his pick here).
 - **The looks:** `REELFONT` has seven, each a free Google font plus a colour, shadow or glow, and a REVEAL that writes the line in letter by letter as
