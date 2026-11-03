@@ -16,7 +16,7 @@ const m = /\/\/ FXLIB:START[\s\S]*?\/\/ FXLIB:END/.exec(src); if (!m) { console.
 const jm = /\/\* SC_JINRA:START \*\/[\s\S]*?\/\* SC_JINRA:END \*\//.exec(src); if (!jm) { console.error('no SC_JINRA markers'); process.exit(1); }     // THE JINRA PALETTE, also shipped text
 const moves = process.argv.slice(2).filter(x => !x.startsWith('--'));
 const OUT = arg('out', path.join(ROOT, 'shots')); fs.mkdirSync(OUT, { recursive: true });
-const opts = { slow: +arg('slow', 1), pal: arg('pal', 'MINT').toUpperCase(), moves, times: (arg('t', '') || '').split(',').filter(Boolean).map(Number), W: +arg('w', 360), H: +arg('h', 270) };
+const opts = { slow: +arg('slow', 1), pal: arg('pal', 'MINT').toUpperCase(), tone: arg('tone', 'SUBTLE').toUpperCase(), moves, times: (arg('t', '') || '').split(',').filter(Boolean).map(Number), W: +arg('w', 360), H: +arg('h', 270) };
 const page = `<!doctype html><html><head><script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script></head><body style="margin:0;background:#000">
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; window.ready = 1;</script></body></html>`;
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); if (u === '/' || u === '/fx.html') { r.writeHead(200, { 'content-type': 'text/html' }); return r.end(page); }
@@ -34,7 +34,7 @@ const res = await pg.evaluate(([code, jin, o]) => { const THREE = window.THREE; 
   const grid = new THREE.GridHelper(40, 40, 0x262a33, 0x1c1f26); grid.position.y = .002; scene.add(grid);
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(.3, .65, 6, 12), new THREE.MeshStandardMaterial({ color: 0x5a5f6a, roughness: .7 })); body.position.y = .62; scene.add(body);
   const dummy = new THREE.Mesh(new THREE.CylinderGeometry(.3, .38, 1.9, 16), new THREE.MeshStandardMaterial({ color: 0x3a3e48, roughness: .8 })); dummy.position.set(0, .95, 9); scene.add(dummy);
-  const FX = make(THREE, scene, cam); FX.pal(o.pal);
+  const FX = make(THREE, scene, cam); FX.pal(o.pal); FX.tone(o.tone);
   const VIEW = { slash: [3.2, 2.0, 2.6, 0, 1.2, .6], punch: [2.6, 1.7, 2.4, 0, 1.25, .8], kick: [2.8, 1.5, 2.2, 0, 1, .7], slam: [5.5, 3.6, 5.5, 0, .3, 0], spin: [4.2, 2.6, 3.6, 0, 1, 0],
     teleport: [6.5, 2.8, 2.5, 0, 1, 2.5], handspring: [5.5, 2.2, 1.6, 0, .8, 1.6], arrow: [5.5, 2.4, 3.5, 0, 1.2, 5.5] };
   const TIMES = { slash: [.04, .1, .16, .22, .3, .42, .6, .85], punch: [.05, .09, .12, .17, .25, .36, .5, .7], kick: [.06, .12, .16, .2, .28, .4, .55, .75], slam: [.02, .06, .12, .2, .3, .45, .65, .9],
@@ -47,9 +47,9 @@ const res = await pg.evaluate(([code, jin, o]) => { const THREE = window.THREE; 
     while (k < ts.length) { const t0 = performance.now(); FX.step(dt); worst = Math.max(worst, performance.now() - t0); t += dt; const c = FX.count(); peak.blobs = Math.max(peak.blobs, c.blobs); peak.sparks = Math.max(peak.sparks, c.sparks);
       if (t >= ts[k] - 1e-6) { R.render(scene, cam); calls = Math.max(calls, R.info.render.calls); c2.drawImage(R.domElement, k * W, 22 + row * (H + 18) + 18);
         c2.fillStyle = '#9ff'; c2.fillText((k ? '' : name.toUpperCase() + '  ') + (ts[k] * o.slow).toFixed(2) + 's', k * W + 6, 22 + row * (H + 18) + 13); k++; } } });
-  c2.fillStyle = '#fff'; c2.fillText('FX STRIP  palette ' + o.pal + '  slow x' + o.slow + '  calls<=' + calls + '  peak blobs ' + peak.blobs + ' sparks ' + peak.sparks + '  worst sim+upload ' + worst.toFixed(2) + ' ms (swiftshader)', 6, 15);
+  c2.fillStyle = '#fff'; c2.fillText('FX STRIP  palette ' + o.pal + '  tone ' + o.tone + '  slow x' + o.slow + '  calls<=' + calls + '  peak blobs ' + peak.blobs + ' sparks ' + peak.sparks + '  worst sim+upload ' + worst.toFixed(2) + ' ms (swiftshader)', 6, 15);
   return { png: out.toDataURL('image/png'), calls, worst, peak }; }, [m[0], jm[0], opts]);
-const file = path.join(OUT, 'fx_' + (moves.join('_') || 'all') + '_' + opts.pal.toLowerCase() + (opts.slow !== 1 ? '_slow' : '') + '.png');
+const file = path.join(OUT, 'fx_' + (moves.join('_') || 'all') + '_' + opts.pal.toLowerCase() + (opts.slow !== 1 ? '_slow' : '') + '_' + opts.tone.toLowerCase() + '.png');
 fs.writeFileSync(file, Buffer.from(res.png.split(',')[1], 'base64'));
 console.log(file, 'calls', res.calls, 'worst ms', res.worst.toFixed(2), 'peak', JSON.stringify(res.peak));
 await br.close(); srv.close();

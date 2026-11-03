@@ -674,6 +674,15 @@ variable changes everything glowing that way, we can easily change fire particle
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
 
+## m2339 -- THE GOOP TONE: SUBTLE is the default; TOOLS > GOOP FX > GOOP LOOK cycles FULL / SUBTLE / WHISPER (Nov 3 2026)
+His: *"a little bit less capacity, maybe make some of them smaller or thinner -- the balls of liquid smaller and some of the lines thinner. They're
+just kind of aggressive right now and I love them so much, but maybe just a little bit more subtle."* One dial on the whole library (`S.T`,
+`FX.tone(name)`): `r` blob and spark size, `w` ribbon / arc / ring width (and ring reach .7 + .3w), `a` opacity, `n` the fraction emitted.
+FULL = 1 / 1 / 1 / 1 (the look he loved, kept for the A/B); **SUBTLE (default) = .68 / .62 / .8 / .6**; WHISPER = .52 / .45 / .65 / .4.
+Split children and drips are not thinned twice (`kid`), the big flash blob is never dropped (only shrunk), and a blade SHEET thins toward its tip
+edge so the cutting line stays where the blade was. Saved as `mel.goopTone`. Strips FULL vs SUBTLE (VIOLET; punch / slash / slam): peak blobs
+74 -> 43, sparks 40 -> 29, worst sim+upload 10.5 -> 3.0 ms on SwiftShader. `npm run fxstrip --tone=FULL|SUBTLE|WHISPER`. Shipped unverified.
+
 ## m2338 -- GOOP on the UNARMED moves and the ACROBATICS: limb trails, slides, the blink; the switch is TOOLS > GOOP FX (Nov 3 2026)
 Relayed from Colin: *"The effects on melee, slams, sword attacks and bow and arrow look SO good."* Then fill the gaps: every unarmed swipe / flick
 punch, kick and combo, the handsprings, the teleport / blink, the left-stick flips and dodges, the slides; light for jabs, heavy for finishers.
