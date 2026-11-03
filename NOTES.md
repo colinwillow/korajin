@@ -253,6 +253,39 @@ the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` 
 MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
 minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
 
+## m2281 -- THE MESH COLLIDER: never trapped in a tree, runs over roots, steps up without a pop (Nov 3 2026)
+
+His first play on MESH in the garden (via main): *stuck inside a tree -- had to restart*; *"instead of running over it he gets stuck to the
+plant"*; *"one step up, he gets stuck, and if he gets over he just POPS up"*. What was actually wrong, measured:
+- **THE WILLOW TRUNKS ARE WOUND INSIDE OUT.** From the trunk's axis every level ray met a face whose normal pointed BACK at him (dot -.75..-.99);
+  no mesh in the garden is mirrored (0 / 197 negative determinants), the geometry itself is inward. `collPush` trusted the winding: from
+  OUTSIDE he read as "behind" the face, and the behind-branch pushed him along the normal -- INTO the trunk -- divided by the face's horizontal
+  normal length, so one frame pushed him 1.36 m (traced). Inside, the far faces were "too deep" to count, so nothing ever pushed him out.
+  -> the push is TWO-SIDED (away from the nearest point on the face, whatever its winding; the plane side only breaks a dead-centre tie), and
+  capped at his radius per pass in all. `collBuild` also reverses the winding of a mirrored transform, as three does (none in the garden today).
+- **ROOTS AND RISERS WERE WALLS.** The knee sphere (a step + .08 up, radius .24) reached 20 cm over his feet, so a root or riser lower than his
+  step pushed him back. -> a face that tops out under `MOVE.step` is never a wall: it is the floor's to step him onto.
+- **STICKING.** -> `collSlide`: after the move, the part of his velocity going INTO the faces that pushed him comes off; along them it stays.
+- **NEVER TRAPPED** (`collGuard`, once a frame after the move): `collInside` counts crossings (PARITY: odd on 5 of 8 level rays) or sees him
+  ENCLOSED (all 8 rays meet a face within 1.6 m); or he is WEDGED (pushed hard from opposite sides, the pushes cancelling) with the stick held
+  and no progress for .4 s -> out along the shortest exit to a spot his capsule fits with ground under it (`collFree`), else the nearest free
+  spot in a ring search, else the newest SAFE point (a ring of 10, one every .3 s and .5 m he stood free). Leaning on a wall is NOT stuck
+  (a first version also unstuck "not moving for 1.2 s" and teleported him off the hammock's wall 59 times -- removed).
+  `COLL.stat.unstick` / `.safeBack` count them.
+- **THE POP.** The drawn height (`stepRamp`, m1944) eased at `hl2` .012 s -- a pop. On the MESH collider only it eases at `STEPUP.hlMesh` .05 s
+  (~.17 s to settle; his stairs everywhere else keep .012). The camera rides the drawn height already (`CAMY`).
+- Instanced meshes are out of the store (the garden's breakable pots: a pot left in a static store is a ghost after it breaks).
+**MEASURED -- `npm run walktest` (new): the shipped page in the Garden, MESH, full stick through the real pads on a fake clock, round and into
+each willow's trunk, across the roots, up and down the shrine stair; sidesteps after .5 s stalled as a player would. m2277 / this build:**
+    STUCK legs            14 of 18 (in willow_a's trunk for the rest of the run)   ->   1 (ends .8 m short of a point by the shrine willow)
+    STALLS                19 (11.5 s)   ->   14 (8.8 s)
+    POPS (drawn > 8 cm/frame) 103       ->   28 (the rest .08-.09 m, while pressed against a trunk's roots)
+    TRAP (dropped inside each trunk)  willow_a / b / shrine: NEVER x3  ->  out in 11 / 7 / 2 frames
+  `colaudit garden --mesh` unchanged in kind: holes 1,510 (the ship, as m2252), walk-through 58, invisible 359 (the pots' boxes now kept), ledges
+  bad 200 / good 141; store 170,529 tris built in 442 ms; walls 15 us a call (two-sided: was ~8).
+**What to try:** MESH on; run into a willow and round it (he slides, never goes in); run across the roots; walk up the shrine stair and any
+single step (no snag, no pop). If he ever is inside something, he should be out within a few frames. **Shipped unverified.**
+
 ## m2252 -- THE MESH COLLIDER leaves out what the garden worker asked: the hammock, the ship, the heart, the far isles (Nov 2 2026)
 
 The garden worker: those move, carry him, or have their own floors (the hammock swings and `player.sleep` owns him there; the moored ship bobs
