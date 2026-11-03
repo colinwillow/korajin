@@ -17,6 +17,113 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2369 -- THE LAKE: TEXTURES on the rock, sand, deck and water (his ask) (Nov 3 2026)
+His: *"paint some textures for the water and the rocks -- we probably have some already, so reuse them."* All reused, no new files:
+- **The canyon / stacks / islets (one material):** `hollows_cliff` (red columns) and `hollows_rock` (strata) BIPLANAR on the steep faces (projected on the
+  XY and ZY planes, blended by the normal: nothing stretches); `hollows_sand` on the flats and `hollows_pebble` along the waterline. Each map is divided
+  by its own mean colour (measured off an 8x8 draw at load), so it adds DETAIL over the canyon's colours and the palette holds; its brightness drives
+  a screen-space BUMP. Nothing is textured until every map has loaded (`L.ready`; CRAFT 4). First strip: the strata map at 13 m stacked on the
+  procedural strata into candy stripes -- 24 m tiles at .55 now.
+- **The deck:** `garden_wood` (vertical planks) replaces the canvas planks.
+- **The water:** a TILING noise normal map built at load (128x128, periodic lattice, no file), three layers scrolling across each other -- smoother and
+  cheaper than the six noise calls per pixel it replaced.
+- Cost: 4 maps resident (~22 MB as RGBA; KTX2 later if it matters), 4-6 texture reads per terrain pixel. Draws unchanged (23-27). Shipped unverified.
+
+## m2368 -- THE MAMMOTH REWEIGHTED: rigid tusks and head, drapes / saddle / tassels on the body, legs keep only their own chain (Nov 3 2026)
+*"Parts like the tusks on his head should be rigidly rigged, and maybe some parts near the front / his chest. New weighting could probably be
+better for him."* What the heat weights (`mammoth_cow.py`) actually were, measured per region: the side TUSKS 89% on the cow's EAR bones
+(`ear_2_L/R` -- they flapped with the ear clips), the head spikes 48% `neck_02` + 39% ears, the SADDLE 31% on the static `root_bone`, the
+flank DRAPES 83% on the front thighs (they flew out to the ground on every stride), the tail TASSELS 77% on the hind shins, the chest band on
+the shoulder bones.
+- **`tools/mammoth_weights.py` weights by region, in the rest pose** (run after `mammoth_plant.py`, on the draco-stripped file): HEAD 100%
+  `head` (rigid, with the tusks fading into the neck over 16 cm at their root); BODY a 1D blend along the spine by y (Spine_05 .. Spine_01 ..
+  neck_01 / neck_02 .. head, the neck bending over half a metre; the low chest stays on Spine_01); TRUNK a 1D blend down z (head .. trunk_4);
+  TAIL a 1D blend back along y, with the fins high over the tail root kept on the body; LEGS a column round each MEASURED foot, keeping the
+  heat weights but only onto that leg's own chain (+ its shoulder) -- every low vertex near its foot (pads, claws, cuffs) wholly that leg; the
+  25 LOOSE PARTS (rings, bells, tassels, found by welding the UV seams: 3,625 seam islands -> 26 real ones) 100% to the one bone their top
+  vertex hangs from, the tail tassels to the tail bone over them. Max 4 influences.
+- **Why the legs keep heat:** the cow's leg bones sit 20-40 cm BEHIND his leg columns (the fit slid each chain so the hoof TIP lands on his
+  foot). A clean split by height swings the column round the wrong pivot -- the first version tore the front leg into a slab. Heat spreads
+  it and reads right; what went is the smear (the front thigh on the back knee, the legs on the drapes).
+- Checked headless: renders of Walk / Idle_2 (the head turn) / Attack, a stretched-edge count per clip (edges over 2x rest and 6 cm) to find
+  every seam (head/neck, chest, tail root, the toe claws first landing in the head region -- all fixed), and the feet re-measured: Walk
+  -0.001..+0.010, Run airborne beat +0.099, Idle / Attack within 1-2 mm -- the m2358 planting holds. 6.6 MB, texture byte-identical.
+- Open: the CLOTH springs (drapes, tassels) are next -- they ride the body rigidly now; the back fins are on the body / tail blend, not each on
+  one bone. Shipped unverified.
+
+## m2367 -- THE LAKE: glowing shore plants at night (the NIGHT worker's flora layer) (Nov 3 2026)
+His: *"add glowing plants."* `NIGHT.zones.lake.flora` (the NIGHT worker's API): 44 mushroom clusters, 64 ferns and the grass specks that follow him, scattered
+in a 70 m radius round the west beach (`L.spawn`), only on sand and gentle ground (`ok`: 0.25-6 m up, slope under .3), never in the water or up a bluff;
+built 1.5 s (wall clock) after the zone stands him, only when TIME is not DAY; his footsteps light them. 3 draws at night, none by day. Shipped unverified.
+
+## m2365 -- THE LAKE: SWIMMING -- jump off the boat, swim, climb back aboard (Nov 3 2026)
+His: *"he RUNS ON the water -- make him swim."* The clips are his own Forge library (colinwillow/retarget-anims): `node tools/forge.cjs
+models/characters/alien_goblin_game.glb tools/agoblin_swim_prof.json models/characters/anims/agoblin_swim.glb --lib ../retarget-anims/library/clips`
+-> 7 clips, 0.93 MB, loaded by HANIM: `swim_idle` (Treading_Water), `swim` (Swimming), `swim_float` (Floating), `swim_edge` (Swimming_To_Edge, in place),
+`climb_top` (Climbing_To_Top, in place), `dive` (Standing_Dive_Forward), `run_dive` (Run_To_Dive, in place). The profile is the agoblin one with the
+foot / ground / toe layers OFF (they would pin his feet to a floor that is not there). The raw Mixamo files stay in that repo.
+- **The floor:** in the Lake there is no floor at y = 0 any more -- the bed is the floor (`groundAt` base -1e3 when `LAKEZ.on`), so he walks into the
+  shallows on the sand and the water deepens round him.
+- **Into the water (`lakeSwimIn`):** where the bed is more than `deep` 1.25 m under the surface and he is below it (walked in, or fell / jumped off the
+  boat), `p.swim` takes the body with a SPLASH sized by his fall and a plunge that bobs him back up.
+- **Swimming (`lakeSwimStep`):** held `sink` .62 m under the drawn surface (`L.waveAt` -- he bobs with the waves), the stick swims him at `speed` 2.1 m/s,
+  x`fast` 1.7 at full stick, turning to face where he goes; the hull and the stacks push him off; where the bed comes up within `stand` .95 m he stands
+  and wades out. `swim` plays faster with speed; `swim_idle` treads.
+- **Climb aboard (`lakeClimbGo`, TAP RIGHT):** beside the hull (within `climbR` 1.5 m of the side, between the cheeks) he plays `climb_top` over 2.2 s,
+  carried in the boat's frame, rising to the deck then stepping in; elsewhere a tip says swim closer.
+- **The water round him:** rings and broken foam (`L.setSwim` -> `uSwim`), and they GLOW at night (the bioluminescence). Splash droplets are round
+  now (they were squares up close).
+- Game test (headless): dropped 2 m off the hull -> `swim` (swim_idle); tap -> `climb_top` -> on the deck (inHull, y = deck). Not yet: the DIVE clips
+  (the jump off the deck is a fall), `swim_float`. Shipped unverified.
+
+## m2364 -- the vertical wall run EASES out: gravity fights him, the apex falls out of his speed, then the sit or the slide (Nov 3 2026)
+*"The VERTICAL wall run that we capped -- I don't like that it just suddenly stops. It runs up and then just hits a wall. I want it to be a velocity
+thing ... it EASES from how fast you're going, as if gravity is fighting him -- he slows down, and then he falls into a sit or slides down."*
+What was wrong: m2170's budget was a CLAMP (`vy = min(vy, left x 4)` in the last .8 m) on top of m1833's grip (no gravity for .35 s) -- so he ran
+at nearly full speed and then braked in a fraction of a second at the top.
+- **The brake (`stepWrun`, the `arc === 'up'` branch):** from the catch his climb loses `WRUN.upG` (6) m/s^2, or MORE when the face's budget is
+  nearer than his speed would carry him: `v^2 / (2 x left)`, the one constant braking that reaches 0 m/s exactly at the budget's top. So the apex is
+  v^2/2g from his entry speed (entry unchanged: run speed + approach angle, `arcUpMin`/`entryK`/`riseK`) and never passes m2170's budget -- a sprint
+  still tops out ~6 m, a walk-in ~3.3, the same routes. Nothing clamps. `climbCap` 0 = m1833's grip-then-`vG`, as before.
+- **The legs slow with him (`wrunUpEase`):** every up-run clip rate (the RUN look's `CLIPS.run`, `wall_up`'s halves, `wall_up`) keeps its cadence
+  above `upSlowV` (3 m/s of climb) and scales in proportion to his climb under it, so the feet slow with the body rather than skating; 0 at the top.
+- **He leans back as he loses it (`wrunPose`):** `upSlowLean` (.2 rad) x the lost share, NOT torso-compensated (the chest goes too), eased.
+- **The top:** under `upApexV` (.4 m/s) he HANGS `upHang` (.22 s) while the last speed eases out; then the LEFT STICK picks: toward the wall
+  (`tin > upSitIn`) = the SIT (the existing perch/slide kind, facing out -- the turn round is carried by the drawn yaw, `p.turnOff`, over
+  `upSitTurn`, no pop); anything else = the SLIDE DOWN THE FACE: still facing the wall, the clip frozen mid-stride, the hips easing to
+  `upSlideHip`, friction `upSlideG` holding the fall to `upSlideV` (4.5 m/s), a scrape swoosh and dust off his feet at the face (`wrunScuff`,
+  `upDust`/s; goop blobs with TOOLS > GOOP FX). The jump off works at every point (velMode's tap, unchanged); the stick pulled hard away lets go.
+- m1888's let-go-to-perch now only applies while he is still CLIMBING (`!R.apex`) -- otherwise letting go at the top would always be the perch.
+- The other runs (diagonal, side) lost m2170's clamp too: they brake smoothly into the budget top (`need - upG` extra, only when needed).
+- One writer: `p.vel.y` is still written only inside `stepWrun`; `R.hipS`/`R.leanS` only in `wrunPose`. All numbers live on `mel.WRUN`.
+- THE WHOLE-PIECE RULE: this reworks an existing piece (the wall run), it does not build on an unsigned one. Open: his look on the phone.
+- TEST: KORAJIN > The Wall Park (`?w=forge&zone=wall`, the Ninja Gym), the yellow B TALL FACES ahead of spawn (8 / 14 / 22 m). Sprint straight
+  at the 14 m face holding up: he should slow to a stop around 6 m, legs slowing, leaning back; keep holding UP = he settles into the sit; let go
+  at the top = he slides down the face with dust. Walk in instead: a lower, shorter climb. Shipped unverified.
+
+## m2363 -- the entrance, plainer: the play camera all the way, no slow motion, no flash, quieter (Nov 3 2026)
+His: *"I don't think I should've called it cinematic. I don't want slow-mo, and I don't like the angle -- what I wanted is the same perspective the
+whole time, like the original: he falls from the sky, hits the ground and does the Spider-Man stance. All I was adding is a portal that opens that
+he falls out of. Not a new camera shot, not crazy sound effects, not slow-mo. A little sound is fine if it's beautiful."*
+- `ENTRY.cine` 0 (the default): no entrance lens (`entryCam` not called -- the play camera follows him down exactly as the m1953 hero drop did), no
+  slow motion (`slowK` 1), no screen flash, the hero drop's own shake and thud. `cine: 1` brings the old version back whole.
+- The portal still opens round him where he appears (H over the landing). The play camera looks DOWN on it from just behind him, so a dead-flat
+  disc read edge-on: it is tipped `lean` .45 rad toward the camera (yawed to face it each frame) -- still a ring above the landing, seen at an angle.
+- Sounds quieter: open .55, through .6, seal .45, no boom; the music dips to .3 instead of .5. The flip, the sigil, the goop shockwave, the surface
+  kick-up and the audited landing spots are unchanged. Shipped unverified.
+
+## m2362 -- the entrance's tear lies FLAT, and the portal has its own sounds (no electricity) (Nov 3 2026)
+His: *"I would make it horizontal instead of vertical -- like an abstract ring, parallel to the ground, that opens and you fall out of it. And I don't
+like the electric sound effects: they linger too much, and the electricity is not really what I'm going for."*
+- The tear plane is laid flat over the landing (`tear.rotation.x = -PI/2`, the .2 tilt kept as a spin), 9 x 9 m, and opens wider (half-width up to
+  2.6 m): the seam still RUNS first, then PEELS into an irregular jagged oval he falls out of the underside of. The arcs droop below it; the glow
+  sits just above. The lens is unchanged (low, three-quarter front, looking up into it).
+- Sounds: every `zap` is gone from the entrance. Main pulled CC0 portal sounds (audio/portal/, CREDITS.txt, -9 dBFS): `portal_open` (A deep tonal
+  swell / B bright chime shimmer / C very deep space swell), `portal_through` (A deep whoosh / B brighter zip), `portal_seal` (A soft tonal close /
+  B the whoosh reversed / C chime close). TOOLS > PORTAL SOUND A/B/C (`mel.entrySnd`, plays the open on the tap; C uses A for the whoosh). A missing
+  file falls back to a low swoosh. The music ducks to half (`ENTRY.duck`, `MUSIC.duck` -- the reel is its other writer and never overlaps) from the
+  rip until the seal has finished.
+- Shipped unverified (a render of the flat tear is in flight).
 ## m23XX -- NIGHT 17: his QUILLS glow -- and the hero glow's height was wrong the whole time (Nov 3 2026)
 His ask: the quills did not catch the glow. They are ORANGE and maroon, not purple, so the purple mask could never take them: a QUILL band now lights
 the top of him (`uHgQ` .88-.95 of his height, saturated colour only, brightest at the tips, mixed 25% to their own colour).
@@ -617,6 +724,15 @@ variable changes everything glowing that way, we can easily change fire particle
   boot threw `reading 'glow'` -- they prepend the `jinpal` script now. `syntax` checks `<script id=..>` too.
 - **SWITCH:** TOOLS > LOOK > JINRA COLOUR (reloads), `mel.jin`, `?jin=violet|jade|mint`. Default stays MINT until he picks.
 - Whole-piece rule: this is a look switch across finished and unfinished pieces alike; it ticks no sandbox box. Shipped unverified.
+
+## m2366 -- THE GOOP TONE: SUBTLE is the default; TOOLS > GOOP FX > GOOP LOOK cycles FULL / SUBTLE / WHISPER (Nov 3 2026)
+His: *"a little bit less capacity, maybe make some of them smaller or thinner -- the balls of liquid smaller and some of the lines thinner. They're
+just kind of aggressive right now and I love them so much, but maybe just a little bit more subtle."* One dial on the whole library (`S.T`,
+`FX.tone(name)`): `r` blob and spark size, `w` ribbon / arc / ring width (and ring reach .7 + .3w), `a` opacity, `n` the fraction emitted.
+FULL = 1 / 1 / 1 / 1 (the look he loved, kept for the A/B); **SUBTLE (default) = .68 / .62 / .8 / .6**; WHISPER = .52 / .45 / .65 / .4.
+Split children and drips are not thinned twice (`kid`), the big flash blob is never dropped (only shrunk), and a blade SHEET thins toward its tip
+edge so the cutting line stays where the blade was. Saved as `mel.goopTone`. Strips FULL vs SUBTLE (VIOLET; punch / slash / slam): peak blobs
+74 -> 43, sparks 40 -> 29, worst sim+upload 10.5 -> 3.0 ms on SwiftShader. `npm run fxstrip --tone=FULL|SUBTLE|WHISPER`. Shipped unverified.
 
 ## m2338 -- GOOP on the UNARMED moves and the ACROBATICS: limb trails, slides, the blink; the switch is TOOLS > GOOP FX (Nov 3 2026)
 Relayed from Colin: *"The effects on melee, slams, sword attacks and bow and arrow look SO good."* Then fill the gaps: every unarmed swipe / flick

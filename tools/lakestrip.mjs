@@ -23,10 +23,10 @@ await new Promise(go => srv.listen(0, go)); const port = srv.address().port;
 const br = await pw.chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const pg = await br.newPage(); pg.on('pageerror', e => console.error('PAGE', e.message)); pg.on('console', c => { if (c.type() === 'error' || c.type() === 'warning') console.error('CONSOLE', c.text().slice(0, 600)); });
 await pg.goto(`http://localhost:${port}/lake.html`); await pg.waitForFunction('window.ready');
-const res = await pg.evaluate(([code, o]) => { const THREE = window.THREE, t0 = performance.now();
+const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE, t0 = performance.now();
   const W = o.W, H = o.H, R = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); R.setSize(W, H); R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.NeutralToneMapping;
   const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(55, W / H, .1, 4000);
-  const L = new Function('THREE', 'scene', 'O', code + '\nreturn lakeMake(THREE, scene, O);')(THREE, scene, { mirror: o.mirror }); const build = performance.now() - t0;
+  const L = new Function('THREE', 'scene', 'O', code + '\nreturn lakeMake(THREE, scene, O);')(THREE, scene, { mirror: o.mirror, tex: p => './' + p }); const build = performance.now() - t0; if (L.ready) await L.ready;     // the textures (m2368)
   const Li = L.light, hemi = new THREE.HemisphereLight(new THREE.Color(...Li.sky), new THREE.Color(...Li.gnd), Li.hI), sun = new THREE.DirectionalLight(new THREE.Color(...Li.col), Li.I);
   sun.position.copy(Li.dir).multiplyScalar(100); scene.add(hemi, sun); hemi.layers.enable(Li.layer); sun.layers.enable(Li.layer);     // the mirror sees layer `Li.layer` only, and three culls LIGHTS by layer too
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(.32, 1.1, 6, 12), new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .7 })); body.position.set(L.spawn[0], L.spawn[1] + .87, L.spawn[2]); scene.add(body);
