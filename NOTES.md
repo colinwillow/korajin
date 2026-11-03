@@ -17,6 +17,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m23XX -- NIGHT 12: NO MORE SATURN -- four ethereal SKY WORLDS on a switch; the flora on the garden's own lawn mask (Nov 3 2026)
+His words (relayed): *"not sold on the rings of Saturn -- too Saturn-like. Alternate worlds, nothing resembling Saturn; ethereal alien worlds rather than
+recognisable planets. A giant moon is fine, but unique."* The shared dome's ringed moon, its ring and the rust second moon are gone, and so is the SHIP
+zone's banded, ringed planet (bands cut, ring hidden: a soft pale orb). In their place `uWorld`, **TOOLS > TIME > SKY WORLD** (`mel.skyworld`, live):
+  VEILED (default)  a translucent world you half see the stars through, mist drifting inside it, a Jinra rim and aura
+  FRACTURED         a huge pale moon split by softly glowing fractures (3D voronoi on the sphere), Jinra with violet cells, a faint aura
+  MOONLETS          a loose arc of seven small glowing moonlets, Jinra and violet, each haloed
+  CRESCENT          a dark world lit from BEHIND: a thin crescent with a glowing ocean edge, luminous mist wrapped round its limb
+(first CRESCENT render was fully lit -- the light pointed AT the viewer; it is behind the world now). Colours: JPAL glow / deep + the violet accent.
+Sheet: images/feedback/m2329/sky_worlds.jpg.
+**Flora placement** (the garden's session's answers): `gdnReserved` was the wrong mask (it reserves SKY volumes); `gdnBuild` now exports its lawn mask
+`GARDEN.lawnFree(x, z)` (rim, temple, stair, zen garden, trunks, hammock, Jinra beam, paths, creeks), the flora scatters in r 24 round the island's
+own centre and stands on `groundAt(x, z, top + 4, 8)` (skipped under top - 3). Open: PROPB pot / barrel clearance. Shipped unverified.
+
 ## m2339 -- NIGHT 11: HIS JINRA GLOW -- the purple on Grumbo's own texture lights on Jinra contact and on every attack (Nov 3 2026)
 His ask (relayed): *"pick the PURPLE already on Grumbo's texture and make those parts GLOW when he is in contact with Jinra -- in a stream, in a geyser,
 collecting Jinra, and when he attacks; colour via JPAL."* HERO_GLOW block: a hue mask spliced into his OWN material (chained hook + key, no new
