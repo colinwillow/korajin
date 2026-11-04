@@ -44,6 +44,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2490 -- the BACKPACK opens in the ring style: its contents are ring segments, not a panel (Nov 4 2026)
+Via main: *"the backpack's expansion doesn't follow the UI style rubric (UI_RINGS.md) -- every other button is a curved ring segment with the same
+expansion animation, colours, type and glow; the backpack opens into something that doesn't match. It can be bigger, but restyle it to the same family."*
+- Under the rings (`RINGS.on && QD.on`), BACKPACK open pushes a `bagitems` group into the LEFT set right after the bag (`ringPut` order: bag,
+  bagitems, then the weapon's choices), 2 a ring: SHIELD / WINGS (`it.short`), red while worn, a tap toggles it (`it.set`, the swoosh). Same
+  segments, tween (they grow out of their centres), palette, type. `#packPanel` is not shown while the rings are on; QUICK DRAW off keeps the panel.
+- Every ring segment now has one press feedback: a .14 s brightness flash (`.seg.press`) and the `ui_tap` sound.
+- Contents / behaviour unchanged (`BAG.items`, tap outside closes it). Shipped unverified; renders of closed / open sent.
+
 ## m2489 -- THE SAND DEFORMATION FOLLOWS HIM EVERYWHERE (his: "regional -- walking one way it pops in, back it pops out; where I land it isn't working")
 His screenshots (images/feedback/m2487/): sand_good_* = the deformation working (he LOVES it); sand_flat_bug_* = same build, no berms, only the tint.
 - THE BUG: the height / disturbance field was a FIXED 50 m square on the field's centre, and the displaced PATCH was hidden beyond 17.7 m of that
