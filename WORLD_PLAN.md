@@ -90,3 +90,11 @@ This is the bake list he can work from for the first temple.
   little closer, he walks up, takes the shard from his bag, sets it into its socket) -> the door lights up (runes, its temple's Jinra
   colour) -> the giant stone door / blocking rock FLOATS up and out of the way -> the special "you opened something" sound -> walk in.
 - **Puzzles** for smaller doors inside temples -- designed when we reach them.
+
+## 8. THE GATHERING -- charging the crystal after a boss (his idea, Nov 4, "not 100% sold", open)
+After a temple's boss: the arena is ringed by 6-8 big torches burning with that temple's Jinra. In the centre he holds up the
+crystal (a press or a pedestal), the Jinra is drawn out of every torch in streams into it, and the nearly clear crystal fills with the
+temple's colour and glows -- that charged crystal is what opens the way onward. The world answers: the Jinra glow drains out of
+the room, the torches drop to ordinary warm fire; and when he steps outside the REGION has changed -- night lifts to day, a blizzard
+clears to sun (the RESTORATION shown as weather). Tech: NIGHT.f and the weather tables can already be driven by a script, the streams
+are FX goop ribbons, the torches are nightGlow/JPAL rows; the "hold it up" pose is the standard GET moment.
