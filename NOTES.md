@@ -29,6 +29,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2435 -- FLOATING BOULDERS: SAND (his m2429 note 2: "beautiful sand -- dunes, ripples -- footprints and pushed sand like the snow, subtler")
+- The pale floor and its rings are gone; the ground is a SAND heightfield in BOULDLIB (`F.sand`, 150 m, 150 seg): flat (y 0) inside `flatR` 26 m
+  of the field centre so the rocks, tiers and his walk are unchanged, DUNES rising to `duneR` 46 m -- crests across the wind (`wind` .55 rad),
+  up to 3.2 m, heights wandering by noise -- vertex-tinted lighter on crests, darker on the slip faces. The dune triangles go into the TRI store
+  (`triAdd` + `triBuild` in `bouldBuild`; the flat ones are left out), so he walks up them.
+- RIPPLES and PRINTS are in the fragment shader (`bould-sand`): two ripple trains (wave numbers 9 and 34 /m, noise-warped, faded by `fwidth`
+  where they would alias) perturb the normal; the PRINT texture (`def`: R8 512 x 512 over 50 m = ~10 cm a texel; 128 untouched, lower pressed,
+  higher pushed up) adds its own gradient and darkens a pressed print a touch. `L.stamp(x, z, r, depth, rim)` presses a dish with a raised rim
+  (the "pushed sand"); prints fill back at 1.2/127 per s (~100 s); uploads are throttled to 20 Hz and only when something changed.
+- The glue (`bouldSand`) presses each TOE as it comes down (once per touchdown, not every frame it rests), kicks a few grains at a run, a crater
+  + puff for a hard landing, a smear for a roll. The mesh is named `boulders:sand` (the footstep classifier's SAND word).
+- In the real page the forge's own grid floor sat exactly at y 0 and covered the flat sand -- the sand is lifted 1.5 cm; and the forge's bright
+  light washed the first colours to white, so they went deeper. Draws 16 (the rings went), +45k tris for the ground. Shipped unverified.
+
 ## m2434 -- FOREST TEMPLE INTERIOR pass 1: THE KIT (FOREST_TEMPLE.md, KORAJIN > Forest Temple Kit, `?w=forge&zone=ftkit`)
 His (via main, Nov 4): *"the above-ground part is the tip of the iceberg / the door; the real temple is massive, inside / underground"* + WORLD_PLAN 1
 (the kit before the place). New sandbox; FOREST_TEMPLE.md has the vision, the chamber map, six passes and DONE WHEN (last box his phone).
