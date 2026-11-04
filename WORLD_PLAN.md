@@ -103,3 +103,18 @@ world's instability, time sped up as the stability is drained. So the signifier 
 colour returns, clear water, the glow is healthy. TWO MOMENTS: (1) the Gathering in the temple rejuvenates the REGION; (2) returning the
 charged crystal to its sky temple restores the FALLEN CITIES -- they float again, rebuilt, not destroyed.** Tech: NIGHT.f and the weather tables can already be driven by a script, the streams
 are FX goop ribbons, the torches are nightGlow/JPAL rows; the "hold it up" pose is the standard GET moment.
+
+## 9. OPEN WORLD + PROGRESSION (his question, Nov 4; recommendation, open)
+Regions connected by land and by WATER CHANNELS (sail between them; fly later). Recommended shape: **open, but GATED BY ABILITIES**
+(the Metroid/Zelda way) -- you can walk to almost everything early, but:
+- **Temples** need their crystal SHARDS to open (the door ritual) -- you can reach every temple's door, not enter it.
+- **Traversal gates**, each lifted by a power/tool earned in a temple:
+  - the BOAT (early) opens the water channels;
+  - a JINRA FORCE PUSH breaks the boulders sealing certain canyons;
+  - DIVE / underwater breath opens sunken ruins;
+  - wall-run upgrades / grapple reach high ledges;
+  - the DRAGON, then the GLIDER/WINGSUIT (late, from the AIR region) open the sky islands -- late on purpose.
+- **Soft gates**: tougher enemies and hazards (cold, heat, storms) warn you off before you're ready, without walls.
+- **Shape**: a short linear start (prologue garden -> the first region + temple as the tutorial), then the next 2-3 regions in
+  the player's chosen order (each temple's power opens part of another), then AIR, then the final region.
+- The world map's first job is a rough BLOCKOUT (shapes only) to set scale, the channels, and where each gate sits.
