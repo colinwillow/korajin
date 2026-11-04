@@ -30,6 +30,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2443 -- THE GATHERING pass 1: the arena, the torches, the crystal, the GET pose and the drain (GATHERING.md; KORAJIN > The Gathering, `?w=forge&zone=gathering`)
+His idea (WORLD_PLAN 8, revised: keep the day/night cycle; the signifier is FALLEN -> REJUVENATED). GATHERING.md written first: the place on four
+tiers, the beats with timings, DONE WHEN. This pass is box 2 ("pass 1"): a hexagonal sandstone arena (r 14) on a 12 m rock mesa, open to the sky,
+six torch pillars burning the temple's Jinra, an inlay channel from each to a three-step pedestal (risers .30), the nearly clear crystal hanging over
+it in a bronze cradle. Tap the chevron (`LIFT THE CRYSTAL`, `interactAdd` row `gath.lift`) or the GATHER button: he is glided onto the pedestal's top
+facing the lens, the **GET pose** comes up (NEW, reusable: `GETPOSE.want` / `GETPOSE.at`, two-bone IK through the lotus' `ltArm` after the mixer,
+undone by `ltUndo` -- any prize can use it), the crystal comes down into his hands, and each torch in turn (staggered .45 s, 2.6 s each) throws
+goop comets (FX.md `FX.trail` heads on a curved path, shedding blobs) into it; the crystal FILLS FROM THE BOTTOM (uFill in its own height, a
+meniscus line) with the temple's colour while each flame's tongues are born warm instead of Jinra; full at 7.05 s = a flash, a floor ring, a boom;
+then the crystal rises off his hands and rides his right shoulder (`charged`). RESET puts everything back; TEMPLE: <row> cycles the JINRA_PRESETS
+rows (torches, streams, crystal follow). The torch fire is its own pool on `gfireTex`'s atlas (one draw), coloured at birth by the torch's `j`.
+Hooks: `p.gath` in stepPlayer (after the sleep, like the hero drop owns the body), `getPose(dt)` after `gdnSleepPose`, build/step beside the
+boulders in the arena step, ENTRY row `gathering`, ZONEWANT, the KORAJIN menu. New tool: `npm run gathstrip` boots the SHIPPED page in the zone,
+fires the moment and waits on the moment's OWN clock (`GATHER.T`) before each frame, play camera + a wide tile.
+Strip (sent to him): pose ok (`GETPOSE.ok` 1, hands met at 13.71 = 0.8 m over the pedestal top's 12.9), streams land, fill 0 -> 18 -> 59 -> 96 -> 100 %,
+torches warm by 6.2 s, charged crystal on the shoulder at 10 s. **86-91 draws, 17-20k tris** for the whole zone (the forge's own base included).
+Fixed after the first strip: the crystal 1.3x bigger (it read as a dot), the cradle sinks to the pedestal once the crystal leaves (it hung over his
+head like a halo). STILL OPEN: the valley is the forge's plain floor (pass 2: fallen land + the wave), the socket/city (pass 3), sound (pass 4).
+The first play-camera tile catches the lens dipping under the pedestal's lip during the glide -- watch it on the phone.
 ## m2442 -- FOREST TEMPLE pass 3: THE WAY IN -- the dome temple's DESCEND, the ENTRY HALL, THE WELL and its waterfall, into chamber 1 (FOREST_TEMPLE.md)
 - THE DOOR: a DESCEND chevron (`interactAdd` 'domet.descend') on the dome temple's cella floor behind the orb -> `?w=forge&zone=ftemple`. It only READS
   DOMET (the exterior worker's); nothing of theirs is touched. Back out: ASCEND ('ftemple.up') at the hall's far end -> `?w=forge&zone=dometemple`.

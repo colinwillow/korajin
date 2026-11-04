@@ -40,7 +40,8 @@
     "bouldstrip": "node tools/bouldstrip.mjs",
     "hitch": "node tools/hitch.mjs",
     "foreststrip": "node tools/foreststrip.mjs",
-    "ftstrip": "node tools/ftstrip.mjs"
+    "ftstrip": "node tools/ftstrip.mjs",
+    "gathstrip": "node tools/gathstrip.mjs"
   },
   "type": "module",
   "devDependencies": {
