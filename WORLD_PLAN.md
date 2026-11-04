@@ -78,3 +78,15 @@ This is the bake list he can work from for the first temple.
 ## 6. CONTROLS
 - **GAMEPAD**: map every action through one action table so the touch layout and a pad read the same bindings and stay in
   sync automatically. On a pad the right stick is ONLY the camera; the buttons do what the right pad's gestures do.
+
+## 7. JINRA COLOURS, CRYSTALS, SHARDS AND TEMPLE DOORS (his, Nov 4, open)
+- **Jinra comes in colours**, each a power type (e.g. yellow / purple / green / red / blue -- fewer is fine), likely ONE COLOUR PER TEMPLE.
+  The colours BALANCE each other (lore: the world's powers held in balance). (Tech: JPAL is one palette today; a per-power palette row
+  per colour later -- keep every glow routed through JPAL so a colour can be swapped per region/power.)
+- **The power crystals** harness each colour. Sky temples form a GRID round the world and beam energy between them -- a protective
+  shield that also keeps everything floating. The crystals were stolen at the start; the game is getting them back.
+- **SHARDS** of the greater crystals are collected; **a shard opens a temple door**.
+- **THE DOOR RITUAL (standard for every temple)**: walk up -> the interact chevron -> tap -> a short automatic sequence (camera eases a
+  little closer, he walks up, takes the shard from his bag, sets it into its socket) -> the door lights up (runes, its temple's Jinra
+  colour) -> the giant stone door / blocking rock FLOATS up and out of the way -> the special "you opened something" sound -> walk in.
+- **Puzzles** for smaller doors inside temples -- designed when we reach them.
