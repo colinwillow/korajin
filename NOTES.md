@@ -20,6 +20,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2414 -- three melee changes: the plain punches out of the unarmed set; the RIGHT stick picks the charge release too; swings, the held charge and a timed up-release beat arrows
+His (Nov 4, relayed): (1) *"remove the plain basic forward punch; keep the flying punch, the handspring and the multi-flip cartwheel"*; (2) *"keep the
+left stick picking the release exactly; ADD the right stick: once armed, DOWN-LEFT / DOWN-RIGHT / DOWN and release = the left stick's left / right /
+down"*; (3) *"any swing in progress blocks an arrow, generously; right DOWN blocks/parries as now; right UP also blocks; a TIMED up-release returns it."*
+- (1) `CLIPS.fist` is `melee_01 / 02 / 03 / 05`: the two STANDING level punches (`melee_04` both hands, `melee_extra` the old jab -- m1770's table:
+  "level ... strike") are out; everything left flies, hops or flips. Both stay in the file: one line puts either back. If he meant only one of the two,
+  that's the line to change.
+- (2) `RREL`: `kaimStep` keeps the right thumb's last held place (`p.kR`); in `chargeRelease`, when the LEFT stick is not pushed, a right thumb past
+  `dead` .45 and in the lower half (`down` .5) picks the move -- within `side` .38 of straight down = the leap (`aimLeap`, its height still `p.kAim`),
+  off to a side = the whirlwind that way (`whirlGo`, mirrored for left, exactly as the left stick). Released from up = neutral / auto, unchanged.
+  A held katana charge already owns the right thumb (the guard's `busy`, m1071), so pulling it down does not raise the guard.
+- (3) `arrowSwing` (in `arrowStep`, before the guard's `arrowBlock`, using the frame segment's closest point so a fast arrow cannot skip it):
+  a charge RELEASE within `ASWING.win` .32 s of an arrow reaching `retR` 2.4 m = it goes HOME (`deflectThreat` perfect, any side, he turns to it);
+  a swing in progress (`p.melee`, the launch `p.chargeGo`, the whirlwind / tornado `p.torn`, the intercept) glances anything within `swingR` 1.9 m,
+  any side; the charge HELD UP glances anything within `holdR` 1.5 m from the front (`BLOCK.arc`). The glance is the guard's own, factored out as
+  `arrowGlance`. The guard (down) is unchanged. Live on `mel.ASWING` (`stat` ret / swing / hold) and `mel.RREL`.
+- Not verified on a device. Test: archers in the arena / sky temple. Box moved: none.
+
 ## m2413 -- THE LAKE has SOUND (his Nov 4 note 4: "the level is silent") (Nov 4 2026)
 CC0 from OpenGameArt like audio/portal (`audio/lake/`, CREDITS.txt; mono, trimmed, faded, -9 dBFS peak; ~300 KB; `audio/lake` added to bump's DIRS and
 hashed): splashes from "40 CC0 water / splash / slime SFX", the river lap from "Sea and river wave sounds" (Vistula, 60-80 s), shore waves from "Beach
