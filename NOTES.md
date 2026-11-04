@@ -30,6 +30,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2455 -- FLOATING BOULDERS: NO INVISIBLE SPHERE -- rocks move only when his BODY touches them (his notes after m2440)
+His: *"I walked into a rock and it scooted round an invisible sphere -- not elegant."* In his normal state nothing moves away from him; he PUSHES.
+- The always-on BUBBLE is OFF (`bubble.on` 0) and is driven by TOOLS > BOULDERS > JINRA AURA (`BOULD.aura`) -- the aura is the POWER STATE
+  (seething with Jinra, rocks lifting and orbiting); off, no resting rock lifts and no floater is deflected.
+- The pass-2 SHOVE (which reached `s x .9 + .38` round every rock -- the "invisible sphere") now acts ONLY on a rock his body is actually in
+  contact with (`r.touch`: the ellipsoid contact for a solid rock; for a pebble under `solid.sMin`, his body overlapping its size). The shove
+  still carries his speed into it, so a pushed rock keeps moving a little after.
+- Plants lean only when his BODY brushes them (`plants.bodyR` .75 x size); leaves kick up only within .8 m of him and only while he moves
+  (> .8 m/s). The aura brings back the wide versions.
+- Strip `push`: walking through b16 moves b16 (1.6 m) and nothing else; 0 resting rocks lift. Shipped unverified.
+
 ## m2454 -- THE SNOW AT 20 FPS: the snowfield plane, and a shadow pass that could not cull (his chip, m2423, night: 20 FPS, 98 DC, 1,467k tris)
 - **WHAT THE TRIANGLES WERE** (one render, per object, main and shadow pass split; `npm run snowtris` for the five-spot A/B):
       the SNOWFIELD    627k  a 560 x 560 displaced plane, frustumCulled off -- every frame, wherever he stood
