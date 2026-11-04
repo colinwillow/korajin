@@ -20,6 +20,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2417 -- gdnWalls no longer walls off the shrine stair (Nov 4 2026)
+The collider worker found it under BOXES: a `gdnWall` box (y 119.80 to 120.88) lay across the shrine stair's second tread. From the 120.30 tread the next floor
+read 120.88, a .58 m step against his .357.
+- **Cause:** the shrine stair's treads are .42 m, shorter than the wall grid's .5 m cell. Two neighbouring cells can land two risers apart (.6 m > `wallRise` .45),
+  and the raised-top pass made that a wall.
+- **Fix:** before it does, `stairy` walks the ground between the two cell centres in fifths. If no step on the way is over `GARDEN.wallStep` (.36), it is
+  climbable and not a wall.
+- Under MESH this spot was already skipped. Shipped unverified.
+
 ## m2416 -- the entrance, minimal: a FLAT portal above the landing, he drops DOWN through it, the play camera never moves, nothing of him shows first (Nov 4 2026)
 His notes (firm, via main): *"(1) the backpack / any worn or held item is visible before he comes through -- hide EVERYTHING until he emerges. (2) I keep
 saying PARALLEL to the ground -- flat above the landing, drop him DOWN out of it. (3) NO CAMERA MOVES -- the normal player camera from frame one; a level
