@@ -49,7 +49,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - `npm run check` ok. Shipped unverified.
 
 
-## m2466 -- STONE HITS: rocks never play the crate again; a stone FX table by what hit them (his: "it always defaults to the breaking box")
+## m2467 -- STONE HITS: rocks never play the crate again; a stone FX table by what hit them (his: "it always defaults to the breaking box")
 - WHERE THE DEFAULT CAME FROM: `snd('thud')` IS `audio/box_break_01.mp3` (the crate, kept for things that BREAK -- m2061), and every rock hit used
   it: the floating boulders (`bouldFx`) AND the plant library's breakable rocks (`rockChips` / `rockBreak`, every zone with `boulder` /
   `rock_snow` / `rock_red` / `rock_temple`). Both now play STONE keys; the crate is left only on non-stone breakables.
