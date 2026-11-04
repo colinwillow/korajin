@@ -20,6 +20,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2409 -- THE LAKE: tread height in the middle; jumping off the boat DIVES (his Nov 4 notes 1-2) (Nov 4 2026)
+1. *"Treading water is now too LOW -- meet in the middle: shoulders / collarbone at the waterline."* m2381 took 1.35 m off a 1.75 m body; the RIG is
+   ~1.25 m (MOVE's own note), so the collarbone is ~1.0 m over his feet: `sinkClip.swim_idle` 1.0 (swim stays .62).
+2. *"Jumping off the boat should DIVE automatically, unless he swipes into another move -- right now it's a jump + flying kick."* m2372 only started the
+   dive once he was clear of the hull, so the take-off played the jump (the kick). Now, at TAKE-OFF from the deck, his landing is PREDICTED (ballistic
+   to the water at `L.waveAt`, `MOVE.g`): if it is open deep water clear of the hull, `lkDive` starts at once, the dive clip from .3 of the way in (the
+   lean and push). If he swipes into another move (melee, flip, air flip, roll, slam, knock) that move wins and the dive is dropped. Shipped unverified.
+
 ## m2407 -- the entrance portal: UPRIGHT, see-through and warped, and he comes THROUGH it (a threshold); no floor symbols (Nov 3 2026)
 His notes: *"He doesn't look like he comes through the portal -- he is there before it shows up, you can see him behind it; it looks like a plane trying
 to cover him. No warping, no bending; the hole should look like a portal to somewhere else, a worm hole. Try perpendicular to the ground so he comes
