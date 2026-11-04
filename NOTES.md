@@ -39,6 +39,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2483 -- THE PLACE, pass B2: THE TEMPLE POND (the oasis shrine in the sunken basin, built only from the kit)
+- `DSHRINE` (SC_DSHRINE markers; `SHRINE` was already taken in this file): 30 placement rows with stable ids -- the POND at the heart, a paved ring
+  (r 3.9-5.4), SIX COLUMNS (two ruined), an OBELISK to the north, the ARCH GATE facing his landing with a STAIR, two BRAZIERS (fire) and two BANNERS
+  (one torn) either side, two CARVED PANELS (one fallen), FOUR URNS (breakable -- they join `BOULD.urns`), three PALMS, three reed clumps, four
+  LILIES that bob. `bouldShrine` builds it from `dkMake` pieces at the basin centre, each piece on the relief, its boxes turned with it into BOXES.
+- THE SAND HAD COVERED THE WATER: the pond sits below the basin floor and the sand surface lay over it. The sand shader (base + patch) now DISCARDS
+  inside `uHole` (the pond's radius), so the water shows. He still walks the pond at the floor's y 0 (on the water, not in it) -- wading is a pass.
+- Real-page renders from his landing and from above (sent). Next: B3 -- the framing mesas and outcrops, a climbable mesa top. Shipped unverified.
+
 ## m2482 -- THE PLACE, pass B1: THE GROUND IS NOT A PLANE (his: "grow the field into a real landscape -- rolling dunes, ridges, a basin")
 - `reliefH` (BOULDLIB, `F.relief`): rolling sand over the whole field (two noises, base .5 / amp .55 / fine .22 m), a wind-carved RIDGE across
   the wind (1.6 m, 13 m off-centre, a steeper lee), and the SHRINE BASIN at the field centre: floor y 0 inside r 7 m, the sand rising over a 6 m rim
