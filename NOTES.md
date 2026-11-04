@@ -47,6 +47,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   (`L.count().kitTris`: rocks 980, scree 320, cactus 2,168, succulent 1,260, orb 358), draws and night look; BOULDERS.md carries the table, the
   phone budget (~26 draws, ~250k tris) and what the region still needs as kit rows. Shipped unverified.
 
+## m2471 -- THE COMBAT LAB pass 4: ARCHETYPES (his: "differences between enemies, different ways to kill them; bigger enemies maybe better weapons")
+- `CBT.def` rows gain `slot` (the WORLD_PLAN roster slot), `red` (the chance a swing is UNBLOCKABLE: a red slam) and `sa` (SUPER-ARMOUR on that
+  red wind-up: `arenaBlow` no longer interrupts it -- trade and you eat it; dodge it). MELEE BIG: warboss red .2 sa + block .6 (his shield takes
+  frontal blows -- FLANK him or guard-break), skullback red .3 sa (the maul: dodge the slams, punish the recovery), CEO beast .25 sa, jackal .15
+  (no sa: interrupt him). MELEE SMALL samurai: no red (his chop on a turtle, m1076), blocks / parries / dodges. RANGED: archers kite already
+  (`archerAI` backs off inside `ARCH.near`), dodge .4, no block: close the gap. Reach and push already scale with size (`arenaKind`, `s`).
+- CREATURES: `beastGo` glints on `cAtk` (white: a bite / lunge you can block) and `cFire` / `cSwoop` (RED: breath and dives -- dodge). Only in
+  the arena worlds (`cbtGlint` returns outside them, so the snow lair's dragon is untouched).
+- Not yet: a caster (RANGED B) does not exist; creature pounce timing is still the beasts' own. Moves COMBAT.md pass 4; no enemy box ticked.
+  `npm run check` ok. Shipped unverified.
+
 ## m2470 -- THE COMBAT LAB pass 3: ENEMY DEFENCE (his: "they have no defence, they can't really block... I can destroy every boss in a few seconds")
 - Found reading `dummyBlow`: EVERY landed light hit on a free arena body put it in `st = 'hit'` (a flinch clip), so a string of slashes was a
   stun-lock from the first hit to the KO -- that, plus no block at all on the katana bodies (`arenaShieldHit`'s mirror parry only runs with a
