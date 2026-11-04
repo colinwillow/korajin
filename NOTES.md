@@ -47,6 +47,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   (`L.count().kitTris`: rocks 980, scree 320, cactus 2,168, succulent 1,260, orb 358), draws and night look; BOULDERS.md carries the table, the
   phone budget (~26 draws, ~250k tris) and what the region still needs as kit rows. Shipped unverified.
 
+## m2470 -- THE COMBAT LAB pass 3: ENEMY DEFENCE (his: "they have no defence, they can't really block... I can destroy every boss in a few seconds")
+- Found reading `dummyBlow`: EVERY landed light hit on a free arena body put it in `st = 'hit'` (a flinch clip), so a string of slashes was a
+  stun-lock from the first hit to the KO -- that, plus no block at all on the katana bodies (`arenaShieldHit`'s mirror parry only runs with a
+  `d.sh`, and the samurai / jackal carry none, so their `mguard` was a picture), is the "dies in seconds".
+- `cbtDefend` (SC_CBTDEF, `CBT.def` one row per kind x `CBT.defK` EASY .5 / MEDIUM 1 / HARD 1.4), called in `dummyBlow` after the shield: a blow
+  from his front (`CBT.arc` 1.2) on a body that is idle / circling / guarding (never in `recover` -- his punish window) rolls DODGE (agile kinds:
+  `cdodge`, a roll aside, the blow meets air), else BLOCK (a guarding body always blocks): sparks, a clang, him bounced back, no damage, the guard
+  clip, then a RIPOSTE (`d.cbRipo` in `cbtStep`); a share of blocks are PARRIES (he is thrown back + stunned, `KATANA.parried`, the riposte now).
+  Each block spends a GUARD point (`guard`, back one per 1.5 s); out of points, or a HEAVY blow (his chop, a charged release, slam, rocket, power
+  >= `breakAt`), is a GUARD BREAK: knocked wide, stagger `breakStun`, no damage, then everything lands.
+- `cbtPoise`: a free body absorbs `poise` light hits (heavy counts 3; a flash, the shove) before it staggers; refilled after 2.5 s quiet. Samurai
+  1 (he blocks and dodges instead), jackal 3, warboss / CEO beast 4, skullback 5.
+- Lab readout: `def blk / par / dodge / gbrk / poise`. Not yet: creatures, horde, guardians (pass 4 / 5). Moves COMBAT.md pass 3; no enemy box
+  ticked. `npm run check` ok. Shipped unverified.
+
 ## m2468 -- THE COMBAT LAB pass 2: AI THAT FIGHTS (his: "if I'm ever in parry/block they just never attack -- I want them to attack so I can block")
 - `cbtStep` (SC_CBT) on every free arena body, after `arenaFight`: TOKENS -- at most 1 / 2 / 3 bodies (EASY / MEDIUM / HARD) winding up or
   swinging at once, the rest CIRCLE (`arenaCircle`) at their spacing; PRESSURE -- a guard he HOLDS (`p.block` or the ice shield) is read after the
