@@ -2221,6 +2221,32 @@ the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` 
 MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
 minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
 
+## m2451 -- THE MESH COLLIDER IN EVERY ZONE (an `auto` row), the forest temple's stairs included (Nov 4 2026)
+
+His (the forest temple): *"couldn't walk up its stairs -- a giant invisible block"*; *"the box collider seems very primitive -- why isn't the mesh one
+on every level?"* The `dometemple` row (m2433, the forest region) built its store from the TERRAIN group only (`DOMET.on.reg`), so the temple and its
+stairs were still boxes. Now:
+- **`dometemple`** builds from the whole stage (`reg.parent`: terrain + temple), still forced MESH (the region has no boxes), and runs on the auto clock.
+- **`auto`, every other arena/forge zone:** the drawn scene round him (R 120 m, +-90 m height) minus his rig, the characters (`DUMMIES`), instanced
+  props, skinned meshes, the sky (radius > 400) and anything `userData.dyn`. **Built when the zone has SETTLED** (`collAutoTick`, every 30 frames:
+  the count of big drawn meshes, 600+ indices, unchanged for 4 checks -- a zone's GLBs arrive over seconds), **rebuilt** if that count grows 5% (a
+  part of the level arrived) or if an included mesh MOVES (it is dropped from the store for good: a door, a platform, a ride -- `stat.movedOut`).
+  A box that belongs to something that moves (`_y0` rides, doors, kit walls/chunks/parts, `dyn`) is never replaced by the mesh.
+- **Caps for a phone:** a single mesh over `COLL.maxMesh` 150k tris is left out (in the snowfield that is its 888k-tri terrain, which it already
+  walks on by its own ground) and the store stops at `maxTris` 700k.
+- **Defaults:** MESH everywhere EXCEPT the snow zone (with the ice temple): its store is still 555k tris (~30 MB) after the terrain is left out and
+  6 meshes hit the cap, and its probes mostly fail to land in the sweep, so it is unmeasured -- BOXES by default there, MESH on the switch.
+  TOOLS > COLLIDER (a saved `mel.coll`) still overrides everywhere; the forest temple is forced MESH.
+**Measured.** Store (real clock, `colaudit` page, desktop swiftshader): temple 54,652 tris / 165 ms (1 big mesh out, 374 boxes replaced, 308 kept);
+arena 125,087 / 253 ms; lake 68,742 / 238 ms; boulders 45,040 / 136 ms; wall course (the ninja gym) 3,514 / 18 ms; garden 167,220 / 444 ms; forest
+temple 172,712 (time not measured: the real-clock page did not settle in 4 min under software GL; on a phone the settle is 120 frames, 2-4 s);
+snow 555,477 (MESH, capped).
+`npm run stepsweep` (stalls / probed, MESH default vs BOXES): forest 3/129 vs 3/132 (all three on steep terrain where he slid downhill -- not a
+step); garden 3/141 vs 0/89; temple 4/95 vs 1/91 (small .13-.29 rises at x +-3.8 along a colonnade); arena 0/1 (MESH finds 15 rises, BOXES none);
+lake 0/0; boulders 0/146 vs 0/146; wall 0/2 vs 0/2; snow 3/12 on MESH, 4/31 on BOXES (most snow drops do not land: unmeasured).
+**Open:** the temple's colonnade rises on MESH; snow's weight and its sweep; the forest store's real build time on the phone.
+**What to try:** the forest temple's stairs (no invisible block), then any zone with TOOLS > COLLIDER on MESH (now the default). **Shipped unverified.**
+
 ## m2436 -- THE STEP-UP, ONE RULE FOR EVERY ZONE AND BOTH COLLIDERS; MESH is the garden's default; `npm run stepsweep` (Nov 4 2026)
 
 His (m2423, the bell-shrine stair top, `images/feedback/m2423/stuck_stair_top_bell.png`): *"It's fixed near the Jinra basin but that's it. I don't

@@ -20,9 +20,14 @@ const ARGS = process.argv.slice(2), MESH = ARGS.includes('--mesh'), BOXM = ARGS.
 // ZONES: the URL, what "built" means, the audited square (x0, x1, z0, z1) and the height window the walkable world lives in.
 const ZONES = {
   garden: { url: '?w=forge&zone=garden', ready: '__ca.GARDEN.on && __ca.GARDEN.on.built && __ca.GARDEN.walls', rect: [-80, 80, -80, 80], y: [80, 200] },
+  forest: { url: '?w=forge&zone=dometemple', ready: '__ca.COLL.built === 1', rect: [-90, 90, -90, 90], y: [-60, 250] },
+  temple: { url: '?w=forge&zone=temple', ready: '__ca.COLL.built === 1', rect: [-90, 90, -90, 90], y: [100, 300] },
+  lake: { url: '?w=forge&zone=lake', ready: '__ca.COLL.built === 1', rect: [-90, 90, -90, 90], y: [-60, 200] },
+  boulders: { url: '?w=forge&zone=boulders', ready: '__ca.COLL.built === 1', rect: [-60, 60, -60, 60], y: [-60, 200] },
+  wall: { url: '?w=forge&zone=wall', ready: '__ca.COLL.built === 1', rect: [-60, 60, -60, 60], y: [-60, 200] },
   akatani: { url: '?w=forge&zone=akatani', ready: 'true', rect: [-120, 120, -120, 120], y: [-60, 200] },
-  snow: { url: '?w=forge&zone=snow', ready: 'true', rect: [-120, 120, -120, 120], y: [-60, 200] },
-  arena: { url: '?w=arena', ready: 'true', rect: [-70, 70, -70, 70], y: [-20, 80] },
+  snow: { url: '?w=forge&zone=snow', ready: '__ca.COLL.built === 1', rect: [-120, 120, -120, 120], y: [-60, 200] },
+  arena: { url: '?w=arena', ready: '__ca.COLL.built === 1', rect: [-70, 70, -70, 70], y: [-20, 80] },
 };
 const want = ARGS.filter(a => !a.startsWith('--')); if (!want.length) want.push('garden');
 const HANDLE = 'window.__ca = { BOXES, boxesNear, boxNear, boxLocal, thinBox, groundAt, LEDGE, RIG, MOVE, TRI, SURF, scene, WORLD, player, GARDEN, COLL: typeof COLL !== "undefined" ? COLL : null, ledgeFind, resolveBoxes }; ';

@@ -538,7 +538,7 @@ rule that has to be in front of me *before* I know which system I am in.
   finished without its statue form; a level wakes statues on an EVENT (the chalice), never by proximity.
 - **A VEHICLE BANKS INTO ITS TURN (m1703): left stick, LEFT side DOWN.** Every vehicle this file has built leaned OUT of the turn. Prove it
   with a dot product (root up . the side it turns toward > 0), never by reasoning about a rotation sign.
-- **ORGANIC / COMPLEX GEOMETRY COLLIDES ON ITS TRIANGLES, NOT BOXES (m2251, `COLL`).** A zone row in `COLL.zones` builds the mesh collider from
+- **ORGANIC / COMPLEX GEOMETRY COLLIDES ON ITS TRIANGLES, NOT BOXES (m2251, `COLL`).** EVERY arena/forge zone gets it (`COLL.zones.auto`, m2451; snow defaults to BOXES -- too heavy) from
   its drawn solid meshes; tag a mesh `userData.noLedge` (or a rock/cliff/bark material) so it offers no ledge. MEASURE with `npm run colaudit <zone>`.
 - **CRAFT.md IS THE FINISH STANDARD (his, Nov 2 2026).** Organic things are never straight (curves, taper, droop); water comes FROM a source and
   arcs; everything that touches touches (no floating rails, stairs, vines, props); metals never go black; show it so it reads. Check a CLOSE render.

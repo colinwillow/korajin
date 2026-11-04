@@ -12,7 +12,7 @@ if (!pw) { console.error('stepsweep: no playwright'); process.exit(2); }
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const A = process.argv.slice(2), MODE = A.includes('--boxes') ? 'boxes' : A.includes('--mesh') ? 'mesh' : '', OFF = A.includes('--off');
 const N = +((A.find(a => a.startsWith('--n=')) || '--n=150').slice(4));
-const ZONES = { garden: '?w=forge&zone=garden', snow: '?w=forge&zone=snow', temple: '?w=forge&zone=temple', lake: '?w=forge&zone=lake', arena: '?w=arena' };
+const ZONES = { forest: '?w=forge&zone=dometemple', boulders: '?w=forge&zone=boulders', wall: '?w=forge&zone=wall', garden: '?w=forge&zone=garden', snow: '?w=forge&zone=snow', temple: '?w=forge&zone=temple', lake: '?w=forge&zone=lake', arena: '?w=arena' };
 const want = A.filter(a => !a.startsWith('--')); if (!want.length) want.push(...Object.keys(ZONES));
 const HANDLE = 'window.__ss = { frameBody, player, cam, COLL, STEPUP, groundAt, godTo, renderer, rig, MOVE }; ';
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary',
@@ -63,7 +63,7 @@ function sweep(o) {
     const bin = Q.rise <= S.MOVE.step ? 'under step' : 'step..lip'; out.bins[bin] = out.bins[bin] || [0, 0]; out.bins[bin][0]++;
     const still = Math.abs(top(Q.ex + Q.sx * .5, Q.ez + Q.sz * .5) - Q.gh) < .06;     /* a pot he broke, a thing that moved: the rise is gone */
     if (made) { out.ok++; out.bins[bin][1]++; } else if (!still && !o.only) out.changed = (out.changed || 0) + 1; else if (Q.beside) out.beside = (out.beside || 0) + 1; else out.stall.push([+Q.ex.toFixed(1), +Q.gl.toFixed(2), +Q.ez.toFixed(1), 'rise ' + Q.rise.toFixed(2), 'got to y ' + p.pos.y.toFixed(2)]); }
-  out.mode = S.COLL.mode + (S.COLL.on ? '' : (S.COLL.zone ? ' (not built)' : ' (no mesh row)')); out.ups = S.STEPUP.ups; out.at = [+cx.toFixed(1), +cy.toFixed(1), +cz.toFixed(1)]; out.hstat = window.__hstat;
+  out.mode = S.COLL.mode + (S.COLL.on ? '' : (S.COLL.zone ? ' (not built)' : ' (no mesh row)')) + ' row ' + (S.COLL.zone || '-'); const st = S.COLL.stat; out.coll = S.COLL.on ? st.tris + ' tris (' + st.floors + ' floor / ' + st.walls + ' wall), built ' + st.ms + ' ms x' + (st.builds || 1) + ', boxes replaced ' + st.rep + ' kept ' + st.kept + (st.movedOut ? ', moved out ' + st.movedOut : '') + (st.big ? ', big meshes left out ' + st.big : '') + (st.capped ? ', CAPPED ' + st.capped : '') : 'no store'; out.ups = S.STEPUP.ups; out.at = [+cx.toFixed(1), +cy.toFixed(1), +cz.toFixed(1)]; out.hstat = window.__hstat;
   return out;
 }
 
@@ -80,8 +80,8 @@ for (const z of want) {
     await page.waitForTimeout(4000);
     await page.evaluate(() => { const S = window.__ss; window.__clock = { t: performance.now(), dt: 1000 / 60 }; performance.now = () => window.__clock.t; S.renderer.render = () => {}; });
     const ONLY = process.env.SS_ONLY ? JSON.parse(process.env.SS_ONLY) : null;
-    const R = await page.evaluate(sweep, { only: ONLY, off: OFF, N, R: z === 'temple' || z === 'lake' ? 90 : 45 });
-    console.log(`== ${z} [${R.mode}] step-up ${OFF ? 'OFF' : 'on'}  ${el()}  rises found ${R.rises} (+${R.tiny} narrower than him, skipped), probed ${R.probed}: walked up ${R.ok}, STALLED ${R.stall.length}, blocked by a wall beside/ahead (too tall to step) ${R.beside || 0}, gone (broken/moved) ${R.changed || 0}   (${Object.entries(R.bins).map(([k, v]) => k + ' ' + v[1] + '/' + v[0]).join(', ')})  step-ups ${R.ups}  unsettled ${R.unsettled || 0}  spawn ${R.at.join(',')}  heights ${R.hstat.join(' / ')}`);
+    const R = await page.evaluate(sweep, { only: ONLY, off: OFF, N, R: z === 'temple' || z === 'lake' || z === 'forest' ? 90 : 45 });
+    console.log(`== ${z} [${R.mode}] collider: ${R.coll}\n   step-up ${OFF ? 'OFF' : 'on'}  ${el()}  rises found ${R.rises} (+${R.tiny} narrower than him, skipped), probed ${R.probed}: walked up ${R.ok}, STALLED ${R.stall.length}, blocked by a wall beside/ahead (too tall to step) ${R.beside || 0}, gone (broken/moved) ${R.changed || 0}   (${Object.entries(R.bins).map(([k, v]) => k + ' ' + v[1] + '/' + v[0]).join(', ')})  step-ups ${R.ups}  unsettled ${R.unsettled || 0}  spawn ${R.at.join(',')}  heights ${R.hstat.join(' / ')}`);
     for (const s of R.stall.slice(0, 12)) console.log('    stall ' + s.join('  '));
     if (R.trace) for (const t of R.trace.filter((t, i) => i < 40 || t[4])) console.log('     ', t.join(' '));
   } catch (e) { console.log('FAIL', z, el(), e.message.split('\n')[0]); code = 1; }
