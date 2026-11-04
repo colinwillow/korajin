@@ -30,6 +30,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2444 -- FOREST TEMPLE: the way in is the DOOR RITUAL; two rows a rebase had dropped are back
+- The surroundings worker built the dome door's crystal-shard ritual (WORLD_PLAN 7): walking through the opened door calls `DOMET.door.enter`, which
+  loads `?w=forge&zone=foresttemple_in`. That zone name is now an ALIAS of `ftemple` (the zone test, a ZONEWANT row, an ENTRY row `foresttemple` --
+  `entryKey` reads `[a-z]+`, so the underscore keys it that way). My m2442 DESCEND chevron in the cella is GONE (two ways in that disagree). ASCEND
+  loads `?w=forge&zone=dometemple&at=door` (out at `DOMET.door.out`, facing out, the door open).
+- **A REBASE HAD EATEN TWO ROWS (m2434..m2442):** my build-number conflict resolver took the upstream side of EVERY index.html hunk, and two hunks
+  were not bookkeeping -- the ENTRY rows `ftkit` / `ftemple` and the `COLL.zones.ftemple` row were silently gone (the entrance fell back to the
+  forge default; the mesh row did not exist). Restored; the resolver now takes upstream only for BUILD / ASSETS hunks and stops on any other.
+- FOREST_TEMPLE.md: puzzle doors (his, via main) planned for the later chambers; inner shard doors reuse the ritual. Shipped unverified.
+
 ## m2443 -- THE GATHERING pass 1: the arena, the torches, the crystal, the GET pose and the drain (GATHERING.md; KORAJIN > The Gathering, `?w=forge&zone=gathering`)
 His idea (WORLD_PLAN 8, revised: keep the day/night cycle; the signifier is FALLEN -> REJUVENATED). GATHERING.md written first: the place on four
 tiers, the beats with timings, DONE WHEN. This pass is box 2 ("pass 1"): a hexagonal sandstone arena (r 14) on a 12 m rock mesa, open to the sky,

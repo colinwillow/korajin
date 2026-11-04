@@ -10,7 +10,7 @@ the walls -- and, at the bottom, the boss who holds the forest's JINRA STONE. Ev
 
 ## Map of the chambers (top to bottom)
 ```
-  [THE DOOR]  the dome temple's cella (DOMET) -- the chevron on its floor seal: ENTER
+  [THE DOOR]  the dome temple's door: the CRYSTAL-SHARD RITUAL (the exterior worker's shared system, WORLD_PLAN 7) -> `DOMET.door.enter` -> here
       |
   1 ENTRY HALL      (-6 m)  a long colonnaded hall, roots hanging from the vault, the first shaft of light; the way DOWN is a broken floor
       |  THE DESCENT  a spiral of stairs and ledges round a root-choked well, a waterfall out of the wall into the dark (-6 -> -24 m)
@@ -69,7 +69,8 @@ the walls -- and, at the bottom, the boss who holds the forest's JINRA STONE. Ev
    flat portal, minimal).
 4. **THE ROSTER SLOTS** (WORLD_PLAN 3): melee small, melee big, ranged A (archer), ranged B (thrower), creature A (swarm), creature B (burrower /
    flyer) -- stand-ins where his models do not exist yet; each with its stone twin and a night glow in pieces.
-5. **THE FLOODED GALLERY, THE ROOT HEART, THE GUARDIANS' HALL** -- one chamber a pass, each with a new verb.
+5. **THE FLOODED GALLERY, THE ROOT HEART, THE GUARDIANS' HALL** -- one chamber a pass, each with a new verb. Leave room for a PUZZLE DOOR or two
+   (smaller inner doors, puzzles designed later); any inner door that needs a shard uses the same RITUAL system as the dome door.
 6. **THE BOSS ARENA + THE JINRA STONE** -- the boss, the stone, the GET moment (standardised once, WORLD_PLAN 2).
 
 ## DONE WHEN
