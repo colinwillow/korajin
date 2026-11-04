@@ -1,0 +1,7 @@
+Temple door ritual sounds (mono, levelled to -9 dBFS peak, faded). All CC0 -- no credit required.
+door_open_a  -- "Achievement" (achievement.ogg), CC0. https://opengameart.org/content/achievement
+door_open_b  -- "Magic words / healing sound effect" (health_restore.wav), CC0. https://opengameart.org/content/magic-words-healing-sound-effect
+door_open_c  -- "Magic Spell SFX" (magical_4.ogg), CC0. https://opengameart.org/content/magic-spell-sfx
+door_stone_a -- "Stone door" (stone_door.ogg) pitched down x.72 (heavier, 2.3 s), CC0. https://opengameart.org/content/stone-door
+door_stone_b -- "Stone door" (stone_door.ogg) as is, CC0. https://opengameart.org/content/stone-door
+door_open_* = the "you opened something" sting (TOOLS > DOOR SOUND A / B / C, `DOORR.snd`); door_stone_* = the stone lifting.

@@ -89,6 +89,7 @@ This is the bake list he can work from for the first temple.
 - **THE DOOR RITUAL (standard for every temple)**: walk up -> the interact chevron -> tap -> a short automatic sequence (camera eases a
   little closer, he walks up, takes the shard from his bag, sets it into its socket) -> the door lights up (runes, its temple's Jinra
   colour) -> the giant stone door / blocking rock FLOATS up and out of the way -> the special "you opened something" sound -> walk in.
+  **BUILT (m2446): `DOORR`, one row per door** -- first on the Forest Temple. NOTES.md m2446.
 - **Puzzles** for smaller doors inside temples -- designed when we reach them.
 
 ## 8. THE GATHERING -- charging the crystal after a boss (his idea, Nov 4, "not 100% sold", open)

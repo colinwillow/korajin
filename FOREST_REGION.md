@@ -70,5 +70,5 @@ trunks' boxes are `collKeep` so the mesh never replaces them. Cliffs are steeper
       routes on four tiers (valley 0, gorge, plateau ~22, high above ~40)
 - [ ] day / dusk / night all beautiful (NIGHT.md: a `dometemple` flora row, glowing mushrooms / veins, the region under the night sky)
 - [ ] phone-fast: draws / tris reported per pass, held near ~100 calls / 450k tris
-- [ ] the door's interact point handed to the interior zone (`DOMET.door.enter`)
+- [x] (m2446) the door: the DOOR RITUAL (WORLD_PLAN s7, `DOORR`) on its seal, then `DOMET.door.enter` -> the interior (`foresttemple_in`); back out lands at the door (`at=door`)
 - [ ] **his sign-off, on his phone**

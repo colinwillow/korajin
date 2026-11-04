@@ -36,6 +36,37 @@ deg), the lake (.23 m, 1.3 deg) and the Sky Temple (.23 m, 2.7 deg). SNOW still 
 late spawn put, so while the entrance owns him the heading is pinned to the landing's (`cam.az = run.h` in `stepCam`). The card still lifted 12-21
 frames before the start in three zones: the 9 s cap ran out while a heavy zone was still building (headless is slow; a hot phone can be too) -- the
 cap is 30 s, and `ENTRY.why` records why the card is or is not held, for the next measure. Shipped unverified.
+## m2446 -- THE TEMPLE DOOR RITUAL (WORLD_PLAN s7): one shared system, a row per door; first on the Forest Temple's door (Nov 4 2026)
+His (via the parent session): *walk up -> the interact chevron -> tap -> a short automatic sequence: the camera eases slightly closer (no wild
+moves), he walks up, takes a crystal SHARD from his bag, sets it into the door's socket -> the door lights up (runes in that temple's Jinra
+colour) -> the giant stone door FLOATS up and out of the way -> a special 'you opened something' sound -> he can walk in.*
+- **`DOORR`** (SC_DOORR markers, after dmtStep). A ROW per door: `live`, `seal` () -> { at (doorway bottom centre), n (outward), w, h, depth,
+  mat, parent }, `col` (a JPAL key or hex: the temple's Jinra colour), `stand`, `sock` (socket height), `float` [up, out, side] (where the seal
+  hovers), `enter` (his crossing inward), `go` (the hand-off). A new temple door is one row. `DOORR.T` holds the beats, `DOORR.cam.dist` the dolly.
+- **The seal** (`doorSealBuild`, built on the first frame the zone is up): an arched slab in a smooth carved stone a shade darker than the wall
+  (`M.seal`), a RUNE PLATE over it (the night rune atlas, `nightRunes`, additive, black until lit), a gold socket ring with a dark cup, and a
+  soft radial glow. Its collider is a BDYN box that moves with it (off when the zone is not live).
+  **Landmine paid again:** the first build made the seal in `dmtStage`, which runs at module scope above `BDYN` -- `Cannot access 'BDYN' before
+  initialization` (caught headless, not shipped). Hence first-frame build.
+- **The sequence** (`doorTap` -> `doorStep`): `go` (the left stick is `doorSteer` -- he WALKS to `stand` m in front of the socket), `turn`
+  (`tossFace`), `take` (`hold_item` once if the rig has it, `DOORR.clip.take`; a shard grows in his hand on `pickHolder`), `fly` (it arcs
+  into the socket), `light` (the runes and the socket ease up in the Jinra colour; a soft clang + the sting `door_open`), `lift` (the stone sound,
+  a small shake; the seal eases OUT .55 m first, so it never cuts the wall, then up .7 and 3.6 m aside along the wall into the ambulatory and hovers,
+  bobbing). Then the gold leaves swing in (they now stay shut until the seal is gone) and walking through the arch calls `DOMET.door.enter`.
+- **Camera**: `cam.doorK` (one writer, stepCam) eases the lens 30% closer while it plays; azimuth untouched.
+- **No shard** (`DOORR.shards`, Infinity for now; GOD always has one): the chevron reads LOCKED, a tap is a soft thud, a toast "A SHARD FITS HERE"
+  and a faint flicker of the runes. The hook for the shard inventory.
+- **Sounds** (CC0, audio/door/CREDITS.txt, -9 dBFS peak): `door_open` A Achievement / B magic healing / C magic spell -- **TOOLS > DOOR SOUND
+  A / B / C** (his pick by ear, `mel.doorSnd`); `door_stone` = the CC0 stone door pitched down x.72 (2.3 s). `audio/door` added to bump's DIRS.
+- **The hand-off** (with the interior worker, who already shipped `foresttemple_in`): the default `DOMET.door.enter` loads
+  `?w=forge&zone=foresttemple_in`; coming back their ASCEND loads `?w=forge&zone=dometemple&at=door` -- he stands at the door facing out, the seal
+  already aside, and the ENTRY drop is skipped (`skip: DOMET.back`).
+- Headless (forge zone, 480x300): he walked from (1.5, 10.2) to (-.07, 8.17) (the stand point), took the shard, it flew in, K -> 1, opened 1,
+  the seal started its float (u .19 by the end of the run -- software GL steps slowly). The hover spot was checked by numbers: x 2.35-4.85,
+  z 7.24-7.56 clears the 75-degree column (z >= 8.85), the cella wall and his body (z >= 7.81).
+- NOT verified: the float's look in motion, the hold_item pose for "taking it from his bag" (it may read as a hold, not a reach -- `DOORR.clip.take`
+  is the dial), the sound picks. WHOLE-PIECE: a new shared system; the forest region's door box moves. Shipped unverified.
+
 ## m2444 -- FOREST TEMPLE: the way in is the DOOR RITUAL; two rows a rebase had dropped are back
 - The surroundings worker built the dome door's crystal-shard ritual (WORLD_PLAN 7): walking through the opened door calls `DOMET.door.enter`, which
   loads `?w=forge&zone=foresttemple_in`. That zone name is now an ALIAS of `ftemple` (the zone test, a ZONEWANT row, an ENTRY row `foresttemple` --
