@@ -29,6 +29,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2437 -- the load card really holds for the entrance now (Nov 4 2026)
+Measured m2426 headless (the camera pose for the first 60 frames after the card, per zone): the card lifted BEFORE the entrance had started -- the first
+frames were state "none" and the camera then moved 3-27 m. `entryRevealAfter` decided there was no entrance to wait for because Grumbo's drop clips
+(`fall_hero` / `land_hero`) load AFTER his rig reports ready: it saw a ready rig without them. It now also holds while the hero is Grumbo (the one
+with those clips), still under the 9 s cap. Shipped unverified; the re-measure follows.
 
 ## m2435 -- FLOATING BOULDERS: SAND (his m2429 note 2: "beautiful sand -- dunes, ripples -- footprints and pushed sand like the snow, subtler")
 - The pale floor and its rings are gone; the ground is a SAND heightfield in BOULDLIB (`F.sand`, 150 m, 150 seg): flat (y 0) inside `flatR` 26 m
