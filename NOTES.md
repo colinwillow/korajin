@@ -25,6 +25,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2427 -- the bow on the mammoth: the ridden body is never a lock, and mounted the aim RESTS 20 deg down (the stick still tilts it down or up)
+His (Nov 4, relayed): *"right stick up draws the bow; the reticle starts up in the air and settles -- on foot fine, but mounted it keeps sinking until it
+points STRAIGHT DOWN at the mammoth. The rest pitch must be relative to the rider's height: mounted, about 20 degrees below horizontal, still free to aim
+further down or up. Same for the gun / blast bow."*
+- Cause (read, not measured): `findLock` skipped only bodies closer than .4 m -- the mammoth he sits on is a DUMMY about a metre off, inside the cone,
+  so the aim LOCKED its chest under him and the eased height (`AIM.halfY`) sank onto it. `aimVert`'s height assist had the same hole. Now the ridden
+  mammoth (`MAMR.d` while `p.mamRide`) and any `tame` body are never a lock or a height target.
+- `ELEVAIM` (rest 20 deg, up 35 deg; `on` 0 = the A/B): mounted (mammoth or dragon) the BOW's unlocked aim (`bowAimDown`, used by `bowSolve` for every
+  arrow type incl. blast) is `bowDownA()` + rest - lift: the thumb below the draw's rest tilts further down as on foot; pushed ABOVE it (past
+  `BOW.downTop`, to the top of the pad) it lifts up to 35 deg, i.e. ~15 deg above level. The GUN (`aimVert`) rests at -20 deg mounted, its +-20 deg
+  height assist still reaching for a body. On foot both are 0, unchanged. Not "anywhere elevated": a roof or a ledge is still level (a mount only).
+- Not verified on a device. Test: ride the mammoth, draw the bow, then the gun. Box moved: none.
+
 ## m2426 -- jacking into a level: the first frame is the play camera's final pose (no close-up, no teleport, no swing) (Nov 4 2026)
 His (via main): *"when you jack into a level (the SNOW zone) the camera STARTS occluded -- a super close-up of a building -- then it moves around a lot,
 teleports, moves again, looks up into the air, and only then settles."* Two causes: the boot card lifted while the zone was still building and
