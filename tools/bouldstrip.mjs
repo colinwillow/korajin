@@ -14,7 +14,7 @@ const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k +
 const src = fs.readFileSync(path.resolve(ROOT, arg('src', 'index.html')), 'utf8');
 const m = /\/\/ BOULDLIB:START[\s\S]*?\/\/ BOULDLIB:END/.exec(src); if (!m) { console.error('no BOULDLIB markers'); process.exit(1); }
 const OUT = arg('out', path.join(ROOT, 'shots')); fs.mkdirSync(OUT, { recursive: true });
-const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 4), W: +arg('w', 480), H: +arg('h', 300), cols: +arg('cols', 2), frames: +arg('frames', 0), dt: +arg('dt', .5), night: +arg('night', 0), push: arg('push', ''), walkOn: +arg('walk', 0), list: +arg('list', 0) };
+const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 4), W: +arg('w', 480), H: +arg('h', 300), cols: +arg('cols', 2), frames: +arg('frames', 0), dt: +arg('dt', .5), night: +arg('night', 0), push: arg('push', ''), walkOn: +arg('walk', 0), list: +arg('list', 0), smash: arg('smash', '') };
 const page = `<!doctype html><html><head><script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script></head><body style="margin:0;background:#000">
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; window.ready = 1;</script></body></html>`;
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); if (u === '/' || u === '/b.html') { r.writeHead(200, { 'content-type': 'text/html' }); return r.end(page); }
@@ -31,6 +31,7 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
   sun.position.set(20, 30, 14); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, far: 120 }); sun.target.position.set(0, 0, -6); scene.add(hemi, sun, sun.target);
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(.32, 1.1, 6, 12), new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .7 })); body.castShadow = true; body.position.set(B.F.clear[0], .87, B.F.clear[1]); scene.add(body);
   await new Promise(go => setTimeout(go, 1500));     // the textures
+  if (o.smash) for (const id of o.smash.split(',')) { const r = B.rows.find(q => q.id === id); if (r) { B.knock(r, 1, .3, -1, 3); B.smash(r, 1, -1); } }
   const P = o.push ? o.push.split(',').map(Number) : null;     // --push=x0,z0,x1,z1: walk the capsule between two points during t (pass 2)
   const n0 = Math.round(o.t * 30); for (let i = 0; i < n0; i++) { if (P && B.player) { const k = i / Math.max(1, n0 - 1); body.position.set(P[0] + (P[2] - P[0]) * k, .87, P[1] + (P[3] - P[1]) * k); B.player(body.position.x, 0, body.position.z, (P[2] - P[0]) / o.t, (P[3] - P[1]) / o.t, 1 / 30); } B.step(1 / 30); }
   let list = o.shots.length ? B.F.shots.filter(s => o.shots.includes(s.id)) : B.F.shots;

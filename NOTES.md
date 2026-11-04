@@ -22,6 +22,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2420 -- FLOATING BOULDERS pass 3: BUMP / HIT / BREAK (BOULDERS.md)
+His: *"I also want to bump them around, slash and maybe break them."*
+- NO NEW HIT PATH: the field hangs off the three the game already routes to rocks. `strikeSweep`'s limb tip (every swing, kick, punch: power 1,
+  a body move 1.3) -> `bouldMelee`; `rockArea` (slam 2, the katana charge release 2.5, whirlwind 1.5, rockets / blast arrows 3) -> `bouldArea`,
+  knocking OUTWARD from the blow; `arrowStep` -> `bouldArrow` (along the flight, 1.4 full draw / .7). Grep `bould` for all three hooks.
+- `L.knock(r, dir, power)`: dv = power x J 5 / mass, capped 9 m/s, a third of it upward; a spin / sqrt(m); a per-rock cooldown .18 s so one
+  swing sweeping several frames is one knock. `L.breaks(r, power)` by `hit.breakS`: power 1 shatters only pebbles (s <= .35), 2 up to 1.0,
+  3 up to 1.3 -- the biggest never break. `L.smash`: the rock goes (scale 0, its shadow and wisps with it), 4-8 CHUNKS fly from it in one
+  instanced pool per species (+3 draws), gravity easing off and drag coming on so they FLOAT a moment, then shrink away (2.4-3.8 s).
+  It REGROWS after 14 s, swelling back over 1.4 s.
+- FX: stone dust in the species' colour, chips, a thud pitched by size; a break adds a clang and a small shake.
+- BUG CAUGHT BY THE GATE: `r.gone = T` was falsy at T = 0 (a rock smashed on the first frame never went). `gone` is a flag and `goneT` the time.
+  The boot gate (`MEL_WORLD='forge&zone=boulders'`) now fires a swing, a power-3 `rockArea` and an arrow and FAILS if nothing broke.
+- Strip (`npm run bouldstrip push --smash=b16,b42 --frames=6`): 13 chunks fly, hang and fade over 2.5 s; 17 draws while they live.
+- WHOLE-PIECE: moves box 5 (hit / break) -- pending his look. Open: night, aura, sign-off. Shipped unverified.
+
 ## m2419 -- FLOATING BOULDERS pass 2: PUSH THROUGH (BOULDERS.md)
 His: *"you can walk through them and it pushes them aside, a slight heaviness to them, but mostly just walking through."*
 - Every rock is a spring-damper on its OFFSET (`o`/`ov`) plus a SPIN (`w` -> `qd`); mass = `push.dens` 2.2 x s^3 (a pebble .004, the biggest ~20).
