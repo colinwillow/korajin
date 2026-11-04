@@ -43,6 +43,14 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
       then it's vulnerable -- run up its arm, hit the head; a few cycles; real strategy.
 - [ ] **Fix the enemy meshes** (the temple guys etc.) -- repeated, see the split item above.
 
+- [ ] **Nov 4 list** (also WORLD_PLAN.md for the big design): collision stuck on rims (basin edge, top of stairs); tread-water now too LOW;
+      jumping off the boat should DIVE; hero cracks smaller + STUCK TO HIM (they slide with the world); entrance: backpack/gear visible before the
+      portal, portal flat to the ground, NO camera move / no early reveal, minimal; interact marker = a small stylised Japanese chevron/arrow above
+      the seat/helm/door/chest (no big ring on the mammoth); lake foam/water/wake still weak + particles + WATER SOUNDS; the one song in every level
+      until more music; optimise heavy levels; drop the plain unarmed punch (keep flying punch, handspring, multi-flip cartwheel); katana charge
+      release directions on the RIGHT stick too (up to charge, then down-left / down-right / down); any attack swing blocks incoming arrows, right
+      stick UP and DOWN both parry, UP timed returns it; glider glow; enemies; village; bosses; gamepad.
+
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
 - [ ] **UI RINGS + REAL PLAY -- OPEN (his, Nov 2).** `UI_RINGS.md`: what he owns (`OWN`, grant/revoke, GOD = all), one ring layout for every pad
       button, then hp / lives / GAME OVER with GOD off. m2263 the rings + ownership; next the lives.
