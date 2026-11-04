@@ -33,6 +33,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2458 -- FLOATING BOULDERS: THE DESERT SKY as background AND light (his: "an HDR environment so we can see the full effect")
+- No HDR asset in the repo fits (`images/hdri_game` is the game's own), and nothing here fetches one, so the sky is PAINTED in BOULDLIB (`F.sky`):
+  a 1536 x 768 equirect on a canvas at build (three's mapping), dusty blue zenith into a warm haze, the sun's glow and disc on the game's OWN sun
+  direction (`_sunOff`, passed in as `O.sun`), three ranges of flat-topped MESAS (a sine-sum clipped hard into plateaus) hazed by distance, warm
+  sand below the horizon (so the bounce off the ground is warm too). ~100 ms once; no file, nothing to hash.
+- `bouldSky` (glue): prefiltered ONCE (PMREM) into `scene.environment`, and background + environment are HELD every frame (the snow's lesson: the
+  forge's own sky loads late and replaces whatever was set at build). Light `envK` .9 x (1 - .85 x night); past half night the background is the
+  NIGHT system's (stars) and only the dimmed light is held. The fog takes the sky's horizon colour, so the sand's far edge melts into it.
+- THE FORGE'S SNOWY LOW-POLY PEAKS (and its white floor), `CWALL.g`, are hidden in this zone -- in the real page they walled off the horizon and
+  read as a snowfield (the before/after strip). `mel.BOULD.sky = 0` before entry is the A/B. Draws unchanged. Shipped unverified.
+
 ## m2457 -- HIS ARROW CRASH, FOUND: `bowArc` assigned to a CONST (`sc *=`, m2428's on-screen ring cap); + BOULDERS scree, sparkle
 - **THE m2429 CRASH WAS THIS, NOT `bowArcHit`.** m2428 capped the bow's landing ring on screen with `if (BARC.maxPx && px > BARC.maxPx) sc *= ...`
   -- but `sc` was declared in `const E = ..., sc = ...` two lines up. "Assignment to constant variable" fires only when the ring is BIG on screen,
