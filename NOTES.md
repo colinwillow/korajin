@@ -32,6 +32,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2457 -- HIS ARROW CRASH, FOUND: `bowArc` assigned to a CONST (`sc *=`, m2428's on-screen ring cap); + BOULDERS scree, sparkle
+- **THE m2429 CRASH WAS THIS, NOT `bowArcHit`.** m2428 capped the bow's landing ring on screen with `if (BARC.maxPx && px > BARC.maxPx) sc *= ...`
+  -- but `sc` was declared in `const E = ..., sc = ...` two lines up. "Assignment to constant variable" fires only when the ring is BIG on screen,
+  i.e. when the arc lands CLOSE to the lens -- aiming at a boulder a few metres away. Far shots never reach the line, which is why 500 headless
+  arrows at the field's far rocks never threw and why his card came "after shooting arrows for a while". The boot gate's barrage found it the
+  moment the field got more rocks near him (the scree). `const E ...; let sc = ...` now. The m2430 guard on `bowArcHit` stays (harmless), but
+  its diagnosis was wrong: **a stack line's column is not proof -- the throw was two lines further down in the same function.**
+- SCREE (`F.scree`, his: "many more small and medium rocks, half-buried, in clusters and drifts, kickable"): 34 clusters of 4-12, stretched
+  ALONG the wind into drifts, .05-.55 m (skewed small), each sunk .25-.6 of its half height; ~190 of them, low-poly (icosphere d3, 320 tris: 3
+  more instanced draws). On the sand they are KICKABLE and STAY where they slide to (sand friction 4.5/s, no spring home); they still bob up
+  off a knock and settle. FEWER FLOATERS: 48 -> 32, the biggest 2.1 -> 1.7 m. Rocks ~248, frame ~216k tris, 25 draws.
+- SAND GLINTS: in the sand shader a grain in ~140 per 2 cm cell catches the light as the view moves (view-dependent twinkle), faded where the
+  cells go sub-pixel. Shipped unverified.
+
 ## m2456 -- FLOATING BOULDERS: SAND DUST (his: "dust and sand KICK-UP from every footstep, run, roll, landing and slide")
 - One more Points in BOULDLIB (`F.sdust`, 520 slots, normal blending, sizes in metres): a PUFF (`L.kick`) is thrown out low and slow, grows,
   SINKS back under a little gravity (.5) and drag and fades -- dust, not the game's smoke (which rises); GRAINS (`grain: 1`) are small and heavy
