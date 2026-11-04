@@ -34,6 +34,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2468 -- THE COMBAT LAB pass 2: AI THAT FIGHTS (his: "if I'm ever in parry/block they just never attack -- I want them to attack so I can block")
+- `cbtStep` (SC_CBT) on every free arena body, after `arenaFight`: TOKENS -- at most 1 / 2 / 3 bodies (EASY / MEDIUM / HARD) winding up or
+  swinging at once, the rest CIRCLE (`arenaCircle`) at their spacing; PRESSURE -- a guard he HOLDS (`p.block` or the ice shield) is read after the
+  level's `react` x his jitter, and the body walks in and swings, so the block and the parry get used; held past `turtle` (2.4 / 1.6 / 1.0 s)
+  the next swing is UNBLOCKABLE (`d.unbl`: the chop where the kind has one, the weapon burns RED, `FOE_UNBL` makes `playerHurt0` take it as a
+  guard break) -- dodge it. GLINT at every wind-up (`cbtGlint`): a star on the weapon + a ring, WHITE = block/parry, RED = dodge. FEINT on
+  MEDIUM (.15) / HARD (.3): the raise held x1.7, so a parry on the count misses.
+- The mirror samurai: `mirrorSee` now counts the shield guard as a turtle too (`cbtGuarding`), so he chops it.
+- The lab readout's third line: `ai press / red / feint / wait`.
+- Not yet: the horde, the archers, the creatures and the guardians are untouched (their own brains). Moves COMBAT.md pass 2; no enemy box
+  ticked. `npm run check` ok. Shipped unverified.
+
 ## m2466 -- THE COMBAT LAB, pass 1 (COMBAT.md; his: "a sandbox that is purely combat, to test every single enemy... I can destroy every boss in a few seconds")
 - COMBAT.md written first: the six-verb triangle (attack / guard / parry / guard-break / dodge / unblockable) with timing windows, poise and
   armour, the group rule (attack tokens; a guarding player is a TARGET), the roster by WORLD_PLAN slot against what exists, the boss pattern
