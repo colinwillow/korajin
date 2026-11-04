@@ -35,7 +35,7 @@ index.html (SC_DESERTKIT markers):
 | sky | -- | 0 | night system | painted equirect, PMREM light |
 | stone FX + sounds | -- | 0 | -- | audio/stone, CC0 |
 
-Built kit rows: ARCHITECTURE (m2475, `dkMake`: block, steps, column, ziggurat, obelisk, arch, carved panel -- restored + ruined, `bury`; the row at `?at=kit`); OASIS (m2477: pond, palm, reeds, lily -- the row behind); PROPS (m2480: urns (break), brazier (flame), banner (sways), bones, relic).
+Built kit rows: ARCHITECTURE (m2475, `dkMake`: block, steps, column, ziggurat, obelisk, arch, carved panel -- restored + ruined, `bury`; the row at `?at=kit`); OASIS (m2477: pond, palm, reeds, lily -- the row behind); PROPS (m2480: urns (break), brazier (flame), banner (sways), bones, relic); LIFE + ATMOSPHERE (m2481, in the field: lizards that flee, birds, dust devils, sand snakes, a mirage band).
 
 Phone budget for the field as built: ~26 draws, ~250k tris a frame. Still to make for the region: architecture (temple / pyramid modular
 pieces), props, water (an oasis), life (lizards, birds), atmosphere (heat shimmer, sandstorm), the region's enemies -- each a kit row first.

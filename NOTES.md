@@ -37,6 +37,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2481 -- THE DESERT KIT, pass A4: LIFE AND ATMOSPHERE (in the field, BOULDLIB `F.life`)
+- LIZARDS (7, one instanced draw, a merged sand-and-teal body / head / tail / legs): BASK, dart in short runs, and SCURRY off in a zig-zag at 5.5 m/s
+  when he comes within 3.6 m, kicking little puffs; they stay in the field.
+- BIRDS (6, one instanced draw): wheeling 22-38 m up on their own circles, wings FLAPPED in the vertex shader (phase from the instance position).
+- DUST DEVILS (2, one Points on the sand-dust material): a spiral of 90 puffs per devil, widening up to 7 m, wandering the field for ~22 s at a time
+  then resting; at its foot it kicks the sand-dust pool and SNATCHES UP LEAVES (spun round it).
+- SAND SNAKES (12 streaks, one merged draw): low ribbons of blown sand along the wind, a scrolling two-scale noise in alpha, draped on the sand.
+- MIRAGE: a shimmering band (an open cylinder, back side, at 66 m) -- warm at the foot, sky at the top -- the heat shimmer without a post pass.
+- +5 draws (~29 with the shadow pass), +~3k tris. Strips `devil` / `lizard` (`track:` shots). First cut: the devil's dust too faint (.32 alpha,
+  small puffs) and the lizard too small for the camera -- both raised. Not checked in a strip: the birds. Shipped unverified.
+
 ## m2480 -- THE DESERT KIT, pass A3: PROPS
 - `dkMake` gains six pieces (restored + ruined), the PROPS row at z +40 / +46 on the kit floor: URN (a lathed amphora) and URN2 (a squat jar) --
   clay with painted bands and a glyph-motif band, BREAKABLE; BRAZIER (a stone pedestal, a bronze bowl, a FLAME of two crossed additive cards with a
