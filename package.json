@@ -37,7 +37,8 @@
     "nightshot": "node tools/nightshot.mjs",
     "lakestrip": "node tools/lakestrip.mjs",
     "bouldstrip": "node tools/bouldstrip.mjs",
-    "hitch": "node tools/hitch.mjs"
+    "hitch": "node tools/hitch.mjs",
+    "foreststrip": "node tools/foreststrip.mjs"
   },
   "type": "module",
   "devDependencies": {

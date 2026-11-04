@@ -56,6 +56,36 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - **STILL OPEN (pass 2):** the ship cloth (`shipCloth`, `computeVertexNormals` every frame in the arena and the Garden -- built even where the
   ship is off screen), `boxesNear`/`groundAt` garbage, `warmKind` (a disguise retarget, 20+ ms here) for each kind that arrives AFTER the
   card -- the snow's calves, mammoth and dragon, every arena wave -- and the snow's 655 KB of buffer uploads a frame.
+## m2433 -- FOREST REGION pass 1: the temple hidden in a valley; he lands at the region's EDGE and has to find it (Nov 4 2026)
+His: *"It's a good start but it's very local -- you jack in and you're right at the entrance. Temples will be in somewhat hidden parts of the
+broader map."* New doc **FOREST_REGION.md** (vision, map sketch, data, DONE WHEN; the last box is his).
+- **`FREG`** (SC_FREG markers, after SC_DOMET): one local origin (the temple's centre, unchanged), a disc footprint R 222 m, and an EDGE wall
+  (r 174-192, steep) open only where it meets the wider world (`edge.links`: `trail_out`, south, blocked by the `trail_end` boulders for now).
+- **`frgH(x, z)`** is the one height function: a HIDDEN VALLEY (flat to r ~47, cliffs to a 21 m rim by r ~67, radii wobbling with the angle),
+  a rolling PLATEAU above (rising 6 m toward the edge), a winding GORGE through the rim at the temple's front (the only way down: floor 0 at its
+  mouth -> 22 m at its head, max ~15 deg, walls 2.7 m per m), and the ARRIVAL knoll (+13 m) at (-36, 170).
+- **The terrain** (`frgTerrain`): a 2.5 m grid, each triangle to the forest floor (grass) or, if steeper than .72, the cliff rock
+  (`garden_rock`, mossy tint). 53.8k tris. Path stones are ribbons laid on it (`frgRibbon`): the gorge, the trail, the trail out.
+- **Collision on the real triangles**: `COLL.zones.dometemple` (def mesh, `force: 1` -- the terrain has no BOXES fallback, so TOOLS > COLLIDER
+  BOXES does not apply here; `collTick` honours `force`). The terrain carries `userData.coll` (its material's name, grass, is otherwise
+  foliage) and `noLedge`. Every box the temple and the trunks push is `collKeep` -- without it `collMark` called the plinth's .3 m first tier
+  and the first stair step "drawn" (the ground within .5 m of their tops) and the stair would have become a wall. Measured: 53,762 tris,
+  48,540 floors, 5,222 walls, built in 70-150 ms headless, rep 0.
+- **ARRIVAL OFF THE DOOR**: the ENTRY row `dometemple` lands him on the knoll (2-element `at`, so it ground-snaps) and waits for the collider
+  (`ready`: COLL built). `dmtStage` stands him there facing the temple and `dmtStep` holds him up until the collider exists (headless, the first
+  run fell through the terrain to the forge's floor at 0 before it was built). Menu text changed to "find the way down".
+- **Sightline**: from the knoll the colonnade shows through a gap far below in the haze (the `glimpse` tile). Kept by `frgKeepOut`'s lane --
+  no tree of any ring and no ground cover within the lane from the knoll to the dome.
+- **Trees**: every giant now stands on `frgFoot` (the lowest ground under its flare) and its trunk box runs from there. m2148's deep ring
+  (44 at r 74-100) is replaced by 78 PLATEAU giants spaced 15 m (`FREG.forest`, cheap crowns: det-1 blobs, 4 card pairs, 8-sided trunks).
+  700 ground-cover plants along the trail, the gorge and the knoll (flat ground only). The backdrop ring moved 130 -> 330 m, fog 34/150 -> 60/290.
+- **Door hand-off** (coordinated with the interior worker by message): `DOMET.door = { at, yaw, out, enter }` -- the interior sets `enter`.
+- **`npm run foreststrip [ids] [--night=1]`** (new): boots the shipped page at the zone, waits for the collider, renders `FREG.shots`
+  (eye/target heights over frgH) into one contact sheet with calls/tris per tile.
+- **COST** (headless, per shot): 62-92 calls, 390-437k tris (the clearing alone was 55-67 / 330-360k).
+- CRAFT checked: the trees' footing (no floating flare on slopes), path stones on the ground (+4 cm), wide + close renders. NOT yet: the forest
+  kit, giant scale, water, the traversal toys, night -- all still open in FOREST_REGION.md. WHOLE-PIECE: moves box 1 of FOREST_REGION.md only.
+Shipped unverified.
 
 ## m2431 -- FLOATING BOULDERS: CONTACT (his m2429 note 1: "he walks INTO the rocks -- they push, but he still sinks into them")
 - Each rock collides as the ELLIPSOID of its own mesh's half extents (`r.e`, measured off the variant's geometry at build) x `solid.fit` .92
