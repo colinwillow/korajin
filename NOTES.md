@@ -20,6 +20,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2410 -- ONE MARKER for everything you can use (a Jinra chevron over the spot); the mammoth's big ring is gone; the one song plays in every level (Nov 4 2026)
+Via main: *"remove the giant ring around the mammoth that shows you can mount it. One standard marker for every interactable: a small stylised
+Japanese-style 3D CHEVRON -- a diamond with its top cut off, pointing down -- floating just above the exact spot, gently bobbing, Jinra-coloured,
+appearing when in reach"* and *"levels are silent -- for now play the one song in every level, continuous, with the existing MUSIC toggle"*.
+- `interactStep`'s cue is now that chevron: a four-sided point under a flat-topped collar (two small meshes + an additive shell, `depthTest` off so
+  a rail or a mane cannot hide it), turning slowly, bobbing; `o.up` (default .75 m) is how far over the registered `pos`. TOOLS > LOOK > INTERACT
+  MARKER: ON / OFF (was INTERACT CUE: RUNE). Every registered interactable gets it (Lake helm / boarding, the garden's hammock / beam / bell, ...).
+- THE MAMMOTH joins the registry (`mam.ride`, RIDE, pos = `mamSeat`, near = `mamNear`, act = `mamTap`); its torus ring and the big cone arrow are
+  never shown now (`mamFrame`); the right pad still glows, the tap still mounts, the fall-onto-the-seat catch is untouched.
+- MUSIC: `musicWant` returns `MUSIC.menu` (Forgotten Garden) everywhere once the menu is past -- the same key as the menu and the garden, so it
+  never restarts across the load; the MUSIC toggle still turns it off. Per-region tracks later: a zone test in `musicWant`. Shipped unverified.
 ## m2409 -- THE LAKE: tread height in the middle; jumping off the boat DIVES (his Nov 4 notes 1-2) (Nov 4 2026)
 1. *"Treading water is now too LOW -- meet in the middle: shoulders / collarbone at the waterline."* m2381 took 1.35 m off a 1.75 m body; the RIG is
    ~1.25 m (MOVE's own note), so the collarbone is ~1.0 m over his feet: `sinkClip.swim_idle` 1.0 (swim stays .62).
