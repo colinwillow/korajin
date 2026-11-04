@@ -20,6 +20,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2416 -- the entrance, minimal: a FLAT portal above the landing, he drops DOWN through it, the play camera never moves, nothing of him shows first (Nov 4 2026)
+His notes (firm, via main): *"(1) the backpack / any worn or held item is visible before he comes through -- hide EVERYTHING until he emerges. (2) I keep
+saying PARALLEL to the ground -- flat above the landing, drop him DOWN out of it. (3) NO CAMERA MOVES -- the normal player camera from frame one; a level
+currently shows him standing on the ground first, then the camera goes wild, then the portal. (4) MINIMAL and brief: open, he comes down, lands, it
+closes."*
+- **Flat** (`ENTRY.flat`): the portal lies parallel to the ground straight over the landing (`pDist` 0), `pH` 2.9 m up (inside the play camera's frame:
+  3.6 sat on the top edge, rendered), `pScale` .5. He is held just above its face and DROPS through; the threshold clip plane faces down, so he
+  appears as he passes it. No flip (`flipT` 0), no throw.
+- **No camera moves**: while the entrance owns him, `stepCam` aims the PLAY camera at the LANDING (`ePos` = the run's spot) instead of at him, so it
+  never climbs to the portal; rendered: the camera sits at the same point from the first frame to the last.
+- **Never seen first**: while an entrance is PENDING for this level (from the first frame until it fires, 10 s cap), he is not drawn; and right
+  before every render while hidden, EVERYTHING on him is switched off -- his rig, the wing PACK (`WG.g`, which re-shows itself every frame) and the
+  SHIELD (`SHIELD.mesh`). The spawn blink can no longer reveal him either.
+- **Minimal**: no warp snapshot (`warp` 0 -- no second render), no arcs, a light corona; the hole is a soft violet see-through tint inside the wobbly
+  glowing lip. The goop slam, the surface kick-up and the quiet portal sounds stay; the sigil stays off.
+- Shipped unverified.
 
 ## m2414 -- three melee changes: the plain punches out of the unarmed set; the RIGHT stick picks the charge release too; swings, the held charge and a timed up-release beat arrows
 His (Nov 4, relayed): (1) *"remove the plain basic forward punch; keep the flying punch, the handspring and the multi-flip cartwheel"*; (2) *"keep the
