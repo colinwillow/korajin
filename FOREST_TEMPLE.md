@@ -1,4 +1,4 @@
-# THE FOREST TEMPLE -- the real temple, below (KORAJIN > Forest Temple Kit `?w=forge&zone=ftkit`; the interior `?w=forge&zone=ftemple` from pass 3)
+# THE FOREST TEMPLE -- the real temple, below (KORAJIN > Forest Temple Kit `?w=forge&zone=ftkit`; chamber 1 `?w=forge&zone=ftemple`)
 
 ## Vision (his words, Nov 4 2026, WORLD_PLAN.md section 2)
 *"The above-ground part is the tip of the iceberg -- the door. The real temple is massive, inside, underground."*
@@ -58,8 +58,8 @@ the walls -- and, at the bottom, the boss who holds the forest's JINRA STONE. Ev
 | `guardian` | a carved guardian on a plinth, a mask head with lit eyes, a spear (a stand-in for his sculpt) | plinth, body |
 
 ## Passes
-1. **THE KIT** -- every piece above in rows on a flagstone floor, then put together on a 3 m terrace (row C). Strip + numbers.
-2. **CHAMBER 1: THE ACROBATIC ROOM** (WORLD_PLAN 5) -- three storeys (ground, rim 1 at ~6 m, rim 2 at ~12 m, the top at ~18 m). Get up to the
+1. **THE KIT** (built) -- every piece above in rows on a flagstone floor, then put together on a 3 m terrace (row C). Strip + numbers.
+2. **CHAMBER 1: THE ACROBATIC ROOM** (WORLD_PLAN 5; built -- the route is in NOTES) -- three storeys (ground, rim 1 at ~6 m, rim 2 at ~12 m, the top at ~18 m). Get up to the
    first rim (stairs + a ledge climb); ARCHERS on the far rim across the gap (the existing archer, `ARCHER` / `archerAI`); a WALL RUN to the next
    ledge; a melee scrap on rim 2; on up by MONKEY BARS / the HIGH BAR / a TIGHTROPE / a MOVING PLATFORM; an ARROW SWITCH on the far wall that
    moves the platform; the BUTTON at the top opens the ground-floor door; back down; the last fight; ROOM CLEARED (a chime). Mesh collider row

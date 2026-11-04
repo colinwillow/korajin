@@ -30,6 +30,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2441 -- FOREST TEMPLE pass 2: CHAMBER 1, THE ACROBATIC ROOM (FOREST_TEMPLE.md; KORAJIN > Forest Temple: The Acrobatic Room, `?w=forge&zone=ftemple`)
+WORLD_PLAN 5, built from the pass-1 kit plus twelve new pieces (`rim`, `block`, `marks`, `ladder`, `monkey`, `rope`, `target`, `mover`, `hbar`,
+`plate`, `zip`, `hangroots`); the room is the `rooms.in` set of the same `SC_FTEMPLE` table (59 rows, stable ids `r1_*`).
+- THE ROOM: 32 x 42 m, 22 m walls, storeys at 0 / 6 / 12 / 18. Route: spawn south -> .30 stair to the 3 m landing -> block (4.4) -> RIM 1 east (6)
+  under the two ARCHERS on the west rim, 24 m across the gap -> WALL RUN on the east wall (glowing chevrons) over a 9 m drop -> the NORTH GALLERY (6):
+  two samurai wake when he steps on it -> LADDER to the upper north rim (12) -> MONKEY BARS (hung from stone beams out of the wall) to the NW tower ->
+  TIGHTROPE 17 m south to the W tower -> shoot the ARROW SWITCH on the east wall (30 m) -> the STONE SLAB wakes and shuttles 9.5 m -> the HIGH BAR on
+  chains from a beam -> the SOUTH RIM (12) -> blocks 13.5 / 15 / 16.5 -> the TOP (18): the BUTTON -> the door below swings open, the LAST FIGHT
+  (two samurai + a bigger one) comes out of the antechamber -> the ZIP from the top to the ground -> all down: ROOM CLEARED (banner + chime).
+- Into the game's OWN systems on the first frame (`ftinReg`, never at module scope): `kitClimbAdd` (mark + climbing side), `MBAR`, `gymRopeMake`,
+  `hbarMake` (bare), `ZIPS`, the slab a `BDYN` box that carries him (`ftinMovers`, the level builder's pattern). Foes: `archerPost` (they stand and
+  shoot) and `bodySpawn` SAMURAI as `spawnSam` with `hordeHp` set so they die; "all down" = none left in `HORDE.list`. STAND-INS until the temple roster.
+- Out of bounds / a fall puts him back at the spawn. `COLL.zones.ftemple` row (boxes by default: every solid is a box; MESH on TOOLS > COLLIDER).
+- Numbers (`npm run ftstrip --set=in`): **27 draws, 40.3k tris** (worst view 25 calls incl. shadows), 57 boxes, build 130 ms. Boot gate: a new
+  `MEL_WORLD='forge&zone=ftemple'` scenario builds, registers, shoots the switch (the slab wakes), presses the button (the door opens), breaks a pot.
+- CRAFT: the monkey bars and the high bar HANG from beams anchored in the wall; the rope is tied to bollards on the tower tops; hanging roots come down
+  the wall faces and stop above the highest rim on each wall (`minY`), so none pierces a deck; the zip runs post to post, clear of everything.
+- WHOLE-PIECE: built on the pass-1 kit (unsigned) -- it is the same sandbox's next box, not a level built on top of it. Moves box 4 (chamber 1 plays)
+  pending his phone. Untested on a body: the wall-run gap (9 m), the slab-to-bar reach (3.5 m out, 2.6 up), the bar-to-rim release (6 m). Shipped unverified.
+
 ## m2440 -- FLOATING BOULDERS: ALIEN PLANTS and BLOWING LEAVES (his m2429 note 4)
 - Four plant kinds BUILT in BOULDLIB (merged, vertex-coloured, one InstancedMesh each, one shared material): an alien CACTUS (a 9-rib lathe column,
   S-bent, three elbowed arms, pink glowing-ish buds; teal into violet), a few GREEN ones (`cactusG`, same build, green into lime, cream buds), a
@@ -72,7 +92,6 @@ with those clips), still under the 9 s cap. Shipped unverified; the re-measure f
   + puff for a hard landing, a smear for a roll. The mesh is named `boulders:sand` (the footstep classifier's SAND word).
 - In the real page the forge's own grid floor sat exactly at y 0 and covered the flat sand -- the sand is lifted 1.5 cm; and the forge's bright
   light washed the first colours to white, so they went deeper. Draws 16 (the rings went), +45k tris for the ground. Shipped unverified.
-
 ## m2434 -- FOREST TEMPLE INTERIOR pass 1: THE KIT (FOREST_TEMPLE.md, KORAJIN > Forest Temple Kit, `?w=forge&zone=ftkit`)
 His (via main, Nov 4): *"the above-ground part is the tip of the iceberg / the door; the real temple is massive, inside / underground"* + WORLD_PLAN 1
 (the kit before the place). New sandbox; FOREST_TEMPLE.md has the vision, the chamber map, six passes and DONE WHEN (last box his phone).

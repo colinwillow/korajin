@@ -27,14 +27,14 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
   const W = o.W, H = o.H, R = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); R.setSize(W, H); R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.NeutralToneMapping; R.shadowMap.enabled = true;
   const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(55, W / H, .1, 400);
   const L = new Function('THREE', 'O', code + '\nreturn ftkMake(THREE, O);')(THREE, { tex: p => './' + p, pal: { glow: 0x7affd8, core: 0xe6fff8, deep: 0x1f8a74, spark: 0xb6ffe8 }, set: o.set }); const build = performance.now() - t0;
-  scene.add(L.group); const E = L.F.env, N = o.night ? E.night : E;
+  scene.add(L.group); const E = Object.assign({}, L.F.env, L.S.env || {}), N = o.night ? E.night : E;
   scene.background = new THREE.Color(N.bg); scene.fog = new THREE.Fog(N.bg, N.fog[0], N.fog[1]);
   const hemi = new THREE.HemisphereLight(N.sky, N.ground, N.hemi), sun = new THREE.DirectionalLight(N.sunC, N.sun); sun.position.set(...E.sunDir.map(v => v * 40)); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, { left: -45, right: 45, top: 45, bottom: -45, far: 140 }); scene.add(hemi, sun, sun.target);
-  const sp = L.F.spawn, body = new THREE.Mesh(new THREE.CapsuleGeometry(.32, 1.1, 6, 12), new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .7 })); body.castShadow = true; body.position.set(sp.at[0], sp.at[1] + .87, sp.at[2]); scene.add(body);
+  const sp = L.S.spawn, body = new THREE.Mesh(new THREE.CapsuleGeometry(.32, 1.1, 6, 12), new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .7 })); body.castShadow = true; body.position.set(sp.at[0], sp.at[1] + .87, sp.at[2]); scene.add(body);
   await new Promise(go => setTimeout(go, 2500));     // the textures
   for (let i = 0; i < 30 * o.t; i++) L.step(1 / 30);
-  const list = o.shots.length ? L.F.shots.filter(s => o.shots.includes(s.id)) : L.F.shots;
+  const list = o.shots.length ? L.S.shots.filter(s => o.shots.includes(s.id)) : L.S.shots;
   const cols = Math.min(o.cols, list.length), rows = Math.ceil(list.length / cols);
   const out = document.createElement('canvas'); out.width = cols * W; out.height = rows * (H + 20) + 22; const c2 = out.getContext('2d'); c2.fillStyle = '#000'; c2.fillRect(0, 0, out.width, out.height); c2.font = '12px monospace';
   let calls = 0, tris = 0;
