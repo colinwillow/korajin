@@ -29,9 +29,9 @@ for (const z of zones) {
   try {
     await page.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=${z}&entry=0`, { timeout: 240000, waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => document.getElementById('boot').classList.contains('gone') && window.__shot && window.mel, null, { timeout: 240000, polling: 1000 });
-    await page.evaluate(() => { try { if (mel.REEL.on) mel.reelSkip(); } catch (e) {} });
+    await page.evaluate(() => { try { if (mel.REEL.on) mel.reelEnd(); } catch (e) {} });
     await page.waitForTimeout(+arg('settle', 8) * 1000);
-    await page.evaluate(() => { try { if (mel.REEL.on) mel.reelSkip(); } catch (e) {} });
+    await page.evaluate(() => { try { if (mel.REEL.on) mel.reelEnd(); } catch (e) {} });
     const res = await page.evaluate(([N, BLK, SEED, RAD, SHOT]) => {
       const { renderer: R, scene, camera, stepCam, cam, player: p, rig, groundAt, THREE } = window.__shot, S = mel.SCAM, gl = R.getContext();
       let sd = SEED; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;

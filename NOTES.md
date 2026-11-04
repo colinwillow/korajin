@@ -34,6 +34,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2462 -- SMART CAMERA pass 3: when nothing clears from above, come IN at the same pitch, else see THROUGH it
+- Measured (`npm run smartcam snow`, sample #34 under a timber deck): with no pitch clear the drone took `elMax` AND pulled the boom to 2.5 m,
+  so the lens sat jammed against the beam at a pitch that did not help (visible .27 -> 0). Now: no clear pitch -> lift 0 and the boom comes
+  IN past the nearest hit at the shot's own pitch (`cap`); if even `CAM.min` is behind it, that mesh gets the dither (the kit x-ray's answer),
+  held while the big hit lasts (`SCAM.thruAt`). Never a jammed lens.
+- The five-zone pass so far (m2460 build): boulders 2/2 blocked views cleared by the dither (0 -> .75, 0 -> .68); snow 1 cleared by a .1 rad
+  lift (.08 -> .65); the forest temple and the sky temple had 0 blocked samples in 40 round the spawn; the rest of the snow "blocked" rows
+  (.37-.47 visible) are his legs in DEEP SNOW (looked at: no occluder, the snowfield's own depth), which is right and not the camera's.
+- `npm run smartcam` ends a playing reel outright (`reelEnd`): the garden opens in the prologue and `reelSkip` eases back too slowly headless.
+  Garden + snow re-run in flight. Shipped unverified.
+
 ## m2461 -- FLOATING BOULDERS: THE SAND MOVES (his: "it still feels like a flat plane -- it doesn't feel like I'm wading through sand")
 He described sand as nearly a liquid (C4D's grain solver) -- too costly, so it is FAKED round him:
 - ONE FIELD, two channels: height `Hh` (m) and disturbance `Gd`, 512^2 over 50 m (~10 cm cells), shipped as an RG8 texture (unit .15 m),
