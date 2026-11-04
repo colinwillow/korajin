@@ -42,6 +42,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2486 -- the fern sits ON its floating boulder; the transition petals grow out of him<!--mine-->
+His two notes on the title screen.
+1. "A fern floats ABOVE the boulder" (`near_rock_b`, `kind: 'floater'`, `top: 'fern'`).
+   - The topper was seated at `I.surf(0, 0)`, the analytic LAWN height of `gdnIsleGeo`. But `loopIsle` adds a separate rock body
+     (`loopRockGeo`), so the lawn height is not the rock's top.
+   - Every floater topper (fern / toro / flag) now sits on the MEASURED top: the highest built vertex within .3 s of the centre, less .03 m.
+   - It is merged into the same band as the rock, so it moves with it.
+2. "When he presses START the petals just APPEAR".
+   - Each petal now GROWS from 8% to full size over `growIn` .45 s and fades in over `fadeIn` .4 s (it was full size, 0.2 s alpha).
+   - It leaves its body part with THAT PART's own screen velocity (`PV`, smoothed), so they are flung out of his rotation, not just his drift.
+   - The first burst of 70 is staggered over .3 s, not .12.
+Shipped unverified.
+
 ## m2485 -- FLOATING BOULDERS AT NIGHT: no hard line, no static (his m2481 night shot, images/feedback/m2481/boulders_night_hard_edge.png)
 His: a big smooth dark-violet DISC round him with a crisp edge against a noisy speckled crust (the crust reads as pixel static at night).
 - STATIC: the crust's own grain was fed into the NORMAL at fixed texel steps with no regard for distance -- sub-pixel detail flickering as
