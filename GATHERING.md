@@ -61,10 +61,10 @@ Where it lives: **KORAJIN > The Gathering** (`?w=forge&zone=gathering`, `GATHER`
 - [x] Pass 1 (m2443): the arena, the six torches burning Jinra, the pedestal and the crystal, the GET pose, the drain streams, the crystal filling, the torches going warm -- strip in NOTES m2443.
 - [x] Pass 2 (m2448): the valley FALLEN by default and the REJUVENATED wave spreading from the crystal (haze, grass, trees, water, lanterns) -- strip in NOTES m2448.
 - [x] Pass 3 (m2449): Moment 2 -- the socket, the beam to the sky temple, the fallen city rising and floating -- strip in NOTES m2449.
-- [ ] Pass 4: sound (a swelling choir / chime, CC0, credited like `audio/portal`) and polish.
-- [ ] RESET replays it all, any number of times, with nothing left over (no stuck streams, no double pieces).
-- [ ] Phone-fast: the draws and tris of the whole zone reported; the drain adds a handful of draws at most.
-- [ ] Normal play camera throughout (no wild moves).
+- [x] Pass 4 (m2450): sound -- a swelling pad, a harp on full, bell chimes, a wave and a rise cue; CC0, `audio/gathering/CREDITS.txt`; lazy-loaded (NOTES m2450). His ear picks.
+- [x] RESET replays it all (m2450: torches, crystal, wave, city via `restoreSet(R, 0)`, comets ended, FX cleared, voices hushed -- measured 0 live voices after a reset mid-drain; `Z.rang` replay bug fixed).
+- [ ] Phone-fast: reported on the strips (67-144 DC, 17-65k tris, the wide shot included); the drain adds no draws (the FX library is a constant 8, the flames one Points). Wants HIS phone's frame rate.
+- [x] Normal play camera throughout -- the moments never touch `cam` except to face him to the lens / out from the dais (m2443, m2449).
 - [ ] **His sign-off, on his phone.**
 
 ## OPEN

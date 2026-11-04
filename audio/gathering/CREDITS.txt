@@ -1,0 +1,8 @@
+The Gathering's sounds (GATHERING.md; trimmed, faded, mono, levelled to -9 dBFS peak). All CC0 -- no credit required.
+gath_swell_a  -- "Heavenly Loop" by isaiah658 (0-8.5 s, faded in 2.5 s), CC0. https://opengameart.org/content/heavenly-loop
+gath_wave_a   -- "Ethereal" by wipics (0.1-9.1 s), CC0. https://opengameart.org/content/ethereal
+gath_rise_a   -- "Cathedral" by Umplix (0-11 s), CC0. https://opengameart.org/content/cathedral-0
+gath_full_a   -- "Magic Words + Healing Sound Effect" (health_restore, the harp) by Spring Spring, CC0. https://opengameart.org/content/magic-words-healing-sound-effect
+gath_chime_a, gath_chime_b -- "Bell dings/chimes" (bell_ding3 / bell_ding1) by pwl, CC0. https://opengameart.org/content/bell-dingschimes
+Roles (GATHER.snd): swell = under the drain, full = the crystal's flash, chime = the crystal in his hands / the runes lighting, wave = under the
+rejuvenation wave, rise = under the city rising. Each role is a key in SFX.files; a swap is one path.

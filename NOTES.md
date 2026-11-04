@@ -30,6 +30,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2450 -- THE GATHERING pass 4: SOUND (CC0) and the replay (GATHERING.md)
+Six cues, all CC0 from opengameart (licence field read on each page, credited in `audio/gathering/CREDITS.txt` like `audio/portal`), trimmed,
+faded, mono, levelled to -9 dBFS peak: **swell** ("Heavenly Loop", a dreamy pad, 8.5 s, 2.5 s fade-in) rises under the drain from 1.0 s; **full**
+("health_restore", a harp) on the crystal's flash; **chime** (two bell dings) when the crystal reaches his hands and when the socket's runes light;
+**wave** ("Ethereal", 9 s) under the rejuvenation wave; **rise** ("Cathedral", 11 s) under the city rising. `GSND.files` is the role table (index 0
+plays; the rest are alternates by ear). **NOT in `SFX.files`**: that table is fetched in full at EVERY page load in every zone, and 436 KB only
+this zone uses does not belong there -- `gathAudioLoad` fetches them when the zone builds, `gathAudioStep` decodes once the context exists (and
+again if iOS rebuilds it), `gathPlay` plays through `SFX.bus` keeping each voice's gain so `gathHush` (on RESET) fades a swell out rather than
+letting it ring on. `audio/gathering` went into bump's DIRS (the twelfth folder; checked: all six hashed in ASSETS).
+Measured headless (a click to open the context): raw 6/6, decoded 6/6 with the cut lengths (3.03 / 1.85 / 2.07 / 8.50 / 9.00 / 11.00 s), a cue
+plays; gather then RESET at 4 s -> 0 live voices, `st` idle. **And a pass-1 bug found on the way**: `Z.rang` (the ring + chime as the crystal
+reaches his hands) was never cleared, so it fired on the FIRST gathering after a load and never on a replay -- RESET clears it now.
+What sound cannot be checked here: whether it sounds right. It is a pick by description and by numbers, his ear decides (`GSND.files`).
+
 ## m2449 -- THE GATHERING pass 3: MOMENT 2, the sky-temple socket, the beam, the fallen city rising (GATHERING.md)
 `GSKY` (rows between SC_GATHER markers). The arena's open north edge now has the SOCKET DAIS: a buttress from the valley floor to a platform 2.4 m
 over the arena floor, up eight .30 risers (his step is .357), low walls on its three outer sides and beside the stair; on it a stone drum, six rune
