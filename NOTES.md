@@ -30,6 +30,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2447 -- ENTRY rows, one per line (Nov 4 2026)
+Main's warning: the ENTRY rows were a few long SHARED lines, and a rebase conflict there silently ate other workers' rows (the forest interior's ENTRY row
+was gone for 8 builds). `ENTRY.rows` is now ONE ROW PER LINE (31 rows, every one kept: arena, home, test, forge, garden, snow, snowkit, region, village,
+wall, duel, prove, rope, temple, dometemple, ship, dragon, tlayout, the three cells, lake, boulders, ftkit, ftemple, foresttemple, gathering, blockout,
+level, the two lvl rows). Add a zone as its own line. No behaviour change. Shipped unverified.
+
 ## m2445 -- the entrance camera, measured: still after the start (arena / lake / temple); snow's swing pinned; the card's cap 30 s (Nov 4 2026)
 The headless measure (camera pose over the first 60 frames after the card): once the entrance has started the camera is still in the arena (0 m, 0
 deg), the lake (.23 m, 1.3 deg) and the Sky Temple (.23 m, 2.7 deg). SNOW still turned ~150 deg after the start: a zone writes `cam.az` on its own
