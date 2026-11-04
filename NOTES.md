@@ -34,6 +34,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2464 -- SMART CAMERA pass 5: rays on his FLANKS too, and leaves he is standing IN thin
+- Garden (`npm run smartcam garden`, images looked at): a fern over his side was never on the centre line the three rays ran, and the fern he
+  stood INSIDE was not nearer the lens than `near` .35 m in front of him, so the dither skipped it. Now SEVEN points (`SCAM.pts`: shins,
+  chest, head on his centre; shins and chest .28-.3 m to his screen left / right), still ONE ray a frame in turn; and `near` .35 -> .12.
+  The ellipse is checked centred on him (`mel.SCAMU`; the tool prints the offset: 0 px across).
+- **The five zones, final** (seeded, 40 samples round each spawn; "blocked" = < .5 of his silhouette on screen with SMART CAM OFF):
+      boulders  2 blocked -> 2 cleared (0 -> .75, 0 -> .68; the dither)
+      garden    6 blocked -> 2 cleared + 1 halved (.39 -> .52, .25 -> .53, .14 -> .30); left: #3 him IN the fountain pool (water,
+                not an occluder), #12 .43 grass at his shins, #14 .19 lift .1 (an earlier run lifted .2 and reached .40: the search is
+                on the edge there)
+      snow      6 blocked -> 2 cleared (.08 -> .65 by a .1 lift; .27 -> .76 under a timber deck by the last-resort dither); the other
+                four are .37-.47: his legs in deep snow, no occluder
+      forest temple, sky temple (`temple`): 0 blocked in 40
+- Steady cost measured in the page (temple): `smScan` .06 ms every 1.2 s, `scamStep` .015 ms a frame; BVHs prewarm one a frame. Shipped
+  unverified -- the look of the dither and the drone's ease are his call on the phone (TOOLS > CAMERA > SMART CAM is the A/B).
+
 ## m2463 -- SMART CAMERA pass 4: the ray goes on past a see-through hit; the last resort thins what is ACTUALLY in the way
 - Garden re-run (m2462, the reel ended): 7 blocked OFF -> 2 cleared (.38 -> .51 dither; .44 -> .96 a .75 rad lift), and two rows showed one fern
   dithered while the next fern behind it still covered him (a bed of ferns is several instanced meshes; the ray stopped at the first). Now past

@@ -52,14 +52,14 @@ for (const z of zones) {
         const az = rnd() * Math.PI * 2; cam.az = az; settle(0); const off = vis(false);
         if (off.tot < 30) { why.tiny++; continue; }
         const row = { k, x: +x.toFixed(1), y: +gy.toFixed(1), z: +zz.toFixed(1), az: +az.toFixed(2), off: +off.f.toFixed(2) };
-        if (off.f < BLK) { const offImg = SHOT ? vis(true).img : null; cam.az = az; settle(1); const on = vis(!!SHOT); row.on = +on.f.toFixed(2); row.lift = +S.lift.toFixed(2); row.cap = S.cap > 1e8 ? '-' : +S.cap.toFixed(1); row.d = +S.k.toFixed(2);
+        if (off.f < BLK) { const offImg = SHOT ? vis(true).img : null; cam.az = az; settle(1); const on = vis(!!SHOT); row.on = +on.f.toFixed(2); row.lift = +S.lift.toFixed(2); row.cap = S.cap > 1e8 ? '-' : +S.cap.toFixed(1); row.d = +S.k.toFixed(2); { const v = new THREE.Vector3(); rig.root.getWorldPosition(v); v.y += 1.2 * 0.55; v.project(camera); const c = mel.SCAMU.c.value; row.dpx = [+((v.x * .5 + .5) * W - c.x).toFixed(0), +((v.y * .5 + .5) * H - c.y).toFixed(0), +c.z.toFixed(0), +c.w.toFixed(0)]; row.root = [rig.root.getWorldPosition(new THREE.Vector3()).toArray().map(q => +q.toFixed(2)), [p.pos.x, p.pos.y, p.pos.z].map(q => +q.toFixed(2))]; }
           if (SHOT) { row.imgOff = offImg; row.imgOn = on.img; } S.on = 1; }
         out.push(row); }
       p.pos.set(x0, y0, z0); S.on = 1;
       return { rows: out, why, at: [x0, y0, z0].map(v => +v.toFixed(1)), stat: Object.assign({}, S.stat, { ms: +S.stat.ms.toFixed(2) }) }; }, [N, BLK, SEED, RAD, SHOT]);
     const blocked = res.rows.filter(r => r.on != null), fail = blocked.filter(r => r.on < PASS);
     console.log(`== ${z}: ${res.rows.length} samples, ${blocked.length} blocked with SMART OFF, ${fail.length} still blocked with it ON | spawn ${res.at} skipped ${JSON.stringify(res.why)} | ${JSON.stringify(res.stat)}`);
-    for (const r of blocked) { console.log(`   ${r.on >= PASS ? 'ok ' : 'BAD'} #${r.k} at ${r.x},${r.y},${r.z} az ${r.az}: visible ${r.off} -> ${r.on}  (lift ${r.lift} rad, boom cap ${r.cap}, dither ${r.d})`);
+    for (const r of blocked) { console.log(`   ${r.on >= PASS ? 'ok ' : 'BAD'} #${r.k} at ${r.x},${r.y},${r.z} az ${r.az}: visible ${r.off} -> ${r.on}  (lift ${r.lift} rad, boom cap ${r.cap}, dither ${r.d}) ell ${JSON.stringify(r.dpx)} root ${JSON.stringify(r.root)}`);
       if (SHOT && r.imgOff) { fs.mkdirSync(SHOT, { recursive: true }); for (const [t, u] of [['off', r.imgOff], ['on', r.imgOn]]) fs.writeFileSync(path.join(SHOT, `${z}_${r.k}_${t}.jpg`), Buffer.from(u.split(',')[1], 'base64')); } }
     if (fail.length) bad = 1;
   } catch (e) { console.log(z, 'FAILED', e.message.split('\n')[0]); bad = 1; }
