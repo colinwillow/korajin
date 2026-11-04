@@ -30,6 +30,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2445 -- the entrance camera, measured: still after the start (arena / lake / temple); snow's swing pinned; the card's cap 30 s (Nov 4 2026)
+The headless measure (camera pose over the first 60 frames after the card): once the entrance has started the camera is still in the arena (0 m, 0
+deg), the lake (.23 m, 1.3 deg) and the Sky Temple (.23 m, 2.7 deg). SNOW still turned ~150 deg after the start: a zone writes `cam.az` on its own
+late spawn put, so while the entrance owns him the heading is pinned to the landing's (`cam.az = run.h` in `stepCam`). The card still lifted 12-21
+frames before the start in three zones: the 9 s cap ran out while a heavy zone was still building (headless is slow; a hot phone can be too) -- the
+cap is 30 s, and `ENTRY.why` records why the card is or is not held, for the next measure. Shipped unverified.
 ## m2444 -- FOREST TEMPLE: the way in is the DOOR RITUAL; two rows a rebase had dropped are back
 - The surroundings worker built the dome door's crystal-shard ritual (WORLD_PLAN 7): walking through the opened door calls `DOMET.door.enter`, which
   loads `?w=forge&zone=foresttemple_in`. That zone name is now an ALIAS of `ftemple` (the zone test, a ZONEWANT row, an ENTRY row `foresttemple` --
