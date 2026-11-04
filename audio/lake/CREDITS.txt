@@ -1,0 +1,5 @@
+The Lake's water sounds (mono, trimmed, faded, levelled to -9 dBFS peak). All CC0 -- no credit required.
+splash_big_a/b/c, splash_small_06/09/10/14/15, hull_loop -- "40 CC0 water / splash / slime SFX" (splash_04/07/01, splash_06/09/10/14/15, loop_water_02), CC0. https://opengameart.org/content/40-cc0-water-splash-slime-sfx
+lap_loop   -- "Sea and river wave sounds" (VistulaShort, 60-80 s), CC0. https://opengameart.org/content/sea-and-river-wave-sounds
+shore_a/b  -- "Beach Ocean Waves" (jasinski, alkaibeach wave_01 / wave_02), CC0. https://opengameart.org/content/beach-ocean-waves
+The falls are not a file: filtered noise built in the game (lakeAudio).

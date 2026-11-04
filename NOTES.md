@@ -20,6 +20,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2413 -- THE LAKE has SOUND (his Nov 4 note 4: "the level is silent") (Nov 4 2026)
+CC0 from OpenGameArt like audio/portal (`audio/lake/`, CREDITS.txt; mono, trimmed, faded, -9 dBFS peak; ~300 KB; `audio/lake` added to bump's DIRS and
+hashed): splashes from "40 CC0 water / splash / slime SFX", the river lap from "Sea and river wave sounds" (Vistula, 60-80 s), shore waves from "Beach
+Ocean Waves" (jasinski). `lakeAudio` (every frame, through SFX.bus -- the game's mute and volume; rebuilt if the audio context is):
+- LOOPS: the HULL through the water (hull_loop, louder with the boat's speed, faded by its distance from the lens); the LAPPING all round (lap_loop, a
+  little louder on the shore); the FALLS -- no file, the game's noise through a low-pass and a 180 Hz peak, a roar growing as he nears the landing (260 m).
+- ONE-SHOTS: bow SLAPS at speed (rate and gain with speed, placed at the boat), his swim STROKES (pace with his speed), the DIVE splash (gain by how
+  hard he went in), a wave on the SHORE every 5-11 s when he is at the water's edge.
+Not checked by ear (headless has no speakers): gains are first guesses. Shipped unverified.
+
 ## m2411 -- THE LAKE: the boat CUTS the water -- spray sheets, churned foam, a bigger bow wave (his Nov 4 note 3) (Nov 4 2026)
 His: *"foam and wake still read as a subtle shader -- it should really read as the boat CUTTING through water: real spray / foam particles mixed with the
 foam, bow spray sheets, churn, droplets, stronger displacement round the hull."*
