@@ -43,6 +43,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2488 -- the title fern really sits on its rock: the card was the wrong height, not the seat<!--mine-->
+His report on m2487 (images/feedback/m2487/title_fern_floating.png): the fern on the near floating rock STILL hovers above it. m2486 had fixed
+the SEAT. The fault was in the CARD:
+- Measured off `textures/garden_fern.webp`: the painted fern fills only rows 102-399 of the 512 px cell, so the bottom 22% of the card is
+  transparent.
+- `fernC` centred the card at y + .4h, which put the drawn base .12h ABOVE whatever it was seated on: EVERY fern in the loop. The floaters'
+  ferns (`near_rock_b`, `near_rock_d`) are big and close, which is where it showed.
+- Now it is centred at y + .25h, which puts the drawn base .03h INTO the surface.
+- The other floater toppers are solids (toro) and a banner with its own pole, so they sit as built.
+Shipped unverified.
+
 ## m2487 -- FLOATING BOULDERS: NATURE, ART-DIRECTED, ON A HIDDEN MANDALA (his direction change: "it feels crowded and messy -- a weird little temple in
 the middle; we were building the LIBRARY")
 - THE SHRINE AND THE LOOKOUT ARE OUT OF THE FIELD: `DSHRINE` and `DPLACE.outcrop` stay in code (`BOULD.shrineOn`, `outcrop.place`), not placed. The
@@ -60,7 +71,7 @@ the middle; we were building the LIBRARY")
 - Strips: the play camera from his landing, and TOP-DOWN (the rings, the spiral, the arches and the cave). The sand line: m2485's feathering
   stands, day and night (his report may predate it). Shipped unverified.
 
-## m2486 -- the fern sits ON its floating boulder; the transition petals grow out of him<!--mine-->
+## m2486 -- the fern sits ON its floating boulder; the transition petals grow out of him
 His two notes on the title screen.
 1. "A fern floats ABOVE the boulder" (`near_rock_b`, `kind: 'floater'`, `top: 'fern'`).
    - The topper was seated at `I.surf(0, 0)`, the analytic LAWN height of `gdnIsleGeo`. But `loopIsle` adds a separate rock body
@@ -864,7 +875,7 @@ blurred frame above it is 5 digits at column 17 -- `bowArc`'s line `if (i > 2 &&
   comes back with `ARC HIT THREW` in the chip, the message says which body.
 - The boot gate (`MEL_WORLD='forge&zone=boulders'`) now flies a 900-frame barrage into the field with the bow drawn and the arc running,
   and fails under 3 breaks. `mel` carries `ARROWS`, `arrowMesh`, `BOW`, `bowLoose`, `WEAP`, `QD` for the next probe. Shipped unverified.
-## m2429 -- the start screen waits for Grumbo and the mammoth before it says it is ready<!--mine-->
+## m2429 -- the start screen waits for Grumbo and the mammoth before it says it is ready
 His report: "the start screen says it's loaded and starts playing BEFORE the mammoth and the hero are on screen -- they pop in, which looks like lag".
 - The title loop now has `ready`, a promise that resolves after:
   - both characters' loads have settled (`st.keyHero`, `st.keyBeast`; a failed load also counts, so it cannot hang);
@@ -924,7 +935,7 @@ height `CAMY`).
 - Measured headless: the camera pose over the first 60 rendered frames after the card in snow / Sky Temple / lake / garden / arena (results in the
   follow-up note). Shipped unverified.
 
-## m2425 -- the title flip turns about his HIPS<!--mine-->
+## m2425 -- the title flip turns about his HIPS
 His note: "it feels like he rotates about an offset point -- maybe his origin/feet -- I'd love it to be more around his HIPS."
 - The pivot was a fixed point (0, .7, 0) above the root. The `tuck` pose moves the hips well off it.
 - Now, each frame, after the mixer has posed him, he is placed UNROTATED on the arc. The `mixamorig_Hips` bone's world point is measured, and
@@ -960,7 +971,7 @@ His (relayed): *"I wanted him to bob up and down MORE."* The drawn float (m2345)
   at night (the forge's own lights); that is the world, not the field.
 - WHOLE-PIECE: moves box 6 (night) -- pending his look. Open: aura (pass 5), sign-off. Shipped unverified.
 
-## m2421 -- URGENT: menu -> zone left the transition petals stuck on screen and the menu half-alive<!--mine-->
+## m2421 -- URGENT: menu -> zone left the transition petals stuck on screen and the menu half-alive
 His phone, m2414 (images/feedback/m2414/stuck_petals_lake_*.png). Going from the menu into the Lake went wrong in several ways:
 - the menu would not take taps;
 - the petals froze, and stayed in the same spot in the zone for ever;
@@ -1150,7 +1161,7 @@ way back. Round it: domain-warped fbm in polar coordinates (seam-free across +-P
 violet with a pink inner glow. Size `pScale` .42, still near flat (`lean` .3) on the play camera; the sigil, fall, slam and sounds are unchanged.
 Rendered headless (arena). Shipped unverified.
 
-## m2402 -- TAKE 5c: the turn is his momentum (the clip is only the crouch and the push-off)<!--mine-->
+## m2402 -- TAKE 5c: the turn is his momentum (the clip is only the crouch and the push-off)
 The m2399 strip showed the loop could not fix it. `backflip` does most of its turn between .4 and .6 of the clip, and by .7-.8 his legs are out
 for the LANDING. So he still read as STANDING in the air before the loop came in.
 Now (`leap.spin`):
@@ -1219,7 +1230,7 @@ height over his geometry's height (per mesh, measured with the span). Smaller to
 so his glow rides his poses too. images/feedback/m2329/cracks_bind_pose.jpg: a run frame and his bind (T) pose -- the cracks on the cheeks and nose
 sit on the same spots. (The height band for the shimmer stays in the world: that is a direction, not a pattern.) Shipped unverified.
 
-## m2399 -- TAKE 5b: no ground pose in the air (the flip carries on); the loading emblem keeps turning while loads block<!--mine-->
+## m2399 -- TAKE 5b: no ground pose in the air (the flip carries on); the loading emblem keeps turning while loads block
 His note on take 5: "much better". But after the backflip ends he is still in the air in the clip's landed pose.
 THE FLIP CARRIES ON (`leap.loop`):
 - At `at` .8 of the clip he is still turning (hips -332 deg). There it crossfades (`fade` .22) into a SECOND copy of `backflip` from `from` .3,
