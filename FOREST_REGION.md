@@ -8,7 +8,19 @@ that sink as you stand, vines to swing on, treehouse villages in giant trees. Th
 (`?w=forge&zone=dometemple`, KORAJIN > The Forest Temple). The temple building (m2144, `DOMET`) and its interior (a separate zone, entered by
 the door: `DOMET.door`, another worker's) are not this doc's.
 
-## Vision
+## THE DIRECTION (his, Nov 4 2026): a ROCK-CUT complex, Kailasa at Ellora as INSPIRATION
+> *"I love how it's cut out of the mountain; none of it looks built or placed, it's literally carved."*
+Not a copy: no 1:1 plan, no real deities or sacred iconography -- our own forest guardians, beasts and Jinra motifs. What we take:
+- **MONOLITHIC, carved top-down out of one living rock**: a deep rectangular PIT cut into the plateau, sheer quarried walls on three sides; every
+  surface the same stone (`textures/kail_*`), tool-cut, weathered, no masonry joints.
+- **The plan**: a GATEWAY cut through the front face (where the gorge comes in) -> the court -> a PAVILION (the dome shrine, door ritual intact) ->
+  later a BRIDGE -> the MAIN SHRINE on a tall plinth carried by a frieze of life-size beasts; two free-standing carved PILLARS and beast statues in the
+  court; later galleries and cave halls cut into the pit walls, linked by stairs and bridges up high; a stepped, tiered TOWER over the shrine.
+- **Relief everywhere** through maps (`kail_panel` niches of leaf-crowned spirits, `kail_frieze` a procession of invented forest beasts) on a few
+  modelled tiers: phone-cheap.
+- Overgrown: moss, giant trees and roots in the court, and later waterfalls over the pit's lip and glowing moss at night.
+
+## Vision (pass 1, still true of the approach)
 You arrive at the EDGE of the forest on a high knoll, through the purple portal. Far below and ahead, between giant trunks, something pale
 shows in the haze -- a colonnade, a moss dome. Nothing leads straight there. A trail runs along the plateau to a cut in the ground: a narrow
 gorge winding down between mossy cliffs, and at its foot the gorge opens into a HIDDEN VALLEY ringed by cliffs, where the temple sits in a
@@ -24,7 +36,16 @@ a pond of lily pads; vines over a drop; a climb up giant roots to a high platfor
 - **Budget** (headless, from `npm run foreststrip`): 63-96 draw calls, 385-450k tris on screen (was 55-67 / 330-360k for the clearing alone);
   terrain 53.8k tris (48.3k floor + 5.4k cliff), 78 plateau giants with cheap crowns. Dials: `FREG.cell` (2.5 m), `FREG.forest.n`.
 
-## The map (top-down, +Z = south = the temple's front; not to scale)
+## The map (top-down, +Z = south = the temple's front; not to scale) -- pass 1's; since pass 2 the round valley is the rectangular PIT:
+```
+   +------------- pit back wall (z -74.5) --------------+
+   |  [ MAIN SHRINE + tower ]  (0, -46)                 |
+   |       stair  |                                     |
+   |  pillar  .   |   .  pillar   (+-12, -22)           |
+   |          ( DOME PAVILION ) (0, 0)                  |
+   +-------------[ GATEWAY ]--- front face (z 30.5) ----+
+                     | gorge -> trail -> the knoll
+```
 ```
                          N  (edge wall: steep, impassable)
              . . . . . . . . . . . . . . . . . . .
@@ -47,6 +68,8 @@ a pond of lily pads; vines over a drop; a climb up giant roots to a high platfor
 ## The data (`FREG`, between `SC_FREG:START/END`; `frgH(x, z)` is the one height function)
 | row | what |
 |---|---|
+| `pit` | the rock-cut pit: a rectangle `cx/cz/hx/hz` (edges on the 2.5 m grid), corner radius `rr`, the wall one `wall` cell wide; `kailSD` its distance |
+| `shrine` | the main shrine: `at`, the plinth (w, h, frieze band), the stair (risers .3), the cella body, the tower tiers, the pillars |
 | `valley` | flat floor to r0 ~47, cliffs to the rim (21 m) by r1 ~67; radii wobble with the angle |
 | `plateau` | the forest floor above the rim: rolling (`roll`), climbing `rise` m toward the edge |
 | `gorge` | the only way down: a polyline, floor ramping 0 -> the plateau (max ~15 deg), walls `wall` m per m |
@@ -62,6 +85,12 @@ trunks' boxes are `collKeep` so the mesh never replaces them. Cliffs are steeper
 ## DONE WHEN (each box ticked with evidence in a NOTES entry; the last one is his)
 - [x] (m2433) region bones: one origin, the footprint, the edge with its link, the hidden valley + cliffs, the gorge, the trail, the arrival
       knoll moved OFF the door (ENTRY row), the dome glimpsed from the knoll, the terrain as the mesh collider, a render strip tool
+- [x] (m2453) THE PIT: the round bowl recut as a rectangle (84 x 105 m) sunk 21+ m into the plateau, sheer one-cell walls of quarried rock, the
+      pit floor dressed rock; the GATEWAY carved round the gorge's mouth (pylons of relief panels, a beast-frieze lintel); the MAIN SHRINE (30 m
+      plinth 7 m tall carried by the beast frieze, a 23-riser stair, a panelled cella with a pillared porch, a 5-tier stepped tower to ~40 m);
+      the two standard PILLARS; the dome pavilion re-stoned in the same rock (TOOLS > TEMPLE STONE: CARVED / LIMESTONE)
+- [ ] the rock-cut pass 2: the BRIDGE from the pavilion to the shrine at plinth height; galleries and cave halls cut into the pit walls (two
+      storeys, stairs and bridges up high); beast statues in the court; carved relief on the walls (not only the maps); waterfalls over the lip
 - [ ] the FOREST KIT sandbox (WORLD_PLAN 1): ~6 plant species (giant glowing bounce mushrooms, giant ferns, vines, giant lily pads, ground
       cover, alien flowers), rocks S/M/L, ground (moss, roots, leaf litter, path stones), each with a day + NIGHT glow and a tri budget
 - [ ] the region dressed with the kit (giant scale: he feels small), the plateau a forest floor (not lawn), the cliffs mossy rock

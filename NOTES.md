@@ -30,6 +30,35 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2453 -- FOREST REGION pass 2: THE ROCK-CUT COMPLEX (Kailasa as inspiration) -- the pit, the gateway, the main shrine and its tower (Nov 4 2026)
+His (via the parent): *base its architecture on the KAILASA TEMPLE at Ellora -- "I love how it's cut out of the mountain; none of it looks built or
+placed, it's literally carved." Inspiration, NOT a copy; no real deities or sacred iconography.* FOREST_REGION.md has the direction and the plan.
+- **THE PIT** (`FREG.pit`, `kailSD`): the round bowl is recut as a rectangle 84 x 105 m (x +-42, z -74.5..30.5) sunk to the plateau's rim height
+  (21 m + its roll). Its edges sit ON the terrain's 2.5 m grid, so each wall is exactly one cell wide: ~84 deg, sheer, collides as a wall.
+  The pit floor is its own terrain mesh (`frg_pitfloor`, dressed rock) and the walls the quarried rock (`kail_rock`). The gorge comes in
+  through the front face.
+- **ONE STONE** (`tools/kailasa_textures.py`, image API, seamless): `kail_rock` (a quarried cliff, chisel-cut steps, moss in the cracks),
+  `kail_floor` (hewn rock floor), `kail_panel` (niches of invented leaf-crowned forest spirits between carved pilasters, vine scrolls),
+  `kail_frieze` (a procession of invented forest beasts: a moss-backed bear, a stag-guardian, an owl, a tusked boar). No deities, no real
+  iconography. (The first run imported dome_textures.py, which GENERATES ON IMPORT -- the functions are copied instead.)
+- **THE MAIN SHRINE** (`FREG.shrine`, `kailBuild`): at (0, -46). A 30 m plinth 7 m tall with the BEAST FRIEZE round all four faces (proud of the
+  core, so it seems to carry the shrine), dressed mouldings and a heavy cornice. A 23-riser stair up its front (.30 m risers, his step .357)
+  between sloped side walls (stepped boxes). A 16 m panelled cella with a pillared porch and a dark sanctum mouth. A 5-tier stepped TOWER of
+  panels (miniature shrines at every tier's corners), a cushion cap and a gold finial, top ~39.7 m. From the knoll the tower now shows over
+  the rim (the `glimpse` tile) -- a better reveal than the dome was.
+- **The court**: two standard PILLARS (+-12, -22): square panelled shafts with bands, a cushion capital and a crouching guardian. **The
+  GATEWAY**: two panelled pylons either side of the gorge's mouth and a beast-frieze lintel across it near the rim.
+- **The dome is the PAVILION now**, re-stoned in the same rock (`DOMET.look` CARVED: panel walls, rock plinth, dressed columns, the frieze for
+  its relief bands, rock paths). **TOOLS > TEMPLE STONE: CARVED / LIMESTONE** (reloads) is his switch back. The door ritual is untouched.
+- Keep-outs (`kailKeep`): no tree, tuft or plant on the shrine, its stair or round the pillars.
+- **COST**: the plant cells were 114 instanced draws over the bigger flat area -- this zone flushes at 56 m cells (`PLANT.cell` is set and
+  restored round the flush). Headless calls/tris: arrival 107 / 481k, valley 77 / 408k, court 60 / 388k, map 109 / 482k. (The strip does not
+  run `plantCull` for its cameras, so small ground cover past 22-34 m is drawn in these and is not in play.) Terrain 53.8k tris
+  (floor 46.4k, cliff 4.5k, pit 2.8k).
+- CRAFT checked on the strip: the shrine sits on the pit floor, the stair meets the plinth, the frieze is proud of the plinth core. NOT yet: the
+  bridge, the galleries cut in the walls, beast statues, waterfalls, glowing moss at night. WHOLE-PIECE: moves FOREST_REGION.md's new box 2.
+Shipped unverified.
+
 ## m2452 -- FOREST TEMPLE pass 3b: ROCK-CUT (his direction via main: the KAILASA temple at Ellora -- carved out of ONE rock, nothing looks built)
 Inspiration, not a copy; none of its real deities or iconography (our guardians and Jinra spirals). Gameplay unchanged.
 - NEW MAPS (`tools/ftemple_textures.py`): `ft_rock` (one carved basalt face, chisel bands, NO joints), `ft_rockfloor` (cut floor, no flagstones),
