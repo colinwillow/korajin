@@ -60,7 +60,8 @@ function drive() {
     if (T.id === 'willow_a') route.push({ x: -8, z: 2.5, t: 10, why: 'round the hammock' }); if (T.id === 'willow_b') route.push({ x: -6, z: 9, t: 10, why: 'away from the hammock' }, { x: 0, z: 2, t: 12, why: 'across the lawn' }); }
   // the shrine: from 12 m out along its stair's line (or +z) up onto the knoll's top
   const sx = st ? st.x : ter[0], sz = st ? st.z : ter[1] + (Z.terrace ? Z.terrace.r : 8.5) + 2, ux = sx - ter[0], uz = sz - ter[1], ul = Math.hypot(ux, uz) || 1;
-  route.push({ x: ter[0] + ux / ul * 14, z: ter[1] + uz / ul * 14, t: 14, why: 'shrine stair foot' }, { x: sh[0], z: sh[1] + 1.5, t: 10, why: 'up the shrine stair' }, { x: ter[0] + ux / ul * 14, z: ter[1] + uz / ul * 14, t: 10, why: 'down the shrine stair' });
+  route.push({ x: ter[0] + 10, z: ter[1] + 12, t: 12, why: 'round the terrace' }, { x: ter[0] + ux / ul * 14, z: ter[1] + uz / ul * 14, t: 14, why: 'shrine stair foot' }, { x: ter[0] + ux / ul * (Z.terrace ? Z.terrace.r - 1.2 : 7), z: ter[1] + uz / ul * (Z.terrace ? Z.terrace.r - 1.2 : 7), t: 10, why: 'up the shrine stair, OVER ITS TOP' }, { x: sh[0], z: sh[1] + 1.5, t: 8, why: 'across the terrace to the shrine' }, { x: ter[0] + ux / ul * 14, z: ter[1] + uz / ul * 14, t: 10, why: 'down the shrine stair' });
+    const Bm = Z.beam; if (Bm && Bm.at) { const [bx, bz] = Bm.at, r0 = (Bm.r || 1.15); route.push({ x: bx + r0 + 2.5, z: bz, t: 18, why: 'to the Jinra basin' }, { x: bx + r0 * .7, z: bz + .2, t: 5, why: 'OVER the basin rim (in)' }, { x: bx + r0 + 2.5, z: bz + 1.2, t: 5, why: 'OVER the basin rim (out)' }); }
   for (const W of route) { out.legs++; let tt = 0, slow = 0, lastD = drawn(), reached = false, side = 0, sideS = 1;
     for (; tt < W.t; tt += DT) { const dx = W.x - p.pos.x, dz = W.z - p.pos.z, d = Math.hypot(dx, dz); if (d < .7) { reached = true; break; } if (side > 0) { side -= DT; steer(-dz * sideS + dx * .3, dx * sideS + dz * .3, 1); } else steer(dx, dz, 1); frame(); out.frames++;
       if (!W.into && slow > .5 && side <= 0) { side = .6; sideS = -sideS; out.sidesteps++; }     /* a player steps round a thing in the way */
@@ -93,7 +94,8 @@ try {
   console.log(`  sidesteps ${R.sidesteps}   STALLS ${R.stalls} (${R.stallSec} s lost)   POPS ${R.pops}   STUCK legs ${R.stuck}   guard: unstuck ${R.unstick}, back to a safe spot ${R.safeBack}`);
   console.log(`  start ${JSON.stringify(R.start)} woke ${JSON.stringify(R.woke)}`);
   console.log(`  trap (dropped inside each trunk): ${R.trap.map(t => t[0] + ' ' + t[1]).join(' | ')}`);
-  for (const w of R.worst.slice(0, 25)) console.log('    ' + w.join('  '));
+  for (const w of R.worst.filter(w => w[0] === 'STUCK' || /rim|stair|terrace|basin/.test(w[1])).slice(0, 40)) console.log('    ' + w.join('  '));
+  const per = {}; for (const w of R.worst) if (w[0] !== 'pop') per[w[1]] = (per[w[1]] || 0) + 1; console.log('  stalls per leg: ' + Object.entries(per).map(([k, n]) => k + ' ' + n).join(' | '));
   if (process.env.WT_ROUTE) console.log(R.route.join('\n'), R.stair);
   if (R.dbg) for (const d of R.dbg.slice(0, 40)) console.log('  D', JSON.stringify(d));
   if (R.trapAt) console.log(JSON.stringify(R.trapAt));

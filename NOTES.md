@@ -1704,6 +1704,25 @@ the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` 
 MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
 minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
 
+## m2415 -- THE MESH COLLIDER STEPS UP LIPS: the Jinra basin rim, the stair's top; the flagstones are ground (Nov 4 2026)
+
+His (via main): *"at the TOP OF THE STAIRS he gets stuck, and he can't walk up over the RIM of the Jinra basin -- it's a lot of stuff like this."*
+Measured with `npm run walktest` (new legs: up the shrine stair OVER ITS TOP onto the terrace, across to the shrine, and over the basin rim in and out):
+- **THE BASIN RIM IS DRAWN .46 M HIGH** (`gdn` lathe profile: .38 / .46 / .44 over the pad), over his step (.357). Under BOXES a .3 m box is its
+  floor, so he walked on the box under the drawn lip; under MESH that box is the mesh's (`meshRep`) and the rim was a wall: stuck 1.2 m short.
+  -> grounded on the mesh, a lip up to `COLL.lipH` .55 m (~1.5 steps) with a floor on top is STEPPED UP ONTO: `integrate`'s grounded
+  `groundAt` reaches `lipH`, and `collPush` leaves a face that tops out under it to the floor (`COLL.lipY`, set per move: `lipH` grounded,
+  `MOVE.step` in the air). The picture eases it (`stepRamp`, `hlMesh`; it lets go only past 1.6 steps = .57).
+- **THE TERRACE'S TOP WAS NOT IN THE STORE.** `collSolid` dropped anything named `flag` (meant: a banner) -- and `M.flag` is the garden's FLAGSTONE
+  paving (`garden_flag`): the shrine terrace's top, the paths. Now `banner|pennant`.
+- **UNDER BOXES THE STAIR ITSELF IS BLOCKED** at z -5.25..-5.67: a `gdnWalls` raster box (119.80-120.88, `gdnWall`) sits across the second
+  tread, so from 120.30 the next floor is 120.88 (.58 > a step). That is the garden's own wall builder -- reported to the garden worker, not
+  changed here. Under MESH it is the mesh's box and skipped.
+**walktest, 23 legs, this build:** MESH -- STUCK 1 (the old .8 m-short point by the shrine willow), stalls 16 (9.9 s), the basin rim crossed both
+ways, the stair climbed over its top (one momentary stall at 121.8), trunks freed in 12 / 14 / 7 frames. BOXES -- STUCK 6, stalls 50 (45.5 s),
+stopped on the stair at z -5 by the box above. `colaudit garden --mesh`: holes 1,511 (the ship), mismatch 189, walk-through 50, invisible 350.
+**What to try (MESH):** walk up the shrine stair and onto the terrace without stopping; walk over the Jinra basin's rim, in and out. **Shipped unverified.**
+
 ## m2281 -- THE MESH COLLIDER: never trapped in a tree, runs over roots, steps up without a pop (Nov 3 2026)
 
 His first play on MESH in the garden (via main): *stuck inside a tree -- had to restart*; *"instead of running over it he gets stuck to the
@@ -1725,7 +1744,7 @@ plant"*; *"one step up, he gets stuck, and if he gets over he just POPS up"*. Wh
   `COLL.stat.unstick` / `.safeBack` count them.
 - **THE POP.** The drawn height (`stepRamp`, m1944) eased at `hl2` .012 s -- a pop. On the MESH collider only it eases at `STEPUP.hlMesh` .05 s
   (~.17 s to settle; his stairs everywhere else keep .012). The camera rides the drawn height already (`CAMY`).
-- Instanced meshes are out of the store (the garden's breakable pots: a pot left in a static store is a ghost after it breaks).
+- Instanced meshes are out of the store (the garden's breakable pots: a pot left in a static store is a ghost after it breaks). (Correction, m2415: the walktest block near (-7.6, 1.0) is the lawn BENCH's wall box, not a pot -- the garden worker; pots keep only their own box, removed on break.)
 **MEASURED -- `npm run walktest` (new): the shipped page in the Garden, MESH, full stick through the real pads on a fake clock, round and into
 each willow's trunk, across the roots, up and down the shrine stair; sidesteps after .5 s stalled as a player would. m2277 / this build:**
     STUCK legs            14 of 18 (in willow_a's trunk for the rest of the run)   ->   1 (ends .8 m short of a point by the shrine willow)
