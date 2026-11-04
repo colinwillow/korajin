@@ -23,6 +23,33 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2421 -- URGENT: menu -> zone left the transition petals stuck on screen and the menu half-alive<!--mine-->
+His phone, m2414 (images/feedback/m2414/stuck_petals_lake_*.png). Going from the menu into the Lake went wrong in several ways:
+- the menu would not take taps;
+- the petals froze, and stayed in the same spot in the zone for ever;
+- another screen peeked under the loading card;
+- the inputs did the wrong things;
+- there was a hitch.
+ROOT CAUSE:
+- A SECOND tap during the leap (the menu "would not take taps", so he tapped again) re-entered `enter()` with `enter.shut` already set.
+- It went straight to the heavy part: `stage.dispose()` stopped the title loop, and the zone loaded in place.
+- The swirl's clock was the title loop's `st.leap.t`, so it FROZE short of `L.dur`. Its z-index 60 canvas was never removed, and `onEnd` (the
+  shutter) never ran.
+- The start page was only opacity 0 (from `onCover`), with its live buttons still able to take touches.
+FIX:
+- `enter.shut === 1` (the leap is running) IGNORES further taps. `close` is one-shot (`shut = 2`).
+- `loopSwirl` runs on its OWN wall clock (`max(leap clock, performance.now() - T0)`). A WATCHDOG `setTimeout` finishes it by `dur + 1 s`
+  whatever happens: it removes the canvas and fires onCover/onEnd once.
+- Every live swirl is in `loopSwirl.live`, and `loopSwirl.kill()` takes them off the screen.
+- `startTeardown(el)` runs on every way into a zone and is idempotent: kill every swirl; `#start` loses `on` and gets `display: none` and
+  `pointer-events: none`; scroll is reset to 0. `#start` is shown only once per page load (startGate), so the inline hide cannot trap a later
+  menu.
+- `loopMark` (the logo petals) stops when `#start` is no longer `on`.
+REPRODUCED HEADLESS, on the fixed build (menu -> the selected Prologue tapped TWICE 0.4 s apart -> 25 s): url `?w=forge&zone=garden`, `#start`
+`display: none` / `pointer-events: none` / not `on`, 0 swirl canvases, 0 page errors.
+NOT CHECKED: the pad rects, whether a right tap jumps, and the 1 s hitch. They are likely the half-alive menu under the game, which is now gone.
+Shipped unverified.
+
 ## m2420 -- FLOATING BOULDERS pass 3: BUMP / HIT / BREAK (BOULDERS.md)
 His: *"I also want to bump them around, slash and maybe break them."*
 - NO NEW HIT PATH: the field hangs off the three the game already routes to rocks. `strikeSweep`'s limb tip (every swing, kick, punch: power 1,
