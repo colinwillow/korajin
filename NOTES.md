@@ -77,6 +77,20 @@ His (via main, Nov 4): *"the above-ground part is the tip of the iceberg / the d
 - WHOLE-PIECE: a new piece on its own, built on nothing unsigned. Moves FOREST_TEMPLE box 1 (pending his look). Open: chamber 1 (pass 2), the
   entry hall + descent + the door (pass 3), the roster, the boss. Shipped unverified.
 
+## m2439 -- THE PERIODIC HITCH, pass 2: THE DISGUISE WARM-UP WAS THE "GLITCH FOR A SECOND"
+- **Pass 1 measured an IDLE arena: nothing.** The arena only hitches with enemies in it, so `npm run hitch` grew `SPAWN=SAMURAI,ARCHER,...`
+  (`mel.arenaSpawn` each before the window). With three in: **heavy frames of 77, 80, 123, 130, 144, 224, 365 ms, max 805 ms ON DESKTOP**,
+  in a burst ~2 s after they arrived, every one owned by `warmStep -> warmKind -> mphSkin -> retargetW` (+ `mphBorrow`): the m1100
+  background warm building a DISGUISE skin (a retarget of every clip) for each kind that arrives after the card -- every arena wave, the
+  snow's calves / mammoth / dragon. x3-4 on a phone, that is his "glitches for a second", and it comes back with every new kind.
+- **Only the blaster's DNA and OUTBREAK modes ever wear one**, so the background warm of a NEW kind now waits until one of them is the
+  mode (`dnaNow() || virusNow()`); the boot warm behind the card is unchanged; a shot with nothing warmed builds the skin on the spot, as it
+  always could. `mel.WARM.any = 1` puts the old always-warm back.
+- **AFTER:** arena + 3 spawned, 25 s: max frame **805 -> 17 ms**, frames run 429 -> 1410 (desktop, NORENDER). Snow 30 s: 1 heavy frame,
+  garbage 1 MB -> 355 KB a frame (pass 1 + this). Dome temple 1.1 ms median, max 12.8; lake max 61 (one frame) -- no period in either.
+- **Still open:** the ship cloth's `computeVertexNormals` every frame in the arena and the Garden; `boxesNear`/`groundAt`/`dojoStep` garbage
+  (arena still ~1 MB a frame); the snow's 655 KB of buffer uploads a frame.
+
 ## m2432 -- THE PERIODIC HITCH, pass 1 (his: "in the snow, the arenas, others -- every second or so it glitches"; less in the Garden)
 - **A NEW TOOL: `npm run hitch [query ...]`** (`tools/hitch.mjs`). Boots the shipped page, times the game's own JS per frame (frame() minus
   `renderer.render`), runs the CDP sampling profiler, and lists every heavy frame with the deepest game function that owned it.

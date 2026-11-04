@@ -30,6 +30,7 @@ for (const q of qs) {
     await page.goto(`http://127.0.0.1:${port}/index.html?${q}${/entry=/.test(q) ? '' : '&entry=0'}`, { timeout: 120000 });
     await page.waitForFunction(() => document.getElementById('boot').classList.contains('gone') && window.__shot && window.mel, null, { timeout: 240000, polling: 1000 });
     await page.evaluate(() => { const R = window.__shot.renderer, r0 = R.render.bind(R); window.__nr = 0; R.render = (s, c) => { const t = performance.now(); try { if (!window.__nr) r0(s, c); } finally { window.__rt = (window.__rt || 0) + performance.now() - t; } }; });
+    if (process.env.SPAWN) { for (const k of process.env.SPAWN.split(',')) { try { await page.evaluate(k => mel.arenaSpawn(k), k); } catch (e) { console.log('   spawn', k, e.message.split('\n')[0]); } } }     // e.g. SPAWN=SAMURAI,ARCHER: enemies in, as a fight has them
     await page.waitForTimeout(SETTLE * 1000);
     if (process.env.NORENDER) await page.evaluate(() => { window.__nr = 1; });     // swiftshader caps this at ~1 fps in the GPU process; skip the draw so the game's own JS runs at a phone's cadence
     if (process.env.TICK) console.log('   timer ticks in 2 s:', await page.evaluate(() => new Promise(ok => { let n = 0; const t0 = performance.now(), d = []; let l = t0; const f = () => { const t = performance.now(); d.push(t - l); l = t; n++; if (t - t0 < 2000) setTimeout(f, 0); else ok(n + ' max gap ' + Math.max(...d).toFixed(0)); }; f(); })));
