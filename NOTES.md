@@ -21,6 +21,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2419 -- FLOATING BOULDERS pass 2: PUSH THROUGH (BOULDERS.md)
+His: *"you can walk through them and it pushes them aside, a slight heaviness to them, but mostly just walking through."*
+- Every rock is a spring-damper on its OFFSET (`o`/`ov`) plus a SPIN (`w` -> `qd`); mass = `push.dens` 2.2 x s^3 (a pebble .004, the biggest ~20).
+  `L.player(x, y, z, vx, vz, dt)` (in BOULDLIB): any rock whose push radius (s x .9 + his .38) he is inside and whose body spans his 1.8 m
+  gets the overlap x `k` plus his speed along the normal x `carry`, both / mass, and a little lift; it ROLLS away from him (axis up x n, / sqrt(m),
+  halved for the big ones). Home spring: natural freq 2.6 rad/s (pebbles) .. .7 (biggest), damping .55, a wander cap of 7 m, never through the floor;
+  the spin decays and the turn eases back to the rock's own pose.
+- Rock-rock: centres kept (si + sj) x .82 apart, the offsets parted by inverse mass and the closing speed traded (a pebble knocked into a big one
+  bounces off it, the big one barely moves).
+- NOT A COLLIDER: he always gets through. The glue takes back up to `slowMax` .32 of his frame step, weighted by mass / `mBig` and how deep he is
+  -- the "slight heaviness". Velocity is read from his position delta (no hook into `stepPlayer`).
+- Strip (`npm run bouldstrip push --push=-1.8,12,-1.8,7.5 --walk=1 --frames=6`): walking through b16 (s 1.16, mass 3.4) shoves it .38 m and it
+  rolls and settles back. The first cut rolled it ~60 deg -- too lively for a big one; `spin` 1.6 -> .9 and x.5 on the big ones.
+- WHOLE-PIECE: moves box 4 (push) -- pending his look. Open: 3 (hit/break), night, aura, sign-off. Shipped unverified.
+
 ## m2418 -- FLOATING BOULDERS pass 1: THE FIELD (BOULDERS.md, KORAJIN > Floating Boulders, `?w=forge&zone=boulders`)
 His (Nov 4): *"boulders that are floating -- different sizes -- just gracefully, melodically floating right off the ground, and interactive."*
 New sandbox; BOULDERS.md has the vision, the five passes and DONE WHEN (last box his phone).

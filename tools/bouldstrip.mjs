@@ -14,7 +14,7 @@ const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k +
 const src = fs.readFileSync(path.resolve(ROOT, arg('src', 'index.html')), 'utf8');
 const m = /\/\/ BOULDLIB:START[\s\S]*?\/\/ BOULDLIB:END/.exec(src); if (!m) { console.error('no BOULDLIB markers'); process.exit(1); }
 const OUT = arg('out', path.join(ROOT, 'shots')); fs.mkdirSync(OUT, { recursive: true });
-const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 4), W: +arg('w', 480), H: +arg('h', 300), cols: +arg('cols', 2), frames: +arg('frames', 0), dt: +arg('dt', .5), night: +arg('night', 0), push: arg('push', '') };
+const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 4), W: +arg('w', 480), H: +arg('h', 300), cols: +arg('cols', 2), frames: +arg('frames', 0), dt: +arg('dt', .5), night: +arg('night', 0), push: arg('push', ''), walkOn: +arg('walk', 0), list: +arg('list', 0) };
 const page = `<!doctype html><html><head><script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script></head><body style="margin:0;background:#000">
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; window.ready = 1;</script></body></html>`;
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); if (u === '/' || u === '/b.html') { r.writeHead(200, { 'content-type': 'text/html' }); return r.end(page); }
@@ -38,11 +38,12 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
   const cols = Math.min(o.cols, list.length), rows = Math.ceil(list.length / cols);
   const out = document.createElement('canvas'); out.width = cols * W; out.height = rows * (H + 20) + 22; const c2 = out.getContext('2d'); c2.fillStyle = '#000'; c2.fillRect(0, 0, out.width, out.height); c2.font = '12px monospace';
   let calls = 0, tris = 0;
-  list.forEach((s, k) => { if (o.frames && k) for (let i = 0; i < Math.round(o.dt * 30); i++) B.step(1 / 30); B.shotCam(s, cam); B.px(cam, H); R.render(scene, cam); calls = Math.max(calls, R.info.render.calls); tris = Math.max(tris, R.info.render.triangles);
+  list.forEach((s, k) => { if (o.frames && k) for (let i = 0; i < Math.round(o.dt * 30); i++) { if (P && o.walkOn) { body.position.z -= 4 / 30; B.player(body.position.x, 0, body.position.z, 0, -4, 1 / 30); } B.step(1 / 30); } B.shotCam(s, cam); B.px(cam, H); R.render(scene, cam); calls = Math.max(calls, R.info.render.calls); tris = Math.max(tris, R.info.render.triangles);
     const x = (k % cols) * W, y = 22 + Math.floor(k / cols) * (H + 20); c2.drawImage(R.domElement, x, y + 20); c2.fillStyle = '#9ff'; c2.fillText(s.id + ' -- ' + s.why, x + 4, y + 14); });
-  const n = B.count(); c2.fillStyle = '#fff'; c2.fillText('FLOATING BOULDERS  t=' + o.t + 's  calls<=' + calls + ' (incl. shadow pass)  tris<=' + tris + '  ' + JSON.stringify(n), 6, 15);
-  return { png: out.toDataURL('image/png'), calls, tris, build, n }; }, [m[0], opts]);
+  const n = Object.assign(B.count(), { maxO: +Math.max(...B.rows.map(r => Math.hypot(r.o.x, r.o.z))).toFixed(2), moved: B.rows.filter(r => Math.hypot(r.o.x, r.o.z) > .1).length, slow: +B.slow().toFixed(2) }); c2.fillStyle = '#fff'; c2.fillText('FLOATING BOULDERS  t=' + o.t + 's  calls<=' + calls + ' (incl. shadow pass)  tris<=' + tris + '  ' + JSON.stringify(n), 6, 15);
+  return { png: out.toDataURL('image/png'), calls, tris, build, n, rows: B.rows.slice(0, +(o.list || 0)).map(r => r.id + ' ' + r.sp + ' x' + r.x.toFixed(1) + ' z' + r.z.toFixed(1) + ' s' + r.s.toFixed(2) + ' y' + r.p.y.toFixed(2)) }; }, [m[0], opts]);
 const file = path.join(OUT, 'boulders_' + (opts.shots.join('_') || 'all') + (opts.frames ? '_f' + opts.frames : '') + (opts.night ? '_night' : '') + '.png');
 fs.writeFileSync(file, Buffer.from(res.png.split(',')[1], 'base64'));
+if (res.rows.length) console.log(res.rows.join('\n'));
 console.log(file, 'calls', res.calls, 'tris', res.tris, 'build ms', res.build.toFixed(0), JSON.stringify(res.n));
 await br.close(); srv.close();

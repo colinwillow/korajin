@@ -55,7 +55,8 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 - [ ] **FLOATING BOULDERS -- OPEN (his, Nov 4).** `BOULDERS.md`: boulders pebble to car-size floating just off the ground; walk through them, bump,
       slash, break; later the seed of his Jinra power. KORAJIN > Floating Boulders (`?w=forge&zone=boulders`).
   - [x] m2418 pass 1 THE FIELD (BOULDERS.md, `bouldMake` + `npm run bouldstrip`, the zone + ENTRY row).
-  - [ ] pass 2 push through; pass 3 bump / hit / break; pass 4 night; pass 5 JINRA AURA preview; his sign-off.
+  - [x] m2419 pass 2 PUSH THROUGH (spring-damper per rock, mass s^3, rock-rock separation, he loses at most 32% of his step).
+  - [ ] pass 3 bump / hit / break; pass 4 night; pass 5 JINRA AURA preview; his sign-off.
 - [ ] **UI RINGS + REAL PLAY -- OPEN (his, Nov 2).** `UI_RINGS.md`: what he owns (`OWN`, grant/revoke, GOD = all), one ring layout for every pad
       button, then hp / lives / GAME OVER with GOD off. m2263 the rings + ownership; next the lives.
 - [ ] **FX -- OPEN (his, Nov 3).** `FX.md`: the goop (oily, blobby, electric, fluid) for every move, perfected in KORAJIN > The FX Lab first.
