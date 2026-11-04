@@ -29,6 +29,34 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2432 -- THE PERIODIC HITCH, pass 1 (his: "in the snow, the arenas, others -- every second or so it glitches"; less in the Garden)
+- **A NEW TOOL: `npm run hitch [query ...]`** (`tools/hitch.mjs`). Boots the shipped page, times the game's own JS per frame (frame() minus
+  `renderer.render`), runs the CDP sampling profiler, and lists every heavy frame with the deepest game function that owned it.
+  `NORENDER=1` skips the draw and drives the loop on a 16 ms timer -- **headless swiftshader paces rAF off its GPU process at 1-4 fps and
+  then stalls the page for SECONDS at a time** (a setTimeout loop measured a 10 s gap), so with rendering on, no frame cadence measured here
+  means anything. `ALLOC=<s>` adds the sampling HEAP profiler (garbage per call site, collected objects included).
+- **MEASURED, BEFORE** (desktop Chromium, NORENDER, so render-side cost is not in these):
+      zone        JS median   garbage           worst site                                   period
+      garden      3.1 ms      ~129-143 MB/s     kitXrayStep 109 MB/s (4 arrays per box)       every frame -> GC every ~0.2 s
+      arena       2.5 ms      ~50 MB/s / 0.8 MB a frame   ship cloth, boxesNear/groundAt       every frame
+      snow        5.6 ms      ~17 MB/s          snowStep 7.3, kitXrayStep 4.2                every frame
+      snow GPU    --          900 KB texture upload EVERY frame (the 960x960 snow field)       every frame
+      snow CPU    --          all 921,600 snow texels walked + field re-uploaded               every .25 s, trodden or not
+      all         1.0-2.6 ms  perfMem: a WHOLE-SCENE walk + Maps + sorts (x4 on a phone)       every 1.5 s (chip) AND every 120 renders
+  GL timeline (`linkProgram`, uploads, draws, framebuffer binds per frame, 60 s in snow and arena): **no periodic shader compile, no periodic
+  extra pass, no periodic big buffer** -- the hitch is not render-side in those two. The one render-side cost was the snow upload.
+- **FIXED:** `kitXrayStep` takes the boxes near the lens-to-him segment (`boxesNear`, the grid) and a slab test with no array literals
+  (`kxSlab`); `perfMem` runs from the chip every 20 ticks (10 s) and not at all from `ctxRender` (the chip's T../MB reads `PERF.mem`);
+  the snow refill visits only the trodden rows (`rlo..rhi`, set by `snowStamp`; the band shrinks as rows fill) and marks nothing when
+  nothing rose; the snow field uploads only CHANGED ROWS (`snowRows` / `snowFlush`, three's `updateRanges` -- note its range unit is
+  RGBA-sized, start / 4 = the pixel, so x4 for this one-byte RED field; over `SNOWZ.rowMax` rows it sends the whole field);
+  the rope bridge's `sat` takes two arrays instead of a fresh `[P0, P1]` per constraint per iteration.
+- **AFTER:** garden garbage 143 -> 32 MB/s (kitXrayStep 109 -> 5.9); snow texture upload 905 KB -> 63 KB a frame. **Read back from the
+  GPU** after 18 stamps and 6 s of refill: the texture equals `SNOWZ.D` byte for byte (0 of 921,600 differ).
+- **STILL OPEN (pass 2):** the ship cloth (`shipCloth`, `computeVertexNormals` every frame in the arena and the Garden -- built even where the
+  ship is off screen), `boxesNear`/`groundAt` garbage, `warmKind` (a disguise retarget, 20+ ms here) for each kind that arrives AFTER the
+  card -- the snow's calves, mammoth and dragon, every arena wave -- and the snow's 655 KB of buffer uploads a frame.
+
 ## m2431 -- FLOATING BOULDERS: CONTACT (his m2429 note 1: "he walks INTO the rocks -- they push, but he still sinks into them")
 - Each rock collides as the ELLIPSOID of its own mesh's half extents (`r.e`, measured off the variant's geometry at build) x `solid.fit` .92
   (the blobs fill their box loosely; inscribed reads closer). `contact()` (BOULDLIB): the point of his body segment (knee .3 .. head 1.7 m) nearest

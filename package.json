@@ -36,7 +36,8 @@
     "fxstrip": "node tools/fxstrip.mjs",
     "nightshot": "node tools/nightshot.mjs",
     "lakestrip": "node tools/lakestrip.mjs",
-    "bouldstrip": "node tools/bouldstrip.mjs"
+    "bouldstrip": "node tools/bouldstrip.mjs",
+    "hitch": "node tools/hitch.mjs"
   },
   "type": "module",
   "devDependencies": {
