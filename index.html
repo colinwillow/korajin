@@ -39375,7 +39375,10 @@ function dkMake(THREE, O = {}) {
     mats: { wall: { tex: 'textures/temple_wall.webp', tile: 2.4, tint: [1, .96, .9] }, pave: { tex: 'textures/temple_paving.webp', tile: 2, tint: [1, .84, .72] },
       plain: { tex: 'textures/jinra_adobe.webp', tile: 3, tint: [.98, .9, .8] }, glyph: { tex: 'textures/temple_glyph.webp', tile: 1.5, tint: [1, 1, 1], glow: 1 }, drift: { col: [.84, .7, .5] } },
     riser: .3, tread: .42,     // his step is .357 m: every stair here is .30
-    pieces: ['block', 'steps', 'column', 'ziggurat', 'obelisk', 'arch', 'panel'] };
+    pieces: ['block', 'steps', 'column', 'ziggurat', 'obelisk', 'arch', 'panel'],
+    oasis: ['pond', 'palm', 'reeds', 'lily'],     // m2476 pass A2: the oasis row
+    pond: { r: 3.2, depth: .9, rim: .45, water: [.05, .2, .24], deep: [.02, .08, .1], wet: [.45, .33, .22] },
+    palm: { h: 5.2, lean: .9, fronds: 9, frondL: 2.6, trunk: [.42, .3, .22], frond: [.24, .52, .34], tip: [.85, .45, .7] } };
   // SC_DKIT:END
   let sd = 4471; const rnd = () => { sd = (sd * 16807) % 2147483647; return (sd - 1) / 2147483646; };
   const loader = new THREE.TextureLoader(), mats = {};
@@ -39425,14 +39428,55 @@ function dkMake(THREE, O = {}) {
     panel(G, ruin) { const w = 2, h = 1.5, d = .28; if (!ruin) { put(G, worn(w, h, d, .03), 'wall', 0, h / 2 + .2, 0); put(G, new THREE.BoxGeometry(w * .8, h * .75, .04), 'glyph', 0, h / 2 + .2, d / 2 + .01, 0, 0, 0, 0); put(G, worn(w + .2, .2, d + .2, .03), 'pave', 0, .1, 0); }
       else { put(G, worn(w * .55, h, d, .06), 'wall', -w * .22, h / 2 + .05, 0, 0, 0, .08); put(G, new THREE.BoxGeometry(w * .45, h * .7, .04), 'glyph', -w * .22, h / 2 + .05, d / 2 + .01, 0, 0, .08, 0);
         put(G, worn(w * .45, h * .9, d, .12, 3), 'wall', w * .4, .3, .5, .3, Math.PI / 2 - .1, 0); drift(G, 1.3, .35, .2, .3); } } };
+  // m2476 THE OASIS SET. POND: a still pool in a ring of worn rim stones, a stair of .30 risers down into it, wet sand round it; its water is a
+  // dark glassy disc that reflects the sky light (the zone's PMREM) and stirs with a slow normal ripple (own tiny shader, one draw). PALM: an alien
+  // palm -- a ringed trunk on a bent curve, a crown of drooping fronds (each a curved, tapered strip), pink buds that glow at night. REEDS: a
+  // clump of tapered blades. LILY: a notched pad and a bud that float (the glue bobs them).
+  let waterMat = null; const waterU = { uT: { value: 0 } };
+  function water() { if (waterMat) return waterMat; const W = K.pond; waterMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(...W.water), roughness: .06, metalness: .1, transparent: true, opacity: .9 }); waterMat.name = 'dk_water';
+    waterMat.onBeforeCompile = sh => { sh.uniforms.uT = waterU.uT; sh.vertexShader = 'varying vec3 vWw;\n' + sh.vertexShader.replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n vWw = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+      sh.fragmentShader = 'uniform float uT; varying vec3 vWw;\n' + sh.fragmentShader.replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+        { vec2 p = vWw.xz; float a = sin(p.x * 3.1 + uT * .9) * cos(p.y * 2.7 - uT * .7) + sin((p.x + p.y) * 5.3 + uT * 1.3) * .5; vec2 g = vec2(cos(p.x * 3.1 + uT * .9), -sin(p.y * 2.7 - uT * .7)) * .035;
+          normal = normalize(normal + mat3(viewMatrix) * vec3(g.x, 0.0, g.y)); }`); }; return waterMat; }
+  const curveTube = (pts, r0, r1, rad = 8) => { const c = new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p))), g = new THREE.TubeGeometry(c, Math.max(6, pts.length * 4), 1, rad, false), P = g.attributes.position, seg = Math.max(6, pts.length * 4);
+    const pt = new THREE.Vector3(); for (let i = 0; i <= seg; i++) { const t = i / seg, r = r0 + (r1 - r0) * t; c.getPointAt(t, pt); for (let j = 0; j <= rad; j++) { const k = i * (rad + 1) + j; P.setXYZ(k, pt.x + (P.getX(k) - pt.x) * r, pt.y + (P.getY(k) - pt.y) * r, pt.z + (P.getZ(k) - pt.z) * r); } }
+    g.computeVertexNormals(); return g; };
+  const vcol = (g, f) => { const P = g.attributes.position, c = new Float32Array(P.count * 3); for (let i = 0; i < P.count; i++) c.set(f(P.getX(i), P.getY(i), P.getZ(i), i), i * 3); g.setAttribute('color', new THREE.BufferAttribute(c, 3)); return g; };
+  let budM = null; const bud = () => budM || (budM = Object.assign(new THREE.MeshStandardMaterial({ color: 0xf0a0d8, emissive: 0xff70c8, emissiveIntensity: 0, roughness: .5 }), { name: 'dk_bud' }));     /* glows at night (the glue drives it) */
+  let plantMatV = null; const vmat = () => plantMatV || (plantMatV = Object.assign(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .7, side: THREE.DoubleSide }), { name: 'dk_flora' }));
+  Object.assign(P, {
+    pond(G, ruin) { const W = K.pond, r = W.r; const wd = new THREE.Mesh(new THREE.CircleGeometry(r * .98, 48).rotateX(-Math.PI / 2), water()); wd.position.y = -.12; wd.name = 'dk:water'; wd.userData.surf = 'water'; wd.userData.dyn = 1; G.add(wd);
+      const bed = new THREE.Mesh(new THREE.CylinderGeometry(r, r * .7, W.depth, 32, 1, true), mat('pave')); bed.material = mat('pave'); bed.position.y = -W.depth / 2 - .1; bed.scale.set(1, 1, 1); G.add(bed);
+      const floor = new THREE.Mesh(new THREE.CircleGeometry(r * .72, 24).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: new THREE.Color(...W.deep), roughness: 1 })); floor.position.y = -W.depth - .1; G.add(floor);
+      const n = 18; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2; if (Math.abs(Math.sin(a) - 1) < .08 && Math.cos(a) > 0) continue; if (ruin && i % 5 === 2) continue; const lift = ruin && i % 4 === 1 ? .3 : 0;
+        put(G, worn(1.15, W.rim, .7, ruin ? .14 : .04, 2), i % 3 ? 'wall' : 'pave', Math.cos(a) * (r + .3), W.rim / 2 - .08 - lift * .5, Math.sin(a) * (r + .3), -a + Math.PI / 2, 0, lift * .4); }
+      for (let k = 0; k < 3; k++) { const top = W.rim - .08 - (k + 1) * .3; put(G, worn(1.4, .3, .45, .03), 'pave', r - .1 - k * .45, top + .15, 0, Math.PI / 2, 0, 0, 0); }     // steps down into the water on +x (.30 risers)
+      const wet = new THREE.Mesh(new THREE.RingGeometry(r + .6, r + 2.4, 48).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: new THREE.Color(...W.wet), roughness: .55, transparent: true, opacity: .55, depthWrite: false })); wet.position.y = .03; wet.name = 'dk:wetsand'; G.add(wet);
+      G.userData.boxes.push({ minx: -r, maxx: r, miny: -W.depth - .1, maxy: -W.depth - .1 + .05, minz: -r, maxz: r }); },
+    palm(G, ruin) { const T = K.palm, h = ruin ? T.h * .55 : T.h, L = T.lean, pts = [[0, 0, 0], [L * .15, h * .3, 0], [L * .55, h * .65, .1], [L, h, .15]];
+      const tr = vcol(curveTube(pts, .26, .14, 9), (x, y) => { const ring = .5 + .5 * Math.sin(y * 9); return T.trunk.map(c => c * (.8 + .3 * ring)); }); const tm = new THREE.Mesh(tr, vmat()); tm.castShadow = true; G.add(tm);
+      G.userData.boxes.push({ minx: -.25, maxx: .25, miny: 0, maxy: h * .6, minz: -.25, maxz: .25 });
+      if (ruin) { const g = vcol(curveTube([[0, 0, 0], [1, .1, .2], [2.2, .25, .1]], .16, .1, 7), () => T.trunk.map(c => c * .7)); const m = new THREE.Mesh(g, vmat()); m.position.set(L * .5, 0, .6); G.add(m); return; }
+      for (let i = 0; i < T.fronds; i++) { const a = i / T.fronds * Math.PI * 2 + .3, fl = T.frondL * (.8 + .3 * ((i * 7) % 5) / 5), seg = 10, g = new THREE.PlaneGeometry(1, 1, 1, seg), Pp = g.attributes.position;
+        for (let k = 0; k < Pp.count; k++) { const u = Pp.getY(k) + .5, side = Pp.getX(k), w = .32 * Math.sin(Math.min(1, u * 1.15) * Math.PI) * (1 - u * .3), r = u * fl, droop = -Math.pow(u, 1.8) * fl * .75 + u * .45;
+          Pp.setXYZ(k, Math.cos(a) * r - Math.sin(a) * side * w, droop + Math.abs(side) * w * .25, Math.sin(a) * r + Math.cos(a) * side * w); }
+        g.computeVertexNormals(); vcol(g, (x, y, z, k) => { const u = (k >> 1) / seg; return [T.frond[0] * (.7 + .5 * u), T.frond[1] * (.8 + .3 * u), T.frond[2] * (.8 + .2 * u)]; }); const m = new THREE.Mesh(g, vmat()); m.position.set(L, h, .15); m.castShadow = true; G.add(m); }
+      for (let i = 0; i < 4; i++) { const b = vcol(new THREE.SphereGeometry(.09, 8, 6), () => T.tip); const m = new THREE.Mesh(b, bud()); m.position.set(L + Math.cos(i * 1.6) * .22, h - .12, .15 + Math.sin(i * 1.6) * .22); m.name = 'dk:palmbud'; G.add(m); } },
+    reeds(G, ruin) { const gs = []; for (let i = 0; i < (ruin ? 8 : 18); i++) { const a = i * 2.4, rr = .15 + (i % 5) * .09, h = (.9 + ((i * 7) % 6) * .14) * (ruin ? .6 : 1), x = Math.cos(a) * rr, z = Math.sin(a) * rr, bend = .25 + (i % 3) * .1;
+        const g = new THREE.PlaneGeometry(.05, h, 1, 5).translate(0, h / 2, 0), Pp = g.attributes.position; for (let k = 0; k < Pp.count; k++) { const y = Pp.getY(k), t = y / h; Pp.setXYZ(k, Pp.getX(k) * (1 - t * .9) + Math.cos(a) * bend * t * t, y, Math.sin(a) * bend * t * t); }
+        g.rotateY(-a); g.translate(x, 0, z); vcol(g, (X, Y) => [.3 + Y / h * .25, .42 + Y / h * .2, .22]); gs.push(g); }
+      for (const g of gs) { const m = new THREE.Mesh(g, vmat()); G.add(m); } },
+    lily(G) { const pad = new THREE.CircleGeometry(.32, 16, .25, Math.PI * 2 - .5).rotateX(-Math.PI / 2); vcol(pad, (x, y, z) => [.2 + Math.hypot(x, z) * .4, .45, .3]); const m = new THREE.Mesh(pad, vmat()); m.position.y = .01; m.name = 'dk:lilypad'; G.add(m);
+      const budG = vcol(new THREE.SphereGeometry(.08, 8, 6).scale(1, 1.4, 1), () => [.95, .6, .85]); const b = new THREE.Mesh(budG, bud()); b.position.set(.05, .09, .04); b.name = 'dk:lilybud'; G.add(b); } });
   function piece(name, variant = 'restored', o = {}) { const G = new THREE.Group(); G.name = 'dk:' + name + ':' + variant; G.userData.boxes = []; sd = 4471 + name.length * 31 + (variant === 'ruined' ? 7 : 0);
     P[name](G, variant === 'ruined'); if (o.bury) { G.children.forEach(c => c.position.y -= o.bury); G.userData.boxes.forEach(b => { b.miny -= o.bury; b.maxy -= o.bury; }); drift(G, (o.buryR || 1.6), o.bury + .25); }
     let tris = 0; G.traverse(c => { if (c.isMesh) tris += (c.geometry.index ? c.geometry.index.count : c.geometry.attributes.position.count) / 3; }); G.userData.tris = tris | 0; return G; }
   // THE KIT ROW: every piece restored (front row) and ruined (back row), spaced by its size, labels as data (the glue draws none)
   function row(origin = [0, 0, 0]) { const G = new THREE.Group(); G.name = 'dk:row'; const out = [], gap = { block: 4, steps: 5, column: 4, ziggurat: 12, obelisk: 5, arch: 6, panel: 5 }; let x = 0;
     for (const n of K.pieces) { x += gap[n] / 2; for (const [v, z] of [['restored', 0], ['ruined', 9]]) { const p = piece(n, v); p.position.set(origin[0] + x, origin[1], origin[2] + z); G.add(p); out.push({ id: n + ':' + v, g: p, tris: p.userData.tris }); } x += gap[n] / 2; }
+    let xo = 0; for (const n of K.oasis) { const w = n === 'pond' ? 10 : 4; xo += w / 2; for (const [v, z] of [['restored', 20], ['ruined', 31]]) { if (n === 'lily' && v === 'ruined') continue; const p = piece(n, v); p.position.set(origin[0] + xo, origin[1] + (n === 'pond' ? 1.05 : 0), origin[2] + z); G.add(p);     /* the pond is dug into terrain; in the row it stands on its bowl */ out.push({ id: n + ':' + v, g: p, tris: p.userData.tris }); } xo += w / 2; }     // m2476: the OASIS row behind
     G.userData.items = out; G.userData.len = x; return G; }
-  return { K, mats, mat, piece, row }; }
+  return { K, mats, mat, piece, row, waterU, budMat: () => budM }; }
 // DKLIB:END
 // the zone (BOULDERS.md): `bouldMake` builds the field from its table; the game adds the tiers to BOXES, stands him on the clear pad facing the
 // field (the ENTRY row `boulders` drops him there), and steps it. `mel.BOULD.L` is the live field (rows, F, count()).
@@ -39468,7 +39512,7 @@ function bouldBuild() { const Z = BOULD; Z.want = 2; if (Z.on) return; const L =
 // on their own pale floor at `BOULD.kitAt` (east of the field, past the dunes). Always built (cheap, out of sight); `?at=kit` lands him at its start
 // and TOOLS > BOULDERS > KIT ROW goes there. The glyph panels glow at night; the stone carries a few runes.
 function bouldKit() { const Z = BOULD; if (Z.kit) return; const DK = Z.DK = dkMake(THREE, { tex: A }), O = Z.kitAt, R = DK.row(O); scene.add(R); Z.kit = R;
-  const fl = new THREE.Mesh(new THREE.PlaneGeometry(R.userData.len + 16, 28).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xe9e4da, roughness: .95 })); fl.position.set(O[0] + R.userData.len / 2, O[1] + .02, O[2] + 4.5); fl.receiveShadow = true; fl.name = 'dk:floor'; scene.add(fl); Z.kitFloor = fl;
+  const fl = new THREE.Mesh(new THREE.PlaneGeometry(R.userData.len + 16, 52).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xe9e4da, roughness: .95 })); fl.position.set(O[0] + R.userData.len / 2, O[1] + .02, O[2] + 15); fl.receiveShadow = true; fl.name = 'dk:floor'; scene.add(fl); Z.kitFloor = fl;
   R.traverse(o => { if (o.userData.boxes) for (const b of o.userData.boxes) BOXES.push({ minx: b.minx + o.position.x, maxx: b.maxx + o.position.x, miny: b.miny + o.position.y, maxy: b.maxy + o.position.y, minz: b.minz + o.position.z, maxz: b.maxz + o.position.z, noLedge: 0 }); });
   boxGrid(); const M = DK.mats; if (M.glyph) { M.glyph.emissiveMap = M.glyph.map; M.glyph.emissive = new THREE.Color(JPAL.glow); M.glyph.emissiveIntensity = 0; }
   if (M.wall) nightGlow(M.wall, { mask: 'runes', role: 'mix', density: .1, scale: 2.4, strength: 2.2 });
@@ -39540,7 +39584,7 @@ function bouldStep(dt) { const Z = BOULD, p = player; if (!Z.on || !Z.L) return;
   const vx = (p.pos.x - lp.x) / Math.max(dt, 1e-3), vz = (p.pos.z - lp.z) / Math.max(dt, 1e-3), sl = Math.hypot(vx, vz) < 20 ? Z.L.player(p.pos.x, p.pos.y, p.pos.z, vx, vz, h) : 0;
   if (sl > 0) { p.pos.x -= (p.pos.x - lp.x) * sl; p.pos.z -= (p.pos.z - lp.z) * sl; }
   { const f = Z.L.fix; if (f.n) { const L = Math.hypot(f.x, f.z), k = L > .6 ? .6 / L : 1; p.pos.x += f.x * k; p.pos.z += f.z * k; Z.st.contacts = (Z.st.contacts || 0) + 1; } }     // m2431: CONTACT -- out of the rock along its surface (capped per frame)     // wading through rock: he loses up to `push.slowMax` of this frame's step, never all of it
-  bouldSand(dt); bouldSky(); if (Z.DK && Z.DK.mats.glyph) Z.DK.mats.glyph.emissiveIntensity = 2.6 * nightF();
+  bouldSand(dt); bouldSky(); if (Z.DK && Z.DK.mats.glyph) Z.DK.mats.glyph.emissiveIntensity = 2.6 * nightF(); if (Z.DK) { Z.DK.waterU.uT.value += dt; const bm = Z.DK.budMat(); if (bm) bm.emissiveIntensity = 1.8 * nightF(); }
   { const ev = Z.L.ev; while (ev.length) { const e = ev.shift(); bouldFx(e.r, e.x, e.y, e.z, e.s, e.k); } }     // m2467: knocks the field reports (rock on rock, on him, a fragment landing)
   lp.copy(p.pos); Z.L.px(camera, renderer.domElement.height); Z.L.wU.uK.value = Z.wispDay + (Z.wispNight - Z.wispDay) * nightF(); Z.L.F.bubble.on = Z.aura ? 1 : 0; Z.L.aura(Z.aura, p.pos.x, p.pos.y, p.pos.z); Z.L.step(h); }
 // m2329: GOOP FX ON THE REAL MOVES (his: "I haven't seen those in game -- I imagine the attacks glowing"). TOOLS > KATANA > GOOP FX, DEFAULT ON;
