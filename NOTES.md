@@ -24,6 +24,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2423 -- FLOATING BOULDERS pass 5: THE JINRA AURA preview (BOULDERS.md; WORLD_PLAN 4, GRUMBO'S RISE)
+- TOOLS > BOULDERS > JINRA AURA (only shown in the zone; OFF by default; `mel.baura` in localStorage). While on, rocks up to .7 m within
+  5.5 m of him are CAUGHT (up to 16) and drift round him -- each its own orbit radius 1.2-2.8 m, height .5-2.1 m, phase and a slow bob,
+  turning at 1.1 rad/s at 1 m -- following as he walks (a critically-ish damped pull on the same offset the push uses: k 14, zeta .8).
+  He does not push a caught rock. Off: they are released, and for 5 s the wander cap is lifted so they FLY home on the home spring instead
+  of snapping to 7 m.
+- Strip (`npm run bouldstrip wide --aura=1 --follow=1 --push=0,12,3,0 --walk=1 --frames=6`): 9 caught on a 4 m walk into the field. The
+  first cut (.5 m, 4 m) caught 5 pebbles, too faint to read as a power -- widened. The boot gate turns it on and off.
+- This is the seed, not the power: no meter, no glow on the caught rocks, no force push. Those belong to the Jinra meter build.
+- WHOLE-PIECE: moves box 7 (aura). All five passes are in; open: his look on the phone, the tuning that follows, his sign-off. Shipped unverified.
+
 ## m2422 -- FLOATING BOULDERS pass 4: NIGHT (BOULDERS.md, NIGHT.md)
 - The rocks glow in PIECES: sandstone carries patches of carved script (`runes`, density .12), the red rock and the mossy lumps their cracks
   (density .22 / .2). Per-species options in `BOULD.night` (reload). The wisps go from x.6 by day to x3 at night (`nightF`).
