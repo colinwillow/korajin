@@ -34,6 +34,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2469 -- FLOATING BOULDERS: THE PLANTS PAINTED; THE SANDBOX IS THE DESERT KIT (his: "some plants have NO painted texture")
+- The plants were vertex colour only (flat). One shader now paints each KIND in the plant's OWN space (rides the lean): RIBS (9 cactus, 12 orb;
+  grooves darker, crests paler), mottled SKIN (two noises), spine AREOLES in rows up the rib crests (a cream tuft), a paler / pinker TIP band, the
+  succulent's waxy BLOOM -- and the same pattern as RELIEF (a screen-derivative bump; no map to load, nothing to hash). `PAINT` rows per kind.
+- NIGHT: cactus tips + buds (`tips`), the orb's crown, the succulent's veins -- `nightGlow` in the plant's local space (`pos: 'transformed'`).
+- GOTCHA (cost one strip): a shader string prepended to three's source MUST end in a newline -- `PLANT_FS` ended in `}` and ran into
+  `#define STANDARD` on the same line ("'#' : invalid character"); the plants vanished, only their shadows drew. SAND_FS had the newline.
+- THE DESERT KIT (his: this sandbox is the kit for the future SAND REGION, WORLD_PLAN 1): `DESERTKIT` (SC_DESERTKIT markers) names every piece --
+  rock_float, rock_rest, scree, cactus, cactus_green, succulent, orb_cactus, leaves, sand, dust, sky, stone_fx -- with its source, MEASURED tris
+  (`L.count().kitTris`: rocks 980, scree 320, cactus 2,168, succulent 1,260, orb 358), draws and night look; BOULDERS.md carries the table, the
+  phone budget (~26 draws, ~250k tris) and what the region still needs as kit rows. Shipped unverified.
+
 ## m2468 -- THE COMBAT LAB pass 2: AI THAT FIGHTS (his: "if I'm ever in parry/block they just never attack -- I want them to attack so I can block")
 - `cbtStep` (SC_CBT) on every free arena body, after `arenaFight`: TOKENS -- at most 1 / 2 / 3 bodies (EASY / MEDIUM / HARD) winding up or
   swinging at once, the rest CIRCLE (`arenaCircle`) at their spacing; PRESSURE -- a guard he HOLDS (`p.block` or the ice shield) is read after the

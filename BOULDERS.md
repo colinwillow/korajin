@@ -16,6 +16,28 @@ swirl of debris goes round him. This sandbox is where the float, the push and th
 - Rocks: three species (banded sandstone slab `hollows_rock`, chiselled red rock `hollows_cliff`, mossy lump `garden_rock`), two shapes each;
   textures TRIPLANAR in the rock's own space x its size, so the grain rides the rock and holds its metre scale.
 
+## THE DESERT KIT (Colin, Nov 4 2026 -- WORLD_PLAN.md section 1, "the kit before the place")
+This sandbox is the KIT for the future SAND REGION (a desert / sand temple, pyramid-like). Its rocks, sand, dust, plants and their FX are the
+region's pieces: each is finished here first, then the region is sculpted by placing them. The list with measured budgets is `DESERTKIT` in
+index.html (SC_DESERTKIT markers):
+
+| piece | tris each | draws | night | notes |
+|---|---|---|---|---|
+| rock_float (3 species x 2 shapes) | 980 | 6 | runes / cracks | floats, push, knock, break (STONEFX) |
+| rock_rest | 980 | (shared) | as above | sunk in the sand |
+| scree | 320 | 3 | -- | half-buried drifts, kickable |
+| cactus / cactus_green | 2,168 | 1 each | tips + buds | painted ribs, areoles, mottle |
+| succulent | 1,260 | 1 | veins | waxy bloom, pink tips |
+| orb_cactus | 358 | 1 | crown | ribs, areoles |
+| leaves (140) | ~30 | 1 | -- | kicked by his steps |
+| sand ground + patch | 45k + 31k | 2 | glints | plough / slump field, painted crust + revealed layer |
+| dust (520 pts) | -- | 1 | -- | kick-up, grains, wind-blown sand |
+| sky | -- | 0 | night system | painted equirect, PMREM light |
+| stone FX + sounds | -- | 0 | -- | audio/stone, CC0 |
+
+Phone budget for the field as built: ~26 draws, ~250k tris a frame. Still to make for the region: architecture (temple / pyramid modular
+pieces), props, water (an oasis), life (lizards, birds), atmosphere (heat shimmer, sandstorm), the region's enemies -- each a kit row first.
+
 ## Passes
 1. **THE FIELD** -- the floor, the tiers, 48 rocks pebble to car-size hovering 0.1-1.5 m (bigger = lower), bob on two incommensurate sines,
    small ones tumble, big ones sway and drift; contact shadows; faint Jinra wisps under the big ones. Instanced.
