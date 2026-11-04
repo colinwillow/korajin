@@ -44,6 +44,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2491 -- FLOATING BOULDERS: EVERY ROCK BREAKS, CRACKS SPREAD, FRAGMENTS ARE CAUGHT AND FLOAT, THE SWORD SLICES (Nov 4 2026)
+His notes (via parent): every rock breakable but scree, toughness by size, cracks spreading as it weakens; broken pieces drop, are
+"caught", then rise and float at their own heights with a faint Jinra shimmer (resting-rock pieces more subtly), pooled, old ones fade;
+a sword cut splits a rock in two along the swing plane, sparks + a ring on EVERY blade contact; arrows tink; blast arrows chip/break.
+- **HP BY SIZE** (`F.hit.hp` [.8, 4]): `hp0 = .8 + 4 s^2`; scree is `Infinity`. `damage(r, power, kind)` (sword x`swordK` 1.15, a plain
+  arrow x`arrowK` 0 -- it still tinks, never breaks). The blast arrow goes `arrowBlast -> rockArea -> bouldArea` at power 3, so it cracks
+  the big ones and breaks the small/medium ones.
+- **CRACKS**: per-instance `aCr` (= 1 - hp/hp0) on the instanced rocks; the rock shader draws noise isolines masked by a spread field
+  that grows with `aCr`, darkens the albedo under them and lights them `JPAL` glow x aCr^2. **IN THE ROCK'S OWN SPACE** (`vCrP` =
+  unit position x2.2, seeded by `aS`): the first version used world metres and a 0.3 m rock sat inside ONE noise cell, so the sand
+  rocks never cracked at all; its spread mask was also inverted (it SHRANK with damage). Both caught on a `--crack=all` render.
+- **CAUGHT FRAGMENTS**: after `catchT` .45 s a chunk is caught (event `catch` -> a `JPAL.glowRgb` spark shimmer), its velocity eases
+  out and it rises to its own `floatH` [.4, 2.2] m (`restH` [.06, .4] for a resting rock's pieces) and bobs; lives 40-60 s, fades 1.5 s.
+- **SLICE**: `bouldMelee` derives the swing plane's normal from the tip's travel x his forward (`BOULD.cutN`); a sword kill calls
+  `L.slice(r, n)` -> two half-rocks (scale 1,1,.5 on the normal) pushed apart, then caught and floating like any fragment.
+  Sparks + the stone sword STONEFX on every contact within rad + .25 m, rate-limited per rock (`r.spT` .07 s).
+- **THE ARROW SWITCH IS STILL THERE**: with the bow out, the quick-draw ring's BOW segment is labelled by arrow type (BOW / FIRE BOW /
+  BLAST BOW) and a tap cycles `ARROWK` normal -> fire -> blast (owned ones only; GOD owns all; remembered in `mel.qdArrow`).
+- **A BOMB ITEM: noted, NOT built.**
+- Tool: `npm run bouldstrip -- mid --crack=all` / `--slice=b01 --frames=6` / `--smash=b08`; `--list=N` prints v, cr, hp0, mesh.
+- Gates: check + boulders boot (barrage >= 3 breaks, urn, 60 m sand walk) pass. Moves BOULDERS.md "hit/break" on; still open:
+  his phone sign-off, the feel of hp per size, the bomb. Shipped unverified.
+
 ## m2490 -- the BACKPACK opens in the ring style: its contents are ring segments, not a panel (Nov 4 2026)
 Via main: *"the backpack's expansion doesn't follow the UI style rubric (UI_RINGS.md) -- every other button is a curved ring segment with the same
 expansion animation, colours, type and glow; the backpack opens into something that doesn't match. It can be bigger, but restyle it to the same family."*
