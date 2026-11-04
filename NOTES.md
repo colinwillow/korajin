@@ -41,6 +41,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2485 -- FLOATING BOULDERS AT NIGHT: no hard line, no static (his m2481 night shot, images/feedback/m2481/boulders_night_hard_edge.png)
+His: a big smooth dark-violet DISC round him with a crisp edge against a noisy speckled crust (the crust reads as pixel static at night).
+- STATIC: the crust's own grain was fed into the NORMAL at fixed texel steps with no regard for distance -- sub-pixel detail flickering as
+  speckle, worst where the sand is dark and only the normal-lit glints and ridges show. Its relief now fades out once a texel is smaller than ~1-2
+  pixels (`fwidth`), and is softer at night; the glints fade by screen size sooner and are 80% damped at night; the ripples 45% softer at night.
+- THE EDGES: the deformation PATCH's displacement feathers over ~2.5 m (was the last ~0.6 m) and the coarse sand under it is cut only inside
+  98.5% of it (no overlap ring); the DISTURBANCE field feathers off across each plough's berm instead of stepping; the REVEAL is a partial,
+  noise-broken blend (two noise scales) instead of a swap.
+- NIGHT CONTRAST: a `uNight` (= nightF) tones the two layers toward each other: the reveal drops to 35% of its day strength, the crust's busy colour
+  calms toward a neutral warm grey, the trough darkening halves. DAY IS UNCHANGED in look.
+- NOT REPRODUCED: headless night here lights the ground like day (only the sky goes dark), so his disc could not be seen. The best candidate after
+  reading the code is the PATCH (12 m, centred on him) drawing differently at night from the coarse sand round it -- the feathering above removes
+  any edge it had; if the disc survives, the other candidate is the moon's shadow frustum (dark inside, lit outside) and the next probe is the
+  shadow camera's extent in this zone. Shipped unverified.
+
 ## m2484 -- THE PLACE, pass B3: THE FRAME AND A HEIGHT (mesas round the place, a climbable lookout)
 - `dkMake` gains MESA (o: r, h, seed: a flat-topped butte -- a noisy outline, walls stepped in STRATA ledges every ~2.6 m, a TALUS skirt at the foot,
   a rough top; `hollows_cliff` triplanar at 15 m tiles, muted -- 7 m read busy and hot on a 34 m wall) and STAIR (o: h, w: solid .30 risers).
