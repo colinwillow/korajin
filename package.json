@@ -35,7 +35,8 @@
     "walktest": "node tools/walktest.mjs",
     "fxstrip": "node tools/fxstrip.mjs",
     "nightshot": "node tools/nightshot.mjs",
-    "lakestrip": "node tools/lakestrip.mjs"
+    "lakestrip": "node tools/lakestrip.mjs",
+    "bouldstrip": "node tools/bouldstrip.mjs"
   },
   "type": "module",
   "devDependencies": {

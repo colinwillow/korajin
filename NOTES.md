@@ -20,6 +20,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2418 -- FLOATING BOULDERS pass 1: THE FIELD (BOULDERS.md, KORAJIN > Floating Boulders, `?w=forge&zone=boulders`)
+His (Nov 4): *"boulders that are floating -- different sizes -- just gracefully, melodically floating right off the ground, and interactive."*
+New sandbox; BOULDERS.md has the vision, the five passes and DONE WHEN (last box his phone).
+- `bouldMake` (BOULDLIB markers) is a PURE builder of the `SC_BOULDERS` table: 48 rocks scattered from seed 1729 (ids `b01..` biggest first, so
+  stable), radius .12 -> 2.1 m skewed small (u^1.6), hover 1.5 m (pebbles) down to .1 m (the biggest), x .75-1.25 each. Three species, two shapes
+  each (an icosphere d6 pushed by seeded fbm, then: sandstone SLAB with strata ledges, red rock FACETS cut by 9 planes, mossy LUMP with a moss
+  crown), every underside tapered so it reads LIFTED. Texture TRIPLANAR in the rock's own space x its size (`aS`): the grain rides the rock.
+- Motion: bob on TWO sines (f and 1.73 f, own phases) -- never a metronome; rocks under `bigAt` .85 m tumble about their own axis, bigger ones
+  tilt-sway and drift in yaw. Every rock already carries `o`/`ov`/`w`/`qd` (offset, velocity, spin) for pass 2/3.
+- Contact shadows: ONE instanced quad layer, a soft disc that darkens as the gap closes. Wisps: ONE Points (JPAL.glow, metres at any lens) curling
+  up under the 21 rocks over .7 m. Pale floor (r 72, four faint rings) and FOUR pale tiers at .8 / 1.2 / 1.8 / 3.0 m (BOXES) -- rocks hover over
+  their tops too (VERTICALITY).
+- Numbers (`npm run bouldstrip`): **14 draws** for the whole field (6 rock instanced meshes + shadows + wisps + floor + 4 rings... + 4 tiers),
+  **47,040 rock tris**, 234 wisps, build 166 ms headless. In-game boot (`MEL_WORLD='forge&zone=boulders' node tools/boot.mjs`) builds + steps clean;
+  a real-page render of the zone came out as the strip shows (forge sky behind).
+- ENTRY row `boulders` (ready on `BOULD.on`), lands on the clear pad (0, 12) facing the field; menu button "Floating Boulders"; `mel.BOULD`.
+- WHOLE-PIECE check: a new piece on its own, builds on nothing unsigned. Moves box 1 (the field reads) and 2 (numbers) -- pending his look.
+  Open: push (pass 2), hit/break (3), night (4), aura (5), his sign-off. Shipped unverified.
+
 ## m2417 -- gdnWalls no longer walls off the shrine stair (Nov 4 2026)
 The collider worker found it under BOXES: a `gdnWall` box (y 119.80 to 120.88) lay across the shrine stair's second tread. From the 120.30 tread the next floor
 read 120.88, a .58 m step against his .357.
