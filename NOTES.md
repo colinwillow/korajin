@@ -25,6 +25,10 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2424 -- the Jinra lift bobs MORE (Nov 4 2026)
+His (relayed): *"I wanted him to bob up and down MORE."* The drawn float (m2345) goes from `GARDEN.beam.fly` .16 to .33 m, and its period from 3.2 to
+3.8 s, floatier. It is the same in the air and in the lotus, where LOTUS.dy's own .14 rides on top. Shipped unverified.
+
 ## m2423 -- FLOATING BOULDERS pass 5: THE JINRA AURA preview (BOULDERS.md; WORLD_PLAN 4, GRUMBO'S RISE)
 - TOOLS > BOULDERS > JINRA AURA (only shown in the zone; OFF by default; `mel.baura` in localStorage). While on, rocks up to .7 m within
   5.5 m of him are CAUGHT (up to 16) and drift round him -- each its own orbit radius 1.2-2.8 m, height .5-2.1 m, phase and a slow bob,
