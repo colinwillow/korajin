@@ -60,7 +60,7 @@ peak at 4,514 of 5,000 (the first try's 3,600 pool saturated at 4.8 s and overwr
 swallowed the gem -- tightened, dimmed, rings smaller and rarer). 131-160 draws, 66-68k tris with the wide shot. Shared lines (ENTRY rows,
 ZONEWANT, the menu) diffed against main before the push: identical.
 
-## m2476 -- THE DESERT KIT, pass A2: THE OASIS SET
+## m2477 -- THE DESERT KIT, pass A2: THE OASIS SET
 - `dkMake` gains four pieces (restored + ruined): POND (a still pool r 3.2, a ring of 18 worn rim stones, three .30 steps down into the water on +x,
   a pave-lined bowl .9 deep, a WET-SAND ring; ruined: stones missing / lifted), PALM (an alien palm: a ringed trunk on a bent curve, nine drooping
   tapered fronds, pink buds; ruined: a snapped stump, the trunk lying), REEDS (a clump of 18 tapered bent blades), LILY (a notched pad and a bud).
