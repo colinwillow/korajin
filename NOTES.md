@@ -40,6 +40,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2484 -- THE PLACE, pass B3: THE FRAME AND A HEIGHT (mesas round the place, a climbable lookout)
+- `dkMake` gains MESA (o: r, h, seed: a flat-topped butte -- a noisy outline, walls stepped in STRATA ledges every ~2.6 m, a TALUS skirt at the foot,
+  a rough top; `hollows_cliff` triplanar at 15 m tiles, muted -- 7 m read busy and hot on a 34 m wall) and STAIR (o: h, w: solid .30 risers).
+- `DPLACE` (SC_DPLACE markers): SEVEN MESAS (11-20 m across, 16-34 m tall) ringing the place 55-95 m out, past the dunes -- the near layer of the
+  background (the painted sky carries the far one) -- and the LOOKOUT: an outcrop at the field's edge (F.c + (20, 4)), 5.4 m tall, with a carved
+  stair of .30 risers up its west face to its flat top over the shrine. `F.keep` keeps rocks and plants off it. Collision: the zone's triangle store
+  takes the mesas' meshes; a box on the lookout's top and every stair step's box.
+- Real-page renders: from his landing the shrine sits in its basin with a mesa wall behind it, the lookout stair at the right. Not yet: a path up
+  the ridge, ledges on the mesas, the far side of the place. Shipped unverified.
+
 ## m2483 -- THE PLACE, pass B2: THE TEMPLE POND (the oasis shrine in the sunken basin, built only from the kit)
 - `DSHRINE` (SC_DSHRINE markers; `SHRINE` was already taken in this file): 30 placement rows with stable ids -- the POND at the heart, a paved ring
   (r 3.9-5.4), SIX COLUMNS (two ruined), an OBELISK to the north, the ARCH GATE facing his landing with a STAIR, two BRAZIERS (fire) and two BANNERS
