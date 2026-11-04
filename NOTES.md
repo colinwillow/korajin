@@ -36,7 +36,7 @@ frames were state "none" and the camera then moved 3-27 m. `entryRevealAfter` de
 with those clips), still under the 9 s cap. Shipped unverified; the re-measure follows.
 
 
-## m2437 -- FLOATING BOULDERS: RESTING ROCKS and HIS BUBBLE (his m2429 note 3: "very subtle, angelic, elegant, beautiful")
+## m2438 -- FLOATING BOULDERS: RESTING ROCKS and HIS BUBBLE (his m2429 note 3: "very subtle, angelic, elegant, beautiful")
 - 26 RESTING rocks (`F.rest`, ids r01..r26, .14-1.35 m, the same species/shapes and the same instanced meshes) sit ON the sand, sunk `embed` .18
   of their half height, scattered among the floaters by the same spacing rule. Still, no bob, no turn -- until he comes near.
 - HIS BUBBLE (`F.bubble`, always on, separate from the JINRA AURA switch): within R 3.2 m + a rock's size, falloff 1 - (d/R)^2 (broad inside,
