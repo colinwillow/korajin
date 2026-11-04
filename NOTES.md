@@ -30,6 +30,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2442 -- FOREST TEMPLE pass 3: THE WAY IN -- the dome temple's DESCEND, the ENTRY HALL, THE WELL and its waterfall, into chamber 1 (FOREST_TEMPLE.md)
+- THE DOOR: a DESCEND chevron (`interactAdd` 'domet.descend') on the dome temple's cella floor behind the orb -> `?w=forge&zone=ftemple`. It only READS
+  DOMET (the exterior worker's); nothing of theirs is touched. Back out: ASCEND ('ftemple.up') at the hall's far end -> `?w=forge&zone=dometemple`.
+- `?w=forge&zone=ftemple` now lands in the ENTRY HALL (y 24, (0, 75), facing the well; ENTRY row `ftemple`); `&at=room` still starts on chamber 1's
+  floor (menu: *Forest Temple: Inside* and *Forest Temple: The Acrobatic Room*).
+- THE HALL: 16 x 34 m at 24 m, eight columns (rooted alternately), guardian statues at the lip, braziers, guardian panels, moss, pots, a light shaft,
+  roots down the walls; its back wall carries the stone door he came through.
+- THE WELL: a 20-segment ring (inner r 10 round (0, 36)), its three south segments stop at the hall floor (the lip), the north one starts over the
+  corridor door. SEVEN LEDGES spiral down 3 m each (21 -> 3), 45 deg apart: ~2.4 m across and 3 m down per hop. A light shaft down its middle.
+- THE WATERFALL (`fall` piece, CRAFT 2): out of a broken stone LIP with moss and a wet dark stain round it, a BALLISTIC sheet (z = out u, y = -drop u^2)
+  that widens as it falls 22 m, streaks running down, torn edges, brightest at the top; it lands in a stone-rimmed POOL (a .3 m rim he steps over,
+  12 colliders) with a glow ring, mist and foam. One shader mesh for every fall, one for every pool. No water SOUND: there is no loopable water
+  recording besides the lake's (said, not faked).
+- THE CORRIDOR from the well's foot through an ARCH now in the room's south wall (the wall split in three round it).
+- Fixed: the shafts' dust specks were 0.7 m cells (white rectangles on a 30 m shaft) -> fine soft dots.
+- Numbers (`npm run ftstrip --set=in`, the whole set): **32 draws, 64k tris** (worst view), 131 boxes, 191 halos, build 157 ms.
+- WHOLE-PIECE: the same sandbox's next box (pass 3), on nothing else unsigned. Untested on a body: the ledge hops, the pool rim. Shipped unverified.
+
 ## m2441 -- FOREST TEMPLE pass 2: CHAMBER 1, THE ACROBATIC ROOM (FOREST_TEMPLE.md; KORAJIN > Forest Temple: The Acrobatic Room, `?w=forge&zone=ftemple`)
 WORLD_PLAN 5, built from the pass-1 kit plus twelve new pieces (`rim`, `block`, `marks`, `ladder`, `monkey`, `rope`, `target`, `mover`, `hbar`,
 `plate`, `zip`, `hangroots`); the room is the `rooms.in` set of the same `SC_FTEMPLE` table (59 rows, stable ids `r1_*`).

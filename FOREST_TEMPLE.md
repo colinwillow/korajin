@@ -64,7 +64,7 @@ the walls -- and, at the bottom, the boss who holds the forest's JINRA STONE. Ev
    ledge; a melee scrap on rim 2; on up by MONKEY BARS / the HIGH BAR / a TIGHTROPE / a MOVING PLATFORM; an ARROW SWITCH on the far wall that
    moves the platform; the BUTTON at the top opens the ground-floor door; back down; the last fight; ROOM CLEARED (a chime). Mesh collider row
    (`COLL.zones`) on its real triangles.
-3. **THE ENTRY HALL + THE DESCENT** -- the door from the dome temple (an interact chevron there -> `?w=forge&zone=ftemple`; the exit back out),
+3. **THE ENTRY HALL + THE DESCENT** (built: DESCEND on the cella floor, the hall at 24 m, the well of seven ledges, the waterfall, the corridor) -- the door from the dome temple (an interact chevron there -> `?w=forge&zone=ftemple`; the exit back out),
    the hall, the spiral down round the root well with its waterfall, into chamber 1's ground floor. Its own ENTRY row (normal play camera,
    flat portal, minimal).
 4. **THE ROSTER SLOTS** (WORLD_PLAN 3): melee small, melee big, ranged A (archer), ranged B (thrower), creature A (swarm), creature B (burrower /
@@ -80,6 +80,6 @@ the walls -- and, at the bottom, the boss who holds the forest's JINRA STONE. Ev
 - [ ] Chamber 1 plays start to finish: up three storeys by every verb, archers, the wall run, the scrap, the switch, the button, the door, the last
       fight, ROOM CLEARED.
 - [ ] Collisions on the real triangles in the chambers; no rim snags (the basin-edge / stair-top report).
-- [ ] The door: in from the dome temple, out again; the ENTRY row lands him facing the hall.
+- [ ] The door: in from the dome temple (DESCEND), out again (ASCEND); the ENTRY row lands him facing the hall (pass 3, pending his look).
 - [ ] The roster slots filled (stand-ins named), the boss arena and the Jinra stone GET moment.
 - [ ] **His sign-off, on his phone.**
