@@ -23,6 +23,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2422 -- FLOATING BOULDERS pass 4: NIGHT (BOULDERS.md, NIGHT.md)
+- The rocks glow in PIECES: sandstone carries patches of carved script (`runes`, density .12), the red rock and the mossy lumps their cracks
+  (density .22 / .2). Per-species options in `BOULD.night` (reload). The wisps go from x.6 by day to x3 at night (`nightF`).
+- **`nightGlow` grew `pos` / `nrm`** (GLSL for the pattern's space). `local` still bakes in `instanceMatrix`, so on an instanced rock that
+  TUMBLES the cracks would slide through the stone; `pos: 'transformed * aS'` is the rock's own space x its size in metres, before the
+  instance matrix -- stuck to the stone as it bobs, is knocked, rolls and breaks (the chunk pools share the material). Additive: no other
+  caller changes; the cache key carries the expression.
+- Looked at in the real page (`?w=forge&zone=boulders&night=1`, headless): the first densities (.45 cracks) covered the red rocks like chicken
+  wire -- the NIGHT.md failure -- so they went down by half and the crack scale up (smaller patches than a rock). The forge's floor stays bright
+  at night (the forge's own lights); that is the world, not the field.
+- WHOLE-PIECE: moves box 6 (night) -- pending his look. Open: aura (pass 5), sign-off. Shipped unverified.
+
 ## m2421 -- URGENT: menu -> zone left the transition petals stuck on screen and the menu half-alive<!--mine-->
 His phone, m2414 (images/feedback/m2414/stuck_petals_lake_*.png). Going from the menu into the Lake went wrong in several ways:
 - the menu would not take taps;
