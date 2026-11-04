@@ -36,6 +36,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2478 -- (housekeeping) m2476 relabelled another worker's m2472 comments; put back
+My `sed s/m2472/m2476/` (renumbering my own tags after a rebase moved my build) also hit the m2472 COMBAT boss pass's eight comment tags
+(`bossGuardStep`, `bossBodyK`, the lab's BOSS button...). Restored to exactly the text main had before m2476 (diffed: identical). Comments only, no
+behaviour. **Renumber my own tags only inside my own markers (SC_GATHER), never file-wide.**
+
 ## m2476 -- THE GATHERING detail pass: two-handed pose, a head-sized cut crystal, the drain as thousands of motes (GATHERING.md)
 His first look (relayed by the parent session): "a really great start" -- then: (1) he holds it up with ONE hand, make it two-handed, a strong
 heroic silhouette; (2) the crystal is massive, make it head-sized and far more detailed; (3) make the gathering much more PARTICLE-driven.
