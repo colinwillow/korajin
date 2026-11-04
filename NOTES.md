@@ -35,6 +35,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2474 -- FOREST TEMPLE: the acrobatic room's two fights are the COMBAT LAB's tuned `forest` set (COMBAT.md 6), not stand-ins
+The Combat Lab worker's temple drop-in (m2473): `combatDrop(set, wave, spots)`. The room's `foes` rows now name a set and a wave instead of a kind:
+- the GALLERY SCRAP = `forest` wave 1 (two samurai + an Osari bowman) at three marks on the gallery (6 m);
+- the LAST FIGHT = `forest` wave 2 (a jackal, a samurai, an archer) out of the antechamber when the button opens the door.
+Same brain, tokens, defence and difficulty (`ARENA.duel.lvl`) as the lab. The bodies are the ones `combatDrop` added to `ARENA.live` (snapshot
+before / after); ROOM CLEARED waits for every one of them and the rim archers to be gone. The two ARCHERS on the far rim stay `archerPost` (posted
+snipers: they hold the rim by design, which a kiting archer from the set would not). The boss (`combatBoss('forest')`) is for the boss arena (pass 6).
+Untested: the beam-in cut (`actionCam`) on each arena spawn may tug the lens mid-climb. Shipped unverified.
+
 ## m2469 -- FLOATING BOULDERS: THE PLANTS PAINTED; THE SANDBOX IS THE DESERT KIT (his: "some plants have NO painted texture")
 - The plants were vertex colour only (flat). One shader now paints each KIND in the plant's OWN space (rides the lean): RIBS (9 cactus, 12 orb;
   grooves darker, crests paler), mottled SKIN (two noises), spine AREOLES in rows up the rib crests (a cream tuft), a paler / pinker TIP band, the
