@@ -96,5 +96,9 @@ After a temple's boss: the arena is ringed by 6-8 big torches burning with that 
 crystal (a press or a pedestal), the Jinra is drawn out of every torch in streams into it, and the nearly clear crystal fills with the
 temple's colour and glows -- that charged crystal is what opens the way onward. The world answers: the Jinra glow drains out of
 the room, the torches drop to ordinary warm fire; and when he steps outside the REGION has changed -- night lifts to day, a blizzard
-clears to sun (the RESTORATION shown as weather). Tech: NIGHT.f and the weather tables can already be driven by a script, the streams
+clears to sun (the RESTORATION shown as weather). **REVISED (his, same day): keep the day/dusk/night CYCLE -- it may itself be lore: the
+world's instability, time sped up as the stability is drained. So the signifier is NOT weather/time: it is the FALLEN -> REJUVENATED look
+(as the Red Hollows' fallen/unfallen states already do): fallen = dusty, eerie red, withered, murky water; rejuvenated = plants grow back,
+colour returns, clear water, the glow is healthy. TWO MOMENTS: (1) the Gathering in the temple rejuvenates the REGION; (2) returning the
+charged crystal to its sky temple restores the FALLEN CITIES -- they float again, rebuilt, not destroyed.** Tech: NIGHT.f and the weather tables can already be driven by a script, the streams
 are FX goop ribbons, the torches are nightGlow/JPAL rows; the "hold it up" pose is the standard GET moment.
