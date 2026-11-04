@@ -44,6 +44,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2492 -- with the bow out the left ring lists the ARROW TYPES; bow vs gun is picked in the BACKPACK (Zelda-style) (Nov 4 2026)
+Via main: *"with the BOW drawn, the left sub-menu lists the ARROW TYPES (BOW / FIRE BOW / BLAST BOW -- the owned ones), one segment each, tap to pick
+(like the katana's STEEL / FIRE / JIN). Remove the gun/rocket launcher from that sub-menu and from quick draw; equipping a different ranged weapon
+moves to the BACKPACK -- add a WEAPONS group to the backpack rings."*
+- `ringsStep`: bow out -> one ring (cap 3) of the owned arrow types (`ARROWK` filtered by `ownHas(<type>arrow)`), tap = that type (red); only when
+  more than one is owned. The gun out has no sub-menu. The BOW | GUN pair is gone from the left; the old tap-to-cycle is gone (it conflicted).
+- BACKPACK open adds `bagweap`: one segment per owned ranged weapon (BOW / GUN), red = the one the right ring's second half draws (`QD.proj`);
+  a tap equips it (and swaps to it if a ranged weapon is already out). Order: BACKPACK, gear, weapons, then the drawn weapon's own choices.
+- One sword exists, so no sword choice yet; a second sword is one more row in `bagweap`. Shipped unverified; renders sent.
+
 ## m2491 -- FLOATING BOULDERS: EVERY ROCK BREAKS, CRACKS SPREAD, FRAGMENTS ARE CAUGHT AND FLOAT, THE SWORD SLICES (Nov 4 2026)
 His notes (via parent): every rock breakable but scree, toughness by size, cracks spreading as it weakens; broken pieces drop, are
 "caught", then rise and float at their own heights with a faint Jinra shimmer (resting-rock pieces more subtly), pooled, old ones fade;
