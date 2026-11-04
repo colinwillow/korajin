@@ -35,6 +35,17 @@ frames were state "none" and the camera then moved 3-27 m. `entryRevealAfter` de
 (`fall_hero` / `land_hero`) load AFTER his rig reports ready: it saw a ready rig without them. It now also holds while the hero is Grumbo (the one
 with those clips), still under the 9 s cap. Shipped unverified; the re-measure follows.
 
+
+## m2437 -- FLOATING BOULDERS: RESTING ROCKS and HIS BUBBLE (his m2429 note 3: "very subtle, angelic, elegant, beautiful")
+- 26 RESTING rocks (`F.rest`, ids r01..r26, .14-1.35 m, the same species/shapes and the same instanced meshes) sit ON the sand, sunk `embed` .18
+  of their half height, scattered among the floaters by the same spacing rule. Still, no bob, no turn -- until he comes near.
+- HIS BUBBLE (`F.bubble`, always on, separate from the JINRA AURA switch): within R 3.2 m + a rock's size, falloff 1 - (d/R)^2 (broad inside,
+  nothing at the edge). A resting rock RISES to at most `lift` .55 m (smaller ones higher), easing up at .9/s and settling at .45/s, and while up
+  it bobs and turns slowly; a floating rock is DEFLECTED (a soft outward accel / sqrt(mass), far gentler than contact) so its drift bends round him.
+  Sand trickles off a rising rock and it leaves its bed pressed in the sand. Contact and the shove still apply to resting rocks.
+- The first falloff (1 - d/R)^2 lifted a 1.15 m rock 12 cm at 2 m -- invisible; the broad one lifts it ~.3 m (strip `rest`: r05).
+- Rocks 74 (48 floating + 26 resting), still 16 draws (the resting ones are instances), 72.5k rock tris. Shipped unverified.
+
 ## m2435 -- FLOATING BOULDERS: SAND (his m2429 note 2: "beautiful sand -- dunes, ripples -- footprints and pushed sand like the snow, subtler")
 - The pale floor and its rings are gone; the ground is a SAND heightfield in BOULDLIB (`F.sand`, 150 m, 150 seg): flat (y 0) inside `flatR` 26 m
   of the field centre so the rocks, tiers and his walk are unchanged, DUNES rising to `duneR` 46 m -- crests across the wind (`wind` .55 rad),

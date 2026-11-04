@@ -37662,6 +37662,8 @@ function bouldMake(THREE, scene, O = {}) {
       red: { tex: 'textures/hollows_cliff.webp', tint: [.74, .64, .62], shape: 'facet', w: .3 },     // chiselled red rock, flat facets
       moss: { tex: 'textures/garden_rock.webp', tint: [.78, .8, .74], shape: 'lump', w: .32 } },     // a rounded mossy lump
     wisp: { at: .7, per: 9, size: .09, k: 1 },
+    rest: { n: 26, sMin: .14, sMax: 1.35, sPow: 1.4, embed: .18, R: 23 },     // m2437 (his: "rocks that sit ON the ground too"): resting rocks, sunk `embed` x their half height into the sand, scattered to R m
+    bubble: { on: 1, R: 3.2, lift: .55, up: .9, down: .45, turn: .35, push: 2.2 },     // m2437 HIS BUBBLE (always on, subtle): resting rocks within R (+ their size) rise up to `lift` m (smaller higher), easing up /s and settling /s, turning a little; drifting ones are deflected (accel / sqrt(mass))
     solid: { on: 1, fit: .92, sMin: .22, pM: 1.6, head: 1.7, knee: .3 },     // his body vs a rock's ELLIPSOID (the mesh's bounds x fit): the overlap is split by mass (his `pM` against the rock's), so a pebble is shoved, a boulder stops him and he slides round it; rocks under `sMin` only get pushed
     push: { pr: .38, tall: 1.8, reach: .9, dens: 2.2, k: 26, carry: .8, spin: .9, lift: .25, slowMax: .32, mBig: 6 },     // pass 2: his radius / height, a rock's push radius (x s), mass = dens * s^3, the shove, how much of his speed it takes, the spin, a little lift, the most it slows him
     home: { w: [2.6, .7], z: .55, wDamp: 1.1, settle: .35, maxO: 7 },     // the spring home: natural freq rad/s (small .. big), damping ratio; spin decay /s; the turn back to its own pose /s; the furthest it may wander
@@ -37677,6 +37679,7 @@ function bouldMake(THREE, scene, O = {}) {
       { id: 'mid', why: 'a mid rock close', row: 'b08', off: [1.6, .5, 2.2] },
       { id: 'dunes', why: 'out to the dunes past the field (m2435)', eye: [6, 2.2, 14], at: [30, 1, 40] },
       { id: 'sand', why: 'the sand close: ripples and his prints', eye: [1.2, 1.1, 12.8], at: [0, 0, 9] },
+      { id: 'rest', why: 'a resting rock (r05) as he comes up to it: his bubble lifts it (m2437)', row: 'r05', off: [2.2, .45, 3.2] },
       { id: 'push', why: 'his line through b16 (pass 2: npm run bouldstrip push --push=-1.8,12,-1.8,7 --walk=1 --frames=6)', eye: [5, 2.6, 9], at: [-2, 1, 4] } ] };
   // SC_BOULDERS:END
   let sd = F.seed; const rnd = () => { sd = (sd * 16807) % 2147483647; return (sd - 1) / 2147483646; }, lerp = (a, b, t) => a + (b - a) * t;
@@ -37690,6 +37693,11 @@ function bouldMake(THREE, scene, O = {}) {
         rows.push({ id: 'b' + String(rows.length + 1).padStart(2, '0'), sp: sp[(rnd() * sp.length) | 0], v: (rnd() * 2) | 0, x, z, g, s, hov: lerp(F.hovHi, F.hovLo, Math.pow(k, .6)) * (.75 + rnd() * .5),
           ph: [rnd() * 6.283, rnd() * 6.283, rnd() * 6.283], bA: lerp(F.bob[1], F.bob[0], k), bF: lerp(F.bobF[1], F.bobF[0], k) * (.8 + rnd() * .4), spin: lerp(F.spin[1], F.spin[0], k) * (.7 + rnd() * .6),
           ax: [rnd() - .5, rnd() - .5, rnd() - .5], yaw: rnd() * 6.283 }); break; } } }
+  { const RS = F.rest, want = []; for (let i = 0; i < RS.n; i++) want.push(RS.sMin + (RS.sMax - RS.sMin) * Math.pow(rnd(), RS.sPow)); want.sort((a, b) => b - a); let n = 0;     // the RESTING rocks (ids r01..), on the sand among the floaters
+    for (const s of want) { for (let tr = 0; tr < 60; tr++) { const a = rnd() * 6.283, r = RS.R * Math.sqrt(rnd()), x = F.c[0] + Math.cos(a) * r, z = F.c[1] + Math.sin(a) * r;
+        if (Math.hypot(x - F.clear[0], z - F.clear[1]) < F.clear[2] + s) continue; if (rows.some(q => Math.hypot(q.x - x, q.z - z) < (q.s + s) * F.gap + F.gapM)) continue;
+        rows.push({ id: 'r' + String(++n).padStart(2, '0'), rest: 1, sp: sp[(rnd() * sp.length) | 0], v: (rnd() * 2) | 0, x, z, g: tierAt(x, z), s, hov: 0, ph: [rnd() * 6.283, rnd() * 6.283, rnd() * 6.283],
+          bA: lerp(F.bob[1], F.bob[0], (s - F.sMin) / (F.sMax - F.sMin)) * .6, bF: lerp(F.bobF[1], F.bobF[0], .5), spin: lerp(F.spin[1], F.spin[0], .5), ax: [rnd() - .5, rnd() - .5, rnd() - .5], yaw: rnd() * 6.283 }); break; } } }
   // THE SHAPES: an icosphere pushed out by seeded noise, then shaped per species; shared vertices move together (keyed by position)
   const h3 = (x, y, z) => { const s = Math.sin(x * 127.1 + y * 311.7 + z * 74.7) * 43758.5453; return s - Math.floor(s); };
   const vn = (x, y, z) => { const ix = Math.floor(x), iy = Math.floor(y), iz = Math.floor(z), fx = x - ix, fy = y - iy, fz = z - iz, u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy), w = fz * fz * (3 - 2 * fz);
@@ -37738,7 +37746,7 @@ function bouldMake(THREE, scene, O = {}) {
       const bb = g.boundingBox; rs.forEach((r, i) => { r.m = im; r.i = i; r.half = g.userData.half; r.e = [(bb.max.x - bb.min.x) / 2, (bb.max.y - bb.min.y) / 2, (bb.max.z - bb.min.z) / 2]; });     /* r.e: the ellipsoid each rock collides as (its own mesh's half extents) */ group.add(im); meshes.push(im); tris += g.attributes.position.count / 3 * rs.length; } }
   // the dynamic state every pass after this one moves: offset + velocity (the push), a spin (the knock), the idle clock
   for (const r of rows) { r.o = new THREE.Vector3(); r.ov = new THREE.Vector3(); r.w = new THREE.Vector3(); r.qd = new THREE.Quaternion(); Ax.set(...r.ax).normalize(); r.axV = Ax.clone();
-    r.q0 = new THREE.Quaternion().setFromEuler(E.set((rnd() - .5) * .5, r.yaw, (rnd() - .5) * .5)); r.p = new THREE.Vector3(); r.q = new THREE.Quaternion(); r.big = r.s > F.bigAt; r.mass = F.push.dens * r.s * r.s * r.s + .05; r.k = (r.s - F.sMin) / (F.sMax - F.sMin); }
+    r.q0 = new THREE.Quaternion().setFromEuler(E.set((rnd() - .5) * .5, r.yaw, (rnd() - .5) * .5)); r.p = new THREE.Vector3(); r.q = new THREE.Quaternion(); r.big = r.s > F.bigAt || !!r.rest; r.lift = 0; r.ya = 0; r.mass = F.push.dens * r.s * r.s * r.s + .05; r.k = (r.s - F.sMin) / (F.sMax - F.sMin); }
   // THE CONTACT SHADOWS: one instanced quad per rock, a soft disc that tightens and darkens as the rock comes down
   const shGeo = new THREE.PlaneGeometry(2, 2).rotateX(-Math.PI / 2), shMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2,
     vertexShader: 'varying vec2 vU; varying float vA; void main() { vU = uv * 2.0 - 1.0; vA = 1.0; \n#ifdef USE_INSTANCING_COLOR\n vA = instanceColor.r; \n#endif\n vec4 p = vec4(position, 1.0); \n#ifdef USE_INSTANCING\n p = instanceMatrix * p; \n#endif\n gl_Position = projectionMatrix * modelViewMatrix * p; }',
@@ -37746,7 +37754,7 @@ function bouldMake(THREE, scene, O = {}) {
   const shM = new THREE.InstancedMesh(shGeo, shMat, rows.length); shM.name = 'boulders:shadow'; shM.frustumCulled = false; shM.renderOrder = 1; shM.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
   shM.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(rows.length * 3), 3); shM.instanceColor.setUsage(THREE.DynamicDrawUsage); group.add(shM); meshes.push(shM);
   // THE WISPS: faint Jinra motes curling under every big rock (one Points, size in METRES at any lens)
-  const wr = rows.filter(r => r.s > F.wisp.at), WN = wr.length * F.wisp.per, wP = new Float32Array(WN * 3), wA = new Float32Array(WN), wD = [];
+  const wr = rows.filter(r => r.s > F.wisp.at && !r.rest), WN = wr.length * F.wisp.per, wP = new Float32Array(WN * 3), wA = new Float32Array(WN), wD = [];
   wr.forEach(r => { for (let j = 0; j < F.wisp.per; j++) wD.push({ r, a: rnd() * 6.283, rr: .35 + rnd() * .6, sp: (.25 + rnd() * .4) * (rnd() < .5 ? 1 : -1), t: rnd(), life: 2.5 + rnd() * 2.5 }); });
   const wG = new THREE.BufferGeometry(); wG.setAttribute('position', new THREE.BufferAttribute(wP, 3).setUsage(THREE.DynamicDrawUsage)); wG.setAttribute('aA', new THREE.BufferAttribute(wA, 1).setUsage(THREE.DynamicDrawUsage));
   const wU = { uC: { value: new THREE.Color(pal.glow) }, uPx: { value: 600 }, uS: { value: F.wisp.size }, uK: { value: F.wisp.k } };
@@ -37802,9 +37810,10 @@ function bouldMake(THREE, scene, O = {}) {
     boxes.push({ minx: t.x - t.w / 2, maxx: t.x + t.w / 2, miny: 0, maxy: t.h, minz: t.z - t.d / 2, maxz: t.z + t.d / 2 }); }
   // THE STEP: the idle (bob, tumble / sway) composed with the dynamic offset and spin, written to the instances
   let T = 0;
-  function pose(r) { const t = T, w = 6.283 * r.bF, bob = r.bA * (Math.sin(t * w + r.ph[0]) + .35 * Math.sin(t * w * 1.73 + r.ph[1]));
-    r.p.set(r.x + r.o.x, r.g + r.half * r.s + r.hov + bob + r.o.y, r.z + r.o.z);
-    if (r.big) { Q.setFromEuler(E.set(Math.sin(t * .23 + r.ph[1]) * .06, t * r.spin * .35 + Math.sin(t * .11 + r.ph[2]) * .2, Math.sin(t * .19 + r.ph[2]) * .06)); }
+  function pose(r) { const t = T, w = 6.283 * r.bF, lf = r.rest ? Math.min(1, r.lift / Math.max(.05, F.bubble.lift)) : 1, bob = r.bA * lf * (Math.sin(t * w + r.ph[0]) + .35 * Math.sin(t * w * 1.73 + r.ph[1]));
+    r.p.set(r.x + r.o.x, r.g + r.half * r.s * (r.rest ? 1 - F.rest.embed : 1) + r.hov + bob + r.o.y + r.lift, r.z + r.o.z);
+    if (r.rest) Q.setFromEuler(E.set(Math.sin(t * .23 + r.ph[1]) * .08 * lf, r.ya, Math.sin(t * .19 + r.ph[2]) * .08 * lf));
+    else if (r.big) { Q.setFromEuler(E.set(Math.sin(t * .23 + r.ph[1]) * .06, t * r.spin * .35 + Math.sin(t * .11 + r.ph[2]) * .2, Math.sin(t * .19 + r.ph[2]) * .06)); }
     else Q.setFromAxisAngle(r.axV, t * r.spin + r.ph[2]);
     r.q.copy(r.qd).multiply(r.q0).multiply(Q); }
   function write() { rows.forEach((r, ri) => { const gk = r.gone ? (r.gk || 0) : 1, ge = gk * gk * (3 - 2 * gk); M.compose(r.p, r.q, Vs.setScalar(r.s * ge)); r.m.setMatrixAt(r.i, M);
@@ -37831,6 +37840,9 @@ function bouldMake(THREE, scene, O = {}) {
     const ws = r.mass / (r.mass + S.pM); fix.x += _n.x * pen * ws; fix.z += _n.z * pen * ws; fix.n++; r.o.x -= _n.x * pen * (1 - ws); r.o.z -= _n.z * pen * (1 - ws); }
   function player(x, y, z, vx, vz, dt) { const P = F.push; slow = 0; fix.x = fix.z = 0; fix.n = 0; if (!dt) return 0;
     for (const r of rows) contact(r, x, y, z);
+    const B = F.bubble; if (B.on) for (const r of rows) { if (r.gone || r.aura) continue; const dx = r.p.x - x, dz = r.p.z - z, d = Math.hypot(dx, dz), R = B.R + r.s; if (d > R) { r.near = 0; continue; }
+      const k = 1 - (d / R) * (d / R); r.near = k;     // HIS BUBBLE: broad inside, nothing at its edge
+      if (!r.rest && d > 1e-3) { const a = B.push * k * dt / Math.sqrt(r.mass); r.ov.x += dx / d * a; r.ov.z += dz / d * a; } }
     for (const r of rows) { if (r.gone || r.aura) continue; const R = r.s * P.reach + P.pr, dx = r.p.x - x, dz = r.p.z - z, d = Math.hypot(dx, dz); if (d > R) continue;
       const bot = r.p.y - r.half * r.s, top = r.p.y + r.half * r.s; if (bot > y + P.tall || top < y + .05) continue;
       const nx = d > 1e-3 ? dx / d : Math.sin(r.yaw), nz = d > 1e-3 ? dz / d : Math.cos(r.yaw), pen = R - d, along = Math.max(0, vx * nx + vz * nz), m = r.mass;
@@ -37849,7 +37861,7 @@ function bouldMake(THREE, scene, O = {}) {
         tx = au.x + Math.cos(U.a) * U.rr - bx; ty = au.y + U.hy + Math.sin(T * 1.3 + r.ph[0]) * .18 - by; tz = au.z + Math.sin(U.a) * U.rr - bz; w = Math.sqrt(A2.k); c = 2 * A2.z * w; }
       r.ov.x += (w * w * (tx - r.o.x) - c * r.ov.x) * dt; r.ov.y += (w * w * (ty - r.o.y) - c * r.ov.y) * dt; r.ov.z += (w * w * (tz - r.o.z) - c * r.ov.z) * dt; r.o.addScaledVector(r.ov, dt);
       const L = Math.hypot(r.o.x, r.o.z); if (!r.aura && !(r.rel > T) && L > H.maxO) { r.o.x *= H.maxO / L; r.o.z *= H.maxO / L; }
-      if (!r.aura && r.o.y < -r.hov * .9) { r.o.y = -r.hov * .9; if (r.ov.y < 0) r.ov.y *= -.3; }     // never through the floor
+      if (!r.aura && r.o.y < (r.rest ? 0 : -r.hov * .9)) { r.o.y = r.rest ? 0 : -r.hov * .9; if (r.ov.y < 0) r.ov.y *= -.3; }     // never through the floor
       const wl = r.w.length(); if (wl > 1e-4) { _q.setFromAxisAngle(_w.copy(r.w).divideScalar(wl), wl * dt); r.qd.premultiply(_q); } r.w.multiplyScalar(Math.exp(-H.wDamp * dt));
       r.qd.slerp(_q.identity(), 1 - Math.exp(-H.settle * dt * (r.big ? 2 : 1))); } }
   // PASS 3 -- THE KNOCK and THE BREAK. `knock` adds an impulse (power x J / mass, capped) and a spin; `smash` hides the rock, throws its CHUNKS
@@ -37885,10 +37897,12 @@ function bouldMake(THREE, scene, O = {}) {
     for (const r of rows) { if (n >= A2.max) break; if (r.aura || r.gone || r.s > A2.sMax || Math.hypot(r.p.x - x, r.p.z - z) > A2.R) continue;
       const k = (r.s - F.sMin) / Math.max(1e-3, A2.sMax - F.sMin); r.aura = { a: Math.atan2(r.p.z - z, r.p.x - x), rr: lerp(A2.rr[0], A2.rr[1], rnd() * .6 + k * .4), hy: lerp(A2.hy[0], A2.hy[1], rnd()) }; n++; }
     return n; }
-  function step(dt) { T += dt; if (dt) { dyn(dt); regrow(); chunks(dt); sandStep(dt); } for (const r of rows) pose(r); write(); if (WN) wisps(dt); }
+  function lifts(dt) { const B = F.bubble; for (const r of rows) { if (!r.rest) continue; const tg = B.on && !r.gone ? B.lift * (1 - .55 * Math.min(1, r.s / F.rest.sMax)) * (r.near || 0) * 1.6 : 0, tgt = Math.min(B.lift, tg);
+      r.lift += (tgt - r.lift) * (1 - Math.exp(-(tgt > r.lift ? B.up : B.down) * dt)); r.ya += B.turn * (r.ph[0] > 3.14 ? 1 : -1) * Math.min(1, r.lift / .1) * dt / Math.max(.4, r.s); if (r.near) r.near *= Math.exp(-6 * dt); } }
+  function step(dt) { T += dt; if (dt) { dyn(dt); lifts(dt); regrow(); chunks(dt); sandStep(dt); } for (const r of rows) pose(r); write(); if (WN) wisps(dt); }
   function shotCam(s, cam) { const r = s.row && rows.find(q => q.id === s.row); if (r) { cam.position.set(r.p.x + s.off[0] * r.s, r.p.y + s.off[1] * r.s, r.p.z + s.off[2] * r.s); cam.lookAt(r.p); } else { cam.position.set(...s.eye); cam.lookAt(...s.at); } cam.updateMatrixWorld(); }
   function px(cam, h) { wU.uPx.value = h / (2 * Math.tan(cam.fov * Math.PI / 360)); }
-  const count = () => ({ rocks: rows.length, aura: rows.filter(r => r.aura).length, gone: rows.filter(r => r.gone).length, chunks: sp.reduce((n, k) => n + CH[k].list.length, 0), draws: meshes.length + sp.length + (WN ? 1 : 0) + 1 + F.tiers.length, rockTris: tris | 0, wisps: WN, big: rows.filter(r => r.big).length });
+  const count = () => ({ rocks: rows.length, rest: rows.filter(r => r.rest).length, lifted: rows.filter(r => r.lift > .05).length, aura: rows.filter(r => r.aura).length, gone: rows.filter(r => r.gone).length, chunks: sp.reduce((n, k) => n + CH[k].list.length, 0), draws: meshes.length + sp.length + (WN ? 1 : 0) + 1 + F.tiers.length, rockTris: tris | 0, wisps: WN, big: rows.filter(r => r.big).length });
   function dispose() { group.removeFromParent(); group.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); } }); }
   step(0);
   return { F, rows, group, boxes, step, player, fix, stamp, sandH, sandTris, slow: () => slow, knock, smash, breaks, at, aura, shotCam, px, count, dispose, tierAt, wU }; }
@@ -37931,6 +37945,8 @@ function bouldSand(dt) { const Z = BOULD, L = Z.L, p = player, bn = rig.bones ||
     if (down && !ft[nm]) { L.stamp(_bsF.x, _bsF.z, .12, .028); if (sp > 3.5 && Math.random() < .6) spkBurst(_bsF.x, g + .05, _bsF.z, 4, { col, spread: 1.2, size: .05, life: .35 }); } ft[nm] = down; }
   if (p.grounded && !Z.wasG && (Z.lastVy || 0) < -6) { L.stamp(p.pos.x, p.pos.z, .7, .06, .5); smokeAt(p.pos.x, L.sandH(p.pos.x, p.pos.z) + .2, p.pos.z, 1.4, .8, col); }
   if (p.roll && p.grounded) L.stamp(p.pos.x, p.pos.z, .4, .03);
+  for (const r of L.rows) { if (!r.rest || r.lift < .04 || r.gone) continue; if (Math.random() < dt * 3 * r.lift) spkBurst(r.p.x + (Math.random() - .5) * r.s, r.p.y - r.half * r.s * .8, r.p.z + (Math.random() - .5) * r.s, 2, { col, spread: .3, size: .04, life: .5 });     // m2437: sand trickles off a rock his bubble lifts
+    if (r.lift > .12 && !r.pressed) { r.pressed = 1; L.stamp(r.x + r.o.x, r.z + r.o.z, r.s * .75, .035, .2); } else if (r.lift < .03) r.pressed = 0; }     // and leaves its bed in the sand
   Z.wasG = p.grounded; Z.lastVy = p.vel.y; }
 function bouldStep(dt) { const Z = BOULD, p = player; if (!Z.on || !Z.L) return; Z.on.t += dt; const h = Math.min(dt, .05), lp = Z.lp || (Z.lp = p.pos.clone());
   const vx = (p.pos.x - lp.x) / Math.max(dt, 1e-3), vz = (p.pos.z - lp.z) / Math.max(dt, 1e-3), sl = Math.hypot(vx, vz) < 20 ? Z.L.player(p.pos.x, p.pos.y, p.pos.z, vx, vz, h) : 0;
