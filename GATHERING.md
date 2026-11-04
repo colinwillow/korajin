@@ -22,7 +22,7 @@ Where it lives: **KORAJIN > The Gathering** (`?w=forge&zone=gathering`, `GATHER`
 | t | beat |
 |---|---|
 | 0.0 | Tap the chevron at the pedestal (`LIFT THE CRYSTAL`). His control is held; he turns to the pedestal. |
-| 0.0 - 1.0 | The crystal rises off the pedestal into his hands; the **GET pose** eases in: both arms up, the crystal held high over his head, the chin up. |
+| 0.0 - 1.0 | The crystal rises off the pedestal into his hands; the **GET pose** eases in: ONE arm straight up holding the crystal, the other down at his side, chin up (his: like Mario holding up a star). |
 | 1.0 | A soft ring pulses off the crystal; a chime. |
 | 1.3 - 6.8 | **THE DRAIN.** One torch after another (staggered round the ring) gives up its Jinra: goop streams arc out of each flame, up and over, into the crystal; the flame's Jinra colour drains to ordinary warm orange and it shrinks a little. The crystal **fills from the bottom** with the temple's colour as the streams land. |
 | 7.05 | **FULL** (= drain0 + 5 x stagger + drainEach + travel; the beats after it are offsets from it, `gathBeats`). The crystal flashes, a shockwave ring rolls across the floor, a low boom, a small camera shake. |

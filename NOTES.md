@@ -36,6 +36,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2479 -- THE GATHERING: the GET pose is ONE-ARMED (the standard pose for every collectible)
+The parent session corrected its relay of his note: *"One arm down, one arm up -- like Mario holding up a star, or holding up the power sword --
+but he's holding the crystal."* m2476's two-handed V is gone. `GETPOSE` is now the clean reusable one: `side` 'R' (or 'L') raises that arm
+straight up overhead (target = his shoulder + his OWN measured reach x .97 up, `out`/`fwd` tiny, the elbow pole out and a little back), the
+crystal sitting on that hand (`hold` .17 over the wrist; `GETPOSE.at`), the other arm down at his side a little out and back (`low`); a small
+lean back (`Spine`), chest out (`Spine2`), chin up (-24 deg) and the head tipped toward the raised hand. The reach is measured off the bones
+every frame, so it fits any hero. Crystal .44 -> .38 m (one hand clearly holds it; still exaggerated). Crystal detail and the motes unchanged.
+Front strip on Grumbo (sent): one arm up holding the crystal, the other down and out, chin up -- through the drain and the full burst. The
+first try's raised arm leaned ~20 deg out (out .1): now -.03, over his head. Shared lines diffed against main before the push.
+
 ## m2478 -- (housekeeping) m2476 relabelled another worker's m2472 comments; put back
 My `sed s/m2472/m2476/` (renumbering my own tags after a rebase moved my build) also hit the m2472 COMBAT boss pass's eight comment tags
 (`bossGuardStep`, `bossBodyK`, the lab's BOSS button...). Restored to exactly the text main had before m2476 (diffed: identical). Comments only, no
