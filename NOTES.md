@@ -47,6 +47,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   (`L.count().kitTris`: rocks 980, scree 320, cactus 2,168, succulent 1,260, orb 358), draws and night look; BOULDERS.md carries the table, the
   phone budget (~26 draws, ~250k tris) and what the region still needs as kit rows. Shipped unverified.
 
+## m2472 -- THE COMBAT LAB pass 5: BOSSES THAT TAKE REAL EFFORT (his: "I can destroy every boss in a few seconds")
+- `BOSS` (SC_BOSS). THE GUARDIANS (`GUARD`, `OLMEC`) are always bosses now, wherever they are spawned: `bossGuardK` in `guardBlow` --
+  ARMOUR outside a window x.15 (grey sparks, a dull high clang, no smoke: it does nothing and looks it); the HEAD picked with PART AIM on a
+  charge x.6 even armoured (the weak point); WINDOWS after his big moves (`bossGuardStep` watches his state: smash -> 2.6 s, swipe 1.2 s, a
+  stagger 1.8 s, shorter each phase) -- his cracks pulse green with motes rising, everything lands x1, the head x2; a FULL charge only takes an
+  ARM inside a window. PHASES at 66% / 33%: a roar, 1.6 s untouchable, green bursts, and his cooldowns run x1.5 / x2.
+- ARENA BODIES as bosses: the lab's BOSS ON switch -- spawned arena kinds get hp x3, armour x.25 outside the punish window (his `recover`, a
+  stagger, a broken shield) x1.25 inside it, and the same two phases (a taunt, his react / recovery x.8 each).
+- Lab readout: OPEN (s) / PHASE / P2-P3 / BOSS on the nearest, and `boss armoured / windows / weak / phases`.
+- Not yet: the colossus's stuck hand (the hand stays down to be attacked) needs a held pose of his smash clip -- the window is the stand-in.
+  Target 60-120 s on MEDIUM: untuned. Moves COMBAT.md pass 5; no enemy box ticked. `npm run check` ok. Shipped unverified.
+
 ## m2471 -- THE COMBAT LAB pass 4: ARCHETYPES (his: "differences between enemies, different ways to kill them; bigger enemies maybe better weapons")
 - `CBT.def` rows gain `slot` (the WORLD_PLAN roster slot), `red` (the chance a swing is UNBLOCKABLE: a red slam) and `sa` (SUPER-ARMOUR on that
   red wind-up: `arenaBlow` no longer interrupts it -- trade and you eat it; dodge it). MELEE BIG: warboss red .2 sa + block .6 (his shield takes
