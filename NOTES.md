@@ -33,6 +33,37 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2459 -- THE SMART CAMERA: see through the small things, fly over the big ones (his: "in the floating rocks place, and other parts of the game, the camera gets occluded by something between the character and the camera -- maybe like a drone that goes over the boulder")
+What was wrong: the boom (`camFree` / `camHit`) only knows COLLIDERS. A floating boulder, a tree, a pillar, a cliff drawn as triangles with no box
+-- nothing told the lens they were there, so it sat behind them. The kit worlds' X-RAY (m181/m1584) was the one answer, and only for kit walls.
+- **`SCAM` / `scamStep` (after every lens writer in `frame`), game-wide, over the DRAWN scene.** Three rays, his shins / chest / head to the lens,
+  ONE PER FRAME in rotation. Candidates are every visible non-skinned mesh (instanced per instance), rescanned every `scanT` 1.2 s, sphere-culled,
+  then a lazy per-geometry BVH (`smBvh`: midpoint splits, leaves of 8, built once, `buildBudget` 60k triangles a frame so a big mesh never
+  hitches one frame; > `triMax` 400k is skipped). No colliders involved -- what the eye sees is what it tests.
+- **SMALL OR MOVING -> DITHER (`smDitherMat`).** A hit under `small` 6.5 m (an instance: its own sphere), anything that moved in the last
+  `movT` 2 s, or a leaf (alphaTest) gets the screen-door patch on its material: FRAGMENT ONLY (`gl_FragCoord`), so it works on ANY material --
+  instanced, skinned, custom vertex code, a kit-patched one (it chains `onBeforeCompile` and the cache key). A fragment nearer the lens than a
+  point `near` .35 m in front of him, inside his on-screen ellipse (`rx` .5 m wide, `ry` .62 x his height), is thinned to `min` .22 at the
+  middle, solid at the rim. Shared uniforms (`SMDU`), faded in `inT` .12 s / out `outT` .45 s. A material is patched the first time its mesh
+  occludes him (one shader compile then; it stays patched -- harmless, the uniforms are zero when nothing occludes).
+- **BIG AND STATIC -> THE DRONE.** A wall / cliff / building in the way: every `searchEvery` 4 frames it searches pitch upward in `elStep` .1
+  rad to `elMax` .8 for the lowest one that sees his chest AND head past every big static thing (`smSkip` leaves out what would be dithered),
+  and `SCAM.lift` springs to it (`elIn` .35 s up, `elOut` .9 s down) inside `stepCam`'s own `cam.el` ease. Past `elMax` the boom comes IN to
+  the nearest hit less .4 m (`cap`, never under `CAM.min`, `capIn` .2 / `capOut` .7). It only comes back DOWN after `hold` .6 s clear AND
+  only as far as the same search says is clear -- so it never drops into the block it rose out of (no see-saw).
+- **Hands off:** `cam.az` is never written (the right pad stays its one writer); the whole thing is off in the entrance window
+  (`ENTRY.run`), a reel and the statue cut-away; the lift (not the dither) is off on the wall-run cam, the dragon, the wing, while aiming, and in
+  the kit worlds (their own x-ray).
+- **TOOLS > CAMERA > SMART CAM ON / OFF** (`mel.smartcam`, saved; ON by default). Every number is live on `mel.SCAM`; `mel.SCAM.stat` says
+  candidates, rays, dither / big hits, BVHs built, materials patched and the ms it costs (smoothed).
+- **MEASURED, `npm run smartcam [zone ...]`** (new): boots the shipped page per zone (`entry=0`), stands him at seeded spots round the spawn at
+  seeded bearings, steps the SHIPPED `stepCam` + `scamStep` to rest, and measures how much of his silhouette reaches the screen (his meshes flat
+  magenta over the real frame, depth tested, over the same meshes alone). A sample blocked with it OFF (< .5 visible) must reach .5 with it ON.
+      boulders  30 samples, 3 blocked OFF -> all 3 clear ON: visible .13 -> .77, .08 -> .70, .18 -> .54 (dither; no lift needed)
+  The garden / forest temple / sky temple (`temple`) / snow run is in flight; its table goes in the next entry.
+- Open: the dither's hole is an ellipse round his body, so a weapon swung wide of him can still go behind a rock; a zone-wide MERGED mesh reads
+  as one big thing, so a small prop merged into it gets the drone, not the dither. Moves no sandbox box (a camera system, not a piece).
+  Shipped unverified.
 
 ## m2458 -- FLOATING BOULDERS: THE DESERT SKY as background AND light (his: "an HDR environment so we can see the full effect")
 - No HDR asset in the repo fits (`images/hdri_game` is the game's own), and nothing here fetches one, so the sky is PAINTED in BOULDLIB (`F.sky`):
