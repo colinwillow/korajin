@@ -1,6 +1,6 @@
 // npm run gathstrip [--at=0.6,1.2,...] [--wide=1] [--q=extra&query] -- A FRAME STRIP of THE GATHERING (GATHERING.md). Boots the SHIPPED index.html in
-// `?w=forge&zone=gathering&entry=0`, lets it settle, fires the moment (`mel.gathGo`, or `--go=` another mel function), waits on the moment's OWN
-// clock (`mel.GATHER.T`, so a slow software frame cannot smear the beats) and renders each frame from the game's own play camera through the night
+// `?w=forge&zone=gathering&entry=0`, lets it settle, fires the moment (`mel.gathGo`, or `--go=` another mel function), waits on the zone's OWN
+// clock (`mel.GATHER.on.t` since the tap, so a slow software frame cannot smear the beats) and renders each frame from the game's own play camera through the night
 // overlay; `--wide=1` adds a fixed wide tile per beat. One JPEG strip (SHOT_DIR or ./shots/gather_strip.jpg); draws and tris on every tile.
 import http from 'node:http';
 import fs from 'node:fs';
@@ -38,9 +38,9 @@ const shoot = async (lab, wideCam) => page.evaluate(([lab, wideCam]) => { const 
   return { url, lab: lab + ' · ' + Z.st + ' T' + Z.T.toFixed(1) + ' fill ' + Math.round(Z.fill * 100) + '% · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k', }; }, [lab, wideCam]);
 const wideCam = JSON.parse(arg('cam', '[0,22,26,0,13,0]'));
 tiles.push(await shoot('before', null)); if (wide) tiles.push(await shoot('before wide', wideCam));
-await page.evaluate(g => mel[g](), go);
+await page.evaluate(g => { mel.GATHER.t0 = mel.GATHER.on.t; mel[g](); }, go);
 for (const t of ats) {
-  try { await page.waitForFunction(t => mel.GATHER.T >= t || mel.GATHER.st !== 'gather', t, { timeout: 120000, polling: 16 }); } catch (e) { console.log('timeout at', t); }
+  try { await page.waitForFunction(t => mel.GATHER.on.t - mel.GATHER.t0 >= t, t, { timeout: 120000, polling: 16 }); } catch (e) { console.log('timeout at', t); }
   tiles.push(await shoot('t ' + t, null)); if (wide) tiles.push(await shoot('t ' + t + ' wide', wideCam));
 }
 const pose = await page.evaluate(() => JSON.stringify({ ok: mel.GETPOSE.ok, w: +mel.GETPOSE.w.toFixed(2), at: mel.GETPOSE.at.toArray().map(v => +v.toFixed(2)), p: mel.player.pos.toArray().map(v => +v.toFixed(2)), st: mel.GATHER.st }));

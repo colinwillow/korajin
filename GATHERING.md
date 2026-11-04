@@ -26,7 +26,7 @@ Where it lives: **KORAJIN > The Gathering** (`?w=forge&zone=gathering`, `GATHER`
 | 1.0 | A soft ring pulses off the crystal; a chime. |
 | 1.3 - 6.8 | **THE DRAIN.** One torch after another (staggered round the ring) gives up its Jinra: goop streams arc out of each flame, up and over, into the crystal; the flame's Jinra colour drains to ordinary warm orange and it shrinks a little. The crystal **fills from the bottom** with the temple's colour as the streams land. |
 | 7.05 | **FULL** (= drain0 + 5 x stagger + drainEach + travel; the beats after it are offsets from it, `gathBeats`). The crystal flashes, a shockwave ring rolls across the floor, a low boom, a small camera shake. |
-| 7.4 - 14 | **THE WAVE.** A front of Jinra light runs out from the crystal across the valley: behind it the dust lifts, the red haze clears, the grass and the trees grow back and green, the water turns from murky brown to clear, the lanterns light. |
+| 7.55 - 15 | **THE WAVE** (out to 175 m in 7.5 s). A front of Jinra light runs out from the crystal across the valley: behind it the dust lifts, the red haze clears, the grass and the trees grow back and green, the water turns from murky brown to clear, the lanterns light. |
 | 8.4 - 9.4 | He lowers his arms; the charged crystal floats up off his hands and hangs over his shoulder (it follows him). Control is back. |
 
 ## THE BEATS (MOMENT 2 -- THE SKY TEMPLE; seconds from the tap at the socket)
@@ -59,7 +59,7 @@ Where it lives: **KORAJIN > The Gathering** (`?w=forge&zone=gathering`, `GATHER`
 ## DONE WHEN
 - [x] GATHERING.md written: the vision, the place, the beats with timings, this list.
 - [x] Pass 1 (m2443): the arena, the six torches burning Jinra, the pedestal and the crystal, the GET pose, the drain streams, the crystal filling, the torches going warm -- strip in NOTES m2443.
-- [ ] Pass 2: the valley FALLEN by default and the REJUVENATED wave spreading from the crystal (haze, grass, trees, water, lanterns) -- a frame strip in NOTES.
+- [x] Pass 2 (m2448): the valley FALLEN by default and the REJUVENATED wave spreading from the crystal (haze, grass, trees, water, lanterns) -- strip in NOTES m2448.
 - [ ] Pass 3: Moment 2 -- the socket, the beam to the sky temple, the fallen city rising and floating -- a frame strip in NOTES.
 - [ ] Pass 4: sound (a swelling choir / chime, CC0, credited like `audio/portal`) and polish.
 - [ ] RESET replays it all, any number of times, with nothing left over (no stuck streams, no double pieces).

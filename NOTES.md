@@ -30,6 +30,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2448 -- THE GATHERING pass 2: the valley FALLEN -> REJUVENATED, a wave from the crystal (GATHERING.md)
+His revision: NOT the time of day or the weather (NIGHT and the cycle are untouched) -- FALLEN -> REJUVENATED. The forge floor round the 12 m mesa is
+now a valley (`GREGION`, rows between SC_GATHER markers): a meadow, 1,800 grass tufts, 120 trees (leaning trunk + three canopy lumps), 520
+flowers, 70 rocks, a closed meandering stream with banks, 12 stone lanterns on its banks, 420 drifting dust motes. ONE uniform drives the look:
+`uGR`, the rejuvenation front's radius from the crystal, spliced into every region material by `gathWaveMat` (world xz distance; instancing
+handled): outside the front the paint drains to dust-red (the AGE recipe) or, for the stream, to murky brown; a thin band of the temple's Jinra
+glows AT the front. Behind it (CPU, `gathGrow`, only while the front moves): grass rises from flattened stubble, the trees straighten and their
+canopies fill out (rsBack overshoot), the flowers open, the lanterns light warm with a halo (one Points draw); the dust shader fades motes the
+front has passed; the fog's colour is pulled from dust-red back to the zone's own and its far edge goes back out. Beat: the wave starts at full
++ .5 s (7.55 s from the tap), runs out to 175 m over 7.5 s (fast first, easing); RESET puts it all back to fallen. The mesa's flanks drain too.
+Strip (sent to him): fallen = dust-pink plain, grey-brown stream, bare bent trees, pink horizon; at 8 s the green ring with its glowing band
+leaving the mesa's foot; 9.5-16 s green to the edge, blue stream, trees up, horizon clear. **67-102 draws, 42-44k tris** for the whole zone.
+First strip's trees were 44 and small (unreadable from the wide shot): 120, 1.0-2.1 x. STILL OPEN: pass 3 (socket + city), pass 4 (sound).
+`npm run gathstrip` now waits on the zone's own clock since the tap (`GATHER.on.t`), so beats after `charged` (the wave) can be framed.
+
 ## m2447 -- ENTRY rows, one per line (Nov 4 2026)
 Main's warning: the ENTRY rows were a few long SHARED lines, and a rebase conflict there silently ate other workers' rows (the forest interior's ENTRY row
 was gone for 8 builds). `ENTRY.rows` is now ONE ROW PER LINE (31 rows, every one kept: arena, home, test, forge, garden, snow, snowkit, region, village,
