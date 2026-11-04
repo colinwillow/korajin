@@ -56,7 +56,9 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
       KORAJIN > The Combat Lab (`?w=forge&zone=combatlab`).
   - [x] m2466 pass 1 THE LAB (spawn panel by roster slot, counts, difficulty, AI on/off, slow-mo, reset, readout).
   - [x] m2468 pass 2 AI that FIGHTS (attacks into a guard, glints, feints, tokens). - [x] m2470 pass 3 ENEMY DEFENCE (block / parry / dodge / guard-break / poise). - [x] m2471 pass 4 ARCHETYPES (red slams + super-armour, shield flank, creature glints).
-  - [x] m2472 pass 5 BOSSES (guardians: armour, head weak point, windows, phases; lab BOSS switch for arena kinds). - [ ] pass 6 TUNING / `SC_COMBAT` rows.
+  - [x] m2472 pass 5 BOSSES (guardians: armour, head weak point, windows, phases; lab BOSS switch for arena kinds).
+  - [x] m2473 pass 6 TEMPLE-READY (`COMBATSET` rows, `combatDrop` / `combatBoss`, lab TEMPLE SET buttons, COMBAT.md section 6).
+  - [ ] his sign-off per enemy (COMBAT.md DONE WHEN) -- tune on his notes.
 - [ ] **THE FOREST TEMPLE (the real temple, below) -- OPEN (his, Nov 4).** `FOREST_TEMPLE.md`: the kit, then the acrobatic room (chamber 1), the entry
       hall + descent from the dome temple's door, the roster, the boss + Jinra stone. KORAJIN > Forest Temple Kit (`?w=forge&zone=ftkit`).
   - [x] m2434 pass 1 THE KIT (`ftkMake`, 17 pieces, 20 draws / 22k tris, `npm run ftstrip`).

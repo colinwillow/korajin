@@ -82,11 +82,37 @@ Every boss is built from the same four parts, so a temple can drop one in:
 | feints | none | some | often |
 | damage | x1 (same) | x1 | x1 |
 
-## 6. TEMPLE-READY (how a temple worker drops an enemy set in)
+## 6. TEMPLE-READY (how a temple worker drops an enemy set in) -- BUILT m2473
 
-Each enemy is one data row (`SC_COMBAT` table in index.html, next to `ARENA.kinds`): `{ kind, slot, block, parry, dodge, poise, armour,
-superArmour, unblockable, tokens, ranged, weak }`. A temple lists the kinds it uses and their counts; the lab spawns the same rows. An enemy row
-is temple-ready when all of its boxes below are ticked.
+**The API (index.html, `SC_COMBAT`):**
+- `COMBATSET.<temple> = { t, waves: [[[kind, count], ...], ...], boss }` -- one row per temple; every `kind` is an `ARENA.kinds` key.
+- `await combatDrop(set, wave, spots)` -- spawns that wave at the temple's own marks (`spots` = [[x, y, z], ...], any height; omitted: the
+  arena's spot / the lab's fan). Same brain, tokens, defence and difficulty as the lab.
+- `await combatBoss(set, spot)` -- the boss: a guardian (`GUARD` / `OLMEC`) is always a boss; an arena kind is spawned with `d.boss`.
+- Difficulty is ONE switch: `ARENA.duel.lvl` (EASY / MEDIUM / HARD; TOOLS and the lab both set it, saved as `mel.arena.lvl`).
+- The lab's SPAWN menu has a TEMPLE SET block per row (Wave 1..n, Boss): fight the temple's combat before the temple exists.
+
+**The per-kind rows (`CBT.def`, `SC_CBTDEF`), x `CBT.defK` (EASY .5 / MEDIUM 1 / HARD 1.4):**
+
+| kind | slot | block | parry | dodge | poise | guard | red | super-armour |
+|---|---|---|---|---|---|---|---|---|
+| SAMURAI | melee small | .45 | .3 | .2 | 1 | 4 | 0 (chops a turtle) | -- |
+| JACKAL | melee big | .5 | .2 | 0 | 3 | 5 | .15 | -- |
+| WARBOSS | melee big (shield) | .6 | .1 | 0 | 4 | 6 | .2 | yes |
+| SKULLBACK | melee big (maul) | .3 | .1 | 0 | 5 | 6 | .3 | yes |
+| CEOALIEN | melee big | .35 | .15 | 0 | 4 | 5 | .25 | yes |
+| ARCHER / OSARI_BOW | ranged (kites) | 0 | 0 | .4 | 1 | 0 | 0 | -- |
+| anything else | -- | .3 | .1 | 0 | 2 | 4 | .1 | -- |
+
+The group knobs (`CBT.lv`): tokens 1 / 2 / 3, turtle-to-red 2.4 / 1.6 / 1.0 s, feint 0 / .15 / .3. The boss knobs (`BOSS`, `SC_BOSS`): armour
+x.15 (guardians) / x.25 (arena bosses), head x.6 armoured / x2 open, windows smash 2.6 / swipe 1.2 / stagger 1.8 s, phases at 66% / 33%.
+
+**Temple-ready checklist (a temple's combat is ready when):**
+- [ ] its `COMBATSET` row exists, every kind in it spawns in the lab and fights (all the per-enemy boxes below for those kinds);
+- [ ] each wave played in the lab on MEDIUM: no swarm (tokens hold), no stand-off, each kind's weakness found;
+- [ ] the boss played in the lab: 60-120 s on MEDIUM, phases seen, the weak point found;
+- [ ] the temple calls `combatDrop` / `combatBoss` at its own marks (heights decided -- VERTICALITY), on an EVENT (STATUES.md);
+- [ ] **he played the set in the lab on his phone and signed it off.**
 
 ## DONE WHEN (per enemy; the last box his)
 

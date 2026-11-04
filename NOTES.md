@@ -47,6 +47,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   (`L.count().kitTris`: rocks 980, scree 320, cactus 2,168, succulent 1,260, orb 358), draws and night look; BOULDERS.md carries the table, the
   phone budget (~26 draws, ~250k tris) and what the region still needs as kit rows. Shipped unverified.
 
+## m2473 -- THE COMBAT LAB pass 6: TEMPLE-READY (his: "every time we make a temple we need all its combat developed ahead of time so we just drop them in")
+- `COMBATSET` (SC_COMBAT): a row per temple -- `waves` of [kind, count] and a `boss` (forest: samurai / osari bow, jackal / samurai / archer,
+  dog / samurai, the GUARDIAN; ice: ..., the DWELLER; a brute trial ending in a boss WARBOSS). `combatDrop(set, wave, spots)` spawns a wave at
+  the temple's own [x, y, z] marks (`ARENA.nextAt`, read by `arenaSpawn`: any height, no doors); `combatBoss(set, spot)` the boss (an arena kind
+  through `ARENA.bossNext` -> `d.boss`). The lab's SPAWN menu grows a TEMPLE SET block per row (Wave 1..n, Boss).
+- COMBAT.md section 6 rewritten as the drop-in contract: the API, every `CBT.def` row as a table, the group and boss knobs, and a temple-ready
+  checklist. Difficulty stays ONE switch (`ARENA.duel.lvl`).
+- All six COMBAT.md passes are in; NOTHING is signed off -- every enemy's DONE WHEN is open until he fights it in the lab on his phone.
+  `npm run check` ok. Shipped unverified.
+
 ## m2472 -- THE COMBAT LAB pass 5: BOSSES THAT TAKE REAL EFFORT (his: "I can destroy every boss in a few seconds")
 - `BOSS` (SC_BOSS). THE GUARDIANS (`GUARD`, `OLMEC`) are always bosses now, wherever they are spawned: `bossGuardK` in `guardBlow` --
   ARMOUR outside a window x.15 (grey sparks, a dull high clang, no smoke: it does nothing and looks it); the HEAD picked with PART AIM on a
