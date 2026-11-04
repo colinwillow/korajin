@@ -30,6 +30,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2449 -- THE GATHERING pass 3: MOMENT 2, the sky-temple socket, the beam, the fallen city rising (GATHERING.md)
+`GSKY` (rows between SC_GATHER markers). The arena's open north edge now has the SOCKET DAIS: a buttress from the valley floor to a platform 2.4 m
+over the arena floor, up eight .30 risers (his step is .357), low walls on its three outer sides and beside the stair; on it a stone drum, six rune
+stones (dark) and an empty bronze cradle (`interactAdd` row `gath.socket`, `SET THE CRYSTAL`, only while `charged`). Far over the valley, high
+(VERTICALITY: 78 m and 96 m), two SKY TEMPLES on floating rock (fog off on them -- the first strip showed them as grey ghosts). In the valley (the
+reserved `GREGION.city` circle, nothing planted in it) the FALLEN CITY: four towers, each a `restoreRig` (THE RESTORATION KIT, reused, not rebuilt):
+three storeys, three roofs and a spire are `restorePiece`s lying tumbled round the foot, `restoreMat` rust-dull, a rock cone under the base buried
+in the ground, four Jinra jets. Tap the socket (or the SKY TEMPLE button: it charges the crystal if needed and puts him on the dais): the crystal
+flies into the cradle (.8 s), the runes light + rings + chime, the beam (an additive tube grown along its length) fires to the sky temple, whose
+windows light, and on from it to the next temple; from 2.0 s each tower `restorePlay`s in turn (.55 s apart, 6.5 s each): the pieces fly home,
+the colour floods back, the jets light, it lifts 6.5-17 m and hovers. RESET puts it all back (`gathSkyReset`: `restoreSet(R, 0)`).
+Strip (sent to him): wreck on the grass -> runes lit -> beam -> towers mid-flight at 4.5 s -> four floating towers on their rocks at 9-11 s.
+**71-144 draws, 64-65k tris** with the play camera and the wide shot. STILL OPEN: pass 4 (sound).
+
 ## m2448 -- THE GATHERING pass 2: the valley FALLEN -> REJUVENATED, a wave from the crystal (GATHERING.md)
 His revision: NOT the time of day or the weather (NIGHT and the cycle are untouched) -- FALLEN -> REJUVENATED. The forge floor round the 12 m mesa is
 now a valley (`GREGION`, rows between SC_GATHER markers): a meadow, 1,800 grass tufts, 120 trees (leaning trunk + three canopy lumps), 520

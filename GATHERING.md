@@ -60,7 +60,7 @@ Where it lives: **KORAJIN > The Gathering** (`?w=forge&zone=gathering`, `GATHER`
 - [x] GATHERING.md written: the vision, the place, the beats with timings, this list.
 - [x] Pass 1 (m2443): the arena, the six torches burning Jinra, the pedestal and the crystal, the GET pose, the drain streams, the crystal filling, the torches going warm -- strip in NOTES m2443.
 - [x] Pass 2 (m2448): the valley FALLEN by default and the REJUVENATED wave spreading from the crystal (haze, grass, trees, water, lanterns) -- strip in NOTES m2448.
-- [ ] Pass 3: Moment 2 -- the socket, the beam to the sky temple, the fallen city rising and floating -- a frame strip in NOTES.
+- [x] Pass 3 (m2449): Moment 2 -- the socket, the beam to the sky temple, the fallen city rising and floating -- strip in NOTES m2449.
 - [ ] Pass 4: sound (a swelling choir / chime, CC0, credited like `audio/portal`) and polish.
 - [ ] RESET replays it all, any number of times, with nothing left over (no stuck streams, no double pieces).
 - [ ] Phone-fast: the draws and tris of the whole zone reported; the drain adds a handful of draws at most.
