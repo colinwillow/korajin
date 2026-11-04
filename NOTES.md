@@ -43,6 +43,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2489 -- THE SAND DEFORMATION FOLLOWS HIM EVERYWHERE (his: "regional -- walking one way it pops in, back it pops out; where I land it isn't working")
+His screenshots (images/feedback/m2487/): sand_good_* = the deformation working (he LOVES it); sand_flat_bug_* = same build, no berms, only the tint.
+- THE BUG: the height / disturbance field was a FIXED 50 m square on the field's centre, and the displaced PATCH was hidden beyond 17.7 m of that
+  centre (`D.size / 2 - patch * .6`). His landing pad is 18.0 m out -- so on landing nothing deformed; walking inward it popped on, walking out it
+  popped off; between 17.7 and 25 m the base sand still showed the TINT from the field (tint and displacement disagreed).
+- THE FIX: the field is WORLD-ANCHORED and TOROIDAL -- world cell (i, j) lives at index (i mod 512, j mod 512); a 512-cell WINDOW is kept centred
+  on him (`follow`, every frame, first thing in `bouldSand`), and the strips of cells that scroll in are CLEARED (they held the far side's sand);
+  a jump beyond the window clears it all. The texture REPEATS (uv = world / 50 m) and the shader masks outside the window (faded at its edge), so
+  the tint and the displacement are the SAME cells. The patch is on him anywhere on the sand. Prints older than ~25 m behind him go when they
+  scroll out of the window (they did before too, by never existing out there).
+- TESTED (the request): headless, a 60 m walk out from the landing and 60 m back, sampled every metre -- 121 / 121 samples have the trough under
+  him (-5.4 .. -5.9 cm), none at 0. The boot gate now walks 60 m from the landing and FAILS if any metre has no deformation. Shipped unverified.
+
 ## m2488 -- the title fern really sits on its rock: the card was the wrong height, not the seat<!--mine-->
 His report on m2487 (images/feedback/m2487/title_fern_floating.png): the fern on the near floating rock STILL hovers above it. m2486 had fixed
 the SEAT. The fault was in the CARD:
