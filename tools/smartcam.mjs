@@ -27,9 +27,11 @@ for (const z of zones) {
   const page = await browser.newPage({ viewport: { width: 480, height: 270 }, deviceScaleFactor: 1 });
   page.on('pageerror', e => console.log('  pageerror', e.message));
   try {
-    await page.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=${z}&entry=0`, { timeout: 120000 });
+    await page.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=${z}&entry=0`, { timeout: 240000, waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => document.getElementById('boot').classList.contains('gone') && window.__shot && window.mel, null, { timeout: 240000, polling: 1000 });
+    await page.evaluate(() => { try { if (mel.REEL.on) mel.reelSkip(); } catch (e) {} });
     await page.waitForTimeout(+arg('settle', 8) * 1000);
+    await page.evaluate(() => { try { if (mel.REEL.on) mel.reelSkip(); } catch (e) {} });
     const res = await page.evaluate(([N, BLK, SEED, RAD, SHOT]) => {
       const { renderer: R, scene, camera, stepCam, cam, player: p, rig, groundAt, THREE } = window.__shot, S = mel.SCAM, gl = R.getContext();
       let sd = SEED; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
@@ -42,21 +44,21 @@ for (const z of zones) {
         let img2 = null; if (keep) { R.render(scene, camera); img2 = R.domElement.toDataURL('image/jpeg', .8); } return { f: b ? a / b : 1, tot: b, img: img2 }; };
       const settle = (on) => { S.on = on; S.lift = S.liftW = 0; S.cap = S.capW = 1e9; S.k = 0; S.clearT = 0; S.hits.fill(0); S.big.fill(0); cam.dist = 0; cam.pos.set(0, 0, 0);
         for (let i = 0; i < 70; i++) { stepCam(1 / 30); mel.scamStep(1 / 30); } };
-      const x0 = p.pos.x, y0 = p.pos.y, z0 = p.pos.z, out = [];
+      const x0 = p.pos.x, y0 = p.pos.y, z0 = p.pos.z, out = [], why = { ground: 0, tiny: 0 };
       for (let k = 0; k < N; k++) {
         const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * RAD, x = x0 + Math.sin(a) * r, zz = z0 + Math.cos(a) * r, gy = groundAt(x, zz, y0 + 12, 30);
-        if (!(gy > -1e8) || Math.abs(gy - y0) > 14) continue;
+        if (!(gy > -1e8) || Math.abs(gy - y0) > 14) { why.ground++; continue; }
         p.pos.set(x, gy, zz); p.vel.set(0, 0, 0); rig.root.position.set(x, gy, zz); rig.root.updateMatrixWorld(true);
         const az = rnd() * Math.PI * 2; cam.az = az; settle(0); const off = vis(false);
-        if (off.tot < 30) continue;
+        if (off.tot < 30) { why.tiny++; continue; }
         const row = { k, x: +x.toFixed(1), y: +gy.toFixed(1), z: +zz.toFixed(1), az: +az.toFixed(2), off: +off.f.toFixed(2) };
         if (off.f < BLK) { const offImg = SHOT ? vis(true).img : null; cam.az = az; settle(1); const on = vis(!!SHOT); row.on = +on.f.toFixed(2); row.lift = +S.lift.toFixed(2); row.cap = S.cap > 1e8 ? '-' : +S.cap.toFixed(1); row.d = +S.k.toFixed(2);
           if (SHOT) { row.imgOff = offImg; row.imgOn = on.img; } S.on = 1; }
         out.push(row); }
       p.pos.set(x0, y0, z0); S.on = 1;
-      return { rows: out, stat: Object.assign({}, S.stat) }; }, [N, BLK, SEED, RAD, SHOT]);
+      return { rows: out, why, at: [x0, y0, z0].map(v => +v.toFixed(1)), stat: Object.assign({}, S.stat, { ms: +S.stat.ms.toFixed(2) }) }; }, [N, BLK, SEED, RAD, SHOT]);
     const blocked = res.rows.filter(r => r.on != null), fail = blocked.filter(r => r.on < PASS);
-    console.log(`== ${z}: ${res.rows.length} samples, ${blocked.length} blocked with SMART OFF, ${fail.length} still blocked with it ON | ${JSON.stringify(res.stat)}`);
+    console.log(`== ${z}: ${res.rows.length} samples, ${blocked.length} blocked with SMART OFF, ${fail.length} still blocked with it ON | spawn ${res.at} skipped ${JSON.stringify(res.why)} | ${JSON.stringify(res.stat)}`);
     for (const r of blocked) { console.log(`   ${r.on >= PASS ? 'ok ' : 'BAD'} #${r.k} at ${r.x},${r.y},${r.z} az ${r.az}: visible ${r.off} -> ${r.on}  (lift ${r.lift} rad, boom cap ${r.cap}, dither ${r.d})`);
       if (SHOT && r.imgOff) { fs.mkdirSync(SHOT, { recursive: true }); for (const [t, u] of [['off', r.imgOff], ['on', r.imgOn]]) fs.writeFileSync(path.join(SHOT, `${z}_${r.k}_${t}.jpg`), Buffer.from(u.split(',')[1], 'base64')); } }
     if (fail.length) bad = 1;

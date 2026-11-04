@@ -33,6 +33,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2460 -- SMART CAMERA pass 2: the snow's hedges were invisible to it, BVH prewarm, the proof skips the garden's prologue
+- **`maxR` 250 -> 3000.** The snow village is merged PER MATERIAL into meshes spanning the zone, so their bounding spheres were over 250 m and
+  `smScan` dropped them -- a snow-covered hedge in front of him (`npm run smartcam snow`, 5 of 40 samples blocked OFF, 5 still blocked ON)
+  was not a candidate at all. A merged mesh's size reads as the whole zone, so it gets the DRONE (lift over it), not the dither.
+- **The BVH was the cost, not the rays** (temple, measured in the page: `smScan` .06 ms, `scamStep` .015 ms a frame steady; the 12 ms
+  average was the first builds, `temple_stone` alone is 165k triangles). Now PREWARMED one tree a frame from the zone's load (`SCAM.warm`), so
+  the build is paid near the load and not on the first occlusion mid-fight. A long thin mesh no longer makes giant leaves (lopsided midpoint
+  splits fall back to the count; node cap n + 2).
+- `npm run smartcam` skips a playing reel (the garden opened in the prologue: 0 samples) and loads on `domcontentloaded`.
+- Re-run of all five zones in flight; its table goes in the next entry. Shipped unverified.
+
 ## m2459 -- THE SMART CAMERA: see through the small things, fly over the big ones (his: "in the floating rocks place, and other parts of the game, the camera gets occluded by something between the character and the camera -- maybe like a drone that goes over the boulder")
 What was wrong: the boom (`camFree` / `camHit`) only knows COLLIDERS. A floating boulder, a tree, a pillar, a cliff drawn as triangles with no box
 -- nothing told the lens they were there, so it sat behind them. The kit worlds' X-RAY (m181/m1584) was the one answer, and only for kit walls.
