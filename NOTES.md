@@ -34,6 +34,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2463 -- SMART CAMERA pass 4: the ray goes on past a see-through hit; the last resort thins what is ACTUALLY in the way
+- Garden re-run (m2462, the reel ended): 7 blocked OFF -> 2 cleared (.38 -> .51 dither; .44 -> .96 a .75 rad lift), and two rows showed one fern
+  dithered while the next fern behind it still covered him (a bed of ferns is several instanced meshes; the ray stopped at the first). Now past
+  a see-through hit the ray goes ON, up to 3 more, patching each see-through mesh and noting a big one behind them for the drone.
+- Snow #34 (lens under a timber deck): the last-resort dither patched the mesh the SEARCH ray hit, not the deck the real lens->him ray hit.
+  It now patches both (`SCAM.bigE`).
+- Not the camera's: garden #3 is him standing IN the fountain pool (the water), the snow rows at .37-.47 are his legs in deep snow.
+  Re-run in flight. Shipped unverified.
+
 ## m2462 -- SMART CAMERA pass 3: when nothing clears from above, come IN at the same pitch, else see THROUGH it
 - Measured (`npm run smartcam snow`, sample #34 under a timber deck): with no pitch clear the drone took `elMax` AND pulled the boom to 2.5 m,
   so the lens sat jammed against the beam at a pitch that did not help (visible .27 -> 0). Now: no clear pitch -> lift 0 and the boom comes
