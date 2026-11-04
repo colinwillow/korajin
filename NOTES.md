@@ -25,6 +25,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2425 -- the title flip turns about his HIPS<!--mine-->
+His note: "it feels like he rotates about an offset point -- maybe his origin/feet -- I'd love it to be more around his HIPS."
+- The pivot was a fixed point (0, .7, 0) above the root. The `tuck` pose moves the hips well off it.
+- Now, each frame, after the mixer has posed him, he is placed UNROTATED on the arc. The `mixamorig_Hips` bone's world point is measured, and
+  the root is turned about THAT point.
+- So the hips ride the ballistic arc exactly and the body spins round them.
+- `st.leap.pivot` holds the point; it falls back to `hipY` if there is no bone.
+Shipped unverified.
+
 ## m2424 -- the Jinra lift bobs MORE (Nov 4 2026)
 His (relayed): *"I wanted him to bob up and down MORE."* The drawn float (m2345) goes from `GARDEN.beam.fly` .16 to .33 m, and its period from 3.2 to
 3.8 s, floatier. It is the same in the air and in the lotus, where LOTUS.dy's own .14 rides on top. Shipped unverified.
