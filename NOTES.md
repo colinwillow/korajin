@@ -117,7 +117,7 @@ no aurora 10.0; no glow 13.4. The aurora's overdraw is the big one. **TOOLS > TI
 aurora curtain of three, no sparkle, the dome's band as one octave, no dust lanes, no finest star layer; AUTO drops to LOW once a night frame averages
 under 30 fps for 4 s (chip: `NIGHT SKY LOW (n fps)`). Shipped unverified -- the phone is the only honest frame clock.
 
-## m23XX -- NIGHT 26: the cracks are STUCK TO HIM -- the pattern lives in his BIND pose (Nov 4 2026)
+## m2410 -- NIGHT 26: the cracks are STUCK TO HIM -- the pattern lives in his BIND pose (Nov 4 2026)
 His words: *"the cracks are better but still a little too big, and they are NOT STUCK TO HIM: as he moves they slide like they belong to the environment
 (the same bug the boat runes and the bell had)."* The crack / splotch pattern was computed from the SKINNED `transformed` -- a posed position, so every
 frame of animation moved the pattern under his skin. Now `vHgL = position` (the pre-skinning attribute: his bind pose), scaled to metres by his world
