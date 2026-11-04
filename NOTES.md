@@ -31,6 +31,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2456 -- FLOATING BOULDERS: SAND DUST (his: "dust and sand KICK-UP from every footstep, run, roll, landing and slide")
+- One more Points in BOULDLIB (`F.sdust`, 520 slots, normal blending, sizes in metres): a PUFF (`L.kick`) is thrown out low and slow, grows,
+  SINKS back under a little gravity (.5) and drag and fades -- dust, not the game's smoke (which rises); GRAINS (`grain: 1`) are small and heavy
+  (g 7) and fall fast. The last 260 slots are WIND-BLOWN SAND streaming along the wind over the dunes (24-62 m out), thicker over the crests.
+- NAMING TRAP: `F.dust` was already the rocks' break-dust colours (pass 3); the new table shadowed it and `kick` read `undefined[0]`. It is `sdust`.
+- Kicks: each toe touchdown (2-6 puffs, wider and higher with speed, carried a little along his velocity; grains at a run), a LANDING from
+  -3 m/s up (a ring of 8-30 puffs and grains past a third of full force; the print 0.4-0.8 m), a ROLL (a stream), a hard TURN or STOP (> 18 m/s^2
+  at a run: a skid of dust thrown back). A pushed rock SHEDS grains off its underside while it moves, and a resting one drags a puff behind it.
+- Prints deeper (.028 -> .036 m). The sand mesh carries `userData.surf = 'sand'`, so the footstep classifier plays the CC0 sand steps
+  (`audio/steps/sand_1..6`, already in the repo) without depending on the name.
+- First look: colour-MATCHED dust (.82 .7 .53, alpha .38) disappeared into the sand it came from -- kicked dust reads LIGHTER (lit, thin);
+  it is .95 .87 .72 at .6 now (strip `sand`: puffs trailing the capsule). 21 draws. Not done: his feet do not visibly sink (a visual offset on
+  the rig is a second writer to his height -- not without a look). Shipped unverified.
+
 ## m2455 -- FLOATING BOULDERS: NO INVISIBLE SPHERE -- rocks move only when his BODY touches them (his notes after m2440)
 His: *"I walked into a rock and it scooted round an invisible sphere -- not elegant."* In his normal state nothing moves away from him; he PUSHES.
 - The always-on BUBBLE is OFF (`bubble.on` 0) and is driven by TOOLS > BOULDERS > JINRA AURA (`BOULD.aura`) -- the aura is the POWER STATE
