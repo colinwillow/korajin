@@ -25,6 +25,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2426 -- jacking into a level: the first frame is the play camera's final pose (no close-up, no teleport, no swing) (Nov 4 2026)
+His (via main): *"when you jack into a level (the SNOW zone) the camera STARTS occluded -- a super close-up of a building -- then it moves around a lot,
+teleports, moves again, looks up into the air, and only then settles."* Two causes: the boot card lifted while the zone was still building and
+placing him (the camera chasing each put), and the play camera EASED from wherever it was to the landing (position `CAM.half`, distance `outHL`,
+height `CAMY`).
+- **The card is held** (`entryRevealAfter`, wrapping the boot's own reveal) until the entrance has picked its landing -- or there is none to make here
+  (prologue, a reel, a hero without the clips, the switch off) -- with a 9 s cap.
+- **The camera is SNAPPED** while the entrance owns him: aimed at the landing (m2416), and now the look height, the distance (collision included)
+  and the lens position are set outright each frame instead of eased, so from its first frame it is at the pose play starts in.
+- Measured headless: the camera pose over the first 60 rendered frames after the card in snow / Sky Temple / lake / garden / arena (results in the
+  follow-up note). Shipped unverified.
+
 ## m2425 -- the title flip turns about his HIPS<!--mine-->
 His note: "it feels like he rotates about an offset point -- maybe his origin/feet -- I'd love it to be more around his HIPS."
 - The pivot was a fixed point (0, .7, 0) above the root. The `tuck` pose moves the hips well off it.
