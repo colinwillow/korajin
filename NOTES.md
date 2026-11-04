@@ -42,6 +42,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2487 -- FLOATING BOULDERS: NATURE, ART-DIRECTED, ON A HIDDEN MANDALA (his direction change: "it feels crowded and messy -- a weird little temple in
+the middle; we were building the LIBRARY")
+- THE SHRINE AND THE LOOKOUT ARE OUT OF THE FIELD: `DSHRINE` and `DPLACE.outcrop` stay in code (`BOULD.shrineOn`, `outcrop.place`), not placed. The
+  desert kit lives only on its row (`?at=kit`). No water in the field. The pale TIERS are gone (`F.tiers` [], kept as `tiersOld`).
+- THE HIDDEN ORGANISING PRINCIPLE (his: "at ground level you wouldn't see it, but top-down it's SACRED GEOMETRY -- concentric circles, a mandala"):
+  `F.mandala` -- RINGS 6 / 10 / 16 / 23 / 30 m and 8 SPOKES -- decides every placement, each with organic jitter (`mpt`): dune CRESTS ride three
+  rings (16 / 23 / 30) warped into eight noisy petals over a soft bowl at the heart; FLOATERS on a GOLDEN-ANGLE spiral (phyllotaxis), small near the
+  heart, bigger outward; RESTING rocks on ring 10 at the spokes and ring 23 at the half-spokes; SCREE clusters where rings 16 / 23 / 30 meet the
+  spokes; PLANT groups between the spokes on three rings; the heart is OPEN (nothing inside 6 m).
+- NATURE'S OWN STRUCTURES: two natural ROCK ARCHES (a sagging, lumpy span thick at the feet, red / sandstone, 7 and 5.6 m) and a CAVERN (an open
+  half-dome of rock, its mouth to the heart) on chosen ring x spoke, built from the rock species' own material; their triangles collide.
+- MESAS only as distant framing: pushed out x1.6 (90-150 m) and x.8 lower.
+- A BUG THIS CAUGHT: with no basin (r 0, rim 0) the vertex at the field's exact centre computed 0/0 = NaN -- a BLACK HEXAGON in the sand (and in the
+  walk triangles). Found by hiding groups one by one (a raycast does not see a NaN vertex). `>=` and a guard.
+- Strips: the play camera from his landing, and TOP-DOWN (the rings, the spiral, the arches and the cave). The sand line: m2485's feathering
+  stands, day and night (his report may predate it). Shipped unverified.
+
 ## m2486 -- the fern sits ON its floating boulder; the transition petals grow out of him<!--mine-->
 His two notes on the title screen.
 1. "A fern floats ABOVE the boulder" (`near_rock_b`, `kind: 'floater'`, `top: 'fern'`).
