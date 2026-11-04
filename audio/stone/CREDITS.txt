@@ -1,0 +1,6 @@
+Stone impact sounds (trimmed, faded, mono, loudness-levelled). All CC0 -- no credit required.
+hit_a, chip_b, crack_a, break_a, break_b, gravel_a, gravel_b, ring_a -- "75 CC0 breaking / falling / hit sfx" (bfh1_rock_hit_01, rock_falling_04 / 03 / 09,
+    rock_breaking_03 / 01 / 02, metal_hit_01), CC0. https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx
+hit_b, chip_a, knock_a, knock_b, ring_b -- "80 CC0 RPG SFX" (stones_04 / 01, item_stone_02 / 04, blade_01), CC0. https://opengameart.org/content/80-cc0-rpg-sfx
+crack_b -- "Breaking rock" (rock_break), CC0. https://opengameart.org/content/breaking-rock
+rumble -- "Cave in" by StarNinjas (first 1.6 s), CC0. https://opengameart.org/content/cave-in

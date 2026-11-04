@@ -48,6 +48,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   Next: pass 2, AI that attacks into his guard.
 - `npm run check` ok. Shipped unverified.
 
+
+## m2466 -- STONE HITS: rocks never play the crate again; a stone FX table by what hit them (his: "it always defaults to the breaking box")
+- WHERE THE DEFAULT CAME FROM: `snd('thud')` IS `audio/box_break_01.mp3` (the crate, kept for things that BREAK -- m2061), and every rock hit used
+  it: the floating boulders (`bouldFx`) AND the plant library's breakable rocks (`rockChips` / `rockBreak`, every zone with `boulder` /
+  `rock_snow` / `rock_red` / `rock_temple`). Both now play STONE keys; the crate is left only on non-stone breakables.
+- `audio/stone/` (NEW folder, in `bump.mjs` DIRS; CREDITS.txt): 15 CC0 cuts from OpenGameArt -- "75 CC0 breaking/falling/hit SFX", "80 CC0 RPG
+  SFX", "Breaking rock", "Cave in" -- trimmed, faded, mono, loudness-levelled. SFX keys `st_hit` `st_knock` `st_ring` `st_chip` `st_crack`
+  `st_break` `st_gravel` `st_rumble` (two takes each, the pool picks).
+- `STONEFX` (SC_STONEFX markers), one row per hit KIND: FIST (dull hit, grit, a dust puff), SWORD (a stone ring + chips, bright sparks; the katana's
+  `meleeName`), ARROW (a knock + a glancing spark, the shaft splinters), HEAVY (power >= 2: a crack, shards, a dust ring, a small shake), BREAK (on top:
+  the break, gravel 0.22 s later, a rumble for rocks over .8 m, shards, a big dust cloud, a shake), KNOCK (soft). Dust goes through the sand-dust
+  pool in the rock's own dust colour; sparks / grit / shards are the pooled spark points. All pooled, no new draws.
+- KNOCKS from the field itself (`L.ev`, drained by the glue): two rocks closing faster than .8 m/s, a rock he presses into (once per .7 s), a
+  fragment bouncing.
+- FRAGMENTS TUMBLE AND SETTLE (was: float and fade): 5-10 pieces of the rock's own stone, real gravity, bounce (.3), roll, then REST on the sand,
+  shrinking away after 4-6.5 s. Strip `mid --smash=b08`.
+- Not done: a SCRATCH decal where a sword hits; the arrow is consumed, not ricocheted. Shipped unverified.
+
 ## m2465 -- FLOATING BOULDERS: THE SAND READS AS SAND (his m2464: "the dynamic isn't bad -- what's killing me is the TEXTURE: very plain")
 His shot (images/feedback/m2464/boulders_sand_plain.png, play camera, day): flat pale cream, no grain, no colour, no ripple at that distance.
 - THE PAINTED CRUST: `textures/garden_sand.webp` (already in the repo: pale sand, wind-swirled ripple bands, grain) tiled at 3.2 m, sampled TWICE
