@@ -27,6 +27,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2429 -- the start screen waits for Grumbo and the mammoth before it says it is ready<!--mine-->
+His report: "the start screen says it's loaded and starts playing BEFORE the mammoth and the hero are on screen -- they pop in, which looks like lag".
+- The title loop now has `ready`, a promise that resolves after:
+  - both characters' loads have settled (`st.keyHero`, `st.keyBeast`; a failed load also counts, so it cannot hang);
+  - `R.compile(S, cam)`;
+  - TWO frames drawn with both in the scene (the textures upload on the first).
+- startGate lays the menu out at opacity 0 behind the splash. `KJ_READY` (the splash's TAP TO START) and a .5 s fade-in wait on `stage.ready`.
+- The fallback is 30 s (`setTimeout(reveal, 30000)`). A 15 s fallback fired before the characters were in, under headless software GL.
+HEADLESS (swiftshader, 390x844):
+- At 12 s: not ready, menu opacity 0, neither character in.
+- KJ_READY came at 31 s with hero AND beast in and `readyAt` set. That is close to the 30 s fallback, so this run may have revealed on the
+  timer: the characters were in either way.
+- The first menu frame after TAP TO START shows Grumbo and the mammoth both on the bridge.
+- 0 page errors.
+Shipped unverified.
+
 ## m2428 -- a gentle aim assist (one reticle's radius, never a mount / pal / calf / passive beast); the katana's lock mark small at the feet; the bow's mark capped on screen
 His (Nov 4, relayed, after m2427): *"it WAS auto-locking onto my own mammoth -- and a baby mammoth ~45 degrees off where I was aiming."* Then:
 (1) the auto-lock only as a very gentle assist, a target only within about one reticle of the aim, never ridden / tame / friendly / baby animals;
