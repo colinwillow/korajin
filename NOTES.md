@@ -28,6 +28,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2431 -- FLOATING BOULDERS: CONTACT (his m2429 note 1: "he walks INTO the rocks -- they push, but he still sinks into them")
+- Each rock collides as the ELLIPSOID of its own mesh's half extents (`r.e`, measured off the variant's geometry at build) x `solid.fit` .92
+  (the blobs fill their box loosely; inscribed reads closer). `contact()` (BOULDLIB): the point of his body segment (knee .3 .. head 1.7 m) nearest
+  the rock's centre height goes into the rock's frame (inverse of its live turn, so a tumbled rock collides as tumbled); inside by `pen` = the
+  ellipsoid's radius along that ray + his .38 - the distance, he is moved out along the ellipsoid's normal FLATTENED to the ground.
+- THE OVERLAP IS SPLIT BY MASS: his share = m / (m + `pM` 1.6), the rock takes the rest on its offset. A pebble under `sMin` .22 is never solid
+  (only shoved); a 1 m rock (mass 2.2) moves him 58%; the biggest (~20) stops him dead and he slides round it. The shove (pass 2) stays on top,
+  so a rock he leans on still leans away. Horizontal only: he never stands on a floating rock. Per-frame cap .6 m.
+- Strip (`push --push=-2.4,12,-2.4,7.5`): the capsule meets b16 (s 1.16), slides round its flank, and the rock gives 1.4 m and drifts home.
+- Not a mesh/hull test (cheap: 48 rocks, a quaternion inverse and a few divides each, culled by a plan-distance test first). If a rock's concave
+  dent or facet lets him in, the hull is the next step. Shipped unverified.
+
 ## m2430 -- FLOATING BOULDERS: the arrow crash (his m2429 card) -- the bow's aim ARC, not the rocks
 His card (images/feedback/m2429/boulders_crash_arrows.jpg): after shooting arrows at the boulders for a while, a red FRAME card; the visible
 stack ends `frameBody :69211 -> frame :69052`, the top cut off by the notch. Read against m2429's own text: 69211:12 is `bowStep(dt)`, and the
