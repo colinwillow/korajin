@@ -35,6 +35,8 @@ index.html (SC_DESERTKIT markers):
 | sky | -- | 0 | night system | painted equirect, PMREM light |
 | stone FX + sounds | -- | 0 | -- | audio/stone, CC0 |
 
+Built kit rows: ARCHITECTURE (m2475, `dkMake`: block, steps, column, ziggurat, obelisk, arch, carved panel -- restored + ruined, `bury`; the row at `?at=kit`).
+
 Phone budget for the field as built: ~26 draws, ~250k tris a frame. Still to make for the region: architecture (temple / pyramid modular
 pieces), props, water (an oasis), life (lizards, birds), atmosphere (heat shimmer, sandstorm), the region's enemies -- each a kit row first.
 

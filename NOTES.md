@@ -35,6 +35,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2475 -- THE DESERT KIT, pass A1: TEMPLE ARCHITECTURE (his: "keep building out FLOATING BOULDERS -- the heart of the future SAND REGION", kit first)
+- `dkMake` (DKLIB markers, a PURE builder; SC_DKIT table): `piece(name, 'restored' | 'ruined', { bury })` -> a Group + its AABBs + tris. Seven
+  pieces, each in BOTH states (the Gathering's rejuvenated / fallen): BLOCK (two courses / chipped, toppled, drifted), STEPS (five .30 risers --
+  his step is .357 / steps missing, a drift), COLUMN (base, 16-flute shaft, capital, 4.2 m / snapped jagged, a drum fallen), ZIGGURAT (three tiers
+  8 / 6 / 4 m x 1.2, a SOLID stair of twelve .30 risers on .42 treads up the south face to the top / the top tier broken, two big drifts),
+  OBELISK (5.5 m, a glyph band and pyramidion / snapped, the top lying), ARCH (3 m span, a glyph lintel band / a pier broken, the lintel fallen
+  across), CARVED PANEL (a slab with our GLYPH inset / split, half fallen). `bury` sinks any piece into a sand drift.
+- Materials: the repo's own painted stone, world-space triplanar (static pieces): `temple_wall` (warm blocks with a carved meander), `temple_paving`,
+  `jinra_adobe` (columns, obelisk), `temple_glyph` (OUR glyphs -- the carved insets). One material per surface, so a temple batches by material.
+  Night: the glyph insets glow (their own map as emissive, JPAL.glow x night), the wall stone carries a few runes.
+- THE KIT ROW: every piece restored (front) and ruined (9 m behind) on a pale floor at (120, 0, -10), east of the field past the dunes. Built with the
+  zone (out of sight); `?w=forge&zone=boulders&at=kit` lands him at its start, TOOLS > BOULDERS > KIT ROW goes there. Colliders: every piece's
+  boxes into BOXES (and the zone's triangle store takes the meshes). Real-page render: the row reads; the two stones were two colours, the paving
+  tint went warmer.
+- ALSO: the sand PATCH (it follows him) is `userData.dyn` now -- the zone's auto triangle store treated it as a moved static mesh.
+Next (A2..): the OASIS set, props, life, atmosphere; then B, the place. Shipped unverified.
+
 ## m2474 -- FOREST TEMPLE: the acrobatic room's two fights are the COMBAT LAB's tuned `forest` set (COMBAT.md 6), not stand-ins
 The Combat Lab worker's temple drop-in (m2473): `combatDrop(set, wave, spots)`. The room's `foes` rows now name a set and a wave instead of a kind:
 - the GALLERY SCRAP = `forest` wave 1 (two samurai + an Osari bowman) at three marks on the gallery (6 m);
