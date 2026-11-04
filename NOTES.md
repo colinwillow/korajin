@@ -29,6 +29,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2434 -- FOREST TEMPLE INTERIOR pass 1: THE KIT (FOREST_TEMPLE.md, KORAJIN > Forest Temple Kit, `?w=forge&zone=ftkit`)
+His (via main, Nov 4): *"the above-ground part is the tip of the iceberg / the door; the real temple is massive, inside / underground"* + WORLD_PLAN 1
+(the kit before the place). New sandbox; FOREST_TEMPLE.md has the vision, the chamber map, six passes and DONE WHEN (last box his phone).
+- `ftkMake` (FTKLIB markers) is a PURE builder of the `SC_FTEMPLE` table: 33 rows, 17 piece kinds (wall / ruin wall, floor / terrace, stair, ledge,
+  column / rooted column, toppled ruin, rootwall, guardian panel, arch, stone door, lantern, brazier, pots, moss, vines, light shaft, guardian statue).
+  Pieces write into ONE sink per material with WORLD-metre UVs (shared texel density), so the whole kit is **20 draws, 22.3k tris** (`npm run ftstrip`),
+  build 80 ms headless. 68 colliders (`obox` shape), 9 pots, 89 halos (one Points), the Jin flames one shader mesh, the shafts one.
+- New maps (`tools/ftemple_textures.py`, gpt-image, seamless): ft_wall / floor / carve (frieze, X-tiling) / root / moss / cobble + door / guardian / pot.
+- CRAFT checked on the close renders: the roots taper and FLOW down the face and over the floor (rootlets, moss at their tips); vines in catenaries,
+  each its own length; the lantern hangs from an iron arm on a chain; the stair (.30 risers) stands on a solid mass with cheek walls; columns have
+  entasis and a moss collar, the rooted one's roots spiral it into the floor. Open: the moss carpet reads a little as a puddle of blobs.
+- Glue: `FTEMPLE`, `ftinStage` (the forge-branch stage: cavern dark, the zone's own light `F.env`, BOXES, `nightGlow` runes / cracks / veins on
+  stone / frieze / roots), `ftinStep`; pots break to a swing (`meleeTick`), an area blow (`rockArea`) or an arrow, and come back 18 s later.
+  ENTRY row `ftkit` lands at the spawn (0, 27) facing the kit (static: ENTRY is declared below the stage -- the boot gate caught the TDZ read).
+- WHOLE-PIECE: a new piece on its own, built on nothing unsigned. Moves FOREST_TEMPLE box 1 (pending his look). Open: chamber 1 (pass 2), the
+  entry hall + descent + the door (pass 3), the roster, the boss. Shipped unverified.
+
 ## m2432 -- THE PERIODIC HITCH, pass 1 (his: "in the snow, the arenas, others -- every second or so it glitches"; less in the Garden)
 - **A NEW TOOL: `npm run hitch [query ...]`** (`tools/hitch.mjs`). Boots the shipped page, times the game's own JS per frame (frame() minus
   `renderer.render`), runs the CDP sampling profiler, and lists every heavy frame with the deepest game function that owned it.
@@ -112,7 +129,6 @@ blurred frame above it is 5 digits at column 17 -- `bowArc`'s line `if (i > 2 &&
   comes back with `ARC HIT THREW` in the chip, the message says which body.
 - The boot gate (`MEL_WORLD='forge&zone=boulders'`) now flies a 900-frame barrage into the field with the bow drawn and the arc running,
   and fails under 3 breaks. `mel` carries `ARROWS`, `arrowMesh`, `BOW`, `bowLoose`, `WEAP`, `QD` for the next probe. Shipped unverified.
-
 ## m2429 -- the start screen waits for Grumbo and the mammoth before it says it is ready<!--mine-->
 His report: "the start screen says it's loaded and starts playing BEFORE the mammoth and the hero are on screen -- they pop in, which looks like lag".
 - The title loop now has `ready`, a promise that resolves after:

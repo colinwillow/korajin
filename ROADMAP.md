@@ -52,6 +52,9 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
       stick UP and DOWN both parry, UP timed returns it; glider glow; enemies; village; bosses; gamepad.
 
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
+- [ ] **THE FOREST TEMPLE (the real temple, below) -- OPEN (his, Nov 4).** `FOREST_TEMPLE.md`: the kit, then the acrobatic room (chamber 1), the entry
+      hall + descent from the dome temple's door, the roster, the boss + Jinra stone. KORAJIN > Forest Temple Kit (`?w=forge&zone=ftkit`).
+  - [x] m2434 pass 1 THE KIT (`ftkMake`, 17 pieces, 20 draws / 22k tris, `npm run ftstrip`).
 - [ ] **FLOATING BOULDERS -- OPEN (his, Nov 4).** `BOULDERS.md`: boulders pebble to car-size floating just off the ground; walk through them, bump,
       slash, break; later the seed of his Jinra power. KORAJIN > Floating Boulders (`?w=forge&zone=boulders`).
   - [x] m2418 pass 1 THE FIELD (BOULDERS.md, `bouldMake` + `npm run bouldstrip`, the zone + ENTRY row).

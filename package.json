@@ -38,7 +38,8 @@
     "lakestrip": "node tools/lakestrip.mjs",
     "bouldstrip": "node tools/bouldstrip.mjs",
     "hitch": "node tools/hitch.mjs",
-    "foreststrip": "node tools/foreststrip.mjs"
+    "foreststrip": "node tools/foreststrip.mjs",
+    "ftstrip": "node tools/ftstrip.mjs"
   },
   "type": "module",
   "devDependencies": {
