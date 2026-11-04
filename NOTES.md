@@ -2026,6 +2026,34 @@ the sleep touches it in a frame (`ltDir`, `ltTurn`, `ltSpread`), and `ltUndo()` 
 MEASURED with the sway forced to ~.35-.45 rad (far more than in play) over 4 game s (1,216 samples): Spine2 drift <= 2.7 deg (the breath itself),
 minimum cloth clearance .066 m. Side renders at both sway extremes: lying flat in the sling. **Shipped unverified.**
 
+## m2436 -- THE STEP-UP, ONE RULE FOR EVERY ZONE AND BOTH COLLIDERS; MESH is the garden's default; `npm run stepsweep` (Nov 4 2026)
+
+His (m2423, the bell-shrine stair top, `images/feedback/m2423/stuck_stair_top_bell.png`): *"It's fixed near the Jinra basin but that's it. I don't
+want to go through 1,876 spots and send screenshots -- I want it fixed in a GENERAL way so I never get stuck at the top of stairs, over a kerb."*
+- **`stepUpTry` (in `integrate`, after the push-out, grounded, the player):** if the push took away more than `STEPUP.blockK` (.35) of his motion
+  ALONG it (grazing a wall is not blocked), probe the ground just ahead (`groundAt` -- the feet's own answer: boxes, the mesh, TRI, the region) for
+  a top over his feet by `min` (.03) to `lip` (.55 m, ~1.5 steps); at the first point his centre would be over it (+.06 / .16 / .30 / .45 m), if
+  his capsule FITS there (the shipped `resolveBoxes` on a copy moves it < `room` .08, no head under a ceiling) he is put there. An uneven top
+  (a stone) within .15 m still counts. Taller is still a wall (a jump). The picture eases it (`stepRamp`). `STEPUP.auto` 0 is the A/B; `.ups`
+  counts; `STEPUP.dbg = []` logs why each try failed.
+- **The grounded snap reaches `STEPUP.lip` in every zone, not only on the mesh** -- a thin floor with no sides (a bridge landing plate, a TRI
+  deck .5 m up) is walked onto, where before he walked UNDER its edge.
+- **MESH IS THE GARDEN'S DEFAULT** (`COLL.zones.garden.def`). TOOLS > COLLIDER still flips it; a saved `mel.coll` wins. No other zone has a
+  mesh row yet (snow, temple, lake and arena are boxes; this rule is what fixes them).
+**`npm run stepsweep [zone ...] [--boxes|--mesh] [--off]` (new):** per zone, the shipped `groundAt` on a .5 m grid (45 m round the spawn, 90 for
+the temple and lake) finds every rise of .05-.55 m with a flat run .5 m both sides and a top at least his width; up to 150 are probed: dropped .7 m
+short on the low side, run at the edge at full stick through the real pads for 1.5 s; walked up = feet within 8 cm of the top. Not counted as
+stalls: a wall too tall to step within his radius beside or ahead of the path (a post, a rock face at his chest), a rise that is gone after
+(a pot he broke), and a drop that did not land at the low side's height. **Measured (several runs; the counts move a little run to run --
+the garden's spawn and props vary, and snow drops often fail to land):**
+    sky temple (BOXES)   step-up OFF 141-147 stalls of 150 probed  ->  ON 0-1        (its .3-.55 m risers; 141-147 step-ups a run)
+    garden (BOXES)       OFF 27                                    ->  ON 0-3        (the 3 were pots, now skipped as narrower than him)
+    snow (BOXES)         OFF 14                                    ->  ON 0-2 (noisy: one run had most drops fail to land)
+    garden (MESH)        OFF 6-9                                   ->  ON 3          (lumpy stone at a rock's foot, a 0.4 m edge at (21.3, 0.9))
+    lake / arena         no 5-55 cm rises with a flat both sides near the spawn (the lake's are in the water)
+**Open:** the garden-MESH three; lake and arena have nothing to measure at this radius; snow's drops need a better landing check.
+**What to try:** the bell-shrine stair top, any kerb, the sky temple's risers, the snow village's steps -- walk at them, no jump. **Shipped unverified.**
+
 ## m2415 -- THE MESH COLLIDER STEPS UP LIPS: the Jinra basin rim, the stair's top; the flagstones are ground (Nov 4 2026)
 
 His (via main): *"at the TOP OF THE STAIRS he gets stuck, and he can't walk up over the RIM of the Jinra basin -- it's a lot of stuff like this."*

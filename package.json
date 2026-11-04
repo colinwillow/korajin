@@ -33,6 +33,7 @@
     "moves": "node tools/moves.mjs",
     "colaudit": "node tools/colaudit.mjs",
     "walktest": "node tools/walktest.mjs",
+    "stepsweep": "node tools/stepsweep.mjs",
     "fxstrip": "node tools/fxstrip.mjs",
     "nightshot": "node tools/nightshot.mjs",
     "lakestrip": "node tools/lakestrip.mjs",
