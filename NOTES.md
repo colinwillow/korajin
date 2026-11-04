@@ -30,6 +30,36 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2454 -- THE SNOW AT 20 FPS: the snowfield plane, and a shadow pass that could not cull (his chip, m2423, night: 20 FPS, 98 DC, 1,467k tris)
+- **WHAT THE TRIANGLES WERE** (one render, per object, main and shadow pass split; `npm run snowtris` for the five-spot A/B):
+      the SNOWFIELD    627k  a 560 x 560 displaced plane, frustumCulled off -- every frame, wherever he stood
+      the SHADOW PASS  611k  the sun's box is only +-22 m round him, but the village (278k) and the ice temple (176k) are merged
+                             PER MATERIAL into meshes spanning the zone, so three could never cull them out of the shadow map
+      village visual   140-255k  (fine ornament: 1.5 cm tori with 10-24 segments, merged per material)
+      waterfall        195k + 83k,  snowflora 116k,  forgehouse 65k,  peaks 59k
+- **FIX 1, `snowGridGeo`:** the snowfield is a grid that FOLLOWS him (`SNOWZ.uC`, snapped to the old .57 m step so near vertices never
+  swim): the old spacing out to `gridFine` 30 m, then x`gridGrow` 1.08 a step to the far edge; a vertex past the field clamps onto its edge
+  in the vertex shader, so the seam with the far plain is where it was. Every coordinate is a whole number of old steps. **627k -> 82k.**
+  The night patches read `transformed`, which is world space as before. Looked at day and night through `nightshot` -- drifts and tracks read.
+- **FIX 2, `shadowCells` / `SHCELL`:** the village's and the ice temple's merged meshes stop casting; their triangles (positions only, every
+  material together) are re-cut into 14 m cells (sparse cells, under 400 triangles, join 112 m ones: the temple's trims made 3,481 objects
+  otherwise -- now 155) on layer 6. **TWO TRAPS, both hit:** (a) three's shadow pass tests a caster's layers against the VIEWING camera, not
+  the shadow camera -- so `renderer.shadowMap.render` is wrapped to give the viewing camera layer 6 for the shadow pass only (the main list is
+  built before it); (b) the distance culls (`perfRegSmall` / `perfRegFog`) move meshes between layers 0 and 1 and put the cells into the MAIN
+  pass (190k untextured triangles at the village) -- `userData.shadowOnly` keeps them off those lists. Measured after: cells 0k in every
+  main pass, and they cast (82-292k in the shadow pass, by spot).
+- **BEFORE -> AFTER**, total triangles (main + shadow) / draws, fixed camera 7 m behind him (swiftshader; draws include the shadow pass):
+      spot       day                         night
+      spawn      2438k/260 -> 1499k/251      2349k/256 -> 1645k/269
+      village    2128k/257 -> 1531k/264      2325k/275 -> 1533k/272
+      temple     1845k/163 -> 1144k/164      1881k/173 -> 1152k/174
+      falls      1665k/158 -> 1032k/161      1926k/193 -> 1035k/165
+      pond       1928k/206 ->  970k/194      2062k/248 -> 1172k/227
+  FPS on the phone is unmeasured here (no GPU timing in this container): **his chip is the measurement.**
+- **STILL OPEN:** the village's visual (255k: cut its ornament segments, or split by cell so a look away culls it), the waterfall (278k at
+  140 m), snowflora (116k); textures 199 MB resident (four 21 MB Tripo/goblin maps -> KTX2); the snow material's fragment cost (two painted
+  samples + three for the bump, per pixel, over the whole ground) -- a fill cost the triangle count does not show.
+
 ## m2453 -- FOREST REGION pass 2: THE ROCK-CUT COMPLEX (Kailasa as inspiration) -- the pit, the gateway, the main shrine and its tower (Nov 4 2026)
 His (via the parent): *base its architecture on the KAILASA TEMPLE at Ellora -- "I love how it's cut out of the mountain; none of it looks built or
 placed, it's literally carved." Inspiration, NOT a copy; no real deities or sacred iconography.* FOREST_REGION.md has the direction and the plan.
