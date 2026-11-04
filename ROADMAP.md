@@ -52,6 +52,11 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
       stick UP and DOWN both parry, UP timed returns it; glider glow; enemies; village; bosses; gamepad.
 
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
+- [ ] **THE COMBAT LAB -- OPEN (his, Nov 4).** `COMBAT.md`: the triangle, every enemy's profile, bosses, difficulty, temple-ready rows.
+      KORAJIN > The Combat Lab (`?w=forge&zone=combatlab`).
+  - [x] m2466 pass 1 THE LAB (spawn panel by roster slot, counts, difficulty, AI on/off, slow-mo, reset, readout).
+  - [ ] pass 2 AI that FIGHTS (attacks into a guard, glints, strings, tokens). - [ ] pass 3 ENEMY DEFENCE. - [ ] pass 4 ARCHETYPES.
+  - [ ] pass 5 BOSSES. - [ ] pass 6 TUNING / `SC_COMBAT` rows.
 - [ ] **THE FOREST TEMPLE (the real temple, below) -- OPEN (his, Nov 4).** `FOREST_TEMPLE.md`: the kit, then the acrobatic room (chamber 1), the entry
       hall + descent from the dome temple's door, the roster, the boss + Jinra stone. KORAJIN > Forest Temple Kit (`?w=forge&zone=ftkit`).
   - [x] m2434 pass 1 THE KIT (`ftkMake`, 17 pieces, 20 draws / 22k tris, `npm run ftstrip`).

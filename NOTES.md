@@ -34,6 +34,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2466 -- THE COMBAT LAB, pass 1 (COMBAT.md; his: "a sandbox that is purely combat, to test every single enemy... I can destroy every boss in a few seconds")
+- COMBAT.md written first: the six-verb triangle (attack / guard / parry / guard-break / dodge / unblockable) with timing windows, poise and
+  armour, the group rule (attack tokens; a guarding player is a TARGET), the roster by WORLD_PLAN slot against what exists, the boss pattern
+  (phases, armour vs weak points, windows, escalation), the difficulty knobs, temple-ready rows, a DONE WHEN per enemy (last box his).
+- KORAJIN > The Combat Lab (`?w=forge&zone=combatlab`, `CLAB`, `SC_CLAB`): a stone floor (r 22) under a dark dome, three rim blocks at 1 / 2.2 /
+  3.6 m, an ENTRY row (`combatlab`). Panel: SPAWN by roster slot (samurai, horde, warboss, skullback, jackal, CEO beast, archer, osari bow,
+  volley, dog, calf, spider-bots, mech, dragon, guardian, dweller, mammoth), COUNT x1/2/3/5 (arena kinds; a fan in front of him, `clabSpot`,
+  through `arenaSpawn` -- no doors), EASY/MEDIUM/HARD (`ARENA.duel.lvl`), AI ON/OFF (`clabHold` / `clabFrozen`: arena bodies, horde, archers,
+  spiders hold idle), SLOW x1/.5/.25 (`clabTime` on the frame dt), RESET. Readout: nearest enemy kind, state, WIND clock, hp, shield/exposed,
+  distance; his hp, took / last / dealt, `ARENA.stat` blk/clang/brk/intr.
+- Not yet: creatures and the guardians ignore AI OFF (their own brains). WHOLE-PIECE: this opens the COMBAT sandbox; no enemy box is ticked.
+  Next: pass 2, AI that attacks into his guard.
+- `npm run check` ok. Shipped unverified.
 
 ## m2465 -- FLOATING BOULDERS: THE SAND READS AS SAND (his m2464: "the dynamic isn't bad -- what's killing me is the TEXTURE: very plain")
 His shot (images/feedback/m2464/boulders_sand_plain.png, play camera, day): flat pale cream, no grain, no colour, no ripple at that distance.
