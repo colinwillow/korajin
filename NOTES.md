@@ -29,6 +29,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2440 -- FLOATING BOULDERS: ALIEN PLANTS and BLOWING LEAVES (his m2429 note 4)
+- Four plant kinds BUILT in BOULDLIB (merged, vertex-coloured, one InstancedMesh each, one shared material): an alien CACTUS (a 9-rib lathe column,
+  S-bent, three elbowed arms, pink glowing-ish buds; teal into violet), a few GREEN ones (`cactusG`, same build, green into lime, cream buds), a
+  SUCCULENT rosette (30 thick pointed leaves in three whorls, frost-blue with pink tips) and an ORB cactus (a 12-rib violet bulb, a crown of pink
+  spines). `F.plants`: 20 clusters of 1-4 (34 plants), the kind mix 30/14/36/20 %, kept off the rocks. Plants over 1.1 m carry a BOX.
+- His bubble LEANS them away (up to .35 rad, a spring k 9 / zeta .35, so they rock back). 
+- LEAVES (`F.leaves`): 140 curled alien leaves (one instanced draw, double-sided, five colours), 65% fallen round the plants. Inside 2.8 m of him
+  they are picked up -- lifted, swirled round him, thrown out a little, harder the faster he moves -- then flutter down (gravity 1.3, drag 1.4,
+  a side-to-side rock, tumbling) and lie flat where they land, on the sand or a tier.
+- Tris: the first succulent was 3,600 tris a plant (spheres of 10 x 6 per leaf) -- 7 x 4 now; orbs 16 x 10. Rocks + plants + leaves ~118k, the
+  whole frame ~165k; draws 20. Shipped unverified.
+
 ## m2437 -- the load card really holds for the entrance now (Nov 4 2026)
 Measured m2426 headless (the camera pose for the first 60 frames after the card, per zone): the card lifted BEFORE the entrance had started -- the first
 frames were state "none" and the camera then moved 3-27 m. `entryRevealAfter` decided there was no entrance to wait for because Grumbo's drop clips
