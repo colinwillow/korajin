@@ -38,6 +38,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2482 -- THE PLACE, pass B1: THE GROUND IS NOT A PLANE (his: "grow the field into a real landscape -- rolling dunes, ridges, a basin")
+- `reliefH` (BOULDLIB, `F.relief`): rolling sand over the whole field (two noises, base .5 / amp .55 / fine .22 m), a wind-carved RIDGE across
+  the wind (1.6 m, 13 m off-centre, a steeper lee), and the SHRINE BASIN at the field centre: floor y 0 inside r 7 m, the sand rising over a 6 m rim
+  -- a sunken courtyard for the temple pond (B2). Everything >= 0: the forge's own floor is the basin floor, nothing can stand below it.
+- `sandH` = relief + the dunes; every placement rides it (`gAt` = max(tier, relief)): floaters, resting rocks, scree, plants, leaves, tiers (their
+  boxes now rise from the relief), lizards, dust, snakes. The basin is kept clear of rocks and plants (`inShrine`). His spawn and the ENTRY landing
+  stand on the relief (in the real page: p.y 1.34, sand 1.34, grounded).
+- THE PATCH on the relief: the base height is baked ONCE into a 384^2 half-float texture over the sand's square (`uBase`); the patch's vertices
+  take it in the vertex shader (and its SLOPE as their normal, 4 taps), so the deformation rides the hills without re-heighting 15k vertices on
+  the CPU every time it moves; it now runs over the whole deformation square, not only the flat.
+- Walking: the sand's triangles go into the TRI store as before (the basin floor, flat at 0, is left to the forge floor). Next: B2 the temple pond
+  in the basin, B3 the framing mesas, outcrops and the climbable heights. Shipped unverified.
+
 ## m2481 -- THE DESERT KIT, pass A4: LIFE AND ATMOSPHERE (in the field, BOULDLIB `F.life`)
 - LIZARDS (7, one instanced draw, a merged sand-and-teal body / head / tail / legs): BASK, dart in short runs, and SCURRY off in a zig-zag at 5.5 m/s
   when he comes within 3.6 m, kicking little puffs; they stay in the field.
