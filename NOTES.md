@@ -34,6 +34,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2465 -- FLOATING BOULDERS: THE SAND READS AS SAND (his m2464: "the dynamic isn't bad -- what's killing me is the TEXTURE: very plain")
+His shot (images/feedback/m2464/boulders_sand_plain.png, play camera, day): flat pale cream, no grain, no colour, no ripple at that distance.
+- THE PAINTED CRUST: `textures/garden_sand.webp` (already in the repo: pale sand, wind-swirled ripple bands, grain) tiled at 3.2 m, sampled TWICE
+  (a second time turned 37 deg at 2.3x the scale, 38%) so the tile does not repeat visibly, and its own luminance used as RELIEF (a 3-tap gradient
+  into the normal, `tile[2]` .9) -- the swirls catch the sun. MACRO swirls on top: two noises (tens of metres) tint it warmer / redder / paler.
+- THE REVEALED LAYER: `textures/hollows_sand.webp` (orange, coarse, scattered pebbles) at 2.4 m, half-desaturated toward a damp warm brown and
+  darkened (x.74), blended in by the DISTURBANCE field (and a little more down in a trough) -- his path draws a visible trail through the pale crust.
+- AO: a trough darkens up to 32% (was 14%), a berm lifts 6%. PLOUGHING x1.5 (feet .068-.12 deep, legs .03-.098).
+- Strip (follow camera, his height): the field has grain and ripple bands to the horizon and a dark trail behind him. Rock bases still rely on the
+  contact shadows (not new AO). No new files (both textures were hashed already). Shipped unverified.
+
 ## m2464 -- SMART CAMERA pass 5: rays on his FLANKS too, and leaves he is standing IN thin
 - Garden (`npm run smartcam garden`, images looked at): a fern over his side was never on the centre line the three rays ran, and the fern he
   stood INSIDE was not nearer the lens than `near` .35 m in front of him, so the dither skipped it. Now SEVEN points (`SCAM.pts`: shins,
