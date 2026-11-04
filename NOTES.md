@@ -27,6 +27,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2430 -- FLOATING BOULDERS: the arrow crash (his m2429 card) -- the bow's aim ARC, not the rocks
+His card (images/feedback/m2429/boulders_crash_arrows.jpg): after shooting arrows at the boulders for a while, a red FRAME card; the visible
+stack ends `frameBody :69211 -> frame :69052`, the top cut off by the notch. Read against m2429's own text: 69211:12 is `bowStep(dt)`, and the
+blurred frame above it is 5 digits at column 17 -- `bowArc`'s line `if (i > 2 && bowArcHit(...))`, where column 17 is exactly the call.
+- `bowArcHit` (the arc, flown EVERY frame he holds a draw) read `d.root.visible` and `d.K.h` on every entry of `DUMMIES` with no guard; a body
+  without a root or a kind table throws there. It is guarded now, and the arc's hit test is wrapped: the arc is a PREVIEW and never takes the
+  frame down (`BARC.err` counts it; the first message goes to the chip as `ARC HIT THREW ...`).
+- NOT REPRODUCED: headless in the real page, 500 synthetic arrows + 300 frames of the real `bowLoose` with the bow drawn (normal and blast,
+  breaks and regrowth) threw nothing -- and the first attempt was BLIND: `frame()` catches and shows the card, so `pageerror` never fires. Hook
+  `window.__crash` to see frame errors headless. So the guard is aimed at the line the stack names, not at a reproduced fault; if the card
+  comes back with `ARC HIT THREW` in the chip, the message says which body.
+- The boot gate (`MEL_WORLD='forge&zone=boulders'`) now flies a 900-frame barrage into the field with the bow drawn and the arc running,
+  and fails under 3 breaks. `mel` carries `ARROWS`, `arrowMesh`, `BOW`, `bowLoose`, `WEAP`, `QD` for the next probe. Shipped unverified.
+
 ## m2429 -- the start screen waits for Grumbo and the mammoth before it says it is ready<!--mine-->
 His report: "the start screen says it's loaded and starts playing BEFORE the mammoth and the hero are on screen -- they pop in, which looks like lag".
 - The title loop now has `ready`, a promise that resolves after:
