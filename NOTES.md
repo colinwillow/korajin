@@ -33,6 +33,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2461 -- FLOATING BOULDERS: THE SAND MOVES (his: "it still feels like a flat plane -- it doesn't feel like I'm wading through sand")
+He described sand as nearly a liquid (C4D's grain solver) -- too costly, so it is FAKED round him:
+- ONE FIELD, two channels: height `Hh` (m) and disturbance `Gd`, 512^2 over 50 m (~10 cm cells), shipped as an RG8 texture (unit .15 m),
+  re-encoded only over the window that changed, at 20 Hz.
+- `plough(x, z, r, depth, dir, berm)`: cuts a dish (deeper in the middle) and lays EVERY bit of the cut back as a BERM in a ring r..r x berm,
+  weighted ahead of and beside the way it moves (volume kept). Each TOE ploughs every frame it is down (a planted foot is idempotent; a dragging one
+  trenches), his LEGS plough a trench + bow wave while he moves (.17-.24 m, .02-.065 deep with speed), a roll a .42 m trench, a landing a crater.
+- `relax`: an ANGLE-OF-REPOSE slump (32 deg) in a 72-cell window round him, two passes a frame -- any step steeper sheds a share downhill (volume
+  kept) -- plus a slow settle. That is the liquid read: a berm slumps, a trough half-fills, then it holds. What moved is FLUX, and the glue spills
+  it as falling GRAINS round him. Far prints stay, filled by the wind over minutes; disturbed sand calms over ~50 s.
+- REAL DISPLACEMENT: a dense PATCH (124^2 cells, one vertex a cell, ~31k tris) follows him, snapped to the cell grid (no swimming), its vertices
+  raised/lowered by the field (faded at its border); the coarse sand under it DISCARDS inside the patch. Hidden on the dunes (no deformation there).
+- Surface: disturbed sand is DARKER and has lost its ripples; ripples are stronger and ASYMMETRIC (gentle windward back, steep lee face); the
+  glints brighten at grazing angles. Dust lingers longer (1.8-4 s, sinks slower).
+- Strip from the FOLLOW camera (his height): before, a flat plane with faint prints; after, a trench with berms trails him. The stamp API is a
+  plough with no direction now (landings, a rock's bed). ~247k tris, 26 draws. Not done: pebbles rolled by his feet beyond the existing contact
+  shove; the sand on the dunes does not deform. Shipped unverified.
+
 ## m2460 -- SMART CAMERA pass 2: the snow's hedges were invisible to it, BVH prewarm, the proof skips the garden's prologue
 - **`maxR` 250 -> 3000.** The snow village is merged PER MATERIAL into meshes spanning the zone, so their bounding spheres were over 250 m and
   `smScan` dropped them -- a snow-covered hedge in front of him (`npm run smartcam snow`, 5 of 40 samples blocked OFF, 5 still blocked ON)
