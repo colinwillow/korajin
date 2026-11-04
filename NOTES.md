@@ -36,6 +36,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2480 -- THE DESERT KIT, pass A3: PROPS
+- `dkMake` gains six pieces (restored + ruined), the PROPS row at z +40 / +46 on the kit floor: URN (a lathed amphora) and URN2 (a squat jar) --
+  clay with painted bands and a glyph-motif band, BREAKABLE; BRAZIER (a stone pedestal, a bronze bowl, a FLAME of two crossed additive cards with a
+  painted teardrop map -- white-hot core, orange body -- flickered by the glue, brighter at night; ruined: the bowl knocked off); BANNER (a bronze
+  pole and bar, a cloth that SWAYS on its own vertex shader -- hanging more the lower it is -- with a glyph patch; ruined: torn, the pole leaning);
+  BONES (a great creature's spine, seven pairs of ribs, a long skull, sunk in drifts; ruined: ribs missing); RELIC (a half-buried bronze ring-shield
+  and a broken blade). New materials: bronze (metal .85), bone, cloth (x3 colours), flame -- each shared by every piece that uses it.
+- URNS BREAK (`bouldUrnHit`, reached by the same three hooks as the rocks -- the swing, `rockArea`, arrows): clay and painted-band shards (the spark
+  pool), a dust puff, a clay crack (stone keys pitched up) -- back after 30 s. The boot gate builds the kit row and breaks an urn (fails if not).
+- First flame was a plain white card (no map) -- it has the painted teardrop now. Seen in the real page (`?at=kit`). Not yet: urn shards as real
+  pieces (sparks for now). Shipped unverified.
+
 ## m2479 -- THE GATHERING: the GET pose is ONE-ARMED (the standard pose for every collectible)
 The parent session corrected its relay of his note: *"One arm down, one arm up -- like Mario holding up a star, or holding up the power sword --
 but he's holding the crystal."* m2476's two-handed V is gone. `GETPOSE` is now the clean reusable one: `side` 'R' (or 'L') raises that arm
