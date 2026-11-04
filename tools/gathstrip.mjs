@@ -35,7 +35,7 @@ const shoot = async (lab, wideCam) => page.evaluate(([lab, wideCam]) => { const 
   let saved = null; if (wideCam) { saved = [camera.position.clone(), camera.quaternion.clone()]; const c = wideCam; camera.position.set(c[0], c[1], c[2]); camera.lookAt(c[3], c[4], c[5]); camera.updateMatrixWorld(true); }
   mel.nightPre(); renderer.render(scene, camera); const url = renderer.domElement.toDataURL('image/jpeg', .85); const i = renderer.info.render; mel.nightPost();
   if (saved) { camera.position.copy(saved[0]); camera.quaternion.copy(saved[1]); camera.updateMatrixWorld(true); }
-  return { url, lab: lab + ' · ' + Z.st + ' T' + Z.T.toFixed(1) + ' fill ' + Math.round(Z.fill * 100) + '% · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k', }; }, [lab, wideCam]);
+  return { url, lab: lab + ' · ' + Z.st + ' T' + Z.T.toFixed(1) + ' fill ' + Math.round(Z.fill * 100) + '% · motes ' + (mel.GMOTE ? mel.GMOTE.alive : 0) + ' · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k', }; }, [lab, wideCam]);
 const wideCam = JSON.parse(arg('cam', '[0,22,26,0,13,0]'));
 tiles.push(await shoot('before', null)); if (wide) tiles.push(await shoot('before wide', wideCam));
 await page.evaluate(g => { mel.GATHER.t0 = mel.GATHER.on.t; mel[g](); }, go);

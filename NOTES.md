@@ -36,6 +36,30 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2476 -- THE GATHERING detail pass: two-handed pose, a head-sized cut crystal, the drain as thousands of motes (GATHERING.md)
+His first look (relayed by the parent session): "a really great start" -- then: (1) he holds it up with ONE hand, make it two-handed, a strong
+heroic silhouette; (2) the crystal is massive, make it head-sized and far more detailed; (3) make the gathering much more PARTICLE-driven.
+**(1) THE POSE.** Measured first, on GRUMBO (`?hero=agoblin` -- my earlier strips booted whatever hero was saved, which is the real lesson
+here: a strip of a pose must name the body): both IK arms WERE up (hands 14.33 / 14.29 m, head bone 14.04), but straight up and together
+under a 1 m crystal they read as one raised arm, and the lens had swung round BEHIND him. Now `GETPOSE` holds the hands .19 m either side of
+the crystal (cradling its sides), elbows out and down in a V (`pole` [out 1, fwd .25, up -.35]), and `gathHold` asks the lens onto his front
+(`p.camWant`, the game's own request hook) through the glide and pose-in only -- after 1.2 s a drag is his.
+**(2) THE CRYSTAL** (`crys` h 1.0 -> .44 m, r .27 -> .14): a GROUP -- a cut gem (crown, girdle, pavilion; 8-sided lathe, flat facets, double-sided
+so the back facets show through), its shader: the liquid-light level with a meniscus (kept), veins (crossed sines in its own space), point
+inclusions, a soft fresnel rim (cool white -> the temple colour as it fills), facet sparkle re-rolled 5x a second; an INNER gem of facets turned
+30 deg (additive, lit by a fixed light so its facets read through the outer one, brightening with the fill and every absorption, `uPulse`); a
+thin bronze girdle band and three prongs (thick ones read as a '+' cross on the gem, first strip); five shards orbiting against its spin.
+**(3) THE MOTES** (`GMOTE`, one additive Points draw, 5,000 pool, 400/s per draining torch on a bell): each is born in the flame, rides the
+torch's curve as progress u ACCELERATING (du/dt ~ .35 + 2.6 u^2), SPIRALS round the curve (own phase, 1.2-3.2 turns, radius closing), is
+wobbled by a curl-like field of crossed sines, then ORBITS the crystal on its own tilted ring, closing, and is ABSORBED -- the inner core
+pulses, every 70 absorptions a small ring of light. Three kinds: wisp (body), dust (wide, dim, the deep colour), spark (white-hot, fast);
+the comet ribbons stay as the streams' spines (3/s, thinner). On FULL a 520-mote BURST flies out and falls. The FLAMES visibly drain: a draining
+torch's tongues shrink and gutter (size .3-1 x the Jinra left, randomly flickered), its halo with them, then the warm fire grows back over 1.6 s.
+Strips (sent to him, Grumbo): the V pose facing the lens; the close-up shows the faceted gem cradled in both hands with its shards; motes
+peak at 4,514 of 5,000 (the first try's 3,600 pool saturated at 4.8 s and overwrote live motes; the first try's orbit swarm and big rings
+swallowed the gem -- tightened, dimmed, rings smaller and rarer). 131-160 draws, 66-68k tris with the wide shot. Shared lines (ENTRY rows,
+ZONEWANT, the menu) diffed against main before the push: identical.
+
 ## m2475 -- THE DESERT KIT, pass A1: TEMPLE ARCHITECTURE (his: "keep building out FLOATING BOULDERS -- the heart of the future SAND REGION", kit first)
 - `dkMake` (DKLIB markers, a PURE builder; SC_DKIT table): `piece(name, 'restored' | 'ruined', { bury })` -> a Group + its AABBs + tris. Seven
   pieces, each in BOTH states (the Gathering's rejuvenated / fallen): BLOCK (two courses / chipped, toppled, drifted), STEPS (five .30 risers --
