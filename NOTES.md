@@ -30,6 +30,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2452 -- FOREST TEMPLE pass 3b: ROCK-CUT (his direction via main: the KAILASA temple at Ellora -- carved out of ONE rock, nothing looks built)
+Inspiration, not a copy; none of its real deities or iconography (our guardians and Jinra spirals). Gameplay unchanged.
+- NEW MAPS (`tools/ftemple_textures.py`): `ft_rock` (one carved basalt face, chisel bands, NO joints), `ft_rockfloor` (cut floor, no flagstones),
+  `ft_frieze` (deep-relief guardian procession + spirals, tiles in X), `ft_pillarband` (a pillar's relief face). NORMAL MAPS for every carved map
+  (`tools/ftnormals.py`: luminance as height, broad + fine blur, Sobel, wrapped) -- rock, floor, frieze, pillar band, guardian panel, door.
+- WALLS: no courses; modelled TIERS at the foot (three, the lowest a .34 step with a collider) and the cornice (three); a deep-relief FRIEZE band
+  standing proud between two mouldings; ROCK-CUT PILASTERS each carrying a relief panel.
+- PILLAR (new piece): massive SQUARE -- foot, square shaft with a relief band on all four faces, octagonal middle, fluted pot capital, abacus, a
+  cross BRACKET capital into the ceiling. The hall is now a HYPOSTYLE (eight 1.5 m pillars, three aisles); the room's four columns are full-height
+  1.4 m pillars (clear of every route: the zip passes 1.3 m from one).
+- CEIL (new piece): rock overhead with clean CUT OPENINGS the shafts fall through, carved soffit beams, vines off the cut edges. The hall's at 33
+  (two openings), the room's at 26 (one 12 x 12 over the shaft; the walls rose 22 -> 26, the roots hang from 26). The well stays open to the sky.
+  The ENTRY drop for `ftemple` comes from 7 m now (under the rock).
+- Numbers: the whole interior set **33 draws, 63k tris** (190 boxes); the kit 21 draws / 23k. Shipped unverified.
+
 ## m2450 -- THE GATHERING pass 4: SOUND (CC0) and the replay (GATHERING.md)
 Six cues, all CC0 from opengameart (licence field read on each page, credited in `audio/gathering/CREDITS.txt` like `audio/portal`), trimmed,
 faded, mono, levelled to -9 dBFS peak: **swell** ("Heavenly Loop", a dreamy pad, 8.5 s, 2.5 s fade-in) rises under the drain from 1.0 s; **full**

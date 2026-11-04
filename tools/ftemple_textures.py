@@ -7,6 +7,9 @@ from PIL import Image
 COMMON = ("Seamless tileable game texture, perfectly flat orthographic front view filling the whole square, even diffuse lighting, no perspective, "
           "no cast shadows, no vignette, no border, no text. Stylised hand-painted but detailed, like a high-end fantasy adventure game (Zelda / Ghibli palette), an ANCIENT UNDERGROUND jungle temple.")
 PROMPTS = {
+  'rock': "ROCK-CUT temple surface carved straight out of one living cliff of dark grey-green basalt: NO blocks, NO masonry joints, NO bricks -- one continuous carved face covered in fine parallel CHISEL and pick TOOL MARKS in shallow diagonal bands, weathered, softened edges, faint water streaks and lichen, a little dark moss in hollows. Cool grey-green, mid value (not black).",
+  'rockfloor': "Top-down floor CUT from one living rock of grey-green basalt: NO flagstones, NO joints -- one continuous worn surface with broad shallow chisel-mark bands, polished smoother along a walked path, a few hairline cracks with dark moss, scattered grit and a fallen leaf. Cool grey-green, mid value.",
+  'frieze': "A horizontal DEEP-RELIEF carved frieze band cut straight into grey-green basalt rock (no masonry joints): a continuous procession of stylised stone GUARDIAN warriors with round eyes and spears, alternating with swirling spiral Jinra motifs and leaf scrolls, deeply undercut so the figures stand out strongly, a crisp plain moulding along the top and bottom edges, weathered, moss in the deepest cuts. NOT any real religious deity or iconography. Must tile seamlessly left to right.",
   'wall': "Ancient underground temple wall of large weathered blue-grey and green-grey stone ashlar blocks in neat courses, rounded worn edges, chipped corners, dark damp patches, thick dark green moss and tiny ferns growing in the joints. Cool grey-green palette, mid value (not black).",
   'floor': "Top-down worn ancient temple floor of big irregular slate-grey and green-grey flagstones, cracked, with dark moss and small plants in the gaps, a few fallen leaves, damp. Cool grey-green palette, mid value.",
   'carve': "A horizontal carved stone FRIEZE BAND of ancient grey-green temple stone: a continuous row of deeply carved stylised spirals, interlocking key patterns and small guardian masks with round eyes, running left to right, a plain moulding along the top and bottom edges, moss in the deep cuts. Must tile seamlessly left to right.",
@@ -15,6 +18,9 @@ PROMPTS = {
   'cobble': "Top-down rough dark grey-green river cobbles and broken stone rubble set in damp earth, moss between the stones. Cool grey palette, mid value.",
 }
 SINGLES = {
+  'pillarband': ("Flat front orthographic view of one face of a massive SQUARE rock-cut temple pillar's carved band, filling the ENTIRE image edge to edge: grey-green basalt cut from living rock, "
+                 "deeply carved with a stylised guardian mask with round eyes in the middle, leaf scrolls and spirals round it, a beaded border top and bottom, tool marks, weathered, moss in the cuts. "
+                 "NOT any real religious deity. Even diffuse lighting, no shadows, no text.", "1024x1536"),
   'door': ("Flat front orthographic view of a massive ancient STONE temple door filling the ENTIRE image edge to edge (no wall, no frame, no background): two heavy grey-green stone leaves meeting "
            "in the middle, deeply carved with a large stylised guardian face with round eyes across both leaves, spirals and key patterns, moss in the cuts, a vertical seam down the centre. "
            "Even diffuse lighting, no shadows, no text.", "1024x1536"),
@@ -47,4 +53,4 @@ for n in (sys.argv[1:] or list(PROMPTS) + list(SINGLES)):
     im = im.resize((768, 512)) if n == 'pot' else im.resize((512, 768))
     im.save(f'textures/ft_{n}.webp', quality=86, method=6); print('wrote', n); continue
   im = gen(COMMON + ' ' + PROMPTS[n])
-  (seamX(im) if n == 'carve' else seamless(im)).resize((768, 768) if n in ('cobble',) else (1024, 1024)).save(f'textures/ft_{n}.webp', quality=86, method=6); print('wrote', n)
+  (seamX(im) if n in ('carve', 'frieze') else seamless(im)).resize((768, 768) if n in ('cobble',) else (1024, 1024)).save(f'textures/ft_{n}.webp', quality=86, method=6); print('wrote', n)

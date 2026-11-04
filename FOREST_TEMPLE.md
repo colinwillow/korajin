@@ -8,6 +8,15 @@ is a vast overgrown underground temple: giant tree roots driven through the cut 
 shafts of daylight falling from cracks far overhead, waterfalls pouring out of broken walls into black pools, carved guardians watching from
 the walls -- and, at the bottom, the boss who holds the forest's JINRA STONE. Everything climbs: storeys, rims, galleries and drops (VERTICALITY).
 
+## THE LOOK: ROCK-CUT (his direction, Nov 4 2026 -- the KAILASA temple at Ellora, Cave 16)
+Carved top-down out of ONE living rock: nothing looks built. Inspiration, not a copy, and none of its real deities or sacred iconography -- our own
+guardians and Jinra motifs. So: chambers read as CUT INTO the rock (cave halls with rock ceilings, light falling in through cut openings); massive
+SQUARE carved pillars (a square foot, a deep-relief band, an octagonal middle, a fluted pot capital, a bracket capital into the ceiling) in
+hypostyle rows; multi-storey rock-cut galleries (the rims); deep relief panels and friezes everywhere (normal-mapped from the carving itself, plus
+modelled tiers at the foot and the cornice of every face); tool-marked weathered stone with NO masonry joints (`ft_rock`, `ft_rockfloor`); stairs
+and bridges carved from the same rock. Kailasa's circulation for later chambers: a courtyard cut down into the rock with the shrine left standing
+in it, ringed by multi-storey cloister galleries, joined by a rock bridge.
+
 ## Map of the chambers (top to bottom)
 ```
   [THE DOOR]  the dome temple's door: the CRYSTAL-SHARD RITUAL (the exterior worker's shared system, WORLD_PLAN 7) -> `DOMET.door.enter` -> here
@@ -74,6 +83,7 @@ the walls -- and, at the bottom, the boss who holds the forest's JINRA STONE. Ev
 6. **THE BOSS ARENA + THE JINRA STONE** -- the boss, the stone, the GET moment (standardised once, WORLD_PLAN 2).
 
 ## DONE WHEN
+- [ ] ROCK-CUT: every chamber reads as carved out of one rock, no joints, reliefs everywhere, light from cut openings (pass 3b, pending his look).
 - [ ] The kit: every piece reads as what it is, close (2-4 m) and wide; CRAFT.md checked (roots taper and flow, vines droop, the chain hangs from
       a hook, stairs stand on a mass, nothing floats); numbers reported (pass 1).
 - [ ] Phone-fast: the kit under ~25 draws; each chamber under ~60 draws and ~150k tris in its worst view; no hitch on entry.
