@@ -26,6 +26,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2428 -- a gentle aim assist (one reticle's radius, never a mount / pal / calf / passive beast); the katana's lock mark small at the feet; the bow's mark capped on screen
+His (Nov 4, relayed, after m2427): *"it WAS auto-locking onto my own mammoth -- and a baby mammoth ~45 degrees off where I was aiming."* Then:
+(1) the auto-lock only as a very gentle assist, a target only within about one reticle of the aim, never ridden / tame / friendly / baby animals;
+(2) *"the sword reticle on the locked enemy is so big it covers their body"* -- small, in the ground ring at the feet; (3) *"the bow reticle is
+great far, but up close it gets huge"* -- clamp its on-screen size.
+- WHY m2427 DID NOT FIX IT: `LOCK.on` is 0, so `findLock` (where m2427 put the skip) never runs outside the guard. The bow's lock is `flyAim`
+  (m1782 `bowAny`: with the bow ANY creature locks), and its cone test had `dd > 2.5` on it -- anything within 2.5 m locked from ANY bearing,
+  i.e. the mammoth under him. The calf was a creature inside the 22 deg cone.
+- (1) `ASSIST` (px 30, pull 1): `flyAim` and `mechAim` take a target only if its projected point is within `px` CSS px of the UNASSISTED aim
+  point's (`aimPoint`, projected once per search -- `assistEye`); the 2.5 m bypass is gone (and nothing nearer than 1.5 m). `assistSkip`: the
+  ridden mammoth, `tame`, `pal`, the `CALF` kind, and any creature that is not `aggro` / an archer. The gun's height assist (`aimVert`) uses the
+  same skip. `pull` < 1 pulls only part way (1 = onto the body inside the circle). `stat.took` / `stat.near` (refused for distance on screen).
+  The mounted -20 deg rest (m2427 `ELEVAIM`) stays -- his to judge now the lock is fixed.
+- (2) `KLOCKMK` (at 'FEET', feetK .34): the charge's sun-wheel (`lockMk`) sits small just above the ground ring at the target's feet, its glow
+  sized with it; 'BODY' = the old emblem over him. PART AIM's mark stays on the chosen part, x.4 (was .55).
+- (3) `BARC.maxPx` 54: the bow's landing mark (a 1.25 m world plane, so it grew as 1/distance) is scaled down whenever its on-screen diameter
+  would pass 54 CSS px -- ~1.5x its size at ~30 m. Far it is unchanged.
+- Not verified on a device. Box moved: none.
+
 ## m2427 -- the bow on the mammoth: the ridden body is never a lock, and mounted the aim RESTS 20 deg down (the stick still tilts it down or up)
 His (Nov 4, relayed): *"right stick up draws the bow; the reticle starts up in the air and settles -- on foot fine, but mounted it keeps sinking until it
 points STRAIGHT DOWN at the mammoth. The rest pitch must be relative to the rider's height: mounted, about 20 degrees below horizontal, still free to aim
