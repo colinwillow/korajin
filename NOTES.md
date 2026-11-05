@@ -44,6 +44,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2557 -- THE DAY SKY WAS MISSING ON HIS PHONE: A SILENT CANVAS FAILURE, AND MY MOUNTAINS OVER THE PAINTED ISLANDS (Nov 5 2026)
+
+His report (via parent): in the day he sees nothing up there, no planet, islands, clouds or sun bloom; only the night sky shows.
+- **Cause 1, the whole sky: `try { sky = skyPaint(); } catch (e) { sky = null; }`.** The m2534 day paint draws on a 3072x1536 canvas. iOS Safari
+  caps the PAGE's total canvas memory, and this game paints many canvas textures. When the cap is spent, `getContext('2d')` returns NULL.
+  `g3.imageSmoothingEnabled = ...` then threw, the bare catch made the sky null, and `bouldSky` returned on `!L.sky`. With no background, no
+  PMREM and no message, the night system's stars are the only sky there is. Headless never hits the cap, so every render here showed the sky.
+  **The fix is a LADDER that never ends null:**
+  - A touch device (`pointer: coarse`) paints at 2048x1024 (desktop keeps 3072), then falls to 1536, then to a bare gradient.
+  - A null context throws with its size, and every fallen rung writes `BOULDERS SKY <w> FAILED: <why>` / `BOULDERS SKY AT <w>` to the chip.
+  - The 1536 base canvas is freed (`width = 0`) as soon as it has been drawn in.
+  - Phone profile (390x844 @2, coarse pointer, noon): `sky 2048 2048x1024, bg is sky true`.
+- **Cause 2, the islands: m2549's mountain ring (80-160 m at ~1360 m, up to ~7 deg) buried the painted islands (.05-.1 rad).** They are raised to
+  .15-.27 rad, and one more was added. Most of the island job is now done by the real floaters (m2554).
+- **And the planet sat ~40 deg off the landing's line of sight.** A portrait phone sees only ~24 deg across, so even a working sky looked
+  empty from the landing. `az` -1.12 -> -1.4 and alpha .62 -> .72: it now hangs behind the great pyramid and the floating pyramid in the
+  landing view, in portrait and in landscape.
+- Shots: `gskyP` (phone, the landing looking up the axis) and `gsky`. Must not be re-done: **a bare `catch` that turns a feature into null
+  is a blank with no message on the phone. Fall back, and say so in the chip.**
 ## m2556 -- THE GIANT SAND SCORPION, a mini-boss placeholder (his: "the little scorpions are cool, but I was picturing BIGGER ones too, that actually
    pop out like real enemies")
 - `GSCORP` (SC_GSCORP): the small scorpion's procedural body and tail (`scorpGeo`) at x6.2 (~4 m long) plus five ARMOUR PLATES down its back;
