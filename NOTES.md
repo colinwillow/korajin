@@ -53,6 +53,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2634 -- FOREST TEMPLE build 1 on the sheet: THE HUB -- the well's doors to the chambers, six shard sockets, the shard HUD
+
+**His go (via main):** *"Go ahead and start building the forest temple"* -- room by room on the planning sheet (m2625).
+**Built:** the WELL is the hub. Its ring (20 segments, 18 deg each) opens a doorway per chamber (`FT_HUBDOORS` in the SC_FTEMPLE table): **B**
+(seg 11, WSW, floor), **E** (seg 1, ENE, floor), **F** (seg 18, ESE, floor) -- a carved guardian door under the segment's lintel -- and **D** (seg 4,
+north under the hall) on a new 12 m sill `w_ledgeD` (he drops to it from the 21 m ledge; D needs the whip anyway). A is the existing corridor at
+the foot; C has no hub door (B's crack in, a zip home out). **Six SHARD SOCKETS** on the well floor (a hexagon r 6.5 round the shaft: bronze
+pedestals merged, the gems ONE instanced draw, dim until their shard is in). **`FTEMPLE.prog`** (saved in `ft.prog`): the shards and the small
+key; `ftinShard(ch)` lights a socket, the banner (JINRA SHARD I (1 / 6)), and the **HUD chip** (top centre: six diamonds, SHARDS n/6, the key).
+**A's ROOM CLEARED now pays SHARD I + the SMALL KEY.** The doors are PLACEHOLDERS (the Interactions Kit's pieces only run inside its sandbox --
+their `can` checks `IKIT.on` -- asked its owner for a zone-agnostic switch): tapping a door names it and says what opens it; B with the key says
+the gallery is the next build; **D / E / F are WHIP GATES**: `WHIP.pulls` is new -- a shared list of any zone's pull targets (`{ x, y, z, fn,
+live }`), in the whip's lock and its pull -- so a lash + pull on the root seal tears at it (the chamber beyond is its own build). Only A's door
+opens on A's button now (it opened every door). Draws 41 kit + 2 sockets; tris 65k. `npm run check` + the ftemple boot (now asserts the hub, the
+three gates, a pull, a shard and the HUD). Renders: `docs/forest_temple/hub_doors.png` (E and F, B, D on its sill).
+**Try:** `?w=forge&zone=ftemple` -- down the well: the doors at the foot (tap one), D up on the north wall; clear A (the button, the last fight)
+-> SHARD I + the key on the HUD; with the whip equipped, lash + pull at E's door. **Next:** A's fixes + its chest. Shipped unverified.
+
 ## m2633 -- THE INTERACTIONS KIT pass 5: RUMBLE -- TOOLS > LOOK > HAPTICS (INTERACT.md)
 iPhone Safari has NO Vibration API (`navigator.vibrate` is undefined there). The iOS 18 trick: a hidden `<input type="checkbox" switch>` inside a
 `<label>`, toggled by `label.click()`, makes Safari give a system haptic tick. `ikHaptic(k)` (`HAPT`): Android / anything with `vibrate` ->
@@ -77,7 +95,6 @@ His (relayed): *"while Grumbo SWIMS at the surface, the waterline where his body
 - New uniform `uSwD` (his facing); `L.setSwim(x, z, v, on, dx, dz)`. Wading passes its facing too.
 - `tools/lakestrip.mjs --swim=<m/s>` puts a swimmer capsule beside the boat and renders `swim_close` and `swim_high`. Checked at 1.4 and 2.2 m/s.
   Draws and tris unchanged. Shipped unverified.
-
 ## m2631 -- THE INTERACTIONS KIT pass 4: BUTTON, PRESSURE PLATE, LEVER, DRAWERS, POTS (INTERACT.md)
 Five more kinds, each a row, each lighting its own SIGNAL LAMP (`ikLamp`: a bronze bowl on a stand, or on a wall bracket -- the first strip had
 the wall lamp's bowl floating off the wall, CRAFT; it has an iron arm and drop back to the wall now) so a switch visibly DOES something:

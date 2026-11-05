@@ -39,6 +39,13 @@ six shards light the SEAL on the well floor and open the stair to the boss benea
 | E SUNKEN COURT | 7 + 8 (the court + the terrace test) | acrobatic + battle | SHARD V |
 | F THE SHRINE | 10 + 11 (the climb + the statue gauntlet out) | puzzle + acrobatic + battle | SHARD VI |
 | X THE HOLLOW BANYAN | 12 | boss | the JINRA STONE |
+**BUILD ORDER ON THE SHEET (his go, Nov 5: "start building the forest temple"; one build per room, each finished before the next):**
+1. [x] **THE HUB** (m-hub): the well's doorways (B, E, F at the floor; D on a 12 m sill under the hall), six SHARD SOCKETS on the well floor,
+   the shard counter on the HUD, A's clear pays SHARD I + the SMALL KEY; D / E / F are WHIP GATES (lash + pull), B the key door -- placeholders
+   until each chamber's build and the Interactions Kit's heavy door.
+2. [ ] A: the acrobatic hall's fixes (no ladder: a chimney; the 9 m wall-run gap to 6 m) + a CHEST for the key and the shard (IKIT `chest`).
+3. [ ] B: the root gallery (the key door opens; blocks onto plates, arrow switches, the crack). 4. [ ] C: the root heart (the Thornback) + the
+   nursery teach + the zip home. 5-7. [ ] D, E, F. 8. [ ] the SEAL (six shards), the stair, 9. [ ] THE HOLLOW BANYAN.
 What changed: the CHALICE is gone (the six shards are the boss key; the shrine pays a shard); D, E and F are open in ANY order once he has the
 whip (each behind a whip gate at the well), and each states its WHIP-ONLY rule (C: a knot ceiling over a pit; D: a pull no move replaces;
 E: a 44 m span off 3 m perches; F: 18 m ledges with no wall under them). Plan metres are the sheet's (hub at 0,0), not yet the zone's.
