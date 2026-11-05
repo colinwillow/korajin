@@ -5773,7 +5773,7 @@ const SPLIT = {
   // one. Without it the only upper pose available is `aimPose` -- the SIGHTED hold -- and he
   // would ride the whole city down the barrel.
   up: ['aimPose', 'aimIdle', 'shoot', 'chargeUp', 'chargeGo', 'swap', 'block', 'rocket', 'rocketFire', 'toss', 'hold'],
-  upRaw: ['katana_guard', 'weapon_melee_02'],     /* + the WHIP CAST's clips (VINEWHIP.md) */     // m979: split when the body has it (the samurai), silently skipped when it does not
+  upRaw: ['katana_guard', 'weapon_melee_02', 'weapon_melee_finish'],     /* + the WHIP CAST's clips (VINEWHIP.md) */     // m979: split when the body has it (the samurai), silently skipped when it does not
   // the ones held SQUARE, which get the hips-free `__ups` and ride on `__legh` legs (m194)
   upSq: ['swap', 'rocket', 'rocketFire', 'toss', 'hold'],
   // `air` (m184): a charge held through a jump is the gun pose over the in-air LEGS
@@ -42319,7 +42319,7 @@ function whipZoneStep(dt) { const Z = WHIPZ; if (!Z.on) return; Z.on.t += dt; }
 // hand in a curl, the tip flies an arc to the target in `WHIP.lashT` s, SNAPS straight (a crack, Jin sparks), hangs taut on an anchor, recoils slack
 // when let go. One ribbon draw. The lit target pulses before every flick (the grapple's `ropeHint` idiom).
 // SC_WHIPTUNE:START
-const WHIP = { on: 1, yankPow: .65, yankDmg: 8, yankV: 9, yankUp: 2.5, throwT: 1.5, throwR: 3, throwV: 14, throwUp: 5, throwDmg: 18, crateV: 11, crateDrag: 2.2, zipV: 14, zipA: 46, zipMax: 17, zipEnd: 1.4, zipUp: 7.5, zipOver: 3.2, reach: 14, cone: .75, lashT: .14, pump: 7, relBoost: 1.2, relLift: 5, relFlip: 1, chainK: .9, chainPull: 1.5, strike: 6.5, n: 18, iters: 6, g: 14, slackK: 1.04, recoilT: .28, hop: 6.5, dmg: 14, power: .55, w: .055,
+const WHIP = { on: 1, chargeT: .9, trail: 2.6, yankPow: .65, yankDmg: 8, yankV: 9, yankUp: 2.5, throwT: 1.5, throwR: 3, throwV: 14, throwUp: 5, throwDmg: 18, crateV: 11, crateDrag: 2.2, zipV: 14, zipA: 46, zipMax: 17, zipEnd: 1.4, zipUp: 7.5, zipOver: 3.2, reach: 14, cone: .75, lashT: .14, pump: 7, relBoost: 1.2, relLift: 5, relFlip: 1, chainK: .9, chainPull: 1.5, strike: 6.5, n: 18, iters: 6, g: 14, slackK: 1.04, recoilT: .28, hop: 6.5, dmg: 14, power: .55, w: .055,
   col: 0x4f8a34, budCol: null, anchors: [], stat: { lash: 0, swing: 0, chain: 0, hit: 0 } };
 // SC_WHIPTUNE:END
 function whipScene() {     // the coiled vine at his hand, around weapon_root_right (the katana's frame: armature units, the tip pair at (-14.31, 0, 0))
@@ -42359,8 +42359,9 @@ function whipVineStep(dt) { const V = WHIP.V; if (!V || V.st === 'idle') return;
       if (GOOP.on) { try { if (!V.gt) V.gt = goopFx().trail({ life: .2, w: .04, shed: 5, shedR: .035 }); V.gt.push(_wT.clone()); } catch (e) {} }     /* pass 6: a Jin goop streak behind the tip */
       if (u >= 1) { if (V.gt) { V.gt.end(); V.gt = null; } if (K) { V.st = 'taut'; whipSnap(V.to.x, V.to.y, V.to.z, 0); } else { V.st = 'recoil'; V.t = 0; } } }
   else if (V.st === 'taut') tip = _wT.set(K.R.x, K.R.y, K.R.z);
+  else if (V.st === 'trail') { if (!p.whipChg) { V.st = 'recoil'; V.t = 0; V.len = WHIP.trail; } }     /* held back during the charge: hanging off his hand, free */
   else if (V.st === 'recoil') { if (V.t > WHIP.recoilT) { V.st = 'idle'; V.m.visible = false; V.buds.visible = false; if (V.gt) { V.gt.end(); V.gt = null; } return; } }
-  const len = V.st === 'taut' ? H.distanceTo(tip) * WHIP.slackK : V.st === 'recoil' ? Math.max(.2, V.len * (1 - V.t / WHIP.recoilT)) : H.distanceTo(tip) * 1.08, seg = len / (N - 1);
+  const len = V.st === 'trail' ? WHIP.trail : V.st === 'taut' ? H.distanceTo(tip) * WHIP.slackK : V.st === 'recoil' ? Math.max(.2, V.len * (1 - V.t / WHIP.recoilT)) : H.distanceTo(tip) * 1.08, seg = len / (N - 1);
   const h = Math.min(dt, 1 / 30); for (let i = 1; i < N; i++) { const a = V.P[i], b = V.Q[i], vx = (a.x - b.x) * .985, vy = (a.y - b.y) * .985, vz = (a.z - b.z) * .985; b.copy(a); a.x += vx; a.y += vy - WHIP.g * h * h; a.z += vz; }
   for (let it = 0; it < WHIP.iters; it++) { V.P[0].copy(H); if (tip) V.P[N - 1].copy(tip);
     for (let i = 0; i < N - 1; i++) { const a = V.P[i], b = V.P[i + 1], dx = b.x - a.x, dy = b.y - a.y, dz = b.z - a.z, d = Math.hypot(dx, dy, dz) || 1e-4, k = (d - seg) / d * .5;
@@ -42387,23 +42388,47 @@ const WHIPCAST = { on: 1,
   //   weapon_melee_02  the hand up and BACK to .56 m over the hips, then forward-down at 9.3 m/s at .46 s (.38) -- the overhead SNAP
   //   throw_item       the hand back and low (-.46 m behind), then up and forward at 7.9 m/s at 1.03 s (.50) -- the THROW
   //   (katana_down, the first pick, peaks at only 4.9 m/s: it read as no motion at all in the cast film)
-  lash: { clip: 'weapon_melee_02', a: .2, b: .52, snap: .56, dur: .34 },
+  //   weapon_melee_finish (his OVERHAND ask, after m2588: "like casting a fishing rod"): the hand drawn BACK .53 m behind the hips at shoulder height,
+  //   up and OVER to .63 m, then forward and DOWN at 12.3 m/s (the hardest downward stroke in his whole set, `whipclips --all`) at .57, finishing low
+  //   and forward (.46 m in front, below the hips) -- the cast. The CHARGE holds this clip's own wind-up (`hold` .12 -> .44 of it, deeper the longer).
+  lash: { clip: 'weapon_melee_finish', a: .3, b: .8, snap: .54, dur: .44, hold: [.14, .44] },
   throw: { clip: 'throw_item', a: .3, b: .63, snap: .6, dur: .36 },
   pull: { clip: 'throw_item', a: .58, b: .3, snap: .35, dur: .34, rev: 1 } };     // the throw played BACKWARD: forward-up hauling back to the chest = the yank
 // SC_WHIPCAST:END
-function whipCastGo(kind, fn) { const C = WHIPCAST[kind], p = player; if (!WHIPCAST.on || !C || !rig.actions || !rig.actions[C.clip]) { fn(); return; }
+function whipCastGo(kind, fn, from, dur) { const C = WHIPCAST[kind], p = player; if (!WHIPCAST.on || !C || !rig.actions || !rig.actions[C.clip]) { fn(); return; }
+  if (from != null) { const len = rig.actions[C.clip].getClip().duration, d = dur || C.dur, rate = Math.abs(C.b - from) * len / d;     /* a RELEASE from the held wind-up: from where the charge left the arm, through the snap, to the follow-through */
+    for (const nm of [C.clip, C.clip + UP, C.clip + UPS]) { const A = rig.actions[nm]; if (!A) continue; if (!A.isRunning()) playOnce(nm, rate); A.setEffectiveTimeScale(rate); A.time = from * len; A.paused = false; }
+    p.whipCast = { k: kind, clip: C.clip, t: 0, dur: d, snap: Math.max(.02, (C.a + (C.b - C.a) * C.snap - from) / (C.b - from)) * d, fn, fired: 0 }; return; }
   const a = rig.actions[C.clip], len = a.getClip().duration, span = Math.abs(C.b - C.a) * len, rate = span / C.dur * (C.b < C.a ? -1 : 1);
   for (const nm of [C.clip, C.clip + UP, C.clip + UPS]) { if (!rig.actions[nm]) continue; playOnce(nm, rate); rig.actions[nm].time = C.a * len; }     /* a window with b < a plays BACKWARD (the pull) */
   p.whipCast = { k: kind, clip: C.clip, t: 0, dur: C.dur, snap: C.snap * C.dur, fn, fired: 0 }; }
-function whipCastStep(dt) { const p = player, W = p.whipCast; if (!W) return; W.t += dt;
+function whipCastStep(dt) { const p = player, W = p.whipCast; if (!W || W.hold) return; W.t += dt;
   if (!W.fired && W.t >= W.snap) { W.fired = 1; try { W.fn(); } catch (e) { note('WHIP CAST ' + e.message); } }
   if (W.t >= W.dur || p.knock || p.rope && W.fired && W.k === 'throw' && W.t > W.snap + .08) p.whipCast = null; }
+// THE CHARGE (his, after m2588): HOLD the right pad UP (the trigger gesture, `padUp`, the bow's and the toss's) and he winds the cast back -- the
+// overhand clip held at its own wind-up and drawn deeper the longer he holds (`WHIPCAST.lash.hold`, over `WHIP.chargeT` s), facing where the lens
+// looks, the vine TRAILING behind him off his hand; LET GO and he throws it from wherever the arm got to, through the snap to the low follow-through
+// (a fuller charge throws faster), and the lash reaches farther and hits harder (`whipAct`'s `k`). A quick flick is still the fast snap.
+function whipTrail() { const V = WHIP.V || whipVineMake(), H = whipHand(_wH); if (V.st !== 'idle' && V.st !== 'recoil') return; V.st = 'trail'; V.t = 0; V.len = WHIP.trail; for (let i = 0; i < WHIP.n; i++) { V.P[i].copy(H); V.Q[i].copy(H); V.P[i].y -= i * .05; V.Q[i].y -= i * .05; } V.m.visible = true; }
+function whipChargeStep(dt) { const p = player, C = WHIPCAST.lash;
+  if (!whipOut() || p.rope || p.knock || !rig.actions || !rig.actions[C.clip]) { if (p.whipChg) { p.whipChg = 0; if (p.whipCast && p.whipCast.hold) p.whipCast = null; } p.whipChgT = 0; return; }
+  const held = WHIP.holdSim != null ? WHIP.holdSim > 0 : padUp(!!p.whipChg), len = rig.actions[C.clip].getClip().duration;     /* `holdSim`: the cast film's stand-in for a held pad */
+  if (held && !(p.whipCast && !p.whipCast.hold)) { p.whipChgT = (p.whipChgT || 0) + dt;
+    if (!p.whipChg && p.whipChgT >= WEAP.armT) { p.whipChg = 1; p.whipChgK = 0; for (const nm of [C.clip, C.clip + UP, C.clip + UPS]) { if (!rig.actions[nm]) continue; playOnce(nm, 0); rig.actions[nm].setEffectiveTimeScale(0); }
+      p.whipCast = { k: 'hold', clip: C.clip, hold: 1, t: 0, dur: 1e9, fired: 1, fn: () => {} }; whipTrail(); snd('swoosh', { g: .4, r: .55 }); }
+    if (p.whipChg) { const was = p.whipChgK || 0, k = Math.min(1, (p.whipChgT - WEAP.armT) / WHIP.chargeT); p.whipChgK = k; const e = 1 - (1 - k) * (1 - k), tt = (C.hold[0] + (C.hold[1] - C.hold[0]) * e) * len;
+      for (const nm of [C.clip, C.clip + UP, C.clip + UPS]) if (rig.actions[nm]) rig.actions[nm].time = tt;
+      const h = flickH(0, -1); p.faceH = p.heading = h;
+      if (was < 1 && k >= 1) { const H = whipHand(_wH); spkBurst(H.x, H.y, H.z, 14, { col: JPAL.glowRgb, spread: 2, size: .09, life: .4 }); snd('ready', { g: .3, r: 1.6 }); } } }
+  else if (p.whipChg) { const k = p.whipChgK || 0, e = 1 - (1 - k) * (1 - k), from = C.hold[0] + (C.hold[1] - C.hold[0]) * e, h = flickH(0, -1); p.whipChg = 0; p.whipChgT = 0; p.whipCast = null;
+    p.faceH = p.heading = h; const B = whipBest(h); whipCastGo('lash', () => whipAct(h, B, k), from, C.dur * (1 - .3 * k)); WHIP.stat.charged = (WHIP.stat.charged || 0) + 1; }
+  else p.whipChgT = 0; }
 function whipFlick(dx, dy) { if (!whipOut()) return 0; return whipGo(flickH(dx, dy)); }
-function whipGo(h) { const p = player; if (p.knock) return 1; if (p.whipCast) return 1; const B = whipBest(h); p.faceH = p.heading = h; p.camWant = h;
+function whipGo(h) { const p = player; if (p.knock) return 1; if (p.whipCast || p.whipChg) return 1; const B = whipBest(h); p.faceH = p.heading = h; p.camWant = h;
   if (p.rope && p.rope.whip) return whipAct(h, B);     /* mid-swing a chain is instant (he is hanging: the hang pose owns the body) */
   const kind = B && B.kind === 'anchor' ? 'throw' : whipThrowable(h) ? 'throw' : B && (B.kind === 'body' || B.kind === 'pull') ? 'pull' : 'lash';
   whipCastGo(kind, () => whipAct(h, B)); return 1; }
-function whipAct(h, B) { const p = player, H = whipHand(_wH);
+function whipAct(h, B, k = 0) { const p = player, H = whipHand(_wH), kR = 1 + .8 * k, kD = 1 + 1.2 * k, kP = .5 * k;     /* `k` = the charge (0 = a flick) */
   if (B && B.kind === 'anchor') { const chain = !!(p.rope && p.rope.whip); if (p.rope && !p.rope.whip) return 0;
     if (p.grounded) { p.vel.y = Math.max(p.vel.y, WHIP.hop); p.grounded = false; p.pos.y += .05; }
     const zip = B.o.kind === 'zip', land = zip ? [B.x, groundAt(B.x, B.z, B.y, 4), B.z] : null;     /* a ZIP anchor hangs over a ledge: he lands under it */
@@ -42413,9 +42438,9 @@ function whipAct(h, B) { const p = player, H = whipHand(_wH);
   if (B && B.kind === 'body') { whipLash(B.x, B.y, B.z, B.o, B.d); const d = B.o; setTimeout(() => { if (!d || d.st === 'gone' || !d.root) return; WHIP.stat.hit++; whipSnap(B.x, B.y, B.z, 1); whipYank(d, h); }, WHIP.lashT * 1000); return 1; }     /* the YANK (a shield first) */
   if (B && B.kind === 'pull') { whipLash(B.x, B.y, B.z, B.o, B.d); const q = B.o; setTimeout(() => { whipSnap(q.x, q.y, q.z, 1); whipPull(q, h); }, WHIP.lashT * 1000); return 1; }
   // nothing lit: the LASH STRIKE along the flick -- every body on the line takes it
-  const ex = H.x + Math.sin(h) * WHIP.strike, ez = H.z + Math.cos(h) * WHIP.strike; whipLash(ex, H.y - .2, ez, null, WHIP.strike);
+  const SR = WHIP.strike * kR, ex = H.x + Math.sin(h) * SR, ez = H.z + Math.cos(h) * SR; whipLash(ex, H.y - .2, ez, null, SR);
   setTimeout(() => { let n = 0; for (const d of DUMMIES) { if (!d || !d.root || d.st === 'gone' || d.hp <= 0) continue; const P = d.root.position, ux = P.x - H.x, uz = P.z - H.z, t = ux * Math.sin(h) + uz * Math.cos(h);
-      if (t < 0 || t > WHIP.strike) continue; const off = Math.abs(ux * Math.cos(h) - uz * Math.sin(h)); if (off > .9 || Math.abs(P.y - p.pos.y) > 2) continue; try { dummyBlow(d, h, WHIP.power, WHIP.dmg); n++; } catch (e) {} }
+      if (t < 0 || t > SR) continue; const off = Math.abs(ux * Math.cos(h) - uz * Math.sin(h)); if (off > .9 || Math.abs(P.y - p.pos.y) > 2) continue; try { dummyBlow(d, h, WHIP.power + kP, WHIP.dmg * kD); n++; } catch (e) {} }
     if (n) { WHIP.stat.hit += n; whipSnap(ex, H.y, ez, 1); } }, WHIP.lashT * 1000); return 1; }
 // PASS 5 -- PULLS (VINEWHIP.md): the lash on a BODY yanks it to him (`bodyLaunch` toward him: heavy bodies barely move and STAGGER instead) with a
 // guard-breaking tug (`dummyBlow` at `yankPow`); a SHIELD is ripped off first (it flies to him and drops; `d.sh` gone); a body yanked in the last
@@ -42448,7 +42473,7 @@ function whipPullStep(dt) { const p = player, L = WHIPZ.L;
   for (const pl of L.pulls) if (pl.kind === 'plate') { const on = L.pulls.some(c => c.kind === 'crate' && Math.hypot(c.x - pl.x, c.z - pl.z) < pl.r); if (on && !pl.on) { spkBurst(pl.x, .3, pl.z, 14, { col: JPAL.glowRgb, spread: 2, size: .08, life: .4 }); snd('ready', { g: .3, r: 1.4 }); } pl.on = on; if (on) lit++; }
   if (lit === 3 && !L.yardDone) { L.yardDone = 1; snd('ready', { g: .7 }); toast('THE YARD IS SET', 2.2); }
 }
-function whipStep(dt) { if (!WHIP.on) return; whipCastStep(dt); whipVineStep(dt); whipHint(); whipPullStep(dt); }
+function whipStep(dt) { if (!WHIP.on) return; whipChargeStep(dt); whipCastStep(dt); whipVineStep(dt); whipHint(); whipPullStep(dt); }
 // m2329: GOOP FX ON THE REAL MOVES (his: "I haven't seen those in game -- I imagine the attacks glowing"). TOOLS > KATANA > GOOP FX, DEFAULT ON;
 // OFF = the old FX exactly (the A/B). One `FX` (fxLibMake) for the whole game, stepped every frame by `goopStep` (and doing NOTHING when empty).
 // Dressed: the katana's TRAIL (a goop sheet from 30% up the blade to the tip, sub-stepped, shedding blobs, sparks and arcs by blade speed --
