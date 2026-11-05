@@ -44,6 +44,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2542 -- DESERT REGION STEP 2c: THE KIT INVENTORY + THE ZONE PIECES IT LACKED
+INVENTORY (all on the kit row, at `?at=kit`, restored + ruined): floaters (3 species x 2 shapes + scree), cacti / succulents / orbs, leaves,
+sand (deformation), dust, the painted sky; blocks, steps, column, ziggurat, obelisk, arch, panel; pond, palm, reeds, lily; urn x2, brazier,
+banner, bones, relic; mesa, stair; the giants (pyramid smooth/stepped, the gold great pyramid -- the kit-row miniature IS the same design
+and stays, inverted floating pyramid, trilithon, tomb, colossus slot, giant obelisk, split obelisk, pier + lintel, split mini-pyramid,
+standing stone); dressing (causeway, rubble, plants, tiny figures). Every one textured (triplanar maps, vertex-painted flora).
+NEW for the zones (DESERT_REGION.md), a fourth kit row (z 112; the platform's ruin at z 140; the range at 1:4):
+- `dune` -- a crested wave of sand whose CREST SNAKES along its length, gentle windward, steep lee, walkable (new `duneS` sand material).
+- `canyon` -- a canyon wall section: deep noise relief, strata bands, a talus foot, a broken top, a walkable LEDGE a third up. (First render
+  read as a BOX -> deeper relief, the foot and the broken top.)
+- `hill` -- a lumpy dome of strata rock leaning one way (a gentle side to climb), sand pooled at its foot.
+- `range` -- a mountain-range segment for the edge: ridged-noise peaks, low-poly cliff stone.
+- `platform` -- the sky ascent's block: a floating slab with a grabbable LIP, a tall WALL-RUN face (carved), a rock root, a crystal under it.
+The kit row draws only when he is at it (m2538), so none of this costs the field anything. Landing 253k / 64 unchanged.
+check + boulders boot pass. Shipped unverified. NEXT: step 3 -- sand everywhere, crested snaking dunes, rocks, valleys, hills.
+
 ## m2541 -- DESERT REGION STEP 2b: A CLIMBING ROUTE UP THE GREAT PYRAMID
 - A GRAND STAIR up the front (the axis side) at ~33 deg (`stairA` .58 rad, `stairW` 16 object m) from the sand to the first plate layer:
   stepped stone (1 object m risers = 2 m in the field), a solid fill under it, mech balustrades, and an invisible smooth RAMP along the
