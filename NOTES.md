@@ -59,12 +59,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2680 -- FOREST TEMPLE build 3 (B, the ROOT GALLERY): the key door opens; the reliefs' eyes give the order of three arrow switches; a chest pays SHARD II
+
+**The door:** with the SMALL KEY (A's chest), tapping the B door at the well's foot spends the key (`ft.prog.bOpen`, saved) and swings the guardian
+door open (`ftinDoorOpen`: the leaves turn, the collider goes; it stays open on a reload). **The room** (pre-whip PUZZLE, the sheet's B): its own
+FRAME (`FTB`) on the B door's radial -- the door moved one ring segment west (seg 10, 189 deg) because on seg 11 B's near corner cut 2 m into A's
+south wall (computed; the plan render confirms the clearance) -- a 6.6 m corridor, then a 21 x 28 m gallery, 10 m tall: four pillars, three
+GUARDIAN RELIEFS on the far wall, braziers by a .3 m dais, lanterns, moss, pots, roots down the walls, a light shaft on a rosette.
+**The puzzle (`FT_B`, `ftinB`):** the reliefs' EYES (one instanced draw) light one by one in an ORDER (a beat each, then a rest, looping); three
+ARROW SWITCHES high on the walls (left, right, over the middle relief) must be shot in that order -- a right one stays lit, a WRONG one puts them
+all out (a thud, "watch the reliefs' eyes"); all three -> "THE RELIEFS OPEN THEIR EYES" and the dais CHEST (the Interactions Kit's) wakes ->
+**SHARD II**. A wave (the forest set's) wakes when he steps in (`zones.B_in` -- zones are generic now: every zone row wakes its own foes; A's
+ROOM CLEARED counts only A's foes). Bounds and the triangle collider's rect grew west (x -48 / -50). Kit 46 draws / 79k tris (was 41 / 65k).
+Boot: the scenario now shoots a WRONG switch (it must reset) and then the order (it must solve). Renders: `docs/forest_temple/B_root_gallery.png`.
+**Still open in B:** the floor CRACK down to C (comes with C), push-blocks (no push mechanic yet), the room's own roster.
+**Try:** clear A -> its chest (the key) -> the B door at the well's foot (west) -> the gallery -> watch the eyes -> the bow at the switches in
+that order -> the chest. Shipped unverified.
+
 ## m2679 -- the entrance waits for its ground to EXIST (the Gathering dropped him 12 m through an unbuilt deck) (Nov 5 2026)
 `npm run entryprobe` (m2674): gathering BAD -- the row lands him on the deck at y 12 (its builder writes it), but the deck's collider was not there yet
 when the entrance fired (the zone says ready first), so the landing search found no ground and he fell through to y 0. A row with a height now waits
 (in `entryWatch`) until `groundAt` finds that ground within .6 m (15 s cap). Probe so far: interact, arena, ftemple, ftemple room, ftkit ok; snow a
 harness timeout; dometemple's entrance never started headless (investigating). Shipped unverified.
-
 ## m2678 -- THE TEMPLE LIFT: the forest temple's outside <-> inside is ONE two-way seam (a lift), not a door that loads
 
 **His (via main):** at the first door, after ~5 s, a LOADING SCREEN into a separate zone; ONE-WAY; the door's inside was built twice, in two
