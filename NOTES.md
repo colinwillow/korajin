@@ -46,6 +46,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2596 -- UNDERWATER ART B: the flora is the hero -- glow halos (fake bloom), rising spores, a carpet of lights on the floor (Nov 5 2026)
+His: *"beautiful glowing plants and animals, really majestic"*; the orchestrator's list: halos round every glow source (no post chain), spores
+drifting off the plants, a carpet of tiny lights. `UWGLOW` (SC_UWGLOW markers), `uwGlowMake`, three ADDITIVE point draws, motion on the GPU:
+- **HALOS** (~1,000): a soft glow sprite at the part of every plant that glows (the kelp's tip, the bulb, the lantern, the crystal), its hue,
+  sized by kind (.8-1.9 m); pods PULSE with their bulbs, lanterns swell as they light (`aL`, the 56 lanterns copied from the flora each frame).
+  Faded beyond 25-60 m and within 1-5 m of the lens (no white-out up close), capped.
+- **SPORES** (520): specks rising 3-9 m off the plants, wobbling, fading as they climb, the plant's hue.
+- **THE FLOOR'S LIGHTS** (~1,600): tiny twinkling lights over the bowl's bed deeper than 8 m, all five hues.
+- Kelp 170 -> 230 (curtains). Cost: +3 draws (points, additive, no depth write), ~3,100 points, ~0 CPU (56 attribute writes).
+- Render (images/feedback/m2586/uw_artB_render.jpg, portrait, 5 / 20 / 40 m): at 20 m the shrine floor now blooms with colour under him.
+  Next: ART C (majesty: leviathan, murmurations, jelly fields, light columns). Shipped unverified.
+
 ## m2595 -- SMART CAMERA: thin things are never dithered, and under water the camera MOVES instead (his screenshots, images/feedback/m2586/: under The Lake a torii post in front of Grumbo dithered him into a pixelated block)
 - **THIN (`smThin`, `SCAM.thinW` 1.2 m):** a hit that would fade (or be the last resort) is first tested with the same segment shifted .6 m to
   either side, square to the view; if one side misses that mesh it is narrower than 1.2 m across -- a post, a column, a gate leg -- and is
