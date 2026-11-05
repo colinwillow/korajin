@@ -47,6 +47,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2517 -- THE GIANTS ON A PHONE BUDGET (perf check of m2505-m2515)
+MEASURED in the real page (renderer.info, three cameras): the giants were 750,942 triangles and the landing view drew 632k triangles in
+106 calls (the field alone: 249k / 36). Ivy was 620k of it -- moss mats at icosahedron detail 2 (320 tris each), two leaf cards per vine
+point, 4-sided stems, 7 curtains per face per lip.
+- IVY lighter: mats detail 1, ONE larger leaf card per point, 3-sided stems, a point every 2.4 m (was 1.6), `per` 7 -> 4, bushes 70 -> 44,
+  fewer curtains on the step pyramids and obelisk plinths. Giants 750k -> 300k.
+- IVY LOD: each piece's ivy mesh draws only within `DPLACE.far.ivy` 230 m of the camera (checked 4x a second) -- except the GREAT pyramid's,
+  which keeps its green from the landing (the hero, 27k).
+- ONE DRAW PER MATERIAL: every static giant mesh (and the mesas and the dressing) is baked to world space and merged by material at build
+  (`giants:batch:*`; `BOULD.st.giantBatch`). Kept apart: what spins/bobs, the statue-figure slots (his models replace them), the ivy.
+- Lighter boxes: the machine ribs, the fitted plinth blocks and the ribs round the floaters at one segment (12 tris, not 48); the
+  dressing's sand mounds 10x4.
+- RESULT: landing 632k / 106 -> 383k / 53 (field 249k / 36 of that); at the pyramid 435k / 56 -> 320k / 41; down the avenue 560k / 94 ->
+  322k / 45. Looked at the play camera and the pyramid detail after: same look. FPS on a phone cannot be measured here (headless
+  SwiftShader runs ~1 fps) -- his phone is the meter. check + boulders boot pass. Shipped unverified.
+
 ## m2516 -- THE PHASE SHIFT IN A PORTRAIT FRAME (his, on m2508, on a vertical phone: "sideways I teleport OFF the screen -- blind teleportation";
    forward is fine). Sideways blinks are now a DODGE sized by the live frame, and the camera DOLLIES OUT so both portals stay on screen.
 - `phaseFrame(h)`, at the flick: at the jump the look point is half way between the portals (`lead` .5), so each sits half the blink's
