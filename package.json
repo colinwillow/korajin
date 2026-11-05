@@ -43,6 +43,7 @@
     "dvperf": "node tools/dvperf.mjs",
     "hitch": "node tools/hitch.mjs",
     "snowtris": "node tools/snowtris.mjs",
+    "entryhitch": "node tools/entryhitch.mjs",
     "foreststrip": "node tools/foreststrip.mjs",
     "ftstrip": "node tools/ftstrip.mjs",
     "ftplan": "node tools/ftplan.mjs",

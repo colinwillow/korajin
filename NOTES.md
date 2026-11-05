@@ -53,6 +53,33 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2624 -- LOADING STUTTERS: the card is the curtain, and the Lake's water patch ran AFTER it (his: "when you cross from above water to underwater it loads everything and stutters and freezes... it goes to the level, he starts coming in, then it stops and freezes")
+- **A NEW TOOL: `npm run entryhitch [query ...]`** -- boots WITH the entrance and logs every frame from boot: ms, program LINKS (and ms
+  waiting on link status), texture uploads, the entrance state; `DIVE=<js>` runs a script after `SECS` (a dive), `PROBE=<js>` prints a result,
+  `IDX=<file>` serves an older build. **Read the LINK column, not the fps** -- swiftshader paces every draw slowly, and game-time timers
+  (the Lake's `t > 2`) barely tick inside a window, so a "before" run can under-count.
+- **WHAT FROZE, MEASURED:**
+      the Lake's water patch   `uwPatch` (the underwater term on EVERY material) first ran 2 s after the Lake turned on -- after the card:
+                               one frame of 20.5 s with **50 program links**, during the portal (`entryhitch 'w=forge&zone=lake&entry=1'`)
+      the portal               its materials are made in `entryGo`, hidden until it opens: **4 links** the frame it opens, every entrance
+      his clip-plane variant   `entryClipArm` marks every material on his rig needsUpdate while he is hidden -- they compile the frame he
+                               comes OUT of the portal ("he starts coming in, then it stops")
+      the first dive           the life, flora, glow, majestic set, fauna, fx, surface-from-below and halo were all BUILT on the first frame
+                               the lens went under or the swim began, then compiled as each first showed
+      link completion          three's `compile()` only ISSUES a link; the first status query (first draw) WAITS for it -- a warm that does
+                               not query moves the stall to the first frame instead of removing it (measured: 1.9 s at the dive)
+- **FIXED:** `uwPrebuild` makes the whole underwater set and runs `uwPatch` at the Lake's load (the `lake` ENTRY row's `warm` hook, and a
+  fallback in `uwStep` at load). `sceneWarm` = everything hidden shown, one `renderer.compile(scene)`, `getUniforms()` on every program (forces
+  the link to finish NOW), and `initTexture` for every texture not yet on the GPU. It runs (a) under the CARD for every zone: `entryRevealAfter`
+  now holds the card until the zone's `ready()` is true (cap 20 s), then runs the row's `warm` and `sceneWarm` (`ZWARM` remembers), entrance or
+  not; (b) in `entryGo` (`entryWarm`), still under the card, for what the entrance itself just made -- the portal and his clip variant.
+  `ENTRY.warmMs` / `warmN` / `warmTex` say what the last one did.
+- **BEFORE -> AFTER (the Lake, headless):** entrance on: worst frame 20,517 ms (50 links, mid-portal) -> **290 ms, under the card**; links
+  after the card 56 -> 4 (under the card). Entrance off + a dive: links after the card -> 5, worst frame 318 ms (under the card), no long
+  frame at the dive; the zone warm itself is 94 programs, ~4.6 s here, all behind the card.
+- **STILL OPEN:** the same A/B over snow / garden / arena / forge / boulders / dome temple (running); things made on FIRST USE that are not
+  in the scene at the warm (a weapon model loaded on its first swap, an FX pool made on its first burst) still compile on that frame --
+  `entryhitch` with `DIVE` running `mel.swapGo(i)` measures each.
 ## m2623 -- THE INTERACTIONS KIT pass 1: the kit, the sandbox room, and the CHEST (INTERACT.md; KORAJIN > Interactions (sandbox), `?w=forge&zone=interact`)
 His new sandbox (through the parent session): "the icing on the cake" -- the polished pieces every temple uses, perfected in a sandbox, then placed
 as ROWS. INTERACT.md first (the row shape, the shared walk-up / lens / pose / rumble, each piece's beats, DONE WHEN). Box 1 moves; 2-5 open.
