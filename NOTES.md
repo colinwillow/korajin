@@ -54,6 +54,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2655 -- THE CAPE COLLIDERS OFF BY DEFAULT (measured worse in motion); the sheath, quiver and buckle 4 cm further out instead (Nov 5 2026)
+His (on m2647, his phone): *"the cape is now stuck THROUGH the sheath and quiver; it's not really working very well."*
+- MEASURED IN MOTION, not stills (headless, the shipped page: 1 s idle, 1.5 s run, 1 s idle; every 4th frame; the count of Grumbo's CAPE vertices
+  -- the 285 weighted > .5 to `cape_*` bones, skinned -- inside the sheath's / quiver's real volume):
+      m2647 colliders ON    idle 19-25   whole sequence mean 14.5, max 44
+      colliders OFF         idle 3-4     mean 10.8, max 62
+  ON is worse at rest: the cape is 12 bone segments with a skinned sheet between them, so pushing the joint TIPS out bends the sheet so that the
+  cloth BETWEEN chains folds into the gear (and the bend limit pulls the tips back). A joint-tip collider cannot make this cloth lie over a
+  rigid object; it would need a real cloth sim on the cape's vertices.
+- SO, HIS OPTION 2 -- the gear outside the cape: `TCOL.on` 0 (the switch stays: `mel.TCOL.on = 1`), and the back group (mouth z), the quiver and the
+  buckle 4 cm further out. Swept 0 / 2 / 4 / 6 cm out: idle 3 / 1 / 0 / 0, mean 10.8 / 10.2 / 9.4 / 10.6 -> 4 cm: at rest NO cape vertex inside
+  the gear; running, the swinging cape still passes through it at times (mean 9 vertices of 285), which only a vertex cloth sim fixes.
 ## m2654 -- THE LAKE: THE SWIMMER'S WATER DIPS, NEVER BULGES OVER HIM (his m2648 screenshot)
 His (relayed, `images/feedback/m2648/swim_bulge.png`): the water bulged UP round Grumbo and covered him, reading as his head under water. He pictured the
 surface dipping DOWN where his body sits, with rings travelling outward and a modest push wave.
