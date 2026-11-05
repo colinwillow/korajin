@@ -53,6 +53,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2642 -- THE INTERACTIONS KIT design pass 4: the BUTTON and the PRESSURE PLATE (INTERACT.md)
+- THE BUTTON: a carved stone PLAQUE (bevelled, a GLYPH BORDER of raised strokes, four bronze rivets) with a bronze BEZEL; a domed bronze PLUNGER
+  carrying Korajin's NESTED DIAMONDS (dark, lit when it goes home); a bronze LATCH that, once it is in, SLIDES across over the plunger's rim to hold
+  it (a clink, a tick) into its keeper. Draws: plaque 1, plunger 1, inlay 1, latch 1. RESET springs it all back.
+- THE PRESSURE PLATE: a carved stone SLAB with a glyph border and the nested diamonds inlaid (lit while it is down), in a sunk bronze FRAME with
+  four corner studs; it sinks with a puff of dust. Draws: frame 1, slab 1, inlay 1.
+- Shared ornament for the passes: `ikGlyphs(w, h, z, band, colour, seed)` (a glyph border of raised strokes) and `ikDiamonds(r, z, colour, depth)`
+  (Korajin's crest as thin bars) -- the game's own motifs, never a borrowed symbol.
+- `npm run ikstrip --id=none` films without a tap (a plate, a pot: `--pre` does the deed).
+Strips (sent): the button close -- reach, press, the latch across, the crest lit; the plate before (dark crest) and under his feet (lit).
+
 ## m2641 -- THE INTERACTIONS KIT design pass 3: the WHEEL CRANK as a machine (INTERACT.md)
 His ask: "the WHEEL CRANK (spokes, hub, rope drum, ratchet pawl)". The crank kind's build is new (its sequence unchanged):
 - THE FRAME (one draw): a stone base, a carved post with three bronze bands, two bronze CHEEK plates on a sole carrying the axle, axle caps.

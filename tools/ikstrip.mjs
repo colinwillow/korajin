@@ -39,7 +39,7 @@ const shoot = async (lab, wideCam) => page.evaluate(([lab, wideCam]) => { const 
   return { url, lab: lab + ' · ' + (R ? R.st + '/' + (R.b || '-') : 'idle') + ' · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k' }; }, [lab, wideCam]);
 const wideCam = JSON.parse(arg('cam', '[-6.2,2.6,-3.6,-9,1.1,-7.4]'));
 tiles.push(await shoot('before', null)); if (wide) tiles.push(await shoot('before wide', wideCam));
-await page.evaluate(id => { mel.IKIT.t0 = mel.IKIT.on.t; mel.ikitGo(mel.IKIT.rows.find(r => r.id === id)); }, go);
+await page.evaluate(id => { mel.IKIT.t0 = mel.IKIT.on.t; if (id !== 'none') mel.ikitGo(mel.IKIT.rows.find(r => r.id === id)); }, go);     /* --id=none: no tap (a plate, a pot: --pre does the deed) */
 for (const t of ats) {
   try { await page.waitForFunction(t => mel.IKIT.on.t - mel.IKIT.t0 >= t, t, { timeout: 120000, polling: 16 }); } catch (e) { console.log('timeout at', t); }
   tiles.push(await shoot('t ' + t, null)); if (wide) tiles.push(await shoot('t ' + t + ' wide', wideCam));

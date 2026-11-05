@@ -53,8 +53,8 @@ the night glow, and 1-3 draws.
 | THE TREASURE CHEST | north bay 2 | [x] m2623 | [x] m2640: carved lid, bronze corners and bands, a clasp that unlatches, a gem lock, lining and glow, working hinges | [ ] |
 | THE WHEEL CRANK (+ gate) | north bay 3 | [x] m2630 | [x] m2641: spokes, hub, rope drum, a ratchet pawl that clicks | [ ] |
 | THE DRAWERS | north bay 4 | [x] m2631 | [ ] | [ ] |
-| THE BUTTON | south bay 1 | [x] m2631 | [ ] | [ ] |
-| THE PRESSURE PLATE | south bay 2 | [x] m2631 | [ ] | [ ] |
+| THE BUTTON | south bay 1 | [x] m2631 | [x] m2642: carved plaque, bezel, domed plunger with the crest, a sliding latch | [ ] |
+| THE PRESSURE PLATE | south bay 2 | [x] m2631 | [x] m2642: carved slab, inlaid crest, bronze frame, dust | [ ] |
 | THE LEVER | south bay 3 | [x] m2631 | [ ] a weighted handle, a gear quadrant | [ ] |
 | THE POTS | south bay 4 | [x] m2631 | [ ] | [ ] |
 
