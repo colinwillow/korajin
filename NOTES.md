@@ -44,6 +44,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2539 -- DESERT REGION STEP 1: THE PLAN (`DESERT_REGION.md` + a top-down map)
+His: plan the whole area first, then build and refine one piece at a time. `DESERT_REGION.md`: the organising plan (the landing at the
+centre, the processional axis north to the great pyramid = THE TEMPLE, eight sectors on the mandala's spokes from r 150 to r 1150, a
+dune-crest RING ROUTE at r 300, mountains r 1150-1500); the ZONES with extent, HEIGHT decision, contents and a per-zone perf budget
+(pyramid plaza/temple N; SKY ASCENT NE rising +20 -> +140 in six stages -- the first zone to build; dune seas E/W with crests +6..+15 that
+snake; red valleys & hills SE to -15/+25; canyons SW to -20; tomb mesas W +25..+30; south dunes on the back axis); the routes; the kit and
+what each zone still needs (dune pieces, canyon walls, valley rocks/hills, mountains, ascent platforms, COLLIDERS for every big piece,
+pyramids first; the small kit-row pyramid kept beside the great one); the order of work and the budget.
+Maps: `images/plan/desert_region_plan.png` (the plan, drawn) and `images/plan/desert_region_now_top.jpg` (what is built, rendered from
+above). ROADMAP SANDBOX points at it. No code change. check passes. Shipped.
+
 ## m2538 -- DESERT REGION STEP 0: PERFORMANCE FIRST (his phone: 20-22 fps here, "chugging")
 MEASURED in the real page (renderer.info; hiding each group in turn to see what it costs): landing 587k tris / 83 draws, the forecourt
 513k / 62, the wide 592k / 89. The worst offenders were things nobody could see:
