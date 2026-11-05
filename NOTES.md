@@ -44,6 +44,32 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2529 -- UNDERWATER pass 1: THE DIVE (UNDERWATER.md; his Nov 5, WORLD_PLAN 14) (Nov 5 2026)
+His: *"We're going to need the ability to swim down, because there's going to be a water temple underwater... Pressing DOWN on the right stick
+makes you dive. We're in GOD mode so you have infinite air, but eventually you'll have limited air..."* New sandbox doc UNDERWATER.md (DONE WHEN).
+Code: `UWATER` (SC_UWATER markers) + the `uw*` block (UWLIB markers) after the Lake's code; LAKELIB / the water material untouched (the surface
+worker was told: session_01PgB7RKuewYScTcpDSuJNMk).
+- **The dive:** in the Lake's swim, the RIGHT stick held DOWN swims him down (2.7 m/s), held UP or a still hold swims up (2.5), let go and he floats
+  up (.55) and breaks the surface himself (`uwDive`: `S.d` depth under the surface line, `S.vy`). Keys: C down, Space up. The left stick swims him
+  at any depth. The bed is a floor (.7 m clear), the stacks still push him off, and he can swim UNDER the boat (not up through it). The wave bob
+  fades with depth. Standing/wading and CLIMB ABOARD only at the surface. `stepKit` stands the guard down in the water (the right stick is the dive).
+- **Pose:** the prone `swim` clip pitched along his travel about the hips (`uwPose`) -- head first down a dive, head up on the way up; the swim clip
+  plays on vertical strokes too. (Pass 4 refits the animation.)
+- **Air:** TOOLS > LOOK > AIR: INFINITE (GOD) by default; LIMITED = 45 s, refills at the surface (12 s/s), at zero he is pushed up and cannot dive
+  until 30 % back. LIMITED also stops him at 9 m unless `uwDeepOk()` -- the hook for the deep-dive cloak (`UWATER.air.deep.have`). Meter at the top
+  centre while under: AIR (inf / seconds) and the depth in metres.
+- **Camera:** never on the waterline (`uwCamClamp`): deeper than .8 m it stays .4 under the surface, otherwise .4 above.
+- **The look, first cut:** `uwPatch` appends ONE call to every fragment shader in the scene (ShaderMaterials by source, built-ins via
+  onBeforeCompile + their own cache key), in LINEAR light before tone mapping, off unless the lens is under (`uUw`). It rebuilds the world position
+  from gl_FragCoord (no varying needed from anyone's shader): per-channel absorption by path (red first), scatter toward `uwFogCol` (the water at
+  the lens's depth, brighter looking up, darker down -- turquoise -> deep blue -> black by depth). The surface from below (`uwSurfMake`, a polar
+  disc on the same `L.wv` waves): Snell's window -- refracted rays leave into a bright sky with the sun in it, outside the critical angle it
+  mirrors the deep; its far edge uses the same fog colour, so there is no horizon line (two renders had one: the patch first ran AFTER the sRGB
+  encode, and built-ins were skipped because their text has only #includes -- both fixed and measured).
+- Headless (portrait 390x844, SwiftShader): dive from the surface to d 7.1 m over a -10.8 m bed with C held; the lens went under at d ~2;
+  81 materials patched. Close + play-camera renders looked at: fogged bed, Snell's window bright and wavy, the hull from below. Not done: caustics,
+  shafts, motes, bubbles (pass 2), life (pass 3), audio/anim (pass 4). Box moved: dive / camera / air (not ticked: needs his phone). Shipped unverified.
+
 ## m2528 -- THE LAKE, DETAIL PASS 6: EVERYTHING FLAT IS PAINTED (WATER.md; closes his Nov 5 series)
 His Nov 5 series, item 6: *"anything that's not painted, let's paint it."*
 - `lkPaint` (m2526) now covers every flat-coloured lake material:
