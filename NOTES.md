@@ -47,6 +47,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## Loading-screen sun-wheel: all 16 rays (his: "it's almost symmetrical, but one side is missing a spoke")
 The boot card's SVG sun-wheel and the katana lock mark (`lockMkTex`) both skipped rays k=5 and k=12 on purpose ("worn"). He doesn't like it: both now draw all 16 rays (the long left ray with its cross-bar, the short lower-right ray). The ring's dash gaps are unchanged.
 
+## m2553 -- the mel.* handles for m2382 / m2400 / m2552 were never on `mel` (a replace that silently matched nothing) (Nov 5 2026)
+My edits that added `INTERACT, interactAdd, ...`, `HRING, SPEEDFX` and `OPT, optApply, PMENU, pmenuOpen` to `window.mel` keyed on the object's first
+entries, which another worker had changed -- `str.replace` found nothing and said nothing. The game code was never affected (zones call
+`interactAdd` in-module); only the console / harness handles were missing. Caught by the m2552 menu render (`mel.pmenuOpen is not a function`).
+Now inserted beside `LIFE, lifeCheckpoint` with an assert. **Edit with an assert on the match count, always.**
+
 ## m2552 -- MENU is a player PAUSE MENU (Resume / Options / Quit to title), not the old Zap 'n Clancy chapter list (Nov 5 2026)
 Via main: *"The top-left MENU button still opens the OLD chapter list. Replace it with a real PLAYER PAUSE MENU: RESUME; OPTIONS (master / music /
 sound volume, camera sensitivity, LEFT-HANDED swap of the sticks, invert camera Y), saved and applied live; QUIT TO TITLE cleanly; it pauses the game."*
