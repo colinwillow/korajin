@@ -44,6 +44,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2500 -- the entrance portal opens LEVEL (Nov 5 2026)
+His (m2491 screenshot, images/feedback/m2491/portal_slanted.jpg): *"the portal is SLANTED when it first starts opening; once it's fully open it's
+correct -- level from the very first frame, parallel to the ground, even side to side."* Not a rotation that interpolates: the opening is a RIP that
+runs first (`uLen`, the plane's long local axis) and then widens (`uOpen`). Laid flat, that long axis pointed AWAY from the play camera, so the young
+seam projected as a near-vertical slash -- and the `tilt` .2 spin about its normal leaned it further; the full oval reads level whatever its spin.
+In flat mode the tear is now turned a quarter (`rotation.z` = PI/2, no spin) so the seam runs ACROSS the view, side to side, from the first frame.
+Every ENTRY zone uses this one builder (the face is yawed to the landing's heading, which the play camera shares), so it holds in all of them.
+Shipped unverified.
 ## m2499 -- FLOATING BOULDERS: RIDEABLE FLOATERS + A SPIRAL COURSE TO THE ARCH (his traversal idea, Nov 5 2026)
 His (via parent): medium and large floaters you can STAND ON (a moving platform that carries him); landing pushes the stone down (more for
 medium) and it springs back; it tilts toward where he stands; no friction in the air, so his landing speed carries it sideways and it
