@@ -47,6 +47,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2518 -- REFERENCE PASS A: THE GREAT PYRAMID AFTER HIS IMAGE (images/reference/pyramid_ref_01.jpg)
+His reference, read by the planner: a battered step-pyramid BASE with dark machine pillars and vertical tech channels, heavy ivy; above it
+LAYERS OF CHUNKY STONE PLATES that overhang like stacked lids; amber glowing writing under the overhangs, a hot orange-white core in the
+deepest gap; the upper layers and the capstone FLOAT apart with air between; green energy cracks down the faces, green orbs at the layer
+corners, shards orbiting.
+- `apyramid` rebuilt from a table (`K.giant.apyr`: `base` three battered tiers, `L` four plate layers [wB, wT, yb, rise, plates/side,
+  thickness], `cap`, `shards`). Each plate is a thick slab laid on the slope (2-4 per side, offsets and gaps, a hair of tilt); a hidden
+  core fills each layer; layers 3-4 and the capstone are their own BREATHING groups with real air under them and a green glow beneath.
+- AMBER: new `glyphA` (dark band, amber glow) carries a procedural RUNE script (`runes` [1.3, 2.0] object m: glyph cells in rows, hashed
+  stems / bars / lintels / rings, spaces between words) -- the glyph texture's strokes were too fine to read at 100 m (first render: a dark
+  band); `base` lets the band glow a little everywhere. The hot core is `coreA` (orange), on each face of the deepest band.
+- Plates use a new `slab` stone WITHOUT the fitted-block coursing (with it they read as small masonry steps, not monoliths).
+- A pitfall paid for here: replacing a span between two markers deleted `gobelisk` (it had been inserted between them) -- every giant
+  vanished (`P[name] is not a function`); restored from HEAD. Splice by the function's own start, not a later neighbour's comment.
+- Renders: play camera + a low angle like the reference + the band close. check + boulders boot pass. Shipped unverified.
+- NEXT (reference passes): split floating obelisks held by green energy joints, floating slabs/lintels bridged off pillars with ivy,
+  split floating mini-pyramids, ruined standing stones, alien plants with glowing spots, tiny figures for scale.
+
 ## m2517 -- THE GIANTS ON A PHONE BUDGET (perf check of m2505-m2515)
 MEASURED in the real page (renderer.info, three cameras): the giants were 750,942 triangles and the landing view drew 632k triangles in
 106 calls (the field alone: 249k / 36). Ivy was 620k of it -- moss mats at icosahedron detail 2 (320 tris each), two leaf cards per vine
