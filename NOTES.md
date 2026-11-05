@@ -44,6 +44,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2564 -- A FLAT SITE FOR THE SUNWELL VILLAGE (the village worker's ask) (Nov 5 2026)
+
+- `DPLACE.flat: [{ id: 'village', at: [290, 0], r: 55 }]` (offsets from F.c). The glue pushes each entry into BOULDLIB's `keep` list, so
+  the region dunes and the valleys fade to nothing inside r and are back by 1.6 r, the rule every giant already sits on.
+- **The field's own small-dune term in `sandH` ignored `keep`.** A site asked flat still carried 2.6 m of dune at r 50. It now takes the same fade
+  (it only checks outside half of `dIn`, so the field's heart is untouched).
+- Measured (`gflat`, sandH along +x / +z from the centre): r 0-60 m reads 0.1-0.4 m (ripple only); r 85 reads 0.2 / 2.05; r 100 reads 0.4 / 4.0.
+  Before, it read up to 2.6 m inside r 50.
+- Ownership: the village worker owns `DPLACE.sky.village` (their skip) and their SC_DVILLAGE block. I own `DPLACE.flat`; tell me if the plinth moves.
+- Budget unchanged: landing 60 / 246k, wide 73 / 260k. Boulders boot gate ok (the east dune-sea crest check still finds its crests past the flat).
+
 ## m2563 -- the giant scorpions on the desert worker's open dune sea; the east small nest out of the village patch
 - `GSCORP.nests`: gsc_sea_e1 [420, 60], gsc_sea_e2 [560, -140], gsc_sea_w [-430, 80] (offsets from F.clear, open dune sea, 11 m+ clear).
 - The desert worker's new keep-out: the E axis r 200-380, theta 1.30-1.84 (the village worker's patch; theta = atan2(x, -z)). sc_sea_e
