@@ -49,6 +49,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2611 -- TOOLS > BOW > BOW SIZE / SWORD SIZE (100 / 90 / 80 / 70 %), bow 85 % by default; the sheath re-fits at every size (Nov 5 2026)
+His (m2607, bow_size.png): *"the bow looks kind of huge, maybe a tiny bit smaller; the sword could maybe be a little smaller too, which might help it
+fit on his back"* -- he loves the big ones and is undecided, so it is a TASTE SWITCH (`TRIPOW.bowPct` / `swordPct`, remembered `mel.bowSize` /
+`mel.swordSize`; `tripoSizeStep`).
+- BOW: `BOW.limbK` = its old .95 (`BOW.limbK0`) x the size -- which already scales the bow, its string nocks, the nocked arrow and its offset. The
+  quiver on his back scales with it.
+- SWORD: the sword's MESH inside its mount (the mount flattens everything relative to its root, so scaling the root cancels out) -- so
+  `measureMuzzle`'s reach follows (measured: 24.2 / 19.4 / 17.0 units at 100 / 80 / 70) and BTRAIL's base/tip scale with it. A switch re-mounts
+  the worn katana. The sheath + sword on his back scale TOGETHER, and the back is now seated by the sheath's MOUTH (`TRIPOW.back.mouth`), so the
+  mouth stays over his right shoulder and a smaller sword ends higher: at 80 % the tip is at his hip and the hilt no longer stands past his head.
+  The draw (`KDRAW.blade`) is in the back group's own units, so it scales too.
+- Rendered at 100 / 80 / 70 (back and front, sword in hand) and the bow at 85 %.
+
 ## m2610 -- HIS WEAPONS GLOW: a Jinra accent glow on the trim, runes and edges, lit by max(night, depth), a slow shimmer (Nov 5 2026)
 His (m2607): *"none of his weapons glow; at night they're just dark. Give the sword, sheath, bow, quiver, arrows Jinra accent glow on their trim, runes
 and edges, driven by the existing night-glow system (max(night, underwater depth) like Grumbo's), with a slow shimmer."*
