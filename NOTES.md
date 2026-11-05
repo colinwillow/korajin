@@ -59,6 +59,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2671 -- THE KIT, his gallery notes part 4: THE CHEST -- no cone, a faceted gem, gold + blackened iron + Jinra, and a KICK (Nov 5 2026)
+- **The light** (his: "the glow coming out is a cheesy CONE, he hates it"): the cone is gone. Now SOFT LIGHT RAYS out of the gap (seven thin fanned
+  planes with a fading texture, `ikRayTex`, swaying and breathing), rising MOTES (one Points of 40, gold and Jinra green, drifting up out of the
+  hoard), a WARM INNER LID (an additive plane under the lining, lit as it opens -- the first try glowed like a lamp, now .22), the floor glow and
+  a smaller halo; the sparkles of the rise as before. All of it in the chest's `free` step (`S.gk`). On the WHITE gallery floor additive light
+  barely shows; it is built for a temple's dark -- his eye on a dark zone.
+- **The gem**: faceted (an octahedron at detail 1, flat-shaded, glassy, the env map in its facets), an inner glowing core, and a turning
+  four-point STAR sparkle (`ikStarTex`); it flares when the hasp lifts (emissive .35 -> 1.4).
+- **The detail pass**: GOLD on dark grey -- blackened iron panels (0x4f5359), gold bands, corner caps, claw FEET (a ball and three claws each),
+  corner GUARDIAN points, STUDS down the bands and over the lid's straps, FILIGREE scrolls on the front panel, a gold CREST medallion on the lid's
+  front slope with a Jinra diamond; glowing green Jinra INLAYS (a frame round the front panel, nested diamonds on the flanks, lines over the lid).
+  Gold is its own path in the shared metal (`IKBR.keep`: bare metal, its own colour, worn highlights, no patina); the first gold read orange.
+- **THE KICK** (TOOLS > LOOK > CHEST OPEN: HEAVE / KICK, `IKIT.chestOpen`, `mel.chestopen`): his right knee comes up and back (a wind-up, leaning
+  back), the sole drives into the lock plate (a FOOT target in the pose layer -- `P.foot`, two-bone IK on the right leg, knee forward), and the
+  chest JUMPS (`ikJolt` 2.2, a shake, a clang and a thud, dust off the lid, sparks at the hit), the hasp flies, the gem flares, the lid bursts
+  open on its own (the swing at .65); then the light, the rise and the GET as ever. Side film: the knee up at .7 s, the leg out at 1.0, the lid
+  open by 1.25.
+- Draws: body 1, inlay 2, gem 3, rays 1, motes 1 (+ the floor glow and the halo). Gates: `npm run check`. Moves no box. **Shipped unverified.**
+
 ## m2670 -- THE KIT, his gallery notes part 3: the DRAWERS become a two-drawer STONE RELIQUARY (Nov 5 2026)
 His: "too human (like a bedroom dresser) -- make it Korajin: a carved stone or bronze reliquary / altar cabinet, alien-temple style, glyphs, Jinra
 inlay, chunky proportions, TWO drawers." Now: a cool grey temple stone (the warm one read as wood), a two-step plinth, four thick square corner
