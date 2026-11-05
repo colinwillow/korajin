@@ -56,6 +56,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2665 -- THE QUIVER ON THE SHEATH (in contact at the crossing), HIGHER on his back; the stray buckle off (Nov 5 2026)
+His (images/feedback/m2661/gear_side.png, gear_back.png): *"from the side the quiver and the sheath don't touch -- separate layers floating apart; and
+there's an extra thing further out"*; *"the quiver is still too low -- up toward the hilt, the fletching near his shoulder."*
+- THE EXTRA THING was the m2614 strap + buckle: m2655 pushed it 4 cm further out with everything else, leaving it ~9 cm clear of the quiver, alone.
+- DEPTHS WORKED OUT, not eyeballed (sword 85 %, bow 85 %, in his frame off Spine2): the sheath's outer face at the crossing is z -.316 (its centre
+  -.27 there, half-thickness .046); the quiver's back face is .036 inside its origin, so its centre goes at -.345 at the crossing -> touching the
+  sheath, a hair into it. `TRIPOW.quiver` at [.06, -.05, -.35], `dir` [.35, .93, .1]: steeper and higher, the crossing at y .82 (root), the fletching
+  at y 1.20 by his left shoulder, its bottom at y .68.
+- THE BUCKLE: moved onto the quiver's face at the new crossing, but from the side it still read as a separate block (the quiver is round there), so it
+  is OFF by default (`mel.TRIPOW.buckle.on = 1` brings it back).
+- FILMED: an 8-angle orbit at night (sides, 3/4, behind).
+
 ## m2664 -- THE KIT, his gallery notes part 1: the arms RELEASE on every exit, SECONDARY MOTION on every piece (`ikJolt`), a HAND-SIZED door lock wheel his hands ride (Nov 5 2026)
 - **"His arms stayed stuck out" (the crank):** `ikitPose` now drops `want` whenever no piece is running (every exit path -- finish, let go,
   interrupt, knocked down, out of reach -- ends `IKIT.run`), and the release eases back to the clip in ~.25 s (`.07` ease on the way out, snapped
