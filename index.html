@@ -23310,7 +23310,11 @@ function stepRope(dt) {
       if (dl > 1e-4) { const nx = dx / dl, nz = dz / dl, vn = p.vel.x * nx + p.vel.z * nz; if (vn < 0) { p.vel.x -= nx * vn * 1.3; p.vel.z -= nz * vn * 1.3; } if (-vn > 6) { camShake(.12); snd('bump', { g: .6, r: .9, x: p.pos.x, z: p.pos.z }); } }
       if (rbVert === 1) { p.vel.y = 0; p.rope = null; if (GRING.line) GRING.line.visible = false; p.grounded = true; return; }
       if (rbVert === -1 && p.vel.y > 0) p.vel.y = 0; } }
-  if (Math.hypot(p.vel.x, p.vel.z) > 1) p.faceH = p.heading = Math.atan2(p.vel.x, p.vel.z);
+  if (K.whip) { const S = K.S || (K.S = { V: { top: new THREE.Vector3() }, H: new THREE.Vector3(), ax: { x: Math.sin(p.faceH), z: Math.cos(p.faceH) }, v: 0 });     /* VINEWHIP: the TARZAN swing -- the gym rope's pose + pump (m1883) */
+    S.V.top.set(R.x, R.y, R.z); S.H.set(p.pos.x, p.pos.y + H * 1.15, p.pos.z);
+    const hv = Math.hypot(p.vel.x, p.vel.z); if (hv > .6) { let dx = p.vel.x / hv, dz = p.vel.z / hv; if (dx * S.ax.x + dz * S.ax.z < 0) { dx = -dx; dz = -dz; } S.ax.x += (dx - S.ax.x) * Math.min(1, dt * 1.5); S.ax.z += (dz - S.ax.z) * Math.min(1, dt * 1.5); const L = Math.hypot(S.ax.x, S.ax.z) || 1; S.ax.x /= L; S.ax.z /= L; }
+    p.faceH = p.heading = Math.atan2(S.ax.x, S.ax.z); S.v = p.vel.x * S.ax.x + p.vel.z * S.ax.z; }     /* he faces ALONG the swing and swings forward and back on it */
+  else if (Math.hypot(p.vel.x, p.vel.z) > 1) p.faceH = p.heading = Math.atan2(p.vel.x, p.vel.z);
   // the rope drawn from the ring to his right hand
   // m1131: the rope SAGS while it is slack and runs straight when it takes him; the HOOK (a three-pronged bronze claw) flies out on a
   // little arc over `throwT` s and bites the ring with a clink and sparks
@@ -44376,25 +44380,25 @@ function stepVine(dt) { const p = player, S = p.vine, V = S.V; dt = Math.min(dt,
 // swung about his right axis toward where the swing is going (`kick` rad per m/s of swing speed, to `max`), the knees tucking on the BACK swing
 // (`tuck`), the spine arching the other way (`arch`), all eased (`half` s). The rope adds his HANDS on it: two-bone IK onto the rope line above his
 // head, one hand `hgap` above the other, elbows out. Hand-animated clips can replace it later (DOCKET).
-const PUMP = { on: 1, kick: .16, max: .95, tuck: .7, arch: .35, half: .08, barK: .55, hgap: .22, k: 0, kn: 0 };
+const PUMP = { on: 1, kick: .16, max: .95, tuck: .7, arch: .35, half: .08, barK: .55, whipK: 1.1, hgap: .22, k: 0, kn: 0 };     /* whipK: the vine whip's swing (VINEWHIP) */
 const _ppQ = new THREE.Quaternion(), _ppQ2 = new THREE.Quaternion(), _ppA = new THREE.Vector3(), _ppT = new THREE.Vector3();
 function ppTurn(B, ax, ang) { if (!B || !ang) return; B.getWorldQuaternion(_ppQ); _ppQ2.setFromAxisAngle(ax, ang).multiply(_ppQ); B.parent.getWorldQuaternion(_ppQ).invert(); B.quaternion.copy(_ppQ.multiply(_ppQ2)); B.updateMatrixWorld(true); }
-function pumpPose(dt) { const p = player, Bn = rig.bones; if (!PUMP.on || !Bn || !(p.vine || p.bar)) { PUMP.k = PUMP.kn = 0; return; }
-  const v = p.vine ? (p.vine.v || 0) : p.bar.w * (p.bar.R || 1) * PUMP.barK, want = clamp(v * PUMP.kick, -PUMP.max, PUMP.max), knee = Math.max(0, -want) * PUMP.tuck + .15;
+function pumpPose(dt) { const p = player, Bn = rig.bones, WS = p.rope && p.rope.whip && p.rope.S ? p.rope.S : null; if (!PUMP.on || !Bn || !(p.vine || p.bar || WS)) { PUMP.k = PUMP.kn = 0; return; }
+  const v = p.vine ? (p.vine.v || 0) : WS ? WS.v * PUMP.whipK : p.bar.w * (p.bar.R || 1) * PUMP.barK, want = clamp(v * PUMP.kick, -PUMP.max, PUMP.max), knee = Math.max(0, -want) * PUMP.tuck + .15;
   const e = 1 - Math.exp(-dt * .693 / PUMP.half); PUMP.k += (want - PUMP.k) * e; PUMP.kn += (knee - PUMP.kn) * e;
   rig.root.updateMatrixWorld(true); const hip = Bn.mixamorig_Hips; if (!hip) return;
   // his right axis, from the drawn hips (the bar turns him about the bar, so the world frame is not enough)
   hip.getWorldQuaternion(_ppQ); _ppA.set(-1, 0, 0).applyQuaternion(_ppQ).normalize();     // +X is his LEFT, so -X is his right
   for (const sd of ['Left', 'Right']) { ppTurn(Bn['mixamorig_' + sd + 'UpLeg'], _ppA, PUMP.k); ppTurn(Bn['mixamorig_' + sd + 'Leg'], _ppA, -PUMP.kn); }
   ppTurn(Bn.mixamorig_Spine1 || Bn.mixamorig_Spine, _ppA, -PUMP.k * PUMP.arch);
-  if (p.vine) { const S = p.vine, up = _ppT.copy(S.V.top).sub(S.H).normalize(), fx = Math.sin(p.faceH), fz = Math.cos(p.faceH), rx = -fz, rz = fx;     // his right (-fz, fx)
+  if (p.vine || WS) { const S = p.vine || WS, up = _ppT.copy(S.V.top).sub(S.H).normalize(), fx = Math.sin(p.faceH), fz = Math.cos(p.faceH), rx = -fz, rz = fx;     // his right (-fz, fx); the whip's vine as the gym rope
     for (const [sd, k, o] of [['Right', 1, 0], ['Left', -1, PUMP.hgap]]) { const UA = Bn['mixamorig_' + sd + 'Arm'], FA = Bn['mixamorig_' + sd + 'ForeArm'], HA = Bn['mixamorig_' + sd + 'Hand']; if (!UA || !FA || !HA) continue;
       const T = S.H.clone().addScaledVector(up, o + .02); wrLimb(UA, FA, HA, T, new THREE.Vector3(rx * k * .7 - fx * .3, -.2, rz * k * .7 - fz * .3)); } } }
 function vineIdle(dt) { for (const V of VINE.list) { if (player.vine && player.vine.V === V) continue;     // an empty rope settles back under its top, swaying a little
   V.idleT += dt; const tgt = V.top.clone().add(new THREE.Vector3(Math.sin(V.idleT * .8) * .25, -V.len, Math.cos(V.idleT * .6) * .15)); V.P.lerp(tgt, 1 - Math.exp(-dt * 1.2)); vineDraw(V, V.top.clone().lerp(V.P, .5)); } }
 function vineSwipe(dx, dy) { const p = player; if (!p.vine) return 0; if (Math.abs(dy) > Math.abs(dx)) p.vine.climb = (dy < 0 ? 1 : -1) * VINE.climb; return 1; }
 // his body along the rope: tilted so his head points up it, toward its top
-function vinePose() { const p = player, S = p.vine; if (!S || !VINE.tilt) return; const d = _vnA.copy(S.V.top).sub(S.H).normalize(), q = new THREE.Quaternion().setFromUnitVectors(_vnU, d);
+function vinePose() { const p = player, S = p.vine || (p.rope && p.rope.whip ? p.rope.S : null); if (!S || !VINE.tilt) return; const d = _vnA.copy(S.V.top).sub(S.H).normalize(), q = new THREE.Quaternion().setFromUnitVectors(_vnU, d);
   const pv = S.H; const r = rig.root.position.clone().sub(pv).applyQuaternion(q); rig.root.position.copy(pv).add(r); rig.root.quaternion.premultiply(q); }
 // m1857 (NINJA GYM pass 5): MONKEY BARS (his: "we should do monkey bars too"). In the air with his hands at a rung's height (`grabY`) and under
 // one, he takes it and hangs; the LEFT STICK along the bars swings him hand over hand to the next rung (`stepT` s, a dip of `dip` m, the
