@@ -44,6 +44,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2558 -- the scorpion nests moved onto the desert worker's layout (they sat inside the boulder field: a lab spot, not dune sea)
+- `SCORP.nests` (offsets from F.clear, north -z): sc_sea_e [330, 40] x4, sc_sea_w [-330, 40] x4 (the dune seas), sc_ruin_spyr [-330, -150] x4
+  (the stepped pyramid's W foot), sc_ruin_s [60, 400] x3 (the south pyramid's flank). `GSCORP.nests`: the giants in the far dune seas,
+  gsc_sea_e [480, -60] and gsc_sea_w [-480, -60]. Clear of the N axis (|x| < 60) and the NE sector (the Sky Ascent), per the desert worker.
+- `npm run check` ok. Shipped unverified.
+
 ## m2557 -- THE DAY SKY WAS MISSING ON HIS PHONE: A SILENT CANVAS FAILURE, AND MY MOUNTAINS OVER THE PAINTED ISLANDS (Nov 5 2026)
 
 His report (via parent): in the day he sees nothing up there, no planet, islands, clouds or sun bloom; only the night sky shows.
