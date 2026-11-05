@@ -44,6 +44,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2544 -- THE LANTERN STAFF (his: "a light source for dark places -- dusk round the forest temple, and a pitch-dark CAVE level where his light is
+   the only thing that shines"); GRUMBO GLOW; his own-model weapon list in ARSENAL.md
+- A procedural stand-in (`lanternScene`, SC_LANTERN) until his Tripo model (a `file:` on the same weapon bones). Built on the KATANA's frame
+  and mount (`weapon_root_right`, tip -14.31, the 22-unit grip at y -3), so the two-handed sword set -- idle, run, guard, `KATANA.lgrip`'s left
+  hand on the grip, every sword move -- runs on it unchanged: a slot `{ key: 'lantern', melee: 'katana', blade: true, lantern: true }`,
+  APPENDED last in `WEAP.slots` so no saved slot index moves. A 150-unit wooden shaft with brass bands (the butt well below his hands, so it
+  reads as a staff), a tall OVAL LOOP at the top, a small brass-and-glass LANTERN hanging inside it, two red TASSELS on the shaft.
+- THE SWING (`lanternPend`): each hangs from a pivot on a WORLD-SPACE spring pendulum (gravity, damping, held at its length, the pivot turned
+  to point at the bob in its parent's frame), clamped `max` off straight down so the lantern stays inside the loop. Tune: `LANTERN.swing` /
+  `LANTERN.tassel` (L, g, damp, max).
+- THE LIGHT: ONE `PointLight`, made the first time the staff is out and NEVER removed (a light appearing or vanishing recompiles every
+  material -- it goes to intensity 0 instead), carried at the lantern, `dist` 11 m, decay 2, a soft flicker (`flick` .12), no shadow; the
+  lantern glass glows with it. TOOLS > LANTERN LIGHT: LAMP (warm 0xffb35c) / JINRA CRYSTAL (`JIN.hex`). Intensity `LANTERN.I` 9 is a first
+  guess -- tune on the phone at night.
+- EQUIP: TOOLS > LANTERN STAFF draws it. In play: the BACKPACK opens a SWORD | LANTERN pair (like BOW | GUN) that picks what the right ring's
+  SWORD half draws (`QD.sword`, `mel.qdSword`; the half then reads LANTERN). With QUICK DRAW off it is its own segment in the weapon ring.
+- GRUMBO GLOW (TOOLS, off by default): a faint violet self-glow on his own materials (`glowK` .22; every original emissive kept and restored).
+- ARSENAL.md: the weapons he will model himself -- the bow, at least one sword, a bladed staff, maybe a retro firework rocket launcher (to
+  replace the alien one); later twin small swords, axes or nunchucks with their own animations.
+- `npm run check` ok. Shipped unverified.
+
 ## m2543 -- DESERT REGION STEP 3a: SAND EVERYWHERE + CRESTED SNAKING DUNES (his: "the sand deformation sells the desert -- it must cover the whole region")
 - REGION SAND: a POLAR RING mesh round the field from r 74 to r 1300 (192 x 48 cells, radii growing geometrically: ~4.6 m near, ~75 m far;
   18k tris, one draw) in the field's OWN sand material (crust, ripples, deformation tint, night), tinted by height and slope. The field's

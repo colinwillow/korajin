@@ -67,3 +67,12 @@ prologue temple (the Metroid half of Zelda).
 - How many tiers per track (3 is Zelda's habit).
 - Which upgrades are temple ITEMS (hard gates) and which are village SHOP upgrades (soft gates).
 - The dragon's tiers.
+
+## His own models (Nov 5 2026 -- he will make these in Tripo; procedural stand-ins until they arrive)
+- **The LANTERN STAFF** (built procedurally, m2544: a light for dark places -- dusk round the forest temple, a pitch-dark CAVE level). His model
+  replaces `lanternScene` as a `file:` on the same weapon bones.
+- **The BOW** (his own, to replace the procedural one).
+- **At least one SWORD.**
+- **A STAFF WITH A BLADE on the end** (a glaive / naginata).
+- **Maybe a RETRO FIREWORK-STYLE ROCKET LAUNCHER**, replacing the alien launcher.
+- **Later:** TWIN SMALL SWORDS, AXES or NUNCHUCKS -- each with its own animations (not the two-handed sword set).
