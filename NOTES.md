@@ -53,6 +53,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2633 -- THE INTERACTIONS KIT pass 5: RUMBLE -- TOOLS > LOOK > HAPTICS (INTERACT.md)
+iPhone Safari has NO Vibration API (`navigator.vibrate` is undefined there). The iOS 18 trick: a hidden `<input type="checkbox" switch>` inside a
+`<label>`, toggled by `label.click()`, makes Safari give a system haptic tick. `ikHaptic(k)` (`HAPT`): Android / anything with `vibrate` ->
+`navigator.vibrate(12-52 ms by k)`; iPhone (UA, or an iPad posing as a Mac) -> the switch tick, and a second tick 90 ms on for a heavy hit (k > .45);
+throttled to one per 70 ms. Every kit rumble (`ikRumble`: the chest's heave, the door's grind pulses, the crank's pawl, the button / plate / lever
+clunks) calls it; the camera shake + low thump ALWAYS play, so OFF -- or a phone that ignores it -- loses nothing but the tick. TOOLS > LOOK >
+HAPTICS: ON / OFF (`mel.haptic`), and tapping it ON plays a test tick (inside his own tap, the surest case for Safari). The sandbox has a HAPTIC TEST
+button that fires one with the shake and says which way it went ('ios switch' / 'vibrate' / why not) and the count.
+Measured here (headless Chromium, which cannot feel anything): the vibrate path returns 1; forced onto the iOS path, the label exists, its input
+carries `switch` and `label.click()` toggles it (checked true). **WHETHER IT TICKS ON HIS iPHONE IS HIS ANSWER** -- the one thing nothing here can
+see. If only the TOOLS tap ticks and the game's rumbles do not, Safari wants a user gesture behind each click: say so and the fallback stays.
+
 ## m2632 -- THE LAKE: THE SWIMMER'S WATERLINE (foam collar, displacement, rings, stroke splashes)
 His (relayed): *"while Grumbo SWIMS at the surface, the waterline where his body meets the water is a hard line."*
 - **Displacement (vertex, `lkSwimH`):** a field round him, read by the water's vertex shader, with its slope added to `vWg` (the per-pixel normal). It has
