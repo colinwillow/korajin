@@ -44,6 +44,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2499 -- FLOATING BOULDERS: RIDEABLE FLOATERS + A SPIRAL COURSE TO THE ARCH (his traversal idea, Nov 5 2026)
+His (via parent): medium and large floaters you can STAND ON (a moving platform that carries him); landing pushes the stone down (more for
+medium) and it springs back; it tilts toward where he stands; no friction in the air, so his landing speed carries it sideways and it
+settles home; the biggest do not react; a small course -- an offset stair of 3-4 floaters rising in a spiral to a high ledge on the plan;
+a floater he stands on does not drift off unless he pushes it; sand trickles off when he lands.
+- `F.ride` (BOULDLIB): `rideable(r)` = a floating, big rock at least `minE` .5 m half-wide (17 in the field) or a course step;
+  `rideTop` = centre + e.y x `topK`; `rideHalf` = the narrow half-extent x `footK` .85. `land(r, v, ...)`: a DIP (fall x `sink` .18 / mass,
+  capped at 1.2 m/s), a DRIFT (his horizontal speed x `carry` .3 / mass, capped 1.5), a TILT toward his feet (spin axis (dz, 0, -dx)),
+  sand trickling off on a real fall. `stand`: his weight (`weight`), the drift held (`hold`), a slow lean toward his feet. Mass by size;
+  over `hugeS` 1.6 nothing reacts. The rock under his feet is skipped by the push contact (`r.rider`).
+- Glue `bouldRide`: one `BDYN` slab per rideable rock (the dojo platforms' form), refitted after every step; on it (grounded, or -- a box
+  sinking under him drops `grounded` for a frame -- still at its top falling slowly) he rides the delta; the frame he lands calls `land`.
+- THE COURSE (`F.course`): four flat sand slabs (s 1.05, no spin) in an offset spiral on arch1's spoke, inside the ring, tops at
+  1.15 / 2.05 / 2.95 / 3.8 m, the last 1.65 m in from the crown. No `rnd()` used, so the scatter is unchanged.
+- MEASURED in the real page (a 1.6 m drop onto c2): first cut -- the stone DIVED (7 m/s: fall x .55 / mass .36, no cap) and the footprint
+  was .74 m on a 1.7 m slab so he walked off its edge and sank through; now he lands, stays grounded, the stone dips ~4 cm and holds.
+  The boot gate asserts >= 8 rideable, 4 climbing steps, and that a landing pushes a stone down.
+- Not done: the reward on the arch's crown (later, his), and the rock's tilt is visual only (the slab he stands on stays level).
+  check + boulders boot pass. Shipped unverified.
+
 ## m2498 -- THE GIANTS ON THE SACRED-GEOMETRY PLAN (his: "the pyramids and obelisks seem RANDOMLY placed", WORLD_PLAN 11) (Nov 5 2026)
 - THE AXIS: landing -> field centre -> the great pyramid is the PROCESSIONAL AXIS (-z). The mandala turned .3 -> pi/8 (`F.mandala.rot`)
   so its eight spokes lie SYMMETRIC about that axis (+-pi/8, +-3pi/8 ...) and the landing sits on the bisector.
