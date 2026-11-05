@@ -44,6 +44,31 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2552 -- DESERT REGION STEP 4: FLOATING ROCKS ACROSS THE WHOLE REGION (Nov 5 2026)
+
+His plan, step 4: *"floating rocks everywhere, several heights, instanced, LOD"*, holding the m2538 budget.
+- **`DPLACE.sky` (SC_DPLACE) + `bouldSkyRocks` / `bouldSkyStep`.** About 130 rows with stable ids (`f001`..), seeded. They sit on the
+  mandala's 8 SPOKES x 6 RINGS (215..1030 m, odd rings offset half a spoke), each node one big island plus 1-3 satellites, and 30 golden-angle singles go between.
+  - **Height tiers** run [7-20, 28-62, 80-140, 170-260 m] over the sand, by ring. They are low near the heart and higher and bigger outward (12-40 m radius
+    up there, so they read in the haze). That is VERTICALITY: four planes, not one.
+  - **The N axis** (the temple's view, |th| < .2 inside 900 m) and **the NE Sky Ascent sector** (step 5 builds its own platforms) are kept clear.
+- **The shape is the field's own rock** (`L.rockGeo`, now with `det` and `root` args). It is the sand-slab species with a flat SAND-crowned top and a deep root that
+  tapers RAGGED and bent (noise on the taper, a lateral wobble, a noisy length; the first try was a clean cone and read as orange acorns).
+  Per-instance non-uniform scale and tint give the variety. The triplanar grain is at `texK` .22 x size, a tile every ~7 m, so the banding reads from far.
+  At the field's .6, the map averaged out to flat orange at 200 m.
+- **Two draws: NEAR (d3, 320 tris, inside 240 m) and FAR (d2, 180 tris).** Every frame each rock is FRUSTUM-culled on the CPU and dropped past 1300 m,
+  so a view pays only for what it sees. A plain "behind the lens" test left 94 far rocks drawn at the landing; the real frustum leaves 13-21.
+  Neither mesh casts shadows.
+- **The low tier is SOLID and still** (31 rocks). Their rest poses are merged (d1) into `desert:collide` as `col:desert:floaters` (noLedge), so a dune crest
+  plus a jump can reach them. The higher tiers bob (.5-1.4 m, .03-.08 Hz) and sway a little.
+- **Paid for:** miniW / miniE (the split mini-pyramids at 600 m) no longer turn (`still: 1`). They were 6 live draws (3 materials x 2) for a turn nobody sees
+  from that far, the same call m2538 made for the bob-only groups. Now they are merged with the rest.
+- **Budget** (gprof, the step re-run per camera; `seen` is near/far):
+      landing    63 draws, 247k tris  (seen 0/14)  -- m2549's numbers had drifted to 66 / 241k before this build
+      forecourt  52, 211k            (0/8)
+      wide       77, 261k            (0/24)       -- aerial budget 80 / 280k
+- **Boot gate** (`zone=boulders`): over 100 floaters, 4 tiers, no NaN, each above its sand, and the low tier's collider exists.
+- Still open: the Sky Ascent (step 5, NE) is the next build. The region floaters are not rideable springs (the field's are); the low tier is static ground.
 ## Loading-screen sun-wheel: all 16 rays (his: "it's almost symmetrical, but one side is missing a spoke")
 The boot card's SVG sun-wheel and the katana lock mark (`lockMkTex`) both skipped rays k=5 and k=12 on purpose ("worn"). He doesn't like it: both now draw all 16 rays (the long left ray with its cross-bar, the short lower-right ray). The ring's dash gaps are unchanged.
 
