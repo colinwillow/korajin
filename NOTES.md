@@ -53,6 +53,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2644 -- THE INTERACTIONS KIT design pass 5: the LEVER, weighted, with a gear quadrant (INTERACT.md)
+His ask: "the LEVER (a weighted handle, a gear quadrant)". The lever kind's build is new (its sequence unchanged):
+- THE PEDESTAL (one draw): carved stone, glyph borders front and back, a bronze cap; bronze CHEEK plates and pivot caps; the RATCHET -- a bronze
+  sector plate on the cheek with its five teeth (the first strip had the teeth floating in air with nothing under them: CRAFT, fixed); the pinion's
+  bearing.
+- THE LEVER (one draw, on the pivot): a bronze arm, a GRIP wrapped and bound with four rings, a heavy knob, a hub, a short arm down and back with a
+  COUNTERWEIGHT ball, and a toothed GEAR QUADRANT (a plate behind the pivot, eleven teeth on its arc -- the first try's plate faced up while its teeth
+  sat behind; fixed).
+- THE PINION (one draw): a seven-tooth gear behind the quadrant that SPINS against it as he hauls (3.4 : 1), on every tooth of the ratchet.
+His hands are on the grip now (the markers moved there). Strip (sent): the lever from the side -- thrown away, hauled through the ratchet with the
+pinion turning, home, the lamp lit. 26-35 draws for the station. STILL OPEN: in the gallery's white light the bronze reads flat orange.
 
 ## m2643 -- THE DRAW IS ONE SMOOTH ARC (the sword driven, the arm follows); the idle's edge turned the right way; the quiver higher on the X (Nov 5 2026)
 His (images/feedback/m2639/): *"the roll is 180 deg wrong -- the edge faces back toward him"*; *"the quiver is too low, slide it up so his hand could

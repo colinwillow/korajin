@@ -55,7 +55,7 @@ the night glow, and 1-3 draws.
 | THE DRAWERS | north bay 4 | [x] m2631 | [ ] | [ ] |
 | THE BUTTON | south bay 1 | [x] m2631 | [x] m2642: carved plaque, bezel, domed plunger with the crest, a sliding latch | [ ] |
 | THE PRESSURE PLATE | south bay 2 | [x] m2631 | [x] m2642: carved slab, inlaid crest, bronze frame, dust | [ ] |
-| THE LEVER | south bay 3 | [x] m2631 | [ ] a weighted handle, a gear quadrant | [ ] |
+| THE LEVER | south bay 3 | [x] m2631 | [x] m2644: a weighted handle, a gear quadrant driving a pinion, a ratchet | [ ] |
 | THE POTS | south bay 4 | [x] m2631 | [ ] | [ ] |
 
 ## THE SANDBOX ROOM (superseded by THE GALLERY)
