@@ -33,11 +33,14 @@ await page.waitForTimeout(settle * 1000);
 if (pre) await page.evaluate(pre);
 const tiles = [];
 const shoot = async (lab, wideCam) => page.evaluate(([lab, wideCam]) => { const { renderer, scene, camera } = window.__shot, Z = mel.IKIT, R = Z.run;
-  let saved = null; if (wideCam) { saved = [camera.position.clone(), camera.quaternion.clone()]; const c = wideCam; camera.position.set(c[0], c[1], c[2]); camera.lookAt(c[3], c[4], c[5]); camera.updateMatrixWorld(true); }
+  let saved = null; if (wideCam) { saved = [camera.position.clone(), camera.quaternion.clone()]; let c = wideCam;
+    if (c === 'side') { const P = mel.player.pos, h = mel.player.faceH, lx = Math.cos(h), lz = -Math.sin(h), fx = Math.sin(h), fz = Math.cos(h); c = [P.x + lx * 2.6 + fx * .35, P.y + 1.0, P.z + lz * 2.6 + fz * .35, P.x + fx * .35, P.y + .75, P.z + fz * .35]; }     /* --cam=side: a SIDE PROFILE off his left */ camera.position.set(c[0], c[1], c[2]); camera.lookAt(c[3], c[4], c[5]); camera.updateMatrixWorld(true); }
   mel.nightPre(); renderer.render(scene, camera); const url = renderer.domElement.toDataURL('image/jpeg', .85); const i = renderer.info.render; mel.nightPost();
   if (saved) { camera.position.copy(saved[0]); camera.quaternion.copy(saved[1]); camera.updateMatrixWorld(true); }
-  return { url, lab: lab + ' · ' + (R ? R.st + '/' + (R.b || '-') : 'idle') + ' · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k' }; }, [lab, wideCam]);
-const wideCam = JSON.parse(arg('cam', '[-6.2,2.6,-3.6,-9,1.1,-7.4]'));
+  const Pp = Z.pose, hb = mel.rig && mel.rig.bones && mel.rig.bones.mixamorig_LeftHand, hd = hb && Pp.L ? hb.getWorldPosition(Pp.L.clone()).distanceTo(Pp.L).toFixed(2) : '-';
+  return { url, lab: lab + ' · ' + (R ? R.st + '/' + (R.b || '-') : 'idle') + ' w' + (Pp.w || 0).toFixed(2) + ' ln' + ((Pp.lean || 0) + (Pp.auto || 0)).toFixed(0) + ' hd' + hd + ' · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k' }; }, [lab, wideCam]);
+const wideCam = arg('cam', '') === 'side' ? 'side' : JSON.parse(arg('cam', '[-6.2,2.6,-3.6,-9,1.1,-7.4]'));
+for (const [k, c] of JSON.parse(arg('cams', '[]')).entries()) tiles.push(await shoot('still ' + k, c));     /* --cams=[[cam],...]: still lifes before the tap (the look passes) */
 tiles.push(await shoot('before', null)); if (wide) tiles.push(await shoot('before wide', wideCam));
 await page.evaluate(id => { mel.IKIT.t0 = mel.IKIT.on.t; if (id !== 'none') mel.ikitGo(mel.IKIT.rows.find(r => r.id === id)); }, go);     /* --id=none: no tap (a plate, a pot: --pre does the deed) */
 for (const t of ats) {
@@ -45,7 +48,7 @@ for (const t of ats) {
   tiles.push(await shoot('t ' + t, null)); if (wide) tiles.push(await shoot('t ' + t + ' wide', wideCam));
 }
 const pose = await page.evaluate(() => JSON.stringify({ getpose: mel.GETPOSE.ok, run: !!mel.IKIT.run, p: mel.player.pos.toArray().map(v => +v.toFixed(2)), open: mel.IKIT.rows.map(r => r.id + ':' + (r.open || r.done || 0)) }));
-console.log('pose', pose);
+console.log('pose', pose); if (arg('post', '')) console.log('post', await page.evaluate(arg('post', '')));
 const cols = wide ? 2 : 3, sheet = await browser.newPage({ viewport: { width: W * cols, height: H } });
 await sheet.setContent(`<body style="margin:0;background:#000;display:grid;grid-template-columns:repeat(${cols},${W}px)">` + tiles.map(x => `<div style="position:relative;width:${W}px;height:${H}px"><img src="${x.url}" style="width:${W}px;height:${H}px;display:block"><b style="position:absolute;left:6px;top:4px;font:700 12px sans-serif;color:#fff;text-shadow:0 0 3px #000">${x.lab}</b></div>`).join('') + '</body>');
 const f = path.join(OUT, arg('out', 'ik_strip') + '.jpg'); await sheet.screenshot({ path: f, type: 'jpeg', quality: 82, fullPage: true }); console.log('strip ->', f);

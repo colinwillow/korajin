@@ -47,6 +47,11 @@ crank pawl tick, its catch heavy; lever teeth tick, its clunk heavy; button heav
 - **Outcomes**: `row.onDone(row, what)` is called once per completion -- `'opened'` (chest, door, drawer), `'caught'` (crank, the gate at the top),
   `'pressed'` (button), `'on'` / `'off'` (lever, plate). Award a key / shard or open a gate there; a throw in it is caught and noted, never fatal.
 
+## HIS PLAYTEST FIXES (m2662)
+- The weapon goes AWAY before any piece (`IKIT.stow`) and comes back after (`IKIT.redraw`); the lens sits `IKIT.camSide` (28 deg) off his back.
+- The pose layer REACHES: a grip past arm's length bends him further from the hips (`IKIT.pose.reach`, `P.auto`). The lever: stand .68, the lean follows the throw.
+- ONE aged-bronze recipe for every piece (`IKBR`). The interact CUE: chevrons + ground ring + part outline (`o.outline`), TOOLS > LOOK > INTERACT CUE.
+
 ## THE GALLERY -- one station per piece, approved station by station (his, after m2633)
 The sandbox is a **white-box gallery**: a white hall, an aisle down the middle, four bays a side, each a STATION with a label plinth (the piece's
 name and how to work it). Walk the aisle, try each one, and approve its INTERACTION and its LOOK separately. Each object then gets its own

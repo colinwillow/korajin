@@ -56,6 +56,32 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2662 -- HIS PLAYTEST FIXES on the Interactions Kit: the lever's hands REACH, the weapon goes away first, the lens sits off to the side, AGED BRONZE, and a NEW INTERACT CUE (Nov 5 2026)
+**The real reason no IK pose had worked since m2647:** the frame line that calls `smearStep`, the lotus, `gdnSleepPose`, `ikitPose` and
+`getPose` had a `// m2647: after every hand fix ...` comment dropped mid-line, which ate the rest of the line -- **the katana smear, the lotus hands,
+the sleep pose, every kit hand-IK and the GET pose all stopped running at m2647**. Now a `/* */`. Found by the side film reading `w0.00` (the pose
+weight) with `want 1` (`ikstrip` now prints `w`, the lean `ln` and the left hand's distance to its grip `hd` on every tile, plus `--cam=side`,
+`--cams=[[...]]` still lifes and `--post=js`).
+- **LEVER** (his: "his hands don't reach it"): he steps in (`IKIT.lever.stand` .78 -> .68; the pedestal collider is now 1.2 m tall -- at .36 he
+  climbed onto it), and the pose layer has a REACH: if a grip is past the arm's length the spine bends further from the hips (`P.auto`, up to
+  40 deg) until it is in reach, and relaxes with slack. The lean follows the throw (`IKIT.lever.pull` [14, -12], `push` [6, 22]). Side film, haul:
+  `hd` 0.28 m at the grab (still easing in), then **0.13, 0.00, 0.00, 0.01** -- the hands on the grip through the whole throw; lean 54 -> 28 deg.
+  Still to judge on his phone: the pull ends at ~28 deg of bow (the reach holds him over the knob), not the hips-back lean he described.
+- **WEAPON AWAY FIRST** (`IKIT.stow`): `ikitGo` calls `swapGo(0)` (the katana goes to the sheath on his back via `KDRAW`); the beats wait for the
+  swap; `ikitEnd` draws it again (`IKIT.redraw`, `kitPick`).
+- **SIDE LENS** (`IKIT.camSide` 28 deg, a row's `camSide` overrides): the lens comes round behind him and sits 28 deg off his back, so his hands show.
+- **AGED BRONZE** -- ONE recipe (`IKBR`, `ikBrBake` in `ikVC`, `ikBronze` in `ikVM`, `ikMerge`) on every kit piece: a darker, browner base,
+  worn highlights on up-facing faces, verdigris pooled low / under / in a noise of pits (baked in vertex colour), metalness .9 / roughness .3 on
+  the bare metal (`aBr` mask) against the env map, and a .1 lift so it never goes black at night. The door's private colour builder is now `ikVC`.
+  The first try (base 0x7a5232) read as brown wood; now 0xa8743a. Gallery still lifes in the strips. Dials on `mel.IKBR`.
+- **THE INTERACT CUE** (his, the m2639 screenshot: the mint diamond read as a collectible), game-wide (`interactStep`): two stacked flat
+  CHEVRONS pointing down, turned to the lens, bobbing; a glowing GROUND RING at the reach radius that fades in with the right stick's cue; an
+  OUTLINE (an inverted hull on the part's own geometry, normal blending so it reads on white) on the part he will touch -- `o.outline: () =>
+  Object3D` on the lever's handle, the crank's wheel, the chest's lid, the door's lock wheel, the button's plunger, the chosen drawer.
+  **TOOLS > LOOK > INTERACT CUE** cycles ARROW+RING+OUTLINE (default) / ARROW+RING / ARROW / RING+OUTLINE / OFF (`mel.icue`; the old '1' maps to
+  the default). Any `interactAdd` row elsewhere gets the arrow + ring now and an outline by adding `outline`.
+- Also m2649 note: `ikitStep` runs while any row exists. Gates: `npm run check`. **Moves no box** (the stations' sign-off is his). **Shipped unverified.**
+
 ## m2661 -- TOOLS (the debug panel) spans the screen and keeps its scroll on every tap (Nov 5 2026)
 Via main: *"the panel doesn't use the screen's width, so some labels are cramped"* and *"every tap re-renders the menu and jumps back to the TOP."*
 - SCROLL: `arenaUi` rebuilds `#arenaUi` with `innerHTML`; it now reads `.ar-tools` / `.ar-menu` `scrollTop` before and puts it back after, so a tap
