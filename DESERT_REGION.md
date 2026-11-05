@@ -60,7 +60,7 @@ What is built today, from above (m2538): ![now](images/plan/desert_region_now_to
 2. The kit, finalised: inventory, finish, the missing pieces, real colliders (the pyramids first).
 3. Sand everywhere + crested snaking dunes, rocks, valleys, hills.
 4. Floating rocks everywhere, several heights, instanced, LOD. **Done m2554** (`DPLACE.sky`: ~130 islands on the spokes x rings, 4 tiers +7..+260 m, 2 draws, CPU-culled; the low tier solid).
-5. Then the zones one at a time, starting with the **sky ascent**; refine each before the next.
+5. Then the zones one at a time, starting with the **sky ascent**; refine each before the next. **Sky Ascent pass 1: m2567** (`DPLACE.ascent`: the helix, 64 stones, 6 stages, +140; TOOLS > SKY ASCENT (go)).
 
 ## Performance budget (held from m2538)
 

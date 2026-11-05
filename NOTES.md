@@ -44,6 +44,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2567 -- DESERT REGION STEP 5, ZONE 1: THE SKY ASCENT (pass 1) (Nov 5 2026)
+
+The plan's first zone (DESERT_REGION.md: NE, +20 to +140 m in six stages, hop / wall-run / ledge, a sky platform at the top).
+- **`DPLACE.ascent` + `bouldAscent`.** A HELIX of floating stones round a point in the NE wedge (th .8, r 420 from F.c, so world (301, -299)),
+  radius 58 m. It starts on the sand on the side facing the landing and the ring route.
+  - **Stones:** hexagonal floating slabs, 4.4 m across, each 2 m above the last (his jump apex is 2.81 m), 5.2 m centre to centre, ±1.2 m radial jitter.
+    Each has a ragged root, and a glowing crystal seed hangs under every third, so the route reads at night.
+  - **Stages:** the six (+20 / +44 / +68 / +92 / +116 / +140) are the kit's `platform` (w 12; the top w 18), with the WALL-RUN face turned OUTWARD, off the path.
+  - **Top:** a small trilithon shrine (×.22) frames the temple.
+  - 64 stones in about one full turn.
+- **Cost:** it is all kit materials as children of the giants' group. The collider bake takes it (slab / under / giant: `groundAt` reads 20.1 / 44.1 /
+  ... / 140.1 on the six tops, 1.7 on the first stone) and the batch merges it per material. **No new draws.** Landing 60 / 249k (budget 65 / 250k:
+  it is tight now), forecourt 51 / 215k, wide 68 / 257k.
+- **Largest jumps:** stone to stage is 2.4 m; stage to stone and stone to stone are 2 m.
+- **TOOLS > BOULDERS > SKY ASCENT (go)** puts him at the helix's foot (`bouldGoAscent`).
+- **Boot gate:** 6 stages, the top at +140, and no stone-to-stone rise past 2.5 m.
+- Still open (pass 2): ledges to hang from and a wall-run gap that NEEDS the face. Right now every hop can be made with a plain jump. The top does not look
+  DOWN on the temple (the great pyramid is ~230 m at ×2, and the top is +140). It wants an ENTRY row once Colin signs the route. No Tripo set pieces yet.
+
 ## m2566 -- FOREST TEMPLE: the acrobatic room's glowing floor shards were Z-FIGHTING (his m2563 screenshot, images/feedback/m2563/acro_glow_zfight.png)
 His: cyan Jinra lines and seams on the floor break into flickering dashed shards entering the acrobatic room. CAUSE (mine, m2495): the room's ROSETTE
 crosses the processional AVENUE, and both topped out at 4 cm -- the rosette's spokes (the `carve` material, whose night-glow cracks are the cyan
