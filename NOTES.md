@@ -44,6 +44,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2549 -- DESERT REGION STEP 3b: VALLEYS, HILLS, BIG ROCKS, CANYON WALLS, THE MOUNTAIN RING
+- VALLEYS (`F.region.val`, `valleyH` in `sandH`): the forge's floor is y 0, so nothing may cut below it -- instead the SE and SW sectors rise
+  into a PLATEAU (+16 m past r 300, ramped over 90 m) and a VALLEY meanders down through each to the sand's grade (46 m floor, 34 m walls,
+  the line wandering +-.16 rad on two sines); kept off the giants like the dunes. `L.valleyLine(S, d)` gives the line to the glue.
+- THE LAND, from the kit (`bouldGiants`, seeded): 20 MOUNTAIN `range` segments ringing the region at ~1.36 km (always drawn, out of reach --
+  not in the collider); CANYON walls lining both sides of each valley every 85 m, facing in; 16 rocky HILLS on the plateaus off the valley
+  lines; 34 BIG ROCKS across the region (off the axis and the giants). Walls, hills and rocks wear a new detail material `landD` (merged per
+  200 m cell, hidden beyond 200 m); hills and walls are in the desert collider.
+- `ringH`: the height of the ring's OWN triangles. The coarse ring is linear between vertices while exact `sandH` is not, so on a dune or a
+  valley wall the deformation patch (exact base heights) stood a STEP above/below the ring at its edge, and his feet were off the surface.
+  The patch's base window and `groundAt` now read `ringH` -- patch, ring and feet agree. (`baseH` switches to it once the ring exists:
+  calling `ringH` from the first fill was a TDZ ReferenceError the boot gate caught.)
+- First mountains were 160-310 m TEETH -> 80-160 m, longer overlapping segments, 24 x 6 grid.
+- BUDGET: the land pushed the landing to 271k / 67 -> mountains 40x10 -> 24x6, mesas 56x18 -> 32x12, scree pebbles icosphere d2 -> d1:
+  landing 239k / 64, forecourt 206k / 55, wide 251k / 77.
+- Looked at: a SE valley at eye level, valleys + mountains from high, the play camera. check + boulders boot pass. Shipped unverified.
+- NEXT: step 4 -- floating rocks across the region at several heights, instanced, LOD.
+
 ## m2548 -- HARDENING 1: the FOREST TEMPLE on triangles, outside and in (Nov 5 2026)
 
 His (via main): *"in the FOREST TEMPLE the stairs are a big box collider and he can't walk up them"* -- triangle collision the DEFAULT everywhere,
