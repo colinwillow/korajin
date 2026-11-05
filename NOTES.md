@@ -44,6 +44,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2503 -- THE PHASE SHIFT (WORLD_PLAN section 13; his: "the same purple portal he arrives through, Nightcrawler-style -- blip out, flip through a small portal, pop out a few metres away, FAST")
+- TOOLS > PHASE (`PHASE.on`, `mel.phase`, OFF by default). With it ON, `leftFlick` asks `phaseGo` first: the flicks that flip him (left / right
+  barrel roll, down backflip -- `cartGo`, untouched with it OFF) and the flick ahead BLINK the way flicked, on the ground and in the air (the
+  air blink holds his height and gives a little lift, `airUp`).
+- THE SPOT (`phaseSpot`): walked out along the flick in .3 m steps to `dist` 4.5 m -- each step's ground within `drop` 1.1 m below / a step above
+  (never off a ledge on the ground; stops at the first that fails), no box at body height (`phaseClear`), short of the MESH collider's first wall
+  (`collRay` at hip and chest, minus his radius), and `collFree` on the chosen spot; under `min` 1.2 m found -> no blink, the flip runs as before.
+- THE LOOK, ~.38 s: two small tears from the ENTRANCE's own maker (`entryPortal`, scale .2, no warp snapshot, no arcs) driven by their own clock
+  (`phaseTick`, `PHASE.run`) -- the entrance's `entryPortalStep` / tilt code is NOT touched (its worker is mid-fix). The in-tear opens, he is gone
+  at `tOut` .1 s (a violet burst), the out-tear opens at the spot, he pops out at `tIn` .2 s with a hop (`popUp`) and the flip of that direction
+  (`airFlipGo`: side / front / back), both seal by `T`. Sounds: the entrance's `open` and `seal` roles.
+- UNTOUCHABLE: `playerHurt` returns while `p.phase` is set, and `LIFE.invT` covers `tIn` + .15 s.
+- Not yet: no lore gate (a free switch, by design); no checkpoint travel. `npm run check` ok. Shipped unverified.
 ## m2502 -- the level portal fits the frame (Nov 5 2026)
 Rendered the level-opening fix: the seam is a flat horizontal line from the first frame and widens into a level oval -- but with its long axis now
 running ACROSS the view, the full oval spilled past both edges of a phone frame. `pScale` .5 -> .34 so the whole ring sits inside the play camera's
