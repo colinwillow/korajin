@@ -44,6 +44,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2536 -- UNDERWATER pass 4: FEEL -- the dive arc, splashes in and out, the muffled world, bubble blips, a calmer tread (UNDERWATER.md) (Nov 5 2026)
+- **The dive arc** (`uwDiveArc`): a head-first dive off the deck (`p.lkDive`, m2372) no longer stops dead at the surface -- he carries on DOWN at
+  2.5 m/s + .55 x his fall speed (cap 7), keeping .75 of his run, the water slows him, the pitch follows (head first, levelling, head up) on the
+  prone `swim` clip, and he glides back up and breaks the surface. Headless: off at 2.5 m, he entered at vy -6.15 and was decelerating (-4.7) at
+  d ~1 m. A plain jump in is unchanged (the plunge bob).
+- **Splashes:** a ring + droplets when he duck-dives from the surface (right stick down), and when he BREAKS the surface coming up faster than
+  1.3 m/s (sized by his speed); the entry splash was already there.
+- **Muffled underwater** (`uwAudio`): the whole SFX bus goes through one low-pass that closes to 520 Hz when the lens goes under (the boat, the
+  falls, the lapping go dull and far) and opens back up out of the water, plus a low hum of the deep (noise through 180 Hz, louder with depth).
+  His bubble bursts make a little three-blip bubble sound (`uwBlip`). All through the game's own mute/volume; `UWATER.snd` holds every number.
+- **Animation:** his clips are `agoblin_swim.glb` (his Forge library on Grumbo: tread, swim, float, swim_edge, dive, run_dive, climb_top).
+  Under the water the tread plays slower (x.6, a calm hover); the prone `swim` clip does the travelling and the vertical strokes, pitched along
+  his path (pass 1). No new clip was needed.
+- Not checked by ear (headless has no speakers) -- the gains are first guesses. Box moved: anim / audio / splash / dive arc. Shipped unverified.
+
 ## m2535 -- UNDERWATER pass 3: LIFE AND DEPTH -- the bed, fish, jellies, glow, the sunken shrine over the temple (UNDERWATER.md) (Nov 5 2026)
 `UWLIFE` (SC_UWLIFE markers; placed things are rows with stable ids) built by `uwLifeMake(T)` the first time he is in the water. The SITE is the
 deepest hollow within 150 m of the boat, searched off `L.groundAt` (measured: (-49.6, -80), bed -16.4 m, -14.9 at 20-40 m round it).
