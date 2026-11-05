@@ -53,6 +53,30 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2620 -- VINE WHIP: the vine is a VINE (braided tube, leaves, tendrils, tip bud), a carved handle; the charge = hand held UP; THE WHIP-ONLY RULE
+
+**His (after trying it, via main):** (1) *"What does the whip do that I can't already do with acrobatics?"* -- make it NECESSARY, sized against his
+measured max reach; (2) it reads as plain cylinders next to his stylized weapons; (3) the charge still goes "way back" -- he wants the hand simply
+HELD UP above his head, like a fishing pole about to cast, the vine dangling; (4) keep tapering the cast.
+**The vine** (`whipTex`, `WHIPLOOK`, `whipVineDraw`): a painted canvas ATLAS (no file) -- a braided strand texture that repeats along the length
+(three twisted strands, bark speckle, thorn nubs), a leaf card and a curled tendril card -- on a 6-sided TUBE twisted along its length
+(parallel-transported frame, so no flips as it curls), tapering .032 -> .007 m, with 7 leaves and 4 tendrils riding it. ONE mesh, one material
+(the ribbon it replaces was also one); the buds are still the glow points and the LAST one is now the tip bud. Night glow and the CHARGE both drive
+`emissiveIntensity` (one writer: the vine step). **The handle** (`whipScene`): a carved wood lathe with collars, a leather wrap spiralled over the
+grip, bronze ferrule + pommel cap with prongs (warm bronze, never black), a Jinra GEM pommel, the coil in the vine's own braid -- merged per material (5 draws).
+**The charge:** `WHIPCAST.hold` is now the hand straight UP over his head, the wrist cocked back a touch, the chest barely turned; the vine
+DANGLES off it (the trail state now hangs it under the hand, a little behind, 1.5 m, instead of soft-pinning it 2.6 m back). The lash/throw
+cocked key moved to match (up, only a little back), and a release blends from the held pose over `relBlend` .09 s (no pop).
+**The rule:** VINEWHIP.md's new section THE WHIP-ONLY RULE, with the move-table numbers: zoom + double + 3 kicks **36.8 m**, run + double + 3
+kicks **33.6 m**, standing high jump + 3 kicks **22.6 m**, high jump **6.7 m**, wall run up **13.4 m** -> whip spans >= 41 m (>= 25 m off a short
+perch), ledges > 7.4 m with no wall under them (> 14.7 m with one), no walls along a span, knot ceilings, pulls. Mirrored in FOREST_TEMPLE.md.
+**`npm run moves` HAS DRIFTED** (run here because he asked for his max reach): on m2606 half the rows fail or mislabel (jump_stand / dbl_stand
+"never left the ground", the bar never caught, sprint 1.1 m/s, the long-jump gesture now gives a high jump) -- so `tools/moves.json` and
+LEVELGRID.md were put BACK to the m1375 table and the rule sizes against the larger of the two readings. Fixing the harness is open.
+**Audit:** sandbox B (20 m pit) and E (25 m with a pillar halfway) are NOT whip-only; C's 10 m ledge is wall-run reachable -- the next build re-lays them.
+**Filmed** (`whipshot charge lash --near=1`, and `--near=2`, new: a close lens): `docs/vinewhip/m2607_charge_lash.png`, `m2607_vine_close.png` --
+the hand goes straight up with the vine hanging under it, then the overhand cast. **Boxes:** none ticked (adds a DONE WHEN box for the rule); his sign-off open.
+
 ## m2619 -- COMBAT LAB, harder pass C: THE CORE SQUAD placeholders (ENEMY_ROSTER.md), each with a stone twin
 - Six new `ARENA.kinds` on rigs we already have, each its own hue (a per-kind `hueDeg` uniform through `rivalHue`) and its own `CBT.def` row,
   until his Tripo models: HUSK SOLDIER (the samurai's body + katana set, terracotta, the ordinary arena brain -- not the mirror; block .35),
@@ -235,7 +259,6 @@ second writer)."*
   halo 1.9 m / .13, point size capped. Also: the shrine's jellies (x.42 -> x.16) and the fan corals (glow 1.3 -> .7) were saturating white.
 - TOOLS > LOOK > **DEEP GLOW (GRUMBO): ON / OFF** -- his taste call (`mel.uwglow`). Render: images/feedback/m2586/uw_glow_render.jpg.
   Shipped unverified.
-
 ## m2606 -- VINE WHIP: the cast is ONE-ARMED (right arm only, procedural); the charge is the arm cocked overhead + a glowing vine
 
 **His (on m2604, screenshot `images/feedback/m2604/whip_two_arms.png`):** *"The throw whip animation looks whack, it's TWO ARMS?? It makes no sense,

@@ -83,6 +83,10 @@ rest -> traversal -> traversal + combat -> puzzle -> combat (mid-boss) -> TEACH 
 8. the fall gallery + the drain (twist); 9. the shrine climb + the chalice; 10. the statue gauntlet + the bridge;
 11. the boss: the Hollow Banyan (COMBAT.md boss knobs; `combatBoss` if a set boss fits, else its own); 12. the GET moment + the geyser out.
 
+
+**THE WHIP-ONLY RULE (his, Nov 5 2026: "What does the whip do that I can't already do with acrobatics?")** -- every whip room in the temple is
+sized by VINEWHIP.md's rule: spans >= 41 m (or >= 25 m off a short perch), ledges > 7.4 m with no wall under them (> 14.7 m with one), no walls
+along a span, knot ceilings over pits, and pulls no move replaces. Every room that needs the whip says which rule makes it whip-only.
 ## How it is built (SCENE_COMPANION.md: data-first)
 - `ftkMake(THREE, O)` between `// FTKLIB:START` / `:END` is a PURE builder of its table (`SC_FTEMPLE` markers): materials (`mats`), the
   placement rows (`kit`; the chambers get their own sets), the underground light (`env`), the spawn and the headless cameras (`shots`).
