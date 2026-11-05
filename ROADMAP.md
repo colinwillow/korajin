@@ -53,6 +53,7 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
 - [ ] **THE DESERT REGION** -- plan in `DESERT_REGION.md` (m2539): steps 0 perf (m2538, done) / 1 plan (m2539, done) / 2 kit + colliders / 3 sand + dunes everywhere / 4 floaters everywhere / 5 zones one at a time, sky ascent first.
+- [ ] **THE SUNWELL (desert village)** -- `DESERT_VILLAGE.md`: plan (m2561) / platforms + routes / buildings / props + treasure / villagers. Owned by the village worker; E spoke r 240-340.
 - [ ] **THE COMBAT LAB -- OPEN (his, Nov 4).** `COMBAT.md`: the triangle, every enemy's profile, bosses, difficulty, temple-ready rows.
       KORAJIN > The Combat Lab (`?w=forge&zone=combatlab`).
   - [x] m2466 pass 1 THE LAB (spawn panel by roster slot, counts, difficulty, AI on/off, slow-mo, reset, readout).

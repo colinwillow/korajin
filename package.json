@@ -38,6 +38,7 @@
     "nightshot": "node tools/nightshot.mjs",
     "lakestrip": "node tools/lakestrip.mjs",
     "bouldstrip": "node tools/bouldstrip.mjs",
+    "dvplan": "node tools/dvplan.mjs",
     "hitch": "node tools/hitch.mjs",
     "snowtris": "node tools/snowtris.mjs",
     "foreststrip": "node tools/foreststrip.mjs",

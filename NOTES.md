@@ -44,6 +44,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2561 -- THE SUNWELL, pass 1: THE PLAN (DESERT_VILLAGE.md; his: "a VILLAGE, FLOATING PLATFORMS with BUILDINGS, TREASURES, VILLAGERS") (Nov 5 2026)
+- **Sector agreed with the desert worker** (session messages): the E axis, theta +pi/2 off `F.c`, r 240..340 -- the village centre (the well) at
+  world (290, -6), straddling the ring route r 300. Mine: `DVILLAGE`, `dvGeo`, the village builder, its isles and colliders, villagers, chests,
+  GODPLACES `dvillage`, and ONE field `DPLACE.sky.village` + its skip line in `bouldSkyRocks` (the region floaters keep out of theta 1.30..1.84,
+  r 200..380 -- the low solid ones there go with their collider rows, both read the same rows). They add a sand FLATTEN term over r 55 -> 85.
+- **The plan is a table** (`DVILLAGE`, SC_DVILLAGE) and **the layout is a pure function of it** (`dvGeo`, DVGEO markers): the game's builder and
+  the new checker `npm run dvplan` run the SAME text, so the route the checker passes is the route the game will build.
+- **Sacred geometry:** the axis gate -> market avenue -> well court -> hall; a hexagonal SPIRAL of six floating isles round the well, every 60 deg,
+  +4 m a turn (+3 .. +23), and the SKY SHRINE (+28) hung straight over the well. Lanterns on the octagon, beds and palms on the hexagon.
+- **`npm run dvplan`** (tools/dvplan.mjs) lifts the table, checks every link against his body (riser <= .32, slope <= 30 deg, hop <= 1.6 up and
+  <= 3 across) and draws images/plan/desert_village_plan.png (top-down + the climb unrolled as a section). Today: 7 links, all ok --
+  L0 stair 10 x .300; L1/L4 rope 16.5 deg (ends 9 / 23); L2/L5 hops 2.41 / 2.45 m across, 1.00 up; L3 hanging stair 14 x .286; L6 17 x .294.
+- No geometry yet (pass 2 builds the platforms and routes). Draws / tris unchanged except the floaters skipped in the patch (a few fewer).
+- Whole-piece rule: this opens the SUNWELL sandbox (its DONE WHEN is in DESERT_VILLAGE.md); box 1 (the plan) ticked, everything else open.
+Shipped unverified.
 ## m2560 -- FIX: m2559 shipped a BLANK PAGE (merge-conflict markers in index.html) (Nov 5 2026)
 My pass-6 push rebased onto a newer main with a stash, the stash pop conflicted on the `mel` export line, and the gate line ran `check` (it
 FAILED: `SyntaxError: Unexpected token '<<'`) but the commands after it were chained with `;`, so bump, commit and push went ahead. Resolved
