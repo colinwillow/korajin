@@ -47,6 +47,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2506 -- ARCHITECTURE PASS 2: OVERGROWTH -- IVY CURTAINS, MOSS OVER THE LIPS, A GREEN RING AT THE FEET (his: "vines, lots of ivy, almost a green bowl")
+- DKLIB `ivy` (a vine that HUGS a face: down-slope direction, face normal, side-to-side wander, thinning, a droop off the face; leaf
+  clusters of two crossed cards, overlapping, darker at the top of each leaf), `curtain` (2-4 vines fanned from one anchor plus a lumpy
+  MOSS MAT draped over the lip -- noise, drooping at its ends and over the edge), `bush` (lumpy mounds). All vertex-coloured into ONE
+  `vflora` mesh per piece (`floraM`, one material for every giant); `add`/`flush` keep the colour for that key only.
+- Where: over every slice lip of the great pyramid (curtains per face, more on a ruin), a 70-bush green ring round its foot; over every tier
+  edge of the stepped pyramids down their risers + a ring at the foot; ivy off the gate's lintel, bushes at its uprights.
+- Looked at (play / close / detail): first cut was sparse, the leaves green GEMS (low-poly icosahedra) -> crossed leaf cards, darker greens
+  (`K.giant.ivy`), curtains; then the moss mats read as smooth SAUCERS sticking out like shelves -> lumpy, drooping, draped.
+- CRAFT: every vine starts ON a lip and runs down the face it hangs from (nothing floats, nothing straight). Next: more seams; carved panels,
+  conduits, sockets, worn edges, fitted stones; the obelisks. check + boulders boot pass. Shipped unverified.
+
 ## m2505 -- ARCHITECTURE PASS 1: THE GREAT PYRAMID SLICED, ITS GROOVES GLOWING (his: "I'm not loving it" + what "square rings" meant)
 His: "picture a smooth regular pyramid, slice it horizontally into layers, spread the slices apart a little so each layer is slightly INSET,
 with a gap between them -- those gaps GLOW, or have strange things going on inside them: Jinra light, alien machinery, moving parts, runes.
