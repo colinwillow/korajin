@@ -58,6 +58,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2669 -- the bow arc: the PURE GLOW is the default again; TOOLS > BOW > ARC LOOK: GLOW / CRISP (hairline edges, a ground shadow, a ringed mark)
+His (Nov 5, relayed) on m2650/m2666 by day: *"more visible, but dark, ugly brown-green -- I prefer the pure glow."* So: the default is the old
+pure glow at every hour, and a switch for a day-readable look that stays bright and pretty, not a muddy band.
+- `BARC.look` GLOW (default, remembered as `mel.arcLook`) / CRISP, TOOLS > BOW > ARC LOOK. GLOW: `arcDayK()` is 0 -> no edges, no shadow, no ring,
+  the old colours -- exactly pre-m2650. m2650's wide dark core, its radial halo and its day colour shift are GONE (they were the muddy part: a dark band
+  UNDER a .45-opacity glow shows through it).
+- CRISP (by day; faded out by `dusk` .4 like m2666, so the pure glow at dusk and night): the glow keeps its own bright colour; `BARC.out` is now two
+  HAIRLINE strips just OUTSIDE the ribbon (from its half-width to `edgeW` 1.7x it, deep purple #2a0d40 at `edgeOp` .9) -- nothing dark under the
+  glow; `BARC.shadow`, the arc laid straight down onto the ground (`groundAt` per point, `shW` .07 m half-width, #101018 at `shOp` .22,
+  polygonOffset so it sits on the floor); the emblem x`emK` 1.35 brighter, with a thin dark ring (r .60-.655 of the 1.25 m mark) at `ringOp` .85.
+- Headless (forge, day, bow drawn): CRISP -> edges on (.90), shadow .22, ring .85; GLOW -> none of them. How it LOOKS is his phone. Box moved: none.
+
 ## m2668 -- THE KIT, his gallery notes part 2: the CAMERA -- 45 deg and unlocked, a piece that drives something ELSE frames both (`shows`), and a REVEAL with a jingle (Nov 5 2026)
 - **45 deg** (`IKIT.camSide` 28 -> 45): the lens comes round 45 deg off his back. It was never locked -- `p.camWant` is an ease a drag cancels.
 - **`row.shows`** (a row id or [x, y, z]; a crank shows what it `drives` by default): the piece frames HIM and the RESULT through the ACTION CAM
