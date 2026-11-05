@@ -41,7 +41,7 @@ floor. RESET puts every piece back.
 ## DONE WHEN
 - [x] INTERACT.md written: one row shape, the shared walk-up / lens / pose / rumble, each piece's beats, this list.
 - [x] 1. CHEST (m2623): the full ritual + GET + backpack, strip in NOTES; the desert village's backwards chests fixed (`face: 'auto'`).
-- [ ] 2. HEAVY DOOR: push, strain, rumble, dust, grind; a strip.
+- [x] 2. HEAVY DOOR (m2627): push, strain, treading feet, pulses of rumble / dust / grind, it finishes on its weight; strip in NOTES.
 - [ ] 3. WHEEL CRANK: spin the stick, hand-over-hand IK, the rope winds, the gate rises; faster spin = faster; let go = slips back; a strip.
 - [ ] 4. BUTTONS / PLATES / LEVERS / DRAWERS / POTS; a strip.
 - [ ] 5. RUMBLE: TOOLS > HAPTICS; his plain answer on whether the iPhone tick works.

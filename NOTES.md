@@ -53,6 +53,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2627 -- THE INTERACTIONS KIT pass 2: the HEAVY DOOR (INTERACT.md)
+A stone slab in a new doorway in the sandbox court's back wall (jambs, a lintel, an alcove behind with a glowing orb on a plinth), a row:
+`{ id: 'door_heavy', kind: 'door', at, face: 'auto', w, h, d, swing (deg), hinge }`. Tap PUSH: he walks up, his palms go onto the stone (two markers
+on its face at his SHOULDERS -- the first strip had them at 1.35 m on a 1.4 m Grumbo, arms over his head), he leans in to 30 deg with a shudder
+in it (strain), and his FEET TREAD AND SLIP: the kit hands the left stick a push into the door (`R.push`) while `R.pin` holds him where he stands,
+so the walk cycle runs in place. The slab grinds open on its hinge in PULSES (every .55 s: a rumble, the stone sound, dust out of the top / hinge /
+free-edge seams, grit off the free edge), away from him; at 58 % open he lets go and it finishes on its own weight (1.4 s, ease-out, a thud and a
+puff), the lens letting go with it. The doorway's collider is a `BDYN` box: the closed slab, then a post by the hinge once it is open.
+Shared kit changes: `ikitSteer` returns `R.push` when a piece sets one, `ikitRunStep` applies `R.pin`. Room floors lifted over the forge's white
+floor (it z-fought through at a distance). Strip (sent): reach -> push with treading feet -> the slab swinging -> open on the alcove's orb. ~3 s of
+push (the first try took ~5: the grind runs only part of each pulse, so its rate is divided by the pulse mean .29 now). 30-35 draws, 16k tris.
+STILL OPEN: the dust reads faintly against the pale stone in the strip -- his eye.
+
 ## m2626 -- the temple sheet's INTERACTIONS column speaks the Interactions Kit (IKIT kinds)
 
 The Interactions Kit started landing at m2623 (INTERACT.md, `ikitAdd({ id, kind, at, face, from })`; `chest` first, then the heavy door, the
