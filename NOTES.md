@@ -45,6 +45,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2580 -- UNDERWATER: smooth crossing of the surface; no stick gestures while swimming (his two fixes, via the orchestrator) (Nov 5 2026)
+1. *"Flicks on the right and left sticks while swimming broke the CAMERA, and I couldn't fix it until I got back on the boat."* Every flick
+   and every hold-release on either pad is ignored while he is in the Lake's water (`uwNoGest`, gated in `bindStick`'s `end` before
+   `onFlick` and `onRel`); only the swim input and the TAP work (the tap still climbs aboard). And nothing a gesture started can hold the camera:
+   `uwCamReset` (every frame in the water, again when he wades out or finishes the climb aboard) clears the phase shift's camera
+   (`PHASE.cam` / `camO` / `dk` / `run`), `p.camWant`, the lock and any half-started move (melee, flips, roll, slam, charge, whirlwind, guard, aim).
+2. *"The transition from above to below pops; it's janky."* No hard flip on one frame now:
+   - the LOOK eases: `uUw` is a 0..1 factor (`cross.hl` .1 s half-life, ~.3 s); every patched shader blends to the underwater result by it, and
+     the shafts and motes fade with it;
+   - the LENS travels through the surface over `cam.cross` .35 s (smoothstep) instead of jumping .8 m between its two clamps;
+   - while it straddles, a WATERLINE SPLIT (`uwSplitMake`, one full-screen quad drawn last, no scene pass): per pixel the view ray's point on a
+     plane .45 m out against the wave height -- a water tint under it, a bright meniscus line with a dark lip, wobbling;
+   - going IN: a splash sound and a burst of 22 bubbles round the lens; coming OUT: a splash and drips running down the lens for 1.4 s;
+   - the audio muffle fades (time constant .12 s in, .15 out, was .05).
+   Headless: the split and the drips rendered on a forced lens at the surface (first cut wobbled too much in screen space: cut to .005).
+   SwiftShader runs too slowly here to watch a real crossing frame by frame. Shipped unverified.
+
 ## m2579 -- THE VINE WHIP pass 6: FEEL -- a Jin goop streak on the lash, buds along the vine, the vine glows at night (VINEWHIP.md)
 - The tip leaves a GOOP trail while it flies (`goopFx().trail`, the arrows' idiom; TOOLS > GOOP FX off = none), ended at the snap / recoil.
 - Jin BUDS: one Points draw riding every third verlet point (2 draws for the whole whip).
