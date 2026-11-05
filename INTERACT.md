@@ -42,7 +42,7 @@ floor. RESET puts every piece back.
 - [x] INTERACT.md written: one row shape, the shared walk-up / lens / pose / rumble, each piece's beats, this list.
 - [x] 1. CHEST (m2623): the full ritual + GET + backpack, strip in NOTES; the desert village's backwards chests fixed (`face: 'auto'`).
 - [x] 2. HEAVY DOOR (m2627): push, strain, treading feet, pulses of rumble / dust / grind, it finishes on its weight; strip in NOTES.
-- [ ] 3. WHEEL CRANK: spin the stick, hand-over-hand IK, the rope winds, the gate rises; faster spin = faster; let go = slips back; a strip.
+- [x] 3. WHEEL CRANK (m2630): spin the stick, hand-over-hand IK, the rope winds on its drum, the portcullis rises; faster = faster; let go = slips back; caught at the top; strip in NOTES.
 - [ ] 4. BUTTONS / PLATES / LEVERS / DRAWERS / POTS; a strip.
 - [ ] 5. RUMBLE: TOOLS > HAPTICS; his plain answer on whether the iPhone tick works.
 - [ ] Every piece is a row a temple can place (`ikitAdd`), with a stable id; RESET replays all of it.

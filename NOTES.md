@@ -53,6 +53,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2630 -- THE INTERACTIONS KIT pass 3: the WHEEL CRANK, its rope and the portcullis it raises (INTERACT.md)
+A ship's-helm wheel on a post up on a BALCONY along the court's right wall (2.4 m, up seven .30 risers and the edge, a rail on its open sides),
+facing a PORTCULLIS in the front wall below; behind it a VAULT with a second chest (BRONZE KEY). Rows: `crank_balcony { kind: 'crank', r, drives:
+'gate_vault', pulley }`, `gate_vault { kind: 'gate', w, h, rise }` (a gate exposes `S.set(u)` and `S.top()` -- anything a crank can drive does).
+Tap TURN: he takes the spokes -- two-bone IK on the spoke handles, HAND OVER HAND: a hand whose spoke has gone round past its side (`drop` 1.6 rad)
+or across the top lets go and takes the spoke now nearest its own top. SPIN THE LEFT STICK in circles: the stick's angular speed (either way
+round, while it is out past .45) is the wheel's, eased; faster = faster (cap 12 rad/s); `gear` .55 / `turns` 3 -> ~3.5 s at a brisk spin. The axle's
+DRUM shows the rope coiling on (nine coil rings appear with the winding), the rope's stripes run, and the rope goes drum -> an iron pulley over the
+gate -> the gate's top ring, so it visibly hauls it. A pawl clicks every eighth of a turn, the odd rumble; all the way up, the RATCHET CATCHES (a
+clang, a rumble) and it stays. Let go (no spin for 2.5 s and he lets go, or never started) and it SLIPS BACK slowly (.06 /s), the wheel turning
+back with it, a thud at the bottom. `IKIT.fakeSpin` (rad/s) drives it for a test strip (no thumb in a headless browser).
+**Every kit piece now asks the lens round BEHIND him once he has turned to it (`p.camWant = R.h`)** -- the first crank strip had the play camera
+on the far side of the wheel, looking back through the housing into his face (he had turned; the lens had stayed where the spawn left it). And
+the hub went 1.02 -> .85 m, the wheel .5 -> .42: at 1.02 Grumbo (1.4 m) was cranking over his head.
+Strip (sent): hands on the top spokes, the wheel turning, the rope running over the pulley, the portcullis climbing into the wall, caught.
+101-110 draws, 18-19k tris with the wide shot. STILL OPEN: from the play camera behind him the gate is partly behind the front wall's top edge.
+
 ## m2628 -- UNDERWATER DETAIL B: rounded, layered, mossy rocks; a seabed with sand ripples, pebbles, shells and debris (Nov 5 2026)
 - **Rocks:** smooth spheres pushed by three octaves of noise, flattened underneath and squashed, with STRATA (terraced bands) and MOSS (vertex
   colour where they face up), rock texture over them; two shapes -- 24 big ones at detail 3, the rest at detail 1 (smooth normals, no facets).
