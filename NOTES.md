@@ -53,6 +53,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2616 -- COMBAT LAB, harder pass A (his verdict on the lab: "the combat needs to be MORE FUN, so it's not just the easiest thing in the world")
+- TOOLS > DIFFICULTY: EASY / NORMAL / HARD (the same `ARENA.duel.lvl` the lab sets; NORMAL is the MEDIUM key, shown as NORMAL in both).
+- NORMAL IS NOTABLY HARDER: react .35 -> .26 s, wind-up .6 -> .5, recovery .9 -> .7, rush after 2.0 -> 1.6 s, combo .3 -> .45; turtle-to-red
+  1.6 -> 1.3 s, feints .15 -> .22; they block / parry / dodge x1.25 (was x1). HARD tighter again (react .13, wind .34, recover .45, combo .6,
+  x1.6 defence, 3 tokens).
+- A HIT COSTS: `dmgK` 1.4 at every level (was 1) -- the cost of being hit is the same everywhere; the difficulty is still the timing.
+- TOGETHER (`cbtPair`): when one starts a swing, the nearest free partner in reach (with a token free) is cued .22-.42 s later and closes in
+  for it -- two blows staggered from two sides. Chance by difficulty: 0 / .55 / .85.
+- NO INFINITE JUGGLES: an arena or horde body pops back up at most `jugMax` 2 times, then falls (the count resets when it is back on its feet).
+  (Flinch-lock was already gone: m2470's poise.)
+- FEEL: a HEAVY hit that lands (power >= .9) punches the camera (`heavyShake` .22) and holds the frame (`heavyStop` .09 s), on top of the
+  existing hit-stop and knockback.
+- Next (pass B): mixed squads and REASONS to use every tool; pass C: the core-squad placeholders from ENEMY_ROSTER.md with stone twins.
+  `npm run check` ok. Shipped unverified.
+
 ## m2615 -- THE LAKE REGION: THE PLAN (LAKE_REGION.md + the map)
 His (relayed, Nov 5): *"There's nowhere really to go in the lake. It needs more entry and more stuff going on, places to go, people to see."* Do it like
 the desert: plan, kit, then one sub-region at a time.
