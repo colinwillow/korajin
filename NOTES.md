@@ -44,6 +44,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2546 -- THE SAND SCORPIONS, a procedural placeholder (his: "creepy little spider-scorpions buried in the sand as small lumps -- they BURROW UP in a
+   spray of sand when he walks near, skitter at him, circle and flank, and the tail STINGS; dodge, block, parry, slice or stomp them and they burst")
+- `SCORP` (SC_SCORP) until his Tripo model. CHEAP BY CONSTRUCTION: every scorpion is one instance in each of three InstancedMeshes -- BODY
+  (three segments, eight legs, two pincers, merged), TAIL (a curled 6-ball chain + the stinger, its instance = the body's matrix x its own
+  rear / strike angle about its root) and the sand MOUND -- 3 draws for all of them, +2 (`sbody` / `stail`, a plain stone material) only while
+  stone twins exist. ~1.2k tris each. The legs "skitter" as a per-instance roll / bob jitter, not bones.
+- THE BRAIN (`scorpStep`): BURIED (a mound) -> within `wakeR` 6.5 m -> BURST (rises out in .45 s, a sand spray, a stone knock) -> HUNT (each
+  skitters to its OWN flank point on a 2.1 m ring round him, the angle drifting, so they circle and come from the sides; 4.6 m/s) -> in reach
+  and holding one of the COMBAT LAB'S attack tokens (`cbtLv().tokens`: 1 / 2 / 3 by difficulty) -> WIND (the tail rears, the body reddens, the
+  m2468 WHITE glint: block / parry it; .7 / .5 / .34 s by difficulty) -> STRIKE (a lunge; the sting goes through `playerHurt`, so his guard,
+  parry and roll answer it like any blow -- a PARRY stuns it 1.1 s) -> RECOVER .7 s (the punish window) -> HUNT. Far off (24 m) it burrows home.
+- HURT (`scorpBlow`, hooked beside every spider hook: the melee sweep, the slams, the whirlwind, bolts): 2 hp, a heavy blow (power >= .9) takes
+  both; at 1 hp it BURROWS (sinks, moves under the sand near its home, re-buries 2.4 s later, healed); at 0 it BURSTS APART (dark chitin chips,
+  a Jinra puff, sand). A STOMP (him coming down on one at -2.5 m/s or faster) kills it and bounces him.
+- STONE TWINS (STATUES.md): `scorpSpawn(x, z, { stone: 1 })` -- grey, no glow, no mound, inert; `scorpWake()` (an EVENT, never proximity).
+- WHERE: the COMBAT LAB, CREATURE row -- SCORPIONS (5 buried ahead of him: walk up to them) and SCORP STATUES (3 stone twins; tap again to wake
+  them). In the DESERT (`?w=forge&zone=boulders`) three NESTS (`SCORP.nests`, offsets from the arrival spot: sc_dune_n [22, -34] x4, sc_dune_w
+  [-38, -18] x3, sc_ruin_e [34, 26] x4) -- placeholder spots for the desert's own worker to move.
+- `npm run check` ok. Shipped unverified.
+
 ## m2545 -- FOREST TEMPLE: THE FLOW (design pass, no game change) -- the key / lock graph, the sections, the mandala plan, the pacing
 His (via main, Nov 5): *"looks super cool so far"* -- then: make it FUN, the meat of the game; design first (ZELDA_STRUCTURE Part 2, TEMPLE_ROUTES,
 Boss Keys graphs, mandala temple plans as guides), diagrams, report before building. FOREST_TEMPLE.md "THE FLOW": 12 rooms on a mandala round the
