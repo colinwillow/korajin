@@ -53,6 +53,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2617 -- UNDERWATER: no darting fish; his glow is his night glow only (his two notes after diving) (Nov 5 2026)
+1. *"The tiny fish that dart across the screen fast -- they don't feel like they're in the world."* That was the MURMURATION: 220 fish orbiting
+   HIM at 3-7 m and .5-1.1 rad/s (3-8 m/s, right past the lens). It is now a fixed swirl round the light columns over the well, 9-17 m radius,
+   .09-.16 rad/s (~1-2.7 m/s), 14 m over the floor -- in the world, at a distance. The other schools were already 1-2.4 m/s on their own loops.
+2. *"The faint glow/sheen round Grumbo -- I meant the SAME as above water at night."* The halo is off (`heroGlow.a` 0), the rest-level push is off
+   (`HEROGLOW.uwK` 0), and the RIM that read as a sheen over his whole body is .3 (was 1.25; the key .4). What is left is exactly his night glow
+   -- his nightGlow pieces and cracks -- driven by depth through the same writer (`max(night, depth)`): none above 10 m, night strength by 40 m.
+   TOOLS > LOOK > DEEP GLOW (GRUMBO) still turns it off. Render: images/feedback/m2586/uw_fix_fish_glow.jpg. Shipped unverified.
 ## m2616 -- COMBAT LAB, harder pass A (his verdict on the lab: "the combat needs to be MORE FUN, so it's not just the easiest thing in the world")
 - TOOLS > DIFFICULTY: EASY / NORMAL / HARD (the same `ARENA.duel.lvl` the lab sets; NORMAL is the MEDIUM key, shown as NORMAL in both).
 - NORMAL IS NOTABLY HARDER: react .35 -> .26 s, wind-up .6 -> .5, recovery .9 -> .7, rush after 2.0 -> 1.6 s, combo .3 -> .45; turtle-to-red
