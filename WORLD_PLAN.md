@@ -125,3 +125,10 @@ Rule: the big things must still READ on screen -- frame them at distance (backdr
 camera pull back for them; never so big they're just a wall filling the view. The SAND region's signature: giant ancient-alien
 PYRAMIDS (some floating), glowing square rings / halos round them with carved writing, offshoots, tombs, megalith gateways,
 obelisks, colossal statues (statues/guardians will be his Tripo models -- leave slots for them).
+
+## 11. SACRED-GEOMETRY LAYOUT -- a standing rule for EVERY place (his, Nov 5)
+Nothing is placed at random. Every region, courtyard, chamber and backdrop follows a designed plan that reads as beauty and
+structure from overhead: axes and symmetry, processional avenues, concentric rings, mandala/radial patterns, golden-ratio
+proportions, courtyards with a long central channel or path and balanced side pieces flanking it, sightlines that line up
+(gate -> courtyard -> monument -> horizon landmark). At ground level it should feel natural (organic jitter, weathering), but
+a top-down view must reveal the organising principle. Every layout ships with a TOP-DOWN render that shows its plan.
