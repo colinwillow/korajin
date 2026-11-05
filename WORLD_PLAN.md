@@ -172,3 +172,21 @@ a real octopus, every piece can EXPLODE apart like an assembly diagram and reass
 bronze-and-Jinra mechanical octopus, fully procedural (no model file), with tentacles driven by procedural motion (wave and
 IK chains), segmented plates that can blow apart into an exploded view and snap back. Lives UNDERWATER in the lake, or
 FLOATS through the air in a level (he has always liked alien flying octopuses). Could be ambient life, a guardian, or a boss.
+
+## 16. PEOPLES, WILDLIFE, ENEMIES, BOSSES PER REGION -- the scope (his, Nov 5, open)
+Every region gets its own STYLE OF PEOPLE (villagers), its own WILDLIFE, its own ENEMIES and its own BOSS. That is a lot, so it is
+scoped as a matrix and built region by region, ONE REGION FINISHED before the next (the whole-piece rule). Colin makes the
+models in Tripo from concept prompts; we make placeholders, rigs, behaviour and placement.
+
+| region | people (village style) | wildlife | enemies | boss |
+|---|---|---|---|---|
+| FOREST (first) | forest folk: moss-and-bark weavers, the Toad Wanderers' cousins | glow moths, deer-like grazers, birds | Husk soldiers/archers, Thornback, Rootbound Sentry | Hollow Banyan |
+| DESERT | Sunwell toads (built) + sand nomads | sand lizards, dune birds | sand scorpions (+ giant), Dune Ray, Husks | Giant Scorpion / a Titan |
+| WATER (lake) | water folk: stilt and houseboat people | fish, rays, herons, the leviathan | Reef Crab Warden, lamprey eels | the water-temple boss |
+| SNOW | snow folk: fur-clad herders | the mammoth, snow hares, the dragon | Frost Oni | the snow dragon |
+| FIRE/STONE (Akatani, his homeland) | Grumbo's own people | lava salamanders | stone constructs | TBD |
+| AIR (last) | sky folk: kite-riders | sky whales, gliders | Kite Gliders | TBD |
+Core enemies everywhere: Husk Soldier, Husk Archer, Bulwark, Sphinx Hound, Hollow Moth, Hollow Monk (ENEMY_ROSTER.md).
+
+ORDER (recommendation): finish ONE TEMPLE end to end first (the forest temple: vine whip sign-off -> rooms -> mid-boss ->
+boss), with its region's people, wildlife and enemies. That proves the whole pipeline once. Then each next region repeats it.
