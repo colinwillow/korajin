@@ -44,6 +44,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2565 -- UNDERWATER pass 7: THE CREATURES -- comb jellies, lion's manes, eels, mantas, lantern fish, floor critters (UNDERWATER.md) (Nov 5 2026)
+`UWFAUNA` (SC_UWFAUNA markers), `uwFaunaMake(T, site)`, one instanced draw per kind on one small shader (`uwCritMat`: a dark body under a fake
+light from above + the glow weighted per vertex x the hue x the shared depth/night glow; motion in the vertex shader):
+- **COMB jellies** (18): rainbow light running down eight ribs, turning slowly as they drift (-40..-4 m). **LION'S MANE** (6): 2-3 m bells,
+  fourteen 3.5-6.5 m tentacles and four frilled arms, amber / magenta, the bell breathing (-42..-16).
+- **EELS** (9): a wave travels head to tail, a dotted glowing lateral line and eyes; they circle the shrine at 6-30 m radius, -45..-12, keeping
+  .8 m off the bed. **MANTAS** (5): swept wings that FLAP, glowing wing edges and back spots, a whip tail; big loops (22-46 m) through -30..-8,
+  banked into the turn.
+- **LANTERN fish** (3 schools, 72): each with a glowing lure; the deep tiers (-42, -32, -20), scattering when he is close.
+- **CRITTERS** (40): little crawlers with glowing eyes on the floor and ledge (deeper than 18 m): crawl, stop, turn, pitched to the slope.
+- **Budget (measured):** +6 draws, ~25k tris; 152 matrices a frame. With pass 6 the bowl's life is +14 draws / ~103k tris, drawn only with the
+  lens under near the site. Renders: the wide, an eel, a manta looked at (close shots of the lion and a critter landed inside flora). Shipped unverified.
+
 ## m2564 -- A FLAT SITE FOR THE SUNWELL VILLAGE (the village worker's ask) (Nov 5 2026)
 
 - `DPLACE.flat: [{ id: 'village', at: [290, 0], r: 55 }]` (offsets from F.c). The glue pushes each entry into BOULDLIB's `keep` list, so
