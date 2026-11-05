@@ -53,6 +53,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2622 -- VINE WHIP: every whip blow lands as BLOW_SRC 'whip' (the combat worker's shield hook)
+
+The combat worker (m2618) made a blow with `BLOW_SRC = 'whip'` tear a shield bearer's shield off and stagger it (`cbtDefend`). The whip's three
+`dummyBlow` calls (the lash strike, the yank, the thrown body) now go through `whipBlow`, which sets `BLOW_SRC = 'whip'` for the call and restores
+it after (`finally`, so a throw inside cannot leave it set). The yank's own shield rip on sandbox dummies (`whipYank`: the shield flies to him)
+is unchanged. Boxes: moves "pulls: shields off" (pass 5) toward the combat roster; his sign-off open. Shipped unverified.
+
 ## m2621 -- UNDERWATER DETAIL A: the shrine is real carved architecture (his: "extremely low poly, underdeveloped") (Nov 5 2026)
 `UWA` builds the pieces (all merged into the shrine's ONE stone draw, triplanar glyph stone; stone 1.1k -> 17.3k tris, measured):
 - **Columns:** turned (lathe), a moulded base on a bevelled plinth, entasis, 14 FLUTES, a capital (echinus + abacus); the tilted / broken ones
@@ -65,7 +72,6 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - **Rubble** (three placements, ids `uw_rubble_01..03`): fallen column drums and broken bevelled blocks round the well, the arch and the torii.
 - CRAFT 3 checked on the close renders (images/feedback/m2586/uw_detailA_shrine.jpg): every piece sits on a footing or the bed. Next detail
   passes: rocks + seabed (ripples, pebbles, shells), plant forms, creatures. Shipped unverified.
-
 ## m2620 -- VINE WHIP: the vine is a VINE (braided tube, leaves, tendrils, tip bud), a carved handle; the charge = hand held UP; THE WHIP-ONLY RULE
 
 **His (after trying it, via main):** (1) *"What does the whip do that I can't already do with acrobatics?"* -- make it NECESSARY, sized against his
