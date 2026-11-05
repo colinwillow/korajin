@@ -59,6 +59,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2672 -- DRY SAND FOOTSTEPS (his: "the sand sounds like running through a PUDDLE"), AND THE KIT'S STONE STEPS AS STONE (Nov 5 2026)
+
+- **Checked first: the classifier was NOT picking water.** Probed `stepSurf` headless at the landing, the dune seas, the region, the causeway and the ascent.
+  It returns **SAND** on every patch of sand (the banks are faked as decoded, because headless never decodes audio and an undecoded bank returns '').
+  **The wet sound was the FILES:** `sand_*` were Fantozzi's CC0 "Grass/Sand", which its own uploader says sounds like grass, and it reads damp.
+- **New `sand_1..6`:** "Sand Step Movement Sounds (Yo Frankie!)" by the Blender Foundation, CC-BY 3.0 (credit in `audio/steps/CREDITS.txt`;
+  the only sand-specific pack found, and no CC0 dry-sand set exists on OGA). It has two steps (L/R), made into six:
+  - pitch ×.95 / 1 / 1.06;
+  - a faint band-passed pink-noise hiss under each (2.6 / 3.2 / 3.8 kHz, the grains);
+  - silence-trimmed, mono, levelled to **-10 dBFS peak** (between the hard sets' -9 and grass's -11), 96 kbps mp3, 0.31-0.42 s.
+  The same paths, so the bump's hashes carry them to the phone.
+- **The kit's stone stepped as SAND by colour** (sandstone): the causeway, the giants and the field's rocks (`boulder_sand` matched /sand/ by NAME).
+  - DKLIB's `mat()` now tags `userData.surf`: stone for giant / slab / gold / cliff / strata / landD / under / mech / glyphs / void / slot / colOnly, sand for
+    dsand / drift. The field's rock materials are tagged stone. The fade copies (m2581) carry the tag (userData is copied).
+  - Probe: the stair at z -400 reads **STONE**; at -340 he is in the deep sand heaped at the pyramid's foot, so it reads SAND (correct).
+- `mel.stepSurf / STEPSURF / STEP / SFX` are on `mel` from the start now (they were only set by the Garden's late hook), and the `gsurf` shot probes them.
+- Not verified by ear: nothing here can listen. He judges the sound on the phone.
+
 ## m2671 -- THE KIT, his gallery notes part 4: THE CHEST -- no cone, a faceted gem, gold + blackened iron + Jinra, and a KICK (Nov 5 2026)
 - **The light** (his: "the glow coming out is a cheesy CONE, he hates it"): the cone is gone. Now SOFT LIGHT RAYS out of the gap (seven thin fanned
   planes with a fading texture, `ikRayTex`, swaying and breathing), rising MOTES (one Points of 40, gold and Jinra green, drifting up out of the
