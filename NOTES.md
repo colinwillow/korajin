@@ -53,6 +53,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2645 -- the entrance camera: a touch out and up, looking DOWN on the portal, easing into play; walls behind it handled (Nov 5 2026)
+His (via main): *"with a wall behind the landing the smart camera pulls in tight and the portal is barely seen; sometimes the portal reads as a flat
+LINE. Subtle -- start JUST SLIGHTLY zoomed out (a little more distance and height), ease in to normal as he falls and lands; the portal stays
+horizontal but the camera sees it from at least ~15-20 deg above; with a wall close behind, raise or offset the entrance camera rather than collapse
+in, then hand off smoothly to the smart camera."*
+- `entryCamPose` (from the entrance's snap in `stepCam`): while the entrance owns him the lens is `camOut` 1.3 x the play distance out and at least
+  `camEl` .5 rad up; `pH` 2.9 -> 2.5, so the lens is ~1.9 m above the portal at ~5.7 m: ~18 deg down onto it -- a ring, not a line.
+- `entryCamK` eases it: 1 while the portal opens, to .4 over the fall (`run.fallT`, measured from the drop height), to 0 by .7 s into the landing.
+  At 0 the pose IS the play pose (same elevation, heading, distance), so the smart camera takes over with no jump.
+- The pose is PICKED once per entrance: straight back first; if a wall is closer than `camFit` .85 of the distance it tries higher (+.25, +.5),
+  then swung .5 either side, then higher and swung, then high (+.8) -- the clearest wins; it never collapses onto him. Collision still clamps it.
+- Every ENTRY zone (rows that name no camera take this; the Interactions sandbox has no row and gets the default). Shipped unverified.
+
 ## m2644 -- THE INTERACTIONS KIT design pass 5: the LEVER, weighted, with a gear quadrant (INTERACT.md)
 His ask: "the LEVER (a weighted handle, a gear quadrant)". The lever kind's build is new (its sequence unchanged):
 - THE PEDESTAL (one draw): carved stone, glyph borders front and back, a bronze cap; bronze CHEEK plates and pivot caps; the RATCHET -- a bronze
