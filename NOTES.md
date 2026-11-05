@@ -122,7 +122,17 @@ chalice is replaced by the six shards. No game code changed. **Boxes:** none (a 
 - **BEFORE -> AFTER (the Lake, headless):** entrance on: worst frame 20,517 ms (50 links, mid-portal) -> **290 ms, under the card**; links
   after the card 56 -> 4 (under the card). Entrance off + a dive: links after the card -> 5, worst frame 318 ms (under the card), no long
   frame at the dive; the zone warm itself is 94 programs, ~4.6 s here, all behind the card.
-- **STILL OPEN:** the same A/B over snow / garden / arena / forge / boulders / dome temple (running); things made on FIRST USE that are not
+- **THE OTHER ZONES** (`entryhitch`, entrance on, 15 s after the card; links AFTER the card / ms waiting on links / worst frame):
+      zone        before                     after
+      snow        4 at portal-open / 96 ms   0 at the portal (1 at wait) / 1 ms
+      arena       4 at portal-open + 1 land  1 at the landing / 5 ms     worst 2,878 -> 1,785 ms
+      forge       4 at portal-open / 51 ms   0 / 6 ms
+      boulders    4 at portal-open / 626 ms  0 / 8 ms                    worst 2,986 -> 778 ms (under the card)
+      garden      0                          0 (8 compiled UNDER the card by the warm)
+      dome temple 0                          0
+  The links that moved all land at t-0.6 s, under the card -- the warm. Every remaining long frame here carries 0 links: swiftshader's draw.
+  **The one link left in the arena is at the LANDING** (both builds): the impact's FX on first use -- the next thing to pre-make.
+- **STILL OPEN:** things made on FIRST USE that are not
   in the scene at the warm (a weapon model loaded on its first swap, an FX pool made on its first burst) still compile on that frame --
   `entryhitch` with `DIVE` running `mel.swapGo(i)` measures each.
 ## m2623 -- THE INTERACTIONS KIT pass 1: the kit, the sandbox room, and the CHEST (INTERACT.md; KORAJIN > Interactions (sandbox), `?w=forge&zone=interact`)
