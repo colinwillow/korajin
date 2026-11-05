@@ -44,6 +44,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2535 -- UNDERWATER pass 3: LIFE AND DEPTH -- the bed, fish, jellies, glow, the sunken shrine over the temple (UNDERWATER.md) (Nov 5 2026)
+`UWLIFE` (SC_UWLIFE markers; placed things are rows with stable ids) built by `uwLifeMake(T)` the first time he is in the water. The SITE is the
+deepest hollow within 150 m of the boat, searched off `L.groundAt` (measured: (-49.6, -80), bed -16.4 m, -14.9 at 20-40 m round it).
+- **The sunken shrine, over four depths (VERTICALITY):** a half-buried TORII up the slope with its beam 3 m under the surface (`uw_torii`, the
+  first thing seen from above); a broken ARCH at mid-depth, half its lintel fallen on the bed; five COLUMNS climbing from the bed toward the light
+  (4-12.5 m, two tilted, one a square stele), each on a footing (CRAFT 3) with glowing rune bands; STEPS down to a WELL-HEAD at the bottom: a
+  crenellated stone ring, rune rings, and a sealed shaft whose spiral glow turns and breathes, with a faint light column rising from it. The water
+  temple is below it. Stone merged to 1 draw (980 tris), runes 1 draw.
+- **The bed:** 150 rocks (noise-dented, half sunk), 520 weed ribbons (tapered, drooping, curved: CRAFT 1; swaying from the root in the vertex
+  shader, three greens, clustered), 120 glow pods on the weed and rocks. 3 instanced draws.
+- **Life:** four fish SCHOOLS on four tiers (-3, -6.5, -10, -13 m; 98 fish, one instanced draw, wriggling tails in the vertex shader) looping the
+  site and SCATTERING when he swims within 4.5 m; 16 JELLIES (bell + four trailing ribbons, additive, the bell breathing) drifting up and down the
+  tiers. **Bioluminescence:** pods, jellies, runes and the well brighten with the lens's depth (x.7 at 3 m -> x3.2 at 15 m, `UWLIFE.glow`).
+- He cannot swim through the columns, the well, the arch legs, the torii posts or the big rocks (`uwCollide`).
+- Draws only while the lens is under and within ~150 m of the site: +8 draws there. Fish 98 + jellies 16 matrices a frame.
+- Headless renders (play camera, wide, the well close, the torii, looking up) looked at. Bugs found doing it: the fish merge returned null
+  (attribute mismatch -> built by hand). Not done: pass 4 (anim, audio, splash, dive arc). Shipped unverified.
+
 ## m2534 -- THE DESERT'S DAY SKY, PAINTED (his: "the sand world looks plain by DAY -- no HDR, no beautiful sky; the sky is a huge part of the frame")
 - The boulders zone already painted its own equirect (`F.sky`, m2458) as the background AND the PMREM light -- a gradient, mesas and a sun
   at ~4 px a degree. `F.sky.day` now upscales it x2 (3072 x 1536) and BRUSHES at that resolution:
