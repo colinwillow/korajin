@@ -47,6 +47,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## Loading-screen sun-wheel: all 16 rays (his: "it's almost symmetrical, but one side is missing a spoke")
 The boot card's SVG sun-wheel and the katana lock mark (`lockMkTex`) both skipped rays k=5 and k=12 on purpose ("worn"). He doesn't like it: both now draw all 16 rays (the long left ray with its cross-bar, the short lower-right ray). The ring's dash gaps are unchanged.
 
+## m2552 -- MENU is a player PAUSE MENU (Resume / Options / Quit to title), not the old Zap 'n Clancy chapter list (Nov 5 2026)
+Via main: *"The top-left MENU button still opens the OLD chapter list. Replace it with a real PLAYER PAUSE MENU: RESUME; OPTIONS (master / music /
+sound volume, camera sensitivity, LEFT-HANDED swap of the sticks, invert camera Y), saved and applied live; QUIT TO TITLE cleanly; it pauses the game."*
+- `PMENU` / `pmenuOpen` / `pmenuPaint`: a centred overlay in the ring palette (ink glass, cream rim, title red; big one-word buttons; scrolls when the
+  screen is short, so portrait and landscape both fit). MENU shows in PLAY too now. While open, `frame` returns before `frameBody` (the last picture
+  stays) and the clock is re-based on close (`last`), so nothing steps through the pause.
+- `OPT` (`mel.opt`): `master` scales the bus (`SFX.vol`, which carries the music too), `music` scales `MUSIC.vol`, `sfx` multiplies every `snd` gain,
+  `sens` multiplies the right pad's yaw rate (and the mouse), `invLook` flips the horizontal look. **THERE IS NO VERTICAL LOOK** in this game (the
+  camera's pitch is not player-driven), so "invert camera Y" became INVERT LOOK on the axis that exists. `lefty` = `body.lefty`: the pads, the
+  floating-pad zones, both ring sets and the quick-draw dial swap sides; the move pad stays the move pad, the gestures are unchanged.
+- QUIT TO TITLE clears the started / GOD-go session keys and replaces the page with the bare URL, i.e. the KORAJIN start screen from a clean load.
+- The old GOD list (places, chapters) is the menu's DEV PLACES button, GOD only. Shipped unverified; renders of the menu sent.
+
 ## m2551 -- SMART CAMERA: WATER IS NEVER SEE-THROUGH AND NEVER AN OCCLUDER (his screenshot, images/feedback/m2549/xray_water.png: swimming in The Lake, a dotted block on the water surface round Grumbo)
 - What it was: the lake's surface lies between the lens and a swimming body; it is one zone-wide mesh, so `smKind` read it BIG, the drone
   found no pitch above it, and the last resort faded it. The pond (`dk_water`) is `transparent` at .9 opacity and passed the old filter
