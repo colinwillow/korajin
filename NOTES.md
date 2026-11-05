@@ -52,6 +52,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2614 -- HIS CORRECTIONS: the idle keeps its lean (ROLL only); the sheath's decorated face OUT and pressed on; the quiver and sheath cross in an X; TOOLS > SWORD CARRY: BACK / HIP (Nov 5 2026)
+His (images/feedback/m2612/): *"I hate it straight up -- I liked the direction the sword pointed; only the TWIST about its own axis was wrong"*;
+*"the glowing side of the sheath faces IN; it should face OUT, and it sits away from his body -- strap it ON"*; *"overlap them, cross them at opposite
+angles like an X, one harness, a strap where they cross"*; and the hip as an option.
+- IDLE (`katIdleUpright`, `KIDLE`): m2612's re-pointing is gone. Now ONLY the roll about the blade's own axis: the edge is turned onto his facing
+  (squared to the blade), the tip left alone. MEASURED: the tip (-.009, .844, -.536) -> (-.008, .847, -.532) (unchanged, ~32 deg forward lean kept),
+  the edge 112 deg off his facing -> 0.0.
+- SHEATH (`TRIPOW.back`): `x` [0,0,-1] -- turned 180 deg about its long axis, the decorated / glowing face OUT (the draw follows: the hand turn reads
+  the back sword); mouth z -.215, `dir` z -.09 -- the back face on the cape at the shoulder and pressing it 2-3 cm lower down.
+- THE X (`TRIPOW.quiver`): the quiver on the OTHER diagonal (~38 deg, right hip -> left shoulder), centred on the crossing, OVER the sheath (its back
+  face clear of the sheath's outer face); a leather strap + brass buckle where they cross (`tripoBuckle`, `TRIPOW.buckle`).
+- SWORD CARRY (`TRIPOW.carry`, TOOLS > BOW > SWORD CARRY: BACK / HIP, remembered `mel.swordCarry`; `tripoCarry`): HIP hangs it on `mixamorig_Hips`
+  -- his LEFT hip, the hilt forward and up, sloping back and down, the face out (`TRIPOW.hip`); the quiver goes back to the solo spot
+  (`quiverSolo`). The draw IK reaches across to the hip grip and slides it out forward along the sheath (no new code: `KDRAW` reads the back group
+  wherever it hangs). It is a very big sword for a hip, as he said.
+- FILMED AT NIGHT: an orbit of 8 (behind, 3/4, sides) on the back X, the idle front and side, the hip from side / 3/4 / behind and its draw at 4 points.
+
 ## m2613 -- THE CARRIED BOW ROCKS WITH HIS HAND (it was gyroscopically level on the ground) (Nov 5 2026)
 His: *"holding the bow while running, it follows his hand's POSITION but not its ROTATION -- almost gyroscopically level ... in reality it would tilt
 and swing with the hand and arm."*
