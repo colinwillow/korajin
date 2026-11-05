@@ -54,6 +54,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2654 -- THE LAKE: THE SWIMMER'S WATER DIPS, NEVER BULGES OVER HIM (his m2648 screenshot)
+His (relayed, `images/feedback/m2648/swim_bulge.png`): the water bulged UP round Grumbo and covered him, reading as his head under water. He pictured the
+surface dipping DOWN where his body sits, with rings travelling outward and a modest push wave.
+- **What was wrong:** m2632's push wave was a Gaussian crest .5 m AHEAD of him, up to .08 x speed (+.18 m at 2.2 m/s). With the rings it rose round his
+  shoulders. The hollow was the smaller term.
+- **`lkSwimH` now:**
+  - a DIP centred on him (-.05 to -.12 m, r ~.75 m);
+  - the push wave is a low swell 1.5-2 m ahead (.022 x speed);
+  - the rings start past 1.1 m; the V starts 1.2 m behind;
+  - the field is CLAMPED to <= 0 within 1.3 m, so nothing can rise over his head or shoulders whatever the sum.
+- The foam collar is unchanged. Strip `--swim=2.2`: the body stands clear of a dip. Shipped unverified.
+
 ## m2653 -- UNDERWATER BUDGET: 529k tris / 66 calls -> ~205-265k / 66-73 under water (orchestrator: <= 70 draws / 280k, shadows included) (Nov 5 2026)
 Measured in the page (renderer.info round one render, the lens 20 m down by the shrine; play view / centre / rim). Before: **529k tris, 66 calls**.
 - **Hidden while the lens is under** (all restored as it comes up; `uwBudget`): everything of the Lake's lying wholly above the water (measured
