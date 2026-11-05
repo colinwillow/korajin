@@ -44,6 +44,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2533 -- THE PHASE SHIFT BLINKS MID-FLIP (his: "my momentum STOPS on the blink. Each phase flick plays the SAME flip it plays with PHASE off; MID-FLIP,
+   at about the top of the rotation, he vanishes into the portal, reappears at the destination still in that flip, and FINISHES it there")
+- The phase NO LONGER OWNS THE BODY (`stepPhase` is gone). `phaseGo` runs the ordinary flip -- `cartGo` on the ground (side flips, the back flip,
+  the FRONT flip for ahead), `airFlipGo` + `airPush` in the air -- and `phaseFlip` rides along (called before `stepCart`, never returning).
+- WHEN AND WHERE: the flip's upside-down moment is predicted from its own rate (`tTel` = (pi - th) / w, clamped .12-.45 s) and his position
+  then from his launch velocity and gravity (`P1`). `phaseShift` searches the SHIFT along the flick from `P1` up to the m2516 frame limit
+  (`phaseFrame`): the teleport point clear of boxes (`phaseClear`) and the mesh (`collRay` walls, `collInside`), and -- on the ground -- the
+  spot the flight will LAND on (shift + his horizontal speed x the air time left) on ground within `drop` of where he took off: never off a
+  ledge. In the air the landing only needs ground below. No safe shift -> the flip simply runs (no blink).
+- AT THE TOP (`aflip.th` >= pi, or `tTel`): he is shifted by D -- velocity, flip rotation and clip time untouched -- hidden `gap` .06 s between
+  the tears, a violet burst at each end. The in-tear opens toward the top and seals just after he is through; the out-tear opens a beat before
+  he arrives and seals after he leaves it (`phaseTick`, its own clock).
+- Kept: the m2516 portrait camera (the look point leads half the SHIFT while he flips toward the top, holds until the in-tear seals, eases home;
+  the dolly out on a sideways blink), and the i-frames (`playerHurt` returns while the phase is live, `LIFE.invT` to the reappearance + .15).
+- `npm run check` ok. Shipped unverified.
 ## m2532 -- UNDERWATER pass 2: THE LOOK -- caustics, light shafts, motes, bubbles (UNDERWATER.md) (Nov 5 2026)
 All in the `uw*` block; LAKELIB untouched. With the lens under the surface:
 - **Caustics** in the shared `uwApply` chunk, so the bed, the stacks, him and anything else under the water gets them: a tileable interference
