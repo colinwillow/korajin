@@ -47,7 +47,10 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
-## m2507 -- THE PHASE SHIFT'S CAMERA (his, on m2503/m2504: "it isn't interesting" -- the camera locked to him, so a blink does not read as a teleport)
+## m2509 -- fix: m2508's commit renamed another worker's `m2506` tags (the OVERGROWTH comments) to m2507 -- a global build-number rename; put back.
+  My own phase-camera tags now read m2508 (the build that shipped them). Lesson: rename only the lines of my own diff, never `sed s/mNNNN/` file-wide.
+
+## m2508 -- THE PHASE SHIFT'S CAMERA (his, on m2503/m2504: "it isn't interesting" -- the camera locked to him, so a blink does not read as a teleport)
 - His ask: for a LEFT flick the camera eases LEFT first (a beat ahead) so he sits on the RIGHT of the screen, he dashes across to the left, and
   the camera eases slowly back until he is centred; mirrored for right, forward for ahead, backward for back.
 - ONE WRITER: an OFFSET on the look point (`PHASE.camO`), added to `cam.tgt` inside `stepCam` right after the bow's drop -- nothing else writes
