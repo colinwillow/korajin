@@ -64,7 +64,9 @@ What is built today, from above (m2538): ![now](images/plan/desert_region_now_to
 
 ## Performance budget (held from m2538)
 
-- Any play view: **≤ 65 draws, ≤ 250k triangles**; aerial / wide: ≤ 80 / 280k. Per-zone numbers above.
+- **COUNTED WITH THE SHADOW PASS (from m2586):** any play view **≤ 70 draws, ≤ 280k triangles**; aerial / wide ≤ 85 / 310k. (three resets
+  `renderer.info` after the shadow map, so read it with `autoReset = false`: the `gshad` shot / the village worker's `npm run dvperf`. Every
+  number before m2585 left the shadow pass out.) Per-zone numbers above were set without shadows.
 - Rules: merge static geometry per material; detail meshes in 200 m cells that hide beyond `DPLACE.far.detail`; instanced
   repeats; nothing complex in building geometry (the detail goes in the maps); ivy and plants cheap.
 - Every build reports draws and triangles at the landing and at its busiest view.

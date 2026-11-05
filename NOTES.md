@@ -46,6 +46,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2586 -- THE BUDGET COUNTS SHADOWS; THE CACTI AND THE ARCHES CAST THROUGH STAND-INS (Nov 5 2026)
+
+- Decision (Colin via parent): from now on the budget is read WITH the shadow pass. Play views **≤ 70 draws / 280k**, aerial ≤ 85 / 310k.
+  It is written into DESERT_REGION.md's budget section, with how to read it (`autoReset = false`: `gshad`, or `npm run dvperf`).
+- His phone was at 20-22 fps, so the cheap invisible cuts go in anyway:
+  - The cacti (both kinds) cast through a ~40-tri stand-in (a 6-sided trunk + a cross-arm) on layer 1, sharing their instance matrices like m2585's rocks.
+  - The two arches and the cave cast as ONE merged shadow-only mesh (3 shadow draws -> 1), hidden with the field.
+- **Measured (`gshad`):** shadow pass 8 / 32k -> **5 / 15k**. The landing **with shadows 69 / 255k** (drawn 64 / 240k). Shadows read as before (`gflL`).
+
 ## m2585 -- THE SHADOW PASS WAS NEVER IN THE BUDGET: LOW-DETAIL SHADOW STAND-INS FOR THE FIELD (the village worker's dvperf) (Nov 5 2026)
 
 - **The finding (theirs, confirmed here):** three resets `renderer.info` AFTER the shadow map renders. So every budget number since m2538, gprof /
