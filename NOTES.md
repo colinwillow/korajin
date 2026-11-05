@@ -46,6 +46,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2592 -- UNDERWATER ART A: Grumbo READS, the water has a gradient, glow-tinted fog, big god rays, fine bubbles (his m2586 screenshots) (Nov 5 2026)
+His (images/feedback/m2586/underwater_1-3.png): *"I want underwater to look cooler. It's pretty dull... super wild, majestic, glowing."* In his
+shots Grumbo is a black silhouette, the water flat murky navy, the bubbles big flat sprites. The first of a series of ART passes:
+- **Grumbo always reads** (`UW_HERO`: his own materials, marked before they are patched): light absorption at half, half the fog, a teal KEY
+  from above (`hero.key`), a strong cyan RIM against the water (`rimK` 1.25, power 2.4) and smooth caustics -- all on HIS normal (the shader's
+  own `normal` / `vViewPosition`), not the faceted screen-derivative one that made him read blocky. `UWATER.look.hero` holds every number.
+- **The water's gradient, stylised:** turquoise (.10, .66, .68) near the surface -> sapphire (.025, .17, .46) -> deep VIOLET (.06, .03, .19)
+  instead of black, by 8 / 42 m; less absorption (red .11) and fog (.032), the depth darkening at .02/m.
+- **The fog takes the colour of the life near the lens** (`uwGlowNear`: a 1/(1+d^2) sum of the flora's instance colours within 30 m, eased).
+- **God rays:** 26 shafts (was 14), 2.4-6.5 m wide, 16-38 m long, brighter (.26), fading slower with depth.
+- **Bubbles:** 1.4-4.5 cm (was 4-12), single bubbles in trails every .12-.32 s, rare bursts of 4.
+- Render: portrait 390x844 at three depths (images/feedback/m2586/uw_artA_render.jpg): at 20 m he is lit, rimmed and reads against a sapphire
+  water full of glowing life (his shot: a black shape on navy). The dither round him at 5 m is the smart camera's X-RAY of the torii post in
+  front of him, not him. Next ART passes: the flora as the hero (halos / fake bloom, spores, the floor's carpet of lights), then the majesty
+  (leviathan, murmurations, jelly fields, light columns), then particles. Shipped unverified.
+
 ## m2590 -- DEV PLACES lists KORAJIN's places only (the old game's chapters, quests and events are deleted from it); three-to-a-ring labels fit (Nov 5 2026)
 Via main: *"the DEV PLACES list in the pause menu is still packed FULL of the OLD game's chapters. We don't need anything from the old game; they're
 all dead. Rebuild DEV PLACES as a list of KORAJIN places only, grouped by region, with big tappable rows. Delete the old entries entirely."*
