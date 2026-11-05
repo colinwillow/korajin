@@ -44,6 +44,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2532 -- UNDERWATER pass 2: THE LOOK -- caustics, light shafts, motes, bubbles (UNDERWATER.md) (Nov 5 2026)
+All in the `uw*` block; LAKELIB untouched. With the lens under the surface:
+- **Caustics** in the shared `uwApply` chunk, so the bed, the stacks, him and anything else under the water gets them: a tileable interference
+  pattern at two scales, drifting, on faces that point UP only (the face normal from screen derivatives -- the hull's underside gets none), strongest
+  in the shallows, gone by `caus.deep` 20 m, fading with distance. The first render blew the bed out to WHITE: the pattern's divisor goes near zero
+  and `pow(abs(c), 8)` explodes -- clamped (`uwCau1`) and capped.
+- **Light shafts** (`uwFxMake`, 1 instanced draw, 14): additive quads hung from the drawn wave height round the lens (26 m), slanted on the sun's
+  bent line, turned to face the lens about their own axis, bright at the top and fading down, flickering, dimmer with the lens's depth; they
+  wander and respawn round him.
+- **Motes** (1 draw, 700 points): a 24 m box that wraps round the lens in the vertex shader (no CPU), slow drift, faded by distance, none above the
+  surface. Sized in metres at any fov (`uPx` from the drawing buffer).
+- **Bubbles** (1 draw, pool of 90): a trickle from his head bone while he is under (1-2, sometimes a burst of 7), a burst as he goes down; they
+  wobble up and pop at the drawn surface. A rim + a highlight, so they read as bubbles, not dots.
+- Cost: +3 draws (only while under; bubbles while he is), ~0 CPU for the motes, 14 matrices + 90 points a frame.
+- Headless portrait renders (play camera + close + looking up + at the bed + the hull): shafts and bubbles read, Snell's window still bright,
+  caustics visible but soft at 10 m. Not done: life (pass 3), audio/anim (pass 4). Shipped unverified.
+
 ## m2531 -- (NOTES only) the m2530 entry below was lost to a script error on that push; written here.
 
 ## m2530 -- THE FLYING PUNCH STARTS AT THE SECOND JUMP (his: "a little euro-step, a first small jump landing on his feet, then a second jump into
