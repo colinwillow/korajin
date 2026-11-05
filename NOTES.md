@@ -44,6 +44,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2528 -- THE LAKE, DETAIL PASS 6: EVERYTHING FLAT IS PAINTED (WATER.md; closes his Nov 5 series)
+His Nov 5 series, item 6: *"anything that's not painted, let's paint it."*
+- `lkPaint` (m2526) now covers every flat-coloured lake material:
+  - the torii: red with grain, black lacquer lifted from 0x2c2624 to 0x40332e (CRAFT 4), stone;
+  - tree bark (grain), cherry canopies, the great tree's jade canopy and tendrils;
+  - lily pads and lotus; boat gold; lantern paper.
+- Already textured and untouched: the canyon, stacks, islets, arches and ruins (`tm`, biplanar maps).
+- **Scale lesson (measured on the strip):** the stroke map's detail is about 10 cm per tile. At sc 1.3 the canopies, seen from 10-60 m, MIP to the
+  mean and show NOTHING; k .2, then .34, then .85 all rendered identically. The fix is the tile size, not the strength: canopies sc .2 (5 m dabs),
+  bark .6, rocks .4. Rule for `lkPaint`: pick sc from the viewing distance (about 1 / (distance / 10)), then tune k.
+- Fish (silhouettes), petals, spray and the shader-drawn falls, mist and rays are not surfaces and are left alone.
+- Draws and tris unchanged. No WATER.md box ticks; that ends the Nov 5 detail series (m2521-m2528). Shipped unverified.
+
 ## m2527 -- THE LAKE, DETAIL PASS 5: OBELISKS, PINES, SHORELINE ROCKS (WATER.md)
 His Nov 5 series, item 5: *"scenery -- obelisks in and around the water with foam where they meet the surface, trees, shoreline, rocks."*
 - **`W.obelisks` (8 rows):**
