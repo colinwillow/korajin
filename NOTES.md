@@ -55,6 +55,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2657 -- UNDERWATER: the budget's lists are measured at load, not on the first dive (the loading-stutter worker's contract) (Nov 5 2026)
+`uwBudget`'s one-time work -- the Lake pieces lying above the water, the far-hide list (boat / stacks / arches) and every other piece's bounding
+sphere -- is all in its first-call block now (it used to finish on the first frame under water). `uwPrebuild` can call `uwBudget(false)` at the
+Lake's load (after the bed patch is made) and the first dive does no traversal or bounds work. Shipped unverified.
+
 ## m2656 -- the Interactions hall's entrance: the builder's row lands him off the back wall; the entrance lens can go LOWER under a ceiling (Nov 5 2026)
 m2652's `interact` row never applied: the Interactions builder (`IKIT`) WRITES `ENTRY.rows.interact.at` at build from its room spawn (-20, 0) -- 2 m off
 the hall's back wall (x -22) -- so the play camera's collision stopped at 1.7 m and the entrance lens with it (probed: `cam.dist` 1.72, smart-cam cap
