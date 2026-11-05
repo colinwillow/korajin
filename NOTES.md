@@ -44,6 +44,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2570 -- THE VINE WHIP pass 1: THE SANDBOX (VINEWHIP.md, KORAJIN > Vine Whip (sandbox), `?w=forge&zone=whip`)
+- `whipMake` (WHIPLIB markers) is a PURE builder of the `SC_WHIP` table: six STATIONS in a ring round a centre pad at 60 deg (sacred geometry),
+  each in its own frame facing the pad -- A LASH LANE (targets on posts at 3 / 6 / 9 m), B SWING PIT (8 m platforms 28 m apart under a stone
+  gantry, three knots hanging on roots at 13 m), C ZIP WALL (16 m wall, ledges at 10 and 16, a zip anchor over each), D PULL YARD (three crates of
+  mass 1 / 2 / 3 behind three plates, a lever on a 6 m post, a shield on a dummy), E CHAIN COURSE (a 10 m start tower, knot -> zip on a 12 m pillar ->
+  knot -> the end tower 31 m away), F COMBAT RING (a button: pass 5). Stairs .30 on their own mass. Every anchor and pullable is a ROW (`X_id`).
+- Glue: `WHIPZ`, `whipBuild` (on the forge's white floor, the boulders' pattern), BOXES; the SWING anchors also go into the grapple's ring list
+  (GRING, m1129) so the swing can be felt today with the existing hook -- an air flick at a lit knot. The whip's own lash replaces that in pass 2.
+- `npm run ftstrip --lib=WHIPLIB --fn=whipMake` (ftstrip now takes any marker pair + builder; `plan` shots work there too). Boot gate: a new
+  `MEL_WORLD='forge&zone=whip'` scenario builds it and checks the anchors reach the grapple. 23 draws / 5k tris, 83 boxes, 8 anchors, 12 pullables.
+- WHOLE-PIECE: a new sandbox on its own. Moves nothing on DONE WHEN yet (the lash is pass 2). Asked the combat worker for the slot / ring before any
+  ring code. Shipped unverified.
+
 ## m2569 -- UNDERWATER: the smart camera looks through the bowl's plants and creatures (Nov 5 2026)
 The camera worker's m2551 ignores water by name or `userData.water`. Tagged: the `uw_flora` and `uw_fauna` groups and the life's fish and jellies,
 so kelp and passing mantas do not shove the lens in. Rocks, columns and the shrine stay solid to it. (`uw_surface_below` and `uw_fx` already match

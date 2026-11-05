@@ -12,9 +12,9 @@ let pw; for (const p of ['playwright', '/opt/node22/lib/node_modules/playwright'
 if (!pw) { console.error('no playwright'); process.exit(1); }
 const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k + '=')); return a ? a.split('=')[1] : d; };
 const src = fs.readFileSync(path.resolve(ROOT, arg('src', 'index.html')), 'utf8');
-const m = /\/\/ FTKLIB:START[\s\S]*?\/\/ FTKLIB:END/.exec(src); if (!m) { console.error('no FTKLIB markers'); process.exit(1); }
+const LIB = arg('lib', 'FTKLIB'), FN = arg('fn', 'ftkMake'), m = new RegExp('// ' + LIB + ':START[\\s\\S]*?// ' + LIB + ':END').exec(src); if (!m) { console.error('no ' + LIB + ' markers'); process.exit(1); }
 const OUT = arg('out', path.join(ROOT, 'shots')); fs.mkdirSync(OUT, { recursive: true });
-const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), W: +arg('w', 480), H: +arg('h', 300), cols: +arg('cols', 2), night: +arg('night', 0), set: arg('set', ''), t: +arg('t', 1) };
+const opts = { fn: FN, shots: process.argv.slice(2).filter(x => !x.startsWith('--')), W: +arg('w', 480), H: +arg('h', 300), cols: +arg('cols', 2), night: +arg('night', 0), set: arg('set', ''), t: +arg('t', 1) };
 const page = `<!doctype html><html><head><script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script></head><body style="margin:0;background:#000">
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; window.ready = 1;</script></body></html>`;
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); if (u === '/' || u === '/b.html') { r.writeHead(200, { 'content-type': 'text/html' }); return r.end(page); }
@@ -26,7 +26,7 @@ await pg.goto(`http://localhost:${port}/b.html`); await pg.waitForFunction('wind
 const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE, t0 = performance.now();
   const W = o.W, H = o.H, R = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); R.setSize(W, H); R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.NeutralToneMapping; R.shadowMap.enabled = true;
   const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(55, W / H, .1, 400);
-  const L = new Function('THREE', 'O', code + '\nreturn ftkMake(THREE, O);')(THREE, { tex: p => './' + p, pal: { glow: 0x7affd8, core: 0xe6fff8, deep: 0x1f8a74, spark: 0xb6ffe8 }, set: o.set }); const build = performance.now() - t0;
+  const L = new Function('THREE', 'O', code + '\nreturn ' + o.fn + '(THREE, O);')(THREE, { tex: p => './' + p, pal: { glow: 0x7affd8, core: 0xe6fff8, deep: 0x1f8a74, spark: 0xb6ffe8 }, set: o.set }); const build = performance.now() - t0;
   scene.add(L.group); const E = Object.assign({}, L.F.env, L.S.env || {}), N = o.night ? E.night : E;
   scene.background = new THREE.Color(N.bg); scene.fog = new THREE.Fog(N.bg, N.fog[0], N.fog[1]);
   const hemi = new THREE.HemisphereLight(N.sky, N.ground, N.hemi), sun = new THREE.DirectionalLight(N.sunC, N.sun); sun.position.set(...E.sunDir.map(v => v * 40)); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
@@ -43,7 +43,7 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
     const x = (k % cols) * W, y = 22 + Math.floor(k / cols) * (H + 20); c2.drawImage(R.domElement, x, y + 20); c2.fillStyle = '#9ff'; c2.fillText(s.id + ' -- ' + s.why, x + 4, y + 14); });
   const n = L.count(); c2.fillStyle = '#fff'; c2.fillText('FOREST TEMPLE' + (o.set ? ' [' + o.set + ']' : ' [kit]') + '  calls<=' + calls + ' (incl. shadow pass)  tris<=' + tris + '  ' + JSON.stringify(n), 6, 15);
   return { png: out.toDataURL('image/png'), calls, tris, build, n }; }, [m[0], opts]);
-const file = path.join(OUT, 'ftemple_' + (opts.set || 'kit') + '_' + (opts.shots.join('_') || 'all') + (opts.night ? '_night' : '') + '.png');
+const file = path.join(OUT, (FN === 'ftkMake' ? 'ftemple_' : FN + '_') + (opts.set || 'kit') + '_' + (opts.shots.join('_') || 'all') + (opts.night ? '_night' : '') + '.png');
 fs.writeFileSync(file, Buffer.from(res.png.split(',')[1], 'base64'));
 console.log(file, 'calls', res.calls, 'tris', res.tris, 'build ms', res.build.toFixed(0), JSON.stringify(res.n));
 await br.close(); srv.close();
