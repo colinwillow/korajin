@@ -54,6 +54,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2653 -- UNDERWATER BUDGET: 529k tris / 66 calls -> ~205-265k / 66-73 under water (orchestrator: <= 70 draws / 280k, shadows included) (Nov 5 2026)
+Measured in the page (renderer.info round one render, the lens 20 m down by the shrine; play view / centre / rim). Before: **529k tris, 66 calls**.
+- **Hidden while the lens is under** (all restored as it comes up; `uwBudget`): everything of the Lake's lying wholly above the water (measured
+  once off world bounds: 13 groups), the water itself; the boat / stacks / arches / every other Lake piece more than 70-90 m away (the fog's
+  .9). The sky stays (hiding it showed the scene's pale background as a white band past the surface disc -- found in the render).
+- **The shadow map is FROZEN under water** (`shadowMap.autoUpdate` false; the mirror and portal save / restore the same flag).
+- **THE BED PATCH:** the Lake's terrain is one 135k mesh (the whole canyon). Under the water it is hidden and a 200 m, 80 x 80 patch of the same
+  bed follows the lens (`uwBedMake`: `L.groundAt` every 2.5 m, the terrain's OWN material, re-sampled every 12 m): 12.8k tris. The terrain is
+  not touched.
+- **INSTANCE LOD** (`uwLod`, `UWLOD`): rocks, weed, pods, pebbles, shells and six flora kinds keep a master list; every .35 s the ones within
+  range (16-52 m by kind) are packed to the front and `count` cut -- far ones are not submitted -- and each material DISSOLVES them out over the
+  last quarter of the range (m2581's `fadeMat`), so nothing pops. Measured: ~700-800 of 2,500 instances drawn by the shrine.
+- **Merged / dropped draws:** the three light columns in one (`aK` attribute), the rocks one shape (was two), the whelks dropped (scallops
+  stay), the broken tiles into the shrine's stone draw, the surface-from-below disc 14k -> 6k.
+- **After: 205-265k tris, 66-73 calls** depending on the view; of the calls ~37 are underwater content, ~9 Grumbo's gear, ~9 other systems,
+  the rest the Lake. Renders: images/feedback/m2586/uw_budget_play.jpg / _wide.jpg. Detail passes C (plants) and D (creatures) next, inside
+  this budget. Shipped unverified.
+
 ## m2652 -- the Interactions sandbox gets an ENTRY row (its spawn backs onto a wall) (Nov 5 2026)
 Rendered the new entrance camera (m2645) in the arena, the boulders and the Interactions sandbox (where he saw it): the arena and the boulders look DOWN
 on the portal (a ring) and ease into the play view by the landing. In the Interactions sandbox the lens collapsed onto him -- every candidate pose
