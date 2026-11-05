@@ -43,7 +43,8 @@ six shards light the SEAL on the well floor and open the stair to the boss benea
 1. [x] **THE HUB** (m-hub): the well's doorways (B, E, F at the floor; D on a 12 m sill under the hall), six SHARD SOCKETS on the well floor,
    the shard counter on the HUD, A's clear pays SHARD I + the SMALL KEY; D / E / F are WHIP GATES (lash + pull), B the key door -- placeholders
    until each chamber's build and the Interactions Kit's heavy door.
-2. [ ] A: the acrobatic hall's fixes (no ladder: a chimney; the 9 m wall-run gap to 6 m) + a CHEST for the key and the shard (IKIT `chest`).
+2. [x] A: the LADDER -> two step blocks (1.5, 3.0 m) under the upper rim's lip; the 9 m wall-run gap KEPT (measured in reach, m2637); a CHEST
+   (IKIT `chest`, `onDone`) in the antechamber pays the SMALL KEY + SHARD I.
 3. [ ] B: the root gallery (the key door opens; blocks onto plates, arrow switches, the crack). 4. [ ] C: the root heart (the Thornback) + the
    nursery teach + the zip home. 5-7. [ ] D, E, F. 8. [ ] the SEAL (six shards), the stair, 9. [ ] THE HOLLOW BANYAN.
 What changed: the CHALICE is gone (the six shards are the boss key; the shrine pays a shard); D, E and F are open in ANY order once he has the

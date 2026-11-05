@@ -54,6 +54,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2651 -- FOREST TEMPLE build 2 (A, the ACROBATIC HALL): no ladder; a CHEST (the Interactions Kit's) pays the SMALL KEY + SHARD I
+
+- **The ladder is gone** (TEMPLE_ROUTES: no ladders on a route): `r1_ladder` (gallery 6 -> upper north rim 12) -> two BLOCKS on the gallery under
+  the rim's lip, 1.5 and 3.0 m (`r1_stepA`, `r1_stepB`, the south rim's own step idiom): a jump off the 3 m one (feet 2.7 m, + the ledge grab)
+  or a double jump (5.0 m) puts him on the 12 m rim. `ladders` 0 in the count.
+- **The 9 m wall-run gap stays** (measured in reach two ways, m2637).
+- **A's reward is a CHEST now** -- the Interactions Kit's (`ikitAdd`, zone-agnostic since m2649): `ftA_chest` in the antechamber behind the
+  button's door (live once the door is open), the full chest sequence (the heave, the lid, the item rising, the GET moment); its `onDone('opened')`
+  pays the SMALL KEY + SHARD I (the socket, the banner, the HUD). The room's clear no longer pays by itself -- it says a chest waits behind the
+  door. Placed only while shard I is not yet his (`ft.prog`).
+- Render: r1_north (the blocks under the upper rim). Draws 42 kit. `npm run check` + the ftemple boot.
+**Try:** `?w=forge&zone=ftemple&at=room` -> the gallery: the two blocks up to the 12 m rim; finish the room (button, last fight) -> the chest in
+the chamber behind the door. **Next:** B, the ROOT GALLERY (the key door opens). Shipped unverified.
+
 ## m2650 -- the bow's arc reads by day and on white: a dark core under the glow, a dark halo behind the landing mark, deeper colours -- all fading out at night
 His (Nov 5, relayed): *"the BOW ARC line looks great at night (a light green glow), but in DAYLIGHT and in the WHITE zones -- sandboxes, snow, bright
 desert -- it's very hard to see. Don't make it ugly, make it read on any background: a thin DARK outline / shadow core under the glow, driven by
@@ -67,7 +81,6 @@ halo round the landing mark."*
   [.06 .82 .5] / `hotDay` [1 .42 0] by dayK -- deeper, more saturated jade / amber by day; at night exactly the old colours.
 - Headless (forge, bow drawn): night.f 0 -> out visible, opacity .55; the forge with ?night=1 also .55 (white fog, correctly). A rendered frame was
   taken but the lens sat behind him and the arc did not land in it, so how it LOOKS is unverified -- his phone. Live on `mel.BARC`. Box moved: none.
-
 ## m2649 -- THE INTERACTIONS KIT goes zone-agnostic: pieces live from any zone, and every row reports its outcome (`onDone`) (Nov 5 2026)
 **Asked by the Forest Temple worker:** the kit's `can` checks required `IKIT.on` (the sandbox), so a chest or lever placed in a temple never offered
 its chevron. **Now:** `ikLive(r)` = the row's own optional `r.live()` AND (the sandbox is on OR the row is in `IKIT.rows`) -- `ikitAdd` from any zone
