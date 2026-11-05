@@ -44,6 +44,33 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2496 -- THE GIANTS: ANCIENT-ALIEN ARCHITECTURE IN THE DESERT KIT, PLACED AS THE HORIZON (Nov 5 2026)
+His (via parent, WORLD_PLAN 10 SCALE): giant pyramids (stepped / smooth, ~100+ m, weathered sandstone, carved glyph bands); an ANCIENT-ALIEN
+pyramid with glowing square rings of writing hovering round it, offshoot spires, a glowing capstone; a FLOATING inverted pyramid; a MEGALITH
+gate; a TOMB cut into rock; colossal OBELISKS; restored + ruined; night glow in pieces; phone budgets. Statues are his Tripo models: SLOTS only.
+Placed far out as backdrop/framing, the centre and mandala kept, reading from the play camera -- "the field feels tiny".
+- DKLIB pieces (SC_DKIT `K.giant`, `K.giants`): `pyramid` (smooth: `pyrGeo` eroded faces, glyph bands, a dark capstone; `steps` -> stepped
+  with a grand stair), `spyramid`, `apyramid` (dark alien stone, Jinra writing bands, a glowing capstone + antenna + a floating spinning core,
+  THREE square RINGS each its own mesh with `userData.spin`/`bob`, four spires on stepped plinths with lit tips), `ipyramid` (a short pyramid
+  up, a ragged rock root down, hanging shards, a glowing seam frame, a drop of light at the tip; bobs), `trilithon`, `tomb` (a rock-cut
+  facade with its own rock shoulder: leaning jambs, writing lintel, a dark mouth, great-block stair), `slot` (a seated guardian stand-in,
+  `userData.slot` = its id, `slotH`). Ruined variants of all. Each merges its geometry PER MATERIAL (`acc`/`add`/`flush`): 3-11 draws a
+  piece, 250-1,350 tris; no shadows (a 130 m caster eats the shadow map), no collision (placed out of reach).
+- MATERIALS: `giant` / `giantA` / `under` / `glyphG` / `glyphJ` are OBJECT-SPACE triplanar (`obj`), so the 1:10 kit-row miniature carries
+  the same stone and writing as the original and a turning ring keeps its writing; `mask` glows only the writing's strokes (glyph map green
+  over red); `core` is the Jinra light. Night (glue): glyphG 0 -> 1.8, glyphJ .7 -> 3.3, core 1.6 -> 3.8.
+- THE KIT ROW: a GIANTS row at 1:10 (z 62 restored / z 86 ruined), floor deepened. **The kit row moved 120 -> 230 m east**: mesa m4
+  (pushed out x1.6 at m2487) was standing ON it.
+- THE FIELD (`DPLACE.giants`, `bouldGiants`): the landing looks -z down an axis: the megalith gate at 190 m flanked by two 53 m obelisks,
+  two colossus slots, and the great alien pyramid at 560 m (x2: 220 m tall -- at 440 m it filled the frame like a wall, his "never a wall"
+  rule); the floating pyramid 92 m up to the east, a stepped one east, a ruined smooth one west, a smooth one behind him, two more obelisks
+  and a ruined floating one behind, the TOMB cut into mesa m5's face toward the field with two guardian slots. Camera far -> 1800, fog
+  -> 140..1500 (`DPLACE.far`). `BOULD.anim` turns the rings and breathes the floaters.
+- Bug caught by the first render: the placement passed `h: undefined`, `Object.assign` wiped every piece's own height -> NaN geometry,
+  nothing drawn but the obelisks. Boot gate now asserts all giants placed, every vertex finite, something turns (verified failing).
+- Renders: play camera + wide + kit row. Moves WORLD_PLAN 10 (sand) pass 1; open: his phone look at scale/composition, the Tripo statues
+  into the slots, a closer reachable giant (a tomb you can enter), snow/other regions. Shipped unverified.
+
 ## m2495 -- FOREST TEMPLE: SACRED GEOMETRY (his standing rule via main, WORLD_PLAN 11) + a PLAN render in the strip
 - The interior is one north-south AXIS (x = 0) and now LOOKS it: new `avenue` piece (a cut processional band between carved kerbs, lit rune studs on
   the centreline, flush) down the hall, the corridor and the room; new `rosette` piece (concentric carved rings + radial spokes + a lit heart) at the
@@ -52,7 +79,6 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   hall's braziers / panels / pots paired. The acrobatic route still spirals round the axis -- gameplay unchanged.
 - `npm run ftstrip plan --set=in`: an ORTHOGRAPHIC top-down shot (shot fields `top`, `up`, `clip`: a global clipping plane cuts everything above
   25.5 m, so the rock ceilings do not hide the plan; fog off for the shot). FOREST_TEMPLE.md has the rule. 33 draws / 64k tris. Shipped unverified.
-
 ## m2494 -- FLOATING BOULDERS: THE SLAM'S SHOCKWAVE RIPPLES THE SAND (Nov 5 2026)
 His (via parent): the air slam's shockwave should physically ripple the sand -- a damped ring wave through the deformation field,
 crest + trough, dust thrown at its front, a shallow crater + radial streaks left, resting rocks/pebbles hop as it passes, floaters
