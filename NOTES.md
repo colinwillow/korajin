@@ -55,13 +55,6 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-<<<<<<< Updated upstream
-## m2659 -- the underwater budget's first measure moved to the load
-- The underwater worker (m2657) gathered `uwBudget`'s whole first-call measurement (the hide list, the far list, every Lake piece's bounding
-  sphere: a `Box3.setFromObject` per piece, instanced counts walked) into one block. `uwPrebuild` now calls `uwBudget(false)` right after it
-  makes `U.bedP` (the terrain joins the hide list only once the bed patch exists), so the first dive only flips visibility. Above water the
-  call hides nothing (`camU` false, nothing hidden yet). Shipped unverified; TOOLS > HITCH LOG on the phone is the measure.
-=======
 
 ## m2660 -- BOW SIZE and SWORD SIZE both 85 % by default; does the sword's size change his STANCE? MEASURED: no (Nov 5 2026)
 His: *"defaults bow 85, sword 85 (the back rig smaller, the bow less huge); does the sword size change Grumbo's stance -- with the big sword his hands
@@ -72,7 +65,12 @@ seemed further out?"*
   (-.106, .735, .291) at 85 %; left hand (.022, .716, .187) vs (.016, .716, .181); the forearms within 7 mm -- the clip's phase, not the size.
   Nothing poses off the sword's size: the size scales only the sword's MESH inside its mount, and the left hand's grip IK (`KATANA.lgrip.at` -8)
   is in the mount's frame, which does not scale; the guard has no IK at all. A bigger blade simply reads as the hands further out: an optical effect.
->>>>>>> Stashed changes
+
+## m2659 -- the underwater budget's first measure moved to the load
+- The underwater worker (m2657) gathered `uwBudget`'s whole first-call measurement (the hide list, the far list, every Lake piece's bounding
+  sphere: a `Box3.setFromObject` per piece, instanced counts walked) into one block. `uwPrebuild` now calls `uwBudget(false)` right after it
+  makes `U.bedP` (the terrain joins the hide list only once the bed patch exists), so the first dive only flips visibility. Above water the
+  call hides nothing (`camU` false, nothing hidden yet). Shipped unverified; TOOLS > HITCH LOG on the phone is the measure.
 
 ## m2658 -- THE LAKE STILL FROZE ON HIS iPHONE (after m2624: "it shows the zone, then FREEZES as he starts to teleport in"; "as he goes under, everything freezes for a few SECONDS while it spawns")
 - **WHY m2624 WAS NOT ENOUGH:** `renderer.compile` builds PROGRAMS only. iOS uploads a texture and a vertex buffer at their first DRAW
