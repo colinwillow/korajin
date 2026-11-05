@@ -5771,7 +5771,7 @@ const SPLIT = {
   // one. Without it the only upper pose available is `aimPose` -- the SIGHTED hold -- and he
   // would ride the whole city down the barrel.
   up: ['aimPose', 'aimIdle', 'shoot', 'chargeUp', 'chargeGo', 'swap', 'block', 'rocket', 'rocketFire', 'toss', 'hold'],
-  upRaw: ['katana_guard', 'katana_down', 'katana_draw', 'katana_slash_1', 'climbing_Ladder'],     /* + the WHIP CAST's clips (VINEWHIP.md) */     // m979: split when the body has it (the samurai), silently skipped when it does not
+  upRaw: ['katana_guard', 'weapon_melee_02'],     /* + the WHIP CAST's clips (VINEWHIP.md) */     // m979: split when the body has it (the samurai), silently skipped when it does not
   // the ones held SQUARE, which get the hips-free `__ups` and ride on `__legh` legs (m194)
   upSq: ['swap', 'rocket', 'rocketFire', 'toss', 'hold'],
   // `air` (m184): a charge held through a jump is the gun pose over the in-air LEGS
@@ -42295,7 +42295,7 @@ function whipMake(THREE, O = {}) {
 // GAME GLUE (VINEWHIP.md, pass 1): KORAJIN > Vine Whip = `?w=forge&zone=whip` on the forge's white floor. The stations' colliders go in BOXES; the
 // SWING anchors also go into the grapple's ring list (GRING, m1129) so the swing can be felt today with the hook (an air flick at a lit knot) --
 // the whip's own lash replaces that throw in pass 2. ZIP anchors and the pullables are data only until passes 4 and 5.
-const WHIPZ = { want: 0, on: null, L: null };
+const WHIPZ = { want: 0, on: null, L: null, slow: 1 };
 try { if (/[?&]zone=whip\b/.test(location.search)) WHIPZ.want = 1; } catch (e) {}
 function whipBuild() { const Z = WHIPZ; Z.want = 2; if (Z.on) return; const L = Z.L = whipMake(THREE, { pal: JPAL }); scene.add(L.group);
   for (const b of L.boxes) BOXES.push(b); boxGrid();
@@ -42376,13 +42376,17 @@ function whipHint() { if (!WHIP.hl) { WHIP.hl = new THREE.Mesh(new THREE.TorusGe
 // (the window, fractions of the clip), snap (fraction of the window where the vine leaves), dur (s for the window) } -- live on `mel.WHIPCAST`.
 // SC_WHIPCAST:START
 const WHIPCAST = { on: 1,
-  lash: { clip: 'katana_down', a: .1, b: .62, snap: .55, dur: .36 },
-  throw: { clip: 'throw_item', a: .2, b: .72, snap: .55, dur: .32 },
-  pull: { clip: 'katana_draw', a: .05, b: .7, snap: .4, dur: .42 } };
+  // MEASURED (`npm run whipclips`: the right hand's path on the bare skeleton; the snap = its peak speed, the wind-up = the rise / draw-back before it):
+  //   weapon_melee_02  the hand up and BACK to .56 m over the hips, then forward-down at 9.3 m/s at .46 s (.38) -- the overhead SNAP
+  //   throw_item       the hand back and low (-.46 m behind), then up and forward at 7.9 m/s at 1.03 s (.50) -- the THROW
+  //   (katana_down, the first pick, peaks at only 4.9 m/s: it read as no motion at all in the cast film)
+  lash: { clip: 'weapon_melee_02', a: .2, b: .52, snap: .56, dur: .34 },
+  throw: { clip: 'throw_item', a: .3, b: .63, snap: .6, dur: .36 },
+  pull: { clip: 'throw_item', a: .58, b: .3, snap: .35, dur: .34, rev: 1 } };     // the throw played BACKWARD: forward-up hauling back to the chest = the yank
 // SC_WHIPCAST:END
 function whipCastGo(kind, fn) { const C = WHIPCAST[kind], p = player; if (!WHIPCAST.on || !C || !rig.actions || !rig.actions[C.clip]) { fn(); return; }
-  const a = rig.actions[C.clip], len = a.getClip().duration, span = (C.b - C.a) * len, rate = span / C.dur;
-  for (const nm of [C.clip, C.clip + UP, C.clip + UPS]) { if (!rig.actions[nm]) continue; playOnce(nm, rate); rig.actions[nm].time = C.a * len; }
+  const a = rig.actions[C.clip], len = a.getClip().duration, span = Math.abs(C.b - C.a) * len, rate = span / C.dur * (C.b < C.a ? -1 : 1);
+  for (const nm of [C.clip, C.clip + UP, C.clip + UPS]) { if (!rig.actions[nm]) continue; playOnce(nm, rate); rig.actions[nm].time = C.a * len; }     /* a window with b < a plays BACKWARD (the pull) */
   p.whipCast = { k: kind, clip: C.clip, t: 0, dur: C.dur, snap: C.snap * C.dur, fn, fired: 0 }; }
 function whipCastStep(dt) { const p = player, W = p.whipCast; if (!W) return; W.t += dt;
   if (!W.fired && W.t >= W.snap) { W.fired = 1; try { W.fn(); } catch (e) { note('WHIP CAST ' + e.message); } }
@@ -74387,7 +74391,7 @@ function frameBody() {
   // clamped, because a backgrounded tab hands back a delta of several seconds and every
   // integrator in the file would take one enormous step through the world
   const dtRaw = Math.min(.05, (now - last) / 1000);
-  const dt = dtRaw * arenaTime(dtRaw) * entryTime(dtRaw) * clabTime();     // m2466: the Combat Lab's SLOW     // m2312: the entrance's slow motion   // z1: the arena's knock-out slow motion
+  const dt = dtRaw * arenaTime(dtRaw) * entryTime(dtRaw) * clabTime() * (WHIPZ.on ? WHIPZ.slow : 1);     // VINEWHIP: the sandbox's slow motion (`mel.WHIPZ.slow`; the cast film uses it)     // m2466: the Combat Lab's SLOW     // m2312: the entrance's slow motion   // z1: the arena's knock-out slow motion
   last = now;
   gearSync();             // m465: a quest done anywhere (GOD's included) puts its find on the wheel
 

@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'), req = createRequire(import.meta.url);
 let pw; for (const p of ['playwright', '/opt/node22/lib/node_modules/playwright', '/opt/node-tools/node_modules/playwright']) { try { pw = req(p); break; } catch (e) {} }
 const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k + '=')); return a ? a.split('=')[1] : d; };
-const OUT = arg('out', path.join(ROOT, 'shots')), N = +arg('n', 8), DT = +arg('dt', 60), W = 300, H = 300;
+const OUT = arg('out', path.join(ROOT, 'shots')), N = +arg('n', 10), DT = +arg('dt', 60), W = 300, H = 300;
 const want = process.argv.slice(2).filter(x => !x.startsWith('--')); const ROWS = want.length ? want : ['lash', 'throw', 'pull', 'swing'];
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg' };
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(new URL(q.url, 'http://x').pathname), f = path.join(ROOT, u === '/' ? 'index.html' : u);
@@ -21,12 +21,12 @@ const br = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--enabl
 const pg = await br.newPage({ viewport: { width: 640, height: 640 }, deviceScaleFactor: 1 }); pg.on('pageerror', e => console.log('  pageerror', e.message));
 await pg.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=whip&entry=0`, { timeout: 120000 });
 await pg.waitForFunction(() => window.__shot && window.mel && mel.whipGo && mel.WHIPZ && mel.WHIPZ.on && document.getElementById('boot').classList.contains('gone'), null, { timeout: 240000, polling: 1000 });
-await pg.waitForTimeout(6000); await pg.evaluate(() => mel.whipPick()); await pg.waitForTimeout(2500);
+await pg.waitForTimeout(6000); await pg.evaluate(k => { window.__slow = k; }, +arg('slow', .125)); await pg.evaluate(() => mel.whipPick()); await pg.waitForTimeout(2500);
 // the setups: where he stands and what the flick takes (in the page; `A` = the sandbox's anchors, `Q` = its pullables)
-const SET = { lash: `(() => { const p = mel.whipP; p.pos.set(0, .3, 4); p.vel.set(0, 0, 0); return Math.PI; })()`,
-  throw: `(() => { const p = mel.whipP, k = mel.WHIP.anchors.find(a => a.id === 'B_knot1'); p.pos.set(32.04, 8, -18.5); p.vel.set(0, 0, 0); return Math.atan2(k.x - p.pos.x, k.z - p.pos.z); })()`,
-  pull: `(() => { const p = mel.whipP, c = mel.WHIPZ.L.pulls.find(q => q.kind === 'crate'); p.pos.set(c.x + Math.sin(c.yaw) * 7, 0, c.z + Math.cos(c.yaw) * 7); p.vel.set(0, 0, 0); return Math.atan2(c.x - p.pos.x, c.z - p.pos.z); })()`,
-  swing: `(() => { const p = mel.whipP, k = mel.WHIP.anchors.find(a => a.id === 'B_knot1'); p.pos.set(32.04, 8, -18.5); p.vel.set(0, 0, 0); return Math.atan2(k.x - p.pos.x, k.z - p.pos.z); })()` };
+const SET = { lash: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const _ = p; p.pos.set(0, .3, 4); p.vel.set(0, 0, 0); return Math.PI; })()`,
+  throw: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const __ = 0, k = mel.WHIP.anchors.find(a => a.id === 'B_knot1'); p.pos.set(32.04, 8, -18.5); p.vel.set(0, 0, 0); return Math.atan2(k.x - p.pos.x, k.z - p.pos.z); })()`,
+  pull: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const __ = 0, c = mel.WHIPZ.L.pulls.find(q => q.kind === 'crate'); p.pos.set(c.x + Math.sin(c.yaw) * 7, 0, c.z + Math.cos(c.yaw) * 7); p.vel.set(0, 0, 0); return Math.atan2(c.x - p.pos.x, c.z - p.pos.z); })()`,
+  swing: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const __ = 0, k = mel.WHIP.anchors.find(a => a.id === 'B_knot1'); p.pos.set(32.04, 8, -18.5); p.vel.set(0, 0, 0); return Math.atan2(k.x - p.pos.x, k.z - p.pos.z); })()` };
 const sheet = [];
 for (const row of ROWS) { const h = await pg.evaluate(SET[row]); await pg.waitForTimeout(1200); const h2 = await pg.evaluate(SET[row]);
   await pg.evaluate(hh => { const p = mel.whipP; p.faceH = p.heading = hh; }, h2); await pg.waitForTimeout(400);
