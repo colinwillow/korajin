@@ -132,3 +132,11 @@ structure from overhead: axes and symmetry, processional avenues, concentric rin
 proportions, courtyards with a long central channel or path and balanced side pieces flanking it, sightlines that line up
 (gate -> courtyard -> monument -> horizon landmark). At ground level it should feel natural (organic jitter, weathering), but
 a top-down view must reveal the organising principle. Every layout ships with a TOP-DOWN render that shows its plan.
+
+## 12. THE TITANS -- walking colossus guardians (his idea, Nov 5, open)
+Giant ancient-alien statues so big they ARE part of the level: they walk slowly across a region with huge footsteps (the ground
+shakes, sand/snow ripples), mostly NEUTRAL. You CLIMB them -- ledges, carved panels and broken armour sticking out to jump to,
+a route up the leg and back to the shoulders/head (a moving level). Lore: they are the GUARDIANS whose SCEPTRES beam Jinra up to
+meet the other Titans' beams and form the SHIELD over the world (this can BE the sky-temple grid of section 7, or feed it). One
+of them turned by the Hollow is a temple's BOSS (the colossus fight of section 5: weak points, climbing, vulnerability windows).
+His Tripo models later; a stand-in blockout titan can prove the climb.
