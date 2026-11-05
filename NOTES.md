@@ -44,6 +44,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2502 -- the level portal fits the frame (Nov 5 2026)
+Rendered the level-opening fix: the seam is a flat horizontal line from the first frame and widens into a level oval -- but with its long axis now
+running ACROSS the view, the full oval spilled past both edges of a phone frame. `pScale` .5 -> .34 so the whole ring sits inside the play camera's
+view (he still fits through it). Shipped unverified.
+
 ## m2501 -- FLOATING BOULDERS: THE DUST DEVILS REBUILT AS STREAKS (his m2491 screenshot: "they look ridiculous... make them cool, artistic particles, or remove them")
 - WHAT WAS WRONG: they were drawn by the dust pool's soft sprites (world-sized puffs) plus dust kicked at their foot -- next to the camera
   that is a screen of big blurry blobs (his screenshot, at night).
