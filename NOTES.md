@@ -44,6 +44,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2497 -- FOREST REGION pass 3: SACRED GEOMETRY (WORLD_PLAN s11) -- one axis through the pit, the BRIDGE over the long pool, mirrored pieces (Nov 5 2026)
+His standing rule (via the parent, WORLD_PLAN s11): *every place laid out with sacred geometry -- axes and symmetry, processional avenues,
+courtyards with a long central channel and balanced flanking pieces, sightlines that line up; natural at ground level, but a top-down render must
+reveal the plan.* Kailasa itself is axial: gateway, court, pavilion, bridge, shrine.
+- **THE AXIS x = 0** (`FREG.axis`): the gateway (in the front face) -> a 6 m dressed-rock CAUSEWAY between two long still-water CHANNELS with
+  kerbs -> the pavilion (the dome, door ritual intact) -> the BRIDGE -> the main shrine; the tower over the rim is the horizon landmark from
+  the knoll.
+- **THE BRIDGE** replaces m2453's front stair: from the pavilion's back terrace (its plinth top, 2.4 m, between the two rear columns' 4.1 m gap)
+  up to the shrine's plinth top (7 m), a 4 m dressed deck at 12.7 deg between .35 m parapets, on two piers standing in the LONG POOL (9 x 16.5 m,
+  kerbed) that runs down the axis beneath it. Its meshes are in the REGION group and carry `userData.coll`, so the mesh collider walks the deck
+  as a ramp and the parapets and piers are walls -- no stepped boxes. (Since m2451 the zone's store is the whole stage anyway; measured
+  170,420 tris, 69,311 floors, 101,109 walls in the strip's run.)
+- **MIRRORED**: the pit's giants are now an AVENUE of 12 (x +-31, z 22..-66, a little jitter); the random rings no longer seed inside the pit.
+  Two pairs of GUARDIAN BEASTS on plinths face the axis (+-16, 22 by the causeway; +-22, -22 outside the pillars). The pillars were already +-12.
+- `kailKeep` keeps trees, tufts and plants off the bridge / pool / causeway / channels / beasts.
+- **The `plan` tile** (top-down over the pit, no fog) is the s11 proof: the rectangle, the mirrored avenue, the twin channels, the pavilion
+  disc, the pool and the shrine all on the axis. Also new: `bridge` tile.
+- Headless calls/tris: glimpse 90 / 397k, valley 74 / 350k, court 57 / 334k, bridge 54 / 337k, plan 75 / 350k (fewer tris: the in-pit ring trees
+  went, the avenue is 12).
+- NOT yet: galleries and cave halls cut into the pit walls (two storeys, stairs and bridges up high), waterfalls over the lip, glowing moss.
+Shipped unverified.
+
 ## m2496 -- THE GIANTS: ANCIENT-ALIEN ARCHITECTURE IN THE DESERT KIT, PLACED AS THE HORIZON (Nov 5 2026)
 His (via parent, WORLD_PLAN 10 SCALE): giant pyramids (stepped / smooth, ~100+ m, weathered sandstone, carved glyph bands); an ANCIENT-ALIEN
 pyramid with glowing square rings of writing hovering round it, offshoot spires, a glowing capstone; a FLOATING inverted pyramid; a MEGALITH

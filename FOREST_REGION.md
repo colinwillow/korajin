@@ -69,6 +69,7 @@ a pond of lily pads; vines over a drop; a climb up giant roots to a high platfor
 | row | what |
 |---|---|
 | `pit` | the rock-cut pit: a rectangle `cx/cz/hx/hz` (edges on the 2.5 m grid), corner radius `rr`, the wall one `wall` cell wide; `kailSD` its distance |
+| `axis` | s11: the causeway, its channels, the guardian beasts (mirrored), the tree avenue (mirrored) |
 | `shrine` | the main shrine: `at`, the plinth (w, h, frieze band), the stair (risers .3), the cella body, the tower tiers, the pillars |
 | `valley` | flat floor to r0 ~47, cliffs to the rim (21 m) by r1 ~67; radii wobble with the angle |
 | `plateau` | the forest floor above the rim: rolling (`roll`), climbing `rise` m toward the edge |
@@ -89,7 +90,10 @@ trunks' boxes are `collKeep` so the mesh never replaces them. Cliffs are steeper
       pit floor dressed rock; the GATEWAY carved round the gorge's mouth (pylons of relief panels, a beast-frieze lintel); the MAIN SHRINE (30 m
       plinth 7 m tall carried by the beast frieze, a 23-riser stair, a panelled cella with a pillared porch, a 5-tier stepped tower to ~40 m);
       the two standard PILLARS; the dome pavilion re-stoned in the same rock (TOOLS > TEMPLE STONE: CARVED / LIMESTONE)
-- [ ] the rock-cut pass 2: the BRIDGE from the pavilion to the shrine at plinth height; galleries and cave halls cut into the pit walls (two
+- [x] (m2497) SACRED GEOMETRY (WORLD_PLAN s11): everything in the pit on ONE AXIS or mirrored across it -- gateway -> causeway between two
+      channels -> the pavilion -> the BRIDGE (pavilion terrace 2.4 m -> shrine plinth 7 m, 12.7 deg, on two piers) over the LONG POOL -> the
+      shrine; a mirrored avenue of 12 giants (x +-31); two pairs of guardian beasts facing the axis; the `plan` tile is the top-down proof
+- [ ] the rock-cut pass 3: galleries and cave halls cut into the pit walls (two
       storeys, stairs and bridges up high); beast statues in the court; carved relief on the walls (not only the maps); waterfalls over the lip
 - [ ] the FOREST KIT sandbox (WORLD_PLAN 1): ~6 plant species (giant glowing bounce mushrooms, giant ferns, vines, giant lily pads, ground
       cover, alien flowers), rocks S/M/L, ground (moss, roots, leaf litter, path stones), each with a day + NIGHT glow and a tri budget
