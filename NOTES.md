@@ -47,6 +47,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2512 -- ARCHITECTURE PASS 5: THE SMOOTH PYRAMIDS, THE FLOATING PYRAMIDS AND THE TOMB
+- SMOOTH PYRAMID: a dark machine BAND with a Jinra SEAM under each band of writing, crystal BRACKETS at its four corners, ivy curtains off
+  every band; a GATEHOUSE at the foot of the face toward the field (a fitted block jutting from the slope, a dark door, a lintel of writing,
+  a glowing threshold, two crystal sockets, ivy over it).
+- FLOATING PYRAMID: a band of runes on the upper faces, machine RIBS round the equator, ROOTS and vines hanging 6-20 m from its rim,
+  CRYSTALS dripping off the shard tips, and a ring of nine torn-off STONES orbiting it (their own group, `userData.spin`).
+- TOMB: a glowing THRESHOLD, crystal SOCKETS on the jambs, tall carved PANELS on the rock flanking the door, a CONDUIT arching over the
+  portal with lights, ivy down the rock over the facade.
+- FIX (seen in the tomb render): the tomb sat INSIDE its mesa -- placed at .92 r, but the mesa's outline wanders to 1.3 r -- so the cliff
+  stood in front of the door. Now it stands on the mesa's real face: the outline's own noise is evaluated in that direction (x1.04 + 1.5 m).
+- Looked at: the south smooth pyramid's face + gatehouse, the floating pyramid with its orbit, the west tomb.
+  check + boulders boot pass. Shipped unverified.
+
 ## m2511 -- ARCHITECTURE PASS 4: THE STEP PYRAMIDS AND THE GATE GET THE MEGALITH + MACHINE DETAIL
 - STEP PYRAMIDS (`pyramid` with `steps`): a dark machine BAND with a Jinra SEAM under every tier's lip; machine BRACKETS at every tier
   corner holding a lit CRYSTAL; a SHRINE on the summit (a fitted-stone cella, a dark door, a lintel of writing, a crystal on its roof);
