@@ -48,6 +48,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2609 -- VILLAGERS NO LONGER FLEE ON SIGHT: Zap 'n Clancy's alien-sighting fear is OFF (`FEAR.on: 0`) (Nov 5 2026)
+Colin (via the orchestrator): the Toad villagers pop a "!" and RUN whenever they see Grumbo -- *old Zap 'n Clancy behaviour, he counted as an
+alien*. In Korajin they go about their business, look at him and say their lines; running is a reaction to being HIT.
+- **The source was `fearStep`** (m279): every pacifist DUMMY with AI that SAW the player (16 m, a 66 deg cone, line of sight) while
+  `fearLooks()` said he looks alien (any non-human hero -- Grumbo is not in `HERO.human`) screamed (`!!`, `fearMark`), fled for ~6 s and maybe
+  phoned it in. **`FEAR.on` is now 0** -- read in exactly one place (`fearStep`'s `looks`), so it is off for EVERY body that goes through
+  DUMMIES: the Sunwell's villagers, the sky castle's townsfolk, any friendly NPC. The mark timers still run (they only clear old marks).
+- **Grepped every other `fleeT =`**: the on-HIT flee (`dummyBlow`, `K.flee0`) is untouched -- hit one and it runs, as asked; the rest are
+  Weirdport story beats (the protest / the brawl dispersing) and my own isle-rim guard. No other sight trigger exists. Animals with their own
+  scare radius (the cows, the meadow herd) are a separate thing and left as they are.
+- The Sunwell: a villager that starts a bark now STOPS for the bark's length (`d.roamT`), so it stands and says it rather than walking off mid-line.
+- `npm run check` ok. Shipped unverified.
 ## m2608 -- THE SHEATH STEEP AND TIGHT ON HIS BACK; THE DRAW / SHEATHE BY HAND (IK onto the real hilt) (Nov 5 2026)
 His (m2607 screenshots, images/feedback/m2607/): *"the sheath sticks out far to the side, nearly horizontal ... closer to vertical and tight to his back,
 the hilt up over the right shoulder, ~25-35 deg from vertical, the tip near his left hip ... his hand must reach all the way back to where the HILT
