@@ -36,12 +36,23 @@ automatically. On a pad the right stick is ONLY the camera; the buttons do what 
 | pause menu | d-pad / stick nav, A select, B back; TOOLS reachable in GOD | 4 |
 | cues | button glyphs (A/B/X/Y/RB/LB/RT) instead of stick highlights; rumble through `haptic()` | 5 |
 
+## Menus (pass 4)
+One cursor, `GP.nav` (`pm` the pause menu, `bag` the backpack, `tools` GOD's TOOLS panel); the list is re-read every frame, the focused entry wears
+`.gpfoc` (cyan). D-pad / left stick move (held = repeat), left / right move a slider, A presses, B goes back a page or closes. The backpack and
+TOOLS PAUSE the game while the pad is in them (`GP.hold`). In the backpack d-pad DOWN / View close it, so left / right / up step its segments.
+TOOLS: the pause menu shows a TOOLS button in GOD (in the arena / forge / home, where the TOOLS panel lives).
+
+## HUD and rumble (pass 5)
+`#gpHud` along the bottom while the pad is in use: RB + the weapon out, LB + the sub-weapon, X, RT, Y + what is in reach to use, the pack.
+The touch pads AND the rings hide (`body.gpad`); the left ring shows only while the backpack is open on the pad. Every `haptic()` buzz also
+rumbles the controller (`gpRumble`: `vibrationActuator.playEffect`, else `hapticActuators[0].pulse`), off with TOOLS > HAPTICS.
+
 ## DONE WHEN
 - [x] One action table (`ACT`) called by both touch and pad; one binding table (`GPMAP`)
 - [x] Left stick moves; A jumps; right stick orbits AND pitches the camera
 - [x] X tap = directional strike; X hold = charge, released by the left stick's pick; B = dodge / phase; Y = interact; Menu = pause
 - [x] RB / LB cycle weapon / sub-weapon; RT draws and looses the bow with free aim (pass 3)
-- [ ] Backpack, pause menu and TOOLS navigable with d-pad / A / B
-- [ ] Glyph cues, rumble, touch UI hidden by default (rings too) with the TOOLS toggle
-- [ ] Connect / disconnect live, touch takes over when the pad goes
+- [x] Backpack, pause menu and TOOLS navigable with d-pad / A / B (pass 4)
+- [x] Glyph cues (`#gpHud`), rumble, touch UI hidden by default (rings too) with the TOOLS toggle (pass 5)
+- [x] Connect / disconnect live, touch takes over when the pad goes (`gpPoll` every frame; a touch also takes over)
 - [ ] **His sign-off, with the controller in his hands**

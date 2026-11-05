@@ -59,6 +59,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2681 -- GAMEPAD pass 4+5: the pause menu, BACKPACK and TOOLS on the d-pad; RUMBLE; the button HUD; the rings hide (Nov 5 2026)
+- **Menus (`GP.nav`, `gpNavStep`)**: ONE cursor over a list re-read every frame (`pm` = `#pmenu` buttons + sliders, `bag` = the left ring's
+  backpack segments -- or `#packPanel` with the rings off, `tools` = `#arenaUi` TOOLS + bar). `.gpfoc` is the cyan focus. D-pad / left stick
+  step (held: .35 s then every .11 s), left / right on a slider moves it, A presses (the ring item's own `tap`, else `click()`, the old panel a
+  pointerdown), B = back a page (OPTIONS -> PAUSED) or close. Menu always toggles the pause menu (and leaves any other pad menu).
+  **The backpack (d-pad DOWN or View) and TOOLS PAUSE the game** while the pad is in them: `GP.hold` sits beside `PMENU.open` in `frame()`.
+  In the backpack d-pad down / View CLOSE it (his spec), so left / right / up step the segments. **TOOLS on the pad**: a TOOLS button on the
+  pause menu in GOD (arena / forge / home, where the panel lives). The button that opened a menu is still held: no step until a fresh press.
+- **Rumble (`gpRumble`, from `haptic()`)**: every haptic kind also plays `vibrationActuator.playEffect('dual-rumble', ...)` (duration 2x the
+  phone pattern, strength from `shake`), else `hapticActuators[0].pulse`. Off with TOOLS > HAPTICS like the phone.
+- **HUD (`#gpHud`, `gpHud`)**: while the pad is in use, along the bottom: RB + the weapon out, LB + the sub-weapon, X STRIKE / HOLD, RT DRAW,
+  Y + what is in reach (`INTERACT.cur.label`), the PACK. Coloured Xbox-style glyphs (`gpG`, `GPGLYPH`). The touch pads AND the rings hide
+  under `body.gpad`; the left ring shows only while the backpack is open on the pad (`body.gpbag`).
+- Measured headless (fake pad, `?god`, the default world = the forge): Menu -> PAUSED focused RESUME; down -> OPTIONS; A -> the OPTIONS page,
+  cursor at its top; B -> back to PAUSED, B -> closed. D-pad down -> backpack open, game held (`GP.hold` 1), focus BOW, the left ring shown;
+  down again closed it. Pause -> TOOLS -> the arena TOOLS panel, focus SPAWN, down x2 -> MORPH, B closed it. HUD read
+  "RB SWORD LB STEEL X STRIKE / HOLD RT DRAW PACK", `#ringR` display none. `haptic('heavy')` -> one dual-rumble, 90 ms, strong .72.
+- Still open: his sign-off with the controller in his hands; Y talk cues for non-registry talkers (the HUD's Y shows registry interactables only).
 ## m2680 -- FOREST TEMPLE build 3 (B, the ROOT GALLERY): the key door opens; the reliefs' eyes give the order of three arrow switches; a chest pays SHARD II
 
 **The door:** with the SMALL KEY (A's chest), tapping the B door at the well's foot spends the key (`ft.prog.bOpen`, saved) and swings the guardian
