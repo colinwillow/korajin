@@ -44,7 +44,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2520 -- THE LAKE, DETAIL PASS 1: PAINTED WATER + WHAT LIVES UNDER IT (WATER.md)
+## m2521 -- THE LAKE, DETAIL PASS 1: PAINTED WATER + WHAT LIVES UNDER IT (WATER.md)
 His Nov 5 series, item 1: *"stylised painted water texture and normal flow, deep-water colour falloff, things under the water."*
 - **Painted water:** `textures/lake_water_paint.webp` (+ `_n` normal), generated with gpt-image-1.5 and made seamless with a half-offset blend.
   It is sampled in two layers flowing against each other (`W.paint`). Pale strokes add light, and contour bands sit at depths 1.25 / 2.7 m. The painted
