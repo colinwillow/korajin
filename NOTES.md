@@ -44,6 +44,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2572 -- THE BOULDER FIELD HIDES WHEN HE IS FAR FROM IT (the village worker's measurement) (Nov 5 2026)
+
+- The village worker measured ~22 draws and ~90k tris of the boulder FIELD being drawn from their well court, 290 m away: the 9 rock meshes plus their
+  shadow copies, plants, leaves, life, wisps, dust, the mirage.
+- **`BFIELD` + `bouldFieldLod`** is the ONE writer of the field children's `visible` (checked first: only the sand patch sets its own, and
+  it is kept). They are hidden past 190 m from F.c and come back inside 160 m (hysteresis). The sand, the region ring and the sand patch always draw.
+  The rocks' physics and regrowth keep stepping; only the drawing stops.
+- **Measured (`gfar`), before -> after:** the village court 54 draws / 221k -> **37 / 146k**; the Sky Ascent's foot 46 / 182k -> **29 / 107k**.
+  The landing is unchanged at 60 / 249k (`gtop2`, field drawn). That is thin against 250k, and the life and devils swing it by ~5k between runs.
+- Every region zone (the village, the ascent, the dune seas, the valleys) gets the room back.
+
 ## m2571 -- THE SUNWELL, pass 2: THE PLATFORMS AND THE ROUTE (DESERT_VILLAGE.md) (Nov 5 2026)
 - **`dvMake` (DVLIB markers)** -- a pure builder of `DVILLAGE` (+ the kit `DK` for its materials, + `O.sand`): the well COURT (paved disc = the
   datum, 24 fitted kerb blocks, a plinth into the sand), the AVENUE (paving on a plinth, kerbs, the kit's arch x2 as the GATE), the SEVEN ISLES (a
