@@ -53,6 +53,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2618 -- COMBAT LAB, harder pass B: MIXED SQUADS and A REASON FOR EVERY TOOL
+- ARMOURED (`pierce: 'charge'` on the row; SKULLBACK, CEO beast): a plain blow does x.35 with grey sparks and a dull clang (`cbtToolK`), the
+  katana's CHARGE release / a slam / a rocket x1.6. The armoured ones are what the charge is for.
+- SHIELDS: the WHIP tears the shield away -- a blow with `BLOW_SRC = 'whip'` on a shield bearer (from its front) throws the shield off toward
+  him and staggers it (`cbtDefend`); the whip worker sets BLOW_SRC. Until then: flank it, or a heavy hit breaks the guard.
+- BURROWERS want a STOMP: the small scorpions die to a stomp on their BURIED mound too (not only once up); the giant's MOVING mound, stomped
+  (landing on it at -4 m/s inside 2.2 m), forces it up early and STUNNED (~2.6 s) and bounces him -- the free window.
+- FLIERS: out of a blade's reach already (the mech dragon); the bow is the answer -- unchanged.
+- MIXED SQUAD (`COMBATSET.squad`): shield + archer + rusher waves ending in the Guardian (warboss / archer / samurai; skullback / two Osari
+  bows / samurai; jackal / warboss / archer / two samurai) -- the archers shoot while the melee engages, so who goes first matters. Lab:
+  SPAWN > TEMPLE SET: MIXED SQUAD.
+- Next (pass C): the core-squad placeholders from ENEMY_ROSTER.md with stone twins. `npm run check` ok. Shipped unverified.
+
 ## m2617 -- UNDERWATER: no darting fish; his glow is his night glow only (his two notes after diving) (Nov 5 2026)
 1. *"The tiny fish that dart across the screen fast -- they don't feel like they're in the world."* That was the MURMURATION: 220 fish orbiting
    HIM at 3-7 m and .5-1.1 rad/s (3-8 m/s, right past the lens). It is now a fixed swirl round the light columns over the well, 9-17 m radius,
