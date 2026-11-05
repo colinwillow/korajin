@@ -44,6 +44,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2555 -- the pause menu's OPTIONS page fits a landscape phone (Nov 5 2026)
+The m2553 render (844 x 390): OPTIONS ran off the bottom, BACK half under the edge (it scrolled, but should not need to). Under 520 px of height the
+menu tightens (smaller heading, shorter buttons) and the OPTIONS page goes two columns for the two toggles. Rendered: PAUSED, OPTIONS, and LEFT-HANDED
+play (both pads and their rings swap sides; the move pad stays the move pad).
+
 ## m2554 -- DESERT REGION STEP 4: FLOATING ROCKS ACROSS THE WHOLE REGION (Nov 5 2026)
 
 His plan, step 4: *"floating rocks everywhere, several heights, instanced, LOD"*, holding the m2538 budget.
