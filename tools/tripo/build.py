@@ -41,6 +41,11 @@ def loose(ob):
     return parts
 INFO={}
 # ---------------- SWORD (weapon units, the katana frame: +Y blade, +Z edge, thin X) ----------------
+# the pommel's TASSELS (two bead chains and two ribbons, all small loose parts under the pommel) are cut: the game hangs dynamic ones (m2647)
+_sp=loose(O['sword']); _sv=[v.co.copy() for v in O['sword'].data.vertices]
+_kill=[i for pp in _sp if len(pp)<60 and max(_sv[j].z for j in pp)<-0.18 for i in pp]
+_bm=bmesh.new(); _bm.from_mesh(O['sword'].data); _bm.verts.ensure_lookup_table(); bmesh.ops.delete(_bm, geom=[_bm.verts[i] for i in _kill], context='VERTS'); _bm.to_mesh(O['sword'].data)
+INFO['tassel_verts_cut']=len(_kill)
 KS=180.0; R=Vector((-0.0046,-0.1997,-0.105-5/KS))
 MS=basis((1,0,0),(0,0,1),(0,-1,0),R,KS)
 bake(O['sword'],MS); O['sword'].name='tripo_sword'

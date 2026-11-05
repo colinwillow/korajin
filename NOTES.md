@@ -88,6 +88,20 @@ His ask: "the LEVER (a weighted handle, a gear quadrant)". The lever kind's buil
 His hands are on the grip now (the markers moved there). Strip (sent): the lever from the side -- thrown away, hauled through the ratchet with the
 pinion turning, home, the lamp lit. 26-35 draws for the station. STILL OPEN: in the gallery's white light the bronze reads flat orange.
 
+
+## m2647 -- THE POMMEL TASSELS HANG AND SWING (cut off the mesh, rebuilt as verlet chains); THE CAPE DRAPES OVER THE SHEATH AND THE QUIVER (Nov 5 2026)
+His (via main): *"the dynamic cape passes through both the sword sheath and the quiver"*; *"the pommel's little dangling tassels are static mesh,
+so in the sheath on his back they stick straight up -- make them dynamic, or delete them"* (images/feedback/m2639/hilt_tassels.jpg).
+- TASSELS: cut in Blender (`tools/tripo/build.py`: every loose part under the pommel with < 60 verts -- the two bead chains and the two ribbons, 277
+  verts; the sword 1,460 -> 996 tris; the GLB re-exported). In the game (`TTAS`, `ttasStep`, AFTER the idle roll / draw IK so they hang off the pommel
+  where it really is): two 4-link VERLET chains off the pommel of whichever sword is showing (his hand, or his back), dark cord + iron beads + a red
+  end weight, gravity always down, they swing with every move; 2 instanced draws. Sized with SWORD SIZE.
+- CAPE: `springsStep`'s collision list takes a CAPSULE along the sheath (sword units 14..82, r .085 x size) and the quiver (r .095), read off their
+  sockets every frame (`tripoCapsules`, `TCOL`), so on the hip it moves with it. A plain capsule pushed the cape out of its NEAREST side -- and the cape
+  rests on the body side of the sheath, so it stayed under; each capsule therefore pushes OUTWARD (away from his spine, `c.o`): the cape goes over the top.
+- FILMED from behind: idle with the capsules off / on (on: the cape lies over the quiver and the sheath), a run (it flies over them; the tassels
+  stream), the tassels on his back. `mel.TCOL.on` / `mel.TTAS.on` are the A/Bs.
+
 ## m2643 -- THE DRAW IS ONE SMOOTH ARC (the sword driven, the arm follows); the idle's edge turned the right way; the quiver higher on the X (Nov 5 2026)
 His (images/feedback/m2639/): *"the roll is 180 deg wrong -- the edge faces back toward him"*; *"the quiver is too low, slide it up so his hand could
 reach the arrows"*; *"the sword comes straight up out of the sheath, then has 1-2 frames to get to the held pose, so it POPs -- reach back, grip the
