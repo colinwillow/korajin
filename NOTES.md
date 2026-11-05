@@ -53,6 +53,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2631 -- THE INTERACTIONS KIT pass 4: BUTTON, PRESSURE PLATE, LEVER, DRAWERS, POTS (INTERACT.md)
+Five more kinds, each a row, each lighting its own SIGNAL LAMP (`ikLamp`: a bronze bowl on a stand, or on a wall bracket -- the first strip had
+the wall lamp's bowl floating off the wall, CRAFT; it has an iron arm and drop back to the wall now) so a switch visibly DOES something:
+- **button** `{ lamp }`: tap PRESS -- his right hand goes onto it and shoves (a lean), it sinks with a deep clunk and a rumble, the lamp lights;
+  latched until RESET.
+- **plate** `{ s, lamp }`: no tap -- step on it and it sinks (a clunk, a rumble), its glyph and lamp light; step off and it rises and goes out.
+- **lever** `{ lamp }`: tap PULL -- both hands on the knob, he leans BACK and hauls it toward him through a four-tooth RATCHET (a lurch and a click
+  at each tooth, a clunk at the end), the lamp toggles; tap PUSH to throw it back (he leans in).
+- **drawer** `{ drawer (0-2), item }`: tap OPEN -- his right hand takes that drawer's pull and draws it out (a scrape), the find lifts out turning
+  and goes to the backpack (a toast).
+- **pots**: the game-wide BREAKABLES (`propKind('ikpot', ...)`, PROPS.md) -- any blow breaks one (shards of its own clay, dust, a chance of a
+  doubloon or Jinra) -- on the floor's corner, the dais and the balcony; RESET mends them (`ikPotsMend`: instance back, box back, hp back).
+Measured in the game (a probe through the shipped page): standing on the plate -> on, lamp on, the plate down 5 cm; off it -> off, lamp off; 7
+pots registered as breakables; a pot broken through `propBreak` loses its box, RESET gives it back.
+Strips (sent): the button pressed (the wall lamp lights), the lever hauled through its teeth (its lamp lights), the drawer drawn and its find
+stowed. 27-87 draws, 19-20k tris.
+
 ## m2630 -- THE INTERACTIONS KIT pass 3: the WHEEL CRANK, its rope and the portcullis it raises (INTERACT.md)
 A ship's-helm wheel on a post up on a BALCONY along the court's right wall (2.4 m, up seven .30 risers and the edge, a rail on its open sides),
 facing a PORTCULLIS in the front wall below; behind it a VAULT with a second chest (BRONZE KEY). Rows: `crank_balcony { kind: 'crank', r, drives:

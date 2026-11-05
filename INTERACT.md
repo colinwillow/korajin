@@ -43,7 +43,7 @@ floor. RESET puts every piece back.
 - [x] 1. CHEST (m2623): the full ritual + GET + backpack, strip in NOTES; the desert village's backwards chests fixed (`face: 'auto'`).
 - [x] 2. HEAVY DOOR (m2627): push, strain, treading feet, pulses of rumble / dust / grind, it finishes on its weight; strip in NOTES.
 - [x] 3. WHEEL CRANK (m2630): spin the stick, hand-over-hand IK, the rope winds on its drum, the portcullis rises; faster = faster; let go = slips back; caught at the top; strip in NOTES.
-- [ ] 4. BUTTONS / PLATES / LEVERS / DRAWERS / POTS; a strip.
+- [x] 4. BUTTONS / PLATES / LEVERS / DRAWERS / POTS (m2631): each a row with its own signal lamp; pots are the game's breakables; strips + a probe in NOTES.
 - [ ] 5. RUMBLE: TOOLS > HAPTICS; his plain answer on whether the iPhone tick works.
 - [ ] Every piece is a row a temple can place (`ikitAdd`), with a stable id; RESET replays all of it.
 - [ ] **His sign-off, on his phone.**
