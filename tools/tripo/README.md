@@ -11,3 +11,7 @@ renders need `apt-get install libegl1 libgl1-mesa-dri` and `EGL_PLATFORM=surface
 
 The part ids in split.py (77 = his string, 81/78/83/89/91/94 = the quiver, 82/116 = the arrow) are the loose-part walk's order on THIS file;
 a re-export from Tripo renumbers them -- re-run the part plot first.
+
+The GLOW MASK (m2610): `atlas.py` writes the 4K atlas out of the FBX, `mask.py <scratch>` classes it (brass / gold, the light carved lines, the
+blade's red runes on grey steel, bright steel rims, the cyan gem) into `<scratch>/glowmask.png`; save it as `models/weapons/tripo_weapons_01_glow.webp`
+(greyscale, 2048). `rmask.py` renders each piece with the mask painted on, to look at before shipping.

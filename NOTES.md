@@ -48,6 +48,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2610 -- HIS WEAPONS GLOW: a Jinra accent glow on the trim, runes and edges, lit by max(night, depth), a slow shimmer (Nov 5 2026)
+His (m2607): *"none of his weapons glow; at night they're just dark. Give the sword, sheath, bow, quiver, arrows Jinra accent glow on their trim, runes
+and edges, driven by the existing night-glow system (max(night, underwater depth) like Grumbo's), with a slow shimmer."*
+- **THE MASK, CLASSED OFF HIS ATLAS** (`tools/tripo/mask.py`; the Tripo atlas is hundreds of tiny islands, no clean regions to paint by hand):
+  brass / gold (hue 24-58, sat > .3, value > .45 -- the guard's gear, the bow's gears, the sheath's mouth and chape, rivets), the light carved /
+  painted lines (cream, the sheath's chevrons and the quiver's emblem), the blade's RED RUNES (hot red only where the neighbourhood is grey steel,
+  so the red leather wraps stay dark), the bright steel rims (the blade's edge, spike tips) and the cyan gem. 6.9% of the atlas. Rendered on every
+  piece in Blender before shipping (`rmask.py`). `models/weapons/tripo_weapons_01_glow.webp` (126 KB, greyscale 2048).
+- **IN THE GAME (`TRIPOW.glow`, `tripoGlowStep` from `bowStep`):** the ONE shared material (every Tripo piece, his hand, his back, the arrows'
+  shafts) takes the mask as its `emissiveMap`, the hue from `heroGlowCol` (Grumbo's own Jinra colour), intensity eased to `day` + (`night` - `day`) x
+  smoothstep(max(nightF, uwGlowF)) -- 0 by day, 2.4 at full night or deep. The shimmer is one splice (`TRIPOGLSL`): a soft band travelling up through
+  the world (`band` .22 /s). The bow string's tubes take `str` .35 of it. No new draw; one program variant.
+- RENDERED AT NIGHT (headless, the forge): the sheath's trim and chevrons, the sword's guard, runes and edge, the bow's gears, the string -- mint
+  over the dark leather. Not done: the whip and the lantern are procedural (not his Tripo pieces) and keep their own looks; the arrowhead keeps
+  its full-draw glow from before.
+
 ## m2609 -- VILLAGERS NO LONGER FLEE ON SIGHT: Zap 'n Clancy's alien-sighting fear is OFF (`FEAR.on: 0`) (Nov 5 2026)
 Colin (via the orchestrator): the Toad villagers pop a "!" and RUN whenever they see Grumbo -- *old Zap 'n Clancy behaviour, he counted as an
 alien*. In Korajin they go about their business, look at him and say their lines; running is a reaction to being HIT.
