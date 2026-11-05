@@ -150,3 +150,10 @@ handsprings/flips through a small portal and pops out a few metres away, fast. U
 CONTROLS: the left-stick flicks (left/right barrel roll, down backflip) STAY. A SWITCH turns phase on; with it on, those same
 flicks phase instead of flipping. Maybe something he wears carries the power (his braids? a charm?), undecided. Built first as
 a switch in TOOLS so he can feel it before it is gated by the story.
+
+## 14. SWIMMING DOWN + THE UNDERWATER WORLD (his idea, Nov 5, open)
+There will be a WATER TEMPLE under the water, so he must be able to DIVE. Pressing DOWN on the right stick swims him down.
+In GOD mode he has infinite air; in the real game air is LIMITED, and reaching the deep needs a special ability or item (a
+cloak, a charm -- gated like section 9). The underwater LOOK is its own sandbox: a beautiful, amazing underwater scene --
+the shader (fog/colour falloff with depth, caustics, light shafts, the surface seen from below), particles, drifting life,
+bioluminescence, ruins below. Built in The Lake first, then the water temple uses it.
