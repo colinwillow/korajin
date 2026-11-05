@@ -59,6 +59,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2679 -- the entrance waits for its ground to EXIST (the Gathering dropped him 12 m through an unbuilt deck) (Nov 5 2026)
+`npm run entryprobe` (m2674): gathering BAD -- the row lands him on the deck at y 12 (its builder writes it), but the deck's collider was not there yet
+when the entrance fired (the zone says ready first), so the landing search found no ground and he fell through to y 0. A row with a height now waits
+(in `entryWatch`) until `groundAt` finds that ground within .6 m (15 s cap). Probe so far: interact, arena, ftemple, ftemple room, ftkit ok; snow a
+harness timeout; dometemple's entrance never started headless (investigating). Shipped unverified.
+
 ## m2678 -- THE TEMPLE LIFT: the forest temple's outside <-> inside is ONE two-way seam (a lift), not a door that loads
 
 **His (via main):** at the first door, after ~5 s, a LOADING SCREEN into a separate zone; ONE-WAY; the door's inside was built twice, in two
