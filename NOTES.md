@@ -44,6 +44,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2547 -- SMART CAMERA: PLANTS AND SMALL THINGS NEVER GO SEE-THROUGH (his, relayed: "plants should never go transparent -- walking into them they rustle and get knocked aside; he wants to see them")
+- **Three kinds now (`smKind`)**: 0 LEAVE IT -- a plant (`userData.noXray` on the mesh OR ANY PARENT, a leaf material with alphaTest, or a
+  mesh / material name matching `SMPLANT`: fern bush grass vine ivy flower plant leaf foliage shrub flora reed petal succ cact hedge weed
+  frond canopy blossom -- NOT "moss": the boulders' mossy rock material is a rock), or anything under `fadeMin` 2.5 m in its largest world
+  dimension (an instance: its own sphere). Never faded, never flown over: the ray goes on past it and he is simply seen with it in front.
+  1 FADE -- 2.5 m .. `small` 6.5 m (a large rock, a pillar, a building piece), or bigger and moving / instanced. 2 BIG -- static and over
+  6.5 m: the drone (lift, then boom in), the fade only as the last resort; the drone's search never counts a plant as a block.
+- **Tagging at source:** `noXray` is honoured on any ancestor, so a plant builder tags its GROUP once. The named plant meshes in the game
+  (`garden_fern_cards`, `garden_grass_cards`, `garden_flower_cards`, `boulders:plant:*`, `snowflora`, `night_flora`) already match by name,
+  so no builder was edited -- the forest interior worker (rustle / push) owns those builders and was told the tag.
+- Measured, `npm run smartcam boulders garden`: the garden's ferns no longer fade (every garden row is now "left alone", as asked); the
+  boulders still clear a big rock (0 -> .68); two boulders rows are a 2.4 m rock under `fadeMin` and stay solid by the rule. Shipped unverified.
 ## m2546 -- THE SAND SCORPIONS, a procedural placeholder (his: "creepy little spider-scorpions buried in the sand as small lumps -- they BURROW UP in a
    spray of sand when he walks near, skitter at him, circle and flank, and the tail STINGS; dodge, block, parry, slice or stomp them and they burst")
 - `SCORP` (SC_SCORP) until his Tripo model. CHEAP BY CONSTRUCTION: every scorpion is one instance in each of three InstancedMeshes -- BODY
