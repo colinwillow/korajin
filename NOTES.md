@@ -47,6 +47,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2513 -- ARCHITECTURE PASS 6: THE COLOSSUS PLINTHS
+- `slot` now builds a megalith PLINTH that stays when his Tripo statue arrives: two stepped tiers of huge fitted blocks (3x3 each), a DIE
+  carved with writing on all four sides under a cornice, fluted corner COLUMNS with machine collars, a Jinra SEAM band round the die's top,
+  two crystal SOCKETS on the front, a stair of great blocks up the front, ivy curtains off the lower tier.
+- THE FIGURE IS SEPARATE NOW: the stand-in silhouette is its own child group (`userData.slotFigure`, named `slot:figure:<id>`) standing at
+  `userData.slotY` (the plinth's top) -- swapping in the statue replaces that group only and keeps the plinth. `slotH` is still the figure's
+  height. Its knees were moved so they sit on the die instead of hanging off its front.
+- Looked at: the west colossus on the approach, close. check + boulders boot pass. Shipped unverified.
+
 ## m2512 -- ARCHITECTURE PASS 5: THE SMOOTH PYRAMIDS, THE FLOATING PYRAMIDS AND THE TOMB
 - SMOOTH PYRAMID: a dark machine BAND with a Jinra SEAM under each band of writing, crystal BRACKETS at its four corners, ivy curtains off
   every band; a GATEHOUSE at the foot of the face toward the field (a fitted block jutting from the slope, a dark door, a lintel of writing,
