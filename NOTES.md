@@ -59,27 +59,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2674 -- THE ENTRANCE LANDED ON ROOFS: the fall took ANY surface up to 99 m over him as ground; landings now checked at run time; the look-down guaranteed (Nov 5 2026)
-His (Forest Temple, outside): *"the portal is a LINE at first; it waits, then as he comes through the camera tilts down. He never visibly comes out of
-the portal -- the sound plays, then the camera POPS and he's somewhere else, apparently on the temple ROOF."* Main: *"robust everywhere -- audit every
-zone; the zone's spawn must not override the landing; a probe so a zone can't ship pointing into a roof."*
-- **THE POP**: `groundAt(x, z, y, step)` returns the highest surface whose top is <= y + step, and the fall asked it with step **99** -- any roof, dome,
-  canopy or ledge up to 99 m OVER him counted as ground, so the instant he dropped he "landed" on top of it (a teleport up; the camera popped). The
-  fall now asks only for what is BELOW where he was (`max(y0, y) + .05`, step 0). The row's height did the same (`y + 80`, step 999): it is the ground
-  just under the zone's own spawn height (`y + 2`, step 0).
-- **THE LANDING, at run time, every zone** (`entryLand`, `ENTRY.land` = [x, y, z, r, why]): from the row's spot out in rings to 8 m, the first spot
-  whose ground is near the zone's height, whose drop column is clear (the first surface under the portal IS that ground) and which is flat. A zone
-  cannot drop him into a roof whatever its row says. No pass -> the row's spot, and `why` says "NO CLEAR SPOT".
-- **THE LOOK-DOWN from frame 1** (`entryCamPose`): the entrance pose is picked to guarantee `lookMin` (.27 rad, ~15.5 deg) down onto the portal --
-  distance (1 .. .55 of the out-pulled play distance), swing (0, +-.5, +-1) and elevation (.5 .. 1.05 rad), clear of colliders (`camFit`); shorter
-  or higher, never lower (m2656's lower fallback could leave the portal edge-on -- the "line"). Held from the first frame and eased into play.
-- **`npm run entryprobe [zone ...]`** (tools/entryprobe.mjs): per zone, headless -- the landing and how far the search moved it, the portal height, the
-  lens and its look-down, and where he ENDED; BAD = no clear landing, ended > .6 m off it, or look < 12 deg. ~1-4 min a zone, so NOT in the 4 s
-  `npm run check`: the run-time search is what makes a roof landing impossible; the probe is the audit.
-- DEV PLACES' forest temples: "Forest Temple: outside" = `zone=dometemple` (the knoll over the valley -- the one he reported); "the door" = the same
-  zone at the door (`at=door`, the entrance skips: he walks back out); "inside" = `zone=ftemple`; "the Acrobatic Room" = `zone=ftemple&at=room`;
-  "the kit" = `zone=ftkit`. Shipped unverified (probe table follows).
-## m2674 -- THE KIT, his gallery notes part 5: THE CAPSTAN (his crank, redone) and the DRAWBRIDGE; the left stick's SPIN CUE (Nov 5 2026)
+## m2675 -- THE KIT, his gallery notes part 5: THE CAPSTAN (his crank, redone) and the DRAWBRIDGE; the left stick's SPIN CUE (Nov 5 2026)
 His crank notes ("pirate's wheel was a SHAPE gesture -- bulky, chunky, built for weight; the hand-over-hand looks weak; a real rope over a pulley;
 light up the left stick when it needs spinning") and his new station ("a big HORIZONTAL wheel, about his height across, at waist / chest height,
 spokes to push, he WALKS round it straining while a chain winds and lowers a DRAWBRIDGE") are ONE new kind, as he suggested:
@@ -104,6 +84,26 @@ spokes to push, he WALKS round it straining while a chain winds and lowers a DRA
   / `walk` / `barY` are the dials. The old `crank` kind stays in the code (unchanged) for anyone placing it.
 - Gates: `npm run check`. Moves no box (two stations to sign). **Shipped unverified.**
 
+## m2674 -- THE ENTRANCE LANDED ON ROOFS: the fall took ANY surface up to 99 m over him as ground; landings now checked at run time; the look-down guaranteed (Nov 5 2026)
+His (Forest Temple, outside): *"the portal is a LINE at first; it waits, then as he comes through the camera tilts down. He never visibly comes out of
+the portal -- the sound plays, then the camera POPS and he's somewhere else, apparently on the temple ROOF."* Main: *"robust everywhere -- audit every
+zone; the zone's spawn must not override the landing; a probe so a zone can't ship pointing into a roof."*
+- **THE POP**: `groundAt(x, z, y, step)` returns the highest surface whose top is <= y + step, and the fall asked it with step **99** -- any roof, dome,
+  canopy or ledge up to 99 m OVER him counted as ground, so the instant he dropped he "landed" on top of it (a teleport up; the camera popped). The
+  fall now asks only for what is BELOW where he was (`max(y0, y) + .05`, step 0). The row's height did the same (`y + 80`, step 999): it is the ground
+  just under the zone's own spawn height (`y + 2`, step 0).
+- **THE LANDING, at run time, every zone** (`entryLand`, `ENTRY.land` = [x, y, z, r, why]): from the row's spot out in rings to 8 m, the first spot
+  whose ground is near the zone's height, whose drop column is clear (the first surface under the portal IS that ground) and which is flat. A zone
+  cannot drop him into a roof whatever its row says. No pass -> the row's spot, and `why` says "NO CLEAR SPOT".
+- **THE LOOK-DOWN from frame 1** (`entryCamPose`): the entrance pose is picked to guarantee `lookMin` (.27 rad, ~15.5 deg) down onto the portal --
+  distance (1 .. .55 of the out-pulled play distance), swing (0, +-.5, +-1) and elevation (.5 .. 1.05 rad), clear of colliders (`camFit`); shorter
+  or higher, never lower (m2656's lower fallback could leave the portal edge-on -- the "line"). Held from the first frame and eased into play.
+- **`npm run entryprobe [zone ...]`** (tools/entryprobe.mjs): per zone, headless -- the landing and how far the search moved it, the portal height, the
+  lens and its look-down, and where he ENDED; BAD = no clear landing, ended > .6 m off it, or look < 12 deg. ~1-4 min a zone, so NOT in the 4 s
+  `npm run check`: the run-time search is what makes a roof landing impossible; the probe is the audit.
+- DEV PLACES' forest temples: "Forest Temple: outside" = `zone=dometemple` (the knoll over the valley -- the one he reported); "the door" = the same
+  zone at the door (`at=door`, the entrance skips: he walks back out); "inside" = `zone=ftemple`; "the Acrobatic Room" = `zone=ftemple&at=room`;
+  "the kit" = `zone=ftkit`. Shipped unverified (probe table follows).
 ## m2673 -- GAMEPAD pass 1+2: ONE ACTION TABLE (`ACT`), the controller moves, jumps, looks (with PITCH), strikes, charges, dodges, interacts, pauses (Nov 5 2026)
 His (WORLD_PLAN.md section 6 + his mapping): "map every action through one action table so the touch layout and a pad read the same bindings";
 left stick move, A jump, X katana (tap + left-stick direction = the directional attacks; HOLD = charge, the LEFT stick picks the release), B dodge
