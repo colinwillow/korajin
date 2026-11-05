@@ -44,6 +44,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2566 -- FOREST TEMPLE: the acrobatic room's glowing floor shards were Z-FIGHTING (his m2563 screenshot, images/feedback/m2563/acro_glow_zfight.png)
+His: cyan Jinra lines and seams on the floor break into flickering dashed shards entering the acrobatic room. CAUSE (mine, m2495): the room's ROSETTE
+crosses the processional AVENUE, and both topped out at 4 cm -- the rosette's spokes (the `carve` material, whose night-glow cracks are the cyan
+lines) and its glowing centre disc were COPLANAR with the avenue's top, so they fought. FIX: rosette rings at 7.5 cm, spokes 7 cm tall, the heart
+at 9 cm; the avenue's rune studs 6.5 cm (2.5 cm over its top). AND every other thin-gap layer: the pillar bands 1.2 -> 3 cm proud, the pilaster
+panels and the guardian panel 1 -> 3 cm, and the glow / ember materials (eyes, studs, chevrons, lantern hearts) take polygonOffset (-2) and the
+relief-plane materials (band, guard) polygonOffset (-1). All of them still DEPTH-TEST, so nothing shows through a roof or a wall; the halos,
+flames and shafts were already depth-tested (no depth write). The rune patterns on the walls are `nightGlow` in the stone's own shader (no extra
+plane), so they cannot z-fight. Checked: the hall's avenue has no rosette over it; the well's rosette sits on bare floor. Shipped unverified.
+
 ## m2565 -- UNDERWATER pass 7: THE CREATURES -- comb jellies, lion's manes, eels, mantas, lantern fish, floor critters (UNDERWATER.md) (Nov 5 2026)
 `UWFAUNA` (SC_UWFAUNA markers), `uwFaunaMake(T, site)`, one instanced draw per kind on one small shader (`uwCritMat`: a dark body under a fake
 light from above + the glow weighted per vertex x the hue x the shared depth/night glow; motion in the vertex shader):
@@ -56,7 +66,6 @@ light from above + the glow weighted per vertex x the hue x the shared depth/nig
 - **CRITTERS** (40): little crawlers with glowing eyes on the floor and ledge (deeper than 18 m): crawl, stop, turn, pitched to the slope.
 - **Budget (measured):** +6 draws, ~25k tris; 152 matrices a frame. With pass 6 the bowl's life is +14 draws / ~103k tris, drawn only with the
   lens under near the site. Renders: the wide, an eel, a manta looked at (close shots of the lion and a critter landed inside flora). Shipped unverified.
-
 ## m2564 -- A FLAT SITE FOR THE SUNWELL VILLAGE (the village worker's ask) (Nov 5 2026)
 
 - `DPLACE.flat: [{ id: 'village', at: [290, 0], r: 55 }]` (offsets from F.c). The glue pushes each entry into BOULDLIB's `keep` list, so
