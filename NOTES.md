@@ -44,6 +44,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2525 -- THE GREAT PYRAMID IN GOLD (his: "the classical pyramid textures are fine, but what if we did more like the gold, crazy one from the reference")
+- New `gold` stone (DKLIB): the wall map tinted warm gold, METALNESS .62 / roughness .34 (it gleams in the sky's light), and gold-glowing
+  ENGRAVED RUNES over every face (`runes` [2.6, 3.4] -- the procedural script from m2518, its strokes lit amber, .55 by day -> 2.15 at night).
+  `mat()` now takes `metal` / `rough`.
+- The great pyramid's base tiers, plate cores, plates and capstone use it when `K.giant.apyr.gold` (`GS` / `GP` in `apyramid`).
+- A TASTE CALL, SO IT IS A SWITCH: TOOLS > BOULDERS > PYRAMID: GOLD / CLASSIC (`mel.pgold`, default GOLD; it reloads -- the pyramid is
+  built once). CLASSIC is m2523 exactly.
+- Looked at: the forecourt low, close, the play camera (it reads gold, engraved, a little "crazy", as asked). check + boulders boot pass.
+  Shipped unverified.
+
 ## m2523 -- REFERENCE PASS D: CHUNKIER PLATES, JAGGED GREEN CRACKS ON THE BASE, DEEP SAND AT ITS FOOT
 - The great pyramid's plates: 15% thicker, a heavier worn edge (two segments), and the seams between them 1.3 m (was .5) -- they read as
   separate slabs, as in the reference.
