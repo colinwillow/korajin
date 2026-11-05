@@ -45,6 +45,30 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2582 -- THE SUNWELL, pass 4: PROPS AND TREASURE (DESERT_VILLAGE.md) (Nov 5 2026)
+- **What went in** (all in `dvMake`, from the table): six MARKET STALLS (posts on footings, a counter, a sagging striped awning with a scalloped
+  hem, baskets of fruit), the WELL (stone rim -- an outer wall, an inner wall flipped to face in, a top ring -- dark water, two stone posts, a beam,
+  a pulley, the rope, a bucket with a brass band), 15 LANTERN POSTS (a curved crook, a cord, a framed lamp; round the court and down the avenue;
+  none in the mouth of the L0 stair or the avenue), lamp-and-pennant STRINGS sagging across the avenue, lamps hung from both rope bridges' and
+  both hanging stairs' rails (40 lamps), four BANNERS (gate pair, hall pair; a glyph stripe, a ragged hem), four GARDEN BEDS (stone border, dark
+  soil, agave rosettes of arcing blades, flowers), four PALMS (a ringed bent trunk, nine drooping tapered fronds, dates), four WINDCHIMES (teahouse,
+  the two domed houses, a frame by the sky shrine), 26 POTS, six CHESTS.
+- **One draw for everything that sways:** `dvcloth`, a vertex-coloured material whose vertex shader moves each vertex by its `aSw` weight (0 where
+  it is tied, 1 at the free edge) and a per-piece phase -- awnings, banners, pennants, chime tubes and sails, fruit and flowers (weight 0). The
+  table's colours are sRGB and go through `lin()` into the vertex colour (the first render was washed out to pastel).
+- **POTS** are one InstancedMesh and break through the KIT's urn path: each instance is wrapped as a `BOULD.urns` entry (a `getWorldPosition` and a
+  `visible` setter that zeroes its instance), so every blow, arrow and slam that breaks an urn breaks a pot; 35% drop a coin; back after 30 s.
+- **CHESTS** (`DVILLAGE.chests`: on the sky shrine's ziggurat top -- 15 coins -- by the lantern tower, behind the elder's and the weaver's houses,
+  behind the hall, beside the L0 stair): body in the batches, LIDS one InstancedMesh hinged at the back edge. The interact registry (right stick
+  glows, tap: OPEN) -> the lid swings open with a little overshoot, at .3 s a ring of COINS pops round it (`coinDrop`, walk through to collect), a
+  gold spark burst, Jinra wisps, a ring and a clang. Opened chests are remembered (`mel.dvchest`). Rendered closed and open (coins in the air).
+- **Budget** (the real page; the desert worker's field LOD landed in between, so the region itself is now 23 draws / 92k at the court):
+  village 16 draws (9 batches + 7 detail: cloth, lamps, leaves, brass, water, pots, lids) + the shadow-only proxy (now stone only), 49.9k tris.
+  court 39 draws / 185k; avenue 39 / 186k; from the sky shrine 43 / 218k; aerial 51 / 219k. Detail meshes hide past 170 m from the camera,
+  the proxy past 120 m from him, so the landing pays nothing (my harness cannot step the field LOD there, so no landing number this build).
+- `npm run dvwalk`: the whole route still climbed. CRAFT on close renders: posts on footings, cords hang from crooks, awnings sag, blades arc.
+- Whole-piece rule: boxes 6 and 7 (props, treasure) ticked; villagers and the budget box open.
+Shipped unverified.
 ## m2581 -- NOTHING POPS: LOD'D THINGS DISSOLVE IN AND OUT, THE FLOATERS CROSSFADE, SHADERS PREWARM (his, flying the desert) (Nov 5 2026)
 
 His report (via parent): flying round the desert, rock formations and other culled things POP into existence. He wants them to FADE IN.

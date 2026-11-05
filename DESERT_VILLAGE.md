@@ -72,8 +72,8 @@ tris at the landing, at the court and from the sky shrine.
 - [x] Every link of the route is walkable or jumpable -- `npm run dvplan` all ok AND `npm run dvwalk` climbs L0..L6 in the shipped page (pass 2, m2571).
 - [ ] Everything collides on its TRIANGLES (`col:desert:village`), stairs on `colOnly` ramps, risers <= .32 (pass 2-4).
 - [x] Ten buildings in the house style, flat roofs walkable, CRAFT.md checked close (pass 3, m2578). (His look on the phone still to come.)
-- [ ] Stalls, well, lanterns, banners, gardens, chimes, pots in place; nothing floats that should touch (pass 4).
-- [ ] Chests open with the interact registry and pop a reward; pots break (pass 4).
+- [x] Stalls, well, lanterns, banners, gardens, chimes, pots in place; nothing floats that should touch (pass 4, m2582 close renders).
+- [x] Chests open with the interact registry and pop a reward; pots break (pass 4, m2582: open + coins rendered; pots ride the kit's urn path).
 - [ ] Villagers wander, the merchant minds his stall, kids run, the elder grumbles; barks when he is near (pass 5).
 - [ ] Budget held: draws and tris reported every build at the landing, the court and the sky shrine (<= 65 / 250k play, <= 80 / 280k aerial).
 - [ ] **His sign-off on his phone.**
