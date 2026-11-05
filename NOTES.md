@@ -53,6 +53,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2641 -- THE INTERACTIONS KIT design pass 3: the WHEEL CRANK as a machine (INTERACT.md)
+His ask: "the WHEEL CRANK (spokes, hub, rope drum, ratchet pawl)". The crank kind's build is new (its sequence unchanged):
+- THE FRAME (one draw): a stone base, a carved post with three bronze bands, two bronze CHEEK plates on a sole carrying the axle, axle caps.
+- THE WHEEL (one draw + the hub gem): eight TURNED spokes (lathed: bulges, a handle past the rim), a wooden rim with a bronze cap ring, an inner
+  bronze ring, a bronze HUB with a Jinra gem at its heart.
+- THE AXLE (one draw, turning with the wheel): an eight-tooth sawtooth RATCHET GEAR in front of the cheeks, the axle, the rope DRUM behind with
+  bronze flanges.
+- THE ROPE WRAP (one draw, replacing nine coil rings): a striped sleeve on the drum that fattens and runs along it as it winds; its stripes run.
+- THE PAWL (one draw): a bronze arm on the cheek, its tip on the gear -- it rides up each tooth and SNAPS down at the wrap, in time with the click
+  and the tick (eight a turn).
+- The pulley is a bronze sheave on a hanger now (one draw).
+Strip (sent): the wheel close from the side, his hands on the spokes, the rope wrap growing on the drum, the portcullis rising on the vault chest.
+53-64 draws with the station in view (was ~100). STILL OPEN: the pawl is small at the play camera's distance -- his eye.
+
 ## m2640 -- THE INTERACTIONS KIT design pass 2: the TREASURE CHEST, decorated and articulated (INTERACT.md)
 His ask: "a highly decorated TREASURE CHEST: carved lid, bronze corners and bands, a clasp that unlatches, a gem lock, interior lining and glow,
 hinges that work". The chest kind's build is new; its sequence keeps every beat and gains the clasp:
