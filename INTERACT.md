@@ -41,7 +41,24 @@ browser, Android `navigator.vibrate`, iPhone Safari the iOS 18 switch-checkbox t
 the plugin to add at packaging time: CAPACITOR.md. The kit uses: chest heave heavy, the GET success; door pulses medium, its last shove heavy;
 crank pawl tick, its catch heavy; lever teeth tick, its clunk heavy; button heavy; plate medium.
 
-## THE SANDBOX ROOM
+## THE GALLERY -- one station per piece, approved station by station (his, after m2633)
+The sandbox is a **white-box gallery**: a white hall, an aisle down the middle, four bays a side, each a STATION with a label plinth (the piece's
+name and how to work it). Walk the aisle, try each one, and approve its INTERACTION and its LOOK separately. Each object then gets its own
+DESIGN pass (one per build): a detailed Korajin look, real mechanical ARTICULATION (its parts move in sequence with Grumbo's action), CRAFT.md,
+the night glow, and 1-3 draws.
+
+| station | where | interaction | look (design pass) | his sign-off |
+|---|---|---|---|---|
+| THE HEAVY DOOR | north bay 1 | [x] m2627 | [ ] carved stone / bronze, ornate frame, studs, glyph bands, glowing Jinra inlays; bolts that slide, a lock that turns, hinges that move | [ ] |
+| THE TREASURE CHEST | north bay 2 | [x] m2623 | [ ] carved lid, bronze corners and bands, a clasp that unlatches, a gem lock, lining and glow, working hinges | [ ] |
+| THE WHEEL CRANK (+ gate) | north bay 3 | [x] m2630 | [ ] spokes, hub, rope drum, a ratchet pawl that clicks | [ ] |
+| THE DRAWERS | north bay 4 | [x] m2631 | [ ] | [ ] |
+| THE BUTTON | south bay 1 | [x] m2631 | [ ] | [ ] |
+| THE PRESSURE PLATE | south bay 2 | [x] m2631 | [ ] | [ ] |
+| THE LEVER | south bay 3 | [x] m2631 | [ ] a weighted handle, a gear quadrant | [ ] |
+| THE POTS | south bay 4 | [x] m2631 | [ ] | [ ] |
+
+## THE SANDBOX ROOM (superseded by THE GALLERY)
 A sunlit stone court open to the sky, one of each piece, spread over three heights (VERTICALITY): the floor, a dais up three .30 risers (the chest),
 a balcony up a stair (the crank) over the gate it raises, the heavy door in the back wall, the buttons / plates / lever / drawers / pots round the
 floor. RESET puts every piece back.

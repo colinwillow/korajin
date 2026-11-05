@@ -53,6 +53,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2636 -- THE INTERACTIONS GALLERY: the sandbox becomes a white-box gallery, one station per piece (INTERACT.md)
+His second track (through the parent session): a clean white-box gallery to walk station to station and approve each piece's INTERACTION and LOOK.
+The court (sandstone, dais, balcony) is gone; `ikitBuild` now builds a 44 x 20 m white hall: an aisle down the middle, four bays a side split by low
+partitions, a skirting line so the walls read, a doorway in the north wall for the heavy door (its alcove + orb behind) and one for the crank's
+portcullis (the vault + the bronze-key chest behind). Stations (rows moved, nothing else changed in them): north -- the DOOR, the CHEST (on a low
+plinth), the WHEEL CRANK (its gate in the wall to its front-right), the DRAWERS; south -- the BUTTON (its wall lamp on a bracket), the PRESSURE PLATE,
+the LEVER, the POTS (two on plinths at .5 / 1.0). Every station has a LABEL PLINTH (`ikLabel`: a white post, a slanted plaque with the piece's name
+and how to work it, from the row's `label`). He spawns at the aisle's west end facing down it. INTERACT.md: THE GALLERY section with a per-station
+approval table (interaction / look / his sign-off), the interaction column ticked by the builds that made them, the look column open.
+Overview strip (sent): the white hall, the bays, the gate doorway, the plinths. **186-195 draws with the whole hall in view -- the pieces are still
+many small meshes each (a chest is ~20); the design passes merge each object to 1-3 draws, which is where this comes down.**
+
 ## m2635 -- ONE HAPTICS LAYER: `haptic(kind)`, native-ready for Capacitor (INTERACT.md, CAPACITOR.md)
 His plan (through the parent session): Korajin ships on iPhone through CAPACITOR, whose `@capacitor/haptics` drives the real Taptic Engine. So there
 is ONE layer: `haptic(kind)` -- tick / light / medium / heavy / thud / success / warning / error (`HKIND`). Each kind is the camera shake + the
