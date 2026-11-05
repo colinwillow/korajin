@@ -53,6 +53,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2640 -- THE INTERACTIONS KIT design pass 2: the TREASURE CHEST, decorated and articulated (INTERACT.md)
+His ask: "a highly decorated TREASURE CHEST: carved lid, bronze corners and bands, a clasp that unlatches, a gem lock, interior lining and glow,
+hinges that work". The chest kind's build is new; its sequence keeps every beat and gains the clasp:
+- THE BODY (one draw, vertex colour): HOLLOW now -- a floor and four plank walls with dark seams, LINED in crimson inside, bronze bands, corner caps
+  on all eight corners, a base trim, four ball feet, the lock plate with its STAPLE and a ring setting; coins in the hoard. `nightGlow` runes.
+- THE GEM LOCK (one draw): a Jinra gem in the plate's ring, dim, FLASHING full as the clasp lets go.
+- THE LID (one draw): a carved half-barrel -- four ribbed panels, two bronze straps and two rims over its curve, a bronze boss on its crown, a crimson
+  underside (so the open lid is lined), and two HINGE BARRELS on the hinge line it turns about.
+- THE HASP (one draw): on the lid's front edge, hanging over the staple. In the GRIP beat it swings UP off the staple (.32 s, a clink, a tick of
+  haptic, the gem flashes) before his hands take the lid and heave; RESET drops it back. (`grip` .55 -> .75 s to fit it.)
+- The hoard's glow, the spilling light and the halo as before (three effect draws).
+`ikVC` (new, shared): one geometry for merging by vertex colour -- the kit's design passes use it so an object is one material and few draws.
+Strip (sent): the chest close -- bands, corners, the gem lock; the hasp up; the heave; the lid swinging on its hinges onto the crimson lining; the
+light; the gem rising; the GET. 39-43 draws for the station in view, 20-24k tris.
+
 ## m2639 -- HIS FULL AIR CHAINS measured (`npm run reach`): 33.7 m without a wall, up to 58 m with one; the whip-only rule is now STRUCTURAL
 
 **His correction (via main):** *"You measure just a wall run, but I can jump, dash after the jump, double jump, dash, wall run, jump off the wall

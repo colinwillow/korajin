@@ -50,7 +50,7 @@ the night glow, and 1-3 draws.
 | station | where | interaction | look (design pass) | his sign-off |
 |---|---|---|---|---|
 | THE HEAVY DOOR | north bay 1 | [x] m2627 | [x] m2638: carved stone / bronze, ornate frame, studs, glyph bands, glowing Jinra inlays; bolts that slide, a lock that turns, hinges that move | [ ] |
-| THE TREASURE CHEST | north bay 2 | [x] m2623 | [ ] carved lid, bronze corners and bands, a clasp that unlatches, a gem lock, lining and glow, working hinges | [ ] |
+| THE TREASURE CHEST | north bay 2 | [x] m2623 | [x] m2640: carved lid, bronze corners and bands, a clasp that unlatches, a gem lock, lining and glow, working hinges | [ ] |
 | THE WHEEL CRANK (+ gate) | north bay 3 | [x] m2630 | [ ] spokes, hub, rope drum, a ratchet pawl that clicks | [ ] |
 | THE DRAWERS | north bay 4 | [x] m2631 | [ ] | [ ] |
 | THE BUTTON | south bay 1 | [x] m2631 | [ ] | [ ] |
