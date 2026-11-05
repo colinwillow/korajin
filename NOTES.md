@@ -44,6 +44,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2574 -- the rocket launcher shoots STRAIGHT again; the bow gets a manual DRAW aim (TOOLS > BOW AIM: CURRENT / DRAW)
+His (Nov 5, relayed): (1) *"put the rocket launcher back to SHOOTING STRAIGHT -- somewhere it was made to aim like the bow (the arc aimer starts up and
+sinks to level), stupid for a rocket launcher. I don't even know how to use it now."* (2) A new bow aim, DRAW, *"like drawing the bow"*: push up starts
+the draw aiming UP, the aim does not sink on its own, the thumb's height sets the angle -- up = up, centre = level, down = down.
+- (1) It was m2139 (`aimVert`'s rocket branch: `ROCKET.raise` 40 deg settling to level over `raiseT`, then `bowDownA` tilting it down). Now behind
+  `ROCKET.bowAim` 0: the rocket leaves along the aim (level, plus the gentle height assist on a body); the mounted -20 deg rest (m2427) skips it too.
+  The gesture is unchanged and plain -- push UP and hold = aim (the lock clunk), LIFT the thumb = fire -- and the hint now says so
+  ("hold up to aim / lift to fire"). `mel.ROCKET.bowAim = 1` is the m2139 behaviour back.
+- (2) `BOWAIM` (mode CURRENT default, remembered as `mel.bowAim`; TOOLS > BOW AIM, beside BOW ARC). CURRENT is unchanged: its "starts high and sinks"
+  is the arc SOLVE -- aimed at a far point, a slow early-draw arrow has to lob, and the lob flattens as the draw fills. DRAW (`bowDrawA`, in
+  `bowSolve`): the launch angle IS the thumb -- pad top = `up` 40 deg up, centre (within `dead` .14) = level, bottom = `down` 50 deg down -- eased
+  (`ease` .05) so the lift cannot jerk it, starting at `up` on the draw; the draw still sets the speed, so a fuller draw flies further at the same
+  angle. The shot is back-solved into the same `{dx, dz, ty, T}`, so the arc line, the landing mark and the arrow agree. The bow looses only on the
+  LIFT (m1854), so releasing at the centre is a level shot, not a cancel. A lock is ignored in DRAW (manual); mounted, the -20 deg rest adds on.
+- Not verified on a device. Box moved: none.
+
 ## m2573 -- THE VINE WHIP pass 2: THE LASH (VINEWHIP.md) -- the slot, the ring segment, the verlet vine, the lock glow, swing / chain / strike
 On the combat worker's layout (their reply): slot `whip` APPENDED LAST in WEAP.slots (`whip: true`, never `blade`: the sword paths would claim
 it; saved slot indexes + GEAR bits are positional), `KIT3.label.whip`, a THIRD segment on the right ring (`qdIx('whip')`) and the dial points at
