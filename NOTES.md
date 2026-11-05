@@ -47,6 +47,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2608 -- THE SHEATH STEEP AND TIGHT ON HIS BACK; THE DRAW / SHEATHE BY HAND (IK onto the real hilt) (Nov 5 2026)
+His (m2607 screenshots, images/feedback/m2607/): *"the sheath sticks out far to the side, nearly horizontal ... closer to vertical and tight to his back,
+the hilt up over the right shoulder, ~25-35 deg from vertical, the tip near his left hip ... his hand must reach all the way back to where the HILT
+actually is, grip it, pull the sword up and out along the sheath's line, bring it round to the guard; reverse it to sheathe ... time the swap at the
+moment the blade clears the mouth."*
+- **MEASURED FIRST (headless, the shipped page, Grumbo in his own frame, metres):** hips y .62, Spine2 .93, right shoulder (RightArm) -.175/.99, head
+  top 1.41; his back/cape's furthest-back point per 10 cm cell -- the cape bulges to z -.26..-.28 at hip height, -.16 at the shoulder blades.
+- **PLACEMENT (`TRIPOW.back`):** 25 deg off vertical (`dir` .423/-.906), the MOUTH just over his right shoulder (y 1.12), the tip behind his left
+  buttock (y .40); leaning back -.1 so it follows the cape's slope: 3-9 cm clear all down it. **The sheath is 0.82 m on a 1.4 m body**, so with the
+  tip at the hip the hilt has to stand past his head -- it does (pommel ~1.45 m). Shrinking his sword is the only way to get both; not done (his size).
+  Quiver (`TRIPOW.quiver`) lower right BESIDE the sheath, on the cape's bulge, fletching under his right shoulder blade.
+- **THE DRAW (`KDRAW`, SC_KDRAW; `katDrawIK` after `katLeftGrip`):** `weapon_swap` still moves the body; the RIGHT ARM is solved with `ik2` onto the
+  sword on his back (read every frame from the sheath socket, the palm not the wrist), and the HAND is turned so a held sword would lie on the back
+  one. The sword slides along the sheath's own axis (`kdSlide`, `blade` 62 units = tip at the mouth). Draw: reach (0-.3), grip (-.38), pull out
+  (-.66) -> THE SWAP AT .66, the blade clear -> eased back to the clip by .97. Sheathe: carried over the shoulder to the tip-at-the-mouth point (.3,
+  the hand sword off, the back one on), slides home (.56), held, released (.64), eased out (.86). `dur` 1.2 s for these two (`p.swapDur`; every other
+  swap keeps `SWAP.dur` .85). Only katana <-> anything; `mel.KDRAW.on = 0` is the A/B, `turn` 0 drops the hand turn.
+- **FILMED (behind-right and side, 8 points each way) and looked at:** the hand meets the hilt over the shoulder, the blade slides out along the
+  sheath, no snap at the swap (the held sword starts on the sheath line and swings round to the guard); sheathing, the tip finds the mouth and slides in.
+- Open: the left hand does nothing during the draw (a real two-handed draw steadies the sheath); the glow (his item 2) is the next build.
+
 ## m2607 -- UNDERWATER: GRUMBO GLOWS IN THE DEEP (his, via the orchestrator); the white wash found and fixed (Nov 5 2026)
 His: *"Grumbo should GLOW underwater -- the parts that glow at night... brighter the deeper he goes, with a soft halo... tie it into nightGlow (no
 second writer)."*
