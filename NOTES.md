@@ -47,6 +47,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2519 -- REFERENCE PASS B: WHAT STANDS ROUND THE GREAT PYRAMID (split obelisks, floating lintels, split mini-pyramids, standing stones)
+- DKLIB `sobelisk`: a stump on a fitted plinth, then shaft pieces FLOATING above (one breathing group), each gap held by a green energy
+  JOINT (a lit flattened core between two machine collars), deep hieroglyph panels on every piece, a pyramidion; ivy off the stump.
+- `plintel`: a tall carved pier of fitted drums with hieroglyph panels; a great SLAB hovering across its head and out to one side (its own
+  breathing group), a band of writing on it, ivy dripping off it. Ruined: the top drum gone, the slab tipped.
+- `mpyramid`: a small floating pyramid SPLIT into a cap, a middle course and an inverted root with green joint discs, a few shards; it bobs
+  and turns.
+- `menhir`: a tall worn monolith, leaning, its top broken (noise), a carved band, ivy.
+- PLACED ON THE PLAN (mirrored): split obelisks flanking the pyramid's sides (ax +-178, 520 -- first at 150 they crowded its flank), piers
+  with lintels bridged TOWARD the axis (+-112, 400; the east one ruined), mini-pyramids hanging either side of the apex (+-95, 600, 150/135 m
+  up), six standing stones in a double row just outside the obelisk avenue (+-64, 260/320/380). All on the kit row too.
+- Looked at: the forecourt low, the wide, a split obelisk close. check + boulders boot pass. Shipped unverified.
+- NEXT: alien desert plants with glowing spots (agave, tube coral), tiny figures for scale, the reference's warm hazy light.
+
 ## m2518 -- REFERENCE PASS A: THE GREAT PYRAMID AFTER HIS IMAGE (images/reference/pyramid_ref_01.jpg)
 His reference, read by the planner: a battered step-pyramid BASE with dark machine pillars and vertical tech channels, heavy ivy; above it
 LAYERS OF CHUNKY STONE PLATES that overhang like stacked lids; amber glowing writing under the overhangs, a hot orange-white core in the
