@@ -46,6 +46,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+<<<<<<< HEAD
 ## m2599 -- UNDERWATER ART C: MAJESTY -- the leviathan, a murmuration round him, a jelly field pulsing in a wave, light columns, floating ruins (Nov 5 2026)
 `UWMAJ` (SC_UWMAJ markers), `uwMajMake` / `uwMajStep`; only while the lens is under near the bowl.
 - **THE LEVIATHAN:** a 30 m Jinra whale (tapered body, flukes, pectoral fins, glowing eyes and flank lines) undulating along a slow loop -- the
@@ -60,6 +61,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - Cost (measured): +9 draws, ~21k tris; per frame 1 + 7 + 14 matrices. Render (images/feedback/m2586/uw_artC_render.jpg): the columns over the
   shrine, the whale passing, the field and the ruins round him at 20 m. Jelly field dimmed after the render (it washed white). Next: ART D
   (marine snow, plankton swirling in his wake). Shipped unverified.
+=======
+## m2600 -- STAIRS RUN FLAT: the periodic snag every few steps was the FRAME RATE (Nov 5 2026)
+
+His: *"running up stairs, he runs up 5-6 steps smoothly, then hits something like a wall and SLOWS, then 5-6 more, slows again."*
+**Measured** (`SS_STAIR` + `SS_FPS` in `stepsweep`: the shipped page on a fake clock, the real pads, his horizontal speed every frame) on the great
+pyramid's grand stair, x 3.3 from z -270 to -470 (0.27 -> 99.22 m):
+    60 fps   9 m/s the whole way -- no snag (which is why a desktop never shows it)
+    30 fps   speed falls to 0.2 m/s once every ~6 m of stair (32 frames), then rebuilds: median 6.4 m/s
+    20 fps   the same every two treads: median 3.0 m/s, and he stopped short at 89 m
+**Why:** a frame's move was split into sub-steps of `MOVE.sub` .34 m, so at 30 fps a full-speed frame (.3 m) was ONE sub-step, and his feet
+stayed on the tread he started from until the frame ended (the ground snap is after the loop). The riser AFTER the next one then stood .6 m over his
+feet -- over `lip` .55, so a wall -- the mesh pushed him .04 m and `collSlide` took his speed into it; `stepUpTry` declined (too little of the
+move lost). **Fix (`integrate`):** grounded, the player moves in sub-steps of at most `MOVE.subGround` .12 m (up to `subMaxGround` 10), and after
+each one his feet follow the floor up within a step (`stepFollow`) -- a riser is always met from its own tread.
+**After:** great pyramid 60 / 30 / 20 fps: 9 m/s flat, 0 frames under 75% after the start, top reached at all three. The forest temple's
+entrance stair (0.12 -> 2.41) and interior stair (0 -> 3.02) at 30 fps: 8.5 / 8.2 m/s flat, 0 slow frames. (The Sunwell village's stairs are not
+yet in the trace: their coordinates are the village worker's.) The trace is the first row of the edge-case course (`SS_STAIR`, `SS_FPS`).
+**Try:** run up the great pyramid's stair, and any long stair, without letting go. **Shipped unverified.**
+>>>>>>> 6c0c12c (m2599 stairs run flat at any frame rate: grounded sub-steps <= .12 m and feet follow the treads between them (the periodic stair snag))
 
 ## m2598 -- THE SWING PUMP made visible (his: "I can't see the pumping on the HIGH BAR") -- the bar's and the vine whip's
 The pump (m1883 `PUMP` / `pumpPose`) is one code path for the high bar, the gym's swing rope and (m2597) the whip's vine. On the BAR its input is the

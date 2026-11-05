@@ -55,9 +55,9 @@ function sweep(o) {
     if (!beside && S.COLL.on && S.COLL.ray(ex - sx * .2, gh + 1.0, ez - sz * .2, sx, sz, p.r + .8, 0) < p.r + .8) beside = true;     /* ... or a drawn face at his chest (a rock) */
     rises.push({ ex, ez, sx, sz, gl, gh, rise: gh - gl, beside }); }
   if (o.stair) { const [x0, z0, x1, z1, yq] = o.stair, L = Math.hypot(x1 - x0, z1 - z0), ux = (x1 - x0) / L, uz = (z1 - z0) / L, g0 = S.groundAt(x0, z0, yq != null && !isNaN(yq) ? yq : cy + 40, 0);
-    S.godTo(x0, g0, z0, Math.atan2(ux, uz)); p.vel.set(0, 0, 0); for (let f = 0; f < 20; f++) frame(); const prof = []; let top = p.pos.y, stuckF = 0, lastP = 0;
-    for (let f = 0; f < 240; f++) { steer(ux, uz); frame(); const along = (p.pos.x - x0) * ux + (p.pos.z - z0) * uz; if (along - lastP < .005) stuckF++; lastP = along; top = Math.max(top, p.pos.y); if (f % 10 === 0) prof.push(along.toFixed(1) + '@' + p.pos.y.toFixed(2)); if (along >= L) break; }
-    up(); const gEnd = S.groundAt(x1, z1, top + 1, 1); return { stair: { from: +g0.toFixed(2), topWant: +gEnd.toFixed(2), reached: +top.toFixed(2), endAlong: +lastP.toFixed(2), len: +L.toFixed(2), stuckFrames: stuckF, ups: S.STEPUP.ups, prof: prof.join(' ') }, rises: 0, probed: 0, ok: 0, stall: [], bins: {}, tiny: 0, mode: S.COLL.mode, coll: '', at: [0, 0, 0], hstat: [] }; }
+    S.godTo(x0, g0, z0, Math.atan2(ux, uz)); p.vel.set(0, 0, 0); for (let f = 0; f < 20; f++) frame(); const prof = [], spd = []; S.STEPUP.dbg = []; const nF = o.stairF || 240; let top = p.pos.y, stuckF = 0, lastP = 0;
+    for (let f = 0; f < nF; f++) { steer(ux, uz); frame(); const along = (p.pos.x - x0) * ux + (p.pos.z - z0) * uz; if (along - lastP < .005) stuckF++; lastP = along; top = Math.max(top, p.pos.y); if (f % 10 === 0) prof.push(along.toFixed(1) + '@' + p.pos.y.toFixed(2)); spd.push([f, +Math.hypot(p.vel.x, p.vel.z).toFixed(2), +along.toFixed(2), +p.pos.y.toFixed(2), (S.STEPUP.dbg || []).splice(0).join(';'), +(S.COLL.fab || 0).toFixed(3)]); if (along >= L) break; }
+    up(); const gEnd = S.groundAt(x1, z1, top + 1, 1); return { stair: { from: +g0.toFixed(2), topWant: +gEnd.toFixed(2), reached: +top.toFixed(2), endAlong: +lastP.toFixed(2), len: +L.toFixed(2), stuckFrames: stuckF, ups: S.STEPUP.ups, prof: prof.join(' '), spd }, rises: 0, probed: 0, ok: 0, stall: [], bins: {}, tiny: 0, mode: S.COLL.mode, coll: '', at: [0, 0, 0], hstat: [] }; }
   if (o.only) { rises.length = 0; rises.push(o.only); }
   const pick = []; const step = Math.max(1, rises.length / o.N); for (let k = 0; k < rises.length && pick.length < o.N; k += step) pick.push(rises[Math.floor(k)]);
   const out = { tiny, rises: rises.length, probed: 0, ok: 0, stall: [], bins: {} };
@@ -82,10 +82,10 @@ for (const z of want) {
     await page.goto(`http://127.0.0.1:${port}/index.html${url}&entry=0`, { timeout: 120000 });
     await page.waitForFunction(() => window.__ss && document.getElementById('boot').classList.contains('gone') && window.__ss.rig.ready, null, { timeout: 240000, polling: 1000 });
     await page.waitForTimeout(4000);
-    await page.evaluate(() => { const S = window.__ss; window.__clock = { t: performance.now(), dt: 1000 / 60 }; performance.now = () => window.__clock.t; S.renderer.render = () => {}; });
+    await page.evaluate(f => { window.__fps = f; }, +(process.env.SS_FPS || 60)); await page.evaluate(() => { const S = window.__ss; window.__clock = { t: performance.now(), dt: 1000 / (window.__fps || 60) }; performance.now = () => window.__clock.t; S.renderer.render = () => {}; });
     const ONLY = process.env.SS_ONLY ? JSON.parse(process.env.SS_ONLY) : null, STAIR = process.env.SS_STAIR ? process.env.SS_STAIR.split(',').map(Number) : null;
-    const R = await page.evaluate(sweep, { stair: STAIR, only: ONLY, off: OFF, N, R: z === 'temple' || z === 'lake' || z === 'forest' ? 90 : 45 });
-    if (R.stair) { console.log(`== ${z} STAIR [${R.mode}] ` + JSON.stringify(R.stair)); await page.close(); continue; }
+    const R = await page.evaluate(sweep, { stairF: +(process.env.SS_F || 240), stair: STAIR, only: ONLY, off: OFF, N, R: z === 'temple' || z === 'lake' || z === 'forest' ? 90 : 45 });
+    if (R.stair) { const sp = R.stair.spd; delete R.stair.spd; console.log(`== ${z} STAIR [${R.mode}] ` + JSON.stringify(R.stair)); const run = sp.slice(30).map(q => q[1]).sort((a, b) => a - b), med = run[run.length >> 1] || 0; console.log('  median speed ' + med + ' m/s; frames under 75%: ' + sp.filter((q, i) => i > 30 && q[1] < med * .75).length); for (const q of sp) if (q[0] > 30 && q[1] < med * .75 || process.env.SS_ALL) console.log('    ' + q.join('  ')); await page.close(); continue; }
     console.log(`== ${z} [${R.mode}] collider: ${R.coll}\n   step-up ${OFF ? 'OFF' : 'on'}  ${el()}  rises found ${R.rises} (+${R.tiny} narrower than him, skipped), probed ${R.probed}: walked up ${R.ok}, STALLED ${R.stall.length}, blocked by a wall beside/ahead (too tall to step) ${R.beside || 0}, gone (broken/moved) ${R.changed || 0}   (${Object.entries(R.bins).map(([k, v]) => k + ' ' + v[1] + '/' + v[0]).join(', ')})  step-ups ${R.ups}  unsettled ${R.unsettled || 0}  spawn ${R.at.join(',')}  heights ${R.hstat.join(' / ')}`);
     for (const s of R.stall.slice(0, 12)) console.log('    stall ' + s.join('  '));
     if (R.trace) for (const t of R.trace.filter((t, i) => i < 40 || t[4])) console.log('     ', t.join(' '));
