@@ -96,8 +96,9 @@ rest -> traversal -> traversal + combat -> puzzle -> combat (mid-boss) -> TEACH 
 
 ### Fixes this plan makes to what is built
 - The acrobatic room's LADDER goes (TEMPLE_ROUTES: no ladders) -> a CHIMNEY of two faces 4.6 m apart, or a side wall run + kick to the upper rim.
-- Every gap in the built route re-checked against `moves.json` comfy numbers (wall run along 5.5-6.5 m: the 9 m wall-run gap is too long ->
-  shortened to 6 m, or a kick-off pillar halfway).
+- ~~The 9 m wall-run gap shortened to 6 m~~ -- **KEPT (his: "I bet I could do it")**: MEASURED with the shipped frame (`npm run wallgap`): from a
+  9 m/s run he lands on the gallery by the side wall run (jumping at z -4.6 or -3.5) AND by a plain running jump. What stopped it was the wall's
+  PILASTERS (solid on the triangle collider, every 7 m) -- now drawn but not solid. A miss lands on the ground floor by the stair (a short way back).
 - Its button becomes the gate to SMALL KEY 1 (a chest after the last fight), not the end of the temple.
 
 ### Build order (track B: one room a build, each refined until it is fun; track A, the detail / paint / plant passes, interleaves)

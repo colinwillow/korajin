@@ -53,6 +53,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2637 -- A's 9 m wall-run gap MEASURED with the shipped wall run: within his reach; the wall PILASTERS were stopping every side run
+
+**His (via main):** *"I bet I could do it"* -- measure the 9 m gap (rim 1 east, ends z -6 -> the north gallery's lip z -15, both at 6 m) with the
+REAL wall run, not TEMPLE_ROUTES' 6.5 m comfort number; keep it as a skill gap if it is in reach.
+**`npm run wallgap`** (new, `tools/wallgap.mjs`): boots the SHIPPED page in the temple (`?w=forge&zone=ftemple&at=room`), stops its loop and steps
+the shipped `frameBody` on a fake clock (the `npm run play` pattern -- `stepPlayer` alone does NOT move him along a wall: the run's motion is
+applied in the frame), runs him down rim 1 with the left stick held, fires the shipped jump (`p.jump`) at a chosen z, leans the stick into the
+wall, and reports the catch, the furthest z at >= 5.7 m, and where he lands.
+**First reading (before the fix):** he caught the wall (`side:side`), rose to 10.7 m on the arc, ran along at ~6 m/s -- and STOPPED DEAD at
+z -13.3 (and at -6.8 from a later take-off): exactly the wall's 7 m SEAMS, where the rock-cut PILASTERS stand 32 cm proud. Their boxes were never
+solid, but the zone collides on its drawn TRIANGLES (COLL `ftemple`, mesh) and the pilasters were merged into the `stone` mesh -- so every side
+wall run in the temple ended at the next pilaster. **Fix:** the pilasters are their own mesh key `trim` (the stone material, the stone UV scale,
+`noColl`): drawn, not solid. +1 draw.
+**After:** run (9 m/s) + jump at z -4.6 or -3.5 + lean -> wall run all the way, **lands ON THE GALLERY** (z -20.7, y 6.02); a plain running jump
+from z -5.3 also lands on it (z -19.4). **So the gap STAYS at 9 m** -- it is in his reach two ways (the wall run is the flashy one). A miss drops
+6 m to the ground floor beside the stair / landing -- a short way back up, no change needed. FOREST_TEMPLE.md's "shorten it" line is struck.
+**Try:** `?w=forge&zone=ftemple&at=room` -> up the stair and blocks to rim 1 east, run north, jump at its end holding the stick toward the wall.
+**Next:** A's ladder -> no-ladder route (a chimney) + its chest. Shipped unverified.
+
 ## m2636 -- THE INTERACTIONS GALLERY: the sandbox becomes a white-box gallery, one station per piece (INTERACT.md)
 His second track (through the parent session): a clean white-box gallery to walk station to station and approve each piece's INTERACTION and LOOK.
 The court (sandstone, dais, balcony) is gone; `ikitBuild` now builds a 44 x 20 m white hall: an aisle down the middle, four bays a side split by low
@@ -77,7 +96,6 @@ heavy; lever teeth tick, its clunk heavy; button heavy; plate medium.
 Measured (a stand-in `window.Capacitor` with a recording Haptics in the shipped page): tick -> selStart, selChanged, selEnd; light -> impact LIGHT;
 heavy -> impact HEAVY; success -> note SUCCESS; warning -> note WARNING; with it removed, the browser path ('vibrate' in Chromium) takes over.
 CAPACITOR.md lists the plugin to add at packaging time and the kind -> call table. **Whether the iPhone BROWSER tick works is still his answer.**
-
 ## m2634 -- FOREST TEMPLE build 1 on the sheet: THE HUB -- the well's doors to the chambers, six shard sockets, the shard HUD
 
 **His go (via main):** *"Go ahead and start building the forest temple"* -- room by room on the planning sheet (m2625).

@@ -46,6 +46,7 @@
     "entryhitch": "node tools/entryhitch.mjs",
     "foreststrip": "node tools/foreststrip.mjs",
     "ftstrip": "node tools/ftstrip.mjs",
+    "wallgap": "node tools/wallgap.mjs",
     "templesheet": "node tools/templesheet.mjs",
     "ftplan": "node tools/ftplan.mjs",
     "whipshot": "node tools/whipshot.mjs",
