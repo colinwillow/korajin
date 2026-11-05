@@ -47,6 +47,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2505 -- ARCHITECTURE PASS 1: THE GREAT PYRAMID SLICED, ITS GROOVES GLOWING (his: "I'm not loving it" + what "square rings" meant)
+His: "picture a smooth regular pyramid, slice it horizontally into layers, spread the slices apart a little so each layer is slightly INSET,
+with a gap between them -- those gaps GLOW, or have strange things going on inside them: Jinra light, alien machinery, moving parts, runes.
+A combination of a regular pyramid and a step pyramid." Then: architecture only for a while, pass after pass of detail.
+- `apyramid` rebuilt (`K.giant.apyr`: layers 7, gap .22 of the pitch, deep 2.6 m, inset .45 m per slice, rib 5 m): seven sloped slices of
+  fitted sandstone (`giant`), each set in from the true slope (the silhouette steps a little), a worn chamfer on each top edge; in every
+  GROOVE a recessed core of carved writing (`glyphJ`, glows Jinra), a light seam at its middle (`core`), machine RIBS every 5 m round
+  all four faces in a new dark `mech` material (the glyph map, dark, its gold lines glow a little), a CRYSTAL SOCKET (a lit octahedron)
+  every third bay. Glowing capstone, antenna, spinning core, corner spires kept. The hovering square halos are GONE -- they were the
+  misreading of his "square rings". Ruined: the top two slices lost, grooves dark (`glyphG`), no seams.
+- Looked at: play camera (the grooves read as glowing lines at 560 m), a close three-quarter, a detail at the face. First cut's ribs were
+  orange teeth (they took the alien-rock map) -> the dark `mech`; grooves raised .17 -> .22 and the seam .16 -> .28 of the gap so they read
+  from the landing. Night: `mech` .5 -> 2.0, glyphJ .7 -> 3.3.
+- Next passes (his list): ivy and overgrowth (a green bowl), more Jinra seams, alien electronics in megalithic stone (carved panels,
+  conduits, sockets, worn edges, huge fitted stones) across the obelisks, step pyramids and structures. check + boulders boot pass.
+  Shipped unverified.
+
 ## m2503 -- THE PHASE SHIFT (WORLD_PLAN section 13; his: "the same purple portal he arrives through, Nightcrawler-style -- blip out, flip through a small portal, pop out a few metres away, FAST")
 - TOOLS > PHASE (`PHASE.on`, `mel.phase`, OFF by default). With it ON, `leftFlick` asks `phaseGo` first: the flicks that flip him (left / right
   barrel roll, down backflip -- `cartGo`, untouched with it OFF) and the flick ahead BLINK the way flicked, on the ground and in the air (the
