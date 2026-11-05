@@ -56,6 +56,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2664 -- THE KIT, his gallery notes part 1: the arms RELEASE on every exit, SECONDARY MOTION on every piece (`ikJolt`), a HAND-SIZED door lock wheel his hands ride (Nov 5 2026)
+- **"His arms stayed stuck out" (the crank):** `ikitPose` now drops `want` whenever no piece is running (every exit path -- finish, let go,
+  interrupt, knocked down, out of reach -- ends `IKIT.run`), and the release eases back to the clip in ~.25 s (`.07` ease on the way out, snapped
+  to 0 under .02, targets cleared). Note: m2662 found the frame line that had disabled every IK pose since m2647, so what he saw may have been
+  older; this makes the exit unconditional either way.
+- **`ikJolt(obj, k)`** (his, the Unreal video): ONE damped spring per object (7 Hz, damping .3, ~.3 s) -- a few mm of drop and ~1.5 deg of tilt per
+  unit, added to the object's REST transform (taken when it starts, restored exactly when it settles). **`haptic()` jolts the running piece on every
+  buzz**, so the wobble lands with the sound and the touch on every beat of every piece (`IKJ.k`: tick .25, medium .55, heavy 1); the plate's
+  on/off and the crank slipping home call it themselves; the drawer now buzzes (and jolts) as it hits its stop. **The lever REBOUNDS** off its stop
+  (a .09 rad damped wobble on the arm). Dials: `IKJ` (f, z, mm, deg). Not done: pots rocking when brushed.
+- **Door lock wheel** (his: "too small, his hand isn't even near it"): r .19 -> .3, a heavy rim, thick spokes, a hub boss, four GRIP PEGS; BOTH
+  hands take the left and right pegs and ride them round (`lwMk[2]`), with the pose's reach; he now stands square in front of the wheel
+  (`door.stand` offsets toward it -- it is .6 m off the middle) and pushes there, near the free edge. Side film: hand to peg **.01 / .21 / .08 m**
+  through the turn (it was .41-.76 before he moved over). The reach is off for the push (it chased the door swinging away: a 70 deg bow).
+- Gates: `npm run check`. Moves no box. **Shipped unverified.** Next: the camera (45 deg nudge, `shows`, reveal + jingle).
+
 ## m2663 -- UNDERWATER DETAIL C: organic plant forms -- mushroom corals, trumpets, anemones, layered fans (his: "no flat spikes") (Nov 5 2026)
 After his two reference paintings (images/feedback/m2586/ref_underwater_a/b.png):
 - **MUSHROOM-CAP CORALS** (`shroom`, replaces the crystal spikes): 2-3 caps on curving stems, ruffled rims, the GILLS underneath alight.
