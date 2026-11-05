@@ -47,6 +47,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2514 -- ARCHITECTURE PASS 7: FITTED-STONE JOINTS AND WORN EDGES ON THE BIG FACES
+- The `giant` stone material gains `blocks: [course 2.4, block 4.6, joint .09]` (object space, so the 1:10 kit-row miniature carries the
+  same coursing): horizontal COURSES (on a top face, a grid), staggered block JOINTS whose length varies per course, a tone per block
+  (+-12%), the joint itself dark, the arrises beside it lighter (sun-worn) and chipped by a noise that also widens the joint in places.
+  All in the shader -- no geometry, no draw calls; it reaches every giant face that uses `giant` (pyramid slices and faces, tiers, plinths,
+  drums, gatehouse, tomb jambs). Its own program key (`dk-trib`).
+- Looked at: the great pyramid's slices close, the south pyramid's face, the play camera. check + boulders boot pass. Shipped unverified.
+
 ## m2513 -- ARCHITECTURE PASS 6: THE COLOSSUS PLINTHS
 - `slot` now builds a megalith PLINTH that stays when his Tripo statue arrives: two stepped tiers of huge fitted blocks (3x3 each), a DIE
   carved with writing on all four sides under a cornice, fluted corner COLUMNS with machine collars, a Jinra SEAM band round the die's top,
