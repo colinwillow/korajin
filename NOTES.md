@@ -62,6 +62,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - DEEP SAND: fourteen big mounds (r 26-44, h 7-14 m) heaped round the great pyramid's foot, the causeway's mouth left open.
 - Looked at: the forecourt low, the play camera. check + boulders boot pass. Shipped unverified.
 
+## m2526 -- THE LAKE, DETAIL PASS 4: THE BOAT, PAINTED (WATER.md; `lkPaint`, pass 6 reuses it)
+His Nov 5 series, item 4: *"the boat -- detail pass, painted."*
+- **`lkPaint(material, opts)` (`L.paint`)**, in the lib, works in OBJECT space so it rides the boat:
+  - a triplanar gouache STROKE (`textures/lake_paint_stroke.webp`, gpt-image-1.5, seamless, normalised to mean .5) modulates the colour by `k`;
+  - a painterly lift on up-facing faces;
+  - `wood` lays the painted grain (`textures/lake_paint_wood.webp`) along the part's long axis;
+  - `seig` (a vertex colour) gets a GOLD seigaiha, the wave-scale pattern, with fwidth anti-aliasing that fades it out where it would alias;
+    `seigT` gets it tone-on-tone.
+  - It chains onto an existing onBeforeCompile and cache key, and `nightGlow` runes still splice after it.
+- **The boat:**
+  - hull lacquer: strokes, GOLD seigaiha in the dark sheer band, faint tone-on-tone scales in the vermilion;
+  - posts, fascia, benches and the prow curl were 0x3a2420 and read BLACK (CRAFT.md 4), so they are now oxblood 0x6a3426 with the grain through them;
+  - roof: wood grain; tiles, cloth, chest and deck: painted strokes; brushed metal: fine strokes.
+- New shot `boat_paint` (close on the hull side). Draws unchanged: no new meshes, just splices. Two new textures, 565 KB on the wire.
+- No WATER.md box ticks. This is detail on the open "lacquer and metal never black" boat box. Shipped unverified.
+
 ## m2524 -- THE LAKE, DETAIL PASS 3: GLOWING PLANKTON (WATER.md NIGHT)
 His Nov 5 series, item 3: *"bioluminescence -- glowing plankton, strongest at night, stirred by the boat and by him."*
 - **Stir:** `lkWake` now also writes `lkStir` (handed to the fragment as `vStir`). It is a wider, longer-lived trail glow (age constant 20 s), the
