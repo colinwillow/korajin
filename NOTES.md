@@ -44,6 +44,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2495 -- FOREST TEMPLE: SACRED GEOMETRY (his standing rule via main, WORLD_PLAN 11) + a PLAN render in the strip
+- The interior is one north-south AXIS (x = 0) and now LOOKS it: new `avenue` piece (a cut processional band between carved kerbs, lit rune studs on
+  the centreline, flush) down the hall, the corridor and the room; new `rosette` piece (concentric carved rings + radial spokes + a lit heart) at the
+  well's foot and under the room's shaft. Mirrored: the room's four pillars (the off-axis one at (2, 4) moved to (8, 13): the pair to (-8, 13); clear
+  of the stair, the block and the zip), the room's shaft + ceiling opening centred on the axis, the ruin paired east / west, the moss paired, the
+  hall's braziers / panels / pots paired. The acrobatic route still spirals round the axis -- gameplay unchanged.
+- `npm run ftstrip plan --set=in`: an ORTHOGRAPHIC top-down shot (shot fields `top`, `up`, `clip`: a global clipping plane cuts everything above
+  25.5 m, so the rock ceilings do not hide the plan; fog off for the shot). FOREST_TEMPLE.md has the rule. 33 draws / 64k tris. Shipped unverified.
+
 ## m2494 -- FLOATING BOULDERS: THE SLAM'S SHOCKWAVE RIPPLES THE SAND (Nov 5 2026)
 His (via parent): the air slam's shockwave should physically ripple the sand -- a damped ring wave through the deformation field,
 crest + trough, dust thrown at its front, a shallow crater + radial streaks left, resting rocks/pebbles hop as it passes, floaters

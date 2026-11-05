@@ -38,7 +38,8 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
   const cols = Math.min(o.cols, list.length), rows = Math.ceil(list.length / cols);
   const out = document.createElement('canvas'); out.width = cols * W; out.height = rows * (H + 20) + 22; const c2 = out.getContext('2d'); c2.fillStyle = '#000'; c2.fillRect(0, 0, out.width, out.height); c2.font = '12px monospace';
   let calls = 0, tris = 0;
-  list.forEach((s, k) => { cam.position.set(...s.eye); cam.lookAt(...s.at); cam.updateMatrixWorld(); L.px(cam, H); R.render(scene, cam); calls = Math.max(calls, R.info.render.calls); tris = Math.max(tris, R.info.render.triangles);
+  list.forEach((s, k) => { let C = cam, fog = scene.fog; R.clippingPlanes = s.clip ? [new THREE.Plane(new THREE.Vector3(0, -1, 0), s.clip)] : [];     // a PLAN shot: orthographic, straight down, cut above `clip`
+    if (s.top) { C = new THREE.OrthographicCamera(-s.top, s.top, s.top * H / W, -s.top * H / W, .1, 400); scene.fog = null; } C.position.set(...s.eye); if (s.up) C.up.set(...s.up); C.lookAt(...s.at); C.updateMatrixWorld(); if (!s.top) L.px(cam, H); R.render(scene, C); scene.fog = fog; calls = Math.max(calls, R.info.render.calls); tris = Math.max(tris, R.info.render.triangles);
     const x = (k % cols) * W, y = 22 + Math.floor(k / cols) * (H + 20); c2.drawImage(R.domElement, x, y + 20); c2.fillStyle = '#9ff'; c2.fillText(s.id + ' -- ' + s.why, x + 4, y + 14); });
   const n = L.count(); c2.fillStyle = '#fff'; c2.fillText('FOREST TEMPLE' + (o.set ? ' [' + o.set + ']' : ' [kit]') + '  calls<=' + calls + ' (incl. shadow pass)  tris<=' + tris + '  ' + JSON.stringify(n), 6, 15);
   return { png: out.toDataURL('image/png'), calls, tris, build, n }; }, [m[0], opts]);

@@ -17,6 +17,14 @@ modelled tiers at the foot and the cornice of every face); tool-marked weathered
 and bridges carved from the same rock. Kailasa's circulation for later chambers: a courtyard cut down into the rock with the shrine left standing
 in it, ringed by multi-storey cloister galleries, joined by a rock bridge.
 
+## SACRED GEOMETRY (his standing rule, WORLD_PLAN 11)
+Every chamber and the sequence between them is laid on AXES with symmetry, processional avenues and concentric / radial patterns -- natural at
+eye level, but a top-down render reveals the plan (`npm run ftstrip plan --set=in`: orthographic, cut above 25.5 m). The interior is ONE axis,
+x = 0, north-south: the hall's avenue (eight pillars in mirrored pairs, paired braziers / panels / pots) -> the well (a circle; a rosette of
+three rings and eight spokes at its foot) -> the corridor's avenue -> the arch -> the room's avenue (four mirrored pillars, the shaft and a
+12-spoke rosette at its centre, the ruins mirrored) -> the door on the far wall. The acrobatic ROUTE climbs round that axis (east, north,
+west, south): the plan is symmetric, the climb spirals. Later chambers keep to the axis or branch from it at right angles.
+
 ## Map of the chambers (top to bottom)
 ```
   [THE DOOR]  the dome temple's door: the CRYSTAL-SHARD RITUAL (the exterior worker's shared system, WORLD_PLAN 7) -> `DOMET.door.enter` -> here
