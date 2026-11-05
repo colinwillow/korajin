@@ -57,6 +57,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2666 -- the bow arc's dark outline: NIGHT WINS -- faded out by dusk, the pure glow at night, wherever he is
+His (Nov 5, relayed) on m2650: *"the dark outline helps by day, but AT NIGHT it shows too and makes the arc LESS visible -- hilarious."*
+- m2650's `arcDayK` was max(1 - NIGHT.f, the fog colour's brightness) -- and some zones (the forge: #f2f4f7) keep a bright fog at night, so night
+  read as full day. Now it is the time of day alone: `1 - smooth(0, BARC.dusk .4, NIGHT.f)` -- full by day, gone by dusk, the old pure glow
+  (old colours, no core, no halo) at dusk and night. The background term is dropped (it could only make night look like day).
+- Headless, forge, bow drawn: ?night=0 -> outline on, opacity .55; ?night=1 -> outline hidden, opacity 0 (the fog still white -- the case that broke).
+  Desert noon / dusk / night and a white sandbox by eye: his phone. `mel.BARC.dusk` moves the fade. Box moved: none.
+
 ## m2665 -- THE QUIVER ON THE SHEATH (in contact at the crossing), HIGHER on his back; the stray buckle off (Nov 5 2026)
 His (images/feedback/m2661/gear_side.png, gear_back.png): *"from the side the quiver and the sheath don't touch -- separate layers floating apart; and
 there's an extra thing further out"*; *"the quiver is still too low -- up toward the hilt, the fletching near his shoulder."*
