@@ -19,7 +19,7 @@ Jinra glyph bands; adobe houses, cloth awnings and lanterns on top. The people a
   theirs to add), ENTRY, ZONEWANT. Shared lines diffed after every rebase: SC_DPLACE (my one field), `bouldSkyRocks`.
 
 ## The plan (sacred geometry, WORLD_PLAN 11)
-- **The axis** runs west to east along the spoke: the GATE (u -54) -> the MARKET AVENUE (three stall pairs, banners, lanterns) -> the
+- **The axis** runs west to east along the spoke: the GATE (u -46) -> the MARKET AVENUE (three stall pairs, banners, lanterns) -> the
   WELL COURT (r 10, the datum y 0) -> the HALL closing the axis (u 16). The landing is west, so he arrives up the axis.
 - **The spiral:** six floating isles every 60 deg round the well (a hexagon on r 26, the last pulled in to r 22), each **+4 m** above the
   last (+3, +7, +11, +15, +19, +23), and the seventh, the **SKY SHRINE (+28)**, hung directly over the well -- the axis mundi: the well looks
@@ -33,12 +33,12 @@ Jinra glyph bands; adobe houses, cloth awnings and lanterns on top. The people a
 |---|---|---|---|---|---|
 | L0 | court -> i1 | stone stair | 10.0 | 3 | 10 steps, riser .300, tread 1.00 |
 | L1 | i1 -> i2 | rope bridge (sag .45) | 13.5 | 4 | mean 16.5 deg, ends 9 / 23 deg |
-| L2 | i2 -> i3 | 3 hop stones | 13.5 | 4 | worst hop 2.41 m across, 1.00 m up |
+| L2 | i2 -> i3 | 3 hop stones (r 1.6) | 13.5 | 4 | worst hop 2.06 m across, 1.00 m up |
 | L3 | i3 -> i4 | hanging stair | 13.5 | 4 | 14 steps, riser .286, tread .96 |
 | L4 | i4 -> i5 | rope bridge | 13.5 | 4 | as L1 |
-| L5 | i5 -> i6 | 3 hop stones | 13.2 | 4 | worst hop 2.45 m, 1.00 m |
+| L5 | i5 -> i6 | 3 hop stones (r 1.6) | 13.2 | 4 | worst hop 2.00 m, 1.00 m |
 | L6 | i6 -> sky | hanging stair | 9.0 | 5 | 17 steps, riser .294, tread .53 |
-Limits: riser <= .32 (his step is .357), walk slope <= 30 deg, a hop <= 1.6 m up and <= 3 m across (apex 2.8, comfy gap 6.5). A wall-run
+`npm run dvwalk` then WALKS it in the shipped page (fake clock, the real pads): every leg arrives. Limits: riser <= .32 (his step is .357), walk slope <= 30 deg, a hop <= 1.6 m up and <= 3 m across (apex 2.8, comfy gap 6.5). A wall-run
 face stands on i4 as an optional shortcut, not on the main route.
 
 ## What stands where
@@ -68,8 +68,8 @@ tris at the landing, at the court and from the sky shrine.
 
 ## DONE WHEN
 - [x] The plan: sector agreed with the desert worker, layout on the sacred-geometry rule, top-down + section rendered (pass 1).
-- [ ] The court, avenue and seven isles stand at seven heights, each isle a floating slab with a rock root (pass 2; close + wide render in NOTES).
-- [ ] Every link of the route is walkable or jumpable -- `npm run dvplan` all ok AND a walk in the real page up L0..L6 (pass 2).
+- [x] The court, avenue and seven isles stand at seven heights, each isle a floating slab with a rock root (pass 2, m2571: close + wide renders).
+- [x] Every link of the route is walkable or jumpable -- `npm run dvplan` all ok AND `npm run dvwalk` climbs L0..L6 in the shipped page (pass 2, m2571).
 - [ ] Everything collides on its TRIANGLES (`col:desert:village`), stairs on `colOnly` ramps, risers <= .32 (pass 2-4).
 - [ ] Nine buildings in the house style, flat roofs walkable, CRAFT.md checked close (pass 3).
 - [ ] Stalls, well, lanterns, banners, gardens, chimes, pots in place; nothing floats that should touch (pass 4).

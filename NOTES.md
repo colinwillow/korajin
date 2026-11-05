@@ -44,6 +44,32 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2571 -- THE SUNWELL, pass 2: THE PLATFORMS AND THE ROUTE (DESERT_VILLAGE.md) (Nov 5 2026)
+- **`dvMake` (DVLIB markers)** -- a pure builder of `DVILLAGE` (+ the kit `DK` for its materials, + `O.sand`): the well COURT (paved disc = the
+  datum, 24 fitted kerb blocks, a plinth into the sand), the AVENUE (paving on a plinth, kerbs, the kit's arch x2 as the GATE), the SEVEN ISLES (a
+  paved top on a stone drum with a noisy rim, a glowing glyph band, a ragged bulbous ROOT of red rock -- three lumps clinging under the drum -- and
+  a Jinra crystal under the tip), and the SEVEN LINKS: a solid stone stair (every step a block down into the sand), two ROPE BRIDGES (84 planks on a
+  .45 m catenary, posts on footings, sagging rope rails, hangers), two HOP chains (3 stones r 1.6), two HANGING STAIRS (treads on two stringers lip
+  to lip, rope rails). Village materials `dvwood` / `dvrope` join the kit's triplanar ones from the table.
+- **Glue:** `dvBuild` runs in `bouldGiants` right after the region floaters (my one line there), so `col:desert:village` (solid, ledge-able) and
+  `col:desert:village:soft` (noLedge: the ramps, the walls under the rope rails, the roots) join `BOULD.colG` before the `desert` COLL row builds.
+  The datum is the highest sand under the court and the avenue + .2 (2.85 today, before the desert worker's flatten term). `?at=village` lands
+  him on the court; GOD > PLACES > THE SUNWELL; `mel.dvGo('i4')` puts him on an isle.
+- **PROVED WALKABLE IN THE SHIPPED PAGE: `npm run dvwalk`** (new; the walktest pattern, fake clock, the real pads, MESH collision): court -> L0
+  stair -> i1 -> L1 rope -> i2 -> 3 hops -> i3 -> L3 hanging stair -> i4 -> L4 rope -> i5 -> 3 hops -> i6 -> L6 hanging stair -> the sky shrine at
+  +28: **every leg arrives** (1.3-2.2 s each). Found on the way: the hop stones were r 1.4 with 2.4 m gaps and a STANDING jump off a small stone
+  did not make it -> r 1.6, worst gap 2.06 m. And a walker trap worth knowing: lifting the thumb off a pushed left stick reads as a FLICK (the
+  backflip dodge) and threw him off a stone -- the walker never lifts between legs now.
+- **Budget:** the village is 6 merged draws (wall, pave, glyphG, under, core, dvwood -- the ropes ride the timber's draw) + ONE shadow proxy on
+  the shadow-only layer (`SHCELL.layer`, no colour-pass draw), whose castShadow is on only within 120 m of him; 19.9k tris, 16.3k collider tris.
+  Measured in the real page, my render (with / without the village): landing 64 / 71 calls (noise: the proxy is off there), court 61 / 58 and
+  276k / 237k, looking up from the court 62 / 55 and 276k / 237k, from the sky shrine 63 / 65, aerial 79 / 70 and 312k / 273k.
+  **The court is over the 250k play budget, and it was before the village (237k):** ~22 draws / ~90k tris of it are the boulder FIELD 290 m away
+  (rocks, chunks, plants, leaves, lizards, wisps, dust...). Sent to the desert worker with the list (their code: hide the field past ~150-200 m).
+- CRAFT checked on close renders (stair, rope bridge, hops, root, hanging stair, the play view): rails sit on posts on footings, stairs rest on
+  blocks / stringers lip to lip, ropes sag and hang, roots are ragged. The crystals float under the roots on purpose (the Jinra lift).
+- Whole-piece rule: boxes 2 and 3 of DESERT_VILLAGE.md ticked; buildings, props, treasure, villagers and the budget box still open.
+Shipped unverified.
 ## m2570 -- THE VINE WHIP pass 1: THE SANDBOX (VINEWHIP.md, KORAJIN > Vine Whip (sandbox), `?w=forge&zone=whip`)
 - `whipMake` (WHIPLIB markers) is a PURE builder of the `SC_WHIP` table: six STATIONS in a ring round a centre pad at 60 deg (sacred geometry),
   each in its own frame facing the pad -- A LASH LANE (targets on posts at 3 / 6 / 9 m), B SWING PIT (8 m platforms 28 m apart under a stone

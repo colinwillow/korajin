@@ -39,6 +39,7 @@
     "lakestrip": "node tools/lakestrip.mjs",
     "bouldstrip": "node tools/bouldstrip.mjs",
     "dvplan": "node tools/dvplan.mjs",
+    "dvwalk": "node tools/dvwalk.mjs",
     "hitch": "node tools/hitch.mjs",
     "snowtris": "node tools/snowtris.mjs",
     "foreststrip": "node tools/foreststrip.mjs",
