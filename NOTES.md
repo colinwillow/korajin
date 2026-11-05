@@ -44,6 +44,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2498 -- THE GIANTS ON THE SACRED-GEOMETRY PLAN (his: "the pyramids and obelisks seem RANDOMLY placed", WORLD_PLAN 11) (Nov 5 2026)
+- THE AXIS: landing -> field centre -> the great pyramid is the PROCESSIONAL AXIS (-z). The mandala turned .3 -> pi/8 (`F.mandala.rot`)
+  so its eight spokes lie SYMMETRIC about that axis (+-pi/8, +-3pi/8 ...) and the landing sits on the bisector.
+- Plan rows (`DPLACE`, `dpAt`): `pol: [theta, R]` (angle off the axis, metres from the centre; x = c.x + sin(theta) R, z = c.z - cos(theta) R)
+  or `ax: [u, d]` (side, along). On the axis: the megalith gate (190), an AVENUE of four obelisk pairs (u +-38 every 60 m, growing x7..8.5),
+  colossus slots flanking the approach (u +-72), the great alien pyramid closing it (560), the floating pyramid hung centred above the
+  axis (330 m out, 178 m up: from the landing it hangs just ABOVE the capstone -- at 115 it hid it). Stepped pyramids MIRRORED on the
+  +-3pi/8 spokes; the six mesas in mirrored pairs on the +-3/5/7 pi/8 spokes (forward sector open); TOMBS cut into the +-5pi/8 mesas
+  facing the centre, a guardian pair each; behind him (theta pi) the smooth pyramid and two ruined floaters on +-7pi/8. `jit`
+  (deterministic, by id) nudges angles/yaws so the ground level is not a ruler.
+- THE KIT ROW moved again, 230 -> (700, 260): it sat inside the plan (the top-down showed the white floor breaking the symmetry).
+- The boot gate's "a power-3 blast breaks a rock" picked `rows[30]`; the mandala turn reordered the rows and it became a big rock (cracks,
+  does not break -- m2491's hp by size, correct). It now picks the smallest breakable rock.
+- Strip: TOP-DOWN plan + play camera + kit row. check + boulders boot pass. Shipped unverified.
+
 ## m2497 -- FOREST REGION pass 3: SACRED GEOMETRY (WORLD_PLAN s11) -- one axis through the pit, the BRIDGE over the long pool, mirrored pieces (Nov 5 2026)
 His standing rule (via the parent, WORLD_PLAN s11): *every place laid out with sacred geometry -- axes and symmetry, processional avenues,
 courtyards with a long central channel and balanced flanking pieces, sightlines that line up; natural at ground level, but a top-down render must
