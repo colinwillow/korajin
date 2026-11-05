@@ -53,6 +53,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2623 -- THE INTERACTIONS KIT pass 1: the kit, the sandbox room, and the CHEST (INTERACT.md; KORAJIN > Interactions (sandbox), `?w=forge&zone=interact`)
+His new sandbox (through the parent session): "the icing on the cake" -- the polished pieces every temple uses, perfected in a sandbox, then placed
+as ROWS. INTERACT.md first (the row shape, the shared walk-up / lens / pose / rumble, each piece's beats, DONE WHEN). Box 1 moves; 2-5 open.
+**The kit** (`IKIT`, between SC_IKIT markers): a piece is a row `{ id, kind, at, face: deg | 'auto', from }` + its own fields; `ikitAdd(row,
+parent)` builds it (pure of the row), its chevron (`interactAdd`) and colliders; `IKIND[kind]` = { build, stand, start, step, abort, reset }. A tap:
+he WALKS UP on his own legs (the left stick is handed the steer -- the door ritual's mechanism, one line beside `doorSteer`), turns to it
+(`p.tossFace`), the lens eases a little closer (the door ritual's `cam.doorK`, now also on while a kit piece plays), and the kind's beats run.
+**The pose layer** `ikitPose` (after the mixer, before `getPose`): two-bone IK hands on any world targets + a lean, undone by `ltUndo` -- Grumbo
+has NO push / kick / lever clips (searched: only `pick_up`, `hold_item`), so the kit's poses are IK. `ikRumble(k)` = a shake + a low thump.
+**The CHEST**: hands go under the lid's front edge (two markers on the lid, sorted to his left / right by his frame) as he leans in 26 deg; the
+HEAVE: the chest JOLTS (its body shaken, decaying), the lid cracks, a rumble and a clang; the lid swings up past open and settles (`rsBack`),
+warm light spills out (the hoard plane, an additive beam, a halo), the gem rises turning; then the GET: it flies to his raised hand (`GETPOSE`,
+one arm, m2479) and **he turns to the lens** (asking the lens round to his front first put it BEHIND the chest, inside its light -- strip 2);
+sparkles, a chime; then it swoops to his back and shrinks (the backpack), a toast "+ JINRA GEM -- to the backpack", coins. RESET closes it.
+**The 180-degree chests**: the desert village's rows measured against where you walk up from: `c_tower` faced away from its isle's centre (dot
+-.85), `c_elder` away from the village (-.99). Every dv chest is now `face: 'auto'` (front to the isle's centre, or the village's for a chest at
+an isle's middle / on the ground). The cave chest was already turned (m1761); kit chests are 'auto' by default (toward `from`).
+**The room**: a sunlit sandstone court 30 x 22 m open to the sky, the chest on a dais up three .30 risers (the other pieces' spots come with them).
+Strips (sent, Grumbo): walk-up -> grip -> heave -> swing with the light -> gem rising -> the GET facing the lens -> stow. 48-53 draws, 16k tris.
+`npm run ikstrip --id=<row> [--pre=...]` films a piece (the zone's own clock). The first strip tapped from 16 m away and the walk cap (3.5 s) ran
+out at the dais side -- in play the tap is within 1.9 m; the strip now starts him beside it. Shared lines (ENTRY rows, ZONEWANT, the menu, the
+arena frame line after a stash-pop conflict) diffed against main: only my additions.
+
 ## m2622 -- VINE WHIP: every whip blow lands as BLOW_SRC 'whip' (the combat worker's shield hook)
 
 The combat worker (m2618) made a blow with `BLOW_SRC = 'whip'` tear a shield bearer's shield off and stagger it (`cbtDefend`). The whip's three

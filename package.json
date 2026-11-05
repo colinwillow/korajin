@@ -49,7 +49,8 @@
     "whipshot": "node tools/whipshot.mjs",
     "whipclips": "node tools/whipclips.mjs",
     "gathstrip": "node tools/gathstrip.mjs",
-    "smartcam": "node tools/smartcam.mjs"
+    "smartcam": "node tools/smartcam.mjs",
+    "ikstrip": "node tools/ikstrip.mjs"
   },
   "type": "module",
   "devDependencies": {
