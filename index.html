@@ -40980,6 +40980,7 @@ const IKIT = { want: 0, on: null, rows: [], run: null, n: 0, err: 0,
   room: { w: 44, d: 20, h: 4.2, wall: .8, spawn: [-20, 0], yaw: Math.PI / 2, bays: [-22, -11, 0, 11, 22], part: 4.5 },     // THE GALLERY (his, after m2633): a white hall, an aisle, four bays a side
   crank: { drop: 1.6, dead: .45, maxW: 12, gear: .55, turns: 3, slip: .06, idle: 2.5 },     // drop: rad round its side before a hand re-takes the top spoke; gear: wheel per stick turn; turns: wheel turns for all the way; slip /s
   lever: { stand: .68, pull: [14, -12], push: [6, 22] },
+  cap: { barY: .92, bar: 1.25, walk: 1.25, lag: .35, lean: 18, teeth: 24, dead: .45, maxW: .9, spinK: .1, slip: .05, idle: 2.5 },     // m2674 the capstan: bar height / length, his walking circle, how far behind the bar he stands (rad), lean, ratchet teeth, the stick, max rad/s, slip /s, let-go s
   chestOpen: 'HEAVE', kick: { back: .05, wind: .32, strike: .14 },     // m2671 (his): TOOLS > LOOK > CHEST OPEN: HEAVE / KICK
   stow: 1, redraw: 1, camSide: 45, showOff: 30, reveal: { dur: 1.3, after: .5 },     // m2668: 45 deg off his back (unlocked: a drag outranks it); a piece that drives something ELSE (`shows`) frames both through the action cam, 30 deg off, and REVEALS it when done
       // m2662 (his): the weapon goes AWAY before any piece (and back after); the lens sits camSide degrees off his back so his hands show     // m2662: where he stands (m from the pivot) and his lean [start, end] in degrees
@@ -40990,7 +40991,9 @@ const IKIT = { want: 0, on: null, rows: [], run: null, n: 0, err: 0,
     { id: 'door_heavy', kind: 'door', at: [-16.5, 0, -10.4], face: 'auto', from: [-16.5, 0], w: 2.9, h: 3.5, d: .45, swing: 84, label: ['THE HEAVY DOOR', 'tap OPEN: the lock, the bolts, the push'] },
     { id: 'chest_dais', kind: 'chest', at: [-5.5, .3, -7.2], face: 'auto', from: [-5.5, 0], item: { name: 'JINRA GEM', col: 'glow' }, coins: 6, label: ['THE TREASURE CHEST', 'tap OPEN'] },
     { id: 'gate_vault', kind: 'gate', at: [7.5, 0, -10.15], face: 0, w: 2.5, h: 2.85, rise: 2.6 },     // the portcullis the crank raises (built BEFORE the crank: it looks it up)
-    { id: 'crank_balcony', kind: 'crank', at: [4, 0, -6.6], face: 0, r: .42, drives: 'gate_vault', pulley: [7.5, 3.55, -9.85], label: ['THE WHEEL CRANK', 'tap TURN, spin the stick'] },
+    { id: 'capstan_gate', kind: 'capstan', at: [4, 0, -6.6], drives: 'gate_vault', pulleys: [[7.5, 3.55, -9.85]], turns: 1.0, rope: 'rope', label: ['THE CAPSTAN (gate)', 'tap PUSH, then spin or push the left stick'] },     // m2674: his crank, redone as a CAPSTAN ("pirate's wheel was a shape gesture")
+    { id: 'bridge_east', kind: 'bridge', at: [22.8, 0, 0], L: 3.4, w: 2.4 },     // m2674: the DRAWBRIDGE in the east doorway, over the moat (built before its capstan)
+    { id: 'capstan_bridge', kind: 'capstan', at: [18.4, 0, 0], drives: 'bridge_east', pulleys: [[22.4, 4.45, -1.05], [22.4, 4.45, 1.05]], turns: 1.25, slip: 0, rope: 'chain' },
     { id: 'chest_vault', kind: 'chest', at: [7.5, 0, -13.6], face: 'auto', from: [7.5, -9], item: { name: 'BRONZE KEY', col: 0xd8a040 }, coins: 4 },
     { id: 'drawers_wall', kind: 'drawer', at: [16.5, 0, -9.72], face: 0, drawer: 1, item: { name: 'OLD MAP', col: 0xe8d8b0 }, label: ['THE DRAWERS', 'tap OPEN'] },
     { id: 'button_wall', kind: 'button', at: [-16.5, 1.0, 10], face: 180, lamp: [-15, 2.3, 9.6, 0, 1], label: ['THE BUTTON', 'tap PRESS'] },
@@ -41060,6 +41063,20 @@ function ikBrBake(q, hex) { const P = q.attributes.position, N = q.attributes.no
       for (let k = 0; k < 3; k++) { const b = k ? (k > 1 ? cb.b : cb.g) : cb.r, H = k ? (k > 1 ? ch.b : ch.g) : ch.r, V = k ? (k > 1 ? cp.b : cp.g) : cp.r; C[i * 3 + k] = (b + (H - b) * hi) * (1 - pa) + V * pa; }
       B[i] = 1 - pa * 1.4 < 0 ? 0 : 1 - pa * 1.4; } q.attributes.color.needsUpdate = true; }
   q.setAttribute('aBr', new THREE.BufferAttribute(B, 1)); }
+// m2674 THE GESTURE CUE (his: "when the interaction needs the LEFT STICK spun, HIGHLIGHT it -- a glow ring plus a circular spin arrow -- exactly
+// like the right stick lights up for tap; wordless; generalise it"): `ikStickCue(kind, side)` -- 'spin' (a turning arc arrow), 'push' (a bobbing
+// up-chevron), null (off) -- on #padL (or #padR). One element per pad, CSS-animated.
+function ikStickCue(kind, side = 'L') { const pad = document.getElementById('pad' + side); if (!pad) return; let e = pad.querySelector('.ikcue');
+  if (!e) { e = document.createElement('div'); e.className = 'ikcue'; e.style.cssText = 'position:absolute;inset:-8px;border-radius:50%;pointer-events:none;border:2px solid var(--jin-glow,#2fe0c0);box-shadow:0 0 18px var(--jin-glow,#2fe0c0),inset 0 0 14px rgba(47,224,192,.35);display:none';
+    if (!document.getElementById('ikcue-css')) { const st = document.createElement('style'); st.id = 'ikcue-css'; st.textContent = '@keyframes ikspin{to{transform:rotate(360deg)}}@keyframes ikbob{0%,100%{transform:translateY(4px)}50%{transform:translateY(-6px)}}@keyframes ikglow{0%,100%{opacity:.75}50%{opacity:1}}'; document.head.appendChild(st); }
+    pad.appendChild(e); }
+  if (!kind) { e.style.display = 'none'; e._k = null; return; } if (e._k === kind) return; e._k = kind; e.style.display = 'block'; e.style.animation = 'ikglow 1.1s ease-in-out infinite';
+  e.innerHTML = kind === 'spin' ? '<svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;animation:ikspin 1.4s linear infinite"><path d="M50 12 A38 38 0 1 1 18 30" fill="none" stroke="#bffff0" stroke-width="5" stroke-linecap="round"/><path d="M8 26 L20 32 L22 18" fill="#bffff0"/></svg>'
+    : '<svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;animation:ikbob 1s ease-in-out infinite"><path d="M30 52 L50 32 L70 52" fill="none" stroke="#bffff0" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+function ikRopeTex(kind) { const key = kind === 'chain' ? 'chainT' : 'ropeT'; if (IKBR[key]) return IKBR[key]; const c = document.createElement('canvas'); c.width = 32; c.height = 32; const q = c.getContext('2d');
+  if (kind === 'chain') { q.fillStyle = '#2a2c30'; q.fillRect(0, 0, 32, 32); q.strokeStyle = '#8a8e94'; q.lineWidth = 4; q.beginPath(); q.ellipse(16, 8, 7, 9, 0, 0, Math.PI * 2); q.stroke(); q.strokeStyle = '#6a6e74'; q.fillStyle = '#6a6e74'; q.fillRect(13, 18, 6, 14); }
+  else { q.fillStyle = '#9a7a4a'; q.fillRect(0, 0, 32, 32); for (let k = -2; k < 4; k++) { q.fillStyle = k % 2 ? '#c8a670' : '#6e5430'; q.beginPath(); q.moveTo(k * 16, 0); q.lineTo(k * 16 + 10, 0); q.lineTo(k * 16 + 26, 32); q.lineTo(k * 16 + 16, 32); q.closePath(); q.fill(); } }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; return (IKBR[key] = t); }
 function ikRayTex() { if (IKBR.rayT) return IKBR.rayT; const c = document.createElement('canvas'); c.width = 32; c.height = 128; const q = c.getContext('2d');
   for (let y = 0; y < 128; y++) { const v = Math.pow(1 - y / 128, 1.6) * (1 - Math.pow(1 - y / 128, 12)); for (let x = 0; x < 32; x++) { const h = 1 - Math.abs(x - 15.5) / 16; q.fillStyle = 'rgba(255,255,255,' + (v * h * h).toFixed(3) + ')'; q.fillRect(x, 127 - y, 1, 1); } }
   return (IKBR.rayT = new THREE.CanvasTexture(c)); }
@@ -41091,7 +41108,7 @@ function ikitGo(r) { const p = player; if (IKIT.run || !p.grounded || p.hdrop) r
   return 1; }
 function ikitSteer() { const R = IKIT.run; if (R && R.push) return R.push; if (!R || R.st !== 'walk') return { x: 0, z: 0, mag: 0 };     /* `push`: a stick into the piece while `pin` holds him -- his feet tread and slip in place */ const dx = R.tx - player.pos.x, dz = R.tz - player.pos.z, d = Math.hypot(dx, dz);
   return d < 1e-3 ? { x: 0, z: 0, mag: 0 } : { x: dx / d, z: dz / d, mag: Math.min(.55, Math.max(.18, d * 1.4)) }; }
-function ikitEnd() { const R = IKIT.run, p = player; if (!R) return; p.tossFace = null; R.push = null; R.pin = null; IKIT.pose.want = 0; IKIT.pose.reach = 0; IKIT.pose.foot = null; GETPOSE.want = 0; IKIT.run = null;
+function ikitEnd() { const R = IKIT.run, p = player; if (!R) return; p.tossFace = null; R.push = null; R.pin = null; IKIT.pose.want = 0; IKIT.pose.reach = 0; IKIT.pose.foot = null; IKIT.pose.twist = 0; GETPOSE.want = 0; IKIT.run = null; ikStickCue(null);
   if (R.stow && IKIT.redraw && !p.slot) { try { kitPick(R.stow); } catch (e) {} } }     // m2662: and back out after
 function ikitRunStep(dt) { const R = IKIT.run, p = player; if (!R) return; R.t += dt; const C = IKIT.chest.T;
   if (p.knock || p.hdrop) { if (R.K.abort) R.K.abort(R); ikitEnd(); return; }
@@ -41117,7 +41134,8 @@ function ikitPose(dt) { const P = IKIT.pose, B = rig.bones; if (!IKIT.run) P.wan
   const w = P.w * P.w * (3 - 2 * P.w), bn = n => B['mixamorig_' + n]; rig.root.updateMatrixWorld(true);
   const F = _ikF.set(0, 0, 1).applyQuaternion(rig.root.getWorldQuaternion(_ikQ)).setY(0).normalize(), U = _ikU.set(0, 1, 0), Lf = _ikL.crossVectors(U, F).normalize();
   if (!P.want && P.w < .05) P.auto = 0; const ln = (P.lean || 0) + (P.auto || 0);
-  if (ln) { ltTurn(bn('Spine'), Lf, ln * .5 * w); ltTurn(bn('Spine1'), Lf, ln * .3 * w); ltTurn(bn('Spine2'), Lf, ln * .2 * w); }     // PLUS about his left tips him forward -- a bend from the HIPS up (Spine is the first bone over them)
+  if (ln) { ltTurn(bn('Spine'), Lf, ln * .5 * w); ltTurn(bn('Spine1'), Lf, ln * .3 * w); ltTurn(bn('Spine2'), Lf, ln * .2 * w); }
+  if (P.twist) { ltTurn(bn('Spine1'), U, P.twist * .6 * w); ltTurn(bn('Spine2'), U, P.twist * .4 * w); }     // m2674: the shoulders turn with each step (the capstan)     // PLUS about his left tips him forward -- a bend from the HIPS up (Spine is the first bone over them)
   // m2662: THE REACH -- his: "his hands don't reach the lever". If a target is past the arm's length the spine bends further (`P.auto`, degrees),
   // a frame behind, until it is in reach; it relaxes when there is slack. The hands are never left floating short of a grip.
   if (P.reach && P.want) { let ex = -1; for (const sd of [1, -1]) { const T = sd > 0 ? P.L : P.R, S = sd > 0 ? 'Left' : 'Right', a = bn(S + 'Arm'), m = bn(S + 'ForeArm'), h = bn(S + 'Hand'); if (!T || !a || !m || !h) continue;
@@ -41557,6 +41575,92 @@ const IKIND = {
         if (u >= 1) { it.removeFromParent(); r.open = 1; ikDone(r, 'opened'); toast('+ ' + (r.item && r.item.name || 'A FIND') + ' -- to the backpack', 2.2); return 1; } } return 0; },
     abort(R) { if (R.it) R.it.removeFromParent(); },
     reset(r) { r.open = 0; for (const D of r.S.dr) { D.z = 0; D.d.position.z = .26; D.d.position.x = 0; D.ring.rotation.x = 0; } } },
+  // m2674 THE CAPSTAN (his: "a big HORIZONTAL wheel, about his height across, on a post at waist / chest height, spokes to push; he puts his WHOLE
+  // BODY into it -- hands on a spoke, leaning in, WALKING round it while it turns, straining, while a chain winds"; and his crank notes: "bulky,
+  // chunky, built for weight, not a delicate helm"). A stone base with a bronze band; the turning head -- a big bronze RATCHET GEAR, the rope /
+  // chain DRUM, a glyph-carved HUB housing, four thick BARS with bronze caps and grip wraps, a domed cap with a Jinra gem; a PAWL on the base that
+  // clicks on every tooth. He takes the nearest bar, both hands on it (IK), leans into it and WALKS it round (his legs walk: the left stick is
+  // handed a push along the circle while he is pinned to it); SPIN the left stick or PUSH it forward. Every tooth a tick, every bar a pulse and
+  // a chain clank; let go and (unless `slip: 0`) it slips back. Row: { drives, pulleys: [[x,y,z]...] (one per chain), turns, slip, rope: 'rope' | 'chain' }.
+  capstan: {
+    build(r, parent) { const g = new THREE.Group(); g.position.set(...r.at); parent.add(g); const V = ikVC, C = { stone: 0x9e978a, stoneD: 0x6c665c, bronze: 0xd29a48, bronzeD: 0x9a6a34, wood: 0x6a4428, grip: 0x4a3020 };
+      const mat = ikVM({ roughness: .7, metalness: .1 }); nightGlow(mat, { mask: 'runes', role: 'glow', density: .1, scale: 1.2, strength: 1.2 });
+      const BH = IKIT.cap.barY, Bs = [V(new THREE.CylinderGeometry(.62, .7, .22, 8), C.stoneD, 0, .11, 0), V(new THREE.CylinderGeometry(.56, .6, .1, 8), C.stone, 0, .27, 0), V(new THREE.CylinderGeometry(.6, .6, .04, 24, 1, true), C.bronzeD, 0, .2, 0)];     // the base: stone, a bronze band
+      Bs.push(...ikGlyphs(1.0, .14, 0, .06, C.stone, 61).map(q => q.translate(0, .11, .63)));
+      Bs.push(V(new THREE.BoxGeometry(.08, .14, .08), C.bronzeD, .58, .38, 0));     // the pawl's post
+      g.add(new THREE.Mesh(ikMerge(Bs), mat)).castShadow = true;
+      const pawl = new THREE.Group(); pawl.position.set(.58, .44, 0); g.add(pawl); pawl.add(new THREE.Mesh(ikMerge([V(new THREE.BoxGeometry(.2, .035, .05), C.bronze, -.09, 0, 0), V(new THREE.CylinderGeometry(.03, .03, .07, 10), C.bronzeD, 0, 0, 0, Math.PI / 2, 0, 0)]), mat));
+      const rot = new THREE.Group(); g.add(rot); const Rs = [V(new THREE.CylinderGeometry(.46, .46, .07, 28), C.bronze, 0, .4, 0)];     // the RATCHET GEAR
+      for (let k = 0; k < IKIT.cap.teeth; k++) { const a = k / IKIT.cap.teeth * Math.PI * 2; Rs.push(V(new THREE.BoxGeometry(.07, .07, .06), C.bronzeD, Math.sin(a) * .48, .4, Math.cos(a) * .48, 0, a + .35, 0)); }
+      Rs.push(V(new THREE.CylinderGeometry(.2, .2, .4, 16), C.wood, 0, .64, 0), V(new THREE.CylinderGeometry(.26, .26, .04, 16), C.bronzeD, 0, .45, 0), V(new THREE.CylinderGeometry(.26, .26, .04, 16), C.bronzeD, 0, .84, 0));     // the DRUM between its flanges
+      Rs.push(V(new THREE.CylinderGeometry(.3, .3, .24, 12), C.stone, 0, BH, 0), V(new THREE.CylinderGeometry(.32, .32, .04, 12), C.bronze, 0, BH - .12, 0), V(new THREE.CylinderGeometry(.32, .32, .04, 12), C.bronze, 0, BH + .12, 0));     // the HUB housing
+      Rs.push(...ikGlyphs(1.6, .12, 0, .06, C.stoneD, 67).map(q => q.translate(0, BH, .305)));
+      Rs.push(V(new THREE.SphereGeometry(.2, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), C.bronze, 0, BH + .14, 0), V(new THREE.OctahedronGeometry(.06, 0), C.bronzeD, 0, BH + .36, 0));     // the domed cap
+      const L = IKIT.cap.bar; for (let k = 0; k < 4; k++) { const a = k / 4 * Math.PI * 2, sa = Math.sin(a), ca = Math.cos(a), bar = [V(new THREE.BoxGeometry(.1, .1, L - .3), C.wood, 0, 0, .3 + (L - .3) / 2), V(new THREE.BoxGeometry(.14, .14, .08), C.bronze, 0, 0, .34), V(new THREE.BoxGeometry(.13, .13, .07), C.bronze, 0, 0, L - .02)];
+        for (let j = 0; j < 4; j++) bar.push(V(new THREE.BoxGeometry(.115, .115, .025), C.grip, 0, 0, L - .45 + j * .08));     // grip wraps
+        Rs.push(...bar.map(q => q.rotateY(a).translate(0, BH, 0))); }
+      rot.add(new THREE.Mesh(ikMerge(Rs), mat)).castShadow = true;
+      const rm = new THREE.MeshStandardMaterial({ map: ikRopeTex(r.rope), roughness: .85, metalness: r.rope === 'chain' ? .5 : 0 });
+      const wrap = new THREE.Mesh(new THREE.CylinderGeometry(.215, .215, .36, 16, 1, true), rm); wrap.position.y = .64; rot.add(wrap);
+      const mk = []; for (let k = 0; k < 4; k++) { const a = k / 4 * Math.PI * 2, m = [.78, 1.02].map(d => { const o = new THREE.Object3D(); o.position.set(Math.sin(a) * d, BH + .02, Math.cos(a) * d); rot.add(o); return o; }); mk.push(m); }
+      const seg = () => { const m = new THREE.Mesh(new THREE.CylinderGeometry(.035, .035, 1, 8, 1, true).translate(0, .5, 0), rm.clone()); m.material.map = rm.map.clone(); m.material.map.needsUpdate = true; m.frustumCulled = false; parent.add(m); return m; };
+      BOXES.push({ minx: r.at[0] - .55, maxx: r.at[0] + .55, miny: r.at[1] - .3, maxy: r.at[1] + .5, minz: r.at[2] - .55, maxz: r.at[2] + .55 });
+      r.S = { g, rot, pawl, wrap, mk, segs: (r.pulleys || []).map(() => [seg(), seg()]), rm, th: 0, u: 0, w: 0, lastA: null, idle: 0, caught: 0, bar: 0, tooth: 0 };
+      interactAdd({ id: 'ikit.' + r.id, outline: () => r.S && r.S.rot, label: 'PUSH', pri: 1, r: 2.2, dy: 1.9, pos: () => r.S && !r.S.caught && !IKIT.run ? [r.at[0], r.at[1] + BH + .55, r.at[2]] : null,
+        can: () => ikLive(r) && !r.S.caught && !IKIT.run && player.grounded, act: () => ikitGo(r) });
+      IKIND.capstan.sync(r); },
+    target(r) { return IKIT.rows.find(o => o.id === r.drives); },
+    sync(r) { const S = r.S, T = IKIND.capstan.target(r), turns = r.turns || 1; S.th = S.u * turns * Math.PI * 2; S.rot.rotation.y = S.th;
+      const k = Math.max(.001, S.u); S.wrap.scale.set(1 + .25 * k, Math.max(.02, k), 1 + .25 * k); S.wrap.visible = S.u > .01;
+      const ph = ((S.th / (Math.PI * 2) * IKIT.cap.teeth) % 1 + 1) % 1; S.pawl.rotation.z = .35 * ph * ph;     // the PAWL rides up a tooth and drops
+      if (T && T.S && T.S.set) T.S.set(S.u);
+      const d0 = S.g.localToWorld(new THREE.Vector3(0, .64 + .12 * Math.sin(S.th * 3), 0)), put = (m, a, b) => { const v = b.clone().sub(a), Ln = v.length(); m.position.copy(a); m.scale.set(1, Ln, 1); m.quaternion.setFromUnitVectors(_ikU.set(0, 1, 0), v.normalize()); m.material.map.repeat.set(1, Ln * 4); m.material.map.offset.y = -S.th * .6; };
+      (r.pulleys || []).forEach((P, i) => { const Pv = new THREE.Vector3(...P), G = T && T.S && T.S.top ? T.S.top(i) : Pv.clone().setY(0); d0.x += (i - .5) * .0; put(S.segs[i][0], d0.clone().add(new THREE.Vector3(Math.sign(P[0] - r.at[0]) * .2, 0, Math.sign(P[2] - r.at[2]) * .2)), Pv); put(S.segs[i][1], Pv, G); }); },
+    // stand: behind the bar nearest him, on the walking circle, facing round it (the way it turns: + angle)
+    stand(r) { const S = r.S, C = IKIT.cap, p = player; let best = 0, bd = 1e9; for (let k = 0; k < 4; k++) { const a = S.th + k * Math.PI / 2 - C.lag, x = r.at[0] + Math.sin(a) * C.walk, z = r.at[2] + Math.cos(a) * C.walk, d = Math.hypot(p.pos.x - x, p.pos.z - z); if (d < bd) { bd = d; best = k; } }
+      S.bar = best; const a = S.th + best * Math.PI / 2 - C.lag; return [r.at[0] + Math.sin(a) * C.walk, r.at[2] + Math.cos(a) * C.walk, Math.atan2(Math.cos(a), -Math.sin(a))]; },
+    start(R) { const S = R.r.S; R.b = 'take'; R.bt = 0; S.lastA = null; S.idle = 0; R.step = 0; IKIT.pose.reach = 1; snd('clang', { g: .25, r: .9 }); ikStickCue('spin'); },
+    step(R, dt) { const r = R.r, S = r.S, P = IKIT.pose, C = IKIT.cap, p = player; R.bt += dt;
+      const a = S.th + S.bar * Math.PI / 2 - C.lag, hd = Math.atan2(Math.cos(a), -Math.sin(a)), wp = o => o.getWorldPosition(new THREE.Vector3()); R.h = hd; R.pin = [r.at[0] + Math.sin(a) * C.walk, r.at[2] + Math.cos(a) * C.walk];
+      const [h1, h2] = ikSides(wp(S.mk[S.bar][0]), wp(S.mk[S.bar][1])); P.want = 1; P.L = h1; P.R = h2;
+      R.step += S.w * C.walk * dt * 3.2; P.lean = C.lean + Math.sin(R.step) * 4 * Math.min(1, S.w * 2); P.twist = Math.sin(R.step) * 7 * Math.min(1, S.w * 2);     // STRAIN: the lean pumps and the shoulders turn with each step
+      if (R.b === 'take') { if (R.bt > .45) { R.b = 'turn'; R.bt = 0; } return 0; }
+      // the INPUT: spin the left stick (its angular speed) or push it forward; a test can drive `IKIT.fakeSpin`
+      let lx = stick.L.x, ly = stick.L.y; if (keys.a || keys.arrowleft) lx -= 1; if (keys.d || keys.arrowright) lx += 1; if (keys.w || keys.arrowup) ly -= 1; if (keys.s || keys.arrowdown) ly += 1;
+      let om = 0; const mag = Math.hypot(lx, ly);
+      if (IKIT.fakeSpin) om = IKIT.fakeSpin * C.spinK; else if (mag > C.dead) { const an = Math.atan2(lx, -ly); if (S.lastA != null) { const d = Math.atan2(Math.sin(an - S.lastA), Math.cos(an - S.lastA)); om = Math.abs(d) / Math.max(dt, 1e-3) * C.spinK; } S.lastA = an; if (-ly > .6 * mag) om = Math.max(om, mag * C.maxW); } else S.lastA = null;
+      om = Math.min(C.maxW, om); S.w += (om - S.w) * (1 - Math.exp(-dt * 3));     // a heavy wheel: slow to start, slow to stop
+      const turns = r.turns || 1, prev = S.u; R.push = S.w > .05 ? { x: Math.sin(hd), z: Math.cos(hd), mag: Math.min(.6, .12 + S.w * .5) } : null;     // his legs WALK it round (pinned to the circle)
+      if (S.w > .08) { S.u = Math.min(1, S.u + S.w * dt / (turns * Math.PI * 2)); S.idle = 0; } else { const sl = r.slip != null ? r.slip : C.slip; S.u = Math.max(0, S.u - sl * dt); S.idle += dt; }
+      IKIND.capstan.sync(r);
+      const tooth = Math.floor(S.th / (Math.PI * 2) * C.teeth); if (tooth > S.tooth) { snd('clink', { g: .25, r: .8 + S.w * .2, x: r.at[0], z: r.at[2] }); haptic('tick'); } if (tooth !== S.tooth) S.tooth = tooth;
+      const q = Math.floor(S.th / (Math.PI / 2)); if (q > (R.q != null ? R.q : q)) { haptic('medium'); snd(r.rope === 'chain' ? 'clang' : 'thud', { g: .3, r: r.rope === 'chain' ? .55 : .7, x: r.at[0], z: r.at[2] }); } R.q = q;     // every BAR past: a pulse and a chain clank
+      if (S.u >= 1) { S.caught = 1; R.push = null; snd('clang', { g: .6, r: .6 }); haptic('heavy'); IKIND.capstan.land(r); ikDone(r, 'caught'); return 1; }
+      if (S.idle > C.idle) { R.push = null; return 1; }     // he lets go
+      return 0; },
+    land(r) { const T = IKIND.capstan.target(r); if (T && T.kind === 'bridge' && T.S.land) T.S.land(); },
+    abort(R) { R.push = null; },
+    free(r, dt) { const S = r.S; if (S.caught || (IKIT.run && IKIT.run.r === r)) { if (!IKIT.run || IKIT.run.r !== r) S.w = 0; return; } S.w = 0; const sl = r.slip != null ? r.slip : IKIT.cap.slip; if (S.u <= 0 || !sl) return; const prev = S.u; S.u = Math.max(0, S.u - sl * dt); IKIND.capstan.sync(r);
+      if (S.u <= 0 && prev > 0) { snd('thud', { g: .5, r: .6 }); haptic('medium', { thud: false }); ikJolt(S.g, .8); } },
+    reset(r) { const S = r.S; S.u = 0; S.w = 0; S.caught = 0; S.tooth = 0; IKIND.capstan.sync(r); } },
+  // m2674 THE DRAWBRIDGE: a heavy plank deck (dark timber, iron bands and studs, bronze corners) hinged at the doorway's sill; `set(u)` lowers it
+  // (u 0 up, closing the doorway .. 1 down across the moat); `land()` -- the BIG thud, dust along its far edge, a shake; its colliders follow
+  // (the doorway is shut while it is up; the deck is walkable once it is down). Row: { L (m), w (m) }; it lies along +x from the sill.
+  bridge: {
+    build(r, parent) { const g = new THREE.Group(); g.position.set(...r.at); parent.add(g); const V = ikVC, C = { wood: 0x5c3a22, woodD: 0x3e2716, iron: 0x4a4d52, bronze: 0xd29a48 }, L = r.L, w = r.w, t = .16;
+      const pv = new THREE.Group(); g.add(pv); const Ps = [];
+      for (let k = 0; k < 6; k++) Ps.push(V(new THREE.BoxGeometry(L, t, w / 6 - .015), k % 2 ? C.wood : C.woodD, L / 2, t / 2, -w / 2 + (k + .5) * w / 6));
+      for (const x of [.35, L / 2, L - .35]) { Ps.push(V(new THREE.BoxGeometry(.12, .03, w + .02), C.iron, x, t + .015, 0)); for (let j = 0; j < 6; j++) Ps.push(V(new THREE.SphereGeometry(.025, 6, 4), C.iron, x, t + .03, -w / 2 + (j + .5) * w / 6)); }
+      for (const z of [-w / 2, w / 2]) Ps.push(V(new THREE.BoxGeometry(.2, t + .04, .06), C.bronze, L - .1, t / 2, z), V(new THREE.TorusGeometry(.07, .02, 6, 12), C.bronze, L - .12, t + .07, z * .875, 0, Math.PI / 2, 0));     // bronze corners, the chain rings
+      pv.add(new THREE.Mesh(ikMerge(Ps), ikVM({ roughness: .8 }))).castShadow = true;
+      const shut = { minx: r.at[0] - .9, maxx: r.at[0] + L, miny: 0, maxy: 3.5, minz: r.at[2] - w / 2 - .1, maxz: r.at[2] + w / 2 + .1 }, deck = { minx: 0, maxx: 0, miny: -9, maxy: -9, minz: 0, maxz: 0 }; BDYN.push(shut, deck);
+      r.S = { g, pv, u: 0, set(u) { this.u = u; const e = 1 - Math.pow(1 - u, 1.6); pv.rotation.z = (1 - e) * Math.PI / 2;
+          const down = u >= .995; shut.maxy = down ? -9 : 3.5; shut.miny = down ? -9 : 0; if (down) { deck.minx = r.at[0] - .9; deck.maxx = r.at[0] + L; deck.miny = -.2; deck.maxy = t; deck.minz = r.at[2] - w / 2; deck.maxz = r.at[2] + w / 2; } else { deck.miny = deck.maxy = -9; } },
+        top(i) { return pv.localToWorld(new THREE.Vector3(L - .12, t + .07, (i ? 1 : -1) * w / 2 * .875)); },
+        land() { const x = r.at[0] + L, z = r.at[2]; camShake(.35); snd('thud', { g: .9, r: .4 }); snd('door_stone', { g: .7, r: .7, i: 1, whole: 1 }); haptic('heavy', { jolt: false }); ikJolt(g, 1.6);
+          for (let k = -2; k <= 2; k++) smokeAt(x, .2, z + k * w / 5, 1.3, 1.2, [.78, .72, .62]); } };
+      r.S.set(0); },
+    stand() { return null; }, reset(r) { r.S.set(0); } },
   // the GATE a crank drives: an iron portcullis in a doorway; `set(u)` raises it (u 0 shut .. 1 up `rise` m); its collider rides it
   gate: {
     build(r, parent) { const y = ikitYaw(r), g = new THREE.Group(); g.position.set(...r.at); g.rotation.y = y; parent.add(g); const w = r.w, h = r.h, gr = new THREE.Group(); g.add(gr);
@@ -41632,7 +41736,7 @@ function ikDiamonds(r0, z, hex, depth = 3, th = .014) { const out = []; for (let
 // button), 'on' / 'off' (a lever thrown, a plate stood on / left) -- so a temple awards its key or shard, or opens its gate.
 function ikLive(r) { try { return (r.live ? !!r.live() : true) && (!!IKIT.on || IKIT.rows.includes(r)); } catch (e) { return false; } }
 // m2668 (his): a piece that drives something ELSE frames it -- `row.shows`: a row id, or [x, y, z]; a crank shows what it `drives` by default
-function ikShows(r) { try { let s = r.shows != null ? r.shows : r.kind === 'crank' ? r.drives : null; if (!s) return null;
+function ikShows(r) { try { let s = r.shows != null ? r.shows : r.kind === 'crank' || r.kind === 'capstan' ? r.drives : null; if (!s) return null;
     if (Array.isArray(s)) return new THREE.Vector3(s[0], s[1], s[2]); const o = IKIT.rows.find(q => q.id === s); if (!o || !o.S || !o.S.g) return null; const v = o.S.g.getWorldPosition(new THREE.Vector3()); v.y += o.showY != null ? o.showY : 1.4; return v; } catch (e) { return null; } }
 // ...and on completion: a short JINGLE (three rising chimes) and a REVEAL beat -- the lens eases onto the opened thing for `reveal.dur` s with a
 // puff of dust and a glint of Jinra light, then comes back (the action cam: a drag still outranks it)
@@ -41657,7 +41761,13 @@ function ikitBuild() { const Z = IKIT; Z.want = 2; if (Z.on) return; const g = n
     if (col) BOXES.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1 }); return o; };
   const W = R.wall, H = R.h, hw2 = 1.95, dh = 4.05, gw = 1.3, gh = 2.95, dX = -16.5, gX = 7.5;
   box(-hw - W, dX - hw2, 0, H, -hd - W, -hd, ww); box(dX + hw2, gX - gw, 0, H, -hd - W, -hd, ww); box(gX + gw, hw + W, 0, H, -hd - W, -hd, ww); box(dX - hw2, dX + hw2, dh, H, -hd - W, -hd, ww); box(gX - gw, gX + gw, gh, H, -hd - W, -hd, ww);     // the north wall and its two doorways
-  box(-hw - W, hw + W, 0, H, hd, hd + W, ww); box(-hw - W, -hw, 0, H, -hd, hd, ww); box(hw, hw + W, 0, H, -hd, hd, ww);     // south, west, east
+  box(-hw - W, hw + W, 0, H, hd, hd + W, ww); box(-hw - W, -hw, 0, H, -hd, hd, ww); box(hw, hw + W, 0, H, -hd, -1.35, ww); box(hw, hw + W, 0, H, 1.35, hd, ww); box(hw, hw + W, 3.5, H, -1.35, 1.35, ww);     // south, west, east (m2674: a doorway for the drawbridge)
+  { const x0 = hw + W, x1 = x0 + 3.4, wm = new THREE.MeshStandardMaterial({ color: 0x1d4148, roughness: .15, metalness: .2 }), wat = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, 14).rotateX(-Math.PI / 2), wm); wat.position.set((x0 + x1) / 2, .03, 0); g.add(wat);     // THE MOAT
+    box(x0, x1, -.6, .02, -7, -6.8, wt); box(x0, x1, -.6, .02, 6.8, 7, wt); box(x1, x1 + 6, 0, .12, -7, 7, wt);     // its ends, the FAR BANK (a step up .12)
+    for (const [z0, z1] of [[-7.1, -1.25], [1.25, 7.1]]) BOXES.push({ minx: x0 + .05, maxx: x1 - .05, miny: 0, maxy: 1, minz: z0, maxz: z1 });     // no walking on the water (beside the bridge)
+    const ped = new THREE.Mesh(new THREE.CylinderGeometry(.35, .45, 1.0, 8), wt); ped.position.set(x1 + 3, .62, 0); g.add(ped); BOXES.push({ minx: x1 + 2.6, maxx: x1 + 3.4, miny: 0, maxy: 1.12, minz: -.4, maxz: .4 });
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(.26, 18, 12), new THREE.MeshBasicMaterial({ color: JPAL.glow, toneMapped: false })); orb.position.set(x1 + 3, 1.4, 0); g.add(orb);     // the prize on the far bank
+    for (const z of [-1.05, 1.05]) { const pb = new THREE.Mesh(ikMerge([ikVC(new THREE.TorusGeometry(.13, .04, 6, 14), 0x9a6a34, 0, 0, 0, 0, Math.PI / 2, 0), ikVC(new THREE.BoxGeometry(.1, .25, .1), 0x9a6a34, 0, -.2, 0)]), ikVM({ roughness: .5 })); pb.position.set(hw + .4, 4.45, z); g.add(pb); } }     // the chains' pulleys on the wall top
   { const a0 = -hd - W, a1 = a0 - 5.2; box(dX - 3.6, dX - 3, 0, H, a1, a0, ww); box(dX + 3, dX + 3.6, 0, H, a1, a0, ww); box(dX - 3.6, dX + 3.6, 0, H, a1 - .6, a1, ww);     // the door's alcove
     box(dX - .5, dX + .5, 0, 1.0, a1 + 1.4, a1 + 2.4, wt); const orb = new THREE.Mesh(new THREE.SphereGeometry(.28, 18, 12), new THREE.MeshBasicMaterial({ color: JPAL.glow, toneMapped: false })); orb.position.set(dX, 1.35, a1 + 1.9); g.add(orb);
     box(gX - 2, gX - 1.4, 0, H, a1, a0, ww); box(gX + 1.4, gX + 2, 0, H, a1, a0, ww); box(gX - 2, gX + 2, 0, H, a1 - .6, a1, ww); box(gX - 2, gX + 2, gh, gh + .3, a1, a0, wt, 0); }     // the vault behind the portcullis

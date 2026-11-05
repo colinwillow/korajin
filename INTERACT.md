@@ -62,7 +62,8 @@ the night glow, and 1-3 draws.
 |---|---|---|---|---|
 | THE HEAVY DOOR | north bay 1 | [x] m2627 | [x] m2638: carved stone / bronze, ornate frame, studs, glyph bands, glowing Jinra inlays; bolts that slide, a lock that turns, hinges that move | [ ] |
 | THE TREASURE CHEST | north bay 2 | [x] m2623 | [x] m2640: carved lid, bronze corners and bands, a clasp that unlatches, a gem lock, lining and glow, working hinges | [ ] |
-| THE WHEEL CRANK (+ gate) | north bay 3 | [x] m2630 | [x] m2641: spokes, hub, rope drum, a ratchet pawl that clicks | [ ] |
+| THE CAPSTAN (+ gate; was the wheel crank) | north bay 3 | [x] m2674 | [x] m2674: stone base, ratchet gear + pawl, drum, glyph hub, four bars; braided rope over a pulley | [ ] |
+| THE CAPSTAN + DRAWBRIDGE | the aisle's east end + the east doorway | [x] m2674 | [x] m2674: chains over the wall-top pulleys, a timber bridge over a moat, the far bank | [ ] |
 | THE DRAWERS | north bay 4 | [x] m2631 | [x] m2670 (his redo): a two-drawer stone RELIQUARY -- pillars, frieze, crown, glyphs, Jinra inlay, drop rings | [ ] |
 | THE BUTTON | south bay 1 | [x] m2631 | [x] m2642: carved plaque, bezel, domed plunger with the crest, a sliding latch | [ ] |
 | THE PRESSURE PLATE | south bay 2 | [x] m2631 | [x] m2642: carved slab, inlaid crest, bronze frame, dust | [ ] |

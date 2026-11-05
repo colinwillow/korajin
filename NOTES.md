@@ -79,6 +79,30 @@ zone; the zone's spawn must not override the landing; a probe so a zone can't sh
 - DEV PLACES' forest temples: "Forest Temple: outside" = `zone=dometemple` (the knoll over the valley -- the one he reported); "the door" = the same
   zone at the door (`at=door`, the entrance skips: he walks back out); "inside" = `zone=ftemple`; "the Acrobatic Room" = `zone=ftemple&at=room`;
   "the kit" = `zone=ftkit`. Shipped unverified (probe table follows).
+## m2674 -- THE KIT, his gallery notes part 5: THE CAPSTAN (his crank, redone) and the DRAWBRIDGE; the left stick's SPIN CUE (Nov 5 2026)
+His crank notes ("pirate's wheel was a SHAPE gesture -- bulky, chunky, built for weight; the hand-over-hand looks weak; a real rope over a pulley;
+light up the left stick when it needs spinning") and his new station ("a big HORIZONTAL wheel, about his height across, at waist / chest height,
+spokes to push, he WALKS round it straining while a chain winds and lowers a DRAWBRIDGE") are ONE new kind, as he suggested:
+- **`capstan`**: a stone base with a bronze band and glyphs; the turning head -- a big bronze RATCHET GEAR (24 teeth) under a PAWL that rides and
+  drops on each, the rope / chain DRUM (the wrap thickens as it winds), a glyph-carved stone HUB with bronze rims, four thick timber BARS (bronze
+  sockets and caps, grip wraps) at .92 m, a domed bronze cap. He takes the bar nearest him, BOTH HANDS on it (IK, the reach), leans in and **walks
+  it round on his own legs** (the left stick is handed a push along the circle while he is pinned to it, the door ritual's trick), the lean
+  pumping and the shoulders TURNING with each step (`P.twist`, new in the pose layer). **SPIN the left stick or PUSH it forward**; a heavy wheel
+  (slow to start, slow to stop). Every tooth a tick; every bar past a pulse and a chain clank; let go and it slips back (`slip`; the bridge's holds).
+  Caught at the end -> `ikDone('caught')` -> the reveal (m2668). Row: `{ drives, pulleys: [[x,y,z]...], turns, slip, rope: 'rope' | 'chain' }`.
+- **Rope / chain**: thick (r .035) segments with a BRAIDED rope or iron-link CHAIN texture that RUNS as it winds, from the drum up over a pulley
+  to the target (the crank's was a thin line, low).
+- **The gallery**: north bay 3's crank is now **`capstan_gate`** (the portcullis, a rope); a NEW station at the aisle's east end: **`capstan_bridge`**
+  + **`bridge_east`** -- the east wall has a doorway, a heavy DRAWBRIDGE (timber, iron bands and studs, bronze corners, chain rings) stands in it,
+  two chains run from the drum over two pulleys on the wall top to its far corners; he walks it round, it lowers over a MOAT (dark water, walls
+  of nothing beside the bridge) and lands with a BIG thud, dust all along its far edge and a shake; the doorway's collider opens and the deck is
+  walkable to the FAR BANK (a step up .12) with a glowing orb on a pedestal. The reveal frames it.
+- **`ikStickCue(kind, side)`** (his: "highlight the left stick -- a glow ring plus a circular spin arrow -- wordless; generalise it"): a glowing ring
+  on the pad with a turning arc arrow ('spin') or a bobbing up-chevron ('push'); on while a piece needs it, off at every exit.
+- Films (`fakeSpin`): the bridge capstan -- he walks it round, the chains pay out, the bridge lowers and lands (hands on the bar `hd` .14-.21);
+  the gate capstan -- `hd` .01-.12, the gate rising in shot. **Open for his eye: he bows 54-62 deg** (the reach) -- it reads as straining; `IKIT.cap.lean`
+  / `walk` / `barY` are the dials. The old `crank` kind stays in the code (unchanged) for anyone placing it.
+- Gates: `npm run check`. Moves no box (two stations to sign). **Shipped unverified.**
 
 ## m2673 -- GAMEPAD pass 1+2: ONE ACTION TABLE (`ACT`), the controller moves, jumps, looks (with PITCH), strikes, charges, dodges, interacts, pauses (Nov 5 2026)
 His (WORLD_PLAN.md section 6 + his mapping): "map every action through one action table so the touch layout and a pad read the same bindings";
