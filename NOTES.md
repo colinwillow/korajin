@@ -55,6 +55,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2656 -- the Interactions hall's entrance: the builder's row lands him off the back wall; the entrance lens can go LOWER under a ceiling (Nov 5 2026)
+m2652's `interact` row never applied: the Interactions builder (`IKIT`) WRITES `ENTRY.rows.interact.at` at build from its room spawn (-20, 0) -- 2 m off
+the hall's back wall (x -22) -- so the play camera's collision stopped at 1.7 m and the entrance lens with it (probed: `cam.dist` 1.72, smart-cam cap
+off, landing -20). The builder's line now lands the entrance `inward` 5 m in from that spawn along its facing (-15, 0); the room spawn itself is
+untouched. And the entrance pose picker (`entryCamPose`) also tries LOWER elevations (down to the play camera's) before swinging aside: under the
+hall's 4.2 m ceiling, up is the blocked way. Probed after: the landing is (-15, 0), the entrance lens holds 6.5 m while the portal opens and eases
+to the play camera's 5 m. Shipped unverified.
+
 ## m2655 -- THE CAPE COLLIDERS OFF BY DEFAULT (measured worse in motion); the sheath, quiver and buckle 4 cm further out instead (Nov 5 2026)
 His (on m2647, his phone): *"the cape is now stuck THROUGH the sheath and quiver; it's not really working very well."*
 - MEASURED IN MOTION, not stills (headless, the shipped page: 1 s idle, 1.5 s run, 1 s idle; every 4th frame; the count of Grumbo's CAPE vertices
