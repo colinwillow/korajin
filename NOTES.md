@@ -47,6 +47,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2510 -- ARCHITECTURE PASS 3: THE GIANT OBELISK -- MEGALITH + ALIEN MACHINE (his list: "carved panels, conduits, crystal sockets, worn edges, huge fitted stones")
+- DKLIB `gobelisk` (`K.giant.gob`: h 44, base .055 h, top .034 h): a PLINTH of three tiers of huge FITTED blocks (3x3 each, hairline joints,
+  worn edges, a hair of jitter); a tapering SHAFT with a glowing SEAM up every face between two dark machine RAILS (`mech`); three
+  CARVED BANDS of writing (`glyphG`, glow at night); CONDUITS -- dark pipes with collars -- up the four corners into a metal COLLAR under
+  a glowing PYRAMIDION; a CRYSTAL SOCKET in a machine frame on the face toward the field; ivy curtains off the plinth tiers. Ruined: the
+  shaft snapped at 55%, the top lying beside it, rubble, no light. On the kit row too.
+- The AVENUE's eight obelisks are now `gobelisk` (growing .92 -> 1.12 toward the pyramid; one ruined), replacing the scaled-up 41-triangle
+  kit obelisk (plain orange shafts).
+- Looked at: the avenue from the gate, one obelisk close, the play camera. The conduits first stood .35 m off the corners and read as a
+  cage -> .12. check + boulders boot pass. Shipped unverified.
+
 ## m2509 -- fix: m2508's commit renamed another worker's `m2506` tags (the OVERGROWTH comments) to m2507 -- a global build-number rename; put back.
   My own phase-camera tags now read m2508 (the build that shipped them). Lesson: rename only the lines of my own diff, never `sed s/mNNNN/` file-wide.
 
