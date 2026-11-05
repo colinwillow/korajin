@@ -47,6 +47,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2606 -- VINE WHIP: the cast is ONE-ARMED (right arm only, procedural); the charge is the arm cocked overhead + a glowing vine
+
+**His (on m2604, screenshot `images/feedback/m2604/whip_two_arms.png`):** *"The throw whip animation looks whack, it's TWO ARMS?? It makes no sense,
+and the charge shot is also dumb."* **Why:** the casts (m2588-m2598) were sword clips played as an upper-body override, and `weapon_melee_finish`
+is a TWO-HANDED finisher, so the whole upper body (both arms) went up. Nothing in his set is a one-handed overhead throw.
+**Now:** no upper clip at all for a cast (`upNm` no longer reads `p.whipCast`), so the LEFT arm and the legs stay on whatever locomotion is
+playing. `whipCastPose` (after the mixer, before `pumpPose`) drives the RIGHT arm only: two-bone IK (`wrLimb`) onto a keyed path round the right
+shoulder in his body frame -- cocked UP and BACK behind his head, over the top with the ELBOW leading (the pole), the hand snapping forward (the
+vine leaves at `snap`), the WRIST last (fingers aimed back, then flicked through), a low follow-through across; Catmull-Rom over the keys so the
+hand never stops at one. A small chest twist (right shoulder back, then through) and lean on Spine1/Spine2. `throw` releases higher (a latch),
+`pull` shoots out and HAULS back to the right hip. **The charge:** no wind-up clip -- the right arm cocked overhead, the vine trailing off it, a
+little deeper and more turned as it fills, the vine's colour going Jinra glow; release runs the lash from its cocked key (`relU`). All keys are
+rows in `WHIPCAST` (SC_WHIPCAST), live on `mel.WHIPCAST`.
+**Filmed** (`npm run whipshot lash charge pull --slow=.5 --dt=0 --n=26 --near=1`, and `--view=behind`, new): `docs/vinewhip/onearm_side.png`,
+`onearm_behind.png`. From behind only the right arm moves; the left hangs at his side through the whole cast and the charge. After the film the
+charge pose was raised (it sat at shoulder height out to the side) -- that tweak is unfilmed.
+**Boxes:** moves "the lash reads" (pass 2) / feel (pass 6) only; still open: his sign-off on the phone. Shipped unverified.
+
 ## m2605 -- HIS TRIPO WEAPONS: sword, sheath ON HIS BACK, bow with a PROCEDURAL string, quiver ON HIS BACK, arrow (Nov 5 2026)
 His: *"Can you open this FBX? A sword, a sword sheath, a bow, a quiver, an arrow. Make sure the sheath matches up to the sword, put it on his back and
 have him pull the sword out of it; put the quiver back there too. Take the bowstring off the bow and put a procedural one on."*
@@ -79,7 +97,6 @@ have him pull the sword out of it; put the quiver back there too. Take the bowst
   is his sword's length; `TRIPOW.back.dir` / `at` are the dials.
 - Open: no limb flex on the draw (no bones in the bow); no reach to the quiver for each arrow (the nocked arrow appears on the draw, as before);
   the glaive is unused. Moves no DONE WHEN box (the bow is TOOLS_SANDBOX piece 1; his sign-off on the phone is the box).
-
 ## m2604 -- UNDERWATER: SEA TEXTURES -- seabed, rock, glyph stone, coral skin (his: "a sea flora texture might help, some bed rock and stuff") (Nov 5 2026)
 His two reference paintings are in images/feedback/m2586/ref_underwater_a.png / _b.png (purple-teal glow, carved glyph ruins, veined flora).
 - **Four seamless maps** made with the image API by `tools/uw_textures.py` (re-roll one: `python3 tools/uw_textures.py bed`), 768 px WebP in
