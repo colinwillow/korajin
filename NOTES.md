@@ -46,6 +46,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2598 -- THE SWING PUMP made visible (his: "I can't see the pumping on the HIGH BAR") -- the bar's and the vine whip's
+The pump (m1883 `PUMP` / `pumpPose`) is one code path for the high bar, the gym's swing rope and (m2597) the whip's vine. On the BAR its input is the
+bar's angular speed x radius x `barK` .55 -- about 15 deg of leg at a full swing, which is why he could not see it. Raised: `barK` .55 -> 1.25,
+`kick` .16 -> .24 per m/s, the cap `max` .95 -> 1.15 rad, the back-swing knee `tuck` .7 -> 1.05, the spine `arch` .35 -> .5, `whipK` 1.1 -> 1.35.
+FILMED the whip swing close (`npm run whipshot swing --near=1`, new: a closer side lens): his legs and body visibly change angle through the swing --
+trailing behind mid-arc, hanging down and forward at the end of it (m2597's film showed almost none). The bar was not filmed (no bar in the whip
+sandbox; it runs the same code at the same gains x its own speed). Every number live on `mel.PUMP` if it is now too much. Shipped unverified.
+
 ## m2597 -- THE VINE WHIP: the TARZAN SWING -- the gym rope's pose + pump on the whip's vine (his: the bar-hang "looks ridiculous")
 His (via main): both hands up the vine (one higher), the body hanging ALONG the vine, PUMPING with the swing phase (knees tuck / legs kick forward on
 the forward swing, extend back on the back swing, hips lead, arch at the ends, arms in at the bottom), legs trailing, the flip on release.
