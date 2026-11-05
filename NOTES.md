@@ -59,6 +59,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2670 -- THE KIT, his gallery notes part 3: the DRAWERS become a two-drawer STONE RELIQUARY (Nov 5 2026)
+His: "too human (like a bedroom dresser) -- make it Korajin: a carved stone or bronze reliquary / altar cabinet, alien-temple style, glyphs, Jinra
+inlay, chunky proportions, TWO drawers." Now: a cool grey temple stone (the warm one read as wood), a two-step plinth, four thick square corner
+PILLARS with bronze bases and caps, a glyph frieze, glyph-carved flanks, a stepped CROWN with a bronze nested diamond; TWO deep drawers, each a
+carved stone face in a bronze frame with two Korajin nested diamonds and a heavy drop ring (the chosen one swings up), cloth-lined; a thin glowing
+Jinra INLAY (one draw) along the frieze, the crown and the drawer frames. The gallery row's `drawer: 1` is now the LOW drawer -- he bends to it
+(the pose's reach). Draws: carcass 1, inlay 1, drawers 2, ring 1. Before: m2662's `bronze2` still (the three-drawer dresser); after: `drawer_still`,
+`drawer_after` (the open, from the side). The cabinet jolts as the drawer hits its stop (m2664's `ikJolt`). Gates: `npm run check`. Moves no box.
+**Shipped unverified.**
+
 ## m2669 -- the bow arc: the PURE GLOW is the default again; TOOLS > BOW > ARC LOOK: GLOW / CRISP (hairline edges, a ground shadow, a ringed mark)
 His (Nov 5, relayed) on m2650/m2666 by day: *"more visible, but dark, ugly brown-green -- I prefer the pure glow."* So: the default is the old
 pure glow at every hour, and a switch for a day-readable look that stays bright and pretty, not a muddy band.
