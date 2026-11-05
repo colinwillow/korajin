@@ -58,6 +58,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2667 -- UNDERWATER DETAIL D: creatures with real bodies, fins and tails (his: "smoother bodies, fins, tails") (Nov 5 2026)
+- **Lantern fish:** a body turned on a lathe along its length (blunt head, deep belly, narrow wrist; flattened sideways), a forked tail, a
+  dorsal and two pectoral fins, the lure on a curved stalk; a lighter base (they read black).
+- **Crawlers:** a smooth domed carapace, six jointed curving legs, two arms with claws, eyes on stalks (glowing).
+- **Eels:** a finer, deeper body and a dorsal RIBBON running into the tail (`UWFAUNA.eelFins`).
+- **Mantas:** smoother wings (24 x 12) and curled cephalic horns.
+- Same draws (one per kind), ~+10k tris. Renders: images/feedback/m2586/uw_detailD_creatures.jpg (the crawler shot landed inside a rock).
+  The detail series: A shrine m2621, B rocks/seabed m2628, budget m2653, C plants m2663, D this. Shipped unverified.
+
 ## m2666 -- the bow arc's dark outline: NIGHT WINS -- faded out by dusk, the pure glow at night, wherever he is
 His (Nov 5, relayed) on m2650: *"the dark outline helps by day, but AT NIGHT it shows too and makes the arc LESS visible -- hilarious."*
 - m2650's `arcDayK` was max(1 - NIGHT.f, the fog colour's brightness) -- and some zones (the forge: #f2f4f7) keep a bright fog at night, so night
