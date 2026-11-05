@@ -51,6 +51,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2613 -- THE CARRIED BOW ROCKS WITH HIS HAND (it was gyroscopically level on the ground) (Nov 5 2026)
+His: *"holding the bow while running, it follows his hand's POSITION but not its ROTATION -- almost gyroscopically level ... in reality it would tilt
+and swing with the hand and arm."*
+- WHY (`bowFist`, m1748 / m1760): carried, the bow's frame was built off his FACING (the low diagonal), and on the ground the offset in the hand
+  (`BOW.inHand`) was re-learned EVERY frame -- so it only rode the hand in the air. A level diagonal with the hand's position under it.
+- NOW: it always rides the hand; the offset is learned SLOWLY (`BOW.carryTau` 1.2 s, frozen in the air), so over a run the average lands on the
+  authored diagonal while each step's turn of the hand passes through; `BOW.carryFollow` .5 of that turn is taken. A draw / release eases between
+  the carry and the aim over `BOW.blendT` .15 s (it switched in one frame).
+- MEASURED (headless, a 9 m/s run, 48 frames): at follow 1 the bow swung -31..131 deg (pitch) -- every bit of a sprint's arm swing, too much;
+  at .5, 12..92 deg pitch, 9..95 roll: it tilts and swings with the arm and never flips. Filmed 8 frames of the cycle from the side.
+
 ## m2612 -- THE KATANA IDLE HOLDS THE BLADE STRAIGHT UP (front AND side), the flat square to the side, the edge forward (Nov 5 2026)
 His (m2607, sword_idle_angle.png / sword_idle_side.png): *"in his neutral idle the blade leans diagonally ... from the side it leans forward, away from
 him ... straight up and down in BOTH views, the blade's full flat side square-on from a side camera."*
