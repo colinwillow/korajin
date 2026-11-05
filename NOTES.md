@@ -47,6 +47,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2515 -- ARCHITECTURE PASS 8: GROUND DRESSING AT THE GIANTS' FEET
+- DKLIB `dress(spec)` -> one group merged per material: a CAUSEWAY (fitted slabs 4.2 m, staggered, heaved and tilted a touch, 7% missing,
+  kerbs both sides with sand banked against them, sand drifted across it in patches), RUBBLE round a footprint (blocks half-buried and
+  tumbled, sizes skewed small, a fifth with a carved face, 12% fallen column drums, sand piled on some), sand DRIFTS banked against a foot.
+- Glue (`bouldGiants`): the causeway runs the AXIS from the gate to the great pyramid's front, 18 m wide; every grounded giant gets rubble
+  round its MEASURED box (more on a ruin) and, if big, two drifts on its sides.
+- The dressing's sand is its own darker tone (`dsand`): the field's pale drift colour read nearly WHITE against the far ground (first
+  render), then still pale; now it sits in the ground.
+- Looked at: down the causeway toward the pyramid, a step pyramid's foot, the play camera. check + boulders boot pass. Shipped unverified.
+
 ## m2514 -- ARCHITECTURE PASS 7: FITTED-STONE JOINTS AND WORN EDGES ON THE BIG FACES
 - The `giant` stone material gains `blocks: [course 2.4, block 4.6, joint .09]` (object space, so the 1:10 kit-row miniature carries the
   same coursing): horizontal COURSES (on a top face, a grid), staggered block JOINTS whose length varies per course, a tone per block
