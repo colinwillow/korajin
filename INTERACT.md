@@ -33,6 +33,14 @@ colliders; the kind's sequence plays when it is tapped. State lives on the row (
 5. **RUMBLE** -- no Vibration API on iPhone Safari. The iOS 18 trick: a hidden `<input type="checkbox" switch>` toggled through its `<label>` makes
    Safari give a system haptic tick. TOOLS > HAPTICS (ON / OFF); always backed by the shake + thump. Whether it works on his phone is HIS answer.
 
+## ONE HAPTICS LAYER (for the native app too)
+Everything that wants a buzz calls **`haptic(kind)`** and nothing else: `tick`, `light`, `medium`, `heavy`, `thud`, `success`, `warning`, `error`.
+Each kind is three halves: the camera SHAKE and the low THUMP (always -- `{ shake: false }` / `{ thud: false }` to skip one), and the TOUCH:
+in the native app (Capacitor, `window.Capacitor.Plugins.Haptics`) the real Taptic Engine (`impact` / `notification` / `selection*`); in the
+browser, Android `navigator.vibrate`, iPhone Safari the iOS 18 switch-checkbox tick. No Capacitor dependency here: a runtime check. The table and
+the plugin to add at packaging time: CAPACITOR.md. The kit uses: chest heave heavy, the GET success; door pulses medium, its last shove heavy;
+crank pawl tick, its catch heavy; lever teeth tick, its clunk heavy; button heavy; plate medium.
+
 ## THE SANDBOX ROOM
 A sunlit stone court open to the sky, one of each piece, spread over three heights (VERTICALITY): the floor, a dais up three .30 risers (the chest),
 a balcony up a stair (the crank) over the gate it raises, the heavy door in the back wall, the buttons / plates / lever / drawers / pots round the

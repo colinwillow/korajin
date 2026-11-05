@@ -53,6 +53,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2635 -- ONE HAPTICS LAYER: `haptic(kind)`, native-ready for Capacitor (INTERACT.md, CAPACITOR.md)
+His plan (through the parent session): Korajin ships on iPhone through CAPACITOR, whose `@capacitor/haptics` drives the real Taptic Engine. So there
+is ONE layer: `haptic(kind)` -- tick / light / medium / heavy / thud / success / warning / error (`HKIND`). Each kind is the camera shake + the
+low thump (always; skippable per call) + the TOUCH: if `window.Capacitor.Plugins.Haptics` exists (the wrapped app) -> `impact({ style })` /
+`notification({ type })` / `selectionStart+Changed+End`; else the browser: Android `navigator.vibrate(pattern)`, iPhone Safari the iOS 18
+switch-checkbox tick (n ticks 90 ms apart; m2633). NO Capacitor dependency and no build step: a runtime check, so it lights up once wrapped.
+TOOLS > LOOK > HAPTICS gates the touch half. `ikRumble(k)` / `ikHaptic(k)` are kept as aliases (a number -> the nearest kind).
+The kit now calls kinds: chest heave heavy + the GET success; door pulses medium, the last shove heavy; crank pawl clicks tick (new), the catch
+heavy; lever teeth tick, its clunk heavy; button heavy; plate medium.
+Measured (a stand-in `window.Capacitor` with a recording Haptics in the shipped page): tick -> selStart, selChanged, selEnd; light -> impact LIGHT;
+heavy -> impact HEAVY; success -> note SUCCESS; warning -> note WARNING; with it removed, the browser path ('vibrate' in Chromium) takes over.
+CAPACITOR.md lists the plugin to add at packaging time and the kind -> call table. **Whether the iPhone BROWSER tick works is still his answer.**
+
 ## m2634 -- FOREST TEMPLE build 1 on the sheet: THE HUB -- the well's doors to the chambers, six shard sockets, the shard HUD
 
 **His go (via main):** *"Go ahead and start building the forest temple"* -- room by room on the planning sheet (m2625).
