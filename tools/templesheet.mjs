@@ -88,7 +88,7 @@ function sheet(T) { const W = 1600, byId = Object.fromEntries(T.rooms.map(r => [
   <div class="box">${Object.values(TY).map(([n, c]) => sw(c, n)).join('')}<br><small>a second type is the dashed rim in the iso view</small><br>${lks}</div>
   <div class="box" style="font-size:13px">${sec}</div></div></div>
   <div class="hd">SIDE SECTION (unrolled round the hub: west wing | the north-south axis | east wing; X lies under the hub)</div><div class="sec">${Se}</div>
-  <div class="hd">THE CHAMBERS</div><table><tr><th></th><th>CHAMBER</th><th>TYPE</th><th>TEACHES / TESTS / TWISTS</th><th>REWARD</th><th>ENEMIES</th><th>INTERACTIONS</th><th>WHIP-ONLY RULE</th></tr>${rows}</table></div></body></html>`; }
+  <div class="hd">THE CHAMBERS</div><table><tr><th></th><th>CHAMBER</th><th>TYPE</th><th>TEACHES / TESTS / TWISTS</th><th>REWARD</th><th>ENEMIES</th><th>INTERACTIONS (IKIT)</th><th>WHIP-ONLY RULE</th></tr>${rows}</table></div></body></html>`; }
 const ids = process.argv.slice(2).filter(x => !x.startsWith('--')); const list = ids.length ? ids : fs.readdirSync(path.join(ROOT, 'tools/temples')).filter(f => f.endsWith('.mjs')).map(f => f.replace('.mjs', ''));
 const br = await pw.chromium.launch(), pg = await br.newPage({ viewport: { width: 1600, height: 1200 }, deviceScaleFactor: 1 });
 for (const id of list) { const T = (await import(pathToFileURL(path.join(ROOT, 'tools/temples', id + '.mjs')).href)).default; const html = sheet(T);

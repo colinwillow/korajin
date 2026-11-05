@@ -53,6 +53,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2626 -- the temple sheet's INTERACTIONS column speaks the Interactions Kit (IKIT kinds)
+
+The Interactions Kit started landing at m2623 (INTERACT.md, `ikitAdd({ id, kind, at, face, from })`; `chest` first, then the heavy door, the
+wheel crank, buttons / plates, levers, drawers, pots). The Forest Temple's sheet now names its interactions by those kinds (`chest`, `door`,
+`crank`, `button`, `plate`, `lever`, `drawer`, `pot`, plus whip anchors), the column reads INTERACTIONS (IKIT), and TEMPLE_TEMPLATE.md says
+the table uses IKIT kinds (only `chest` exists yet -- the rest are its planned pieces). Re-rendered `docs/temples/forest_sheet.png`. No game code.
+
 ## m2625 -- THE TEMPLE PLANNING SHEET (TEMPLE_TEMPLATE.md + `npm run templesheet`) and the Forest Temple re-planned on it
 
 **His (via main):** six reference temple layout sheets (`images/reference/temples/`) and his structure -- a HUB you land in, lettered

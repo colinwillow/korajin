@@ -13,8 +13,9 @@ One image per temple, in the style of his references, generated from ONE data fi
    stacked floors read apart, the links between them as coloured dashed lines, the chambers lettered, secrets as stars.
 2. **TOP-DOWN PLAN** -- on a grid (`grid` m a square), lettered, lighter = higher, a compass; the boss under the hub dashed.
 3. **SIDE SECTION** -- unrolled round the hub (`section` order), the levels as lines with their heights, drops dotted.
-4. **THE TABLE** -- chamber, type, what it TEACHES / TESTS / TWISTS, REWARD (shard / key / item), ENEMIES, INTERACTIONS used (chests, key
-   doors, levers, the wheel crank, plates, switches, whip anchors -- the Interactions Kit's names once it lands), and the WHIP-ONLY RULE
+4. **THE TABLE** -- chamber, type, what it TEACHES / TESTS / TWISTS, REWARD (shard / key / item), ENEMIES, INTERACTIONS used -- by their
+   INTERACTIONS KIT kinds (INTERACT.md, `ikitAdd({ id, kind, ... })`: `chest`, `door` (heavy), `crank`, `button`, `plate`, `lever`, `drawer`,
+   `pot`; only `chest` has landed as of m2623, the rest are its planned pieces) plus whip anchors -- and the WHIP-ONLY RULE
    (VINEWHIP.md) for any chamber that needs the item.
 Plus the ITEM, the GOAL (what the shards/keys open), the FLOW in one line, and the legend.
 
