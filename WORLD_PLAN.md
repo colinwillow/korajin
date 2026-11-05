@@ -157,3 +157,11 @@ In GOD mode he has infinite air; in the real game air is LIMITED, and reaching t
 cloak, a charm -- gated like section 9). The underwater LOOK is its own sandbox: a beautiful, amazing underwater scene --
 the shader (fog/colour falloff with depth, caustics, light shafts, the surface seen from below), particles, drifting life,
 bioluminescence, ruins below. Built in The Lake first, then the water temple uses it.
+WHERE THE WATER GOES (his, Nov 5): three scales, each with a job.
+- RIVERS / CHANNELS = the CONNECTIVE TISSUE. The boat sails them between regions; they have some depth (a shallow dive
+  is possible) but they are travel routes, not the underwater world.
+- THE LAKE = the WATER WORLD. A great basin the rivers drain into; the WATER TEMPLE sits at the BOTTOM of it. This is where
+  the underwater look, life and depth are developed (deep enough to need the air ability).
+- THE OCEAN (maybe, later) = open sea with real WAVES at the far edge of the map; a set-piece fight (a giant rocky sea monster
+  / colossus). Too big for the temple; a spectacle place.
+So the underwater sandbox is built in The Lake, and the river network is planned as the boat routes linking the regions.
