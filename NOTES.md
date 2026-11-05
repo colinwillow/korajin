@@ -44,6 +44,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2494 -- FLOATING BOULDERS: THE SLAM'S SHOCKWAVE RIPPLES THE SAND (Nov 5 2026)
+His (via parent): the air slam's shockwave should physically ripple the sand -- a damped ring wave through the deformation field,
+crest + trough, dust thrown at its front, a shallow crater + radial streaks left, resting rocks/pebbles hop as it passes, floaters
+wobble; a higher fall = a bigger wave. Sand first; snow later.
+- `L.shock(x, z, k)` (BOULDLIB, table `F.shock`): the wave is a TRANSIENT DELTA on the field -- `Wv` holds what each cell carries of it,
+  so each frame swaps the old value for the new and the sand underneath is untouched when it has passed. Profile: a gaussian crest at
+  the front (`c` 7.5 m/s, width `w` .5) minus a `trough` .7 behind it, x e^(-t/`tau` 1.1) / sqrt(1 + .6 d), feathered to 0 at reach
+  `R` (3.5 m small .. 9 m big). What it LEAVES is ordinary sand: a `stamp` crater and `streaks` 11 radial ploughs pointing outward.
+  The front kicks dust (`kick`) while it has energy; every rock it reaches gets ONE impulse (up `hop` / sqrt(mass), out, a spin;
+  floaters x`wob` 1.6) and some play their knock.
+- Glue: `slamGo` records `p.slamY0`; `slamLand` calls `shock(x, z, .5 + fall / 5)` (+1.5 m of fall if the slam rose first).
+- MEASURED, not eyeballed: at 2.5 m out the height goes 0 -> -.028 -> -.043 -> +.043 (crest) -> -.03 (trough) -> back to the streaked
+  value; the boot gate now asserts a wave passes 2.5 m out (against the sand it LEAVES, so the permanent streaks do not count) and
+  that it ends -- verified failing (`SHOCK: no wave passed`) with `A` 0.
+- Tool: `npm run bouldstrip -- sand --shock=0,8.6,1.4 --eye=4.5,3.2,13.5,0,0,8.6 --frames=6 --dt=.15` (the shock fires at the FIRST
+  frame -- before the 4 s warm-up it had finished before anything was drawn). `--eye=x,y,z,ax,ay,az` sets any camera.
+- SNOW: noted, not built -- the snow patches (`SNOWPATCH`) want the same delta on their own heights.
+- check + boulders boot pass. Shipped unverified.
+
 ## m2493 -- the rings fixes m2492's render showed: short arrow labels, room for more rings, one menu at a time (Nov 5 2026)
 m2492's own headless renders: FIRE BOW / BLAST BOW overflowed their thirds of the ring, and with the backpack open the 4th ring was CLIPPED (the ring
 set's SVG was sized for 3 rings). Now: the arrow segments read ARROW / FIRE / BLAST; the set is sized for 5 rings; and while the BACKPACK is open the
