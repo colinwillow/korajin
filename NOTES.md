@@ -46,6 +46,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2590 -- DEV PLACES lists KORAJIN's places only (the old game's chapters, quests and events are deleted from it); three-to-a-ring labels fit (Nov 5 2026)
+Via main: *"the DEV PLACES list in the pause menu is still packed FULL of the OLD game's chapters. We don't need anything from the old game; they're
+all dead. Rebuild DEV PLACES as a list of KORAJIN places only, grouped by region, with big tappable rows. Delete the old entries entirely."*
+- `KPLACES` (one table, data-first): PROLOGUE / THE FOREST / THE DESERT / WATER / SNOW / THE SKY / SANDBOXES, 30 rows, each a name and the URL query
+  the start menu (or the temple door) already uses -- a tap loads it (`?w=` skips the start screen). `godMenuOpen` now builds ONLY: HERE (the live
+  spots in this zone, `godLive`: the Sunwell, portals, talkers), the regions, and FLY / PLAY MODE. The old PLACES / CHAPTER / ROSTER / EVENTS /
+  QUESTS / SWITCHES sections are deleted from it. Every row's query was checked against its reader in the file (30/30 have one). The Sky Ascent has
+  no URL of its own (it is inside the desert); the Boulders row says so. ROADMAP CUT: the dead chapter / quest / places code itself, to remove.
+- The m2589 renders showed SWORD and STEEL overflowing their thirds of a ring: a segment on a ring of 3 now gets `.tight` (12 px, tighter spacing).
+
 ## m2588 -- THE VINE WHIP: GRUMBO CASTS IT (his: "the whip is really cool -- but he has NO ANIMATION when he uses it")
 Every flick is now a CAST (`WHIPCAST`, SC_WHIPCAST): an UPPER-BODY clip (its `__up` clone, in the same override slot the swap / toss / carry use,
 over whatever the legs do: running, jumping, mid-air) played over a measured SUB-RANGE with a wind-up; the lash / latch / pull is DEFERRED to the

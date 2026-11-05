@@ -186,6 +186,9 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
       `weapon_tip` / `gun_tip_left` -- m915 fits the procedural one there, so his drops in by file.
 
 ## CUT (dead code from the story, one system per pass, `npm run check` + a tkit boot after each)
+- [ ] **THE OLD GAME'S CHAPTER / QUEST / PLACES CODE IS DEAD (his, Nov 5: "we don't need anything from the old game; they're all dead").** m2590 took it
+      out of DEV PLACES (now `KPLACES`, Korajin only). Still in the file and to be removed later: `GODPLACES` (143 tkit rows), `GODCHAP`, `QUESTS` and
+      the quest runner, `ROSTER`, the Old Town / Pearl / Hollow Creek / Waterfront events (`OPROTEST`, `HCRALLY`, `OPLAZA`, `WFCONV`, ...), `godPlace`.
 - [x] the POLICE / heat / stars system (`HEAT`, `COPS`, `copAI`, `heatHit`): switched OFF at m895, cut at m1916 (236 lines).
       `heatAdd` stays as a `return 0` stub and `HEAT` as `{ v, calls }` until the story callers go.
 - [ ] remove the PLAIN-skipped builders and their data (farm, islands, gorge, waterfront, ferry, factory, underneath,
