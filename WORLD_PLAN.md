@@ -165,3 +165,10 @@ WHERE THE WATER GOES (his, Nov 5): three scales, each with a job.
 - THE OCEAN (maybe, later) = open sea with real WAVES at the far edge of the map; a set-piece fight (a giant rocky sea monster
   / colossus). Too big for the temple; a spectacle place.
 So the underwater sandbox is built in The Lake, and the river network is planned as the boat routes linking the regions.
+
+## 15. THE SKY OCTOPUS -- a procedural mechanical creature (his idea, Nov 5, open)
+Inspired by a Reddit post ("PELAGOS OC-8": a robotic octopus made entirely procedurally in three.js, ~2,100 lines, moves like
+a real octopus, every piece can EXPLODE apart like an assembly diagram and reassemble). Ours is ORIGINAL: an alien
+bronze-and-Jinra mechanical octopus, fully procedural (no model file), with tentacles driven by procedural motion (wave and
+IK chains), segmented plates that can blow apart into an exploded view and snap back. Lives UNDERWATER in the lake, or
+FLOATS through the air in a level (he has always liked alien flying octopuses). Could be ambient life, a guardian, or a boss.
