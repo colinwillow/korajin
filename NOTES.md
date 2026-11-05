@@ -44,6 +44,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2537 -- UNDERWATER pass 5: THE DEEP BASIN -- a 46 m bowl with the temple at its bottom (UNDERWATER.md; WORLD_PLAN 14) (Nov 5 2026)
+Via the orchestrator (WORLD_PLAN 14, his strategy): *rivers drain into THE LAKE, a great basin with the WATER TEMPLE at its bottom -- give it a real
+depth profile (shallows, a drop-off, a deep bowl), deep enough that the air gate matters.* The bed was 16 m at its deepest.
+- **`W.bowl`** (one row in LAKELIB's table + a few lines at the end of `terr`; the surface worker was told first): centred at canyon u 30, z -20
+  (world ~44.8, -20, ~136 m from the boat, clear of the colonnade, the obelisks, the stacks and the arches). Measured profile out from the centre:
+  0-20 m: -46 (a noisy floor) / 30: -39.6 / 40: -33 / 50: -30.3 (THE LEDGE) / 60: -14 (the rim) / 70: -6.6 / 80: -3.7 (the shallows as before).
+  `L.groundAt`, the drawn bed and the surface's bed texture all follow the one function: from the boat it reads as a dark deep pool (rendered).
+- **The shrine re-spread down the bowl:** the site search now finds the floor (-46.4); the WELL-HEAD and five columns on the floor, the ARCH and a
+  stele on the ledge (~-30), the TORII and a column up on the rim (beam 3 m under the surface: the way in), steps down the floor. Fish tiers at -3,
+  -7, -13, -24, -38; 22 jellies from -42 to -3; no weed below 30 m (no light); the glow ramps x.7 -> x3.6 from 4 to 34 m.
+- **The air gate matters now:** LIMITED stops him at 14 m (was 9): the rim and the torii are reachable without the cloak, the ledge and the temple
+  are not. The look's black depth is now at 40 m.
+- **Fix:** the bed's own absorption (in the terrain shader) is written for a lens ABOVE the water; under it `uwApply` also did the water, so the
+  bed went black twice over. The patch now gates their block off while the lens is under (`if (vWP.y < uLevel` -> `&& uUw < .5`; if their text
+  changes the gate simply misses and nothing breaks). Rocks darkened to sit with the bed.
+- Open: in the wide shots of the bowl the far walls still fade to the fog colour, so some rocks on the slope read as floating; next look pass.
+  Shipped unverified.
+
 ## m2536 -- UNDERWATER pass 4: FEEL -- the dive arc, splashes in and out, the muffled world, bubble blips, a calmer tread (UNDERWATER.md) (Nov 5 2026)
 - **The dive arc** (`uwDiveArc`): a head-first dive off the deck (`p.lkDive`, m2372) no longer stops dead at the surface -- he carries on DOWN at
   2.5 m/s + .55 x his fall speed (cap 7), keeping .75 of his run, the water slows him, the pitch follows (head first, levelling, head up) on the
