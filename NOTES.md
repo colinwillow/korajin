@@ -46,6 +46,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2597 -- THE VINE WHIP: the TARZAN SWING -- the gym rope's pose + pump on the whip's vine (his: the bar-hang "looks ridiculous")
+His (via main): both hands up the vine (one higher), the body hanging ALONG the vine, PUMPING with the swing phase (knees tuck / legs kick forward on
+the forward swing, extend back on the back swing, hips lead, arch at the ends, arms in at the bottom), legs trailing, the flip on release.
+- IT EXISTED (m1883, `PUMP` / `pumpPose` + `vinePose`, built for the gym's swing rope AND the high bar): after the mixer, the thighs swing about his
+  right axis toward where the swing is going (`kick` per m/s, to `max`), the knees tuck on the back swing, the spine arches against it, all eased;
+  on a rope his HANDS are two-bone IK onto the rope line above his head, one `hgap` above the other, elbows out; `vinePose` tilts the whole body
+  so his head points up the rope. The whip's swing (`p.rope.whip`, the grapple's pendulum) simply never fed it.
+- NOW IT DOES: `stepRope` gives the whip swing the gym rope's SWING AXIS (smoothed along his horizontal velocity, never flipping -- so he faces
+  ALONG the swing and goes forward and back on it instead of turning to face his motion every half swing), the signed speed along it (the pump's
+  phase; `PUMP.whipK` 1.1) and a vine-shaped `S` (the anchor as the top, his hand point) that `vinePose` and `pumpPose` read as the rope.
+- The vine is laid STRAIGHT along the line when it snaps taut (the film showed 6 verlet iterations leaving a slack loop sagging for a second).
+- FILMED and LOOKED (`npm run whipshot swing`): hands up the vine, the body tilted along it toward the anchor, legs trailing; the pump's leg swing is
+  subtle at the film's sampling (a tuning dial for his look: `PUMP.kick` / `PUMP.whipK`, live on mel).
+- THE HIGH BAR ALREADY HAS THIS PUMP (m1883: `pumpPose` runs for `p.bar`, at `PUMP.barK` .55 of the swing). If he cannot see it there, it is too
+  weak, not missing: raise `PUMP.barK` (noted to main). Shipped unverified.
+
 ## m2596 -- UNDERWATER ART B: the flora is the hero -- glow halos (fake bloom), rising spores, a carpet of lights on the floor (Nov 5 2026)
 His: *"beautiful glowing plants and animals, really majestic"*; the orchestrator's list: halos round every glow source (no post chain), spores
 drifting off the plants, a carpet of tiny lights. `UWGLOW` (SC_UWGLOW markers), `uwGlowMake`, three ADDITIVE point draws, motion on the GPU:
@@ -57,7 +73,6 @@ drifting off the plants, a carpet of tiny lights. `UWGLOW` (SC_UWGLOW markers), 
 - Kelp 170 -> 230 (curtains). Cost: +3 draws (points, additive, no depth write), ~3,100 points, ~0 CPU (56 attribute writes).
 - Render (images/feedback/m2586/uw_artB_render.jpg, portrait, 5 / 20 / 40 m): at 20 m the shrine floor now blooms with colour under him.
   Next: ART C (majesty: leviathan, murmurations, jelly fields, light columns). Shipped unverified.
-
 ## m2595 -- SMART CAMERA: thin things are never dithered, and under water the camera MOVES instead (his screenshots, images/feedback/m2586/: under The Lake a torii post in front of Grumbo dithered him into a pixelated block)
 - **THIN (`smThin`, `SCAM.thinW` 1.2 m):** a hit that would fade (or be the last resort) is first tested with the same segment shifted .6 m to
   either side, square to the view; if one side misses that mesh it is narrower than 1.2 m across -- a post, a column, a gate leg -- and is
