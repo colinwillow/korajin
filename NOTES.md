@@ -46,6 +46,40 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2605 -- HIS TRIPO WEAPONS: sword, sheath ON HIS BACK, bow with a PROCEDURAL string, quiver ON HIS BACK, arrow (Nov 5 2026)
+His: *"Can you open this FBX? A sword, a sword sheath, a bow, a quiver, an arrow. Make sure the sheath matches up to the sword, put it on his back and
+have him pull the sword out of it; put the quiver back there too. Take the bowstring off the bow and put a procedural one on."*
+- **WHAT IS IN `models/source/weapons_01.fbx` (measured in Blender, bpy 5.2.3):** ONE mesh, 10,693 tris, **118 loose parts**, one material, one 4096
+  JPG atlas, unit-normalised (1.0 x 0.57 x 0.11), laid flat in Blender's Y-Z plane. **SIX pieces, not five**: a GLAIVE (a polearm-sword, 1,944 tris --
+  not asked for, left out of the game file, still in the FBX), the sword 1,460, the sheath 1,546, the bow 3,566 + his modelled string 367, the quiver
+  1,566 (WITH arrows in it), the loose arrow 244. Tripo ran some quiver arrow shafts up to the bow string's top knot and one out of the quiver's side.
+- **ONE GLB, `models/weapons/tripo_weapons_01.glb` (630 KB: draco + EXT_texture_webp, the atlas at 2048, ONE material + a copy for the arrowhead)**,
+  not five: the five pieces share one atlas, so five files would be five copies of the same ~22 MB resident texture. Nodes, each already in the game's frame:
+  `weapon_root_right` (the sword in the KATANA's frame and WEAP.unit units: +Y blade, +Z edge = his jagged convex side, grip at the origin 5 units under
+  the guard, tip marker -14.31), `tripo_sheath` (the SAME frame: the sword at identity is sheathed; scaled to the blade x1.04, 0.75 of his size; empty
+  `sheath_mouth`), `tripo_bow` (metres, grip at the origin on the chord's middle, +Y up the chord, +Z the shot, tips 0.26 behind; empties `bow_tip_top` /
+  `bow_tip_bottom` at his string's two knots; his string DELETED), `tripo_arrow` (0.92 m, origin at the NOCK, +Z to the head; `tripo_arrow_head` its own
+  material), `tripo_quiver` (0.5 m body, origin mid-body, +Y up, +Z its gear emblem; the stray shafts cut off below the mouth). `doubleSided` off,
+  `alphaMode` OPAQUE (the FBX was HASHED). Sizes: the sword 1.16 m pommel to tip (blade .80 m) at WEAP.unit, the katana stand-in 1.15 (blade .77); bow chord
+  1.24 x BOW.limbK .95 = the stand-in's exactly; arrow .92 = the stand-in's. Built by `tools/tripo/` (README there; re-runnable).
+- **CHECKED IN BLENDER:** the sheathed render and an x-ray -- the whole blade inside, the guard seated on the mouth.
+- **IN THE GAME (`TRIPOW`, SC_TRIPOW markers; `mel.TRIPOW`):** loaded before the slots are built (`tripoLoad`); `katanaScene` returns his sword, so
+  every katana user (his hand, the title walker, duel bodies) gets it -- BTRAIL base/tip 15/74 to his blade. `arrowMesh` returns his arrow (every
+  arrow, his and the bowmen's; the head lights on a full draw as before). The player's bow (`tripoBow`, only HIS -- the bowmen keep theirs) is his mesh,
+  `tipA`/`tipB` read off the empties, and the string is two thin TUBES (`TRIPOW.str.r` 4.5 mm) top nock -> the pull point -> bottom nock, straight at
+  rest and drawn to his right hand by the same `pull` as before -- so both BOW AIM modes drive it unchanged.
+- **ON HIS BACK (`tripoBack`, from `bowStep`):** the sheath with the sword in it rides `mixamorig_Spine2` -- hilt over his RIGHT shoulder, tip at his
+  LEFT hip, edge up (`TRIPOW.back`: `at` m from the bone, `dir` = the piece's +Y, `x` its +X, in HIS frame -- the bone-to-body turn is measured once, so
+  any rig's bone axes work); the quiver lower right, behind it, the fletching by his right shoulder (`TRIPOW.quiver`). Shown when the piece is owned.
+  **THE SWORD ON HIS BACK SHOWS EXACTLY WHEN THE ONE IN HIS HAND DOES NOT**, so the existing reach over the shoulder (`weapon_swap`) takes it out of the
+  sheath at its show crossing and, reversed, puts it back at the hide crossing -- no new clip, no new timing.
+- **RENDERED ON GRUMBO (headless, the shipped page, forge):** sheathed on his back from behind / side / front, the draw at u .4 / .55 / .62 / .8,
+  the katana in hand, the bow at rest, half drawn and fully drawn from six sides. The sheath is LONG on him (the tip stands out past his left hip): it
+  is his sword's length; `TRIPOW.back.dir` / `at` are the dials.
+- Open: no limb flex on the draw (no bones in the bow); no reach to the quiver for each arrow (the nocked arrow appears on the draw, as before);
+  the glaive is unused. Moves no DONE WHEN box (the bow is TOOLS_SANDBOX piece 1; his sign-off on the phone is the box).
+
 ## m2604 -- UNDERWATER: SEA TEXTURES -- seabed, rock, glyph stone, coral skin (his: "a sea flora texture might help, some bed rock and stuff") (Nov 5 2026)
 His two reference paintings are in images/feedback/m2586/ref_underwater_a.png / _b.png (purple-teal glow, carved glyph ruins, veined flora).
 - **Four seamless maps** made with the image API by `tools/uw_textures.py` (re-roll one: `python3 tools/uw_textures.py bed`), 768 px WebP in
