@@ -44,6 +44,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2562 -- THE GREAT PYRAMID'S GRAND STAIR WALKS (his: "I have to HOP up each step") (Nov 5 2026)
+
+- **What was wrong (measured, not argued).** I stepped the shipped `groundAt` up the stair's centre line (placecheck's walkUp rule, his `MOVE.step`).
+  The surface rose in exact 2 m jumps (2.3, 6.3, 10.3, 16.3 ...): the TREADS. The stair was built with 1 m risers in the piece, and the great
+  pyramid is placed at `s: 2`, so every riser was a 2 m wall.
+  m2541's invisible `colOnly` ramp WAS in the collider, but it ran through the steps' INNER corners, not their noses. Each tread
+  stood up to one rise above it, so the ramp lay buried under the stair and never caught him.
+- **Fix: real steps.** The piece is now told its placement scale (`po.sc = R.s`). The stair is built from risers of **.3 m in the WORLD**
+  (`ns = yTop / (.3 / sc)`, so about 310 plain boxes on the great one and about 157 on the kit row's). Each box is 12 tris and they merge into the existing batch:
+  about +4k tris, no new draw. The ramp stays where it was, harmless under the treads.
+- **Proof** (the `gstair` shot, walkUp from the sand at z -280 along x 3.3, 5 cm steps): it climbs continuously from 1.2 m to **93.5 m**, the
+  top of the stair at the first plate layer. Before, it stayed on the sand at about 1-2 m all the way, through the stair's foot.
+- Also: the land scatter's `keepOut` honours the village worker's patch (`DPLACE.sky.village`, their field) as soon as it exists.
+- Must not be re-done: **a collider-only ramp has to touch the NOSES, the front-top edges.** Better still, build risers he can walk (.32 m or less in
+  the world, after the placement scale).
+
 ## m2561 -- THE SUNWELL, pass 1: THE PLAN (DESERT_VILLAGE.md; his: "a VILLAGE, FLOATING PLATFORMS with BUILDINGS, TREASURES, VILLAGERS") (Nov 5 2026)
 - **Sector agreed with the desert worker** (session messages): the E axis, theta +pi/2 off `F.c`, r 240..340 -- the village centre (the well) at
   world (290, -6), straddling the ring route r 300. Mine: `DVILLAGE`, `dvGeo`, the village builder, its isles and colliders, villagers, chests,
