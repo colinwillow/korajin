@@ -44,6 +44,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2493 -- the rings fixes m2492's render showed: short arrow labels, room for more rings, one menu at a time (Nov 5 2026)
+m2492's own headless renders: FIRE BOW / BLAST BOW overflowed their thirds of the ring, and with the backpack open the 4th ring was CLIPPED (the ring
+set's SVG was sized for 3 rings). Now: the arrow segments read ARROW / FIRE / BLAST; the set is sized for 5 rings; and while the BACKPACK is open the
+drawn weapon's own choices (arrows, blade elements) are hidden -- one menu at a time, so the open pack is BACKPACK + gear + weapons, 3 rings.
+
 ## m2492 -- with the bow out the left ring lists the ARROW TYPES; bow vs gun is picked in the BACKPACK (Zelda-style) (Nov 4 2026)
 Via main: *"with the BOW drawn, the left sub-menu lists the ARROW TYPES (BOW / FIRE BOW / BLAST BOW -- the owned ones), one segment each, tap to pick
 (like the katana's STEEL / FIRE / JIN). Remove the gun/rocket launcher from that sub-menu and from quick draw; equipping a different ranged weapon
