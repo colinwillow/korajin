@@ -46,6 +46,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2588 -- THE VINE WHIP: GRUMBO CASTS IT (his: "the whip is really cool -- but he has NO ANIMATION when he uses it")
+Every flick is now a CAST (`WHIPCAST`, SC_WHIPCAST): an UPPER-BODY clip (its `__up` clone, in the same override slot the swap / toss / carry use,
+over whatever the legs do: running, jumping, mid-air) played over a measured SUB-RANGE with a wind-up; the lash / latch / pull is DEFERRED to the
+SNAP (`whipCastGo` -> `whipAct`), so the vine leaves his hand at the snap frame and follows the hand (it is pinned to the hand bone every frame).
+- PICKED BY MEASUREMENT (`npm run whipclips`: the right hand's path on the bare skeleton -- peak speed = the snap, the rise / draw-back before it =
+  the wind-up): LASH / STRIKE = `weapon_melee_02` (the hand up and back to .56 m over the hips, then forward-down at 9.3 m/s); LATCH / ZIP = `throw_item`
+  (back and low, then up and forward at 7.9 m/s); PULL / YANK = `throw_item` played BACKWARD (forward-up hauling back to the chest). The first pick,
+  `katana_down`, peaks at only 4.9 m/s and showed as no motion at all in the first film.
+- SWINGING keeps the game's hang pose (`hbarClip`): no clip has ONE arm overhead -- said, not faked (a hand-made pose or a new clip from him).
+  A chain mid-swing is instant (he is hanging; the hang owns the body).
+- `npm run whipshot [lash throw pull swing]`: boots the shipped page in the sandbox, equips the whip, stands him at a setup per cast and films him from
+  the side (`WHIPZ.slow`, the sandbox's slow motion, for denser frames). LOOKED at it: the throw reads clearly (the arm up and over at the knot, the
+  hop, the hang); the pull reads (he turns, reaches, hauls; the crate slides in); the lash's lift is modest (shoulder height, not overhead) -- a
+  tuning note for his look. Shipped unverified.
+
 ## The green DNA bar is hidden (his: "Idk what this dna green line is, I think it's leftover from the old game")
 `#juice` (m284, Zap's DNA-gun tank, above the pads) is forced `display: none` in CSS. Nothing reads it visually in Korajin; the DNA code still runs, untouched.
 

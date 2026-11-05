@@ -46,6 +46,8 @@
     "foreststrip": "node tools/foreststrip.mjs",
     "ftstrip": "node tools/ftstrip.mjs",
     "ftplan": "node tools/ftplan.mjs",
+    "whipshot": "node tools/whipshot.mjs",
+    "whipclips": "node tools/whipclips.mjs",
     "gathstrip": "node tools/gathstrip.mjs",
     "smartcam": "node tools/smartcam.mjs"
   },
