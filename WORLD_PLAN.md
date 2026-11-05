@@ -140,3 +140,13 @@ a route up the leg and back to the shoulders/head (a moving level). Lore: they a
 meet the other Titans' beams and form the SHIELD over the world (this can BE the sky-temple grid of section 7, or feed it). One
 of them turned by the Hollow is a temple's BOSS (the colossus fight of section 5: weak points, climbing, vulnerability windows).
 His Tripo models later; a stand-in blockout titan can prove the climb.
+
+## 13. STOLEN POWER + THE PHASE SHIFT (his idea, Nov 5, open)
+LORE: when the Hollow strikes (the prologue crash), it drains Grumbo's own Jinra along with the stones. He starts the game
+without his power; restoring the crystals is also getting HIS power back, piece by piece (ties to section 9's ability gates).
+One ability he earns back is the PHASE SHIFT: the same purple portal he arrives through, used Nightcrawler-style. He blips out,
+handsprings/flips through a small portal and pops out a few metres away, fast. Uses: a DODGE (ground), maybe a JUMP version
+(air blink), and later the same power is how he TRAVELS between checkpoints/levels (fast travel = phasing).
+CONTROLS: the left-stick flicks (left/right barrel roll, down backflip) STAY. A SWITCH turns phase on; with it on, those same
+flicks phase instead of flipping. Maybe something he wears carries the power (his braids? a charm?), undecided. Built first as
+a switch in TOOLS so he can feel it before it is gated by the story.
