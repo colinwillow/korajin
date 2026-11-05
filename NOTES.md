@@ -44,6 +44,10 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2569 -- UNDERWATER: the smart camera looks through the bowl's plants and creatures (Nov 5 2026)
+The camera worker's m2551 ignores water by name or `userData.water`. Tagged: the `uw_flora` and `uw_fauna` groups and the life's fish and jellies,
+so kelp and passing mantas do not shove the lens in. Rocks, columns and the shrine stay solid to it. (`uw_surface_below` and `uw_fx` already match
+by name.) Shipped unverified.
 ## m2568 -- THE VINE WHIP: his pick (via main: "only if it's done well") -> VINEWHIP.md, a sandbox FIRST; the Forest Temple's flow re-planned round it (docs)
 - VINEWHIP.md: vision, his "done well" list (a fast readable verlet lash that curls and snaps; a lock glow on anchors before the flick; SWING with
   momentum, a flip on release, chained swings; ZIP / pull-to; PULL crates, levers, shields, small enemies; a lash strike + grab-and-throw), the
