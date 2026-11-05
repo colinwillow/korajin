@@ -44,6 +44,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2520 -- THE LAKE, DETAIL PASS 1: PAINTED WATER + WHAT LIVES UNDER IT (WATER.md)
+His Nov 5 series, item 1: *"stylised painted water texture and normal flow, deep-water colour falloff, things under the water."*
+- **Painted water:** `textures/lake_water_paint.webp` (+ `_n` normal), generated with gpt-image-1.5 and made seamless with a half-offset blend.
+  It is sampled in two layers flowing against each other (`W.paint`). Pale strokes add light, and contour bands sit at depths 1.25 / 2.7 m. The painted
+  normal is added on top of the per-pixel Gerstner normal.
+- **Depth falloff:** the bed absorbs toward `uDeep2` (indigo) between 4 and 15 m, so the middle reads deep and not flat teal.
+- **Under the water:** a sunken colonnade (`W.ruins`, 4 rows, merged into the terrain material), 4 fish schools (`W.fish`, ONE instanced draw,
+  with a tail wiggle from gl_InstanceID), and light-shaft billboards (`W.shafts`).
+- `textures/lake_foam_paint.webp` is in for pass 2 (the wake) and nothing reads it yet.
+- Strip `deep painted down_canyon shallows`: calls 36, tris 306k. Two new shots: `deep` and `painted`.
+- WATER.md: no box ticks. This is a detail pass on the open "water reads as water" and "depth reads" boxes. Shipped unverified.
+
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
