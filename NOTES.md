@@ -45,6 +45,30 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2581 -- NOTHING POPS: LOD'D THINGS DISSOLVE IN AND OUT, THE FLOATERS CROSSFADE, SHADERS PREWARM (his, flying the desert) (Nov 5 2026)
+
+His report (via parent): flying round the desert, rock formations and other culled things POP into existence. He wants them to FADE IN.
+- **The fade: a screen-door DITHER by view distance** (`fadeSplice`). `vFdD = length(mvPosition)` is computed in the vertex shader. A fragment is discarded when
+  the interleaved-gradient noise of gl_FragCoord >= `fa`, where `fa` = smoothstep IN [x, y] times smoothstep OUT [z, w] (`uFd`). It stays opaque and
+  depth-sorted (no blending, no sort cost) and costs one varying plus a few ALU ops.
+  **Why it hides the pop:** a mesh's CPU cull flips when its nearest point crosses its range, and by then its fragments at that distance are already fully
+  dithered away. So it arrives and leaves as a dissolve.
+- **Where:**
+  - **Every LOD'd mesh** (`Z.ivy`: the dressing cells, the per-cell detail batches incl. the canyon walls / hills / rocks' `landD`, the giants'
+    ivy) dissolves over 74-97% of its own range. It gets its own COPY of the shared material (`fadeClone`, cached per material x range: 11 copies), because
+    the shared one also draws the giants, which must not fade. DKLIB's hooks read only `sh` and a shared uniform object, so a copy is safe.
+    `fadeSync` copies the source's emissive / opacity each frame, since the night glow writes the source.
+  - **The boulder field** dissolves 122-158 m from the lens, spliced in place because those materials are field-only. Its hide (190 / 160 m) is now
+    measured from the CAMERA in 3D, because he flies. At 190 m nothing of a ~30 m field is left undithered.
+  - **The region floaters CROSSFADE their LOD:** inside ±30 m of the 240 m line a rock is in BOTH meshes, NEAR dissolving out as FAR
+    dissolves in. FAR also dissolves 1150-1290 m, into the haze, before its 1300 m cull (the fog ends at 1250).
+- **Prewarm:** `bouldPrewarm` makes every hidden LOD mesh, the field and both floater meshes visible for one `renderer.compile` at zone
+  load, so no shader compiles mid-flight. (Geometry uploads still happen on first draw; none of these are large.)
+- **Budget, with margin back:** I measured the landing at 64 / 254k before this build (it swings ~5k with the life). Trimmed: cactus arms are lathed at
+  2 segments a rib (18 -> 14), and buds and stubs are lower (1448 -> 1088 tris a cactus); the field's own sand mesh is 120 -> 100 segments (28.8k -> 20k).
+  The follow patch carries the close detail. **Landing 61 / 236k**, village court 43 / 161k, ascent foot 29 / 107k.
+- **Fly test: NOT done** (no interactive flight here). These are renders at the transition distances; they show the dissolve band (the
+  floaters near 240 m read as a soft stipple) and no shader errors. The kit row (dev showcase) still hard-toggles at 340 m.
 ## m2580 -- UNDERWATER: smooth crossing of the surface; no stick gestures while swimming (his two fixes, via the orchestrator) (Nov 5 2026)
 1. *"Flicks on the right and left sticks while swimming broke the CAMERA, and I couldn't fix it until I got back on the boat."* Every flick
    and every hold-release on either pad is ignored while he is in the Lake's water (`uwNoGest`, gated in `bindStick`'s `end` before
