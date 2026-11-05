@@ -5771,7 +5771,7 @@ const SPLIT = {
   // one. Without it the only upper pose available is `aimPose` -- the SIGHTED hold -- and he
   // would ride the whole city down the barrel.
   up: ['aimPose', 'aimIdle', 'shoot', 'chargeUp', 'chargeGo', 'swap', 'block', 'rocket', 'rocketFire', 'toss', 'hold'],
-  upRaw: ['katana_guard'],     // m979: split when the body has it (the samurai), silently skipped when it does not
+  upRaw: ['katana_guard', 'katana_down', 'katana_draw', 'katana_slash_1', 'climbing_Ladder'],     /* + the WHIP CAST's clips (VINEWHIP.md) */     // m979: split when the body has it (the samurai), silently skipped when it does not
   // the ones held SQUARE, which get the hips-free `__ups` and ride on `__legh` legs (m194)
   upSq: ['swap', 'rocket', 'rocketFire', 'toss', 'hold'],
   // `air` (m184): a charge held through a jump is the gun pose over the in-air LEGS
@@ -42301,7 +42301,7 @@ function whipBuild() { const Z = WHIPZ; Z.want = 2; if (Z.on) return; const L = 
   for (const b of L.boxes) BOXES.push(b); boxGrid();
   for (const a of L.anchors) WHIP.anchors.push(a);     // pass 2: the whip's own anchors (pass 1 lent the knots to the grapple hook)
   const S = L.S.spawn, p = player; p.pos.set(S.at[0], S.at[1] + .3, S.at[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = S.yaw; cam.az = S.yaw; Z.on = { t: 0 };
-  setTimeout(() => { try { if (window.mel) mel.WHIPZ = WHIPZ; } catch (e) {} }, 0); }
+  setTimeout(() => { try { if (window.mel) { mel.WHIPZ = WHIPZ; mel.WHIP = WHIP; mel.WHIPCAST = WHIPCAST; mel.whipGo = whipGo; mel.whipPick = () => kitPick(WEAP.slots.findIndex(q => q.whip)); mel.whipCastGo = whipCastGo; mel.whipP = player; } } catch (e) {} }, 0); }
 function whipZoneStep(dt) { const Z = WHIPZ; if (!Z.on) return; Z.on.t += dt; }
 // THE VINE WHIP, pass 2 -- THE LASH (VINEWHIP.md). The slot `whip` (LAST in WEAP.slots: saved indexes are positional; the combat worker's layout),
 // a third segment on the right ring. With it out, a right-pad FLICK is `whipFlick`: the LIT target in the flick's cone (`WHIP.cone` of the flick,
@@ -42368,9 +42368,31 @@ function whipVineStep(dt) { const V = WHIP.V; if (!V || V.st === 'idle') return;
 function whipHint() { if (!WHIP.hl) { WHIP.hl = new THREE.Mesh(new THREE.TorusGeometry(.55, .045, 8, 28), new THREE.MeshBasicMaterial({ color: JPAL.glow, transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false })); scene.add(WHIP.hl); }
   const p = player, ht = Math.hypot(p.vel.x, p.vel.z), h = !p.grounded && ht > 2 ? Math.atan2(p.vel.x, p.vel.z) : p.faceH; const B = whipOut() && !(p.rope && !p.rope.whip) ? whipBest(h) : null;
   WHIP.hl.visible = !!B; if (B) { WHIP.hl.position.set(B.x, B.y, B.z); WHIP.hl.lookAt(camera.position); WHIP.hl.scale.setScalar((B.kind === 'anchor' ? 1 : .8) * (1 + Math.sin(performance.now() * .012) * .15)); } }
+// THE WHIP CAST (his, after pass 6: "the whip is really cool -- but Grumbo has no animation when he uses it"). Every flick is now a CAST: an
+// UPPER-BODY clip (its `__up` clone over whatever the legs are doing -- running, jumping, mid-air) played over a SUB-RANGE of the clip at its own
+// rate, with a short WIND-UP before the SNAP; the vine leaves his hand at the snap (the lash / latch / pull is deferred to it). One cast per use:
+// `lash` (a strike or a lash at an enemy: an overhead snap), `throw` (a latch on an anchor or a zip: a forward throw), `pull` (a crate / lever /
+// shield / yank: a haul back with the arms). Swinging keeps the game's hang pose (`hbarClip`). Rows are data: `WHIPCAST.<kind>` = { clip, a, b
+// (the window, fractions of the clip), snap (fraction of the window where the vine leaves), dur (s for the window) } -- live on `mel.WHIPCAST`.
+// SC_WHIPCAST:START
+const WHIPCAST = { on: 1,
+  lash: { clip: 'katana_down', a: .1, b: .62, snap: .55, dur: .36 },
+  throw: { clip: 'throw_item', a: .2, b: .72, snap: .55, dur: .32 },
+  pull: { clip: 'katana_draw', a: .05, b: .7, snap: .4, dur: .42 } };
+// SC_WHIPCAST:END
+function whipCastGo(kind, fn) { const C = WHIPCAST[kind], p = player; if (!WHIPCAST.on || !C || !rig.actions || !rig.actions[C.clip]) { fn(); return; }
+  const a = rig.actions[C.clip], len = a.getClip().duration, span = (C.b - C.a) * len, rate = span / C.dur;
+  for (const nm of [C.clip, C.clip + UP, C.clip + UPS]) { if (!rig.actions[nm]) continue; playOnce(nm, rate); rig.actions[nm].time = C.a * len; }
+  p.whipCast = { k: kind, clip: C.clip, t: 0, dur: C.dur, snap: C.snap * C.dur, fn, fired: 0 }; }
+function whipCastStep(dt) { const p = player, W = p.whipCast; if (!W) return; W.t += dt;
+  if (!W.fired && W.t >= W.snap) { W.fired = 1; try { W.fn(); } catch (e) { note('WHIP CAST ' + e.message); } }
+  if (W.t >= W.dur || p.knock || p.rope && W.fired && W.k === 'throw' && W.t > W.snap + .08) p.whipCast = null; }
 function whipFlick(dx, dy) { if (!whipOut()) return 0; return whipGo(flickH(dx, dy)); }
-function whipGo(h) { const p = player; if (p.knock) return 1; const B = whipBest(h), H = whipHand(_wH);
-  p.faceH = p.heading = h; p.camWant = h;
+function whipGo(h) { const p = player; if (p.knock) return 1; if (p.whipCast) return 1; const B = whipBest(h); p.faceH = p.heading = h; p.camWant = h;
+  if (p.rope && p.rope.whip) return whipAct(h, B);     /* mid-swing a chain is instant (he is hanging: the hang pose owns the body) */
+  const kind = B && B.kind === 'anchor' ? 'throw' : whipThrowable(h) ? 'throw' : B && (B.kind === 'body' || B.kind === 'pull') ? 'pull' : 'lash';
+  whipCastGo(kind, () => whipAct(h, B)); return 1; }
+function whipAct(h, B) { const p = player, H = whipHand(_wH);
   if (B && B.kind === 'anchor') { const chain = !!(p.rope && p.rope.whip); if (p.rope && !p.rope.whip) return 0;
     if (p.grounded) { p.vel.y = Math.max(p.vel.y, WHIP.hop); p.grounded = false; p.pos.y += .05; }
     const zip = B.o.kind === 'zip', land = zip ? [B.x, groundAt(B.x, B.z, B.y, 4), B.z] : null;     /* a ZIP anchor hangs over a ledge: he lands under it */
@@ -42415,7 +42437,7 @@ function whipPullStep(dt) { const p = player, L = WHIPZ.L;
   for (const pl of L.pulls) if (pl.kind === 'plate') { const on = L.pulls.some(c => c.kind === 'crate' && Math.hypot(c.x - pl.x, c.z - pl.z) < pl.r); if (on && !pl.on) { spkBurst(pl.x, .3, pl.z, 14, { col: JPAL.glowRgb, spread: 2, size: .08, life: .4 }); snd('ready', { g: .3, r: 1.4 }); } pl.on = on; if (on) lit++; }
   if (lit === 3 && !L.yardDone) { L.yardDone = 1; snd('ready', { g: .7 }); toast('THE YARD IS SET', 2.2); }
 }
-function whipStep(dt) { if (!WHIP.on) return; whipVineStep(dt); whipHint(); whipPullStep(dt); }
+function whipStep(dt) { if (!WHIP.on) return; whipCastStep(dt); whipVineStep(dt); whipHint(); whipPullStep(dt); }
 // m2329: GOOP FX ON THE REAL MOVES (his: "I haven't seen those in game -- I imagine the attacks glowing"). TOOLS > KATANA > GOOP FX, DEFAULT ON;
 // OFF = the old FX exactly (the A/B). One `FX` (fxLibMake) for the whole game, stepped every frame by `goopStep` (and doing NOTHING when empty).
 // Dressed: the katana's TRAIL (a goop sheet from 30% up the blade to the tip, sub-stepped, shedding blobs, sparks and arcs by blade speed --
@@ -51874,7 +51896,7 @@ function rigAnim(dt) {
   // **AND THE LAUNCHER IS THE SAME SLOT (m189)**: carried, its pose owns the top half over the
   // ORDINARY gait's legs -- walk, run, the long stride, all phase-synced -- rather than the rifle
   // carry, whose bladed hips would turn the legs out from under a square pose.
-  const upNm = p.swap ? CLIPS.swap : p.toss ? CLIPS.toss : p.carry ? (rig.actions[CLIPS.carry + UPS] ? CLIPS.carry : CLIPS.hold) : (rocketUp() || '');
+  const upNm = p.whipCast ? p.whipCast.clip : p.swap ? CLIPS.swap : p.toss ? CLIPS.toss : p.carry ? (rig.actions[CLIPS.carry + UPS] ? CLIPS.carry : CLIPS.hold) : (rocketUp() || '');
   const sw = upNm && rig.actions[upKey(upNm)];
   if (sw) add(upKey(upNm), rest, 0);
   const L = n => (sw && rig.actions[legKey(n, isSq(upNm))] ? legKey(n, isSq(upNm)) : n);
