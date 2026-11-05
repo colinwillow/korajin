@@ -53,6 +53,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2619 -- COMBAT LAB, harder pass C: THE CORE SQUAD placeholders (ENEMY_ROSTER.md), each with a stone twin
+- Six new `ARENA.kinds` on rigs we already have, each its own hue (a per-kind `hueDeg` uniform through `rivalHue`) and its own `CBT.def` row,
+  until his Tripo models: HUSK SOLDIER (the samurai's body + katana set, terracotta, the ordinary arena brain -- not the mirror; block .35),
+  HUSK ARCHER (the archer, terracotta; kites), BULWARK (the warboss + tower shield, violet; blocks .95 in front, guard 8, red slams with
+  super-armour -- the WHIP tears the shield away, a heavy hit breaks the guard, and its BACK takes x2: a new row field `back`),
+  SPHINX HOUND (the three-headed dog at 1.3 m, spawned in THREES), HOLLOW MOTH (the mech dragon at 1.1 m: the bow), HOLLOW MONK (a CASTER:
+  `monkStep` keeps it 8-12 m off, every 3.6-5.4 s it swings the censer -- a taunt clip + the white glint -- and a STONE SMOKE lands where he
+  stood: a ring of grey motes for 1.1 s, then the cloud; caught inside 2.6 m he is PETRIFIED (stunned 1.1 s). No guard: catch it).
+- STONE TWINS for EVERY arena kind (STATUES.md): the lab's STONE switch spawns them as statues -- after the beam-in their materials are swapped
+  for `statueStone` copies (grey, no glow) and they stand posed and still (`stoneT`); WAKE (or a blow) puts the materials back with a burst of
+  stone dust and a taunt.
+- Lab: SPAWN > CORE SQUAD (soldier, archer, bulwark, hounds x3, moth, monk); STONE ON/OFF and WAKE beside BOSS. TEMPLE SET: CORE SQUAD -- five
+  waves (soldiers; soldiers + archers; bulwark + archer + soldiers; three hounds + a monk; two moths + a bulwark + soldiers), boss the Guardian.
+- `npm run check` ok. Shipped unverified.
+
 ## m2618 -- COMBAT LAB, harder pass B: MIXED SQUADS and A REASON FOR EVERY TOOL
 - ARMOURED (`pierce: 'charge'` on the row; SKULLBACK, CEO beast): a plain blow does x.35 with grey sparks and a dull clang (`cbtToolK`), the
   katana's CHARGE release / a slam / a rocket x1.6. The armoured ones are what the charge is for.
