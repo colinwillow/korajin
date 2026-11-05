@@ -58,6 +58,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2668 -- THE KIT, his gallery notes part 2: the CAMERA -- 45 deg and unlocked, a piece that drives something ELSE frames both (`shows`), and a REVEAL with a jingle (Nov 5 2026)
+- **45 deg** (`IKIT.camSide` 28 -> 45): the lens comes round 45 deg off his back. It was never locked -- `p.camWant` is an ease a drag cancels.
+- **`row.shows`** (a row id or [x, y, z]; a crank shows what it `drives` by default): the piece frames HIM and the RESULT through the ACTION CAM
+  (`actionCam`, the m1083 event framing): it turns toward the target, 30 deg off (`IKIT.showOff`), and pulls out to fit both; a drag outranks it.
+  **`ikCamOff`** picks the 3/4 side whose boom is clear for 5 m (+, -, half, 0). **ACAM src `look`**: a kit piece keeps the look point on him
+  (`look .12`) -- the default slid it toward the gate, THROUGH the crank's own collider, so `camFree` started inside a box and clamped the lens
+  to `CAM.min` 1.5 m (the first film: his back filling the frame; label `d1.50` against a wanted 6.6). ACAM `off` is new (a 3/4 angle).
+- **Completion** (`ikDone`, every `shows` piece): `ikReveal` -- three rising chimes, the lens eases onto the opened thing for 1.3 s (`IKIT.reveal`),
+  a puff of dust and a glint of Jinra sparks there, then back. Film (crank, `fakeSpin` 10): wheel + him + the portcullis in one shot (d 4.8-7.4),
+  the gate rising, the reveal on the open vault, back to him (d 4.4).
+- Only the crank has a remote target in the gallery; the lever / plate / button light their own lamps. A temple sets `shows` on its rows.
+- `ikstrip`: `window.__lab` (a label readout) and `--post`. Gates: `npm run check`. Moves no box. **Shipped unverified.**
+
 ## m2667 -- UNDERWATER DETAIL D: creatures with real bodies, fins and tails (his: "smoother bodies, fins, tails") (Nov 5 2026)
 - **Lantern fish:** a body turned on a lathe along its length (blunt head, deep belly, narrow wrist; flattened sideways), a forked tail, a
   dorsal and two pectoral fins, the lure on a curved stalk; a lighter base (they read black).

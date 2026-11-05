@@ -38,7 +38,7 @@ const shoot = async (lab, wideCam) => page.evaluate(([lab, wideCam]) => { const 
   mel.nightPre(); renderer.render(scene, camera); const url = renderer.domElement.toDataURL('image/jpeg', .85); const i = renderer.info.render; mel.nightPost();
   if (saved) { camera.position.copy(saved[0]); camera.quaternion.copy(saved[1]); camera.updateMatrixWorld(true); }
   const Pp = Z.pose, hb = mel.rig && mel.rig.bones && mel.rig.bones.mixamorig_LeftHand, hd = hb && Pp.L ? hb.getWorldPosition(Pp.L.clone()).distanceTo(Pp.L).toFixed(2) : '-';
-  return { url, lab: lab + ' · ' + (R ? R.st + '/' + (R.b || '-') : 'idle') + ' w' + (Pp.w || 0).toFixed(2) + ' ln' + ((Pp.lean || 0) + (Pp.auto || 0)).toFixed(0) + ' hd' + hd + ' · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k' }; }, [lab, wideCam]);
+  return { url, lab: lab + ' · ' + (R ? R.st + '/' + (R.b || '-') : 'idle') + ' w' + (Pp.w || 0).toFixed(2) + ' ln' + ((Pp.lean || 0) + (Pp.auto || 0)).toFixed(0) + ' hd' + hd + (window.__lab ? ' ' + window.__lab() : '') + ' · ' + i.calls + ' DC ' + Math.round(i.triangles / 1000) + 'k' }; }, [lab, wideCam]);
 const wideCam = arg('cam', '') === 'side' ? 'side' : JSON.parse(arg('cam', '[-6.2,2.6,-3.6,-9,1.1,-7.4]'));
 for (const [k, c] of JSON.parse(arg('cams', '[]')).entries()) tiles.push(await shoot('still ' + k, c));     /* --cams=[[cam],...]: still lifes before the tap (the look passes) */
 tiles.push(await shoot('before', null)); if (wide) tiles.push(await shoot('before wide', wideCam));
