@@ -14,7 +14,7 @@ const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k +
 const src = fs.readFileSync(path.resolve(ROOT, arg('src', 'index.html')), 'utf8');
 const m = /\/\/ LAKELIB:START[\s\S]*?\/\/ LAKELIB:END/.exec(src); if (!m) { console.error('no LAKELIB markers'); process.exit(1); }
 const OUT = arg('out', path.join(ROOT, 'shots')); fs.mkdirSync(OUT, { recursive: true });
-const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 6), W: +arg('w', 480), H: +arg('h', 300), mirror: +arg('mirror', 1), cols: +arg('cols', 3), cruise: +arg('cruise', 1) };
+const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 6), W: +arg('w', 480), H: +arg('h', 300), mirror: +arg('mirror', 1), cols: +arg('cols', 3), cruise: +arg('cruise', 1), night: +arg('night', 0) };
 const page = `<!doctype html><html><head><script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script></head><body style="margin:0;background:#000">
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; window.ready = 1;</script></body></html>`;
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); if (u === '/' || u === '/lake.html') { r.writeHead(200, { 'content-type': 'text/html' }); return r.end(page); }
@@ -30,6 +30,7 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
   const Li = L.light, hemi = new THREE.HemisphereLight(new THREE.Color(...Li.sky), new THREE.Color(...Li.gnd), Li.hI), sun = new THREE.DirectionalLight(new THREE.Color(...Li.col), Li.I);
   sun.position.copy(Li.dir).multiplyScalar(100); scene.add(hemi, sun); hemi.layers.enable(Li.layer); sun.layers.enable(Li.layer);     // the mirror sees layer `Li.layer` only, and three culls LIGHTS by layer too
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(.32, 1.1, 6, 12), new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .7 })); body.position.set(L.spawn[0], L.spawn[1] + .87, L.spawn[2]); scene.add(body);
+  if (o.night && L.setNight) { L.setNight(o.night); sun.intensity *= 1 - .85 * o.night; hemi.intensity *= 1 - .7 * o.night; }     // --night=1: the lake's own night (the game's shared star dome is not in the strip)
   if (o.cruise && L.boat) L.boat.setMode('cruise');     // the wake needs a moving boat (pass 3)
   for (let i = 0; i < Math.round(o.t * 30); i++) { if (L.boat) L.WU.uCam.value.set(L.boat.x, 4, L.boat.z); L.step(1 / 30); }     // the petals live round the lens: hold it at the boat
   const list = o.shots.length ? L.W.shots.filter(s => o.shots.includes(s.id)) : L.W.shots, cols = Math.min(o.cols, list.length), rows = Math.ceil(list.length / cols);
@@ -39,7 +40,7 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
     const x = (k % cols) * W, y = 22 + Math.floor(k / cols) * (H + 20); c2.drawImage(R.domElement, x, y + 20); c2.fillStyle = '#9ff'; c2.fillText(s.id + ' -- ' + s.why, x + 4, y + 14); });
   const n = L.count(); c2.fillStyle = '#fff'; c2.fillText('THE LAKE  t=' + o.t + 's  mirror ' + (o.mirror ? 'ON' : 'OFF') + '  calls<=' + calls + '  tris<=' + tris + '  terrain ' + n.terrainTris + '  stacks ' + n.stackTris + '  water ' + n.waterTris + '  build ' + build.toFixed(0) + ' ms', 6, 15);
   return { png: out.toDataURL('image/png'), calls, tris, build, n, spawn: L.spawn, mirrorN: L.mirrorN || 0 }; }, [m[0], opts]);
-const file = path.join(OUT, 'lake_' + (opts.shots.join('_') || 'all') + (opts.mirror ? '' : '_nomirror') + '.png');
+const file = path.join(OUT, 'lake_' + (opts.shots.join('_') || 'all') + (opts.mirror ? '' : '_nomirror') + (opts.night ? '_night' : '') + '.png');
 fs.writeFileSync(file, Buffer.from(res.png.split(',')[1], 'base64'));
 console.log(file, 'calls', res.calls, 'tris', res.tris, 'build ms', res.build.toFixed(0), 'mirror renders', res.mirrorN, 'spawn', res.spawn.map(v => v.toFixed(1)).join(','), JSON.stringify(res.n));
 await br.close(); srv.close();

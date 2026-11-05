@@ -52,6 +52,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - DEEP SAND: fourteen big mounds (r 26-44, h 7-14 m) heaped round the great pyramid's foot, the causeway's mouth left open.
 - Looked at: the forecourt low, the play camera. check + boulders boot pass. Shipped unverified.
 
+## m2524 -- THE LAKE, DETAIL PASS 3: GLOWING PLANKTON (WATER.md NIGHT)
+His Nov 5 series, item 3: *"bioluminescence -- glowing plankton, strongest at night, stirred by the boat and by him."*
+- **Stir:** `lkWake` now also writes `lkStir` (handed to the fragment as `vStir`). It is a wider, longer-lived trail glow (age constant 20 s), the
+  Kelvin arms, the churn, and hull contact. Him swimming or WADING adds to it (new: wading sets `uSwim` with w = .5, so the shallows also get his
+  rings and foam).
+- **Plankton:** two layers UNDER the surface at .45 and 1.3 m, sampled along the refracted view so they slide with parallax. Drifting soft clouds
+  (noise), and motes in them that flare with the stir. Night only (x `uNight`), and only in water deeper than the layer.
+- **Still water stays quiet on purpose:** his m2382 note ("no sparkle dots, low rent"). The first cut showed motes everywhere, so the base mote term
+  is now cloud x .05; motes read only where something moved.
+- `tools/lakestrip.mjs --night=1` calls `L.setNight` and dims the strip's sun and hemi light (the shared star dome is not in the strip).
+- Strip at night: `wake_top wake_low bow_wave deep`; calls and tris unchanged. Moves the NIGHT box ("bioluminescence where disturbed") toward done;
+  not ticked. Shipped unverified.
+
 ## m2522 -- THE LAKE, DETAIL PASS 2: THE WAKE, PAINTED FOAM EVERYWHERE (WATER.md)
 His Nov 5 series, item 2: *"a proper V-shaped Kelvin wake, wake ripples, foam trailing the boat, foam at the shore, rocks and obelisks, a painted foam texture."*
 - **Painted foam (`uFoamP` = `textures/lake_foam_paint.webp`, clumps, swirls and flecks, white on black):** every foam source (shore band, stack rims,
