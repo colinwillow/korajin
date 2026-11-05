@@ -59,6 +59,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2676 -- THE GEAR TIGHT ON HIS BACK (the sheath's bottom tilted in); the cape held by ONE PLANE (his idea), not capsules (Nov 5 2026)
+His (images/feedback/m2669/gear_gap.png): *"the sheath and quiver still FLOAT OFF his body -- bring them in, tight, even if the gear then intersects the
+cape"*; *"a PLANE collider instead of capsules: one plane along the gear's outer face, the cape on one side of it -- no penetration, no sticking."*
+- MEASURED his back WITHOUT the cape (vertices weighted < .3 to `cape_*`, his frame): -.07..-.18 at the lower back, the hood bulging to -.20 at the
+  shoulders; the cape itself hangs out to -.25..-.29. The m2655 sheath leaned its bottom OUT (`dir` z -.09), so it rode the cape.
+- PLACEMENT: `TRIPOW.back.dir` z +.26 -- the bottom tilted IN: on the hood at the mouth (-.26), on his back at the tip; the quiver re-seated on the
+  sheath's outer face at the crossing (`at` z -.257, `dir` z 0).
+- THE PLANE (`tripoPlane`, in `springsStep`; the capsules are gone): normal = HIS backward (a plane tilted with the sheath sat 10 cm off his back at the
+  cape's top and flared it); placed at the gear's OUTERMOST face (sheath and quiver, sampled) over the height the cape covers, + `TCOL.over` .02;
+  half-space, only above the sheath's tip. TOOLS > BOW > CAPE vs GEAR: OVER (default) / UNDER / OFF (remembered `mel.capeGear`).
+- MEASURED IN MOTION (1 s idle, 1.5 s run, 1 s idle; cape vertices inside the gear's real volume; the largest frame-to-frame jump of a cape joint):
+      OFF                     mean 13.6  max 46  idle 12-33 (wandering)   jump .150 m
+      UNDER (plane)           mean 20.6  max 37  idle 24-37               jump .170   (forcing the cape under means through the gear)
+      OVER, plane tilted      mean  4.9  max 11  idle 4                   jump .146   (but the cape flared far out)
+      OVER, his backward      mean  8.2  max 13  idle 11 (steady)         jump .138   <- shipped
+  Steady at rest = nothing stuck; no more jitter than with it off. Filmed an 8-angle orbit at night: the hilt, the sheath and the quiver read on his
+  back, tight, the cape hanging round and below them.
+
 ## m2675 -- THE KIT, his gallery notes part 5: THE CAPSTAN (his crank, redone) and the DRAWBRIDGE; the left stick's SPIN CUE (Nov 5 2026)
 His crank notes ("pirate's wheel was a SHAPE gesture -- bulky, chunky, built for weight; the hand-over-hand looks weak; a real rope over a pulley;
 light up the left stick when it needs spinning") and his new station ("a big HORIZONTAL wheel, about his height across, at waist / chest height,
