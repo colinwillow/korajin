@@ -53,6 +53,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2643 -- THE DRAW IS ONE SMOOTH ARC (the sword driven, the arm follows); the idle's edge turned the right way; the quiver higher on the X (Nov 5 2026)
+His (images/feedback/m2639/): *"the roll is 180 deg wrong -- the edge faces back toward him"*; *"the quiver is too low, slide it up so his hand could
+reach the arrows"*; *"the sword comes straight up out of the sheath, then has 1-2 frames to get to the held pose, so it POPs -- reach back, grip the
+real hilt, then the sword travels SMOOTHLY in an arc from the back to the guard over ~.35-.5 s; same in reverse."*
+- MEASURED FIRST (the tip, frame to frame, the m2608 draw): .68 m in ONE frame at the swap; .3-.6 m a frame at s .83-.90 as the swap clip swept;
+  .27 m when the swap clip ended.
+- THE DRAW (`KDRAW`, `katDrawIK(dt)`, its own clock `KDRAW.live`): the SWORD is driven and the arm follows. The grip's world transform runs sheathed
+  (T0, off the back socket) -> an eased ARC (`arc` .48 s, lifted `lift` .22 m over his shoulder at its middle, rotation slerped) -> the clip's held
+  pose (T1), smoothed (`k` 16 /s) so the swap clip's own jumps -- its end among them -- are absorbed (`settle` .45 s, then `fade`); the right arm is
+  `ik2`'d and the hand turned so the sword in his hand IS that transform. The swap (hand sword on, back off) is at the GRIP (.36 of the 1.2 s), where
+  it equals T0 exactly. Sheathing: T1 -> arc (.52 s, driven direct, so it lands exactly on T0) -> the swap -> held (.1) -> released (.2). No slide.
+  AFTER: the largest tip step over the whole draw .097 m/frame (a smooth ramp, ~6 m/s at the arc's middle), the sheathe .092; 0.012 at the swap.
+  Filmed 11 frames each way from two sides.
+- IDLE (`KIDLE.edge` -1): the CUTTING edge is the sword's -Z -- m2614 squared its back to his facing. The tip (-.008, .842, -.539), unchanged; the
+  cutting edge 0.0 deg off his facing.
+- QUIVER (`TRIPOW.quiver`): slid UP the X (centre at the shoulder blade, the fletching by his left shoulder, `dir` z .12 to lean in); it still
+  crosses the sheath (the buckle moved to the new crossing).
+
 ## m2642 -- THE INTERACTIONS KIT design pass 4: the BUTTON and the PRESSURE PLATE (INTERACT.md)
 - THE BUTTON: a carved stone PLAQUE (bevelled, a GLYPH BORDER of raised strokes, four bronze rivets) with a bronze BEZEL; a domed bronze PLUNGER
   carrying Korajin's NESTED DIAMONDS (dark, lit when it goes home); a bronze LATCH that, once it is in, SLIDES across over the plunger's rim to hold
@@ -23999,7 +24018,7 @@ stacks with `scale.y = h`. `U.dig.box` is unchanged. Shipped unverified.
   unchanged in plan). Still plain: the dock-1 landing in front of the footbridge's sign (cube planters, two overlapping
   PEARL signs) -- that is the footbridge frame's, and PE3's first look.
 
-- **THE PEARL'S PLAZA, DRESSED -- AND A BED .45 M TALL STALLED THE MARCH (m491, F1-PE1, `buildPearlPlaza`).** The shot: a
+- **THE PEARL'S PLAZA, DRESSED -- AND A BED .45 M TALL STALLED THE m2643H (m491, F1-PE1, `buildPearlPlaza`).** The shot: a
   40 x 37 m grey floor, the sit-in and a few crates, nothing overhead. Added: four lines of pennants and bulbs at y+7.4 with
   sag (the overhead layer), a painted floor (sun before the stage, three swirls, a footprint trail; flat `geo`, no
   colliders), and four corner beds of three planters with sunflowers. **The first cut had the planters .45 m tall and
@@ -25937,7 +25956,7 @@ stacks with `scale.y = h`. `U.dig.box` is unchanged. Shipped unverified.
   `pearlLadder` builds the climb box at the frame's yaw PLUS the face's (`th + psi`, the same turn `bx`'s colliders use) and
   sets its front to that heading. Ladders here are UP only (`climbFind` latches from the front, and from the roof he is
   behind it); the way down is the drop, which does not hurt him.
-  **THE ROOFS GET HIM INTO THE PLAZA WITHOUT THE MARCH** -- up outside by the dock, over the stair, off the studios' edge.
+  **THE ROOFS GET HIM INTO THE PLAZA WITHOUT THE m2643H** -- up outside by the dock, over the stair, off the studios' edge.
   On purpose: the march is the walker's way, the roofs the climber's (REGIONS' connective tissue: "across rooftops").
   The PLAZA row's "sealed" is a ground-level claim and stays true.
   `npm run places` (150 rows, exit 0):
@@ -25958,7 +25977,7 @@ stacks with `scale.y = h`. `U.dig.box` is unchanged. Shipped unverified.
   inside the plaza is not a trap, and walking out does NOT set `gate:<id>` (only getting IN counts). In: a `city` form
   inside the march (`pearlCrowd`: it is out and you are within 5 m of its middle) -- `gateLets`' `crowd` field now names
   WHICH march (`'pearl'`), and Old Town's police line still asks `protestCrowd`.
-  **THE SIT-IN AND THE MARCH**: twelve people (signs: `protestSign`) in a fan round a low stage (.35 m, a banner behind),
+  **THE SIT-IN AND THE m2643H**: twelve people (signs: `protestSign`) in a fan round a low stage (.35 m, a banner behind),
   Marisol on it with a megaphone on her root (`plazaHorn`); the call shows over her, the answer over them, one at a time
   (`protestChant(..., own)` -- `own` keeps the Old Town amplifier's red off it), painted only within 130 m. Every 70-120 s
   (the first 25-40 s in): FORM (8 s) -> OUT along a route -> HOLD 14 s -> BACK -> SIT, alternating TO THE DOCK (out the
@@ -26152,10 +26171,10 @@ stacks with `scale.y = h`. `U.dig.box` is unchanged. Shipped unverified.
   `gateLets` is `socialMe() === 'city' && protestCrowd()`: an activist, a hippie or a hipster (A8 named the activist; the
   group is the honest test of "looks like part of it"), and only while within 4.5 m of the middle of the march as it is
   out. The march itself walks through, because a gate only ever stops YOU. Sage now says so and gives the task
-  MARCH WITH THEM (`from: 'mk_protest_0'`, one `gate` step: crossing it in the right body, inside the crowd).
+  m2643H WITH THEM (`from: 'mk_protest_0'`, one `gate` step: crossing it in the right body, inside the crowd).
   GOD: the place "the police line across the march". `places`: `police line 14.0 m wide at 13.4,0.2,46.7`, `GATES ...
   protest_barricade barricade w14.0`, `ok  QUESTS ... qmarch.0 gate`, exit 0. `npm run shot barricade` (from above; it
-  stands across the street at a junction, so there are other ways round -- this is the line the MARCH takes, which is
+  stands across the street at a junction, so there are other ways round -- this is the line the m2643H takes, which is
   what the task is about, and The Pearl's plaza is where barricades seal every street).
 
 - **`d.beat` WAS TWO THINGS FROM m338 TO m346: THE HIT REACTION'S LENGTH AND MY ROUTE (m347).** `dummyBlow` writes
@@ -26184,7 +26203,7 @@ stacks with `scale.y = h`. `U.dig.box` is unchanged. Shipped unverified.
 - **THE PROTEST IS AN EVENT ON ITS OWN CLOCK, AND A CROWD IS BODIES CHASING THEIR PLACES ROUND ONE MOVING POINT (m346,
   C1-1, `OPROTEST`, `buildProtest`, `protestStep`, `protestStart`).** Eight activists (Sage, Moonbeam, Jasper, Rowan,
   Tamsin, River, Kai, Ezra -- npc marks, `src: 'PROTEST'`, living round THE SQUARE at (-7.5, 35.7), a clear lot from m337's
-  sweep) go quiet -> GATHER (14 s) -> MARCH -> RALLY (40 s at THE CORNER LOT, (30.5, 55.7)) -> HOME, then quiet for 90-150 s.
+  sweep) go quiet -> GATHER (14 s) -> m2643H -> RALLY (40 s at THE CORNER LOT, (30.5, 55.7)) -> HOME, then quiet for 90-150 s.
   The march follows `navPath` through the real collider (42.9 m, straight here). Each member has a fixed place in a loose
   block (`off`: across and behind) round a leader point that only moves on while the crowd's mean lag is under 4.5 m; the
   place is fed to the ordinary roam as a one-point beat (`d.beat`, `d.rx/rz`, `roamT = 0` when it is 1.4 m away), so the
@@ -38467,7 +38486,7 @@ stacks with `scale.y = h`. `U.dig.box` is unchanged. Shipped unverified.
   three do not stagger in the same order every fight.
   **AND THE STATE'S LENGTH HAS TO READ THE SAME `d.upB` THE CLIP WAS SCALED BY**, or it cuts the
   get-up off part-way -- the m8 landmine, which is exactly what a per-body beat would walk into.
-- **THREE MEN MARCHING AT ONE SPEED DOWN ONE LINE IS ONE MAN DRAWN THREE TIMES (m50, `foeGait`,
+- **THREE MEN m2643HING AT ONE SPEED DOWN ONE LINE IS ONE MAN DRAWN THREE TIMES (m50, `foeGait`,
   `foeLane`).** *"They just all kind of walk at the exact same speed towards me... maybe they
   don't always go in a straight line towards you, a little more intelligent path as well as
   speed. Sometimes it's a little faster, sometimes they stop, sometimes they turn, sometimes a
