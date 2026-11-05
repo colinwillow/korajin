@@ -55,6 +55,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2658 -- THE LAKE STILL FROZE ON HIS iPHONE (after m2624: "it shows the zone, then FREEZES as he starts to teleport in"; "as he goes under, everything freezes for a few SECONDS while it spawns")
+- **WHY m2624 WAS NOT ENOUGH:** `renderer.compile` builds PROGRAMS only. iOS uploads a texture and a vertex buffer at their first DRAW
+  (`initTexture` does not settle it there) and can defer a link until a draw uses it -- so the first frame that DREW the underwater set paid
+  for all of it. And three groups had been added since as lazy first-dive builds: the plankton (`U.plank`), the bed patch (`U.bedP`), the
+  waterline split (`U.split`) -- made, compiled and uploaded on the frame he went under.
+- **FIXED:**
+  - `uwPrebuild` makes those three too (contract sent to the underwater worker: a new lazy `U.x` gets a `mk('x', ...)` line there).
+  - `warmDraw` (in `sceneWarm`): everything DRAWN once under the card -- hidden objects shown, frustum culling off, into a 1 x 1 scissor of
+    the real canvas (a render target would compile other program variants) -- and in the Lake a second time in the underwater state (the look's
+    uniform on, the lens 3 m under the surface). Every program, texture and buffer is used on the GPU before the reveal.
+  - The card waits until the zone is SETTLED, not just built: `HITCH.need` (20) frames in a row under `HITCH.stableMs` (70 ms), capped at
+    `HITCH.cap` (6 s) from the moment nothing else holds it.
+  - **TOOLS > HITCH LOG** (`mel.hitch` in localStorage): bottom-left, the worst frame of the last 10 s, how long ago, and the STAGE
+    (`card` / `entrance:wait|portal|fall|land` / `underwater` / `swim` + the zone key). Every frame over 50 ms is logged.
+- **BEFORE -> AFTER** (`entryhitch 'w=forge&zone=lake&entry=0'` + a dive): links after the card 5 -> **0**, first-draw texture uploads
+  after the card 5 MB -> **0**, worst frame 819 ms -> **47 ms**. The cost moved under the card: the zone warm is 15.8 s headless (swiftshader
+  draws the whole scene twice); on the phone the card will stay up longer by about the cost of two full draws.
+- **STILL OPEN:** the uwLod repacks (every .35 s, `bufferSubData` per instanced set) once he is under -- now the only per-frame upload; the
+  arena's landing FX on first use.
+
 ## m2657 -- UNDERWATER: the budget's lists are measured at load, not on the first dive (the loading-stutter worker's contract) (Nov 5 2026)
 `uwBudget`'s one-time work -- the Lake pieces lying above the water, the far-hide list (boat / stacks / arches) and every other piece's bounding
 sphere -- is all in its first-call block now (it used to finish on the first frame under water). `uwPrebuild` can call `uwBudget(false)` at the
