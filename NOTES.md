@@ -45,6 +45,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2575 -- THE VINE WHIP pass 3: SWING FEEL -- let go INTO A FLIP, chains keep their speed; the grapple's rope fixed (VINEWHIP.md)
+- RELEASE: a TAP off the vine leaves with `WHIP.relBoost` 1.2 (the hook's 1.12) and `relLift` 5 m/s (3.5), and -- moving over 3 m/s -- turns him
+  to his flight and runs the game's own FRONT FLIP (`airFlipGo(0, -1, noPop)`: the left-stick air flip, its tuck and settle). `WHIP.relFlip` 0 = off.
+- PUMP: the vine pumps at 7 (the hook's 5) -- it is a living vine he whips into a swing, it should feel lively.
+- CHAIN: a flick mid-swing keeps the swing's speed (a smaller pull, `chainPull` 1.5 vs 3) and takes the new vine at .9 of the distance so the next
+  arc swings UNDER the anchor rather than reeling him into it.
+- FIXED (found in pass 2, parent's ask): the grapple's rope line was drawn from `_rpH`, which nothing ever set -- every grapple rope in the game
+  started at the WORLD ORIGIN. It now leaves his right hand (`whipHand`, the hand bone).
+- Boot gate: swing off knot 1, CHAIN to knot 2, let go with a tap -> the flip runs (stats lash 3, swing 1, chain 1, flip 1). Shipped unverified.
+
 ## m2574 -- the rocket launcher shoots STRAIGHT again; the bow gets a manual DRAW aim (TOOLS > BOW AIM: CURRENT / DRAW)
 His (Nov 5, relayed): (1) *"put the rocket launcher back to SHOOTING STRAIGHT -- somewhere it was made to aim like the bow (the arc aimer starts up and
 sinks to level), stupid for a rocket launcher. I don't even know how to use it now."* (2) A new bow aim, DRAW, *"like drawing the bow"*: push up starts
@@ -60,7 +70,6 @@ the draw aiming UP, the aim does not sink on its own, the thumb's height sets th
   angle. The shot is back-solved into the same `{dx, dz, ty, T}`, so the arc line, the landing mark and the arrow agree. The bow looses only on the
   LIFT (m1854), so releasing at the centre is a level shot, not a cancel. A lock is ignored in DRAW (manual); mounted, the -20 deg rest adds on.
 - Not verified on a device. Box moved: none.
-
 ## m2573 -- THE VINE WHIP pass 2: THE LASH (VINEWHIP.md) -- the slot, the ring segment, the verlet vine, the lock glow, swing / chain / strike
 On the combat worker's layout (their reply): slot `whip` APPENDED LAST in WEAP.slots (`whip: true`, never `blade`: the sword paths would claim
 it; saved slot indexes + GEAR bits are positional), `KIT3.label.whip`, a THIRD segment on the right ring (`qdIx('whip')`) and the dial points at
