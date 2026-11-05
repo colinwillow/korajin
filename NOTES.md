@@ -46,6 +46,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2602 -- UNDERWATER ART D: marine snow, glowing plankton swirling in his wake; the jelly field calmed (Nov 5 2026)
+- **PLANKTON IN HIS WAKE** (`UWPLANK`, SC_UWPLANK markers, `uwPlankStep`): a pool of 320 glowing specks born round him as he swims (6/s idle,
+  up to 76/s at speed, a puff of 30 as he goes under), each spun into its own little vortex round the point it was shed from while that point
+  drifts back along his wake, slowing and fading over 1.5-3.5 s; cyan in the shallows drifting to violet in the deep, brighter with the glow.
+  One additive point draw (`uw_fx_plankton`).
+- **MARINE SNOW:** the drifting specks round the lens are finer (1.8-5 cm), denser (1,100) and SINK (.12 m/s) instead of floating up.
+- The jelly field washed white in the ART C/D renders (additive, saturated): dimmed to .32 and smaller (.5-1.05).
+- Render: images/feedback/m2586/uw_artD_render.jpg (20 m, and close behind him swimming). ART series so far: A (he reads, the gradient, rays,
+  bubbles) m2592, B (halos, spores, floor lights) m2596, C (majesty) m2599, D (this). Shipped unverified.
+
 ## m2599 -- UNDERWATER ART C: MAJESTY -- the leviathan, a murmuration round him, a jelly field pulsing in a wave, light columns, floating ruins (Nov 5 2026)
 `UWMAJ` (SC_UWMAJ markers), `uwMajMake` / `uwMajStep`; only while the lens is under near the bowl.
 - **THE LEVIATHAN:** a 30 m Jinra whale (tapered body, flukes, pectoral fins, glowing eyes and flank lines) undulating along a slow loop -- the
