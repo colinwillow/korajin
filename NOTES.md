@@ -44,6 +44,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2541 -- DESERT REGION STEP 2b: A CLIMBING ROUTE UP THE GREAT PYRAMID
+- A GRAND STAIR up the front (the axis side) at ~33 deg (`stairA` .58 rad, `stairW` 16 object m) from the sand to the first plate layer:
+  stepped stone (1 object m risers = 2 m in the field), a solid fill under it, mech balustrades, and an invisible smooth RAMP along the
+  step noses (`colOnly` -- a new kit material: `visible: false`, no draw; the collider pass takes it) so it WALKS rather than being a stack
+  of 2 m walls.
+- FLOATING STEPPING SLABS (gold, a hair of tilt, a crystal under every other) a jump apart (`hop` 1.1 object m = 2.2 m; his jump apex is
+  2.8), arcing out round the side from each plate layer up to the overhanging edge of the next, and from the top layer to the capstone.
+  Alternating sides per layer. They are in the pyramid's collider (m2540).
+- Looked at: the front three-quarter (the stair on the axis face, the slabs spiralling up the floating layers).
+- Budget: landing 253k / 64 (was 251k / 63); forecourt 190k / 53; wide 265k / 77. check + boulders boot pass. Shipped unverified.
+- NEXT (step 2c): the kit inventory and the missing pieces for the zones (dune pieces, canyon walls, valley rocks/hills, mountains, ascent
+  platforms).
+
 ## m2540 -- DESERT REGION STEP 2a: REAL COLLIDERS ON THE GIANTS (his: "the big pyramids especially -- I want to climb and stand on them")
 - FOUND: none of the giants was solid. The `auto` COLL row only gathers meshes within 120 m of him when it builds, and skips any single mesh
   over 400 m across -- the m2517 batches span the whole map. So the pyramids, obelisks and gate were drawn and nothing else.
