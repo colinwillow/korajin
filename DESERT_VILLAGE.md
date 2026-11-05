@@ -71,7 +71,7 @@ tris at the landing, at the court and from the sky shrine.
 - [x] The court, avenue and seven isles stand at seven heights, each isle a floating slab with a rock root (pass 2, m2571: close + wide renders).
 - [x] Every link of the route is walkable or jumpable -- `npm run dvplan` all ok AND `npm run dvwalk` climbs L0..L6 in the shipped page (pass 2, m2571).
 - [ ] Everything collides on its TRIANGLES (`col:desert:village`), stairs on `colOnly` ramps, risers <= .32 (pass 2-4).
-- [ ] Nine buildings in the house style, flat roofs walkable, CRAFT.md checked close (pass 3).
+- [x] Ten buildings in the house style, flat roofs walkable, CRAFT.md checked close (pass 3, m2578). (His look on the phone still to come.)
 - [ ] Stalls, well, lanterns, banners, gardens, chimes, pots in place; nothing floats that should touch (pass 4).
 - [ ] Chests open with the interact registry and pop a reward; pots break (pass 4).
 - [ ] Villagers wander, the merchant minds his stall, kids run, the elder grumbles; barks when he is near (pass 5).

@@ -45,6 +45,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2578 -- THE SUNWELL, pass 3: THE BUILDINGS (DESERT_VILLAGE.md) (Nov 5 2026)
+- **Ten buildings from the table** (`DVILLAGE.buildings`), each built in its own frame (door on local +z, toward the well) and dropped into the
+  village's material batches through a frame matrix (`XF` in `add`), so they cost NO new draw except two new materials:
+  - **house** (hN, hS on the ground; b1 potter, b2 weaver, b5 merchant domed; b4 the elder, TWO storeys -- the lower roof a terrace): a fitted-stone
+    plinth, soft adobe walls (the kit's `plain`, worn .2), a flat roof inside a parapet (stand-on-able, solid triangles), the glowing glyph band
+    under it, timber BEAM-ENDS (vigas) out of the front and back walls, a stone-framed door on a step, windows on stone sills, a dome with a
+    Jinra finial on two.
+  - **hall** (closes the axis at u 16): a two-step plinth with a porch, a portico of four of the kit's columns under a lintel and a porch roof
+    onto the wall, a big glyph panel over a 2.7 m door. **teahouse** (i3): open, six posts on footings, beams, a plank roof, a back wall, a counter.
+  - **tower** (i6, the lantern tower): a tapering shaft, a lantern room of four piers under a pyramid cap, the light inside.
+  - **shrine** (the sky isle): the kit's ziggurat at 3/4 (its stair of .225 risers faces west, at the hanging stair), two obelisks at its foot,
+    the Jinra crystal on a block on top (the big chest goes there in pass 4).
+- **Placement keeps the walk clear:** on an isle a building is pushed OUT from the well by `off` (1.8 m) -- for a hexagon the walk between an
+  isle's two links runs ~3 m on the well side of its centre, so the house never stands in it. `npm run dvwalk` after: the whole route climbed.
+- New materials: `dvdark` (the door and window dark, a warm near-black brown -- not `void` black, CRAFT 4) and the kit's `plain` (adobe).
+- **Budget** (my render in the real page, with / without the village): village 8 draws + the shadow-only proxy, 28.1k tris, 22.4k collider tris.
+  court 66 / 57 calls, 289k / 238k; from the sky shrine 65 / 56; aerial 82 / 71, 327k / 276k. Landing +1 / +23k in my harness only (it does
+  not run the frame loop, so the proxy's 120 m switch never fires; in play it is off there). The court is still over 250k because of the
+  region's own 238k (the boulder field 290 m away: sent to the desert worker in pass 2).
+- CRAFT checked close (all ten): doors framed and stepped, posts on footings, beam-ends out of walls, nothing floats. The datum came down to
+  0.69 (the desert worker's flatten term is in): the plinths now sit low on flat sand.
+- Whole-piece rule: box 5 (buildings) ticked; props, treasure, villagers and the budget box open.
+Shipped unverified.
 ## m2577 -- THE VINE WHIP pass 5: PULLS -- yank, rip shields, throw; crates, the lever, the prop shield, the combat ring's wave (VINEWHIP.md)
 On the combat worker's hooks: a lash at a BODY now YANKS it (`whipYank`): if it carries a shield (`d.sh`, arenaShieldMake) the shield is RIPPED
 off first -- it flies to him and drops, `d.sh` gone, `arenaStagger(d, .9)` -- otherwise a guard-breaking tug (`dummyBlow` at `yankPow` .65, over
