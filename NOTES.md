@@ -53,6 +53,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2650 -- the bow's arc reads by day and on white: a dark core under the glow, a dark halo behind the landing mark, deeper colours -- all fading out at night
+His (Nov 5, relayed): *"the BOW ARC line looks great at night (a light green glow), but in DAYLIGHT and in the WHITE zones -- sandboxes, snow, bright
+desert -- it's very hard to see. Don't make it ugly, make it read on any background: a thin DARK outline / shadow core under the glow, driven by
+brightness, so by day and on white the dark edge carries it and at night it fades to the pure glow; optionally more saturated by day and a soft dark
+halo round the landing mark."*
+- `arcDayK()` = max(1 - `NIGHT.f`, the background's brightness: the fog colour's luminance x1.4, else a plain-colour sky). So a white room is "day"
+  at any hour (the forge's fog is #f2f4f7 -> 1), a dark night zone is 0.
+- The ribbon is now TWO meshes on one index: the glow (unchanged, renderOrder 62) and under it `BARC.out`, a dark #08130f core `outW` 2.6x as wide at
+  `outOp` .55 x dayK (renderOrder 61), filled in the same loop from the same path, hidden when the line is off or dayK < .02.
+- The landing emblem gets a soft radial dark halo behind it (`haloK` 1.7x its size, `haloOp` .5 x dayK), and the glow colours lerp toward `colDay`
+  [.06 .82 .5] / `hotDay` [1 .42 0] by dayK -- deeper, more saturated jade / amber by day; at night exactly the old colours.
+- Headless (forge, bow drawn): night.f 0 -> out visible, opacity .55; the forge with ?night=1 also .55 (white fog, correctly). A rendered frame was
+  taken but the lens sat behind him and the arc did not land in it, so how it LOOKS is unverified -- his phone. Live on `mel.BARC`. Box moved: none.
+
 ## m2649 -- THE INTERACTIONS KIT goes zone-agnostic: pieces live from any zone, and every row reports its outcome (`onDone`) (Nov 5 2026)
 **Asked by the Forest Temple worker:** the kit's `can` checks required `IKIT.on` (the sandbox), so a chest or lever placed in a temple never offered
 its chevron. **Now:** `ikLive(r)` = the row's own optional `r.live()` AND (the sandbox is on OR the row is in `IKIT.rows`) -- `ikitAdd` from any zone
