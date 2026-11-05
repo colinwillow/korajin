@@ -44,6 +44,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2501 -- FLOATING BOULDERS: THE DUST DEVILS REBUILT AS STREAKS (his m2491 screenshot: "they look ridiculous... make them cool, artistic particles, or remove them")
+- WHAT WAS WRONG: they were drawn by the dust pool's soft sprites (world-sized puffs) plus dust kicked at their foot -- next to the camera
+  that is a screen of big blurry blobs (his screenshot, at night).
+- NOW: each grain is a LINE SEGMENT from where it is back along its spiral (bright head, fading tail), up a FUNNEL (radius .12 -> 1.37 x
+  `devilR`, swaying at the top), spinning faster near the sand, with a skirt (every 5th grain) whipping round the foot. 320 grains a devil,
+  one draw call, one pixel wide at any distance -- nothing can be a blob. Ochre (darker than the sand) with normal blending by day; pale and
+  ADDITIVE at night (`sU.uNight`). The foot no longer kicks dust puffs; leaves still get swept up.
+- Renders (bouldstrip `devil`, day + night). check + boulders boot pass. Shipped unverified.
+
 ## m2500 -- the entrance portal opens LEVEL (Nov 5 2026)
 His (m2491 screenshot, images/feedback/m2491/portal_slanted.jpg): *"the portal is SLANTED when it first starts opening; once it's fully open it's
 correct -- level from the very first frame, parallel to the ground, even side to side."* Not a rotation that interpolates: the opening is a RIP that
