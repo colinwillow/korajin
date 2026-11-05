@@ -46,7 +46,6 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-<<<<<<< Updated upstream
 ## m2590 -- DEV PLACES lists KORAJIN's places only (the old game's chapters, quests and events are deleted from it); three-to-a-ring labels fit (Nov 5 2026)
 Via main: *"the DEV PLACES list in the pause menu is still packed FULL of the OLD game's chapters. We don't need anything from the old game; they're
 all dead. Rebuild DEV PLACES as a list of KORAJIN places only, grouped by region, with big tappable rows. Delete the old entries entirely."*
@@ -56,10 +55,9 @@ all dead. Rebuild DEV PLACES as a list of KORAJIN places only, grouped by region
   QUESTS / SWITCHES sections are deleted from it. Every row's query was checked against its reader in the file (30/30 have one). The Sky Ascent has
   no URL of its own (it is inside the desert); the Boulders row says so. ROADMAP CUT: the dead chapter / quest / places code itself, to remove.
 - The m2589 renders showed SWORD and STEEL overflowing their thirds of a ring: a segment on a ring of 3 now gets `.tight` (12 px, tighter spacing).
-=======
+
 ## BOW AIM / BOW ARC get their own BOW heading in TOOLS (his: "I've looked so many times")
 Both sat deep in the CAMERA section among ~40 buttons. They now sit under a new BOW heading, just above MOVE. No behaviour change.
->>>>>>> Stashed changes
 
 ## m2588 -- THE VINE WHIP: GRUMBO CASTS IT (his: "the whip is really cool -- but he has NO ANIMATION when he uses it")
 Every flick is now a CAST (`WHIPCAST`, SC_WHIPCAST): an UPPER-BODY clip (its `__up` clone, in the same override slot the swap / toss / carry use,
