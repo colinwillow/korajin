@@ -45,6 +45,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2583 -- the katana charge and guard WALK: capped at the strafe / walk clips' measured speed, no run legs, a .2 s skid in (measured headless)
+His (Nov 5, relayed): *"a long-standing bug that was never fixed"* -- holding UP (the charge) he should move slowly in a defensive stance, at a WALK,
+on the strafe / back-walk clips; the clips play the slow strafe but the LOCOMOTION stays at SPRINT speed, so he slides -- and sometimes the legs
+switch to a sprint one way, "prancing and going really fast".
+- MEASURED FIRST (a scratch probe on the tools/moves.mjs pattern: the SHIPPED page, forge, Grumbo, the katana granted + equipped, the pads driven,
+  1/60 s fake clock; a 4 s forward sprint to 9 m/s, then the right pad held UP while the left still pushes). Before:
+      charge, any direction, from +0.1 s on   v 7.20   katana_guard__up + katana_walk_b__legs / katana_strafe_l__legs (refs 1.39) -- x1.6 at most = 2.2
+      charge, moving toward his facing        v 7.20   katana_guard__up + run_fwd__legs 1.00   <- m1968's CHRUN run legs: the "prance"
+  The m2391 plant only bled the SPRINT (`p.ninja`) off; the charge itself had no cap since m1968 (`aiming` skipped it).
+- NOW (`CHGWALK` on, rate 1.5): ONLY while the blade's charge or guard is held, `wantSp` <= the measured ref of the walk / strafe clip that direction
+  plays (`KATANA.legRef`: fwd .674, back / left / right 1.391; blended exactly as the legs are) x 1.5, x the stick; `CHRUN.keep` 0 (no run legs);
+  `STANCE.bleed` .32 -> .2 (the entry skid). Nothing else writes his speed in the charge: the sprint is already cleared by any stance (m2391:
+  AUTOSPRINT cannot re-arm, the right-hold sprint needs `!busy`), the long jump / zoom need the air or their own states.
+- AFTER, the same probe:
+      sprint 9.00 -> charge +.05 8.27, +.1 7.17, +.15 6.07, +.2 4.97, +.25 3.87, +.3 2.77, +.5 2.09 (held)   legs: katana walk/strafe only
+      charge sideways 2.09 (katana_strafe_l__legs 1.00, rate 1.50)   charge back 1.01 (katana_walk__legs 1.00, rate 1.50)
+      guard after a sprint: 9.00 -> +.1 5.09, +.2 3.64, +.3 1.87, +.5 2.09 (katana_strafe_l__legs)   released: back to the run at once (6.1 at +.6 s)
+  No run or sprint clip carries weight in either stance after the first ~.2 s of crossfade.
+- Live on `mel.CHGWALK` (`rate`; `on` 0 = the A/B). Not seen on a device -- the speed is his to judge (`rate` 1.6 is the clips' own ceiling).
+
 ## m2582 -- THE SUNWELL, pass 4: PROPS AND TREASURE (DESERT_VILLAGE.md) (Nov 5 2026)
 - **What went in** (all in `dvMake`, from the table): six MARKET STALLS (posts on footings, a counter, a sagging striped awning with a scalloped
   hem, baskets of fruit), the WELL (stone rim -- an outer wall, an inner wall flipped to face in, a top ring -- dark water, two stone posts, a beam,
