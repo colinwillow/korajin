@@ -41,6 +41,12 @@ browser, Android `navigator.vibrate`, iPhone Safari the iOS 18 switch-checkbox t
 the plugin to add at packaging time: CAPACITOR.md. The kit uses: chest heave heavy, the GET success; door pulses medium, its last shove heavy;
 crank pawl tick, its catch heavy; lever teeth tick, its clunk heavy; button heavy; plate medium.
 
+## PLACING PIECES IN A TEMPLE (m2649, for the Forest Temple)
+- `ikitAdd(row, parent)` works from ANY zone: a row is live (its chevron offered) while the sandbox is on OR the row is in `IKIT.rows`, and its
+  own optional `live: () => bool` agrees (`ikLive`). `ikitStep` runs whenever any row exists (the arena frame), on its own clock `IKIT.t`.
+- **Outcomes**: `row.onDone(row, what)` is called once per completion -- `'opened'` (chest, door, drawer), `'caught'` (crank, the gate at the top),
+  `'pressed'` (button), `'on'` / `'off'` (lever, plate). Award a key / shard or open a gate there; a throw in it is caught and noted, never fatal.
+
 ## THE GALLERY -- one station per piece, approved station by station (his, after m2633)
 The sandbox is a **white-box gallery**: a white hall, an aisle down the middle, four bays a side, each a STATION with a label plinth (the piece's
 name and how to work it). Walk the aisle, try each one, and approve its INTERACTION and its LOOK separately. Each object then gets its own

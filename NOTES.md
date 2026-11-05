@@ -53,6 +53,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2649 -- THE INTERACTIONS KIT goes zone-agnostic: pieces live from any zone, and every row reports its outcome (`onDone`) (Nov 5 2026)
+**Asked by the Forest Temple worker:** the kit's `can` checks required `IKIT.on` (the sandbox), so a chest or lever placed in a temple never offered
+its chevron. **Now:** `ikLive(r)` = the row's own optional `r.live()` AND (the sandbox is on OR the row is in `IKIT.rows`) -- `ikitAdd` from any zone
+makes it live. `ikitStep` runs whenever any row exists, on its own clock `IKIT.t` (the lamps used the sandbox's). **Outcomes:** `r.onDone(r, what)`
+once per completion -- `'opened'` (chest stowed, door at rest, drawer find stowed), `'caught'` (crank at the top), `'pressed'` (button), `'on'`/`'off'`
+(lever, plate); a throw inside it is caught and `note`d. INTERACT.md has the section. Gates: `npm run check` (boot ok). **Moves no box**: the
+pieces' sign-off is still his. **Shipped unverified.**
+
 ## m2648 -- THE INTERACTIONS KIT design pass 7: the POT, a painted Korajin urn (INTERACT.md) -- every station now has its look
 `ikUrnGeo`: a lathed URN (a foot ring, a full belly, a shoulder, a neck, a flared lip), PAINTED by vertex colour -- terracotta, a dark-red belly
 band, a teal shoulder band of cream DIAMONDS (the game's motif), a dark lip and foot -- with two lug handles and a knobbed lid, ONE geometry: still
