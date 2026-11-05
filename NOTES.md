@@ -44,6 +44,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2538 -- DESERT REGION STEP 0: PERFORMANCE FIRST (his phone: 20-22 fps here, "chugging")
+MEASURED in the real page (renderer.info; hiding each group in turn to see what it costs): landing 587k tris / 83 draws, the forecourt
+513k / 62, the wide 592k / 89. The worst offenders were things nobody could see:
+- the alien PLANTS (m2520) were 164k: every coral tube a 240-tri tube -> an open 5-sided cylinder leaning out (10 tris), agave leaves 3x2.
+- the GIANTS' detail -- rubble, figures, plants, sand mounds, machine rails, glyph panels 200-600 m away -- merged into region-wide meshes
+  that were never culled. Now the dressing is built in 150 m CELLS (`dress` per cell, the causeway in thirds) and the DETAIL materials
+  (mech, glyphG, void, slot, dsand, drift, under) merge per 200 m cell; every one of those meshes hides beyond `DPLACE.far.detail` 200 m
+  (the ivy LOD's loop, `lodD` per mesh; ivy 230 -> 200). Silhouettes (gold, giant, cliff) and GLOWS (core, amber) stay drawn from anywhere.
+  (First try merged detail PER GIANT: tris fell but draws rose 67 -> 87 -- one draw per giant per material. Cells fixed it.)
+- BOB-only groups (floating layers, split-obelisk pieces, lintels, mini-pyramids) are merged too: ~15 draws for a breath nobody sees at
+  300-600 m. Only what SPINS (shard and stone rings) stays live.
+- ROCKS icosphere d6 -> d4 (980 -> 500 tris each, 176 rocks; the detail is in the triplanar map); scree d3 -> d2.
+- CACTI lathe 12 -> 7 rows; SUCCULENTS 30 -> 24 leaves of 5x3; the plate orbs 10x7 -> 7x5.
+- The KIT ROW (373 objects, 252k tris at 700, 260) draws only when he is within ~340 m of it.
+RESULT: landing 587k / 83 -> 251k / 63; forecourt 513k / 62 -> 188k / 53; wide 592k / 89 -> 263k / 77.
+BUDGET FROM NOW ON (any play view in the desert region): <= 65 draws, <= 250k triangles; aerial/wide views <= 80 / 280k. Every later build
+reports these numbers. (Resolution: PERF's auto mode already drops to 1.1x below 30 fps, so geometry and draws are what is left.)
+Looked at: the play camera (same look). check + boulders boot pass. Shipped unverified -- his phone is the fps meter.
+
 ## m2537 -- UNDERWATER pass 5: THE DEEP BASIN -- a 46 m bowl with the temple at its bottom (UNDERWATER.md; WORLD_PLAN 14) (Nov 5 2026)
 Via the orchestrator (WORLD_PLAN 14, his strategy): *rivers drain into THE LAKE, a great basin with the WATER TEMPLE at its bottom -- give it a real
 depth profile (shallows, a drop-off, a deep bowl), deep enough that the air gate matters.* The bed was 16 m at its deepest.
