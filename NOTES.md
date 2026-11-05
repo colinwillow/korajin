@@ -44,6 +44,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2522 -- THE LAKE, DETAIL PASS 2: THE WAKE, PAINTED FOAM EVERYWHERE (WATER.md)
+His Nov 5 series, item 2: *"a proper V-shaped Kelvin wake, wake ripples, foam trailing the boat, foam at the shore, rocks and obelisks, a painted foam texture."*
+- **Painted foam (`uFoamP` = `textures/lake_foam_paint.webp`, clumps, swirls and flecks, white on black):** every foam source (shore band, stack rims,
+  wind streaks, falls, swimmer, wake, hull) still computes an AMOUNT. The painted texture is now thresholded by that amount at two drifting scales,
+  so a thin amount shows only the brightest clumps and a full amount closes up. It hands back to the plain amount by 140 m, where mips would grey it.
+  The texture's brightness also shades the foam colour.
+- **The wake (`lkWake`, both copies):** a broad TRAILING band down the middle that outlives the churn (`trl`, age constant 9 s). Foam LINES along
+  both Kelvin arms (`arm2`, on the 19.5 deg cusp line, dP = .354 sP) for most of the trail, gated on boat speed (not on `vk`, which faded them to
+  nothing at cruise). Fine divergent RIPPLES inside the wedge (height, so the numeric normal picks them up).
+- **Obelisks:** pass 5 puts them in `W.stacks`, so the existing rim foam (now painted) rings them with no new code.
+- New shots `wake_top` and `wake_low` (boat-relative). Strip: calls <=36, tris 306k, no change from pass 1.
+- No WATER.md box ticks; this is detail on the open "water deforms round the boat" box. Shipped unverified.
+
 ## m2521 -- THE LAKE, DETAIL PASS 1: PAINTED WATER + WHAT LIVES UNDER IT (WATER.md)
 His Nov 5 series, item 1: *"stylised painted water texture and normal flow, deep-water colour falloff, things under the water."*
 - **Painted water:** `textures/lake_water_paint.webp` (+ `_n` normal), generated with gpt-image-1.5 and made seamless with a half-offset blend.
