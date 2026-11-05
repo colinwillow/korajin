@@ -44,7 +44,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2553 -- DESERT REGION STEP 4: FLOATING ROCKS ACROSS THE WHOLE REGION (Nov 5 2026)
+## m2554 -- DESERT REGION STEP 4: FLOATING ROCKS ACROSS THE WHOLE REGION (Nov 5 2026)
 
 His plan, step 4: *"floating rocks everywhere, several heights, instanced, LOD"*, holding the m2538 budget.
 - **`DPLACE.sky` (SC_DPLACE) + `bouldSkyRocks` / `bouldSkyStep`.** About 130 rows with stable ids (`f001`..), seeded. They sit on the
