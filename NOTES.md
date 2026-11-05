@@ -53,6 +53,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2621 -- UNDERWATER DETAIL A: the shrine is real carved architecture (his: "extremely low poly, underdeveloped") (Nov 5 2026)
+`UWA` builds the pieces (all merged into the shrine's ONE stone draw, triplanar glyph stone; stone 1.1k -> 17.3k tris, measured):
+- **Columns:** turned (lathe), a moulded base on a bevelled plinth, entasis, 14 FLUTES, a capital (echinus + abacus); the tilted / broken ones
+  end in a jagged BREAK, with fallen drums lying beside them. The stele is a bevelled slab on its footing.
+- **The well-head:** a stepped round platform, a moulded ring wall, eight bevelled posts with pyramid caps, FOUR STONE LANTERNS (toro: base,
+  post, fire-box with a glowing light, flared roof, finial) round it, rune rings.
+- **The steps:** a flight of bevelled treads with CHEEK WALLS rising away from the well, two lanterns at the top.
+- **The arch:** a TRUE arch of 11 voussoirs on moulded piers with imposts and bases; three crown voussoirs gone, fallen blocks on the bed.
+- **The torii:** tapered round posts on kamebara bases, an UPTURNED kasagi over the shimaki, the nuki and the gakuzuka strut.
+- **Rubble** (three placements, ids `uw_rubble_01..03`): fallen column drums and broken bevelled blocks round the well, the arch and the torii.
+- CRAFT 3 checked on the close renders (images/feedback/m2586/uw_detailA_shrine.jpg): every piece sits on a footing or the bed. Next detail
+  passes: rocks + seabed (ripples, pebbles, shells), plant forms, creatures. Shipped unverified.
+
 ## m2620 -- VINE WHIP: the vine is a VINE (braided tube, leaves, tendrils, tip bud), a carved handle; the charge = hand held UP; THE WHIP-ONLY RULE
 
 **His (after trying it, via main):** (1) *"What does the whip do that I can't already do with acrobatics?"* -- make it NECESSARY, sized against his
