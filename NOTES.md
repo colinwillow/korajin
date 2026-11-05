@@ -55,6 +55,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2659 -- the underwater budget's first measure moved to the load
+- The underwater worker (m2657) gathered `uwBudget`'s whole first-call measurement (the hide list, the far list, every Lake piece's bounding
+  sphere: a `Box3.setFromObject` per piece, instanced counts walked) into one block. `uwPrebuild` now calls `uwBudget(false)` right after it
+  makes `U.bedP` (the terrain joins the hide list only once the bed patch exists), so the first dive only flips visibility. Above water the
+  call hides nothing (`camU` false, nothing hidden yet). Shipped unverified; TOOLS > HITCH LOG on the phone is the measure.
+
 ## m2658 -- THE LAKE STILL FROZE ON HIS iPHONE (after m2624: "it shows the zone, then FREEZES as he starts to teleport in"; "as he goes under, everything freezes for a few SECONDS while it spawns")
 - **WHY m2624 WAS NOT ENOUGH:** `renderer.compile` builds PROGRAMS only. iOS uploads a texture and a vertex buffer at their first DRAW
   (`initTexture` does not settle it there) and can defer a link until a draw uses it -- so the first frame that DREW the underwater set paid
