@@ -53,6 +53,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2638 -- THE INTERACTIONS KIT design pass 1: the HEAVY DOOR, carved, inlaid and articulated (INTERACT.md)
+His ask: "a beautiful, highly detailed, sophisticated DOOR: carved stone or bronze in Korajin's style, ornate frame, studs, glyph bands, Jinra inlays
+that glow, articulated parts (bolts that slide, a lock that turns, hinges that move)". The door kind's build is new (its sequence kept + two beats):
+- THE SLAB (one draw, stone + bronze by vertex colour): carved sandstone, a raised bronze border, two GLYPH BANDS of raised strokes (seeded), a field
+  of half-dome studs, a great MEDALLION (a bronze ring with twelve teeth round a stone disc), bronze HINGE STRAPS on knuckles at the hinge edge,
+  the bolts' staples. `nightGlow` runes on it (NIGHT.md).
+- THE INLAY (one draw, Jinra): a ring, KORAJIN'S NESTED DIAMONDS three deep, three channels down to each band. Faint asleep (.25), full once
+  unlocked, x1.6 at night. **The first strip had a six-point star there -- a hexagram, a real religious symbol; replaced with the game's own crest.**
+- ITS FRAME (one draw): jambs with bronze bases and capitals and a sunk panel, a lintel, a bronze keystone; proud of the gallery wall (the gallery's
+  plain jambs are gone, the doorway widened to take it; the door is 3.5 m now).
+- ARTICULATED (one draw each): a LOCK WHEEL near the free edge -- his right hand takes its top handle (IK) and turns it a half turn in two clunks
+  (a tick each); it draws THREE surface BARREL BOLTS back out of the jamb through their staples (a clack, a medium haptic); the inlay flares; then
+  the push as before (palms, lean, treading feet, the grinding pulses). The hinge straps swing with the slab on their knuckles. RESET re-locks it.
+- CRAFT: the first strip's bronze read near-black (metalness .35 with nothing to reflect): lighter bronze, metalness .12 -- metals never go black.
+Five draws in all; 24k tris in the station. Strips (sent): the lock turning under his hand, the bolts drawn, the inlay lit, the push, open.
+
 ## m2637 -- A's 9 m wall-run gap MEASURED with the shipped wall run: within his reach; the wall PILASTERS were stopping every side run
 
 **His (via main):** *"I bet I could do it"* -- measure the 9 m gap (rim 1 east, ends z -6 -> the north gallery's lip z -15, both at 6 m) with the
