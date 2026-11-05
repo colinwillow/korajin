@@ -47,6 +47,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2511 -- ARCHITECTURE PASS 4: THE STEP PYRAMIDS AND THE GATE GET THE MEGALITH + MACHINE DETAIL
+- STEP PYRAMIDS (`pyramid` with `steps`): a dark machine BAND with a Jinra SEAM under every tier's lip; machine BRACKETS at every tier
+  corner holding a lit CRYSTAL; a SHRINE on the summit (a fitted-stone cella, a dark door, a lintel of writing, a crystal on its roof);
+  CONDUITS down both sides of the grand stair. Ruined: the top tiers bare, the seams dark, no shrine or crystals.
+- THE GATE (`trilithon`): each upright is four fitted DRUMS (tapering a touch) with a machine COLLAR and a seam at every joint, a tall
+  carved PANEL of writing up its front, a crystal near its head; a big crystal socket in the lintel. The ruined upright is a stump of drums.
+- Looked at: the west step pyramid three-quarter, the gate close (its ivy from pass 2 hangs off the lintel through the panels).
+  check + boulders boot pass. Shipped unverified.
+
 ## m2510 -- ARCHITECTURE PASS 3: THE GIANT OBELISK -- MEGALITH + ALIEN MACHINE (his list: "carved panels, conduits, crystal sockets, worn edges, huge fitted stones")
 - DKLIB `gobelisk` (`K.giant.gob`: h 44, base .055 h, top .034 h): a PLINTH of three tiers of huge FITTED blocks (3x3 each, hairline joints,
   worn edges, a hair of jitter); a tapering SHAFT with a glowing SEAM up every face between two dark machine RAILS (`mech`); three
