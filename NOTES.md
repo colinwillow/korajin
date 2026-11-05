@@ -54,6 +54,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2652 -- the Interactions sandbox gets an ENTRY row (its spawn backs onto a wall) (Nov 5 2026)
+Rendered the new entrance camera (m2645) in the arena, the boulders and the Interactions sandbox (where he saw it): the arena and the boulders look DOWN
+on the portal (a ring) and ease into the play view by the landing. In the Interactions sandbox the lens collapsed onto him -- every candidate pose
+was blocked at its spawn (a wall right behind). The spot search (flat, clear drop, both lenses clear) found it open 5 m in: `interact: { at: [-15, 0] }`.
+Shipped unverified.
 ## m2651 -- FOREST TEMPLE build 2 (A, the ACROBATIC HALL): no ladder; a CHEST (the Interactions Kit's) pays the SMALL KEY + SHARD I
 
 - **The ladder is gone** (TEMPLE_ROUTES: no ladders on a route): `r1_ladder` (gallery 6 -> upper north rim 12) -> two BLOCKS on the gallery under
