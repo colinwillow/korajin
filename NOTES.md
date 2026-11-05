@@ -47,6 +47,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2520 -- REFERENCE PASS C: GLOWING ALIEN PLANTS, TINY FIGURES FOR SCALE, WARMER HAZE
+- `dress` gains `plants` [[x, z, kind, s]]: kind 0 an AGAVE-like rosette (9-14 long fleshy leaves, flattened and curling out, teal into
+  sea-green by height, glowing Jinra spots along most); kind 1 TUBE CORAL (4-8 curved open tubes, blue-teal, a lit rim on some). Vertex
+  colour + `core` spots, merged with the rest of the dressing.
+- `figures` [[x, z, n, yaw]]: robed silhouettes 1.8 m tall in twos and threes (dark cloth, a pale wrap, a staff on some) -- his reference's
+  little people that make the pyramid enormous. On the causeway (three groups) and at the great pyramid's foot (two).
+- Glue: plants every 9-19 m along the causeway's edges and 3-18 round every grounded giant's measured foot. Haze: fog 140..1500 ->
+  120..1250 (the reference is hazy and warm; the far giants soften more).
+- Looked at: down the causeway (plants, figures), the pyramid's foot, the play camera. check + boulders boot pass. Shipped unverified.
+
 ## m2519 -- REFERENCE PASS B: WHAT STANDS ROUND THE GREAT PYRAMID (split obelisks, floating lintels, split mini-pyramids, standing stones)
 - DKLIB `sobelisk`: a stump on a fitted plinth, then shaft pieces FLOATING above (one breathing group), each gap held by a green energy
   JOINT (a lit flattened core between two machine collars), deep hieroglyph panels on every piece, a pyramidion; ivy off the stump.
