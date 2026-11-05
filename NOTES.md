@@ -44,6 +44,9 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## PHASE button moved to the top of TOOLS > MOVE
+He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
+
 ## m2503 -- THE PHASE SHIFT (WORLD_PLAN section 13; his: "the same purple portal he arrives through, Nightcrawler-style -- blip out, flip through a small portal, pop out a few metres away, FAST")
 - TOOLS > PHASE (`PHASE.on`, `mel.phase`, OFF by default). With it ON, `leftFlick` asks `phaseGo` first: the flicks that flip him (left / right
   barrel roll, down backflip -- `cartGo`, untouched with it OFF) and the flick ahead BLINK the way flicked, on the ground and in the air (the
