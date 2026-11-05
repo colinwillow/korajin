@@ -10,7 +10,7 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 let pw; for (const p of ['playwright', '/opt/node22/lib/node_modules/playwright', '/opt/node-tools/node_modules/playwright']) { try { pw = req(p); break; } catch (e) {} }
 const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k + '=')); return a ? a.split('=')[1] : d; };
 const OUT = arg('out', path.join(ROOT, 'shots')), N = +arg('n', 10), DT = +arg('dt', 60), W = 300, H = 300;
-const want = process.argv.slice(2).filter(x => !x.startsWith('--')); const ROWS = want.length ? want : ['lash', 'throw', 'pull', 'swing'];
+const want = process.argv.slice(2).filter(x => !x.startsWith('--')); const ROWS = want.length ? want : ['lash', 'charge', 'throw', 'pull'];
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg' };
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(new URL(q.url, 'http://x').pathname), f = path.join(ROOT, u === '/' ? 'index.html' : u);
   if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); r.end(); return; } let body = fs.readFileSync(f);
@@ -26,17 +26,19 @@ await pg.waitForTimeout(6000); await pg.evaluate(k => { window.__slow = k; }, +a
 const SET = { lash: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const _ = p; p.pos.set(0, .3, 4); p.vel.set(0, 0, 0); return Math.PI; })()`,
   throw: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const __ = 0, k = mel.WHIP.anchors.find(a => a.id === 'B_knot1'); p.pos.set(32.04, 8, -18.5); p.vel.set(0, 0, 0); return Math.atan2(k.x - p.pos.x, k.z - p.pos.z); })()`,
   pull: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const __ = 0, c = mel.WHIPZ.L.pulls.find(q => q.kind === 'crate'); p.pos.set(c.x + Math.sin(c.yaw) * 7, 0, c.z + Math.cos(c.yaw) * 7); p.vel.set(0, 0, 0); return Math.atan2(c.x - p.pos.x, c.z - p.pos.z); })()`,
+  charge: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); p.pos.set(0, .3, 4); p.vel.set(0, 0, 0); return Math.PI; })()`,
   swing: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const __ = 0, k = mel.WHIP.anchors.find(a => a.id === 'B_knot1'); p.pos.set(32.04, 8, -18.5); p.vel.set(0, 0, 0); return Math.atan2(k.x - p.pos.x, k.z - p.pos.z); })()` };
 const sheet = [];
 for (const row of ROWS) { const h = await pg.evaluate(SET[row]); await pg.waitForTimeout(1200); const h2 = await pg.evaluate(SET[row]);
   await pg.evaluate(hh => { const p = mel.whipP; p.faceH = p.heading = hh; }, h2); await pg.waitForTimeout(400);
-  const t0 = Date.now(); await pg.evaluate(hh => mel.whipGo(hh), h2); if (row === 'swing') await pg.waitForTimeout(700);
+  const t0 = Date.now(); if (row === 'charge') await pg.evaluate(() => { mel.WHIP.holdSim = 1; }); else await pg.evaluate(hh => mel.whipGo(hh), h2); if (row === 'swing') await pg.waitForTimeout(700);
   const frames = []; for (let k = 0; k < N; k++) {
     frames.push(await pg.evaluate(([hh, W, H]) => { const { renderer, scene, camera } = window.__shot, p = mel.whipP.pos, fx = Math.sin(hh), fz = Math.cos(hh);
       const c = camera.clone(); c.aspect = 1; c.fov = 45; c.updateProjectionMatrix(); c.position.set(p.x - fz * 4.6 - fx * 1.2, p.y + 1.6, p.z + fx * 4.6 - fz * 1.2); c.lookAt(p.x + fx * 1.2, p.y + 1.15, p.z + fz * 1.2);
       renderer.render(scene, c); const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
       const src = renderer.domElement, s = Math.min(src.width, src.height); cv.getContext('2d').drawImage(src, (src.width - s) / 2, (src.height - s) / 2, s, s, 0, 0, W, H); return cv.toDataURL('image/jpeg', .85); }, [h2, W, H]));
-    frames[frames.length - 1] = { url: frames[frames.length - 1], t: Date.now() - t0 }; await pg.waitForTimeout(DT); }
+    frames[frames.length - 1] = { url: frames[frames.length - 1], t: Date.now() - t0 }; if (row === 'charge' && k === 5) await pg.evaluate(() => { mel.WHIP.holdSim = 0; }); await pg.waitForTimeout(DT); }
+  if (row === 'charge') await pg.evaluate(() => { mel.WHIP.holdSim = null; });
   sheet.push({ row, frames }); console.log(row, 'frames at', frames.map(f => f.t).join(' '), 'ms'); }
 const png = await pg.evaluate(async ([sheet, W, H]) => { const cols = Math.max(...sheet.map(r => r.frames.length)), cv = document.createElement('canvas'); cv.width = cols * W; cv.height = sheet.length * (H + 18) + 20; const c = cv.getContext('2d');
   c.fillStyle = '#000'; c.fillRect(0, 0, cv.width, cv.height); c.font = '13px monospace'; c.fillStyle = '#fff'; c.fillText('THE VINE WHIP -- the cast, frame by frame (wall-clock ms after the flick)', 6, 14);

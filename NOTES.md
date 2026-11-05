@@ -46,6 +46,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2594 -- THE VINE WHIP: the OVERHAND cast (his: "like casting a fishing rod") + HOLD TO CHARGE
+His after m2588: *"it just doesn't look right"* -- overhand: the arm fully up and back over the shoulder, then a big throw forward and down; a CHARGE
+(hold longer = wound back further, the vine trailing behind, a farther harder lash); exaggerated (anticipation, a lean, a low follow-through).
+- MEASURED (`npm run whipclips --all` now ranks every clip by how high the hand rises over the HEAD and how hard it then comes DOWN): the winner by a
+  distance is `weapon_melee_finish` (the hammer's charged finish): the hand drawn BACK .53 m behind the hips at shoulder height, up and OVER to .63 m,
+  then forward-DOWN at 12.3 m/s -- the hardest downward stroke in his set -- finishing low and .46 m in front. `WHIPCAST.lash` = its [.3, .8] window,
+  snap at .54 (the clip's own .57 peak), so the follow-through lands low and forward with his body leaning into it. (`weapon_melee_02`, m2588's
+  lash, only reached shoulder height; `katana_down` 4.5 m/s.)
+- THE CHARGE (`whipChargeStep`): HOLD the right pad UP (`padUp`, the trigger gesture; the whip slot has no `charge` flag, so the hammer's wind-up never
+  claims it) -> after `WEAP.armT` the overhand clip is HELD at its own wind-up, drawn from .14 to .44 of it (ease-out) over `WHIP.chargeT` .9 s, facing
+  where the lens looks; the vine TRAILS behind him (soft-pinned back and a little up off his hand, never through the floor); full charge = Jin sparks +
+  a ping. LET GO: he throws from wherever the arm got to, through the snap to the follow-through (up to 30% faster at full), and the lash reaches
+  x(1 + .8k) farther and hits x(1 + 1.2k) harder (+.5k power). A quick flick is still the fast overhand snap.
+- FILMED and LOOKED (`npm run whipshot lash charge`; a `charge` row fakes the held pad with `WHIP.holdSim`): the lash draws back, rises to head height,
+  throws and leans down into the follow-through (m2588's arm barely moved); the charge cocks the arm up by his head with the vine trailing behind and
+  rising, then the throw. First take hid the trail (it hung straight down through the floor behind him) -- fixed and re-filmed. Shipped unverified.
+
 ## m2592 -- UNDERWATER ART A: Grumbo READS, the water has a gradient, glow-tinted fog, big god rays, fine bubbles (his m2586 screenshots) (Nov 5 2026)
 His (images/feedback/m2586/underwater_1-3.png): *"I want underwater to look cooler. It's pretty dull... super wild, majestic, glowing."* In his
 shots Grumbo is a black silhouette, the water flat murky navy, the bubbles big flat sprites. The first of a series of ART passes:
