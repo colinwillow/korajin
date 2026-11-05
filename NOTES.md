@@ -44,6 +44,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2560 -- FIX: m2559 shipped a BLANK PAGE (merge-conflict markers in index.html) (Nov 5 2026)
+My pass-6 push rebased onto a newer main with a stash, the stash pop conflicted on the `mel` export line, and the gate line ran `check` (it
+FAILED: `SyntaxError: Unexpected token '<<'`) but the commands after it were chained with `;`, so bump, commit and push went ahead. Resolved
+(upstream's line + `UWFLORA`), check passes, re-pushed. **The gate must be `&&` from check to push, every time** -- a failed check has to stop the push.
+
 ## m2559 -- UNDERWATER pass 6: THE ALIEN FLORA -- eight glowing kinds down the bowl (UNDERWATER.md) (Nov 5 2026)
 His, via the orchestrator, after diving: *"the underwater world is looking pretty cool, keep going"* -- LOTS of different bioluminescent,
 fluorescent, weird alien underwater plants. `UWFLORA` (SC_UWFLORA markers), `uwFloraMake(T, site)`, one instanced draw per kind:
