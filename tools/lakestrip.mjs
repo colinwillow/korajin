@@ -14,7 +14,7 @@ const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k +
 const src = fs.readFileSync(path.resolve(ROOT, arg('src', 'index.html')), 'utf8');
 const m = /\/\/ LAKELIB:START[\s\S]*?\/\/ LAKELIB:END/.exec(src); if (!m) { console.error('no LAKELIB markers'); process.exit(1); }
 const OUT = arg('out', path.join(ROOT, 'shots')); fs.mkdirSync(OUT, { recursive: true });
-const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 6), W: +arg('w', 480), H: +arg('h', 300), mirror: +arg('mirror', 1), cols: +arg('cols', 3), cruise: +arg('cruise', 1), night: +arg('night', 0) };
+const opts = { shots: process.argv.slice(2).filter(x => !x.startsWith('--')), t: +arg('t', 6), W: +arg('w', 480), H: +arg('h', 300), mirror: +arg('mirror', 1), cols: +arg('cols', 3), cruise: +arg('cruise', 1), night: +arg('night', 0), swim: arg('swim', '') };
 const page = `<!doctype html><html><head><script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script></head><body style="margin:0;background:#000">
 <script type="module">import * as THREE from 'three'; window.THREE = THREE; window.ready = 1;</script></body></html>`;
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.split('?')[0]); if (u === '/' || u === '/lake.html') { r.writeHead(200, { 'content-type': 'text/html' }); return r.end(page); }
@@ -32,7 +32,11 @@ const res = await pg.evaluate(async ([code, o]) => { const THREE = window.THREE,
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(.32, 1.1, 6, 12), new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: .7 })); body.position.set(L.spawn[0], L.spawn[1] + .87, L.spawn[2]); scene.add(body);
   if (o.night && L.setNight) { L.setNight(o.night); sun.intensity *= 1 - .85 * o.night; hemi.intensity *= 1 - .7 * o.night; }     // --night=1: the lake's own night (the game's shared star dome is not in the strip)
   if (o.cruise && L.boat) L.boat.setMode('cruise');     // the wake needs a moving boat (pass 3)
-  for (let i = 0; i < Math.round(o.t * 30); i++) { if (L.boat) L.WU.uCam.value.set(L.boat.x, 4, L.boat.z); L.step(1 / 30); }     // the petals live round the lens: hold it at the boat
+  let SW = null; if (o.swim !== '') { const sp = +o.swim, sx = L.boat.x + 7, sz = L.boat.z + 2; SW = { sp, x: sx, z: sz }; body.position.set(sx, 0, sz); }     // --swim=<m/s>: a swimmer beside the boat (the collar, the displacement, the rings)
+  for (let i = 0; i < Math.round(o.t * 30); i++) { if (SW) { SW.z += SW.sp / 30; const w = L.waveAt(SW.x, SW.z, L.t, { y: 0 }); body.position.set(SW.x, w.y - .25, SW.z); L.setSwim(SW.x, SW.z, SW.sp, 1, 0, 1); L.WU.uCam.value.set(SW.x, 4, SW.z); }
+    else if (L.boat) L.WU.uCam.value.set(L.boat.x, 4, L.boat.z); L.step(1 / 30); }
+  if (SW) { const list2 = [{ id: 'swim_close', why: 'the swimmer at ' + SW.sp + ' m/s: the foam collar, the push wave, the V, the rings', E: [SW.x + 2.4, 1.6, SW.z + 3.2], A: [SW.x, 0, SW.z - .2] }, { id: 'swim_high', why: 'from above and behind: the collar, the V and the rings', E: [SW.x - 1.5, 4.5, SW.z - 5], A: [SW.x, 0, SW.z + .5] }];
+    L.shotCam = (s2, cam2) => { cam2.position.set(...s2.E); cam2.lookAt(...s2.A); cam2.updateMatrixWorld(); }; L.W.shots = list2; o.shots = []; }     // the petals live round the lens: hold it at the boat
   const list = o.shots.length ? L.W.shots.filter(s => o.shots.includes(s.id)) : L.W.shots, cols = Math.min(o.cols, list.length), rows = Math.ceil(list.length / cols);
   const out = document.createElement('canvas'); out.width = cols * W; out.height = rows * (H + 20) + 22; const c2 = out.getContext('2d'); c2.fillStyle = '#000'; c2.fillRect(0, 0, out.width, out.height); c2.font = '12px monospace';
   let calls = 0, tris = 0, worst = 0;

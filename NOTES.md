@@ -53,6 +53,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2632 -- THE LAKE: THE SWIMMER'S WATERLINE (foam collar, displacement, rings, stroke splashes)
+His (relayed): *"while Grumbo SWIMS at the surface, the waterline where his body meets the water is a hard line."*
+- **Displacement (vertex, `lkSwimH`):** a field round him, read by the water's vertex shader, with its slope added to `vWg` (the per-pixel normal). It has
+  the push wave ahead (bigger fast), the hollow he sits in, rings (gentler treading and wading), and a small V behind. The camera-following polar grid
+  is already ~10-30 cm round him at the swim lens, so I chose the field over an extra subdivided patch: no new mesh, no new draw.
+- **Foam collar (fragment):** a ring of foam hugging him at the waterline that closes UNDER him, so where body meets water is foam, not a seam. It is
+  thicker in front when he moves, with a small V and a trail behind and rings round him, and goes through the painted foam threshold like all the
+  lake's foam.
+- **Stroke splashes:** flecks off alternating hands (`L.splash`) every ~.4 s while he swims faster than .6 m/s.
+- New uniform `uSwD` (his facing); `L.setSwim(x, z, v, on, dx, dz)`. Wading passes its facing too.
+- `tools/lakestrip.mjs --swim=<m/s>` puts a swimmer capsule beside the boat and renders `swim_close` and `swim_high`. Checked at 1.4 and 2.2 m/s.
+  Draws and tris unchanged. Shipped unverified.
+
 ## m2631 -- THE INTERACTIONS KIT pass 4: BUTTON, PRESSURE PLATE, LEVER, DRAWERS, POTS (INTERACT.md)
 Five more kinds, each a row, each lighting its own SIGNAL LAMP (`ikLamp`: a bronze bowl on a stand, or on a wall bracket -- the first strip had
 the wall lamp's bowl floating off the wall, CRAFT; it has an iron arm and drop back to the wall now) so a switch visibly DOES something:
