@@ -44,6 +44,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2559 -- UNDERWATER pass 6: THE ALIEN FLORA -- eight glowing kinds down the bowl (UNDERWATER.md) (Nov 5 2026)
+His, via the orchestrator, after diving: *"the underwater world is looking pretty cool, keep going"* -- LOTS of different bioluminescent,
+fluorescent, weird alien underwater plants. `UWFLORA` (SC_UWFLORA markers), `uwFloraMake(T, site)`, one instanced draw per kind:
+- **KELP** forests (clumped, 5-13 m ribbons, bands of light climbing to a bright tip, big sway; 4-32 m deep), **FAN** corals (ruffled, the rim
+  alight; 6-44), **TUBE** anemones (five tubes with glowing lips; they PULL IN when he is within 3.2 m and ease back out), **BULB** pods (a crooked
+  stalk and two bulbs that PULSE), **SPIRAL** fronds (fiddleheads curling into a glowing spiral, small leaves; 4-30), **CRYSTAL** growths (deep
+  only, 18-47, tilted with the slope), glowing **MOSS** carpets with bright tufts (lying ON the bed's slope: the bed normal), and **LANTERN** plants
+  (a curved stalk, three lanterns on threads) that LIGHT UP as he passes within 5.5 m, hold 4 s, then fade.
+- One material recipe (`uwFloraMat`): a dark base of the instance's hue + an emissive glow weighted per vertex (`aG`: tips, rims, bulbs) x the hue x
+  `UWATER.floraGK` = the depth ramp (x.7 -> x3.6) x `glow.k` .32 x (1 + .9 x NIGHT.f). Hues: cyan, magenta, violet, lime, amber, each kind its own set.
+- Placement: each kind in its own band of depths over the bowl (rim, slope, ledge, floor: VERTICALITY), radius biased toward the shrine (pow 1.6).
+- **Budget (measured in the page):** +8 draws, ~78k tris (kelp 170 x 20, fan 110 x 38, tubes 90 x 240, pods 90 x 156, fronds 90 x 118, crystal
+  80 x 40, moss 100 x 110, lantern 56 x 264); first cut was 218k -- segments cut. Drawn only with the rest of the life (lens under, near the site).
+  Per frame: 146 distance checks for the tubes and lanterns.
+- Renders: bugs found and fixed -- kelp scaled its WIDTH by its height (9 m paper sheets) and the glow saturated everything to flat pastel (x.32).
+  Still flat-ish up close; moss on a curved slope can lift at an edge. Also: my under-surface mesh is tagged `userData.noXray` for the camera worker.
+  Creatures next (pass 7). Shipped unverified.
+
 ## m2558 -- the scorpion nests moved onto the desert worker's layout (they sat inside the boulder field: a lab spot, not dune sea)
 - `SCORP.nests` (offsets from F.clear, north -z): sc_sea_e [330, 40] x4, sc_sea_w [-330, 40] x4 (the dune seas), sc_ruin_spyr [-330, -150] x4
   (the stepped pyramid's W foot), sc_ruin_s [60, 400] x3 (the south pyramid's flank). `GSCORP.nests`: the giants in the far dune seas,
