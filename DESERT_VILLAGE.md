@@ -56,7 +56,7 @@ face stands on i4 as an optional shortcut, not on the main route.
 Any play view <= 65 draws / 250k tris; aerial <= 80 / 280k. The village merges its static stone, adobe, timber and cloth into one draw per
 material (sway in a vertex shader, not per banner), instances the chests, chimes and hop stones, casts shadows only from the big shapes, hides
 props / lanterns / villagers past `DVILLAGE.far.detail` (170 m) and the whole village past `far.all` (520 m). Every build reports draws and
-tris at the landing, at the court and from the sky shrine.
+tris at the landing, at the court and from the sky shrine -- `npm run dvperf` measures every spot through the real play camera.
 
 ## Passes (one build each)
 1. **The plan** (this page, the table, `npm run dvplan`, the region floaters kept out of the patch).
@@ -74,6 +74,6 @@ tris at the landing, at the court and from the sky shrine.
 - [x] Ten buildings in the house style, flat roofs walkable, CRAFT.md checked close (pass 3, m2578). (His look on the phone still to come.)
 - [x] Stalls, well, lanterns, banners, gardens, chimes, pots in place; nothing floats that should touch (pass 4, m2582 close renders).
 - [x] Chests open with the interact registry and pop a reward; pots break (pass 4, m2582: open + coins rendered; pots ride the kit's urn path).
-- [ ] Villagers wander, the merchant minds his stall, kids run, the elder grumbles; barks when he is near (pass 5).
-- [ ] Budget held: draws and tris reported every build at the landing, the court and the sky shrine (<= 65 / 250k play, <= 80 / 280k aerial).
+- [x] Villagers wander, the merchant minds his stall, a kid runs the court, the elder grumbles on her isle; barks when he is near (pass 5, m2584 -- the bubble is DOM, so his phone is the first to see it).
+- [x] Budget held: `npm run dvperf` (the real play camera) at every spot, m2584: worst play view 61 draws (i3) / 244k (i2), aerial 54 / 249k, the landing +0.
 - [ ] **His sign-off on his phone.**

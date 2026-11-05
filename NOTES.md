@@ -46,6 +46,31 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2584 -- THE SUNWELL, pass 5: THE VILLAGERS, and the budget measured from the REAL play camera (DESERT_VILLAGE.md) (Nov 5 2026)
+- **Four villagers, Toad Wanderers** (m1812's village NPC; the hick's pacifist brain) spawned the sky castle townsfolk's way (`arenaLoad('TOAD')` +
+  `bodySpawn`, `d.route` / `d.routeWait`), from `DVILLAGE.villagers`: a WANDERER round the well, the MERCHANT behind his counter on the avenue (long
+  waits), a KID (x.6) darting round the court (short waits), the ELDER (x.92) pottering on her isle (i4, +15 m). Each route spot is checked
+  standable (`groundAt`) at spawn; a tint each. Struck, they run -- never off an isle (`folk.rim`: a flight near the rim is called off and a body
+  past it is put back). They live while he is within 150 m and go past 220.
+- **BARKS:** the nearest villager within 4.6 m (and within 3 m of his height) says a line in a SPEECH BUBBLE over its head -- one DOM element
+  projected each frame (no draw), one at a time, each villager every 7 s; grumpy and funny by role (`DVILLAGE.barks`: "Buy something or stop
+  breathing on the fruit.", "Mum says the sky shrine eats kids.", "In my day the isles floated HIGHER."). Break a pot near one: "HEY! That was my
+  grandmother's pot!" (the pot proxy's break calls `dvPotBroke`).
+- **A Toad is ~16k triangles**, so: drawn only within 30 m of the lens, shadows only within 8 m of him (`folk.show` / `folk.shadow`). Seven
+  villagers measured 114k; four with these switches stay inside the budget.
+- **`npm run dvperf` (new):** boots the shipped page like `dvwalk`, stands him at every spot (gate, avenue, court both ways, each isle, the sky
+  shrine, an aerial, the landing last), steps 90 REAL frames so every per-frame LOD has run (the field's, the village's detail, the villagers',
+  the shadow switches), then renders ONE frame through the game's own camera (renderer.info, the shadow pass included) -- with and without the
+  village. My older harness never ran the frame loop, so those switches never fired there; this one is the number to trust:
+      gate 42 / 184k  avenue 43 / 201k  court 43 / 201k  court looking back 57 / 205k  i1 49 / 234k  i2 53 / 244k  i3 59 / 221k
+      i4 45 / 190k  i5 42 / 171k  i6 42 / 200k  sky shrine 48 / 227k  aerial 54 / 249k  landing 78 / 315k (WITHOUT the village: 78 / 315k)
+  Every village view is inside 65 / 250k (aerial 80 / 280k). The village adds ~17 draws / ~70-90k where you stand in it and NOTHING at the
+  landing. (The landing's own 78 / 315k in this portrait harness is the region's, above the desert worker's 63 / 247k -- told them.)
+- **Cuts to get there:** my `worn()` boxes went from 2x2x2 segments to 1 (the eight corners pulled in: a chamfer, 12 tris not 48), the lamps lost
+  their corner posts (108 -> 36 tris), cords are 3-sided, pots 10-sided; the shadow proxy is stone only.
+- `npm run dvwalk`: the whole route still climbed. Close renders of all four (the merchant moved behind his counter after the first look).
+- Whole-piece rule: every box of DESERT_VILLAGE.md is ticked but the last -- **his sign-off on his phone**.
+Shipped unverified.
 ## m2583 -- the katana charge and guard WALK: capped at the strafe / walk clips' measured speed, no run legs, a .2 s skid in (measured headless)
 His (Nov 5, relayed): *"a long-standing bug that was never fixed"* -- holding UP (the charge) he should move slowly in a defensive stance, at a WALK,
 on the strafe / back-walk clips; the clips play the slow strafe but the LOCOMOTION stays at SPRINT speed, so he slides -- and sometimes the legs
