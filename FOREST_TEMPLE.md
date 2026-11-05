@@ -25,6 +25,19 @@ three rings and eight spokes at its foot) -> the corridor's avenue -> the arch -
 12-spoke rosette at its centre, the ruins mirrored) -> the door on the far wall. The acrobatic ROUTE climbs round that axis (east, north,
 west, south): the plan is symmetric, the climb spirals. Later chambers keep to the axis or branch from it at right angles.
 
+## OUTSIDE <-> INSIDE: THE TEMPLE LIFT (his, Nov 5 2026: "a loading screen ... one-way ... the door's inside built twice and they don't match")
+**Measured (`npm run zonebudget`, the game camera, shadows included):** outside (`dometemple`, at the arrival) **92 draws / 526k tris**; inside
+(`ftemple`) **96 / 154k**; one merged scene would hold ~565k tris -- twice the phone's 280k -- and every interior system (boxes, traversal, foes,
+the triangle collider's rect) is written in the interior's own coordinates. **So: two zones, one HONEST seam -- the LIFT.** (Both zones are
+also over 70 draws on their own: a budget pass for each is owed.)
+- **One builder, both sides** (`ftLiftMake`, SC_FTLIFT): a round platform (carved stone, a bronze rim, the weighted plate with its glyph ring),
+  six carved posts and a lintel ring, and its SHAFT (below the floor outside, up to the ceiling inside).
+- **Outside:** the door ritual OPENS the door (no load); he walks into the cella; the lift stands where the pedestal was (the orb floats over it).
+  Step on -> the glyphs light, a rumble, the platform SINKS (the lens following); in the dark of the shaft the screen fades and the inside loads.
+- **Inside:** he arrives STILL SINKING -- the same lift, at the entry hall's end, coming down its shaft out of the dark -- and lands at 24 m.
+  The old inner door (`h_door`, a second mismatched copy of the outside's) and the ASCEND chevron are gone; the wall closes.
+- **Back:** step on the hall's lift -> it RISES, fades, and he arrives in the cella rising up out of the floor, on the same platform. Two-way.
+
 ## THE PLANNING SHEET (his structure, Nov 5 2026 -- TEMPLE_TEMPLATE.md) -- `docs/temples/forest_sheet.png`, `npm run templesheet forest`
 **THE WELL is the hub you land in; six lettered chambers A-F on a hexagon round it (mirrored W / E, on the N-S axis); each pays ONE JINRA SHARD;
 six shards light the SEAL on the well floor and open the stair to the boss beneath it.** The 12 rooms of THE FLOW below are kept, folded into it:

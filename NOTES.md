@@ -59,6 +59,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2678 -- THE TEMPLE LIFT: the forest temple's outside <-> inside is ONE two-way seam (a lift), not a door that loads
+
+**His (via main):** at the first door, after ~5 s, a LOADING SCREEN into a separate zone; ONE-WAY; the door's inside was built twice, in two
+places, and they don't match ("you're in the same room but it doesn't look like the same room"); the outside shows an interior of its own. Make it
+SEAMLESS -- or, if a load is needed, an honest in-world transition: a lift down a shaft, the load during the descent, two-way, one builder.
+**Measured first (`npm run zonebudget`, new: boots each zone, renders the game camera, reads `renderer.info`):** outside 92 draws / 526k tris at the
+arrival (145 meshes, 428k in the scene); inside 96 / 154k (130 meshes, 137k). Merged: ~565k tris in one scene, twice the phone's 280k, and every
+interior system is in interior coordinates -> **the lift**, not a merge. (Both zones are over 70 draws alone: a budget pass for each is owed.)
+**Built (SC_FTLIFT):** `FTLIFT` (the table), `ftLiftMake` (ONE builder: the platform with its weighted plate and glyph ring, six posts, the lintel
+ring, its shaft -- 6 draws), `ftLiftPlace` (outside in the cella where the pedestal was, the orb now floating over it; inside at the entry hall's
+end, (0, 24, 76.5)), `ftLiftStep` (idle -> step on -> RIDE: the glyphs light, a rumble, the platform sinks / rises over `rideT`, the screen fades
+in the shaft at `fadeAt`, then the far zone loads with `&at=lift`; ARRIVE: he spawns still riding, out of the dark, the platform finishing its
+travel; it re-arms once he steps off), `ftLiftHold` (the lift owns the body in `stepPlayer`, like the mammoth). The door ritual now only OPENS the
+door (`DOMET.door.enter` = 1); the interior's `h_door` (the mismatched copy) is a plain wall; the ASCEND chevron is gone; both zones' ENTRY rows
+skip the hero drop when arriving by lift. Boot: the ftemple scenario now steps onto the lift and checks it starts and rises; both zones boot.
+Headless in the real page: `&at=lift` arrives riding on both sides. Renders: `docs/forest_temple/lift_hall.png`, `lift_cella.png`.
+**Try:** the dome temple -> the door ritual -> walk into the cella -> step on the round platform -> down; at the hall's end, step back on -> up.
+Shipped unverified.
+
 ## m2677 -- GAMEPAD pass 3: RB weapon, LB sub-weapon, RT the bow (draw / loose) aimed by the camera's pitch, LT precision look (Nov 5 2026)
 - **RB = `gpWeapNext`**: the next entry of the right ring's own list (`RINGS.lastW`, saved by `ringsStep`: WHIP / SWORD / BOW-or-GUN, in its order)
   through the ring item's own `tap` -- so it is the same pick a thumb makes. Rings off (QUICK DRAW off): `cycleKit`.
@@ -155,7 +174,6 @@ left stick move, A jump, X katana (tap + left-stick direction = the directional 
   (`melee` true); X held = katana `charge` 1, chargeT climbing, released on X up; B + left = the side flip (`cart`, 3.3 m left); Menu opened the
   pause menu, B closed it. No page errors.
 - Still open (GAMEPAD.md): RB/LB cycling, RT bow + free aim, menu / backpack / TOOLS navigation, glyph cues, rumble, hiding the rings, his sign-off.
-
 ## m2672 -- DRY SAND FOOTSTEPS (his: "the sand sounds like running through a PUDDLE"), AND THE KIT'S STONE STEPS AS STONE (Nov 5 2026)
 
 - **Checked first: the classifier was NOT picking water.** Probed `stepSurf` headless at the landing, the dune seas, the region, the causeway and the ascent.
