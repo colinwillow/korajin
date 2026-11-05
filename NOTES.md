@@ -50,6 +50,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2612 -- THE KATANA IDLE HOLDS THE BLADE STRAIGHT UP (front AND side), the flat square to the side, the edge forward (Nov 5 2026)
+His (m2607, sword_idle_angle.png / sword_idle_side.png): *"in his neutral idle the blade leans diagonally ... from the side it leans forward, away from
+him ... straight up and down in BOTH views, the blade's full flat side square-on from a side camera."*
+- MEASURED (headless, the shipped page, his katana idle): the blade 32.2 deg off vertical, all of it FORWARD (side lean .6), the edge 109 deg off
+  his facing.
+- `katIdleUpright` (`KIDLE`, before `katLeftGrip` so the left hand follows): after the mixer the right hand gets ONE world-space turn that takes the
+  held sword's frame (+Y blade, +Z edge) onto (world up, his facing) -- weighted by the katana IDLE's own mixer weight, and off outright in a strike,
+  the guard, the charge, a swap, a roll, a knockdown or the air. So a walk blends it out at the clip's own rate; no swing is touched.
+- AFTER: 0.0 deg off vertical, 0.0 forward / side lean, the edge 0.0 deg off his facing (five samples over 2 s of the idle). Filmed from the front
+  and the side. `mel.KIDLE.on = 0` is the A/B; `KIDLE.err` reads the angle live.
+
 ## m2611 -- TOOLS > BOW > BOW SIZE / SWORD SIZE (100 / 90 / 80 / 70 %), bow 85 % by default; the sheath re-fits at every size (Nov 5 2026)
 His (m2607, bow_size.png): *"the bow looks kind of huge, maybe a tiny bit smaller; the sword could maybe be a little smaller too, which might help it
 fit on his back"* -- he loves the big ones and is undecided, so it is a TASTE SWITCH (`TRIPOW.bowPct` / `swordPct`, remembered `mel.bowSize` /
