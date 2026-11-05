@@ -46,6 +46,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2604 -- UNDERWATER: SEA TEXTURES -- seabed, rock, glyph stone, coral skin (his: "a sea flora texture might help, some bed rock and stuff") (Nov 5 2026)
+His two reference paintings are in images/feedback/m2586/ref_underwater_a.png / _b.png (purple-teal glow, carved glyph ruins, veined flora).
+- **Four seamless maps** made with the image API by `tools/uw_textures.py` (re-roll one: `python3 tools/uw_textures.py bed`), 768 px WebP in
+  `textures/` (already in bump's DIRS; hashed): `uw_bed` (sand, pebbles, coral polyps), `uw_rock` (slate under coralline crust), `uw_glyph`
+  (dark carved temple blocks, square key/spiral glyphs, moss in the joints), `uw_coral` (veined translucent flesh, pores).
+- **No UVs needed:** every one is sampled TRIPLANAR in world space (`uwTri`, an onBeforeCompile chained before the water's patch).
+  The shrine's stone and the floating ruins wear the GLYPH stone; the rocks the ROCK; all eight flora kinds the CORAL skin (veins in the dark base
+  AND in the glow: the emission is modulated by the skin's brightness).
+- **The lake bed, under the water only** (`UW_BED` in the patch; the bed is the surface worker's and is untouched above the water): flat ground
+  = the seabed map, steep = the rock map, in the bed's own light, from .3 m under the surface down (`UWTEX.bedK` .85).
+- Cost: 4 textures (~730 KB on the wire, ~9 MB resident with mips), 3-6 texture reads per fragment on the textured things. Render
+  (images/feedback/m2586/uw_tex_render.jpg): glyph blocks on the well, the seabed and the crusted rocks on the slope. Shipped unverified.
+
 ## m2602 -- UNDERWATER ART D: marine snow, glowing plankton swirling in his wake; the jelly field calmed (Nov 5 2026)
 - **PLANKTON IN HIS WAKE** (`UWPLANK`, SC_UWPLANK markers, `uwPlankStep`): a pool of 320 glowing specks born round him as he swims (6/s idle,
   up to 76/s at speed, a puff of 30 as he goes under), each spun into its own little vortex round the point it was shed from while that point
