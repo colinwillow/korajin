@@ -45,6 +45,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2576 -- THE VINE WHIP pass 4: ZIP / PULL-TO (VINEWHIP.md)
+A flick at a ZIP anchor (the gold-cored ones over the zip wall's ledges and the chain course's pillar) hangs him on the vine with `zip: 1`; the
+grapple pendulum then REELS: the vine shortens at `WHIP.zipV` 14 m/s while he is pulled along it (`zipA` 46 m/s^2, most of gravity cancelled, capped
+at `zipMax` 17 m/s). Inside `zipEnd` 1.4 m of the anchor (or 1.6 s) he lets go UP and OVER: `zipUp` 7.5 m/s and `zipOver` 3.2 m/s toward his
+landing -- `groundAt` under the anchor, worked out at the flick (a zip anchor hangs over its ledge). From the ground or from a swing (a chain into
+a zip is a flick like any other). Boot gate: a zip to C_zip10 from the floor takes and arrives (stats zip 1). Untested on a body: that he lands ON
+the 10 m and 16 m ledges every time -- the DONE WHEN box. Shipped unverified.
+
 ## m2575 -- THE VINE WHIP pass 3: SWING FEEL -- let go INTO A FLIP, chains keep their speed; the grapple's rope fixed (VINEWHIP.md)
 - RELEASE: a TAP off the vine leaves with `WHIP.relBoost` 1.2 (the hook's 1.12) and `relLift` 5 m/s (3.5), and -- moving over 3 m/s -- turns him
   to his flight and runs the game's own FRONT FLIP (`airFlipGo(0, -1, noPop)`: the left-stick air flip, its tuck and settle). `WHIP.relFlip` 0 = off.

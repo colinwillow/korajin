@@ -58,6 +58,7 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   - [x] m2570 pass 1 THE SANDBOX (six stations, anchors / pullables as rows; knots take the grapple hook for now).
   - [x] m2573 pass 2 THE LASH (slot + ring, verlet vine, lock glow, swing / chain on the grapple pendulum, strike via dummyBlow).
   - [x] m2575 pass 3 SWING FEEL (release flip, chain keeps speed, livelier pump; the grapple rope's origin bug fixed).
+  - [x] m2576 pass 4 ZIP / PULL-TO (reel along the vine, up and over onto the anchor's ledge).
 - [ ] **THE DESERT REGION** -- plan in `DESERT_REGION.md` (m2539): steps 0 perf (m2538, done) / 1 plan (m2539, done) / 2 kit + colliders / 3 sand + dunes everywhere / 4 floaters everywhere / 5 zones one at a time, sky ascent first.
 - [ ] **THE SUNWELL (desert village)** -- `DESERT_VILLAGE.md`: plan (m2561) / platforms + routes / buildings / props + treasure / villagers. Owned by the village worker; E spoke r 240-340.
 - [ ] **THE COMBAT LAB -- OPEN (his, Nov 4).** `COMBAT.md`: the triangle, every enemy's profile, bosses, difficulty, temple-ready rows.
