@@ -45,6 +45,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2579 -- THE VINE WHIP pass 6: FEEL -- a Jin goop streak on the lash, buds along the vine, the vine glows at night (VINEWHIP.md)
+- The tip leaves a GOOP trail while it flies (`goopFx().trail`, the arrows' idiom; TOOLS > GOOP FX off = none), ended at the snap / recoil.
+- Jin BUDS: one Points draw riding every third verlet point (2 draws for the whole whip).
+- NIGHT: the vine's colour leans 15% toward `JPAL.glow` by day and 65% at night (`nightF`), the buds grow -- it reads as a living Jinra vine in the dark.
+The whip's six passes are in. DONE WHEN boxes (lash reads, swing feel, zip lands, pulls, works beside the sword, phone-fast) are all his to tick on the
+phone; the Forest Temple builds on it only after his sign-off. Shipped unverified.
+
 ## m2578 -- THE SUNWELL, pass 3: THE BUILDINGS (DESERT_VILLAGE.md) (Nov 5 2026)
 - **Ten buildings from the table** (`DVILLAGE.buildings`), each built in its own frame (door on local +z, toward the well) and dropped into the
   village's material batches through a frame matrix (`XF` in `add`), so they cost NO new draw except two new materials:
