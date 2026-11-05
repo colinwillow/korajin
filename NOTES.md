@@ -44,6 +44,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2556 -- THE GIANT SAND SCORPION, a mini-boss placeholder (his: "the little scorpions are cool, but I was picturing BIGGER ones too, that actually
+   pop out like real enemies")
+- `GSCORP` (SC_GSCORP): the small scorpion's procedural body and tail (`scorpGeo`) at x6.2 (~4 m long) plus five ARMOUR PLATES down its back;
+  its own meshes (body, plates, tail on a pivot -> 3 draws, + its mound and a shared shockwave ring). The little ones are untouched.
+- THE FIGHT (`gscorpStep`): BURIED (a big sand mound) -> within `wakeR` 11 m it ERUPTS (the mound swells and sprays, then a boom, a sand
+  column, a SHOCKWAVE ring; inside `quakeR` 5 m he is shoved). HUNT: walks at him (2.6 m/s, turning slowly). TAIL STRIKE: the body pitches up
+  (the UNDERSIDE shows), the tail rears, the WHITE glint, `wind` 1.2 / .9 / .62 s by difficulty, then the stinger comes down in front (block /
+  parry / dodge); `slamP` .35 of them are a SLAM -- the RED glint (unblockable through `FOE_UNBL`) and a GROUND RIPPLE ring runs out to 9 m at
+  11 m/s that catches him if he is on the ground as it passes (JUMP it). PINCER SWEEP: a white glint, the claws swing across (4.2 m, 1.3 rad),
+  shoving him sideways. BURROW every 14 s (and at each third of its life): it sinks, a MOVING MOUND tracks him at 6.5 m/s for 3 s, a RED ring
+  opens under him for .9 s, then it ERUPTS there (inside 2.8 m he is launched -- keep moving). RECOVER 1.3 s after each move.
+- ARMOUR (`gscorpBlow`): outside a window x.2 (grey sparks, a dull clang); weak points x1.6 -- the TAIL JOINT (a blow landing within 1.4 m of
+  the tail's root) and the UNDERSIDE while it rears for a tail move (a blow from its front); its recovery / a stagger x1.2. `poise` 3: heavy
+  blows and weak-point hits stagger it. hp 40. He cannot walk through it (pushed out of its body radius). Hooked beside the small scorpions
+  (melee sweep, slams, whirlwind, bolts).
+- STONE TWIN: `gscorpSpawn(x, z, { stone: 1 })` -- grey, no glow, inert until `gscorpWake()`.
+- WHERE: Combat Lab > SPAWN > BOSS > GIANT SCORPION (buried 13 m ahead: walk up to it) and GIANT STATUE (tap again to wake). Desert: two in the
+  dune seas at placeholder offsets from the arrival spot (`GSCORP.nests`: gsc_sea_s [-20, 48], gsc_sea_e [60, -10]) for the desert worker to move.
+- Damage numbers (`GSCORP.dmg`, `hp`, `armour`) are first guesses -- tune on his notes. `npm run check` ok. Shipped unverified.
+
 ## m2555 -- the pause menu's OPTIONS page fits a landscape phone (Nov 5 2026)
 The m2553 render (844 x 390): OPTIONS ran off the bottom, BACK half under the edge (it scrolled, but should not need to). Under 520 px of height the
 menu tightens (smaller heading, shorter buttons) and the OPTIONS page goes two columns for the two toggles. Rendered: PAUSED, OPTIONS, and LEFT-HANDED
