@@ -47,6 +47,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2516 -- THE PHASE SHIFT IN A PORTRAIT FRAME (his, on m2508, on a vertical phone: "sideways I teleport OFF the screen -- blind teleportation";
+   forward is fine). Sideways blinks are now a DODGE sized by the live frame, and the camera DOLLIES OUT so both portals stay on screen.
+- `phaseFrame(h)`, at the flick: at the jump the look point is half way between the portals (`lead` .5), so each sits half the blink's
+  SIDEWAYS part (across the view: `lat` = |dir . camera right|) off centre. With the boom dollied to `dolly` 1.5 x `cam.dist`, the half-width the
+  lens sees there is d * tan(hfov / 2) (hfov from `camera.fov` and `camera.aspect`); both portals inside `frameIn` .8 of it (10%-90%) ->
+  max distance = min(`dist` 7, `sideMax` 5.5, 2 * .8 * halfWidth / lat). A blink AHEAD (lat ~0) keeps 7 m. `PHASE.lastFrame` holds the numbers.
+- MEASURED, a three.js PerspectiveCamera at 390 x 844 with the game's lens (fov 58, el .22, boom 5, look 1.05 x SZ; a projection of the two
+  portal points, not a full game render):
+      boom 5 x1    half-width 1.28 m  sideways blink 2.05 m  in-portal 89.8%  out-portal 10.2%
+      boom 5 x1.5  half-width 1.92 m  sideways blink 3.07 m  in-portal 89.9%  out-portal 10.1%     <- what ships on his phone at rest
+      boom 5.6 x1.5 (running)  3.44 m                         89.9% / 10.1%
+  and the settle: with the look point 75% of the way back the in-portal sat at 109.8% -- off screen -- so the lead is now HELD until the
+  in-portal has sealed (`tIn` + .06 s), and only then eases home.
+- THE DOLLY (`PHASE.dk`, written only in `stepCam`): the boom's want x dk, eased to `dolly` in .04 s half-life while a sideways blink runs
+  (`cam.lat` > .3), back with the offset (`backHL` .35); `cam.dist` takes the quick ease while it is out (the boom's own `outHL` .5 is too slow).
+  The look-point offset and the dolly are both terms inside `stepCam`: lock-on (`cam.az`) and SMART CAM (el / cap / dither) compose untouched.
+- `npm run check` ok. Shipped unverified.
+
 ## m2515 -- ARCHITECTURE PASS 8: GROUND DRESSING AT THE GIANTS' FEET
 - DKLIB `dress(spec)` -> one group merged per material: a CAUSEWAY (fitted slabs 4.2 m, staggered, heaved and tilted a touch, 7% missing,
   kerbs both sides with sand banked against them, sand drifted across it in patches), RUBBLE round a footprint (blocks half-buried and
