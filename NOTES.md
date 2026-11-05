@@ -59,6 +59,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2673 -- GAMEPAD pass 1+2: ONE ACTION TABLE (`ACT`), the controller moves, jumps, looks (with PITCH), strikes, charges, dodges, interacts, pauses (Nov 5 2026)
+His (WORLD_PLAN.md section 6 + his mapping): "map every action through one action table so the touch layout and a pad read the same bindings";
+left stick move, A jump, X katana (tap + left-stick direction = the directional attacks; HOLD = charge, the LEFT stick picks the release), B dodge
+(the left flick / PHASE), Y interact, Menu = pause, right stick CAMERA ONLY with pitch unlocked. Design doc + DONE WHEN: `GAMEPAD.md`.
+- **`ACT`** (just above `LTAP`): the four pad gesture bodies MOVED out of the inline `bindStick` arrows, unchanged, plus `jump` (= `rTap({ jump: 1 })`,
+  the right tap without its interact/talk/pick/portal half), `interact` (that half), `dodge`, `strike`. The pads now call `ACT.*`.
+  **A new verb goes in `ACT`, never in a pad's inline handler** (CLAUDE.md control map).
+- **`GP` / `GPMAP` / `gpPoll`** (after the DESK block): polled at the top of `frame()` BEFORE the pause return. The left stick writes `stick.L`
+  (`far` = 1, so no hold-in-place gesture fires off a stick); a held X past `GP.holdT` .16 s writes `stick.R` straight up (DESK's trick; melee
+  weapon only) and its release is `chargeRelease` (`gpRUp`); a shorter X is `ACT.strike` along the left stick (neutral = ahead). B = `ACT.dodge`
+  along the left stick (neutral = the backflip). Right stick -> `stepCam` (yaw rate, squared response) and `GP.pit` -> `cam.el`'s target
+  (clamped -.55..+.95 rad; OPTIONS speed / invert apply). A press hides the touch pads (`body.gpad`); a touch shows them; TOOLS > MOVE >
+  CONTROLLER: TOUCH PADS keeps them.
+- **Measured headless with a fake standard Gamepad (`navigator.getGamepads` stubbed, `?god`)**: stick forward walked him 8.00 -> 7.34 m; right
+  stick x 0.8 s turned `cam.az` 3.142 -> 2.570, y up 0.8 s took `GP.pit` to -0.30 and `cam.el` .22 -> .035; A jumped (y 1.29); X tap = a strike
+  (`melee` true); X held = katana `charge` 1, chargeT climbing, released on X up; B + left = the side flip (`cart`, 3.3 m left); Menu opened the
+  pause menu, B closed it. No page errors.
+- Still open (GAMEPAD.md): RB/LB cycling, RT bow + free aim, menu / backpack / TOOLS navigation, glyph cues, rumble, hiding the rings, his sign-off.
+
 ## m2672 -- DRY SAND FOOTSTEPS (his: "the sand sounds like running through a PUDDLE"), AND THE KIT'S STONE STEPS AS STONE (Nov 5 2026)
 
 - **Checked first: the classifier was NOT picking water.** Probed `stepSurf` headless at the landing, the dune seas, the region, the causeway and the ascent.

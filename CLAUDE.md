@@ -549,6 +549,9 @@ rule that has to be in front of me *before* I know which system I am in.
 
 ## The control map — read this before touching either pad
 
+**A GAMEPAD DRIVES THE SAME VERBS (GAMEPAD.md).** Every gesture's body lives in `ACT` (the action table); the pads and the controller both call it,
+and `GPMAP` is the one place a button is bound. Add a new verb to `ACT`, never to a pad's inline handler.
+
 **LEFT PAD is the BODY. RIGHT PAD is the VERB.** That has to hold in every state or neither pad
 means anything you can carry from one situation to the next.
 
