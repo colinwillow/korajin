@@ -44,6 +44,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2523 -- REFERENCE PASS D: CHUNKIER PLATES, JAGGED GREEN CRACKS ON THE BASE, DEEP SAND AT ITS FOOT
+- The great pyramid's plates: 15% thicker, a heavier worn edge (two segments), and the seams between them 1.3 m (was .5) -- they read as
+  separate slabs, as in the reference.
+- JAGGED green energy CRACKS down every base face (two per face per tier), zig-zag polylines of straight lit segments. First cut was a tube
+  through the points and it smoothed them into SINE SQUIGGLES; straight boxes between the points keep the lightning.
+- DEEP SAND: fourteen big mounds (r 26-44, h 7-14 m) heaped round the great pyramid's foot, the causeway's mouth left open.
+- Looked at: the forecourt low, the play camera. check + boulders boot pass. Shipped unverified.
+
 ## m2522 -- THE LAKE, DETAIL PASS 2: THE WAKE, PAINTED FOAM EVERYWHERE (WATER.md)
 His Nov 5 series, item 2: *"a proper V-shaped Kelvin wake, wake ripples, foam trailing the boat, foam at the shore, rocks and obelisks, a painted foam texture."*
 - **Painted foam (`uFoamP` = `textures/lake_foam_paint.webp`, clumps, swirls and flecks, white on black):** every foam source (shore band, stack rims,
@@ -56,7 +64,6 @@ His Nov 5 series, item 2: *"a proper V-shaped Kelvin wake, wake ripples, foam tr
 - **Obelisks:** pass 5 puts them in `W.stacks`, so the existing rim foam (now painted) rings them with no new code.
 - New shots `wake_top` and `wake_low` (boat-relative). Strip: calls <=36, tris 306k, no change from pass 1.
 - No WATER.md box ticks; this is detail on the open "water deforms round the boat" box. Shipped unverified.
-
 ## m2521 -- THE LAKE, DETAIL PASS 1: PAINTED WATER + WHAT LIVES UNDER IT (WATER.md)
 His Nov 5 series, item 1: *"stylised painted water texture and normal flow, deep-water colour falloff, things under the water."*
 - **Painted water:** `textures/lake_water_paint.webp` (+ `_n` normal), generated with gpt-image-1.5 and made seamless with a half-offset blend.
