@@ -44,6 +44,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2573 -- THE VINE WHIP pass 2: THE LASH (VINEWHIP.md) -- the slot, the ring segment, the verlet vine, the lock glow, swing / chain / strike
+On the combat worker's layout (their reply): slot `whip` APPENDED LAST in WEAP.slots (`whip: true`, never `blade`: the sword paths would claim
+it; saved slot indexes + GEAR bits are positional), `KIT3.label.whip`, a THIRD segment on the right ring (`qdIx('whip')`) and the dial points at
+it; the right-pad flick handler's first line `if (slotNow().whip && whipFlick(dx, dy)) return;` (the left pad untouched: PHASE + cartwheels).
+- `WHIP` (SC_WHIPTUNE): reach 14 m, cone .75 rad, lash .14 s, 18 verlet points. `whipBest(h)`: the best target in the flick's cone -- a WHIP ANCHOR
+  (the shared list `WHIP.anchors`, any zone fills it; the sandbox's knots / rings / zips), a body in DUMMIES, a sandbox pullable.
+- ANCHOR -> he is HUNG ON THE VINE: the grapple's own pendulum (`stepRope`, fed `{ whip: 1 }`, its hook line hidden): pump with the left stick,
+  TAP to let go with the boost; from the ground the lash HOPS him first (`WHIP.hop`). A flick while swinging at the next lit anchor CHAINS.
+- BODY -> `dummyBlow(d, h, .55, 14)` as the tip lands (their block / parry / poise / armour all apply: a front lash can be blocked).
+  NOTHING LIT -> the LASH STRIKE: 6.5 m along the flick, every body on the line. A sandbox TARGET flashes (pulls are pass 5; zip is pass 4).
+- THE VINE (`whipVineStep`): verlet, a camera-facing ribbon thinning to the tip, ONE draw; OUT = the tip flies a curled arc (a sideways sine + a
+  lift) to the target and SNAPS (a crack, Jin sparks); TAUT on an anchor (slack x1.04); RECOIL = it winds back slack in .28 s.
+  THE LOCK (`whipHint`): a pulsing Jin ring on what a flick would take now (facing on the ground, the flight in the air).
+- Found, not fixed (not mine): the grapple's rope line is drawn from `_rpH`, which nothing ever sets -- its rope starts at the world origin. The
+  whip draws from his real right hand (`rig.bones.mixamorig_RightHand`).
+- Boot gate (`MEL_WORLD='forge&zone=whip'`): equips the whip, stands him on the swing pit's platform, lashes knot 1 (he hangs on it), steps the
+  swing 40 frames, then a strike lash. The whip is in every zone's kit (not earned yet -- the temple's mid-boss will give it). Shipped unverified.
+
 ## m2572 -- THE BOULDER FIELD HIDES WHEN HE IS FAR FROM IT (the village worker's measurement) (Nov 5 2026)
 
 - The village worker measured ~22 draws and ~90k tris of the boulder FIELD being drawn from their well court, 290 m away: the 9 rock meshes plus their
