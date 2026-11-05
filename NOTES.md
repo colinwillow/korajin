@@ -64,6 +64,13 @@ SNAP (`whipCastGo` -> `whipAct`), so the vine leaves his hand at the snap frame 
 ## The green DNA bar is hidden (his: "Idk what this dna green line is, I think it's leftover from the old game")
 `#juice` (m284, Zap's DNA-gun tank, above the pads) is forced `display: none` in CSS. Nothing reads it visually in Korajin; the DNA code still runs, untouched.
 
+## m2589 -- the right ring: no HANDS button; WHIP joins SWORD and BOW on one row, to their left (Nov 5 2026)
+Via main: *"REMOVE the HANDS button from the right ring -- unarmed is what you get with nothing drawn, or tapping the drawn weapon's segment again
+holsters it"* and *"put WHIP on the SAME ROW as SWORD and BOW, three segments round the side of the circle, WHIP to the LEFT -- no third arc above."*
+- `ringsStep`: the `weap` group is `cap: 3` with WHIP pushed FIRST (left is the highest angle), then SWORD (or LANTERN), then BOW / GUN; the HANDS group
+  is gone. Putting a weapon away is tapping its own red segment again (`pick`, m2057's rule). The dial hides when nothing is drawn.
+- Left-handed mirrors it with the rest of the right set (m2552). Shipped unverified; renders (unarmed / sword out / whip out, left-handed) sent.
+
 ## m2586 -- THE BUDGET COUNTS SHADOWS; THE CACTI AND THE ARCHES CAST THROUGH STAND-INS (Nov 5 2026)
 
 - Decision (Colin via parent): from now on the budget is read WITH the shadow pass. Play views **≤ 70 draws / 280k**, aerial ≤ 85 / 310k.
