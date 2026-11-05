@@ -76,3 +76,10 @@ prologue temple (the Metroid half of Zelda).
 - **A STAFF WITH A BLADE on the end** (a glaive / naginata).
 - **Maybe a RETRO FIREWORK-STYLE ROCKET LAUNCHER**, replacing the alien launcher.
 - **Later:** TWIN SMALL SWORDS, AXES or NUNCHUCKS -- each with its own animations (not the two-handed sword set).
+
+## ROPE ARROW (his idea, Nov 5 2026, open)
+An arrow with a rope tied to it, shot from the bow. It sticks into wood, stone or a target and leaves him tethered: he can SWING
+across caverns (Tarzan swing, same pumping as the vine whip), REEL himself in to the anchor (a grapple), REEL THINGS in (pull a
+crate, a lever, a shield, an enemy), make a TIGHTROPE between two arrows, or go FISHING. A long-range cousin of the vine whip
+(the whip is close and quick; the rope arrow reaches far). Candidate: a temple ITEM (a later temple), or a bow upgrade. It reuses
+the whip's verlet rope and swing and the bow's aim and arc.
