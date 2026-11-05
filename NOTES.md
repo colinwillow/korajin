@@ -44,6 +44,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2540 -- DESERT REGION STEP 2a: REAL COLLIDERS ON THE GIANTS (his: "the big pyramids especially -- I want to climb and stand on them")
+- FOUND: none of the giants was solid. The `auto` COLL row only gathers meshes within 120 m of him when it builds, and skips any single mesh
+  over 400 m across -- the m2517 batches span the whole map. So the pyramids, obelisks and gate were drawn and nothing else.
+- NOW: before the batch merges them, each giant's SOLID stone (giant / gold / slab / mech / cliff / glyph / void / under materials; no ivy,
+  plants, glows, figures or dressing) is baked into ONE mesh per giant with an invisible material (`visible: false` = no draw call;
+  `userData.coll` = always solid), plus the field's natural arches and cavern; a new `desert` COLL row (ahead of `auto`, forced mesh,
+  region-wide) walks them. 66k triangles, 0 draws.
+- MEASURED in the real page: `COLL.zone` = desert, built, 60,139 kept triangles; dropped onto the great pyramid's lowest plate layer he
+  LANDS and stands (y 113.2, grounded). (The step-pyramid top and the gate lintel were still falling after 9 s at the headless page's
+  ~1 fps -- the open-sand control was too; same store, same rule.)
+- Still to come in step 2: the kit inventory and the missing pieces (dune pieces, canyon walls, valley rocks/hills, mountains, ascent
+  platforms) and a CLIMBING ROUTE up the great pyramid (its base tiers are 26 m walls; the plate layers are walkable slopes).
+- Draws/tris at the landing unchanged (the colliders draw nothing): 251k / 63. check + boulders boot pass. Shipped unverified.
+
 ## m2539 -- DESERT REGION STEP 1: THE PLAN (`DESERT_REGION.md` + a top-down map)
 His: plan the whole area first, then build and refine one piece at a time. `DESERT_REGION.md`: the organising plan (the landing at the
 centre, the processional axis north to the great pyramid = THE TEMPLE, eight sectors on the mandala's spokes from r 150 to r 1150, a
