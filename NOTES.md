@@ -45,6 +45,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2577 -- THE VINE WHIP pass 5: PULLS -- yank, rip shields, throw; crates, the lever, the prop shield, the combat ring's wave (VINEWHIP.md)
+On the combat worker's hooks: a lash at a BODY now YANKS it (`whipYank`): if it carries a shield (`d.sh`, arenaShieldMake) the shield is RIPPED
+off first -- it flies to him and drops, `d.sh` gone, `arenaStagger(d, .9)` -- otherwise a guard-breaking tug (`dummyBlow` at `yankPow` .65, over
+`ARENA.duel.breakAt`) and `bodyLaunch` TOWARD him (`yankV` 9, up 2.5; `bodyLaunch` itself keeps heavy bodies nearly still). A body yanked in the last
+1.5 s and within 3 m is THROWN by the next flick the way he flicks (`throwV` 14, up 5, 18 dmg). The lash STRIKE (nothing lit) is unchanged.
+SANDBOX: a crate slides to his feet (`crateV` 11 / mass, drag 2.2), stops 1.3 m short of him; a crate on a plate lights it (sparks, a ping), all three
+-> a chime + THE YARD IS SET; the lever flips; the prop shield tears free and tumbles; the combat ring's button drops `forest` wave 1 round it
+(4 s cooldown) to practise yank / rip / throw on real tuned enemies. Flying pieces are ballistic and bounce, gone after 6 s.
+Boot gate: a crate pulled 9 m slides, the lever flips, the prop shield rips. UNTESTED HEADLESS: the yank / rip / throw on real bodies (node loads no
+bodies) -- the lab or station F on the phone. Shipped unverified.
+
 ## m2576 -- THE VINE WHIP pass 4: ZIP / PULL-TO (VINEWHIP.md)
 A flick at a ZIP anchor (the gold-cored ones over the zip wall's ledges and the chain course's pillar) hangs him on the vine with `zip: 1`; the
 grapple pendulum then REELS: the vine shortens at `WHIP.zipV` 14 m/s while he is pulled along it (`zipA` 46 m/s^2, most of gravity cancelled, capped
