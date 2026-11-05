@@ -44,6 +44,12 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2563 -- the giant scorpions on the desert worker's open dune sea; the east small nest out of the village patch
+- `GSCORP.nests`: gsc_sea_e1 [420, 60], gsc_sea_e2 [560, -140], gsc_sea_w [-430, 80] (offsets from F.clear, open dune sea, 11 m+ clear).
+- The desert worker's new keep-out: the E axis r 200-380, theta 1.30-1.84 (the village worker's patch; theta = atan2(x, -z)). sc_sea_e
+  [330, 40] sat inside it (r 332, theta 1.69) -> [400, 140] (r 424, theta 1.91). Checked every nest: the others are outside both keep-outs.
+- `npm run check` ok. Shipped unverified.
+
 ## m2562 -- THE GREAT PYRAMID'S GRAND STAIR WALKS (his: "I have to HOP up each step") (Nov 5 2026)
 
 - **What was wrong (measured, not argued).** I stepped the shipped `groundAt` up the stair's centre line (placecheck's walkUp rule, his `MOVE.step`).
