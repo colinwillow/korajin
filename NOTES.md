@@ -44,6 +44,9 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## Loading-screen sun-wheel: all 16 rays (his: "it's almost symmetrical, but one side is missing a spoke")
+The boot card's SVG sun-wheel and the katana lock mark (`lockMkTex`) both skipped rays k=5 and k=12 on purpose ("worn"). He doesn't like it: both now draw all 16 rays (the long left ray with its cross-bar, the short lower-right ray). The ring's dash gaps are unchanged.
+
 ## m2549 -- DESERT REGION STEP 3b: VALLEYS, HILLS, BIG ROCKS, CANYON WALLS, THE MOUNTAIN RING
 - VALLEYS (`F.region.val`, `valleyH` in `sandH`): the forge's floor is y 0, so nothing may cut below it -- instead the SE and SW sectors rise
   into a PLATEAU (+16 m past r 300, ramped over 90 m) and a VALLEY meanders down through each to the sand's grade (46 m floor, 34 m walls,
