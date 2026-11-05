@@ -44425,7 +44425,7 @@ function stepVine(dt) { const p = player, S = p.vine, V = S.V; dt = Math.min(dt,
 // swung about his right axis toward where the swing is going (`kick` rad per m/s of swing speed, to `max`), the knees tucking on the BACK swing
 // (`tuck`), the spine arching the other way (`arch`), all eased (`half` s). The rope adds his HANDS on it: two-bone IK onto the rope line above his
 // head, one hand `hgap` above the other, elbows out. Hand-animated clips can replace it later (DOCKET).
-const PUMP = { on: 1, kick: .16, max: .95, tuck: .7, arch: .35, half: .08, barK: .55, whipK: 1.1, hgap: .22, k: 0, kn: 0 };     /* whipK: the vine whip's swing (VINEWHIP) */
+const PUMP = { on: 1, kick: .24, max: 1.15, tuck: 1.05, arch: .5, half: .08, barK: 1.25, whipK: 1.35, hgap: .22, k: 0, kn: 0 };     /* m2598 (his: "I can't see the pumping on the high bar"): kick .16->.24, max .95->1.15, tuck .7->1.05, arch .35->.5, barK .55->1.25 (the bar's w x R x .55 was ~15 deg of leg), whipK 1.1->1.35 */     /* whipK: the vine whip's swing (VINEWHIP) */
 const _ppQ = new THREE.Quaternion(), _ppQ2 = new THREE.Quaternion(), _ppA = new THREE.Vector3(), _ppT = new THREE.Vector3();
 function ppTurn(B, ax, ang) { if (!B || !ang) return; B.getWorldQuaternion(_ppQ); _ppQ2.setFromAxisAngle(ax, ang).multiply(_ppQ); B.parent.getWorldQuaternion(_ppQ).invert(); B.quaternion.copy(_ppQ.multiply(_ppQ2)); B.updateMatrixWorld(true); }
 function pumpPose(dt) { const p = player, Bn = rig.bones, WS = p.rope && p.rope.whip && p.rope.S ? p.rope.S : null; if (!PUMP.on || !Bn || !(p.vine || p.bar || WS)) { PUMP.k = PUMP.kn = 0; return; }

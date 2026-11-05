@@ -21,7 +21,7 @@ const br = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--enabl
 const pg = await br.newPage({ viewport: { width: 640, height: 640 }, deviceScaleFactor: 1 }); pg.on('pageerror', e => console.log('  pageerror', e.message));
 await pg.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=whip&entry=0`, { timeout: 120000 });
 await pg.waitForFunction(() => window.__shot && window.mel && mel.whipGo && mel.WHIPZ && mel.WHIPZ.on && document.getElementById('boot').classList.contains('gone'), null, { timeout: 240000, polling: 1000 });
-await pg.waitForTimeout(6000); await pg.evaluate(k => { window.__slow = k; }, +arg('slow', .125)); await pg.evaluate(() => mel.whipPick()); await pg.waitForTimeout(2500);
+await pg.waitForTimeout(6000); await pg.evaluate(([k, nr]) => { window.__slow = k; window.__near = nr; }, [+arg('slow', .125), +arg('near', 0)]); await pg.evaluate(() => mel.whipPick()); await pg.waitForTimeout(2500);
 // the setups: where he stands and what the flick takes (in the page; `A` = the sandbox's anchors, `Q` = its pullables)
 const SET = { lash: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const _ = p; p.pos.set(0, .3, 4); p.vel.set(0, 0, 0); return Math.PI; })()`,
   throw: `(() => { const p = mel.whipP; p.rope = null; p.whipCast = null; mel.WHIPZ.slow = +(window.__slow || 1); (() => {})(); const __ = 0, k = mel.WHIP.anchors.find(a => a.id === 'B_knot1'); p.pos.set(32.04, 8, -18.5); p.vel.set(0, 0, 0); return Math.atan2(k.x - p.pos.x, k.z - p.pos.z); })()`,
@@ -34,7 +34,7 @@ for (const row of ROWS) { const h = await pg.evaluate(SET[row]); await pg.waitFo
   const t0 = Date.now(); if (row === 'charge') await pg.evaluate(() => { mel.WHIP.holdSim = 1; }); else await pg.evaluate(hh => mel.whipGo(hh), h2); if (row === 'swing') await pg.waitForTimeout(700);
   const frames = []; for (let k = 0; k < N; k++) {
     frames.push(await pg.evaluate(([hh, W, H]) => { const { renderer, scene, camera } = window.__shot, p = mel.whipP.pos, fx = Math.sin(hh), fz = Math.cos(hh);
-      const c = camera.clone(); c.aspect = 1; c.fov = 45; c.updateProjectionMatrix(); c.position.set(p.x - fz * 4.6 - fx * 1.2, p.y + 1.6, p.z + fx * 4.6 - fz * 1.2); c.lookAt(p.x + fx * 1.2, p.y + 1.15, p.z + fz * 1.2);
+      const c = camera.clone(); c.aspect = 1; c.fov = 45; c.updateProjectionMatrix(); const near = window.__near ? .6 : 1; c.position.set(p.x - fz * 4.6 * near - fx * 1.2, p.y + 1.6, p.z + fx * 4.6 * near - fz * 1.2); c.lookAt(p.x + fx * 1.2 * near, p.y + 1.15, p.z + fz * 1.2 * near);
       renderer.render(scene, c); const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
       const src = renderer.domElement, s = Math.min(src.width, src.height); cv.getContext('2d').drawImage(src, (src.width - s) / 2, (src.height - s) / 2, s, s, 0, 0, W, H); return cv.toDataURL('image/jpeg', .85); }, [h2, W, H]));
     frames[frames.length - 1] = { url: frames[frames.length - 1], t: Date.now() - t0 }; if (row === 'charge' && k === 5) await pg.evaluate(() => { mel.WHIP.holdSim = 0; }); await pg.waitForTimeout(DT); }
