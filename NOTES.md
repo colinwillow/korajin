@@ -53,6 +53,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2628 -- UNDERWATER DETAIL B: rounded, layered, mossy rocks; a seabed with sand ripples, pebbles, shells and debris (Nov 5 2026)
+- **Rocks:** smooth spheres pushed by three octaves of noise, flattened underneath and squashed, with STRATA (terraced bands) and MOSS (vertex
+  colour where they face up), rock texture over them; two shapes -- 24 big ones at detail 3, the rest at detail 1 (smooth normals, no facets).
+- **Sand ripples** in the seabed shading (the lake bed's under-water patch): long crests on the flat, broken by low-frequency wander.
+- **Pebbles** (650, smooth, lying flat on the slope's normal), **shells** (140: a ridged scallop and a spiral whelk, pale pinks / lilacs /
+  blues) and **debris** (60 broken glyph tiles near the shrine) -- one instanced draw each, denser toward the shrine.
+- Cost: +5 draws (rocks x2, pebbles, scallops, whelks, debris = 6 vs the old 1), ~60k tris. Close renders:
+  images/feedback/m2586/uw_detailB_seabed.jpg (the scallop's ridges were too fine for its segments -- 40 segments, 9 deep ridges after). Shipped unverified.
+
 ## m2627 -- THE INTERACTIONS KIT pass 2: the HEAVY DOOR (INTERACT.md)
 A stone slab in a new doorway in the sandbox court's back wall (jambs, a lintel, an alcove behind with a glowing orb on a plinth), a row:
 `{ id: 'door_heavy', kind: 'door', at, face: 'auto', w, h, d, swing (deg), hinge }`. Tap PUSH: he walks up, his palms go onto the stone (two markers
