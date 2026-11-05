@@ -44,6 +44,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2534 -- THE DESERT'S DAY SKY, PAINTED (his: "the sand world looks plain by DAY -- no HDR, no beautiful sky; the sky is a huge part of the frame")
+- The boulders zone already painted its own equirect (`F.sky`, m2458) as the background AND the PMREM light -- a gradient, mesas and a sun
+  at ~4 px a degree. `F.sky.day` now upscales it x2 (3072 x 1536) and BRUSHES at that resolution:
+  a big hazy SUN BLOOM (three radial layers), 46 WISPY CLOUDS of 40-90 soft dabs each (warm tops, a few cool undersides, stretched along
+  the dome), a huge pale RINGED PLANET up past the great pyramid (banded, lit toward the sun, its ring passing behind and in front),
+  seven FLOATING ISLANDS hazed near the horizon (two with a stepped SKY-TEMPLE and spire), three faint JINRA STREAKS high up.
+  Every shape is stretched 1/cos(elevation) sideways so it reads round on the dome.
+- It is still the zone's environment map, so the gold pyramid and the stone take the warm sky in reflection and fill (no new light).
+  SCOPED: only `bouldMake`'s painter changed; NIGHT is untouched -- `bouldSky` already fades this background out by `nightF` and hands
+  the dark to the night sky, so dusk and stars are as they were.
+- Looked at: up the axis at noon (planet, clouds, streak, islands), behind him, the play camera. First clouds were broad smears -> smaller,
+  more numerous, fainter dabs. A faint fine dot pattern in the renders is SwiftShader's, not the texture's (it is in older renders too).
+  check + boulders boot pass. Shipped unverified.
+
 ## m2533 -- THE PHASE SHIFT BLINKS MID-FLIP (his: "my momentum STOPS on the blink. Each phase flick plays the SAME flip it plays with PHASE off; MID-FLIP,
    at about the top of the rotation, he vanishes into the portal, reappears at the destination still in that flip, and FINISHES it there")
 - The phase NO LONGER OWNS THE BODY (`stepPhase` is gone). `phaseGo` runs the ordinary flip -- `cartGo` on the ground (side flips, the back flip,
