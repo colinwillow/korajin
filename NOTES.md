@@ -47,6 +47,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## PHASE button moved to the top of TOOLS > MOVE
 He could not find TOOLS > PHASE ("there's like 100 buttons in there"). It sat after CARTWHEEL under the CAMERA heading. It is now the first button under MOVE. No behaviour change.
 
+## m2507 -- THE PHASE SHIFT'S CAMERA (his, on m2503/m2504: "it isn't interesting" -- the camera locked to him, so a blink does not read as a teleport)
+- His ask: for a LEFT flick the camera eases LEFT first (a beat ahead) so he sits on the RIGHT of the screen, he dashes across to the left, and
+  the camera eases slowly back until he is centred; mirrored for right, forward for ahead, backward for back.
+- ONE WRITER: an OFFSET on the look point (`PHASE.camO`), added to `cam.tgt` inside `stepCam` right after the bow's drop -- nothing else writes
+  the camera. `phaseGo` leaves the blink's vector (`PHASE.cam`); while he has not gone the offset eases to `lead` .5 of it (`leadHL` .05 s); the
+  frame he jumps, `stepPhase` leaves `PHASE.camShift` and `stepCam` takes the jump back off the offset, so the look point does not move and he
+  crosses the frame; then it eases home (`backHL` .35 s). Lock-on (`cam.az`) and SMART CAM (el / dist / dither) are untouched and compose.
+- The crossing reads wider: `dist` 4.5 -> 7 m; the beat before he goes is longer so the lead is seen (`tOut` .1 -> .16, `tIn` .2 -> .24,
+  `T` .38 -> .42). `npm run check` ok. Shipped unverified.
+
 ## m2506 -- ARCHITECTURE PASS 2: OVERGROWTH -- IVY CURTAINS, MOSS OVER THE LIPS, A GREEN RING AT THE FEET (his: "vines, lots of ivy, almost a green bowl")
 - DKLIB `ivy` (a vine that HUGS a face: down-slope direction, face normal, side-to-side wander, thinning, a droop off the face; leaf
   clusters of two crossed cards, overlapping, darker at the top of each leaf), `curtain` (2-4 vines fanned from one anchor plus a lumpy
