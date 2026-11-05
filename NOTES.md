@@ -44,6 +44,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2568 -- THE VINE WHIP: his pick (via main: "only if it's done well") -> VINEWHIP.md, a sandbox FIRST; the Forest Temple's flow re-planned round it (docs)
+- VINEWHIP.md: vision, his "done well" list (a fast readable verlet lash that curls and snaps; a lock glow on anchors before the flick; SWING with
+  momentum, a flip on release, chained swings; ZIP / pull-to; PULL crates, levers, shields, small enemies; a lash strike + grab-and-throw), the
+  controls on the existing map (right-pad FLICK = the lash: latch the lit target, or strike; TAP = let go), the sandbox's six stations
+  (`?w=forge&zone=whip`), six passes, DONE WHEN ending in his phone. Built on the grapple's existing pendulum (GRING / `ropeThrow`).
+- FOREST_TEMPLE.md "THE FLOW" re-planned: the Thornback guards the WHIP; the nursery's only way out is swinging (its zip anchor is the loop-back);
+  the terrace tests PULLS under fire; the twist pulls down a root DAM so the fall diverts and the water drains; the Hollow Banyan's stuck root-hands
+  are pulled down and its heart armour lashed off. The SEED ARROW stays in the doc as a later upgrade / another temple's item. Diagrams re-rendered
+  (`npm run ftplan`). No game change. Shipped unverified.
+
 ## m2567 -- DESERT REGION STEP 5, ZONE 1: THE SKY ASCENT (pass 1) (Nov 5 2026)
 
 The plan's first zone (DESERT_REGION.md: NE, +20 to +140 m in six stages, hop / wall-run / ledge, a sky platform at the top).
@@ -62,7 +72,6 @@ The plan's first zone (DESERT_REGION.md: NE, +20 to +140 m in six stages, hop / 
 - **Boot gate:** 6 stages, the top at +140, and no stone-to-stone rise past 2.5 m.
 - Still open (pass 2): ledges to hang from and a wall-run gap that NEEDS the face. Right now every hop can be made with a plain jump. The top does not look
   DOWN on the temple (the great pyramid is ~230 m at ×2, and the top is +140). It wants an ENTRY row once Colin signs the route. No Tripo set pieces yet.
-
 ## m2566 -- FOREST TEMPLE: the acrobatic room's glowing floor shards were Z-FIGHTING (his m2563 screenshot, images/feedback/m2563/acro_glow_zfight.png)
 His: cyan Jinra lines and seams on the floor break into flickering dashed shards entering the acrobatic room. CAUSE (mine, m2495): the room's ROSETTE
 crosses the processional AVENUE, and both topped out at 4 cm -- the rosette's spokes (the `carve` material, whose night-glow cracks are the cyan

@@ -14,19 +14,19 @@ const ROOMS = [
   ['well', '2 THE WELL (HUB)', 'hub', 'L3-L0', [0, 1], [0, 36], 'the spine: ledges down, doors on every level, the waterfall'],
   ['acro', '3 ACROBATIC ROOM', 'trav', 'L1-L2', [-1, 2], [0, 0], 'wall run, bars, rope, slab, archers + scrap -> SMALL KEY 1'],
   ['root', '4 ROOT GALLERY', 'puzzle', 'L1-L2', [1, 2], [-42, 36], 'K1 door; root-bound blocks + arrow switches -> SMALL KEY 2; a floor crack down'],
-  ['heart', '5 THE ROOT HEART', 'combat', 'L0', [1, 3], [-42, 36], 'MID-BOSS: the THORNBACK (burrower) -> THE ITEM: JINRA SEEDS'],
-  ['nurs', '6 SEED NURSERY', 'teach', 'L0', [0, 3], [-22, 36], 'TEACH: safe; the only way out is a planted mushroom + a grown vine'],
+  ['heart', '5 THE ROOT HEART', 'combat', 'L0', [1, 3], [-42, 36], 'MID-BOSS: the THORNBACK (burrower) -> THE ITEM: THE VINE WHIP'],
+  ['nurs', '6 SEED NURSERY', 'teach', 'L0', [0, 3], [-22, 36], 'TEACH: safe; the only way out is SWINGING (knots over a pit, a zip to the rim)'],
   ['court', '7 THE SUNKEN COURT', 'trav', 'L1-L3', [-1, 4], [46, 36], 'K2 gate; open to the sky; a long water channel; the shrine standing in it'],
-  ['thorn', '8 TERRACE OF THORNS', 'teach', 'L2', [-2, 5], [46, 14], 'TEST: archers on ledges only seeds reach; burrowers -> SMALL KEY 3'],
-  ['fall', '9 THE FALL GALLERY', 'puzzle', 'L2', [0, 5], [-8, 36], 'K3 door; TWIST: seed the waterfall\'s lip -> vines choke it -> the pools drain'],
-  ['shrine', '10 THE SHRINE', 'puzzle', 'L1-L3', [-1, 6], [46, 36], 'its door was under the channel; grow vines up its core -> THE CHALICE (boss key)'],
+  ['thorn', '8 TERRACE OF THORNS', 'teach', 'L2', [-2, 5], [46, 14], 'TEST: PULLS -- shields off, archers yanked off ledges, crates onto plates -> SMALL KEY 3'],
+  ['fall', '9 THE FALL GALLERY', 'puzzle', 'L2', [0, 5], [-8, 36], 'K3 door; TWIST: whip the root DAM at the lip and pull it down -> the fall diverts -> the pools drain'],
+  ['shrine', '10 THE SHRINE', 'puzzle', 'L1-L3', [-1, 6], [46, 36], 'its door was under the channel; swing / zip up its hollow core -> THE CHALICE (boss key)'],
   ['gaunt', '11 STATUE GAUNTLET', 'combat', 'L3', [-1, 7], [46, 58], 'the chalice wakes the stone guardians; escape over the ROCK BRIDGE'],
-  ['boss', '12 THE HOLLOW BANYAN', 'boss', 'L0', [0, 8], [0, 36], 'BOSS (with the seeds) under the well; the stolen one inside; the JINRA STONE'] ];
+  ['boss', '12 THE HOLLOW BANYAN', 'boss', 'L0', [0, 8], [0, 36], 'BOSS (with the whip): pull its root-hands down, yank its heart armour off; the stolen one; the JINRA STONE'] ];
 // THE EDGES: from, to, kind ('open' | 'key1'..'key3' | 'item' | 'boss' | 'short' (a shortcut / loop-back) | 'oneway'), label
 const EDGES = [
   ['hall', 'well', 'open', 'walk to the lip'], ['well', 'acro', 'open', 'ledges down, the arch'], ['acro', 'well', 'short', 'zip down'],
-  ['well', 'root', 'key1', 'K1'], ['root', 'heart', 'oneway', 'drop through the crack'], ['heart', 'nurs', 'item', 'SEEDS'],
-  ['nurs', 'well', 'short', 'mushroom bounce L1 -> L3'], ['well', 'court', 'key2', 'K2'], ['court', 'thorn', 'item', 'seeds reach'],
+  ['well', 'root', 'key1', 'K1'], ['root', 'heart', 'oneway', 'drop through the crack'], ['heart', 'nurs', 'item', 'THE WHIP'],
+  ['nurs', 'well', 'short', 'a zip anchor: L1 -> L3'], ['well', 'court', 'key2', 'K2'], ['court', 'thorn', 'item', 'whip pulls'],
   ['thorn', 'fall', 'key3', 'K3'], ['fall', 'court', 'item', 'the channel drains'], ['court', 'shrine', 'open', ''],
   ['shrine', 'gaunt', 'open', 'take the chalice'], ['gaunt', 'hall', 'short', 'the rock bridge (L3)'], ['well', 'boss', 'boss', 'CHALICE (the drained pool\'s stair)'] ];
 const PACE = [['rest', 'hall', 2], ['trav', 'well', 3], ['trav', 'acro', 7], ['combat', 'scrap', 3], ['puzzle', 'root', 6], ['combat', 'mid-boss', 5], ['teach', 'teach', 3], ['rest', 'nursery', 1],
@@ -47,7 +47,7 @@ function graph() { const W = 1500, H = 1290, cx = c => 750 + c * 300, cy = r => 
   for (const R of ROOMS) { const x = cx(R[4][0]) - bw / 2, y = cy(R[4][1]) - 9; s += `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="12" fill="#152523" stroke="${K[R[2]]}" stroke-width="3"/>`;
     s += `<text x="${x + 12}" y="${y + 24}" fill="${K[R[2]]}" font-size="16" font-weight="700">${esc(R[1])}</text><text x="${x + bw - 12}" y="${y + 24}" fill="#cde" font-size="12" text-anchor="end">${R[3]}</text>`;
     const words = R[6].split(' '); let line = '', ly = y + 43; for (const w of words) { if ((line + ' ' + w).length > 34) { s += `<text x="${x + 12}" y="${ly}" fill="#dfe" font-size="12">${esc(line)}</text>`; ly += 15; line = w; } else line = line ? line + ' ' + w : w; } s += `<text x="${x + 12}" y="${ly}" fill="#dfe" font-size="12">${esc(line)}</text>`; }
-  const leg = [['open', 'open way'], ['key1', 'SMALL KEY door'], ['item', 'needs THE ITEM (seeds)'], ['boss', 'BOSS door (the chalice)'], ['short', 'SHORTCUT / loop-back'], ['oneway', 'one-way drop']];
+  const leg = [['open', 'open way'], ['key1', 'SMALL KEY door'], ['item', 'needs THE ITEM (the whip)'], ['boss', 'BOSS door (the chalice)'], ['short', 'SHORTCUT / loop-back'], ['oneway', 'one-way drop']];
   leg.forEach(([k, t], i) => { s += `<line x1="${30 + i * 245}" y1="${H - 30}" x2="${70 + i * 245}" y2="${H - 30}" stroke="${ec[k]}" stroke-width="4" ${k === 'short' ? 'stroke-dasharray="9 6"' : ''}/><text x="${78 + i * 245}" y="${H - 25}" fill="#dfe" font-size="14">${t}</text>`; });
   return s + '</svg>'; }
 // --- 2. THE SECTIONS (W-E and S-N through the well; the four levels)

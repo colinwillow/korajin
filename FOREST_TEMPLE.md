@@ -36,17 +36,13 @@ sections, four levels), `ftemple_plan.png` (the mandala), `ftemple_pacing.png`.
 
 ### The idea in one line
 **The temple is a mandala you spiral DOWN into: the WELL is the hub at its centre, four wings sit on the cardinal axes, and the forest's power --
-growing things -- is what finally drains the water and opens the floor to the boss beneath the well.**
+the VINE WHIP -- is what pulls down the dam, drains the water and opens the floor to the boss beneath the well.**
 
-### The new ability: JINRA SEEDS (proposed -- his call; the alternative is below)
-The forest region's verb is GROW (WORLD_PLAN 2: the giant realm, mushrooms to bounce on, vines). The temple item is a quiver of **Jinra seeds**, shot
-with the BOW he already has (one more arrow type: no new control). A seed that lands in **living soil** (glowing moss patches, root sockets, cracks
-with roots in them) GROWS what that spot holds:
-- a **GIANT MUSHROOM** (a bounce pad: up 8-10 m -- past any comfy double jump, so it opens new heights);
-- a **VINE** up a cracked wall (a climbable face -- the vertical wall run's surface, never a ladder);
-- a **ROOT** that heaves (lifts a slab, cracks a sealed floor, pins something heavy).
-In a fight: a mushroom under an enemy LAUNCHES it; a vine at an archer's ledge is your way up to it. Alternative if he prefers: the **VINE WHIP**
-(a grapple to the existing grapple rings + a pull: rip shields, yank switches and platforms) -- same rooms, the sockets become rings.
+### The new ability: THE VINE WHIP (his pick, Nov 5: "only if it's done well" -- built FIRST as its own sandbox, VINEWHIP.md)
+A living Jinra vine: it LASHES (a fast verlet vine that curls and snaps), latches glowing ANCHORS (root knots, Jinra flowers, bronze rings) to
+SWING and chain, ZIPS him to a ledge, and PULLS the world: crates, levers, shields off enemies, small enemies into reach (then thrown). The
+temple builds on it only after his sign-off on the sandbox (WHOLE-PIECE RULE).
+*Kept for later (another temple, or an upgrade): the SEED ARROW -- a seed shot into living soil grows a bounce mushroom / a vine / a heaving root.*
 
 ### The rooms (12) and the keys
 | # | room | level | kind | what happens | gives |
@@ -55,17 +51,17 @@ In a fight: a mushroom under an enemy LAUNCHES it; a vine at an archer's ledge i
 | 2 | THE WELL (built, grows) | L3 -> L0 | hub | the spine: ledges spiral down; a door on every level and axis (one locked at a time); the waterfall; its floor is a POOL with a sealed stair under it | -- |
 | 3 | ACROBATIC ROOM (built) | L1-L2 | traversal + combat | the climb under archer fire, the gallery scrap, the button, the last fight | SMALL KEY 1 |
 | 4 | ROOT GALLERY | L1-L2 west | puzzle | K1 door. Root-bound stone blocks to push onto plates, arrow switches high up, a gallery of guardian reliefs whose eyes give the order; ends at a floor CRACK | SMALL KEY 2 |
-| 5 | THE ROOT HEART | L0 west | combat | drop through the crack (one-way): MID-BOSS, the THORNBACK (a burrower: it surfaces under you; hit it as it breaches) | THE ITEM (seeds) |
-| 6 | SEED NURSERY | L0 | TEACH | a safe walled garden under the well, no way out but UP: shoot a seed into the moss -> a mushroom -> bounce to a ledge; seed the cracked wall -> a vine -> climb out into the well at L1. That mushroom STAYS: **the loop-back** (well foot -> L3 in one bounce) | shortcut |
+| 5 | THE ROOT HEART | L0 west | combat | drop through the crack (one-way): MID-BOSS, the THORNBACK (a burrower: it surfaces under you; hit it as it breaches) | THE VINE WHIP |
+| 6 | THE NURSERY | L0 | TEACH | a safe walled garden under the well, no way out but SWINGING: knots over a pit (swing, then chain two), then a ZIP anchor on the rim lifts him into the well at L1. A zip anchor at the well's foot STAYS: **the loop-back** (well foot -> L3 in one pull) | shortcut |
 | 7 | THE SUNKEN COURT | L1-L3 east | traversal | K2 gate. Kailasa: a court cut 33 m down into the rock, open to the sky, three storeys of cloister galleries, a long WATER CHANNEL on its axis, the SHRINE standing in the middle -- its door is under the channel's water | -- |
-| 8 | TERRACE OF THORNS | L2 east | TEST | the court's upper cloister: archers on ledges only seeds reach (a mushroom to bounce up, a vine to climb), burrowers in soft soil, a mushroom launch to clear a crowd | SMALL KEY 3 |
-| 9 | THE FALL GALLERY | L2, in the well | TWIST | K3 door, behind the waterfall. The fall comes from a crack crowded with roots: shoot a seed into its lip from below -> roots CHOKE the fall -> the well's pool and the court's channel DRAIN (one water system: the twist uses the item on the WORLD, not a socket) | the way down |
-| 10 | THE SHRINE | L1-L3 east | puzzle-traversal | its door was under the channel; inside, a hollow core: grow vines and mushrooms up it to the top chamber | THE CHALICE (boss key) |
+| 8 | TERRACE OF THORNS | L2 east | TEST | the court's upper cloister, PULLS under fire: rip the shields off a shield line, yank the archers off their ledges, pull crates onto the plates while they shoot, swing between the cloister's anchors to reach the key | SMALL KEY 3 |
+| 9 | THE FALL GALLERY | L2, in the well | TWIST | K3 door, behind the waterfall. A ROOT DAM holds back a second channel at the lip: lash it and PULL it down -> the fall DIVERTS away from the well -> the well's pool and the court's channel DRAIN (one water system: the twist pulls on the WORLD, not on a box) | the way down |
+| 10 | THE SHRINE | L1-L3 east | puzzle-traversal | its door was under the channel; inside, a hollow core: swing and zip up its anchors, pull its stone counterweights to raise the floors | THE CHALICE (boss key) |
 | 11 | STATUE GAUNTLET | L3 east | combat | taking the chalice wakes the stone guardians in the cloisters (STATUES.md: an event, never proximity); run the ROCK BRIDGE (L3) back to the hall level -- a shortcut home | checkpoint |
-| 12 | THE HOLLOW BANYAN | L0 under the well | BOSS | the drained pool shows the stair; the chalice opens the boss door. A root colossus in a round undercroft with a rim: it slams a root-hand that STICKS; seed the stuck hand -> vines PIN it; run up the arm; strike the corrupted Jinra heart; 3 cycles, faster, burrowers in phase 2, the floor flooding in phase 3. Inside it: a STOLEN ONE (a villager turned to stone) | the JINRA STONE (GET moment) + the stolen one |
+| 12 | THE HOLLOW BANYAN | L0 under the well | BOSS | the drained pool shows the stair; the chalice opens the boss door. A root colossus in a round undercroft with a rim: it slams a root-hand that STICKS; WHIP the hand's knot and PULL it down flat -> run up the arm -> lash the armour plates off its heart -> strike the corrupted Jinra heart; 3 cycles, faster; phase 2 swings it up into the roots (swing between hanging knots to reach it), phase 3 the floor floods. Inside it: a STOLEN ONE (a villager turned to stone) | the JINRA STONE (GET moment) + the stolen one |
 
-**Keys:** 3 small keys + the chalice; exactly one locked door is ever available. **Shortcuts:** the acrobatic zip (built), the nursery mushroom
-(well foot -> L3), the root gallery's crack (one-way down), the rock bridge (court -> hall), and after the boss a GEYSER up the well to the hall.
+**Keys:** 3 small keys + the chalice; exactly one locked door is ever available. **Shortcuts:** the acrobatic zip (built), the nursery's zip
+anchor (well foot -> L3), the root gallery's crack (one-way down), the rock bridge (court -> hall), and after the boss a GEYSER up the well to the hall.
 **Hidden (3):** behind the waterfall before it is choked; atop the acrobatic room's cut opening (a long-jump off the top balcony); at the bottom of
 the court's channel once drained.
 
@@ -82,7 +78,7 @@ rest -> traversal -> traversal + combat -> puzzle -> combat (mid-boss) -> TEACH 
 ### Build order (track B: one room a build, each refined until it is fun; track A, the detail / paint / plant passes, interleaves)
 1. the acrobatic room's fixes above + SMALL KEY 1 + the key / lock / chest system (`FTEMPLE.keys`, a door row that eats a key);
 2. the well as hub (doors on its levels and axes, the pool and its sealed stair);
-3. the root gallery (K1 -> K2); 4. the root heart + the Thornback stand-in + the SEEDS (an arrow type + soil sockets + mushroom / vine / root);
+3. the root gallery (K1 -> K2); 4. the root heart + the Thornback stand-in + the WHIP pickup (the whip itself is VINEWHIP.md's sandbox, signed off FIRST);
 5. the nursery (teach + the loop-back); 6. the sunken court + the shrine shell; 7. the terrace of thorns (test, K3);
 8. the fall gallery + the drain (twist); 9. the shrine climb + the chalice; 10. the statue gauntlet + the bridge;
 11. the boss: the Hollow Banyan (COMBAT.md boss knobs; `combatBoss` if a set boss fits, else its own); 12. the GET moment + the geyser out.
