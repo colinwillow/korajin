@@ -56,6 +56,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2663 -- UNDERWATER DETAIL C: organic plant forms -- mushroom corals, trumpets, anemones, layered fans (his: "no flat spikes") (Nov 5 2026)
+After his two reference paintings (images/feedback/m2586/ref_underwater_a/b.png):
+- **MUSHROOM-CAP CORALS** (`shroom`, replaces the crystal spikes): 2-3 caps on curving stems, ruffled rims, the GILLS underneath alight.
+- **TRUMPETS** (`trumpet`): three curving stems each ending in a flared bell whose mouth glows.
+- **ANEMONES** (`anemone`, replaces the tube clusters): 22 curving, tapered tentacles off a base, the tips alight.
+- **FANS:** three ruffled, cupped lobes with glowing rims (was one flat half-disc).
+- All on the flora's one material recipe (coral skin triplanar, glow by `aG`), each kind one instanced draw with the budget's LOD (30-42 m) and
+  dissolve. Draw-neutral by trading: the life's separate weed / glow-pod draws and the old fish schools (the lantern fish and the murmuration
+  carry those) and the comb jellies are off (`UWLIFE.weedOff/fishOff`, `UWFAUNA.comb.off` -- switches, not deletions).
+- Measured: 67-74 calls, 209-239k tris by view (incl. ~18 calls that are not underwater content). Close renders:
+  images/feedback/m2586/uw_detailC_flora.jpg. Next: DETAIL D (creatures). Shipped unverified.
+
 ## m2662 -- HIS PLAYTEST FIXES on the Interactions Kit: the lever's hands REACH, the weapon goes away first, the lens sits off to the side, AGED BRONZE, and a NEW INTERACT CUE (Nov 5 2026)
 **The real reason no IK pose had worked since m2647:** the frame line that calls `smearStep`, the lotus, `gdnSleepPose`, `ikitPose` and
 `getPose` had a `// m2647: after every hand fix ...` comment dropped mid-line, which ate the rest of the line -- **the katana smear, the lotus hands,
