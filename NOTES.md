@@ -44,6 +44,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2527 -- THE LAKE, DETAIL PASS 5: OBELISKS, PINES, SHORELINE ROCKS (WATER.md)
+His Nov 5 series, item 5: *"scenery -- obelisks in and around the water with foam where they meet the surface, trees, shoreline, rocks."*
+- **`W.obelisks` (8 rows):**
+  - Four stand IN the lake (reach pair, south, a broken one whose top lies on the bed beside it). Each foot is pushed into `W.stacks` as a `leg`,
+    so it gets the foam ring (now boosted for legs, w < .5, which arch feet share), the turquoise skirt, and boat and player collision.
+  - One sits on the west beach and one on an east ledge, each on a stepped plinth set into the ground; one stands on the west rim; one hangs in the
+    air over the boat lane at 46 m. That is four heights (VERTICALITY).
+  - Pale painted stone with CARVED glyph columns (new `lkPaint` option `carve`), a wet algae line at the water (`wet`), two gold bands and a gold
+    pyramidion.
+  - ONE stone draw and ONE gold draw for all eight (472 tris). Night runes go through `L.mats.obelisk` in `lakeNightGlow`.
+  - Scale first went in at 24 m and read as twigs against 100 m bluffs; now 18-46 m.
+- **`W.pines` (8):** Japanese black pines (S-curved trunk, tiered branches, flat cloud pads paler on top) on ledges, rims, two beaches and islet_b.
+  They go into the SAME bark and canopy meshes as the cherries (no new draws), and add no petals.
+- **`W.shoreRocks`:** 318 lumpy rocks in clusters along both waterlines, half in the water so the shore foam laps them. ONE instanced draw, painted.
+- New shots `obelisks` and `ob_close`. Strip: calls <=39 (was 36), tris 343k (was 306k, mostly pines and rocks).
+- No WATER.md box ticks; this is detail on the open "the place" box. Shipped unverified.
+
 ## m2525 -- THE GREAT PYRAMID IN GOLD (his: "the classical pyramid textures are fine, but what if we did more like the gold, crazy one from the reference")
 - New `gold` stone (DKLIB): the wall map tinted warm gold, METALNESS .62 / roughness .34 (it gleams in the sky's light), and gold-glowing
   ENGRAVED RUNES over every face (`runes` [2.6, 3.4] -- the procedural script from m2518, its strokes lit amber, .55 by day -> 2.15 at night).
