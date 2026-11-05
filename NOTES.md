@@ -46,6 +46,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2599 -- UNDERWATER ART C: MAJESTY -- the leviathan, a murmuration round him, a jelly field pulsing in a wave, light columns, floating ruins (Nov 5 2026)
+`UWMAJ` (SC_UWMAJ markers), `uwMajMake` / `uwMajStep`; only while the lens is under near the bowl.
+- **THE LEVIATHAN:** a 30 m Jinra whale (tapered body, flukes, pectoral fins, glowing eyes and flank lines) undulating along a slow loop -- the
+  largest circle round the bowl with water 13 m deep all the way, searched off the bed (measured: R 50 m at y -8) -- fogged at 40 % (its own
+  `uwApplyFar`) so it reads as a far silhouette through the water.
+- **THE MURMURATION:** 220 glowing fish (cyan / lime / amber) swirling round HIM on tilted, breathing rings -- all on the GPU (an instanced
+  geometry; each fish's ring, height, phase and speed in an attribute); they gather once he is deeper than 6 m and drift off as he rises.
+- **THE JELLY FIELD:** 60 jellies over the ledge, violet at the heart and magenta round it, pulsing in a WAVE rolling out from the field's centre.
+- **THE LIGHT COLUMNS:** three columns (2.6 / 1.1 / .8 m) rising 44 m from the well toward the surface, banded and drifting, Jinra and violet,
+  with 260 motes climbing them.
+- **THE FLOATING RUINS:** seven broken blocks hovering 14-28 m deep round the shrine, bobbing and turning slowly, Jinra light in their seams.
+- Cost (measured): +9 draws, ~21k tris; per frame 1 + 7 + 14 matrices. Render (images/feedback/m2586/uw_artC_render.jpg): the columns over the
+  shrine, the whale passing, the field and the ruins round him at 20 m. Jelly field dimmed after the render (it washed white). Next: ART D
+  (marine snow, plankton swirling in his wake). Shipped unverified.
+
 ## m2598 -- THE SWING PUMP made visible (his: "I can't see the pumping on the HIGH BAR") -- the bar's and the vine whip's
 The pump (m1883 `PUMP` / `pumpPose`) is one code path for the high bar, the gym's swing rope and (m2597) the whip's vine. On the BAR its input is the
 bar's angular speed x radius x `barK` .55 -- about 15 deg of leg at a full swing, which is why he could not see it. Raised: `barK` .55 -> 1.25,
