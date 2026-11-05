@@ -53,6 +53,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2615 -- THE LAKE REGION: THE PLAN (LAKE_REGION.md + the map)
+His (relayed, Nov 5): *"There's nowhere really to go in the lake. It needs more entry and more stuff going on, places to go, people to see."* Do it like
+the desert: plan, kit, then one sub-region at a time.
+- `LAKE_REGION.md`:
+  - THE AXIS: the canyon's centreline, a long canyon and not a disc, so an axis and not a mandala. The deep basin is the centre; a lantern-buoy ring
+    sits on r 64.
+  - Three sub-regions at the golden-ratio points z +-396 (640/phi): **LOTUS HARBOUR** (the village; a round bay R 175 with a mandala village,
+    stilts, floating houses, cliff dwellings +20..+60) south; **WILD REACH** (nature: the grotto behind the falls, reeds, a rope bridge at +70)
+    north; the **SKY HARBOUR** (+60..+220, the six existing islets become its moorings) stacked OVER the centre.
+  - Channels out: north to the forest, south to the desert, east to the ocean later. Entries: the portal slam on the harbour plaza, by boat up
+    the south river, the cliff stair.
+  - The kit list (including flying boats and houseboats), the order of work, and the budget (<= 70 / 280k WITH shadows).
+- `tools/lakeplan.py` draws the plan from the game's own canyon formulas -> `images/plan/lake_region_plan.png`. The new strip shot `top_plan` gives
+  the "now" view (`images/plan/lake_region_now_top.jpg`, contrast-stretched, because the haze washes out a 1750 m view).
+- **Found while planning:** the lake is ALREADY over budget: 39 draws / 343k tris in the strip WITHOUT shadows. So step 0 is perf, before the kit.
+- Nothing in the game changed but one strip shot. Waiting on his reaction to the plan.
+
 ## m2614 -- HIS CORRECTIONS: the idle keeps its lean (ROLL only); the sheath's decorated face OUT and pressed on; the quiver and sheath cross in an X; TOOLS > SWORD CARRY: BACK / HIP (Nov 5 2026)
 His (images/feedback/m2612/): *"I hate it straight up -- I liked the direction the sword pointed; only the TWIST about its own axis was wrong"*;
 *"the glowing side of the sheath faces IN; it should face OUT, and it sits away from his body -- strap it ON"*; *"overlap them, cross them at opposite
