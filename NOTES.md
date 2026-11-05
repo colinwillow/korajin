@@ -47,6 +47,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2607 -- UNDERWATER: GRUMBO GLOWS IN THE DEEP (his, via the orchestrator); the white wash found and fixed (Nov 5 2026)
+His: *"Grumbo should GLOW underwater -- the parts that glow at night... brighter the deeper he goes, with a soft halo... tie it into nightGlow (no
+second writer)."*
+- `heroGlowStep` (the ONE writer of his glow) now takes `nf = max(nightF(), uwGlowF())` and its rest target also takes `uwGlowF() x uwK`.
+  `uwGlowF` is the deep's factor: 0 above 12 m, rising to .5 by 40 m (`UWATER.look.heroGlow`), times the eased under-water look.
+- A soft additive HALO round him (`uwHaloStep`: one point sprite at his chest, the Jinra hue, by the same factor; depth-tested so his body
+  stays in front).
+- **Measured, not guessed, in renders:** at the first numbers (.5 -> 1.35 from the surface, halo 3.2 m / .32) he washed PALE CYAN -- his night
+  glow lights his whole skin at any level over ~.3 in this bright water -- and the halo (a 3.2 m point clamped to the device's max size up
+  close) washed a quarter of the screen. A strip of renders hiding one layer at a time found both. So: the deep's glow only (from 12 m), the
+  halo 1.9 m / .13, point size capped. Also: the shrine's jellies (x.42 -> x.16) and the fan corals (glow 1.3 -> .7) were saturating white.
+- TOOLS > LOOK > **DEEP GLOW (GRUMBO): ON / OFF** -- his taste call (`mel.uwglow`). Render: images/feedback/m2586/uw_glow_render.jpg.
+  Shipped unverified.
+
 ## m2606 -- VINE WHIP: the cast is ONE-ARMED (right arm only, procedural); the charge is the arm cocked overhead + a glowing vine
 
 **His (on m2604, screenshot `images/feedback/m2604/whip_two_arms.png`):** *"The throw whip animation looks whack, it's TWO ARMS?? It makes no sense,
