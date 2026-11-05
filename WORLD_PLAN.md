@@ -190,3 +190,12 @@ Core enemies everywhere: Husk Soldier, Husk Archer, Bulwark, Sphinx Hound, Hollo
 
 ORDER (recommendation): finish ONE TEMPLE end to end first (the forest temple: vine whip sign-off -> rooms -> mid-boss ->
 boss), with its region's people, wildlife and enemies. That proves the whole pipeline once. Then each next region repeats it.
+
+## 13b. PHASE THROUGH WALLS -- a temple ability (his, Nov 5, on the menu)
+The Phase Shift (section 13) grows into a TEMPLE ITEM/ABILITY: once earned, he can blink THROUGH certain walls -- areas walled
+off until you have it. The problem it poses: players will try to phase into temple walls, out of bounds, through every wall.
+So ONLY marked walls are phaseable: a "VEIL" wall with a clear, consistent look (thin translucent Jinra-veined stone, violet
+portal shimmer, glowing cracks that pulse when he's near and has the ability). Every other wall stays solid to the blink (the
+phase spot search already refuses to land inside geometry; it must also refuse to cross unmarked walls). Which temple teaches
+it: a later one (forest = the vine whip). Teach / test / twist like every item: a veil to get out of a sealed room, veils
+under fire, then a twist (phase through a veil mid-swing, or into a sealed chamber to flip a lever from inside).

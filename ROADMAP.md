@@ -13,6 +13,7 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
   bare body -> rig + weapon bones -> `armorfit.py`). The arena in `colinwillow/culture_war` (`duel.html`) is the fight lab.
 
 ## COLIN'S LIST (Nov 3 2026, end of his week's credits -- the backlog to pick up next, in his words)
+- [ ] PHASE THROUGH WALLS (his, Nov 5): the Phase Shift as a temple ability -- blink through marked VEIL walls only (Jinra-veined, shimmering); unmarked walls stay solid to the blink. WORLD_PLAN 13b. For a later temple.
 - [ ] **Katana charge sound**: none of the K-HUM picks (synth-flute feel); he wants a ONE-SHOT (not a loop) and something else entirely. Try more.
 - [ ] **Grumbo grunts** (Link-style effort grunts on swings, jumps, hits): a deep grunt guy. He may record new ones; the alien orc grunts are the enemies' for now.
 - [ ] **Vertical wall run** still steps down (run -> slower -> stop). Wants a continuous RAMP, gravity/friction-like; maybe allow a bit more height so it isn't so quick.
