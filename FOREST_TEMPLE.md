@@ -25,6 +25,24 @@ three rings and eight spokes at its foot) -> the corridor's avenue -> the arch -
 12-spoke rosette at its centre, the ruins mirrored) -> the door on the far wall. The acrobatic ROUTE climbs round that axis (east, north,
 west, south): the plan is symmetric, the climb spirals. Later chambers keep to the axis or branch from it at right angles.
 
+## THE PLANNING SHEET (his structure, Nov 5 2026 -- TEMPLE_TEMPLATE.md) -- `docs/temples/forest_sheet.png`, `npm run templesheet forest`
+**THE WELL is the hub you land in; six lettered chambers A-F on a hexagon round it (mirrored W / E, on the N-S axis); each pays ONE JINRA SHARD;
+six shards light the SEAL on the well floor and open the stair to the boss beneath it.** The 12 rooms of THE FLOW below are kept, folded into it:
+| sheet | was (THE FLOW) | type | pays |
+|---|---|---|---|
+| 0 ENTRY HALL | 1 | rest | checkpoint |
+| H THE WELL | 2 (+ the seal: 6 sockets under the pool) | hub | -- |
+| A ACROBATIC HALL (built) | 3 | acrobatic + battle | SMALL KEY + SHARD I |
+| B ROOT GALLERY | 4 | puzzle | SHARD II + the crack down |
+| C ROOT HEART + NURSERY | 5 + 6 (mid-boss, then the teach) | battle + rest | THE VINE WHIP + SHARD III |
+| D FALL GALLERY | 9 (the twist: pull the dam, the pool drains) | puzzle | SHARD IV |
+| E SUNKEN COURT | 7 + 8 (the court + the terrace test) | acrobatic + battle | SHARD V |
+| F THE SHRINE | 10 + 11 (the climb + the statue gauntlet out) | puzzle + acrobatic + battle | SHARD VI |
+| X THE HOLLOW BANYAN | 12 | boss | the JINRA STONE |
+What changed: the CHALICE is gone (the six shards are the boss key; the shrine pays a shard); D, E and F are open in ANY order once he has the
+whip (each behind a whip gate at the well), and each states its WHIP-ONLY rule (C: a knot ceiling over a pit; D: a pull no move replaces;
+E: a 44 m span off 3 m perches; F: 18 m ledges with no wall under them). Plan metres are the sheet's (hub at 0,0), not yet the zone's.
+
 ## THE FLOW -- the design pass (his ask via main, Nov 5: "this is the meat of the game; make the temple FUN")
 Built on ZELDA_STRUCTURE.md Part 2 (hub; first half on what you walked in with; the mini-boss guards the ITEM; the item TAUGHT / TESTED / TWISTED;
 the loop-back; the boss key; the boss beaten WITH the item) and TEMPLE_ROUTES.md (**no ladders on a route**; every gap sized from `tools/moves.json`

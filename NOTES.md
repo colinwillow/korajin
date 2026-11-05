@@ -53,6 +53,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2625 -- THE TEMPLE PLANNING SHEET (TEMPLE_TEMPLATE.md + `npm run templesheet`) and the Forest Temple re-planned on it
+
+**His (via main):** six reference temple layout sheets (`images/reference/temples/`) and his structure -- a HUB you land in, lettered
+sub-chambers A-F off it, each paying a shard or key, enough of them opening the boss; every chamber tagged PUZZLE / BATTLE / ACROBATIC (+ rest /
+secret / treasure); PLAN IT ALL AHEAD on one sheet: an isometric view, a lettered top-down plan on a grid, a side section, and a table.
+**Built:** `TEMPLE_TEMPLATE.md` (the structure, the data file's shape, the rules a sheet must pass before building) and `tools/templesheet.mjs`
+(`npm run templesheet <id>`): one PNG per temple from ONE data file (`tools/temples/<id>.mjs`): an EXPLODED isometric (floor slabs with back walls,
+type colours, a second type as a dashed rim, links as coloured dashes, fitted to its frame), a lettered grid plan with a compass, an unrolled
+side section with the levels, the legend, item / goal / flow, and the chamber table (type, teach/test/twist, reward, enemies, interactions,
+whip-only rule). HTML laid out and screenshotted in headless Chromium.
+**The Forest Temple on it** (`docs/temples/forest_sheet.png`): THE WELL is the hub; A ACROBATIC HALL (built: key + shard I), B ROOT GALLERY
+(shard II + the crack), C ROOT HEART + NURSERY (mid-boss: THE WHIP + shard III, then the teach), and -- in any order, each behind a whip gate --
+D FALL GALLERY (the dam twist, shard IV), E SUNKEN COURT (the test, shard V), F THE SHRINE (climb + statue gauntlet, shard VI); six shards
+light the seal on the well floor -> X THE HOLLOW BANYAN below. The 12 rooms of THE FLOW are kept, folded in (table in FOREST_TEMPLE.md); the
+chalice is replaced by the six shards. No game code changed. **Boxes:** none (a plan); for his look before building.
+
 ## m2624 -- LOADING STUTTERS: the card is the curtain, and the Lake's water patch ran AFTER it (his: "when you cross from above water to underwater it loads everything and stutters and freezes... it goes to the level, he starts coming in, then it stops and freezes")
 - **A NEW TOOL: `npm run entryhitch [query ...]`** -- boots WITH the entrance and logs every frame from boot: ms, program LINKS (and ms
   waiting on link status), texture uploads, the entrance state; `DIVE=<js>` runs a script after `SECS` (a dive), `PROBE=<js>` prints a result,
@@ -102,7 +118,6 @@ Strips (sent, Grumbo): walk-up -> grip -> heave -> swing with the light -> gem r
 `npm run ikstrip --id=<row> [--pre=...]` films a piece (the zone's own clock). The first strip tapped from 16 m away and the walk cap (3.5 s) ran
 out at the dais side -- in play the tap is within 1.9 m; the strip now starts him beside it. Shared lines (ENTRY rows, ZONEWANT, the menu, the
 arena frame line after a stash-pop conflict) diffed against main: only my additions.
-
 ## m2622 -- VINE WHIP: every whip blow lands as BLOW_SRC 'whip' (the combat worker's shield hook)
 
 The combat worker (m2618) made a blow with `BLOW_SRC = 'whip'` tear a shield bearer's shield off and stagger it (`cbtDefend`). The whip's three
