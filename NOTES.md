@@ -53,6 +53,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2646 -- THE INTERACTIONS KIT design pass 6: the DRAWERS, a Korajin cabinet (INTERACT.md)
+The drawer kind's build is new (its sequence keeps every beat and gains the ring):
+- THE CARCASS (one draw, vertex colour): sides, a back, a plinth, an overhanging top with a moulded edge, rails between the drawers, side panels,
+  four carved feet, bronze corner fittings top and bottom. `nightGlow` runes.
+- THE DRAWERS (one draw each): a RAISED-PANEL front (three steps), a bronze escutcheon with a keyhole, the ring's lug, and a real box behind --
+  back, sides, and a CLOTH-LINED floor (teal) the find lies on.
+- THE RING (one draw, the chosen drawer only; the others' rings are merged into their fronts): a bronze DROP RING that SWINGS UP into his hand
+  as he reaches (a clink), then he draws the drawer out -- it rattles as it runs.
+Strip (sent): the cabinet close; the ring lifting into his hand; the drawer drawn; the find rising out of it. 38-41 draws for the station.
+
 ## m2645 -- the entrance camera: a touch out and up, looking DOWN on the portal, easing into play; walls behind it handled (Nov 5 2026)
 His (via main): *"with a wall behind the landing the smart camera pulls in tight and the portal is barely seen; sometimes the portal reads as a flat
 LINE. Subtle -- start JUST SLIGHTLY zoomed out (a little more distance and height), ease in to normal as he falls and lands; the portal stays
