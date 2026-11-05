@@ -53,6 +53,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2639 -- HIS FULL AIR CHAINS measured (`npm run reach`): 33.7 m without a wall, up to 58 m with one; the whip-only rule is now STRUCTURAL
+
+**His correction (via main):** *"You measure just a wall run, but I can jump, dash after the jump, double jump, dash, wall run, jump off the wall
+run and dash dash again, so it's usually about DOUBLE what you think."*
+**`npm run reach`** (new, `tools/reach.mjs`): the SHIPPED frame on a fake clock on the forge's empty floor; each chain's steps IN ORDER, each as
+soon as it can -- the jump and the double jump are the jump request (`p.jump`), the AIR DASH is the flying kick (`meleeGo` in the air: the right
+flick; `AIRK.max` 3 an airtime), the wall run the shipped catch (the left stick into a wall in the air), the wall jump the jump request on it.
+At his 9 m/s run: jump 14.0 m; + double 23.0; + dash, double, dash 29.8; **+ dash, double, dash, dash 33.7 m (the best without a wall)**; with a
+48 m wall: run, jump, wall run 0.5 / 1.5 / 2.5 s, wall jump, double, dash x3 -> **40.7 / 51.1 / 58.2 m**; the run UP a face + the wall jump
+**11.4 m** up (feet); the high jump 6.7 m. (The ZOOM start is retired -- `ZOOM.on` 0 since m1813 -- so it is not one.) A wall does double it, as he said.
+(A finding on the way: the driver must lean the stick to HIS side of the wall -- facing +z, +X is his LEFT -- or no wall run is ever caught.)
+**The rule (VINEWHIP.md, FOREST_TEMPLE.md):** the line is the measured max + 25%, and distance alone is not trusted -- every whip space is
+STRUCTURAL: spans >= 42 m with NOTHING to run, kick or land on (no wall within 5 m of the line); thorn / rot ceilings that kill the high arc;
+ledges > 8.4 m with no wall under them (> 17 m with one); pits whose far side is a sheer wall > 17 m; pulls no move replaces. The sheet's
+whip rooms re-stated: C knots over a pit with sheer walls > 17 m; D the dam; E a 46 m court crossing (no walls near the line, a thorn canopy);
+F 18 m ledges on overhangs. Sheet re-rendered. The whip sandbox's B, E and BOTH of C's ledges fail the new line -- its re-lay is a build.
+A's 9 m gap: far inside his reach, kept (m2637). No game code changed.
+
 ## m2638 -- THE INTERACTIONS KIT design pass 1: the HEAVY DOOR, carved, inlaid and articulated (INTERACT.md)
 His ask: "a beautiful, highly detailed, sophisticated DOOR: carved stone or bronze in Korajin's style, ornate frame, studs, glyph bands, Jinra inlays
 that glow, articulated parts (bolts that slide, a lock that turns, hinges that move)". The door kind's build is new (its sequence kept + two beats):
@@ -68,7 +86,6 @@ that glow, articulated parts (bolts that slide, a lock that turns, hinges that m
   the push as before (palms, lean, treading feet, the grinding pulses). The hinge straps swing with the slab on their knuckles. RESET re-locks it.
 - CRAFT: the first strip's bronze read near-black (metalness .35 with nothing to reflect): lighter bronze, metalness .12 -- metals never go black.
 Five draws in all; 24k tris in the station. Strips (sent): the lock turning under his hand, the bolts drawn, the inlay lit, the push, open.
-
 ## m2637 -- A's 9 m wall-run gap MEASURED with the shipped wall run: within his reach; the wall PILASTERS were stopping every side run
 
 **His (via main):** *"I bet I could do it"* -- measure the 9 m gap (rim 1 east, ends z -6 -> the north gallery's lip z -15, both at 6 m) with the

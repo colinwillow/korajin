@@ -110,9 +110,13 @@ rest -> traversal -> traversal + combat -> puzzle -> combat (mid-boss) -> TEACH 
 11. the boss: the Hollow Banyan (COMBAT.md boss knobs; `combatBoss` if a set boss fits, else its own); 12. the GET moment + the geyser out.
 
 
-**THE WHIP-ONLY RULE (his, Nov 5 2026: "What does the whip do that I can't already do with acrobatics?")** -- every whip room in the temple is
-sized by VINEWHIP.md's rule: spans >= 41 m (or >= 25 m off a short perch), ledges > 7.4 m with no wall under them (> 14.7 m with one), no walls
-along a span, knot ceilings over pits, and pulls no move replaces. Every room that needs the whip says which rule makes it whip-only.
+**THE WHIP-ONLY RULE (his, Nov 5 2026 -- VINEWHIP.md, re-measured on his FULL AIR CHAINS with `npm run reach`):** without a wall he crosses
+33.7 m (jump, dash, double jump, dash, dash); WITH a wall 40-58 m; up 6.7 m without a wall, ~17 m with one. The line is the max + 25%, and every
+whip room is STRUCTURAL, not just long: spans >= 42 m with NOTHING to run, kick or land on (no walls within 5 m of the line); thorn / rot
+ceilings over gaps that kill the high arc; ledges > 8.4 m with no wall under them (overhangs, pillar tops); pits whose far side is a sheer wall
+> 17 m; pulls no move replaces. The sheet's whip rooms: **C** a knot ceiling over a pit, its walls sheer and > 17 m (rule 4); **D** the dam (rule 5);
+**E** a 46 m court crossing on a knot gantry, the cloister set back > 5 m from the line, a thorn canopy 3 m over the perches (rules 1 + 2);
+**F** 18 m ledges on overhangs inside the shrine's undercut core (rule 3).
 ## How it is built (SCENE_COMPANION.md: data-first)
 - `ftkMake(THREE, O)` between `// FTKLIB:START` / `:END` is a PURE builder of its table (`SC_FTEMPLE` markers): materials (`mats`), the
   placement rows (`kit`; the chambers get their own sets), the underground light (`env`), the spawn and the headless cameras (`shots`).

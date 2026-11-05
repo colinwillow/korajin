@@ -18,36 +18,39 @@ back to the seed arrow (FOREST_TEMPLE.md keeps it as a later upgrade / another t
 6. **Combat**: with no anchor in the cone, the flick is a LASH strike (6 m, fast, a chain with the sword); a yanked small enemy can be THROWN
    (the next flick sends it the way you flick).
 
-## THE WHIP-ONLY RULE (his, after trying it, Nov 5 2026: "What does the whip do that I can't already do with acrobatics?")
-He can wall-run, double-jump, long-jump and chain air kicks/flips anywhere. So **every whip space must be provably impossible without the whip**.
-A whip gap is sized against his **MAXIMUM** acrobatic reach (not the comfy 80%) plus a 10% margin, from the MOVE TABLE (`tools/moves.json`):
+## THE WHIP-ONLY RULE (his, Nov 5 2026: "What does the whip do that I can't already do with acrobatics?" -- and, measuring it: "I can jump,
+## dash after the jump, double jump, dash, wall run, jump off the wall run and dash dash again, so it's usually about DOUBLE what you think")
+**Every whip space must be provably impossible without the whip, against his FULL AIR CHAINS** -- measured with the shipped frame by
+`npm run reach` (m-reach: `frameBody` on a fake clock; the jump / double jump are the jump request, the AIR DASH is the flying kick in the air
+(`meleeGo`, up to `AIRK.max` 3 an airtime), the wall run the shipped catch, the wall jump the jump request on the wall). Run speed 9 m/s.
 
-| his best without the whip | distance | height | row |
+| chain (each step as soon as it can) | across | up | air |
 |---|---|---|---|
-| zoom + double jump + 3 air kicks (needs ~30 m of runway for the zoom) | **36.8 m** | 5.0 m | `zoom_dbl_k3` (m1375) |
-| run + double jump + 3 air kicks (no zoom; run 9 m/s on m2606) | **33.6 m** | 5.0 m | `dbl_k3` (re-read m2606) |
-| high jump + 3 air kicks, FROM A STANDING START (no runway at all) | **22.6 m** | 6.7 m | `high_k3` (both) |
-| high jump (backflip), full charge, no wall | -- | **6.7 m** | `high` |
-| wall run UP, zoom-jumping into the face (hands on the lip) | -- | **13.4 m** | `wall_up_zoomjump` (m1375) |
-| high bar launch (only where there is a bar) | 23.9 m | 14.8 m | `bar_far` / `bar_high` |
+| run + jump | 14.0 m | 2.7 m | 1.0 s |
+| run + jump + double jump | 23.0 m | 5.0 m | 1.7 s |
+| run + jump + dash + double jump + dash | 29.8 m | 3.3 m | 2.6 s |
+| **run + jump + dash + double jump + dash + dash -- the best WITHOUT a wall** | **33.7 m** | 3.3 m | 2.9 s |
+| run + jump + wall run (0.5 s) + wall jump + double + dash x3 | 40.7 m | 8.4 m | 4.1 s |
+| the same, riding the wall 1.5 s | 51.1 m | 9.3 m | 5.2 s |
+| **the same, riding the wall 2.5 s (a 48 m wall)** | **58.2 m** | 6.0 m | 5.8 s |
+| run straight into a tall face: the run UP + the wall jump | -- | **11.4 m** (feet) | -- |
+| high jump (backflip, full charge; spends the double) | -- | **6.7 m** | -- |
+(The ZOOM start is retired (`ZOOM.on` 0, m1813), so it is not a start here. A wall roughly DOUBLES what he can cross -- his word.)
 
-**So a whip space is one of these, and the doc of the room says which:**
-1. **SPAN**: a gap of **>= 41 m** (36.8 + 10%) with nothing to land on in between -- crossed by a CHAIN of 3+ anchors (reach 14 m each).
-   Under 41 m it must ALSO deny the run-up: a perch shorter than ~4 m on the near side (no zoom, no long run) makes the cap the standing
-   **22.6 m**, so a short-perch span is whip-only from **>= 25 m**.
-2. **HEIGHT**: a ledge **> 7.4 m** up with NO wall face under it (an overhang, a pillar top, an undercut lip) -- or **> 14.7 m** with a wall --
-   reached by a ZIP anchor. (The sandbox's 10 m ledge with a wall under it is NOT whip-only: his wall run reaches ~10-13 m.)
-3. **NO WALLS ALONG THE SPAN**: nothing he can side-run or wall-kick off within 5 m of the line (a side wall run carries 8 m and kicks 7.5 m).
-4. **CEILINGS OF KNOTS OVER PITS**: knots hanging from a ceiling/gantry over a pit too wide for rule 1; a fall drops into the pit (a reset, not death).
-5. **PULLS NO MOVE REPLACES**: a shield off an enemy, a lever out of reach (rule 2 heights), a crate dragged onto a plate, an enemy yanked off a ledge.
+**THE LINE = the measured max + 25%.** And distance alone is not trusted -- he finds chains -- so **every whip space is STRUCTURAL**:
+1. **SPAN with NOTHING to run, kick or land on**: no wall within 5 m of the line, no pillar, no ledge, AND longer than **42 m** (33.7 + 25%).
+   Off a perch too short to reach run speed (<= 4 m) the start is a standing one -- but still size it at 42 m (he can bring speed from behind).
+2. **A CEILING or a HAZARD over the gap** that kills the high arc: thorns or a rot cloud from ~3 m above the take-off, so the double jump and the
+   dashes have no room -- only a knot swing UNDER it works.
+3. **HEIGHT with no wall under it**: a ledge **> 8.4 m** up (6.7 + 25%) on an overhang, a pillar top or an undercut lip -> a ZIP anchor. With a wall
+   under it, **> 17 m** (his hands on an 11.4 m run-up + a wall jump and a double jump, + 25%) -- or better, an overhang.
+4. **ANCHORS OVER A PIT whose far side is a SHEER WALL too tall for the vertical chain** (> 17 m) -- the swing lands on its top.
+5. **PULLS NO MOVE REPLACES**: a lever behind a grate, a dam to drag down, a shield off an enemy, crates onto plates, an enemy yanked off a ledge.
+Every room that needs the whip states which of these makes it whip-only.
 
-**The table is OLD and its harness has drifted** (re-run on m2606: half the rows fail or mislabel -- the gestures moved under it; the
-speeds read run 9, sprint 1.1). Until `npm run moves` is fixed, size against the LARGER of the two readings above. Fixing the harness is DOCKET.
-
-**Audit of the sandbox against the rule (m2607):** A lash lane, D pull yard, F combat -- fine (pulls / strikes). **B swing pit: FAILS** -- a 20 m
-gap at 8 m (his run + double jump + kicks crosses 26-34 m). **E chain course: FAILS** -- 25 m, with a 12 m pillar to land on halfway. **C: half** --
-the 16 m ledge is whip-only, the 10 m one is reachable by wall run. NEXT BUILD re-lays B and E to the rule (a >= 41 m pit under a knot gantry; the
-chain course on short perches with no pillar and no walls) and gives C's 10 m ledge an overhang.
+**Audit of the sandbox (m-reach):** A lash lane, D pull yard, F combat -- fine (pulls / strikes). **B swing pit: FAILS** (a 20 m gap). **E chain
+course: FAILS** (25 m with a pillar). **C: FAILS both ledges now** (10 m and 16 m both have a wall under them: under 17 m). The re-lay is a build.
+**A's 9 m wall-run gap in the temple is far inside his reach -- kept as a skill gap (m2637).**
 
 ## Controls (on the existing map: LEFT pad = the body, RIGHT pad = the verb)
 | | left | right (whip out) |
