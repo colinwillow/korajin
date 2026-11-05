@@ -53,6 +53,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2648 -- THE INTERACTIONS KIT design pass 7: the POT, a painted Korajin urn (INTERACT.md) -- every station now has its look
+`ikUrnGeo`: a lathed URN (a foot ring, a full belly, a shoulder, a neck, a flared lip), PAINTED by vertex colour -- terracotta, a dark-red belly
+band, a teal shoulder band of cream DIAMONDS (the game's motif), a dark lip and foot -- with two lug handles and a knobbed lid, ONE geometry: still
+the game-wide breakables (`propKind`), so every pot in the station is one instanced draw. It breaks into CURVED, PAINTED shards of its own clay
+(twelve), dust, the usual chance of a doubloon or Jinra; RESET mends it. The first render's diamonds smeared (too few lathe rings / segments
+across the band): rings through the bands and 60 segments now.
+Strip (sent): the urns at three heights; one struck -- the shards and the dust.
+**All eight stations have their design pass** (door m2638, chest m2640, crank m2641, button + plate m2642, lever m2644, drawers m2646, pots
+m2648). What every station still wants is HIS eye and sign-off (INTERACT.md's table).
+
 ## m2647 -- THE POMMEL TASSELS HANG AND SWING (cut off the mesh, rebuilt as verlet chains); THE CAPE DRAPES OVER THE SHEATH AND THE QUIVER (Nov 5 2026)
 His (via main): *"the dynamic cape passes through both the sword sheath and the quiver"*; *"the pommel's little dangling tassels are static mesh,
 so in the sheath on his back they stick straight up -- make them dynamic, or delete them"* (images/feedback/m2639/hilt_tassels.jpg).

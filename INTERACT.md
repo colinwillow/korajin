@@ -56,7 +56,7 @@ the night glow, and 1-3 draws.
 | THE BUTTON | south bay 1 | [x] m2631 | [x] m2642: carved plaque, bezel, domed plunger with the crest, a sliding latch | [ ] |
 | THE PRESSURE PLATE | south bay 2 | [x] m2631 | [x] m2642: carved slab, inlaid crest, bronze frame, dust | [ ] |
 | THE LEVER | south bay 3 | [x] m2631 | [x] m2644: a weighted handle, a gear quadrant driving a pinion, a ratchet | [ ] |
-| THE POTS | south bay 4 | [x] m2631 | [ ] | [ ] |
+| THE POTS | south bay 4 | [x] m2631 | [x] m2648: a painted urn (diamond band, lugs, lid), curved painted shards | [ ] |
 
 ## THE SANDBOX ROOM (superseded by THE GALLERY)
 A sunlit stone court open to the sky, one of each piece, spread over three heights (VERTICALITY): the floor, a dais up three .30 risers (the chest),
