@@ -44,6 +44,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2543 -- DESERT REGION STEP 3a: SAND EVERYWHERE + CRESTED SNAKING DUNES (his: "the sand deformation sells the desert -- it must cover the whole region")
+- REGION SAND: a POLAR RING mesh round the field from r 74 to r 1300 (192 x 48 cells, radii growing geometrically: ~4.6 m near, ~75 m far;
+  18k tris, one draw) in the field's OWN sand material (crust, ripples, deformation tint, night), tinted by height and slope. The field's
+  150 m square tucks its corners under it. First cut was INVISIBLE -- wound facing down (radial x tangent points down in x-z), culled; then a
+  dark seam ran out along +x where the duplicated column was lit differently -> the column wraps.
+- WALKABLE: `BOULD.gH` -- the analytic `sandH` past the field -- is a new term in `groundAt`.
+- THE DEFORMATION EVERYWHERE: the patch's base heights are a WINDOW that follows him (`F.region.base` 192 cells over 64 m, re-sampled when he
+  is 16 m from its centre); the patch draws anywhere inside the ring (it was limited to the field's 150 m square).
+- DUNES (`F.region`): past r 120 the E and W DUNE SEAS rise to 18 m: a ridge across the wind, windward 78% of a ~90 m wave, a SHARP crest
+  (power 2.3), the phase warped by two noises so the crests SNAKE (you can run along them); the axis and the back axis stay low; dunes
+  fade to nothing round every giant and mesa (`O.keep` from the plan, passed by the glue) so nothing floats on a slope.
+- Budget: the ring's 18k pushed the landing to 272k -> the field's sand grid 150 -> 120 segments (1.25 m; the patch carries the near detail):
+  landing 255k / 64, forecourt 208k / 54, wide 266k / 77.
+- Boot gate: the region ring exists, his feet find ground 400 m out, the east dune sea has crests >= 6 m.
+- Looked at: the east dune sea at eye level and from high, the wide, the play camera. Shipped unverified.
+- NEXT (step 3b): big rocks, valleys (SE/SW, cut below grade) and hills placed from the kit; the region's edge meets the mountains.
+
 ## m2542 -- DESERT REGION STEP 2c: THE KIT INVENTORY + THE ZONE PIECES IT LACKED
 INVENTORY (all on the kit row, at `?at=kit`, restored + ruined): floaters (3 species x 2 shapes + scree), cacti / succulents / orbs, leaves,
 sand (deformation), dust, the painted sky; blocks, steps, column, ziggurat, obelisk, arch, panel; pond, palm, reeds, lily; urn x2, brazier,
