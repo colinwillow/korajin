@@ -46,6 +46,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2595 -- SMART CAMERA: thin things are never dithered, and under water the camera MOVES instead (his screenshots, images/feedback/m2586/: under The Lake a torii post in front of Grumbo dithered him into a pixelated block)
+- **THIN (`smThin`, `SCAM.thinW` 1.2 m):** a hit that would fade (or be the last resort) is first tested with the same segment shifted .6 m to
+  either side, square to the view; if one side misses that mesh it is narrower than 1.2 m across -- a post, a column, a gate leg -- and is
+  LEFT in front (kind 0), never dithered. Works on a merged gate too (it measures across the view at the hit, not the mesh's bounds).
+- **UNDER WATER (`SCAM.uw`: the Lake on, swimming, the lens below the surface per `UWATER.camX`):** a fade-class hit becomes a camera move
+  (kind 2); the lift search is skipped (the surface clamp `uwCamClamp` would undo it), so the boom comes IN past it; the last-resort dither
+  only for a big wall (over `small` 6.5 m) and never a thin one. Orbiting is not done: `cam.az` stays the right pad's alone.
+- `npm run smartcam boulders`: unchanged (the big rock still clears 0 -> .68). Under water not run headless (needs a dive pose). Shipped unverified.
 ## m2594 -- THE VINE WHIP: the OVERHAND cast (his: "like casting a fishing rod") + HOLD TO CHARGE
 His after m2588: *"it just doesn't look right"* -- overhand: the arm fully up and back over the shoulder, then a big throw forward and down; a CHARGE
 (hold longer = wound back further, the vine trailing behind, a farther harder lash); exaggerated (anticipation, a lean, a low follow-through).
