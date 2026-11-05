@@ -118,3 +118,10 @@ Regions connected by land and by WATER CHANNELS (sail between them; fly later). 
 - **Shape**: a short linear start (prologue garden -> the first region + temple as the tutorial), then the next 2-3 regions in
   the player's chosen order (each temple's power opens part of another), then AIR, then the final region.
 - The world map's first job is a rough BLOCKOUT (shapes only) to set scale, the channels, and where each gate sits.
+
+## 10. SCALE -- every region feels HUGE (his, Nov 5)
+God-of-War / Hercules scale: bosses and guardians hundreds of times his size; pyramids, temples, mountains, caverns, oceans vast.
+Rule: the big things must still READ on screen -- frame them at distance (backdrops, some unreachable, some floating) or let the
+camera pull back for them; never so big they're just a wall filling the view. The SAND region's signature: giant ancient-alien
+PYRAMIDS (some floating), glowing square rings / halos round them with carved writing, offshoots, tombs, megalith gateways,
+obelisks, colossal statues (statues/guardians will be his Tripo models -- leave slots for them).
