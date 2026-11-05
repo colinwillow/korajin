@@ -46,6 +46,9 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## The green DNA bar is hidden (his: "Idk what this dna green line is, I think it's leftover from the old game")
+`#juice` (m284, Zap's DNA-gun tank, above the pads) is forced `display: none` in CSS. Nothing reads it visually in Korajin; the DNA code still runs, untouched.
+
 ## m2586 -- THE BUDGET COUNTS SHADOWS; THE CACTI AND THE ARCHES CAST THROUGH STAND-INS (Nov 5 2026)
 
 - Decision (Colin via parent): from now on the budget is read WITH the shadow pass. Play views **≤ 70 draws / 280k**, aerial ≤ 85 / 310k.
