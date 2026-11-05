@@ -12,7 +12,7 @@ if (!pw) { console.error('stepsweep: no playwright'); process.exit(2); }
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const A = process.argv.slice(2), MODE = A.includes('--boxes') ? 'boxes' : A.includes('--mesh') ? 'mesh' : '', OFF = A.includes('--off');
 const N = +((A.find(a => a.startsWith('--n=')) || '--n=150').slice(4));
-const ZONES = { forest: '?w=forge&zone=dometemple', boulders: '?w=forge&zone=boulders', wall: '?w=forge&zone=wall', garden: '?w=forge&zone=garden', snow: '?w=forge&zone=snow', temple: '?w=forge&zone=temple', lake: '?w=forge&zone=lake', arena: '?w=arena' };
+const ZONES = { ftin: '?w=forge&zone=ftemple', forest: '?w=forge&zone=dometemple', boulders: '?w=forge&zone=boulders', wall: '?w=forge&zone=wall', garden: '?w=forge&zone=garden', snow: '?w=forge&zone=snow', temple: '?w=forge&zone=temple', lake: '?w=forge&zone=lake', arena: '?w=arena' };
 const want = A.filter(a => !a.startsWith('--')); if (!want.length) want.push(...Object.keys(ZONES));
 const HANDLE = 'window.__ss = { frameBody, player, cam, COLL, STEPUP, groundAt, godTo, renderer, rig, MOVE }; ';
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary',
@@ -54,6 +54,10 @@ function sweep(o) {
     for (let f = 0; f <= p.r + .6 && !beside; f += .1) { const x = ex + sx * f, z = ez + sz * f; if (top(x, z) > gh + S.STEPUP.lip) beside = true; }     /* a wall straight ahead, too tall to step */
     if (!beside && S.COLL.on && S.COLL.ray(ex - sx * .2, gh + 1.0, ez - sz * .2, sx, sz, p.r + .8, 0) < p.r + .8) beside = true;     /* ... or a drawn face at his chest (a rock) */
     rises.push({ ex, ez, sx, sz, gl, gh, rise: gh - gl, beside }); }
+  if (o.stair) { const [x0, z0, x1, z1, yq] = o.stair, L = Math.hypot(x1 - x0, z1 - z0), ux = (x1 - x0) / L, uz = (z1 - z0) / L, g0 = S.groundAt(x0, z0, yq != null && !isNaN(yq) ? yq : cy + 40, 0);
+    S.godTo(x0, g0, z0, Math.atan2(ux, uz)); p.vel.set(0, 0, 0); for (let f = 0; f < 20; f++) frame(); const prof = []; let top = p.pos.y, stuckF = 0, lastP = 0;
+    for (let f = 0; f < 240; f++) { steer(ux, uz); frame(); const along = (p.pos.x - x0) * ux + (p.pos.z - z0) * uz; if (along - lastP < .005) stuckF++; lastP = along; top = Math.max(top, p.pos.y); if (f % 10 === 0) prof.push(along.toFixed(1) + '@' + p.pos.y.toFixed(2)); if (along >= L) break; }
+    up(); const gEnd = S.groundAt(x1, z1, top + 1, 1); return { stair: { from: +g0.toFixed(2), topWant: +gEnd.toFixed(2), reached: +top.toFixed(2), endAlong: +lastP.toFixed(2), len: +L.toFixed(2), stuckFrames: stuckF, ups: S.STEPUP.ups, prof: prof.join(' ') }, rises: 0, probed: 0, ok: 0, stall: [], bins: {}, tiny: 0, mode: S.COLL.mode, coll: '', at: [0, 0, 0], hstat: [] }; }
   if (o.only) { rises.length = 0; rises.push(o.only); }
   const pick = []; const step = Math.max(1, rises.length / o.N); for (let k = 0; k < rises.length && pick.length < o.N; k += step) pick.push(rises[Math.floor(k)]);
   const out = { tiny, rises: rises.length, probed: 0, ok: 0, stall: [], bins: {} };
@@ -75,12 +79,13 @@ for (const z of want) {
     try { localStorage.setItem('mel.game', 'korajin'); if (m) localStorage.setItem('mel.coll', m); else localStorage.removeItem('mel.coll'); } catch (e) {} }, MODE);
   const errs = []; page.on('pageerror', e => errs.push(e.message.split('\n')[0]));
   try {
-    await page.goto(`http://127.0.0.1:${port}/index.html${url}`, { timeout: 120000 });
+    await page.goto(`http://127.0.0.1:${port}/index.html${url}&entry=0`, { timeout: 120000 });
     await page.waitForFunction(() => window.__ss && document.getElementById('boot').classList.contains('gone') && window.__ss.rig.ready, null, { timeout: 240000, polling: 1000 });
     await page.waitForTimeout(4000);
     await page.evaluate(() => { const S = window.__ss; window.__clock = { t: performance.now(), dt: 1000 / 60 }; performance.now = () => window.__clock.t; S.renderer.render = () => {}; });
-    const ONLY = process.env.SS_ONLY ? JSON.parse(process.env.SS_ONLY) : null;
-    const R = await page.evaluate(sweep, { only: ONLY, off: OFF, N, R: z === 'temple' || z === 'lake' || z === 'forest' ? 90 : 45 });
+    const ONLY = process.env.SS_ONLY ? JSON.parse(process.env.SS_ONLY) : null, STAIR = process.env.SS_STAIR ? process.env.SS_STAIR.split(',').map(Number) : null;
+    const R = await page.evaluate(sweep, { stair: STAIR, only: ONLY, off: OFF, N, R: z === 'temple' || z === 'lake' || z === 'forest' ? 90 : 45 });
+    if (R.stair) { console.log(`== ${z} STAIR [${R.mode}] ` + JSON.stringify(R.stair)); await page.close(); continue; }
     console.log(`== ${z} [${R.mode}] collider: ${R.coll}\n   step-up ${OFF ? 'OFF' : 'on'}  ${el()}  rises found ${R.rises} (+${R.tiny} narrower than him, skipped), probed ${R.probed}: walked up ${R.ok}, STALLED ${R.stall.length}, blocked by a wall beside/ahead (too tall to step) ${R.beside || 0}, gone (broken/moved) ${R.changed || 0}   (${Object.entries(R.bins).map(([k, v]) => k + ' ' + v[1] + '/' + v[0]).join(', ')})  step-ups ${R.ups}  unsettled ${R.unsettled || 0}  spawn ${R.at.join(',')}  heights ${R.hstat.join(' / ')}`);
     for (const s of R.stall.slice(0, 12)) console.log('    stall ' + s.join('  '));
     if (R.trace) for (const t of R.trace.filter((t, i) => i < 40 || t[4])) console.log('     ', t.join(' '));

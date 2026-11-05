@@ -44,6 +44,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2548 -- HARDENING 1: the FOREST TEMPLE on triangles, outside and in (Nov 5 2026)
+
+His (via main): *"in the FOREST TEMPLE the stairs are a big box collider and he can't walk up them"* -- triangle collision the DEFAULT everywhere,
+then a hardening pass. Batch 1, the forest temple:
+- **OUTSIDE (`dometemple`): its 282 boxes were all `collKeep`** (m2433 kept the temple's and trunks' boxes as boxes when only the TERRAIN was
+  the mesh), so after m2451 put the temple itself into the mesh store the boxes still won wherever they stood above the drawing -- a box over
+  a drawn step is a block. The flag is now a plain `dmt` tag and `collMark` judges each box like anywhere else (drawn -> replaced by the
+  triangles; undrawn -> kept): 265 replaced, 17 kept. `colaudit forest` (MESH) before -> after: MISMATCH 1,146 -> 120, HOLES 839 -> 651,
+  INVISIBLE walls 245 -> 7, ledges offered BAD 258 -> 96 (good 310 -> 316).
+- **INSIDE (`ftemple`): MESH is the default** (it was BOXES -- "every solid there is a box"); the mesh replaces 187 of its 193 boxes (24,140 tris,
+  83-210 ms). TOOLS > COLLIDER: BOXES is the fallback.
+- **The staircases, walked** (`SS_STAIR=x0,z0,x1,z1[,y]`, new in `stepsweep`: dropped at the foot, run at the top for 4 s through the real pads):
+  the temple's entrance stair (0, 17) -> (0, 8.5): 0.12 -> 2.41 (its top), 2 stuck frames; the interior stair (4.8, 17.5) -> (12.5, 17.5):
+  0.00 -> 3.02 (its top), 2 stuck frames. Both on MESH.
+- **The store now remembers which mesh each triangle came from** (`COLL.tm` -> `COLL.meshes`, 2 bytes a triangle) so a bad wall can be named.
+- **The harnesses pass `&entry=0`** -- the art-directed portal entrance owns him for its first seconds and `godTo` did nothing under it (that is
+  most of the "unsettled" drops in m2436 / m2451's sweeps; their numbers are to be re-taken).
+**Still open in this zone (next batch):** `colaudit forest` still reports 95k cells of collider floor at y 27.8 with nothing drawn within .6 m round
+(0, 7) -- the `domet` mesh's roof (the store and the audit disagree about it; to be named with `COLL.tm`) -- and 2,800 "walk-through" cells round
+x = +-24 at y 8 (every mesh there is in the store: an audit/geometry question, not settled). **Shipped unverified.** **Try:** the forest temple's
+stairs, outside and in.
+
 ## m2547 -- SMART CAMERA: PLANTS AND SMALL THINGS NEVER GO SEE-THROUGH (his, relayed: "plants should never go transparent -- walking into them they rustle and get knocked aside; he wants to see them")
 - **Three kinds now (`smKind`)**: 0 LEAVE IT -- a plant (`userData.noXray` on the mesh OR ANY PARENT, a leaf material with alphaTest, or a
   mesh / material name matching `SMPLANT`: fern bush grass vine ivy flower plant leaf foliage shrub flora reed petal succ cact hedge weed

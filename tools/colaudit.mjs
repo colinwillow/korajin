@@ -20,7 +20,8 @@ const ARGS = process.argv.slice(2), MESH = ARGS.includes('--mesh'), BOXM = ARGS.
 // ZONES: the URL, what "built" means, the audited square (x0, x1, z0, z1) and the height window the walkable world lives in.
 const ZONES = {
   garden: { url: '?w=forge&zone=garden', ready: '__ca.GARDEN.on && __ca.GARDEN.on.built && __ca.GARDEN.walls', rect: [-80, 80, -80, 80], y: [80, 200] },
-  forest: { url: '?w=forge&zone=dometemple', ready: '__ca.COLL.built === 1', rect: [-90, 90, -90, 90], y: [-60, 250] },
+  forest: { url: '?w=forge&zone=dometemple', ready: '__ca.player && __ca.COLL', rect: [-90, 90, -90, 90], y: [-60, 250] },
+  ftin: { url: '?w=forge&zone=ftemple', ready: '__ca.player && __ca.COLL', rect: [-40, 40, -40, 90], y: [-30, 60] },
   temple: { url: '?w=forge&zone=temple', ready: '__ca.COLL.built === 1', rect: [-90, 90, -90, 90], y: [100, 300] },
   lake: { url: '?w=forge&zone=lake', ready: '__ca.COLL.built === 1', rect: [-90, 90, -90, 90], y: [-60, 200] },
   boulders: { url: '?w=forge&zone=boulders', ready: '__ca.COLL.built === 1', rect: [-60, 60, -60, 60], y: [-60, 200] },
@@ -30,7 +31,7 @@ const ZONES = {
   arena: { url: '?w=arena', ready: '__ca.COLL.built === 1', rect: [-70, 70, -70, 70], y: [-20, 80] },
 };
 const want = ARGS.filter(a => !a.startsWith('--')); if (!want.length) want.push('garden');
-const HANDLE = 'window.__ca = { BOXES, boxesNear, boxNear, boxLocal, thinBox, groundAt, LEDGE, RIG, MOVE, TRI, SURF, scene, WORLD, player, GARDEN, COLL: typeof COLL !== "undefined" ? COLL : null, ledgeFind, resolveBoxes }; ';
+const HANDLE = 'window.__ca = { TRI, triGround, RGN: typeof RGN !== "undefined" ? RGN : null, rgnH: typeof rgnH === "function" ? rgnH : null, DOMET: typeof DOMET !== "undefined" ? DOMET : null, BOXES, boxesNear, boxNear, boxLocal, thinBox, groundAt, LEDGE, RIG, MOVE, TRI, SURF, scene, WORLD, player, GARDEN, COLL: typeof COLL !== "undefined" ? COLL : null, ledgeFind, resolveBoxes }; ';
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.webmanifest': 'application/manifest+json' };
 const server = http.createServer((q, r) => {
@@ -169,9 +170,10 @@ for (const id of want) {
   await page.addInitScript(([mesh, boxes]) => { try { localStorage.setItem('mel.game', 'korajin'); if (mesh) localStorage.setItem('mel.coll', 'mesh'); else if (boxes) localStorage.setItem('mel.coll', 'boxes'); else localStorage.removeItem('mel.coll'); } catch (e) {} }, [MESH, BOXM]);
   const errs = []; page.on('pageerror', e => errs.push(e.message.split('\n')[0]));
   try {
-    await page.goto(`http://127.0.0.1:${port}/index.html${Z.url}`, { timeout: 120000 });
+    await page.goto(`http://127.0.0.1:${port}/index.html${Z.url}&entry=0`, { timeout: 120000 });
     await page.waitForFunction(r => window.__ca && document.getElementById('boot').classList.contains('gone') && eval(r), Z.ready, { timeout: 240000, polling: 1000 });
     await page.waitForTimeout(1500);
+    await page.evaluate(() => { const C = window.__ca.COLL; if (C && C.tick) for (let i = 0; i < 400 && C.built !== 1; i++) C.tick(); });     /* drive the collider's settle clock: software GL is too slow to reach it in time */
     if (process.env.COLAUDIT_EVAL) { console.log(await page.evaluate(process.env.COLAUDIT_EVAL)); if (process.env.COLAUDIT_EVAL_ONLY) { await page.close(); continue; } }
     const R = await page.evaluate(audit, { rect: Z.rect, y: Z.y, mats: null, zone: id });
     const tagN = MESH ? '_mesh' : BOXM ? '_boxes' : '';

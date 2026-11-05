@@ -85,7 +85,7 @@ function drive() {
 
 let code = 0;
 try {
-  await page.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=garden`, { timeout: 120000 });
+  await page.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=garden&entry=0`, { timeout: 120000 });
   await page.waitForFunction(() => window.__wt && document.getElementById('boot').classList.contains('gone') && window.__wt.rig.ready && window.__wt.GARDEN.on && window.__wt.GARDEN.on.built && window.__wt.GARDEN.walls, null, { timeout: 240000, polling: 1000 });
   await page.evaluate(() => { const S = window.__wt; window.__clock = { t: performance.now(), dt: 1000 / 60 }; performance.now = () => window.__clock.t; S.renderer.render = () => {}; });
   if (process.env.WT_TRACE) await page.evaluate(() => { window.__wtTrace = 1; });
