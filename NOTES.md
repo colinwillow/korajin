@@ -56,6 +56,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2661 -- TOOLS (the debug panel) spans the screen and keeps its scroll on every tap (Nov 5 2026)
+Via main: *"the panel doesn't use the screen's width, so some labels are cramped"* and *"every tap re-renders the menu and jumps back to the TOP."*
+- SCROLL: `arenaUi` rebuilds `#arenaUi` with `innerHTML`; it now reads `.ar-tools` / `.ar-menu` `scrollTop` before and puts it back after, so a tap
+  (which re-renders) leaves you where you were.
+- WIDTH: `.ar-tools` is a fixed layer of its own -- portrait: ~95% wide (2.5vw each side), starting just under the button bar (measured at render,
+  so it never covers TOOLS itself) and stopping above the pads; landscape (<= 560 px tall): the band BETWEEN the two pads, full height. Columns
+  auto-fill at 150 px, 11.5 px type, and a label wraps to a second line instead of being cut off with an ellipsis. Shipped unverified.
+
 ## m2660 -- BOW SIZE and SWORD SIZE both 85 % by default; does the sword's size change his STANCE? MEASURED: no (Nov 5 2026)
 His: *"defaults bow 85, sword 85 (the back rig smaller, the bow less huge); does the sword size change Grumbo's stance -- with the big sword his hands
 seemed further out?"*
