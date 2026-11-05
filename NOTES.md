@@ -44,6 +44,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2545 -- FOREST TEMPLE: THE FLOW (design pass, no game change) -- the key / lock graph, the sections, the mandala plan, the pacing
+His (via main, Nov 5): *"looks super cool so far"* -- then: make it FUN, the meat of the game; design first (ZELDA_STRUCTURE Part 2, TEMPLE_ROUTES,
+Boss Keys graphs, mandala temple plans as guides), diagrams, report before building. FOREST_TEMPLE.md "THE FLOW": 12 rooms on a mandala round the
+WELL (hub), 3 small keys + the chalice, the item JINRA SEEDS (a seed arrow: grows a bounce mushroom / a vine / a heaving root in living soil;
+alternative the vine whip -- his call), teach in the nursery, test on the terrace of thorns, twist = choke the waterfall so the water drains,
+the Hollow Banyan boss beneath the well, five shortcuts, 3 hidden tokens, ~63 min. It also corrects what is built: the acrobatic room's ladder
+breaks TEMPLE_ROUTES' no-ladder rule and its 9 m wall-run gap is past the comfy 6.5 m -- both fixed in build 1. `npm run ftplan` renders the
+diagrams from its own table into `docs/forest_temple/`. Shipped unverified (docs only; the bump keeps the build number honest).
+
 ## m2544 -- THE LANTERN STAFF (his: "a light source for dark places -- dusk round the forest temple, and a pitch-dark CAVE level where his light is
    the only thing that shines"); GRUMBO GLOW; his own-model weapon list in ARSENAL.md
 - A procedural stand-in (`lanternScene`, SC_LANTERN) until his Tripo model (a `file:` on the same weapon bones). Built on the KATANA's frame
@@ -81,7 +90,6 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 - Boot gate: the region ring exists, his feet find ground 400 m out, the east dune sea has crests >= 6 m.
 - Looked at: the east dune sea at eye level and from high, the wide, the play camera. Shipped unverified.
 - NEXT (step 3b): big rocks, valleys (SE/SW, cut below grade) and hills placed from the kit; the region's edge meets the mountains.
-
 ## m2542 -- DESERT REGION STEP 2c: THE KIT INVENTORY + THE ZONE PIECES IT LACKED
 INVENTORY (all on the kit row, at `?at=kit`, restored + ruined): floaters (3 species x 2 shapes + scree), cacti / succulents / orbs, leaves,
 sand (deformation), dust, the painted sky; blocks, steps, column, ziggurat, obelisk, arch, panel; pond, palm, reeds, lily; urn x2, brazier,

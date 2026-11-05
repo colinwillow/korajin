@@ -25,20 +25,67 @@ three rings and eight spokes at its foot) -> the corridor's avenue -> the arch -
 12-spoke rosette at its centre, the ruins mirrored) -> the door on the far wall. The acrobatic ROUTE climbs round that axis (east, north,
 west, south): the plan is symmetric, the climb spirals. Later chambers keep to the axis or branch from it at right angles.
 
-## Map of the chambers (top to bottom)
-```
-  [THE DOOR]  the dome temple's door: the CRYSTAL-SHARD RITUAL (the exterior worker's shared system, WORLD_PLAN 7) -> `DOMET.door.enter` -> here
-      |
-  1 ENTRY HALL      (-6 m)  a long colonnaded hall, roots hanging from the vault, the first shaft of light; the way DOWN is a broken floor
-      |  THE DESCENT  a spiral of stairs and ledges round a root-choked well, a waterfall out of the wall into the dark (-6 -> -24 m)
-  2 THE ACROBATIC ROOM (chamber 1, WORLD_PLAN 5) -- three storeys, -24 .. -6 m
-      |     ground floor: the locked door (opened from the top), the last fight
-      |     rim 1: archers across the gap; rim 2 by the wall run; the melee scrap; monkey bars / high bar / tightrope; the BUTTON at the top
-  3 THE FLOODED GALLERY (later)  pools and a waterfall, lily stones that sink, an arrow switch over the water
-  4 THE ROOT HEART (later)        the giant root mass, climbing it, creature A (swarm) and creature B (burrower)
-  5 THE GUARDIANS' HALL (later)   the stone-twin statues that wake on the chalice (STATUES.md)
-  6 THE BOSS ARENA (later)        the boss (WORLD_PLAN 6); the JINRA STONE with the GET moment
-```
+## THE FLOW -- the design pass (his ask via main, Nov 5: "this is the meat of the game; make the temple FUN")
+Built on ZELDA_STRUCTURE.md Part 2 (hub; first half on what you walked in with; the mini-boss guards the ITEM; the item TAUGHT / TESTED / TWISTED;
+the loop-back; the boss key; the boss beaten WITH the item) and TEMPLE_ROUTES.md (**no ladders on a route**; every gap sized from `tools/moves.json`
+at 80% "comfy"; a rest and a checkpoint after every stage; every fall lands somewhere he can climb back from). Layout guides, not copies: Mark Brown's
+*Boss Keys* graphs (one locked door open at a time; hubs that make a line feel like a web), the concentric MANDALA plans of Borobudur / Angkor
+(the centre is the holiest and the deepest; you circle it as you descend), and Kailasa (a court cut DOWN into the rock with the shrine left standing).
+Diagrams (`npm run ftplan` writes them from its table): `docs/forest_temple/ftemple_graph.png` (key / lock), `ftemple_section.png` (W-E and S-N
+sections, four levels), `ftemple_plan.png` (the mandala), `ftemple_pacing.png`.
+
+### The idea in one line
+**The temple is a mandala you spiral DOWN into: the WELL is the hub at its centre, four wings sit on the cardinal axes, and the forest's power --
+growing things -- is what finally drains the water and opens the floor to the boss beneath the well.**
+
+### The new ability: JINRA SEEDS (proposed -- his call; the alternative is below)
+The forest region's verb is GROW (WORLD_PLAN 2: the giant realm, mushrooms to bounce on, vines). The temple item is a quiver of **Jinra seeds**, shot
+with the BOW he already has (one more arrow type: no new control). A seed that lands in **living soil** (glowing moss patches, root sockets, cracks
+with roots in them) GROWS what that spot holds:
+- a **GIANT MUSHROOM** (a bounce pad: up 8-10 m -- past any comfy double jump, so it opens new heights);
+- a **VINE** up a cracked wall (a climbable face -- the vertical wall run's surface, never a ladder);
+- a **ROOT** that heaves (lifts a slab, cracks a sealed floor, pins something heavy).
+In a fight: a mushroom under an enemy LAUNCHES it; a vine at an archer's ledge is your way up to it. Alternative if he prefers: the **VINE WHIP**
+(a grapple to the existing grapple rings + a pull: rip shields, yank switches and platforms) -- same rooms, the sockets become rings.
+
+### The rooms (12) and the keys
+| # | room | level | kind | what happens | gives |
+|---|---|---|---|---|---|
+| 1 | ENTRY HALL (built) | L3 24 m | rest | the door ritual drops him in; the map on a pillar; the first sight of the well | checkpoint |
+| 2 | THE WELL (built, grows) | L3 -> L0 | hub | the spine: ledges spiral down; a door on every level and axis (one locked at a time); the waterfall; its floor is a POOL with a sealed stair under it | -- |
+| 3 | ACROBATIC ROOM (built) | L1-L2 | traversal + combat | the climb under archer fire, the gallery scrap, the button, the last fight | SMALL KEY 1 |
+| 4 | ROOT GALLERY | L1-L2 west | puzzle | K1 door. Root-bound stone blocks to push onto plates, arrow switches high up, a gallery of guardian reliefs whose eyes give the order; ends at a floor CRACK | SMALL KEY 2 |
+| 5 | THE ROOT HEART | L0 west | combat | drop through the crack (one-way): MID-BOSS, the THORNBACK (a burrower: it surfaces under you; hit it as it breaches) | THE ITEM (seeds) |
+| 6 | SEED NURSERY | L0 | TEACH | a safe walled garden under the well, no way out but UP: shoot a seed into the moss -> a mushroom -> bounce to a ledge; seed the cracked wall -> a vine -> climb out into the well at L1. That mushroom STAYS: **the loop-back** (well foot -> L3 in one bounce) | shortcut |
+| 7 | THE SUNKEN COURT | L1-L3 east | traversal | K2 gate. Kailasa: a court cut 33 m down into the rock, open to the sky, three storeys of cloister galleries, a long WATER CHANNEL on its axis, the SHRINE standing in the middle -- its door is under the channel's water | -- |
+| 8 | TERRACE OF THORNS | L2 east | TEST | the court's upper cloister: archers on ledges only seeds reach (a mushroom to bounce up, a vine to climb), burrowers in soft soil, a mushroom launch to clear a crowd | SMALL KEY 3 |
+| 9 | THE FALL GALLERY | L2, in the well | TWIST | K3 door, behind the waterfall. The fall comes from a crack crowded with roots: shoot a seed into its lip from below -> roots CHOKE the fall -> the well's pool and the court's channel DRAIN (one water system: the twist uses the item on the WORLD, not a socket) | the way down |
+| 10 | THE SHRINE | L1-L3 east | puzzle-traversal | its door was under the channel; inside, a hollow core: grow vines and mushrooms up it to the top chamber | THE CHALICE (boss key) |
+| 11 | STATUE GAUNTLET | L3 east | combat | taking the chalice wakes the stone guardians in the cloisters (STATUES.md: an event, never proximity); run the ROCK BRIDGE (L3) back to the hall level -- a shortcut home | checkpoint |
+| 12 | THE HOLLOW BANYAN | L0 under the well | BOSS | the drained pool shows the stair; the chalice opens the boss door. A root colossus in a round undercroft with a rim: it slams a root-hand that STICKS; seed the stuck hand -> vines PIN it; run up the arm; strike the corrupted Jinra heart; 3 cycles, faster, burrowers in phase 2, the floor flooding in phase 3. Inside it: a STOLEN ONE (a villager turned to stone) | the JINRA STONE (GET moment) + the stolen one |
+
+**Keys:** 3 small keys + the chalice; exactly one locked door is ever available. **Shortcuts:** the acrobatic zip (built), the nursery mushroom
+(well foot -> L3), the root gallery's crack (one-way down), the rock bridge (court -> hall), and after the boss a GEYSER up the well to the hall.
+**Hidden (3):** behind the waterfall before it is choked; atop the acrobatic room's cut opening (a long-jump off the top balcony); at the bottom of
+the court's channel once drained.
+
+### Pacing (first play ~63 min; see ftemple_pacing.png)
+rest -> traversal -> traversal + combat -> puzzle -> combat (mid-boss) -> TEACH -> rest -> traversal -> TEST -> TWIST -> puzzle -> combat (gauntlet)
+-> rest -> BOSS. Never two combat rooms back to back; a rest after the mid-boss and before the boss.
+
+### Fixes this plan makes to what is built
+- The acrobatic room's LADDER goes (TEMPLE_ROUTES: no ladders) -> a CHIMNEY of two faces 4.6 m apart, or a side wall run + kick to the upper rim.
+- Every gap in the built route re-checked against `moves.json` comfy numbers (wall run along 5.5-6.5 m: the 9 m wall-run gap is too long ->
+  shortened to 6 m, or a kick-off pillar halfway).
+- Its button becomes the gate to SMALL KEY 1 (a chest after the last fight), not the end of the temple.
+
+### Build order (track B: one room a build, each refined until it is fun; track A, the detail / paint / plant passes, interleaves)
+1. the acrobatic room's fixes above + SMALL KEY 1 + the key / lock / chest system (`FTEMPLE.keys`, a door row that eats a key);
+2. the well as hub (doors on its levels and axes, the pool and its sealed stair);
+3. the root gallery (K1 -> K2); 4. the root heart + the Thornback stand-in + the SEEDS (an arrow type + soil sockets + mushroom / vine / root);
+5. the nursery (teach + the loop-back); 6. the sunken court + the shrine shell; 7. the terrace of thorns (test, K3);
+8. the fall gallery + the drain (twist); 9. the shrine climb + the chalice; 10. the statue gauntlet + the bridge;
+11. the boss: the Hollow Banyan (COMBAT.md boss knobs; `combatBoss` if a set boss fits, else its own); 12. the GET moment + the geyser out.
 
 ## How it is built (SCENE_COMPANION.md: data-first)
 - `ftkMake(THREE, O)` between `// FTKLIB:START` / `:END` is a PURE builder of its table (`SC_FTEMPLE` markers): materials (`mats`), the
@@ -74,7 +121,7 @@ west, south): the plan is symmetric, the climb spirals. Later chambers keep to t
 | `shaft` | daylight down from a crack (an additive cone, dust in it), a lit pool on the floor | -- |
 | `guardian` | a carved guardian on a plinth, a mask head with lit eyes, a spear (a stand-in for his sculpt) | plinth, body |
 
-## Passes
+## Passes (the original six; superseded in ORDER by THE FLOW's build order above)
 1. **THE KIT** (built) -- every piece above in rows on a flagstone floor, then put together on a 3 m terrace (row C). Strip + numbers.
 2. **CHAMBER 1: THE ACROBATIC ROOM** (WORLD_PLAN 5; built -- the route is in NOTES) -- three storeys (ground, rim 1 at ~6 m, rim 2 at ~12 m, the top at ~18 m). Get up to the
    first rim (stairs + a ledge climb); ARCHERS on the far rim across the gap (the existing archer, `ARCHER` / `archerAI`); a WALL RUN to the next
