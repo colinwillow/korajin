@@ -47,6 +47,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 ## Loading-screen sun-wheel: all 16 rays (his: "it's almost symmetrical, but one side is missing a spoke")
 The boot card's SVG sun-wheel and the katana lock mark (`lockMkTex`) both skipped rays k=5 and k=12 on purpose ("worn"). He doesn't like it: both now draw all 16 rays (the long left ray with its cross-bar, the short lower-right ray). The ring's dash gaps are unchanged.
 
+## m2551 -- SMART CAMERA: WATER IS NEVER SEE-THROUGH AND NEVER AN OCCLUDER (his screenshot, images/feedback/m2549/xray_water.png: swimming in The Lake, a dotted block on the water surface round Grumbo)
+- What it was: the lake's surface lies between the lens and a swimming body; it is one zone-wide mesh, so `smKind` read it BIG, the drone
+  found no pitch above it, and the last resort faded it. The pond (`dk_water`) is `transparent` at .9 opacity and passed the old filter
+  (it only dropped transparent layers under .5 or without depth writes).
+- Now `smScan` never makes a candidate of: ANY transparent material, a `transmission` material, or WATER -- `SMWATER` on the mesh name, a
+  parent's name or the material name (water ocean river pond foam wake wave spray ripple splash caustic fall(s) wfall sea underwater
+  uw_surface uw_fx), or `userData.water` on any parent. Water is never faded, never flown over, never the last resort. Covers `lake_water`,
+  `isle_water`, `garden_water`, `dk_water`, `uw_surface_below`, `uw_fx` and the falls (`garden_falls`, `ft_falls`, `temple_falls`, `wfall`).
+  Side effect, accepted: a rock NAMED for a waterfall would not fade either.
+- The first half went out in b870992 without a bump or this note (a broken shell chain); this build carries the uw_ names, the bump and
+  the note. The lake and underwater workers were told: tag a water group `userData.water = 1` (or `noXray`) at the source for anything
+  unnamed. Not run headless (the lake needs a swim pose to put the surface between lens and body). Shipped unverified.
+
 ## m2549 -- DESERT REGION STEP 3b: VALLEYS, HILLS, BIG ROCKS, CANYON WALLS, THE MOUNTAIN RING
 - VALLEYS (`F.region.val`, `valleyH` in `sandH`): the forge's floor is y 0, so nothing may cut below it -- instead the SE and SW sectors rise
   into a PLATEAU (+16 m past r 300, ramped over 90 m) and a VALLEY meanders down through each to the sand's grade (46 m floor, 34 m walls,
