@@ -44,6 +44,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2531 -- (NOTES only) the m2530 entry below was lost to a script error on that push; written here.
+
+## m2530 -- THE FLYING PUNCH STARTS AT THE SECOND JUMP (his: "a little euro-step, a first small jump landing on his feet, then a second jump into
+   the flying punch -- the first jump kills my momentum. Cut off the beginning: running, then straight into the flying jump punch")
+- WHICH CLIP, MEASURED (not assumed): forward kinematics of both feet off alien_goblin_game.glb's own samplers (rest TRS + the clip's tracks,
+  through the node tree), the LOWER foot's height as % of standing hip height, by clip fraction:
+      melee_01 (2.25 s)  0 2 8 6 7 22 | .125: 21 28 25 13 2 0 | .25: 1 3 8 22 39 57 | .375: 69 77 81 80 78 79 | .5: 81 82 78 71 60 48 | .625: 35 25 ..
+      -> both feet OFF the floor .06-.21 (the euro-step hop), down .229-.25, the real take-off from ~.27 (the hips' crouch minimum .237).
+      melee_02 is a back flip (feet to 300% over his head), melee_03 one flip kick from .36, melee_05 the handspring from .12 -- one take-off each.
+- `FISTTRIM` (melee_01: .23): the clip plays from .23 (`rig.actions[name].time`, the tornado kick's own sub-range method), the beat
+  shrinks by the cut (`meleeDur` x .77, the same playback speed), FISTWIN's travel window remaps onto the shorter state ([.26, .76] of the clip ->
+  [.04, .69] of the move), the blow's `at` is the first hand contact (.33 of the clip -> .13 of the move; `FISTTRIM.hit`, used only on a trimmed
+  move), and `p.melV` is never under his speed at the flick (`p.speed`), so the run carries straight into the flight. `FISTTRIM.on = 0` is the A/B.
+- `npm run check` ok. Shipped unverified.
+
 ## m2529 -- UNDERWATER pass 1: THE DIVE (UNDERWATER.md; his Nov 5, WORLD_PLAN 14) (Nov 5 2026)
 His: *"We're going to need the ability to swim down, because there's going to be a water temple underwater... Pressing DOWN on the right stick
 makes you dive. We're in GOD mode so you have infinite air, but eventually you'll have limited air..."* New sandbox doc UNDERWATER.md (DONE WHEN).
