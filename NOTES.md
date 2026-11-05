@@ -46,6 +46,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2585 -- THE SHADOW PASS WAS NEVER IN THE BUDGET: LOW-DETAIL SHADOW STAND-INS FOR THE FIELD (the village worker's dvperf) (Nov 5 2026)
+
+- **The finding (theirs, confirmed here):** three resets `renderer.info` AFTER the shadow map renders. So every budget number since m2538, gprof /
+  gcalls / gtop2 alike, LEFT OUT THE SHADOW PASS, and the game updates shadows every frame (`autoUpdate` true).
+  - Counted with `autoReset = false` (dvperf's way; the new `gshad` shot): **the landing was 80 draws / 319k**, i.e. 61 / 236k drawn + 19 / 82k in shadow.
+  - The field's 500-tri rocks were most of the shadow pass.
+- **Fix: the field's rocks cast through LOW-DETAIL STAND-INS.**
+  - Each rock mesh gets an 80-tri twin (`rockGeo(sp, v, 1)`) on layer 1. Only the sun's shadow camera has layer 1 enabled, so the main pass never draws it.
+  - The twin SHARES the rock mesh's `instanceMatrix` (one buffer, one upload), so it bobs, tumbles and breaks with the rocks for free. The per-frame line copies count and visibility; that is the one writer.
+  - The twins live in the scene root, not the field group, so `bouldFieldLod` does not also write them.
+  - The 500-tri rocks no longer cast. The half-buried scree and the low succulents / orbs stop casting too; their contact shadows already ground them.
+- **Measured (`gshad`):** shadow pass 19 / 82k -> **8 / 32k**. The landing **with shadows 69 / 268k** (drawn 61 / 236k). The floating rocks still throw
+  their shadows on the sand (`gflL`).
+- **The budget must now be read WITH the shadow pass.** By that measure the landing is over the old 65 / 250k, a figure that was itself measured without it.
+  Proposed: count shadows from here on and hold **≤ 70 draws / 280k tris with shadows** at the play views, or cut more. Candidates: the arches and cave
+  stop casting (3 draws), the cacti cast through a stand-in too. Colin's call.
+
 ## m2584 -- THE SUNWELL, pass 5: THE VILLAGERS, and the budget measured from the REAL play camera (DESERT_VILLAGE.md) (Nov 5 2026)
 - **Four villagers, Toad Wanderers** (m1812's village NPC; the hick's pacifist brain) spawned the sky castle townsfolk's way (`arenaLoad('TOAD')` +
   `bodySpawn`, `d.route` / `d.routeWait`), from `DVILLAGE.villagers`: a WANDERER round the well, the MERCHANT behind his counter on the avenue (long
