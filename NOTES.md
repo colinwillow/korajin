@@ -59,6 +59,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2677 -- GAMEPAD pass 3: RB weapon, LB sub-weapon, RT the bow (draw / loose) aimed by the camera's pitch, LT precision look (Nov 5 2026)
+- **RB = `gpWeapNext`**: the next entry of the right ring's own list (`RINGS.lastW`, saved by `ringsStep`: WHIP / SWORD / BOW-or-GUN, in its order)
+  through the ring item's own `tap` -- so it is the same pick a thumb makes. Rings off (QUICK DRAW off): `cycleKit`.
+- **LB = `gpSubNext`**: the left ring's first group that is not the backpack (`RINGS.lastL`): arrow ARROW / FIRE / BLAST with the bow out,
+  STEEL / FIRE / JIN with the sword. Only owned entries are in it, as on touch.
+- **RT**: with a bow or gun out, held = the right pad held up (`GP.rOwn` 'rt'), so `stepKit`'s own bow draw runs; letting go drops `stick.R`
+  and `stepKit` looses on that edge. With the sword out, the pull draws the projectile first (`qdProj`, once per pull, after any swap) and the
+  draw starts when it is in hand. **The aim is the camera**: `GP.rtBow` makes `bowAimDown` / `bowDrawA` read `gpAimUp()` = -`GP.pit` x 1.1
+  (clamped -.8..+1 rad), so looking up with the right stick aims up -- both BOW AIM modes.
+- **LT held = fine look** (the right stick at x0.4) -- his "precision aim" slot, as proposed.
+- Measured headless (fake pad, `?god`): RB went SWORD -> BOW -> WHIP; LB went ARROW -> FIRE -> BLAST -> ARROW and STEEL -> FIRE -> JIN -> STEEL;
+  RT held with the bow out: `aim` 1, released: `BOW.stat.shots` +1. A press during a weapon swap is dropped (`kitPick` refuses mid-swap).
+- Still open: menus / backpack / TOOLS navigation (pass 4), glyph cues, rumble, hiding the rings (pass 5), his sign-off.
+
 
 ## m2676 -- THE GEAR TIGHT ON HIS BACK (the sheath's bottom tilted in); the cape held by ONE PLANE (his idea), not capsules (Nov 5 2026)
 His (images/feedback/m2669/gear_gap.png): *"the sheath and quiver still FLOAT OFF his body -- bring them in, tight, even if the gear then intersects the

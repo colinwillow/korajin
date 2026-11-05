@@ -31,7 +31,7 @@ automatically. On a pad the right stick is ONLY the camera; the buttons do what 
 | RB | next main weapon (the right ring's order) | 3 |
 | LB | next sub-weapon (the left ring: arrow types, blade element) | 3 |
 | RT hold | bow draw (draws the projectile if the sword is out), release = loose; aim with the right stick | 3 |
-| LT | proposal: precision aim / zoom while drawn | 3 |
+| LT hold | precision look: the right stick at 0.4x (for the bow) | 3 |
 | D-pad down / View | backpack open / close (pauses); d-pad / stick nav, A toggle, B back | 4 |
 | pause menu | d-pad / stick nav, A select, B back; TOOLS reachable in GOD | 4 |
 | cues | button glyphs (A/B/X/Y/RB/LB/RT) instead of stick highlights; rumble through `haptic()` | 5 |
@@ -40,7 +40,7 @@ automatically. On a pad the right stick is ONLY the camera; the buttons do what 
 - [x] One action table (`ACT`) called by both touch and pad; one binding table (`GPMAP`)
 - [x] Left stick moves; A jumps; right stick orbits AND pitches the camera
 - [x] X tap = directional strike; X hold = charge, released by the left stick's pick; B = dodge / phase; Y = interact; Menu = pause
-- [ ] RB / LB cycle weapon / sub-weapon; RT draws and looses the bow with free aim
+- [x] RB / LB cycle weapon / sub-weapon; RT draws and looses the bow with free aim (pass 3)
 - [ ] Backpack, pause menu and TOOLS navigable with d-pad / A / B
 - [ ] Glyph cues, rumble, touch UI hidden by default (rings too) with the TOOLS toggle
 - [ ] Connect / disconnect live, touch takes over when the pad goes
