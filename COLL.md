@@ -81,3 +81,7 @@ measured with one), whip zips (14 m, chained to 58 m). Every level needs its pla
   (`--h` 6 m up, `--d` 11.4 m across, nothing taller in the straight path). With a bounds row: any reachable cell outside it is BAD. Without one:
   a reachable unwalkable top more than 2.5 m over the walkable floor near it (a wall top, a roof) is BAD, and drops are only counted. Whip-zip
   anchors are not modelled yet.
+  **m2752:** the flood is refused through a mesh wall between two cell centres (rayed at knee and chest), a jump path is sampled every .25 m and
+  rayed at its ceiling, and a target must be floor at 3 of 4 points .3 m round it and OPEN FROM ABOVE. `--walk=x,z [--full]` prints the flood's
+  own route to a cell, `--why=x,z` every clear jump into it, `--nofloodwalls` the old flood. (Before it, the flood walked from his spawn at 24 m
+  down onto a 22.2 m roof and through the hall wall to (11, 22.2, 52): 81 of the forest temple's 82 BAD cells were the tool.)

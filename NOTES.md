@@ -63,6 +63,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2752 -- THE ESCAPE AUDIT WAS WRONG ABOUT THE FOREST TEMPLE: its walk flood went through walls (81 of 82 BAD cells were the tool)
+
+The temple worker asked two things after m2747's bounds took `npm run escape ftin` to 82 BAD cells in 7 spots: *"Could the straight-path check be
+missing the 1.5 m wall at the 1 m grid? Can escape.mjs print the path it took?"* and *"a 0.14 m slot at the lip, at (5, 0, 48) and (9, 0, 48)"*.
+- **It was not the jump check; it was the WALK FLOOD.** The jumping-off point (11, 22.2, 52) was itself marked walkable. `--walk=11,52` (new: the
+  flood's own parent chain) shows the route: from his spawn at (0.5, 24, 75.5), down 1.8 m onto a 22.2 m surface, then 129 cells along it to
+  (11.5, 22.2, 52.5). The flood stepped cell to cell on |dy| alone and never asked whether a wall stood between two centres.
+- **Fixes (tools/escape.mjs only; the game is unchanged):**
+  - each flood step is rayed (`collRay`, mesh walls) between the two cell centres at .6 and 1.0 m over the higher floor. That refused 109 steps
+    in ftin, and walkable went 1045 -> 842;
+  - each jump path is sampled every .25 m with `groundAt` (a top over the ceiling blocks it) and rayed at the ceiling and 1 m under it;
+  - a target must be floor at 3 of 4 points .3 m round it (no 1 m cell landing in a slot) and OPEN FROM ABOVE, so the ground 24 m under his own
+    floor is no longer a landing. That was the (5, 0, 48) / (9, 0, 48) spot.
+  - `--why=x,z` prints every clear jump into a cell; `--nofloodwalls` runs the old flood for comparison.
+- **Measured** (mesh collider, swiftshader):
+  - **ftin:** 82 BAD in 8 spots -> **0 BAD** (5 sliver cells dropped, 109 flood steps refused);
+  - **forest outside** (no bounds row, auto): 115 -> 105 BAD in 13 spots, the knoll-rim rock tops (the exterior's bounds are its owner's);
+  - **garden** (no row, auto): 144 BAD in 20+ spots, the roof tops round 124-130 m.
+- Still open: whip-zip anchors are not modelled; the jump path is a straight line, not an arc. COLL.md "Containment" carries the new options.
+
 ## m2751 -- HIS TIERS: THE TIER-2 PARRY-RECOIL LOOP, THE JACKAL'S WALL-STUN, THE TEMPLE ORDER (m2751)
 Colin's tier design (via the orchestrator), written into COMBAT_DEPTH.md "HIS TIERS".
 - **TIER 2 = `HUSK_GUARD`, shown as "Husk Swordsman":** same husk (hueDeg 30 like the soldier, and the hue is not applied to katana kinds
