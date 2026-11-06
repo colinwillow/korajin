@@ -67,7 +67,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## (m2768) THE PORTAL IS JINRA AND ITS FACE IS OPAQUE -- he comes OUT of the underside, never seen through the top
+## (m2769) THE PORTAL IS JINRA AND ITS FACE IS OPAQUE -- he comes OUT of the underside, never seen through the top
 His (screenshots images/feedback/m2766/portal_emerge_1/2.png): magenta/purple (purple is the Hollow's, EMBLEMS.md), and the flat disc was
 SEE-THROUGH, so with the camera looking down you saw him through its top face while he was still in it, then he dropped out of the bottom --
 the bird-in-a-cage toy: it read as if the portal were upside down. Now:
@@ -75,7 +75,7 @@ the bird-in-a-cage toy: it read as if the portal were upside down. Now:
 - THE FACE: `ENTRY.opaque` (1; uniform `uOpq`) -- inside the lip `ENTRYFS_T` draws its TUNNEL (the swirl into somewhere else) at alpha 1
   instead of the warped scene behind, so the disc hides anything beneath its footprint. He is opaque and drawn first, so alpha 1 is enough.
 - THE THRESHOLD (m2407's clip plane) now also goes on the pack (`WG.g`), the shield and the katana's tassels -- scene-level, not under the rig.
-Strip (boulders, the play camera): images/renders/entrance/m2768_jinra_opaque_boulders_strip.jpg -- open / portal (a mint vortex, opaque),
+Strip (boulders, the play camera): images/renders/entrance/m2769_jinra_opaque_boulders_strip.jpg -- open / portal (a mint vortex, opaque),
 emerge (nothing of him), emerge2 (his feet under the rim), flip (his body out of the underside), landing, play. No radial exit streak yet.
 
 ## (m2767) THE GATHERING'S DECK HAD NO WALKABLE TRIANGLE -- its hex floor went into `triAdd` facing DOWN since m2443
