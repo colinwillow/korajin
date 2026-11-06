@@ -69,6 +69,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2779 -- THE PERFECT DODGE AND THE TIMED PARRY OPEN A GUARDIAN TOO (m2779)
+The Stone Guardian worker's ask (for SHADE): `cbtPerfectDodge` and `cbtTimedParry` take a GUARDIAN (`d.Z` -- GUARD / OLMEC / SHADE on the guard
+brain). The swipe: a dodge begun inside .38 s of it (range + `dodgeR`) misses and opens him; otherwise the hurt runs with `FOE_D = G`, so a
+guard raised inside .22 s is a timed parry -- he goes to `stag` (`guardPlay(G, 'hit')`). The smash (an unblockable slam): the perfect dodge only.
+Either sets `G.cbOpen` (SHADE honours CBT.depth.openK on its spirit) AND `G.bOpen` (the BOSS window: `bossGuardK` lands x1 inside it).
+`playerHurt0`'s timed test reads the row's `parryWin` only for arena bodies. `npm run check` green. Shipped unverified.
+
 ## (m2777) THE STONE GUARDIAN, TWO LAYERS -- his two Tripo models on ONE skeleton, the armour breaks per piece and the spirit shows
 His (Nov 6): two Tripo models in `models/characters/character_model_zips/` -- the guardian in carved sandstone armour and the SAME guardian
 as glowing green spirit, same pose. Two layers of one enemy. Built as `SHADE` (a third kind on the guardian brain) -- read STONE_GUARDIAN.md.
