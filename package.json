@@ -67,7 +67,8 @@
     "glowshot": "node tools/glowshot.mjs",
     "shadeshot": "node tools/shadeshot.mjs",
     "shadefight": "node tools/shadefight.mjs",
-    "shjinshot": "node tools/shjinshot.mjs"
+    "shjinshot": "node tools/shjinshot.mjs",
+    "hammershot": "node tools/hammershot.mjs"
   },
   "type": "module",
   "devDependencies": {

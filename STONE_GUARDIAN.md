@@ -36,6 +36,15 @@ The spirit DRAWS ONLY WHERE THE ARMOUR IS BROKEN: each guardian has its own inde
 
 ## How it fights (`SHADE`, a third kind on the guardian brain; `mel.SHADE` live) -- m2783, after he played it
 - 3.4 m, swipe + smash (no boulders); perfect dodge / timed parry open him (the combat worker's guardian path, m2779).
+- **THE MEGALITH HAMMER** (m2791, his: "the reach is kinda far -- he punches you even though he doesn't touch you... give him a massive
+  sledgehammer"): a rough stone post (bowed, tapered, uneven) and a carved monolith head with a Jinra band, on his right hand (the haft along
+  the hand's +Z, measured off the slam's impact frame). Its stone twin is the statue's. **Every blow lands where the HEAD really is:**
+  - **SWING** (close, `swipe` clip): hurts only within `reach` 1.25 m of the head or .8x of the haft's middle.
+  - **SHOCKWAVE** (`slam` x1.25, the head's Jinra band kindles first): three rings of dust and stone run out from the impact at 7 m/s, .5 s
+    apart, 14 m out. Only a man ON THE GROUND is hit -- JUMP each one. A cracked-ground decal stays 6 s.
+  - **OVERHEAD** (`slam` x.78, a rumble at the start: a long readable wind-up): 24 at the head, 60% at the edge of 2.1 m. The head stays STUCK
+    in the ground 1.7 s (`G.cbOpen` set: the punish window), then comes up.
+  - No more punch ring (`smash` is null for this kind). `mel.shadeAttack(i, 'swipe' | 'wave' | 'over')`. Sheet: `npm run hammershot`.
 - **15 pieces**: head, chest, waist, and a side each of shoulder (upper arm + plate), forearm, hand, thigh, shin, foot.
 - **THE ARMOUR PHASE: one piece per solid hit, in ORDER.** A blow works on the nearest piece among the lowest tier still on and the tier above
   (`SHTIER`: hands / feet -> forearms / shins / head -> shoulders / thighs -> waist -> chest). `segHp` .9 (chest 1.6, waist 1.2) = one solid

@@ -220,6 +220,23 @@ villages*; her role is open (a villager, a love interest, a village princess, pl
 - **Her role -- three options in CHARACTERS.md for him to pick** (a villager with a bell quest / the keeper who knows the old bell / a companion
   who rides along and may become playable). Not chosen.
 Shipped unverified.
+## (m2791) THE STONE GUARDIAN'S MEGALITH HAMMER -- every blow lands where the head is; a shockwave you jump, an overhead that sticks
+His: *"the statue's reach is kinda far. It's like he punches you even though he doesn't actually touch you... give him a really massive
+sledgehammer -- a post and a giant megalithic stone hammer -- and he slams it down. One attack sends waves and you gotta jump over them."*
+- **WHY THE PUNCH REACHED:** the old guardian brain's swipe hurts anyone within `swipe.R` (3.4 m) of his ROOT and inside an arc -- a distance
+  from his feet, never from his fist. For this kind the blows are now measured from the HAMMER HEAD (`G.ham.tip`) and the haft's middle.
+- **THE HAMMER** (`shadeHammer`, procedural, 2 draws: stone + the Jinra band): on `mixamorig_RightHand` with the haft along the hand's +Z --
+  MEASURED off the `slam` clip (at its impact frame the hand is on the ground a body ahead and its +Z points forward, its +Y down). Built in
+  metres, scaled by 1 / the bone's world scale. Its materials join `G.mats` / `G.stoneMats`, so the statue twin's hammer is stone too.
+  On death he lets go of it (a dissolving debris piece).
+- **THE BLOWS** (`shadeAct`, hooked at the top of `guardThink` for a kind with `ham`): SWING (`swipe` clip, head within 1.25 m),
+  SHOCKWAVE (`slam` x1.25, the band kindles as the tell; 3 rings at 7 m/s, `.5` s apart -- only a man on the ground is hit; a crack decal),
+  OVERHEAD (`slam` x.78 with a rumble; 24 at the head; the clip PAUSES with the head in the ground 1.7 s -- `G.cbOpen` -- then `over2` lifts it).
+- **crack_sprite_01.png is an OPAQUE 2x2 atlas** -- as a decal it drew a black square. The crack is drawn once on a transparent canvas.
+- **THE SHEET LIED FIRST:** `hammershot` waited on time-in-state only, slept straight through `stuck`, and then with `aggro` 0 and him inside
+  `notice` the guardian ROARED (`wake`) -- which read as "the overhead never sticks". Wait on (state, time), and keep aggro on for renders.
+- Sheet: images/renders/shade/hammer_sheet.png (`npm run hammershot`). `npm run shadefight` re-run with the hammer: ok (armour in 17 blows, pass-through, dunk, 5 Jinra blows, dissolve). Shipped unverified on the phone.
+
 ## (m2789) THE STONE GUARDIAN WAS UNBEATABLE -- his stone HANDS could never be hit, and the tier lock waited on them for ever
 His: *"I got its gloves and feet off but now I'm shooting it with arrows, hitting it with the sword -- all this stuff it's making explosion
 noises, but nothing, it's not taking any more damage."*
