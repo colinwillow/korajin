@@ -62,6 +62,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2706 -- FOREST TEMPLE build 7 (F, the SHRINE): a hexagonal core, three ledges each ~9 m over the last, a zip anchor over every lip; SHARD VI
+
+The sheet's F (WHIP-ONLY rule 3: ledges higher than anything he can reach, with no wall to climb). Through the whip gate on the well's east side
+(segment 7, 3 m up), a 19 m corridor reaches a RIM over a HEXAGONAL CORE (apothem 12, floor -14.2, cap 20). Its five sheer walls REFUSE a wall run
+(`WRUN.refuse`, 14.5 m round the core's centre). The ledges sit on overhangs: floor -14.2 -> L1 -5.4 -> L2 3.6 -> the ALTAR 12.8, so the rises are
+**8.8 / 9.0 / 9.2 m against his best 8.6** (hands, tools/reach.mjs). The first fix had L2 at 3 (8.2 m), and the boot test caught it. Over every
+lip there is a ZIP anchor (a knot on a root arm, a glow ring), each within the whip's 14 m (zips 9.0 / 12.9 / 13.0 m). The rim reaches L2 with a
+jump. The altar's chest pays SHARD VI, and 2.6 s later "THE GUARDIANS WAKE": a stand-in forest wave until the stone twins exist (STATUES.md).
+`FT_F` is the glue table and `FTF` is the frame. Play-test: `at=roomF&grant=1` (menu: Room F -- The Shrine). Budget, the whole interior: 34 draws, 126k tris.
+Open: the sheet's COUNTERWEIGHTS (pull to raise the floors) are not built yet; the core is plain and dark (detail pass); the guardians are a stand-in.
+Boot: gate pulled, the three zip hops within reach, every rise over 8.6, the core refuses a wall run. Shipped unverified.
+
 ## m2705 -- GLOWKIT pass 2: the crystals look like CRYSTALS -- facet edges, a tight parallax core, inclusions, glints; moss with a pile; mushroom rims (Nov 6 2026)
 From the m2704 renders (`images/renders/glowkit/`, sheet `images/renders/glowkit_sheet.jpg`): crystals read pale and plastic, the moss as flat paint.
 - CRYSTAL: the bright FACET-EDGE line is what makes a stylized crystal read; it is barycentric (`aE`, every sink carries it) with each body quad's
