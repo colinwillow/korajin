@@ -62,6 +62,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2714 -- ENEMIES ON THE GROUND, SPAWNED WHERE HE CAN REACH THEM, AND NO HITS FROM ANOTHER LEVEL (his bug report, Nov 6, priority)
+- WHAT WAS WRONG, read off the code: (1) every BEAST (`beastStep`) stood at y 0 unless it had a home or was in the Garden (`homed ? groundAt :
+  0`) -- so in the desert the dog, the hounds, the dragons walked at sea level THROUGH the dunes; and `foeMove` (every walker) resolved BOXES only,
+  never the mesh collider's walls, so canyon walls and cliffs (COLL triangles) did not stop anyone. (2) SPAWN placed arena kinds at `spawnAt`
+  [0, -6] at y 0 (the Garden alone had a ring search), the lab's fan ignored ground, and scorpions / giants / the Thornback took the HIGHEST
+  ground at their x, z from 500 m up. (3) the creatures' bites, stomps, strikes and swoops, the guardian's smash and the big bosses' rolls,
+  slams, ripples and eruptions tested FLAT distance (one tested the WORLD's y < 1.6); the arena brain's own swings (`cbtStep`'s pressure, the
+  riposte, the paired attack, the mirror's in-reach) never asked `foeReachY`.
+- FIXES: ONE `spawnSpot(clear, k)` for every spawn path (`gdnSpawnSpot` is now an alias, so the spiders, guardians and archers get it too): a
+  ring round HIM 3-12 m, real ground within 1.5 m of his height, ground all round out to `clear` (no edge), no box at body height, not inside
+  the mesh (`collInside`), a clear line to him (`losClear`); else the nearest spot with ground in that band; else his feet 1.5 m back -- never
+  the void. arenaSpawn uses it outside the stadium's doors; a temple mark (`combatDrop` spots) snaps to its own ground; the lab's scorpions,
+  giant, Thornback and `combatBoss('thorn')` without a spot use it. `foeMove` now also runs `collPush` (walls / cliffs stop a body as they stop
+  him) and every beast stands on `groundAt` under it, falling off a ledge at its own rate. VERTICAL REACH: `reachY(y0, above)` (his feet in
+  [y0 - 1, y0 + above]) on every creature / boss contact listed above; ripples need him within .8 m of their own level; the lab brain's swings
+  need `foeReachY`; the giant scorpion and the Thornback do not start a strike at a man more than 3 m off their level (the Thornback may still
+  burrow toward him). Ranged: the archers already wait for a line of sight (`archerSees`).
+- THE BOOT GATE (`spawnGate`, `MEL_WORLD='test&gate=reach'`, now in `npm run check`): a 10 m platform with him on top -- six spawn spots must stand
+  on its top (y within 1.5, ground under each within 5 cm); a body 5 m BELOW him must NOT land a `foeStrike`; the same body on his level MUST (the
+  positive control); `reachY` agrees. VERIFIED THAT IT CATCHES THE BUG: with `foeReachY` forced true it fails ("a body 5 m BELOW him hit him").
+- Not measured here: a real dune / floating-island / under-a-ledge run per family on the phone -- that is his look. `npm run check` ok. Shipped unverified.
+
 ## m2713 -- CONTROLS: CLASSIC (default) / FLOATING, and a FOOTAGE mode (Nov 6 2026)
 Via main: *"a CONTROLS switch: CLASSIC (fixed, big, obvious, always on screen -- stays the default) vs FLOATING (pads appear wherever the thumb lands,
 INVISIBLE when no thumb is down). Lots of players expect floating, and hidden controls are great for capturing footage."* Rings: his pick **A**.
