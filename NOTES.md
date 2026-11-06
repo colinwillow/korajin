@@ -59,6 +59,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2692 -- FOREST TEMPLE C: the REAL THORNBACK (the combat lab's m2690) in the root heart; C's arena lengthened for it
+
+The combat lab's THORNBACK landed (m2690: procedural until his Tripo model; roll charge into a belly-up stun, rear + slam with a ripple to 10 m,
+burrow + erupt, a thorn volley; wakes within 14 m). Room C now drops it: the foes row is `boss: 'thorn'`; `ftinWake`'s boss branch keeps the beast
+`combatBoss` resolves (it is not an arena body) and banners "THE THORNBACK"; `ftinCStep` counts a thorn alive while `!dead`.
+**Its room:** its roll runs ~20 m and its ripple 10, and C's arena was 18 x 14 m -- so the arena now runs **24 m** (lz 12.6..36.8, its far end 10 m
+past B's far wall, under the rock: a ceiling slab `c_ceil`; walls 38.5 m; the root heart, braziers, the dais and the chest moved to the far end).
+**The beat:** he lands under the crack **14.2 m** from the beast (`at` lz 31.5): just outside its wake radius. Bounds x -62, collider rect x -64.
+Boot unchanged (the hops 11.7 / 5.0 / 13.2 m). Shipped unverified.
+
 ## m2691 -- THE KIT REGRESSION (his, urgent): hands ON every object, LOCKED IN while a piece runs, a gate so it cannot break silently; cue ARROW+OUTLINE, chest KICK (Nov 6 2026)
 **His report:** the door -- he stands at its centre doing nothing while the lock wheel spins by itself, then runs into the door instead of
 pushing it; the wheel not bigger. The crank -- no arms on the spokes, and a flick / dodge leaves mid-spin while the wheel keeps going.
