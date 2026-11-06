@@ -69,6 +69,35 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2790 -- THE GARDEN BUDGET PASS, part 1: ACROSS-PIECE MERGE, CHEAPER FAR ISLES (the garden is mine now; the orchestrator's go) (Nov 6 2026)
+
+**Measured with shadows** (`gg_play`: spawn / shrine / zen / wide; `gg_list` lists every draw by parent):
+- Before m2786: **188 / 690k**, 162 / 628k, 171 / 684k, 194 / 717k. The budget is 70 / 280k.
+- The biggest items:
+  - the far-isles mesh: ONE draw of **198k tris**
+  - the island's pieces: main, the two chunks, the shrine, **56 draws / 245k**
+  - the moored ship: 27 draws
+  - the Jinra heart: 19 small shader draws
+  - the shadow pass: ~35 draws / 117k
+- **ACROSS-PIECE MERGE (`garden_static`):** each piece was already merged per material, but the same materials repeat piece to piece. Every static mesh in
+  main / shrine / chunk_home / chunk_summit is merged again by material + shadow flags into one draw each: **56 meshes -> 17 draws**.
+  - Nothing the step moves or LOD-hides BY REFERENCE is touched: `Z.wheels`, the bell, the sword, `Z.detail` groups.
+  - Also never touched: the hammock (the interactions worker's), the heart, the ship, the far isles.
+  - The first try selected only merge OUTPUTS and read `keepG` out of another `try`'s block scope (a ReferenceError swallowed by its own catch).
+  - Including the CASTERS saves another 26 draws and costs ~38k shadow tris, because a merged caster spans the island and always sits in the shadow camera.
+    **Draws are the scarcer of the two on a phone, so they are in.**
+- **FAR ISLES:** generated isles 26 -> 14 rings and the hand-placed ones 20; their canopies are detail 0 (`gdnFarTree(..., cheap)`, opt-in, since other zones use it).
+  The far mesh is **198k -> 153k**.
+- **After:** spawn **150 / 710k**, shrine 129 / 669k, zen 129 / 701k, wide 150 / 714k. **Draws -38 (-20%). Tris are not down yet.**
+- The route still holds (groundAt reads every stone to 0.01 m), and the island renders as before.
+- **Next (part 2):** the tris and the rest of the draws.
+  - Shadow casters through stand-ins (the desert's layer-1 trick) or pruned.
+  - The far isles' count / LOD (153k).
+  - The ship (27 draws): merge its static parts by material in its own frame.
+  - The heart's 19 draws: the static ones merged.
+  - The chunks' geometry (~150k).
+  - The cards.
+
 ## m2788 -- THE KORAJIN WOMAN'S BLUE BACK PANEL IS GONE (his: "a piece on her back... this weird blue texture, an error in the generation; those polygons need to be deleted") (Nov 6 2026)
 - **What it was, measured:** ONE loose shell of THREE triangles -- a flat quad (x +-.07, y .64-.78, z -.008 of her 1.0 FBX height) laid over her
   mid-back with a blue patch of the atlas on it. Found by rendering her back, finding the blue pixels and raycasting them to triangles (32 hits:
