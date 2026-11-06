@@ -62,6 +62,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2722 -- THE CUT-AWAY WAKE for the arena's stone twins (`arenaCineWake`, reusable); F's guardians wake on it
+
+STATUES.md: "the lens visits each statue in turn (dust, chips, a crack, the flash); the woken ones REAR in place until the lens is back, then
+all come down at once; nobody attacks while the lens is away". The spider sandbox had this (`statueCam`) and the arena's stone twins did not:
+`arenaWakeAll` woke every one at once with no camera. `arenaCineWake([focus])` (table `ACINE`) runs the same cut-away for any level:
+- The lens eases off him to a point beside each stone twin in turn, looking at it. The chips and dust come first, then the wake
+  (`arenaStoneWake`). The woken ones hold (no aggro, cooldown held) until the lens is back, then all go at once.
+- F's chest uses it (focus: the altar). A guardian already broken by a blow stays broken.
+Hooks: `arenaCineStep` beside `statueStep` in the frame, and `arenaCineCam` beside `statueCam` in the camera.
+Boot: three stand-in stone twins wake in turn (at frame 40 one is up and held, two are still stone); the lens moved for 82 frames; all three
+are loose after. Shipped unverified.
+
 ## m2721 -- FOREST TEMPLE polish pass, the weakest room (E, the Sunken Court): the THORN WALLS finally look thorn-covered, and the bark shows
 
 Picked by render: a contact sheet of every room (A, the well, B, C, D, E, F, the root hall), then E in game. E was the weakest, because its
