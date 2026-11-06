@@ -39,7 +39,8 @@ west, south): the plan is symmetric, the climb spirals. Later chambers keep to t
 6. **Room D -- Fall Gallery** (on the D sill, 12 m up the north wall, with the whip): lash + pull the door's root seal -> the wave -> pull the ROOT DAM
    at the trough's head (the well's waterfall stops, its pool drains) -> turn the CRANK -> the alcove's chest (shard IV).
 7. **Room E -- Sunken Court** (at the E door, east, with the whip): pull it open -> from the near perch swing the SIX KNOTS under the thorn canopy across
-   the 46 m chasm (a jump hits the thorns; the walls will not take a wall run) -> the squad on the far perch -> the chest (shard V).
+   the 46 m chasm (a jump hits the thorns; the walls will not take a wall run) -> the squad on the far perch -> lash + pull the two LEVERS high on
+   the far wall, and drag the two CRATES onto the two glowing PLATES with the whip -> the iron gate rises -> the chest (shard V).
 8. **Temple kit (pieces)** -- every building piece laid out, for looking at.
 Each Room entry lands you at that room's door with everything before it done (`&grant=1`: in memory only -- your real save is never touched;
 the chip says TEST). The chip: `FT: shards n/6 · whip ✓ · rooms A B C D E F` (a lit letter = that room's shard is yours).
@@ -80,7 +81,7 @@ six shards light the SEAL on the well floor and open the stair to the boss benea
 3. [x] B: the ROOT GALLERY (the key door opens; the reliefs' eyes give the ORDER, three arrow switches; the chest pays SHARD II). Still open in B:
    the floor CRACK down to C (with C's build), push-blocks onto plates (no push mechanic yet), its own enemy roster (the forest wave stands in). 4. [x] C (see NOTES). 5. [x] D: the FALL GALLERY (the whip gate opens on a pull; pull the ROOT DAM -> the trough runs dry, the waterfall stops, the well's pool drains;
    the crank raises the alcove gate -> the chest: SHARD IV). 6. [x] E: the SUNKEN COURT, part 1 (the whip gate; a 46 m chasm, thorn walls that refuse a wall run, a thorn canopy over it, six knots;
-   the far perch: the squad, the chest = SHARD V). Part 2: the court's levers and crates onto plates, the cloister detail. 7. [ ] F. 8. [ ] the SEAL (six shards), the stair, 9. [ ] THE HOLLOW BANYAN.
+   the far perch: the squad, the chest = SHARD V). [x] Part 2: the chest's niche behind an iron gate -- two levers 9 m up (whip pulls) + two crates dragged onto plates (whip). Open: the cloister detail. 7. [ ] F. 8. [ ] the SEAL (six shards), the stair, 9. [ ] THE HOLLOW BANYAN.
 What changed: the CHALICE is gone (the six shards are the boss key; the shrine pays a shard); D, E and F are open in ANY order once he has the
 whip (each behind a whip gate at the well), and each states its WHIP-ONLY rule (C: a knot ceiling over a pit; D: a pull no move replaces;
 E: a 44 m span off 3 m perches; F: 18 m ledges with no wall under them). Plan metres are the sheet's (hub at 0,0), not yet the zone's.

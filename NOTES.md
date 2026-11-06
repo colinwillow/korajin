@@ -62,6 +62,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2703 -- FOREST TEMPLE E part 2: the far perch's chest behind an iron gate -- two levers 9 m up + two crates onto plates, all by the whip
+
+The sheet's TEST (rule 5: pulls no move replaces). The chest now sits in a NICHE (two short walls and a lid round the dais) behind the Interactions
+Kit's iron GATE; it rises ("THE IRON GATE RISES") when **both LEVERS** high on the far wall (9 m: a bronze plate, an arm that swings down, a knob that
+lights -- whip pull targets, nothing else reaches them) are thrown **and both CRATES** stand on their **PLATES** (a bronze slab each, its ring lights
+under a crate). A crate: a wooden box with a moving collider (`BDYN`), a pull target that drags it toward him (`crateV` / mass, braked by `drag`);
+it slides on the perch and never off its edge or into the niche (tested in E's frame). All under the squad's fire. `FT_E2` is the table.
+Boot: both levers pulled, both crates dragged onto their plates (9 pulls), the gate rises. Shipped unverified.
+
 ## m2702 -- FOREST TEMPLE: PLAY-TESTABLE FROM THE PHONE -- the menu lists every room, each lands him at its door with what it needs; a progress chip
 
 **His (via main):** *"I never really know how to test the forest temple... 'Forest Temple: inside' and 'Forest Temple: the Acrobatic Room' both
