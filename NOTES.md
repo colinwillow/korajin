@@ -59,6 +59,13 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2694 -- THE KIT: POTS ROCK WHEN BRUSHED (his secondary-motion list, the last item) (Nov 6 2026)
+Brush past a pot moving (over .6 m/s, within its radius + .42 m) and it TIPS AWAY from you -- the push is 60% his direction of travel, 40% straight
+away from him -- and rocks on its base: a damped two-axis spring per pot (`IKPOT`: 2.6 Hz, damping .22, clamped .22 rad), the instance matrix
+rebuilt with the tilt about the urn's base; a soft clink on a real knock (over 2 m/s, .5 s apart). A broken pot is left to its shards; `ikPotsMend`
+puts them back upright. Film (`pots`): a forced pass at 3 m/s beside the bay-4 pots -- the brushed pot's tilt reads .011 -> .036 rad and settles by
+1.3 s; the push is now x1.6 of that (`k` .055 -> .09). Every item of his secondary-motion list is in (m2664 `ikJolt`, this). Gates: `npm run check`.
+Moves no box. **Shipped unverified.**
 ## m2694 -- FOREST TEMPLE OUTSIDE: the phone budget (99 draws / 528k tris -> 69 / 276k at the arrival, shadows included); the lift-up seam (Nov 6 2026)
 The interior worker measured the outside at its arrival over the phone budget (<= 70 draws / 280k tris, shadows included). Measured with
 `npm run zonebudget` (the game's own camera at the arrival knoll, the shadow pass included): **before 99 draws / 527,778 tris, after 69 / 275,534.**

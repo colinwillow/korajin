@@ -42074,6 +42074,20 @@ function ikUrnGeo() { const prof = [[.01, 0], [.15, 0], [.17, .03], [.2, .06], [
 function ikPots(g, recs) { const mat = ikVM({ roughness: .7 }); nightGlow(mat, { mask: 'runes', role: 'glow', density: .08, scale: 1.1, strength: 1.0 });
   const shard = ikVC(new THREE.CylinderGeometry(.3, .3, .14, 5, 1, true, 0, .55), 0xb8693e); shard.computeVertexNormals();
   IKIT.potK = propKind('ikpot', g, [[ikUrnGeo(), mat, 1]], recs, { hp: 8, shard: [shard, ikVM({ roughness: .7, side: THREE.DoubleSide })], shards: 12, dust: [.62, .45, .32] }); }
+// m2694 (his, the secondary-motion list: "pots rock when brushed"): brush past a pot moving and it TIPS AWAY from you and rocks on its base --
+// a damped two-axis spring per pot (a few degrees, ~.6 s), a soft clink on a real knock; the instance matrix is rebuilt with the tilt about the
+// base (the urn's origin). A dead pot is left to its shards.
+const IKPOT = { r: .42, k: .09, f: 2.6, z: .22, max: .22 };
+function ikPotRock(dt) { const K = IKIT.potK; if (!K) return; const p = player, PW = K.parent.matrixWorld, sp = Math.hypot(p.vel.x, p.vel.z), w = IKPOT.f * Math.PI * 2;
+  for (const b of BREAK) { if (b.prop !== 'ikpot' || b.dead) continue; const r = b.rec, R = b.rock || (b.rock = { ax: 0, az: 0, vx: 0, vz: 0, cd: 0, on: 0 });
+    const c = _prkV.set(r.x, r.y, r.z).applyMatrix4(PW), dx = c.x - p.pos.x, dz = c.z - p.pos.z, d = Math.hypot(dx, dz), reach = b.rad + IKPOT.r; R.cd -= dt;
+    if (d < reach && sp > .6 && Math.abs(p.pos.y - c.y) < 1.2) { const k = IKPOT.k * Math.min(1, sp / 4) * (1 - d / reach) * 60 * dt, nx = (p.vel.x / sp) * .6 + (dx / (d || 1)) * .4, nz = (p.vel.z / sp) * .6 + (dz / (d || 1)) * .4;
+      R.vx += nz * k * w; R.vz -= nx * k * w; R.on = 1; if (R.cd <= 0 && sp > 2) { R.cd = .5; snd('clink', { g: .12 + Math.min(.2, sp * .03), r: .7 + Math.random() * .2, x: c.x, z: c.z }); } }
+    if (!R.on) continue; const n = Math.max(1, Math.ceil(dt * 120)), h = dt / n;
+    for (let i = 0; i < n; i++) { R.vx += (-w * w * R.ax - 2 * IKPOT.z * w * R.vx) * h; R.vz += (-w * w * R.az - 2 * IKPOT.z * w * R.vz) * h; R.ax = Math.max(-IKPOT.max, Math.min(IKPOT.max, R.ax + R.vx * h)); R.az = Math.max(-IKPOT.max, Math.min(IKPOT.max, R.az + R.vz * h)); }
+    _prkQ.setFromEuler(_ikE.set(R.ax, r.yaw || 0, R.az, 'XYZ')); _prkM.compose(_prkV.set(r.x, r.y, r.z), _prkQ, _prkS.set(r.s || 1, r.s || 1, r.s || 1)); for (const m of K.ims) { m.setMatrixAt(b.i, _prkM); m.instanceMatrix.needsUpdate = true; }
+    if (Math.abs(R.ax) + Math.abs(R.az) < 1e-4 && Math.abs(R.vx) + Math.abs(R.vz) < 1e-3) { R.on = 0; R.ax = R.az = R.vx = R.vz = 0; } } }
+const _ikE = new THREE.Euler();
 function ikPotsMend() { const K = IKIT.potK; if (!K) return; const PW = K.parent.matrixWorld;
   for (const b of BREAK) { if (b.prop !== 'ikpot' || !b.dead && b.box) continue; const r = b.rec; _prkQ.setFromAxisAngle(_prkA.set(0, 1, 0), r.yaw || 0); _prkM.compose(_prkV.set(r.x, r.y, r.z), _prkQ, _prkS.set(r.s || 1, r.s || 1, r.s || 1));
     for (const m of K.ims) { m.setMatrixAt(b.i, _prkM); m.instanceMatrix.needsUpdate = true; }
@@ -42154,7 +42168,7 @@ function ikitBuild() { const Z = IKIT; Z.want = 2; if (Z.on) return; const g = n
   btn('HAPTIC TEST', () => { const ok = haptic('heavy'); toast(HAPT.on ? (ok ? 'tick sent (' + HAPT.how + ', #' + HAPT.n + ') -- did the phone tick?' : 'no tick (' + (HAPT.how || 'throttled') + ')') : 'HAPTICS are OFF (TOOLS > LOOK)', 2.6); });
   document.body.appendChild(el); Z.el = el;
   Z.on = { g, t: 0 }; try { if (window.mel) { mel.IKIT = IKIT; mel.IKIND = IKIND; mel.ikitGo = ikitGo; mel.ikitReset = ikitReset; mel.ikitAdd = ikitAdd; mel.IKBR = IKBR; mel.ACT = ACT; mel.ikitExit = ikitExit; } } catch (e) {} }
-function ikitStep(dt) { const Z = IKIT; if (!Z.on && !Z.rows.length) return; Z.t = (Z.t || 0) + dt; if (Z.on) Z.on.t += dt; ikitRunStep(dt); ikLampStep(dt); ikJoltStep(dt); for (const r of Z.rows) { const K = IKIND[r.kind]; if (K.free) K.free(r, dt); } }
+function ikitStep(dt) { const Z = IKIT; if (!Z.on && !Z.rows.length) return; Z.t = (Z.t || 0) + dt; if (Z.on) Z.on.t += dt; ikitRunStep(dt); ikLampStep(dt); ikJoltStep(dt); try { if (!IKPOT.off) ikPotRock(dt); } catch (e) { IKPOT.off = 1; note('IKPOT ' + e.message); } for (const r of Z.rows) { const K = IKIND[r.kind]; if (K.free) K.free(r, dt); } }
 // SC_IKIT:END
 // m2418: FLOATING BOULDERS (BOULDERS.md) -- KORAJIN > Floating Boulders, `?w=forge&zone=boulders`. His: "boulders that are floating -- different
 // sizes -- just gracefully, melodically floating right off the ground, and interactive". `bouldMake` is a PURE builder of its table (the rows
