@@ -76,7 +76,8 @@ with overshoot and settle, a whoosh at the flip. Recompute the TAIL boundary."*
   slide in (the swap there), hold, release. The X draw is untouched.
 - MEASURED IN MOTION (idle, run + 3 jumps, idle; cape vertices inside the gear's mesh bounds; the same run for both): X mean 32.2 / max 39, HORIZONTAL
   mean 28.8 / max 36 -- what is left is the QUIVER (unchanged, under the cape as asked) and the cape's attachment. (Both numbers are up on m2698's
-  22 -- the cape itself changed upstream since; same run, same build here.)
+  22. CORRECTION: nothing upstream changed the cape -- only two commits landed after m2698; this probe switched layouts at the start of the run,
+  which rebuilds the back gear, so its baseline is not m2698's. Compare X and HORIZONTAL with each other, not with m2698.)
 - RENDERED (night, the forge): idle from behind / 3-4 / the sides, a run from behind and the side, the draw at 7 moments, the sheathe at 4.
 
 ## m2699 -- GIANT FLORA pass 2: WIND SWAY (vertex shader), DEEPER CACTUS RIBS, BONE BARK (his go, via parent) (Nov 6 2026)
