@@ -59,6 +59,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2693 -- THE THORNBACK NEVER LEAVES ITS FLOOR (the forest worker: room C's near end is the edge of an 8 m pit)
+- Every move of the Thornback (walk, the ROLL charge, the burrow's tracking mound) checks the ground at the next step: lower than its feet by more
+  than `THORN.edge` (1 m), or none -> the step is refused. A ROLL that meets an edge ends right there in its belly-up tumble (the stun window);
+  the mound simply stops at the edge. So it can't fall into room C's pit, whatever the charge length. `npm run check` ok. Shipped unverified.
+
 ## m2692 -- FOREST TEMPLE C: the REAL THORNBACK (the combat lab's m2690) in the root heart; C's arena lengthened for it
 
 The combat lab's THORNBACK landed (m2690: procedural until his Tripo model; roll charge into a belly-up stun, rear + slam with a ripple to 10 m,
