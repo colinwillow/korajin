@@ -59,6 +59,30 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2687 -- THE GIANT ALIEN FLORA, pass 1 (his: "big plants -- towering cacti and agave, glowing succulents, bone-like trees") (Nov 6 2026)
+
+- **`DPLACE.flora` + `bouldFlora`.** Four kinds, built as plain geometry with vertex colours in ONE material (`dk_bigflora`, double-sided, step-tagged plant).
+  The glowing tips use the kit's `core`, so they merge with the giants' glow (no draw).
+  - **Tower cacti:** 12-26 m, ribbed lathe, 1-3 arms, teal to violet, crystal tips.
+  - **Giant agave:** a 16-leaf rosette 8-15 m, a 16-26 m flower spike with glowing seeds.
+  - **Glow succulents:** 5-8 bulbous pods 4.5-8 m, blue into Jinra mint, a glow on each.
+  - **Bone trees:** 12-22 m, a 6-sided limb branching twice with knuckles at every joint, sometimes a glow at a tip.
+- **Placement:** clusters of 2-4 across six sector zones, by kind:
+  - the E dune sea: agave / glow;
+  - the SE valleys: cactus / bone;
+  - the S: bone / agave;
+  - the SW canyons: cacti;
+  - the W mesas: bone / glow;
+  - the NW: agave / glow.
+  Kept clear: the landing's northern view (|th| < .75 inside 1000 m), the Sky Ascent wedge, the village patch and 70 m round every giant.
+  **112 plants, 49k tris in all.** Trunks are solid (an invisible `colOnly` cylinder each, baked into `desert:collide`).
+- **Budget:** each plant is its own child of G, so the batch merges it into its 200 m CELL (`dk_bigflora` is DET), and its cells take `DPLACE.flora.lod` 900 m.
+  They dissolve in and out (m2581's fade). **Landing WITH shadows 65 / 254k** (none of the flora is in that view).
+- **Bug found and fixed: the giants' batch stripped EVERY attribute but position and normal.** The flora merged BLACK. A vertex-coloured material
+  now keeps its colours.
+- **Boot gate:** over 60 plants, at most 90k tris, the merged flora still carries colour.
+- **Open (pass 2):** no wind sway (a vertex-shader bend would need its own material). The cactus ribs read faintly under flat light. The bone trees have no
+  bark detail. His look decides the sizes and the mix.
 
 ## m2686 -- CAPE: TAIL (the default) -- the top pinned over the gear, only the tail below the gear flutters; no cloth-vs-gear collision at all (Nov 6 2026)
 His (after trying the m2647 capsules -- "stuck halfway through the sheath" -- OFF -- "all right, not great" -- and the m2676 plane -- "still pokes

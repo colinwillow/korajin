@@ -43803,6 +43803,12 @@ const DPLACE = {
   // (his jump tops out at 2.81 m), from the sand on the side facing the landing up to a sky platform at +140 that looks down the valley to the
   // temple; the six STAGES (+20 .. +140) are kit platforms (a slab, a lip, a WALL-RUN face on the outside, a glowing root). Solid (they join
   // desert:collide), merged with the giants per material. [th, r] of the centre from F.c (region convention: th 0 = north).
+  // m2687 THE GIANT ALIEN FLORA (his: "big plants -- towering cacti and agave, glowing succulents, bone-like trees"). Zones by sector [th0, th1, r0, r1]
+  // (region convention), each with its kinds and a count of CLUSTERS (2-4 plants a cluster); kept off the landing's northern view (|th| < .75 inside
+  // 1000 m), the Sky Ascent wedge, the village patch and the giants. Merged per 200 m cell (one draw a cell), dissolving in and out to `lod` m.
+  flora: { seed: 4711, lod: 900, zones: [[1.25, 2.0, 380, 1100, ['agave', 'glow', 'agave'], 7], [2.0, 2.75, 330, 1100, ['cactus', 'bone', 'cactus'], 8], [2.75, 3.55, 380, 1100, ['bone', 'agave'], 6],
+      [-2.75, -2.0, 330, 1100, ['cactus', 'cactus', 'glow'], 8], [-2.0, -1.2, 260, 900, ['bone', 'glow'], 6], [-1.2, -.78, 400, 1100, ['agave', 'glow'], 5]],
+    kinds: { cactus: { h: [12, 26] }, agave: { r: [8, 15], spike: [16, 26] }, glow: { r: [4.5, 8] }, bone: { h: [12, 22] } } },
   ascent: { at: [.8, 420], R: 58, rise: 2, chord: 5.2, jit: 1.2, stone: [2.2, .8], stages: [20, 44, 68, 92, 116, 140], stageW: 12, topW: 18, start: 1.6, seed: 77 },     // m2564: offsets from F.c: the Sunwell village's plinth (the village worker's ask: flat inside 55 m, sand again by ~88)
   sky: { seed: 5150, sp: 'sand', rings: [215, 330, 470, 640, 830, 1030], axis: .2, ascent: [.36, 1.22, 160, 700], village: [1.30, 1.84, 200, 380],     /* village: DESERT_VILLAGE.md's patch (the village worker's one field) */
     tiers: [[7, 20, 3, 8, 0, 1], [28, 62, 6, 14, .5, 0], [80, 140, 12, 24, .9, 0], [170, 260, 20, 40, 1.4, 0]], sat: [1, 3], satR: [1.6, 3.4], satK: [.25, .55], singles: 30,
@@ -43904,6 +43910,53 @@ function bouldAscent(G) { const Z = BOULD, L = Z.L, DK = Z.DK, A = DPLACE.ascent
     if (n % 3 === 1) { const cr = new THREE.Mesh(new THREE.OctahedronGeometry(.32).toNonIndexed(), MC); cr.position.set(x, y - A.stone[1] - A.stone[0] * 1.9, z); cr.scale.y = 1.6; cr.name = 'ascent:crystal'; AG.add(cr); }     /* the glowing seed under every third: the route reads at night */
     path.push([x, y, z]); n++; ph += A.chord / A.R; h += A.rise; }
   Z.ascent = { c: [cx, gy, cz], path, tops, stones: n }; Z.st.ascent = n + ' stones, ' + tops.length + ' stages, top +' + A.stages[A.stages.length - 1]; }
+// m2687 THE GIANT FLORA (DPLACE.flora): four kinds built here as plain geometry with vertex colours in ONE material (`dk_bigflora`, double-sided,
+// tagged a plant for the footsteps), the glowing tips in the kit's `core` (merged with the giants' glow, no draw). Each plant is its own child of G, so the
+// batch merges it into its 200 m CELL (DET) and the LOD loop dissolves the cell in and out (m2581). Trunks are solid: an invisible cylinder each.
+function bouldFlora(G) { const Z = BOULD, L = Z.L, DK = Z.DK, FL = DPLACE.flora; if (!FL || !DK) return; const c = L.F.c; let sd = FL.seed; const R = () => { sd = (sd * 16807) % 2147483647; return (sd - 1) / 2147483646; };
+  let FM = Z.floraM; if (!FM) { FM = Z.floraM = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .78, side: THREE.DoubleSide }); FM.name = 'dk_bigflora'; FM.userData.surf = 'plant'; }
+  const CM = DK.mat('core'), COL = DK.mat('colOnly'), lerp3 = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const paint = (g, f) => { g = g.index ? g.toNonIndexed() : g; const P = g.attributes.position, C = new Float32Array(P.count * 3); for (let i = 0; i < P.count; i++) C.set(f(P.getX(i), P.getY(i), P.getZ(i)), i * 3); g.setAttribute('color', new THREE.BufferAttribute(C, 3)); if (g.attributes.uv) g.deleteAttribute('uv'); return g; };
+  const lathe = (r, h, segs, rows, ribs, bend, tip) => { const pts = []; for (let i = 0; i <= rows; i++) { const t = i / rows; pts.push(new THREE.Vector2(Math.max(.01, r * (t < .82 ? 1 - t * .15 : (.877) * Math.sqrt(Math.max(0, 1 - Math.pow((t - .82) / .18, 2)))) * (tip || 1)), t * h)); }
+    const g = new THREE.LatheGeometry(pts, segs), P = g.attributes.position; for (let i = 0; i < P.count; i++) { const x = P.getX(i), y = P.getY(i), z = P.getZ(i), k = 1 + .09 * Math.cos(Math.atan2(z, x) * ribs); P.setXYZ(i, x * k + Math.sin(y / h * 2.4) * bend * y / h, y, z * k); } g.computeVertexNormals(); return g; };
+  const gl = (parts, x, y, z, s) => parts.push(new THREE.OctahedronGeometry(s).toNonIndexed().scale(1, 1.5, 1).translate(x, y, z));
+  const B = {
+    cactus(o) { const h = o.h, r = h * .07, P = [], G2 = [], lo = [.14, .4, .42], hi = [.42, .3, .66], col = (x, y) => lerp3(lo, hi, Math.min(1, y / h)), trunk = lathe(r, h, 16, 8, 8, r * .6);
+      P.push(paint(trunk, col)); const na = 1 + (R() * 3 | 0); for (let a = 0; a < na; a++) { const ang = R() * 6.28, hy = h * (.35 + R() * .3), L = r * (1.6 + R()), up = h * (.25 + R() * .25), ax = Math.cos(ang), az = Math.sin(ang);
+        P.push(paint(new THREE.CylinderGeometry(r * .5, r * .55, L, 8).rotateZ(Math.PI / 2).translate(L / 2, 0, 0).rotateY(-ang).translate(0, hy, 0), col));
+        const arm = lathe(r * .62, up, 12, 6, 6, r * .3); arm.translate(ax * L, hy - r * .3, az * L); P.push(paint(arm, (x, y) => col(x, y))); gl(G2, ax * L, hy + up, az * L, r * .5); }
+      gl(G2, 0, h + r * .2, 0, r * .7); return [P, G2, r]; },
+    agave(o) { const rr = o.r, P = [], G2 = [], n = 16, lo = [.36, .46, .4], hi = [.62, .72, .66];
+      for (let k = 0; k < n; k++) { const a = k / n * 6.28 + R() * .3, L = rr * (.7 + R() * .4), up = .7 + R() * .7, w = rr * .12, pos = [], seg = 4;
+        for (let i = 0; i <= seg; i++) { const t = i / seg, d = L * t, y = Math.sin(t * Math.PI * .6) * L * up - t * t * L * .15, ww = w * (1 - t) + .02; pos.push([d, y, -ww], [d, y, ww]); }
+        const g = new THREE.BufferGeometry(), V = []; for (let i = 0; i < seg; i++) { const [a0, b0] = [pos[i * 2], pos[i * 2 + 1]], [a1, b1] = [pos[i * 2 + 2], pos[i * 2 + 3]]; V.push(...a0, ...b0, ...a1, ...b0, ...b1, ...a1); }
+        g.setAttribute('position', new THREE.Float32BufferAttribute(V, 3)); g.rotateZ(.0).rotateY(-a).computeVertexNormals(); P.push(paint(g, (x, y) => lerp3(lo, hi, Math.min(1, Math.hypot(x, 0) / rr)))); }
+      const sp = o.spike, st = new THREE.CylinderGeometry(rr * .03, rr * .07, sp, 6).translate(0, sp / 2, 0); P.push(paint(st, () => [.5, .44, .3]));
+      for (let k = 0; k < 6; k++) { const a = k * 1.05, y = sp * (.7 + k * .05); gl(G2, Math.cos(a) * rr * .2, y, Math.sin(a) * rr * .2, rr * .07); } return [P, G2, rr * .1]; },
+    glow(o) { const rr = o.r, P = [], G2 = [], n = 5 + (R() * 4 | 0);
+      for (let k = 0; k < n; k++) { const a = R() * 6.28, d = rr * R() * .8, s = rr * (.35 + R() * .4), h = s * (1.2 + R() * .8), g = new THREE.IcosahedronGeometry(1, 1).scale(s, h, s).translate(Math.cos(a) * d, h * .8, Math.sin(a) * d);
+        P.push(paint(g, (x, y) => lerp3([.2, .32, .5], [.55, .9, .86], Math.min(1, y / (h * 1.8))))); gl(G2, Math.cos(a) * d, h * 1.85, Math.sin(a) * d, s * .32); } return [P, G2, 0]; },
+    bone(o) { const h = o.h, P = [], G2 = [], bc = (x, y) => { const k = .82 + .18 * Math.sin(y * 1.7 + x); return [.9 * k, .87 * k, .8 * k]; };
+      const limb = (x0, y0, z0, dx, dy, dz, L, r, depth) => { const g = new THREE.CylinderGeometry(r * .62, r, L, 6, 2), q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());
+        g.translate(0, L / 2, 0).applyQuaternion(q).translate(x0, y0, z0); P.push(paint(g, bc)); P.push(paint(new THREE.IcosahedronGeometry(r * .95, 0).translate(x0, y0, z0), bc));     /* a knuckle at every joint */
+        const ex = x0 + dx * L, ey = y0 + dy * L, ez = z0 + dz * L; if (depth <= 0) { P.push(paint(new THREE.IcosahedronGeometry(r * .9, 0).translate(ex, ey, ez), bc)); if (R() < .4) gl(G2, ex, ey + r, ez, r * .9); return; }
+        const nb = 2 + (R() < .4 ? 1 : 0); for (let b = 0; b < nb; b++) { const a = R() * 6.28, sp = .5 + R() * .5, v = new THREE.Vector3(dx + Math.cos(a) * sp, dy * .7 + .25, dz + Math.sin(a) * sp).normalize(); limb(ex, ey, ez, v.x, v.y, v.z, L * (.55 + R() * .2), r * .62, depth - 1); } };
+      limb(0, -.5, 0, (R() - .5) * .2, 1, (R() - .5) * .2, h * .45, h * .05, 2); return [P, G2, h * .05]; } };
+  const keep = (x, z, r) => { const dx = x - c[0], dz = z - c[1], d = Math.hypot(dx, dz), th = Math.atan2(dx, -dz); if (Math.abs(th) < .75 && d < 1000) return 0;
+      const A = DPLACE.ascent; if (A && th > .36 && th < 1.22 && d > 160 && d < 700) return 0; const VK = DPLACE.sky && DPLACE.sky.village; if (VK && th > VK[0] - .1 && th < VK[1] + .1 && d > VK[2] - 40 && d < VK[3] + 40) return 0;
+      for (const g of Object.values(Z.giants)) if (Math.hypot(g.position.x - x, g.position.z - z) < 70 + r) return 0; return 1; };
+  let n = 0, tris = 0; const KS = FL.kinds;
+  for (const [t0, t1, r0, r1, kinds, nc] of FL.zones) for (let q = 0, made = 0; q < nc * 12 && made < nc; q++) {
+    const th = t0 + R() * (t1 - t0), d = r0 + R() * (r1 - r0), cx = c[0] + Math.sin(th) * d, cz = c[1] - Math.cos(th) * d; if (!keep(cx, cz, 30)) continue; made++;
+    const m = 2 + (R() * 3 | 0); for (let k = 0; k < m; k++) { const kind = kinds[(R() * kinds.length) | 0], K = KS[kind], a = R() * 6.28, rr = k ? 8 + R() * 22 : 0, x = cx + Math.cos(a) * rr, z = cz + Math.sin(a) * rr;
+      const o = kind === 'cactus' || kind === 'bone' ? { h: K.h[0] + R() * (K.h[1] - K.h[0]) } : kind === 'agave' ? { r: K.r[0] + R() * (K.r[1] - K.r[0]), spike: K.spike[0] + R() * (K.spike[1] - K.spike[0]) } : { r: K.r[0] + R() * (K.r[1] - K.r[0]) };
+      const [P, G2, tr] = B[kind](o), root = new THREE.Group(); root.name = 'flora:' + kind; root.position.set(x, L.sandH(x, z) - .3, z); root.rotation.y = R() * 6.28;
+      const mg = mergeGeometries(P.map(g => { g = g.index ? g.toNonIndexed() : g; for (const k2 of Object.keys(g.attributes)) if (!['position', 'normal', 'color'].includes(k2)) g.deleteAttribute(k2); if (!g.attributes.normal) g.computeVertexNormals(); return g; }));
+      if (mg) { root.add(new THREE.Mesh(mg, FM)); tris += mg.attributes.position.count / 3; }
+      if (G2.length) { const gg = mergeGeometries(G2.map(g => { for (const k2 of Object.keys(g.attributes)) if (!['position', 'normal'].includes(k2)) g.deleteAttribute(k2); return g; })); if (gg) root.add(new THREE.Mesh(gg, CM)); }
+      if (tr) { const cyl = new THREE.Mesh(new THREE.CylinderGeometry(tr, tr, (o.h || o.spike || 4) * .9, 8).translate(0, (o.h || o.spike || 4) * .45, 0), COL); root.add(cyl); }     /* the trunk is solid */
+      G.add(root); n++; } }
+  Z.st.flora = n + ' plants, ' + (tris / 1000).toFixed(1) + 'k tris'; Z.flora = { n, tris }; }
 function bouldGoAscent() { const Z = BOULD, p = player; if (!Z.ascent) return; const q = Z.ascent.path[0], c = Z.ascent.c, x = q[0] + (q[0] - c[0]) * .1, z = q[2] + (q[2] - c[2]) * .1; p.pos.set(x, Z.L.sandH(x, z) + .5, z); p.vel.set(0, 0, 0); p.faceH = p.heading = Math.atan2(q[0] - x, q[2] - z); cam.az = p.heading; }     // TOOLS > BOULDERS > SKY ASCENT (go): the foot of the helix
 function bouldGiants(G) { const Z = BOULD, L = Z.L, DK = Z.DK, c = L.F.c, F2 = DPLACE.far; Z.giants = {};
   for (const R of DPLACE.giants) { let x, z, yaw = R.yaw;
@@ -43927,6 +43980,7 @@ function bouldGiants(G) { const Z = BOULD, L = Z.L, DK = Z.DK, c = L.F.c, F2 = D
     for (let q = 0, n = 0; q < 300 && n < 34; q++) { const th = R3() * 6.283 - Math.PI, d = 130 + Math.pow(R3(), .8) * 950; if (Math.abs(th) < .4) continue; const x = cC[0] + Math.sin(th) * d, z = cC[1] - Math.cos(th) * d; if (keepOut(x, z, 12)) continue;
       const g = DK.piece('hill', 'restored', { r: 3 + R3() * 5, h: 2.5 + R3() * 4.5, noDrift: 1 }); toLand(g); g.name = 'land:rock'; g.position.set(x, L.sandH(x, z) - .4, z); g.rotation.y = R3() * 6.283; G.add(g); n++; } }
   bouldAscent(G);     // m2567
+  bouldFlora(G);     // m2687
   // m2515: THE GROUND at their feet -- the causeway from the gate to the great pyramid, rubble round every grounded giant's footprint (its
   // measured box), sand banked on each one's windward side
   { const spec = { rubble: [], drifts: [] }, gt = Z.giants.gate, gr = Z.giants.great, bb = new THREE.Box3();
@@ -43966,10 +44020,10 @@ function bouldGiants(G) { const Z = BOULD, L = Z.L, DK = Z.DK, c = L.F.c, F2 = D
   // m2517 ONE DRAW PER MATERIAL: the giants never move (except what turns or breathes), so every static mesh is baked into world space and merged
   // by material -- 58 draw calls at the landing became a handful. Kept apart: anything under a `spin`/`bob` group, the statue FIGURE slots
   // (his models replace them), and the ivy (LOD'd per piece).
-  { const live = o => { for (let q = o; q && q !== G; q = q.parent) if (q.userData.spin || q.userData.slotFigure || q.userData.lodD) return 1; return 0; }, DET = new Set(['dk_mech', 'dk_glyphG', 'dk_void', 'dk_slot', 'dk_dsand', 'dk_drift', 'dk_under', 'dk_landD']), rootOf = o => { let q = o; while (q.parent && q.parent !== G) q = q.parent; return q; }     /* m2538: a BOB-only group is merged too (30 draws for a breath nobody sees at 300-600 m); only what SPINS stays live */, by = new Map(), kill = []; G.updateMatrixWorld(true);
-    G.traverse(o => { if (!o.isMesh || live(o) || (o.material && o.material.name === 'dk_ivy')) return; let g = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone(); for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal') g.deleteAttribute(k); if (!g.attributes.normal) g.computeVertexNormals();
+  { const live = o => { for (let q = o; q && q !== G; q = q.parent) if (q.userData.spin || q.userData.slotFigure || q.userData.lodD) return 1; return 0; }, DET = new Set(['dk_mech', 'dk_glyphG', 'dk_void', 'dk_slot', 'dk_dsand', 'dk_drift', 'dk_under', 'dk_landD', 'dk_bigflora']), rootOf = o => { let q = o; while (q.parent && q.parent !== G) q = q.parent; return q; }     /* m2538: a BOB-only group is merged too (30 draws for a breath nobody sees at 300-600 m); only what SPINS stays live */, by = new Map(), kill = []; G.updateMatrixWorld(true);
+    G.traverse(o => { if (!o.isMesh || live(o) || (o.material && o.material.name === 'dk_ivy')) return; let g = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone(); const kc = o.material.vertexColors && g.attributes.color; for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal' && !(kc && k === 'color')) g.deleteAttribute(k); if (!g.attributes.normal) g.computeVertexNormals();     /* m2687: a vertex-coloured material keeps its colours (the giant flora was merged BLACK) */
       g.applyMatrix4(o.matrixWorld); const rp = rootOf(o).position, key = DET.has(o.material.name) ? o.material.name + '|' + Math.round(rp.x / 200) + ',' + Math.round(rp.z / 200) : o.material; (by.get(key) || by.set(key, []).get(key)).push(g); kill.push(o); });     /* m2538: DETAIL materials merge per 200 m CELL (so they can LOD without a draw per giant); the rest per material */
-    for (const o of kill) o.parent.remove(o); let nd = 0; for (const [key, list] of by) { const mg = _mergeGeos(list); if (!mg) continue; mg.computeBoundingSphere(); const det = typeof key === 'string', m = det ? kill.find(o => o.material.name === key.split('|')[0]).material : key; const me = new THREE.Mesh(mg, m); me.name = 'giants:batch:' + (det ? key : m.name); if (det) me.userData.lodD = DPLACE.far.detail; me.userData.noLedge = 1; me.receiveShadow = m.name === 'dk_giant' || m.name === 'dk_dsand'; G.add(me); nd++; } Z.st.giantBatch = nd + '/' + kill.length; }
+    for (const o of kill) o.parent.remove(o); let nd = 0; for (const [key, list] of by) { const mg = _mergeGeos(list); if (!mg) continue; mg.computeBoundingSphere(); const det = typeof key === 'string', m = det ? kill.find(o => o.material.name === key.split('|')[0]).material : key; const me = new THREE.Mesh(mg, m); me.name = 'giants:batch:' + (det ? key : m.name); if (det) me.userData.lodD = (key.startsWith('dk_bigflora') ? DPLACE.flora.lod : DPLACE.far.detail)     /* m2687: the giant flora is a landmark: its cells reach 900 m */; me.userData.noLedge = 1; me.receiveShadow = m.name === 'dk_giant' || m.name === 'dk_dsand'; G.add(me); nd++; } Z.st.giantBatch = nd + '/' + kill.length; }
   Z.ivy = []; G.traverse(o => { if (!o.isMesh || !o.material) return; let lod = 0; for (let q = o; q && q !== G; q = q.parent) if (q.userData.lodD) lod = q.userData.lodD; if (lod) { o.userData.lodD = lod; Z.ivy.push(o); } else if (o.material.name === 'dk_ivy' && !(o.parent && o.parent.name === 'giant:great')) Z.ivy.push(o); });     /* m2538: the ivy AND every LOD'd detail mesh */     /* the great pyramid keeps its green from the landing (the hero, 27k tris) */     // m2517: the giants' ivy is LOD'd (`DPLACE.far.ivy` m)
   { const cache = new Map(); for (const m of Z.ivy) { const lod = m.userData.lodD || DPLACE.far.ivy, k = m.material.uuid + '|' + lod; let c = cache.get(k); if (!c) cache.set(k, c = fadeClone(m.material, [0, 0, lod * .74, lod * .97])); m.material = c; } Z.st.fadeMats = cache.size; }     // m2581: every LOD mesh DISSOLVES over the last quarter of its range (its own copy of the shared material)
   Z.anim = []; const grab = root => root.traverse(o => { if (o.userData.spin || o.userData.bob) Z.anim.push({ o, y0: o.position.y, k: o.scale.x, ph: Math.random() * 6.283 }); }); grab(G); if (Z.kit) grab(Z.kit);
