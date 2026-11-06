@@ -69,6 +69,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2792 -- GARDEN BUDGET part 2a: SHADOW CELLS; AND THE DESERT'S SHADOW STAND-INS NEVER CAST (a bug of mine since m2585) (Nov 6 2026)
+
+- **The desert bug:** m2585 / m2586 put the field's shadow stand-ins on LAYER 1 and enabled layer 1 on the sun's shadow camera. But three's shadow pass
+  tests a caster's layers against the **VIEWING camera** (SHCELL's note, m-snowfps). So the stand-ins were NEVER drawn: the desert rocks, cacti and
+  arches have cast no shadow since m2585. The ellipses under the floaters in those renders were the field's contact-shadow blobs.
+  - They now go on `SHCELL.layer` (6), which SHCELL's wrapper enables on the viewing camera for the shadow pass only.
+  - **And they are ONE proxy per kind:** a generic 80-tri rock for all six rock meshes, and one cactus stand-in. Each frame the instance matrices are copied
+    from every visible source (`Z.shProxy`, the one writer), so the shadow pass is **2 draws, not 8**. The merged arches are a third.
+  - **Desert landing WITH shadows 68 / 263k** (the stand-ins really casting now; with them on layer 6 one by one it read 74 / 263k).
+- **The garden:** the merged casters span the island, so the sun's +-22 m shadow camera could never cull them. Those casters (the four static pieces'
+  and `garden_static`'s) now go through `shadowCells(..., 30)`: position-only cells on layer 6 that cull by cell.
+  - `shadowCells` takes a cell `size` now. At the default 14 m, keyed in 3D on a 30 m tall island, it made MORE draws than it saved.
+  - Garden spawn WITH shadows **151 / 690k** (part 1: 150 / 710k). On screen 127 / 551k, in the shadow pass 26 / 140k.
+- Still to come (part 2b+): the on-screen draws (the ship 27, the heart 19, ~26 small unnamed root-level draws -- the plant system), and the tris
+  (far isles 153k, the merged pieces 241k).
+
 ## m2790 -- THE GARDEN BUDGET PASS, part 1: ACROSS-PIECE MERGE, CHEAPER FAR ISLES (the garden is mine now; the orchestrator's go) (Nov 6 2026)
 
 **Measured with shadows** (`gg_play`: spawn / shrine / zen / wide; `gg_list` lists every draw by parent):
