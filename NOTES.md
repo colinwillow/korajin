@@ -59,6 +59,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2683 -- HARDENING 2: the edge-case course (`npm run collcourse`), COLL.md, and a lintel that stopped him (Nov 6 2026)
+
+- **`npm run collcourse [--fps=20] [--boxes]`** builds eleven test pieces out of plain drawn meshes on the empty forge floor (far from the spawn,
+  so the `auto` mesh row takes them like any level), then drives him through each with the real pads on a fake clock and scores it: a 12-step
+  stair (top reached, no slow frame), a .50 lip (stepped onto), a .70 lip (NOT -- a jump), a seam (two slabs 1 cm apart and 1 cm out of level),
+  a 5 cm wall at a sprint (never passed), 30 / 50 degree slopes (walked / not), a 60-degree V corner (not trapped), ceilings at 1.00 (stops him,
+  never into the floor) and 1.30 (walked under), a .9 m doorway.
+- **Found by it: a 1.30 m ceiling stopped a 1.14 m man.** `collPush`'s top sample sat at his head - .05 with radius .24, so its sphere reached
+  .19 m OVER his head and caught the slab's edge. It now sits a radius below his head (`y1 = p.y + hh - r`).
+- **Result, MESH: 11/11 PASS at 30 fps and at 20 fps.** On BOXES the drawn-only pieces do not collide at all (9 of 11 fail: no box was authored
+  for them) -- the case for MESH by default, in one table.
+- **COLL.md** -- the rules: what collides, what counts as solid and its overrides (`userData.coll` / `noColl` / `noLedge` / `dyn`), the numbers
+  (45 deg floor, .357 step, .55 lip, the capsule, the .12 m grounded sub-step, ledges, the trap guard), nine rules for building geometry that
+  collides right by default, and the four measuring tools. CLAUDE.md's COLL line points at it.
+**Still open:** snow on MESH (555k tris: needs a cheaper store), moving platforms in the course, the forest temple's two audit leftovers (m2548).
+**Shipped unverified.** Nothing to see in a level from this build but the lintel: he now walks under anything 1.3 m or higher.
+
 ## m2682 -- GAMEPAD gaps: the Y label for TALK / PICK UP / RIDE / TRAVEL / SAMPLE; a LEFT-HANDED stick swap in TOOLS (Nov 6 2026)
 - `gpHud`'s Y slot fell back to nothing for every right-tap verb outside the `INTERACT` registry. It now reads the classes those systems already
   toggle on `#padR` (`talk`, `pick`, `mount`, `port`, `samp` -- the same set `interactStep` calls "legacy"), so the label exists whatever owns it.
