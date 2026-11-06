@@ -30,6 +30,30 @@ Room A's arrow switch wakes the moving slab, and it was the moment he liked best
 high up) that swings a bridge, raises a platform, drops a counterweight or opens a way -- and the camera shows what it moved (`ikReveal` / a short
 action cam). Placed so the shot is a small skill (a height, a distance, a timing), never a chore. Tracked: A (the slab), B (the eye-order switches), THE WELL (the lift back up to the hall), E (the root bridge back across, after shard V).
 
+## ROOM B REDESIGN -- "THE SPINDLE" (PLAN, awaiting his approval -- NOT BUILT; his process, Nov 6: one room at a time)
+Sketch: `images/temple_plans/roomB.png` (top-down + the climb). Concept blockout: `images/temple_plans/roomB_concept.png`.
+- **SHAPE:** the entry gallery (21 x 8 m, the hub door) opens into a **HEXAGONAL well**: 21 m point to point, 18.2 m flat to flat, **20 m tall**. B's
+  footprint stays; the room goes UP. *(Before the build: check its 20 m against F's real footprint. Their AABBs overlap; the true rects have to be measured.)*
+- **THE CLEVER IDEA:** the room is a machine round a central root-wrapped **SPINDLE** (r 2.2 m, 20 m). Every arrow wakes the NEXT moving part, and each
+  part is the only place the next target can be seen from. So the shots are STACKED: shoot, ride, shoot while riding, jump, run, shoot mid-air.
+- **THE ROUTE, beat by beat:**
+  0. **Floor (0 m):** wave 2 (2 soldiers + the crested swordsman). The hub door locks; it re-opens with door_open when they fall.
+  1. **Eye 1** on the spindle's foot (3 m) -> **BLOCK 1** slides out of the SE face and **ORBITS** the hex on a track at 2.2 m (8 s a lap). Jump on.
+  2. **Riding it**, shoot **eye 2** on the far N face. It is hidden behind the spindle from everywhere but the block's path -> three stone **PETALS** unfold
+     from the spindle at 5 m and **TURN** with it.
+  3. **Petal to petal** round to the SW face: a carved **RUN PANEL**. Wall-run it (to ~7.5 m), and **mid-air** at its end shoot **eye 3** over the NW face's
+     door -> the **HIGH DOOR** (8.5 m) grinds open (cut-away). Land on its ledge.
+  4. **The niche:** a **LEVER** -> the spindle **STOPS** for 20 s and its **BRIDGE** swings down from 12.5 m to the door ledge (cut-away). Cross before it turns again.
+  5. **Crown (15 m):** shoot **eye 4**, the root knot in the ceiling (19 m) -> the **CHEST rises** on the crown (chest_open). **SHARD II**, the GET pose.
+  6. **Out:** the floor at the spindle's foot CRACKS (the existing link to room C below).
+- **HEIGHTS:** 0 / 2.2 (orbit) / 5 (petals) / 7.5 (run) / 8.5 (door) / 12.5 (bridge) / 15 (crown) / 19 (eye 4). Every rise is inside his measured
+  reach (`tools/moves.json`: jump 2.72, double ~6.7 without a wall). What makes it hard is the MOTION (riding, turning, the 20 s window), not reach.
+- **A MISS:** he falls to the floor. After 10 s there the eyes close again, the block docks and the petals fold: the climb restarts. Progress is lost, never a death.
+- **PILLARS:** acrobatics x puzzle (the block, petals and bridge are the puzzle's pieces); shot chains stacked in a row (4 eyes, each seen from the last
+  moving part); a HEXAGONAL room with a central pillar and radial platforms; a wall run + a mid-air shot; an arrow opens a DOOR -> a LEVER -> a PLATFORM moves.
+- **VOICE:** a toad on the gallery: *"The old tree only wakes for those who look it in the eye. Again. And again."*
+- **KEEPS:** SHARD II, wave 2, the hub door, the crack down to C. **GOES:** the current B (its eye-order switches, the two push blocks, the caged switches).
+
 ## THE HUB LOOP (his, Nov 6 2026, step by step -- replaces "a socket lights up when a room is cleared")
 1. **THE CENTRAL CHAMBER.** He lands in a GIANT round chamber. A MASSIVE, scary STATUE stands in it ("oh god, I hope that's not the boss"), foreshadowing
    the Hollow Banyan or the temple's guardian. It dwarfs him, and the camera looks UP at it on arrival. *(NEXT BUILD: the statue, and the well's vertical scale.)*

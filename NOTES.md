@@ -63,6 +63,10 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2761 -- ROOM B: THE PLAN (docs only; his new process: plan -> his approval -> build -> his sign-off, one room at a time)
+FOREST_TEMPLE.md "ROOM B REDESIGN -- THE SPINDLE", `images/temple_plans/roomB.png` (top-down + the climb) and `roomB_concept.png` (a three.js blockout,
+rendered headless). Nothing in the game changed. Waiting for his approval before a line of it is built.
+
 ## m2760 -- STABILISE (his new process: freeze features, make the temple solid, then redesign the rooms one at a time)
 **What was run, and what it found:**
 - **`npm run escape ftin`: BAD 0 cells in 0 spots** (842 walkable, 109 flood steps refused by mesh walls).
