@@ -551,6 +551,8 @@ rule that has to be in front of me *before* I know which system I am in.
   IN the 3D world (carved, floating, spoken) and are styled, never a yellow toast over the HUD. Enemies are VOLUME: most die in 3-4 hits.
   An item GET = he HOLDS IT UP (the GET pose) + the jingle -- no caption. Hints come from little NPCs placed in the level, in an in-world
   speech bubble, SOFT and CRYPTIC ("they say six keys once kept this temple safe"), never literal instructions.
+- **EVERY ENEMY HAS ITS OWN TACTIC (his rule, Nov 6 2026).** No enemy, big or small, is beaten by walking up and mashing swing. Each has a read: a window, a
+  weak side, a counter, a bait. Mashing gets punished. A fight test must win with the SKILLED script and FAIL with a mash script. Template: SWORD_SAINT.md.
 - **TEMPLE ROOMS ARE DESIGNED ONE AT A TIME (his rule, Nov 6 2026).** Never build ahead: one room gets a one-page plan he approves, is built,
   played on his phone and SIGNED OFF before the next room starts. Every room needs a CLEVER idea mixing acrobatics and puzzle: chained
   arrow-triggers (shoot -> a platform moves -> shoot the next while riding it; miss and you fall all the way down), arrow shots that open a
