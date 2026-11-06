@@ -94,6 +94,20 @@ sealAt .3 + .5 s after the fall starts), it blends over `blendT` (.8 s) into the
 from wherever it is. The portal is a flat level disc (E.flat), not a billboard, so with no rotation there is nothing to re-face. OLD is the m2674
 eased tilt, on the switch (`mel.entryCam` in localStorage). Moves no sandbox box; the entrance's sign-off on his phone is still open.
 
+## m2768 -- A RELOAD LANDED ON AN OLDER BUILD (his iPhone: "it loads M2766, then something happens, it RELOADS, and goes back to M2761")
+- **WHY:** Pages and Safari cache each URL on its own (ten minutes; a home-screen shortcut longer). Every in-game reload -- a zone or world
+  switch, a TOOLS switch that reloads, the dome temple's lift, QUIT TO TITLE -- went to a URL with a DIFFERENT query, and a URL he had
+  visited before could be answered from its own older cache. So the fresh bare URL showed m2766 and the zone URL m2761.
+- **FIXED, both halves:**
+  - `navGo(url)`: all 9 `location.replace(...)`, all 9 `location.reload()` and the temple-skin `location.search =` now go through it.
+    It stamps `b=<BUILD>` into the query, so a new build always means a new URL. **Any new navigation must use `navGo`**; a bare
+    `location.replace` / `reload` brings the bug back.
+  - `staleCheck()` at boot (right after the card shows the build): `version.json?t=<now>` with `cache: 'no-store'`. If the server's build
+    number is HIGHER than this page's, the card says "updating to mNNNN" and the same URL is replaced with `b=<that build>` -- ONCE per
+    target build (`mel.upd` in sessionStorage), so a CDN still serving the old page can never loop it. Older or equal: nothing happens.
+- **TESTED headless** (a mock server whose version.json claims m9999, page loaded with `b=m1`): exactly two navigations, `b=m1` then
+  `b=m9999`, and no third. With the mock claiming m1: one navigation, no redirect.
+
 ## m2765 -- THE X GEAR SNUG: the sheath and the quiver FITTED to his body's own vertices (his: "spaced out, away from his back and each other") (Nov 6 2026)
 His (m2764, `images/feedback/m2764/gear_spaced_out.png`): the sheath stood a clear gap off his back and the quiver hung further out again.
 - WHY m2763 FLOATED: it was seated on the CAPE's flare (natural cape, up to 27 cm behind the spine at the hem). MEASURED against the BODY's own
