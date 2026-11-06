@@ -62,6 +62,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2704 -- GLOWKIT pass 1: THE GLOW GARDEN sandbox -- crystals (5 kinds), glowing ivy, moss, mushrooms; 3 draws a room (Nov 6 2026)
+His (on m2701, the forest temple's flat green diamond over a plain pedestal): *"spend some time in a sandbox... making them look super fucking cool...
+weird crystals growing out of corners of walls, glowing ivy, glowing moss, glowing mushrooms."* WHOLE-PIECE RULE: a sandbox and a design doc first
+(`GLOWKIT.md`, DONE WHEN), nothing in the temple yet.
+- KORAJIN > The Glow Garden (`?w=forge&zone=glowkit`, an ENTRY row, ZONEWANT, the SANDBOXES row). Data-first: `GLOWG.room.place` rows with stable
+  ids, builders `GKF.<kind>` pure and seeded, `SC_GLOWKIT` markers.
+- **3 DRAWS PER ROOM** (crystal sink, organic sink, one Points cloud), materials shared by every room, no shadows cast. Measured on the shipped
+  text headless: the whole garden = 3 draws, 39,434 tris, 328 motes, 14 hit spheres.
+- **NOTHING PER-PIECE ON THE CPU**: sway, the brush shiver, the hit ring (4 slots), the shard's float/spin/orbit, the pulse, the spores -- vertex /
+  fragment shader off `GLOWKIT.U`. A hit (`glowHit`, from the melee sweep and `bldHit`) rings a synthesized glass chime (`glowChime`), flashes and sparks.
+- THE CRYSTAL SHADER: three samples marched INTO the crystal along the view ray, each its distance to the crystal's axis, banded -> an inner core
+  with parallax (faked refraction) + fresnel rim + tip gradient + pulse. Colour per temple (`GLOWKIT.pal`); the forest is TEAL / green-gold (mint
+  is Jinra's).
+- LANDMINE (cost one render): a `onBeforeCompile` that PREPENDS declarations must end them with a newline -- the material's own text starts with
+  `#define STANDARD`, and `...}#define` is a compile error (both materials went black-and-error).
+- Renders: `npm run glowshot` -> `images/renders/glowkit/*.jpg` (16 views: wide, shard x3, prisms, geodes, stal, drape, mushrooms, vignette).
+  What they show, for pass 2: the moss is too bright and flat (paint, not moss); the crystals read pale/plastic (body too light, core too weak);
+  mushroom caps dull, gills hidden; the geode crust near-black (CRAFT 4); the forge's white pad showed through the floor (raised to .03).
+- Moves: GLOWKIT DONE WHEN box 1. Open: pass 2 polish, CRAFT check, the phone feel, pass 3 (forest temple), his sign-off.
 ## m2703 -- FOREST TEMPLE E part 2: the far perch's chest behind an iron gate -- two levers 9 m up + two crates onto plates, all by the whip
 
 The sheet's TEST (rule 5: pulls no move replaces). The chest now sits in a NICHE (two short walls and a lid round the dais) behind the Interactions

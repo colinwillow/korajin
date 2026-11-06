@@ -59,7 +59,8 @@
     "smartcam": "node tools/smartcam.mjs",
     "ikstrip": "node tools/ikstrip.mjs",
     "entryprobe": "node tools/entryprobe.mjs",
-    "lakeperf": "node tools/lakeperf.mjs"
+    "lakeperf": "node tools/lakeperf.mjs",
+    "glowshot": "node tools/glowshot.mjs"
   },
   "type": "module",
   "devDependencies": {
