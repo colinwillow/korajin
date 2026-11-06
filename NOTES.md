@@ -62,6 +62,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2729 -- the DRAW bow gets a very subtle AIM ASSIST: a soft magnet within a reticle of the aim (TOOLS > BOW > AIM ASSIST: OFF / LOW / MED)
+His (Nov 6, relayed): *"I love the DRAW bow -- it adds skill. But it's mobile: a VERY, VERY subtle aim assist. Within about a reticle of a valid target
+it gently NUDGES onto it -- a soft magnet, never a snap or a lock; easy to pull off. Only while the thumb is slow or still; friction + a small pull;
+on-screen, line-of-sight targets; the nearest; ease in and out; lead a moving target."*
+- `BOWAST` (mode LOW default, remembered as `mel.bowAst`; TOOLS > BOW > AIM ASSIST cycles OFF / LOW / MED; DRAW mode only -- CURRENT is untouched).
+  `bowAssist(dt)` runs each frame beside `bowDrawA`. Candidates (`bowAssistCands`): hostile bodies (the m2428 `assistSkip`: never a mount, pal,
+  calf or passive beast), spiders, guardians, turrets, live breakables, dojo targets -- each LED by its own damped velocity x the flight time.
+- MEASURED IN AIM SPACE: for each target the yaw and launch angle that would hit it (the low-arc ballistic solve at this draw's speed and gravity),
+  the error from the current aim, scaled to the miss AT the target as the camera sees it (x shooter distance / camera distance), in px (`r`: LOW 34,
+  MED 50). WHY NOT the drawn arc: at a fast draw its path is 4 points ~3.5 m apart and its landing snaps to the steps -- a probe that measured the
+  arc chased a quantised target and never converged (and a raised target is crossed before the arc lands).
+- The nearest within `r`, on screen and in line of sight (`boxRay` from the lens), pulls the aim's two offsets (`p.bowAstYaw`, `p.bowAstA`, read by
+  `bowSolve`'s DRAW branch so the arc, the mark and the shot agree) toward it at `pull`/s x (1 - e/r) x the GATE, capped at `max` rad each way
+  (LOW .07 = 4 deg, MED .12); the GATE is the aim angle's own speed under `slow` .9 rad/s (none in a sweep; works for the gamepad too); near a target
+  the thumb's angle eases a little slower (`fric`). No target: the offsets ease out at `out` 3/s.
+- Headless (scratch probe, forge, DRAW + LOW, thumb held still, a probe target on the TRUE trajectory, 3.3 m out, beside the arc):
+      16 px off -> 12.8 (+.25 s) -> 7.6 (+1 s) -> 7.4 (+2 s: the 4 deg LOW cap holds it there)     5 px off -> 3.4 (+.5 s) -> 0.6 (+2 s)
+      a fast thumb sweep: gate .14-.17; target removed: offsets back to ~0 within 1 s
+  So at LOW it is a slow lean toward a target you are already nearly on -- it finishes a close aim, it does not fetch a far one.
+  Live on `mel.BOWAST` (LOW / MED rows: r, pull, max, fric; slow, out). Not seen on a device. Box moved: none.
+
 ## m2728 -- CAPTURE, STAGE 1: dual capture, the WIDE 16:9 and the TALL 9:16 of the same play, each framed for its shape (his sandbox, Nov 6; CAPTURE.md)
 - **F9 / View + Menu / TOOLS > CAPTURE** starts and stops; stop downloads `korajin_wide_<ts>.mp4` + `korajin_tall_<ts>.mp4`. `CAPT`, `capStep`
   (after the play render, inside its try so the night values are still on), `capCams`, `capBlit`, `capDrain`. CAPTURE.md has the whole design.
