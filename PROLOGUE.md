@@ -123,3 +123,14 @@ villager props in place) -> P2 the nap + chase + walk to the bell -> P3 late / H
 - **Who is Grumbo up there?** A monk-in-training? A visitor? Does he lose something in the fall (his powers -- "the Korajin forgot they were magical")?
 - **The way down:** jump-down level, wingsuit glide, the dragon -- or all three in sequence?
 - **The ground:** is it the Red Hollows (his homeland, already built and looking good) or a new place?
+
+## HIS NOTES (Nov 6 2026) -- milestone 1 and the NETWORK
+- **Milestone 1 (ROADMAP "THE ROAD"):** this prologue, start to end and cinematic, then the training zone, then the forest temple, is the first
+  finished slice of the game. Piece by piece, one beat at a time.
+- **Still to make:** the SKY VILLAGE (P1b), a cast of VILLAGE PEOPLE, the village scene animated (the festival), Grumbo sleeping in, the enemy
+  arriving, the world crashing.
+- **THE NETWORK (new, his):** *"a network of the stones connecting over the floating sky -- maybe the network that holds everything up."* The
+  floating world is held up by a visible web: standing stones / Jinra nodes on every island, linked by glowing threads across the sky. The
+  Hollow breaks the web, and each island whose links are cut drains and falls -- so THE FALL reads as a network failing link by link, and the
+  RESTORATION later is relinking it (each temple's crystal relights its node).
+- **The story text is still coming from him (ChatGPT, STORY_PROMPTS.md).** Build the set pieces now; the words wait on it.
