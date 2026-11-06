@@ -62,6 +62,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2721 -- FOREST TEMPLE polish pass, the weakest room (E, the Sunken Court): the THORN WALLS finally look thorn-covered, and the bark shows
+
+Picked by render: a contact sheet of every room (A, the well, B, C, D, E, F, the root hall), then E in game. E was the weakest, because its
+whole rule is that the side walls refuse a wall run since they are THORN-COVERED, and they were plain stone. That reads as a broken wall run.
+Its canopy, knots and thorns were flat untextured brown: `add` stripped their uv, so the bark texture had nothing to sample.
+- **The thorn walls.** 80 brambles per wall (twisting root tubes, 0.14-0.28 m thick) climb both walls over the chasm's span, each bristling
+  with thorns 0.45-0.95 m long pointing into the chasm. They go into the canopy's mesh: no extra draw, about 35k tris, casting no shadow.
+- **The bark.** E's root meshes keep their uv, so the canopy mat, the hanging thorns and the knots carry the bark texture.
+Renders: docs/forest_temple/e_polish_before.png and e_polish_after.png (the length of the court; the thorn wall up close).
+Boot: E unchanged (knots in reach, the walls refuse). Shipped unverified.
+
 ## m2720 -- FOREST TEMPLE: THE FULL RUN, no stand-ins -- the geyser carries him OUT to the hall (the lift beyond), the STOLEN ONE is the real villager in stone, every room fights the Forest's own squad
 
 Step 4 of his queue: knoll -> boss -> exit as one run, with no stand-ins.
