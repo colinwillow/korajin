@@ -21487,7 +21487,7 @@ const GARDEN = { want: 0, on: null, state: 'calm', top: 120, fallY: 22, seed: 18
   // builder writes `bed` = { at: [x, y, z] (the sling's lowest point, world), yaw (along the span), sag, span } so a body can be fitted by number
   hammock: { id: 'hammock', a: 'willow_a', b: 'willow_b', y: 1.75, sag: 1.05, w: 1.35, bed: null },
   glowWade: .7, glowBeam: 1,     // m2341: how strongly his purple parts glow (HEROGLOW hold) wading in the Jinra water / inside the beam column
-  sleep: { on: 1, clip: 'lay', out: 1.1, clear: .06, flip: 0, side: 1.3, push: .3, wake: 'wake', hold: 0, commit: .62, back: 1.4, turn: [.08, .5], move: [.2, .75], drop: [.25, .7], blendIn: .12, blendOut: .88 },     /* m2332: `wake` is the Getting_Up clip; `hold` 1 = HOLD the stick to get up (let go early and he settles back, until `commit`); turn/move/drop are the clip fractions over which he swings to the side, is carried off the cloth and drops to the ground */     // m2242: he wakes IN the hammock (Male_Laying_Pose_2); the first stick push gets him up (`out` s) beside it. `flip` 1 turns him end for end
+  sleep: { on: 1, clip: 'lay', out: 1.1, clear: .06, flip: 0, side: 1.3, push: .3, wake: 'wake', hold: 0, commit: .62, back: 1.4, turn: [.04, .34], move: [.38, .78], drop: [.38, .74], blendIn: .12, blendOut: .88, scoot: [.03, .34], edge: .46, tilt: .13, tiltSign: 1 },     /* m2786 (his: "slide to the EDGE first -- he passes THROUGH the fabric"): `scoot` (clip fractions) carries his hips sideways to the cloth's edge (`edge` x its width from the middle) at cloth height while he turns side-on and the sling TILTS under his weight (`tilt` rad); only then `move` / `drop` take him off and down. Control returns the moment his feet are planted (`drop` end) */     /* m2332: `wake` is the Getting_Up clip; `hold` 1 = HOLD the stick to get up (let go early and he settles back, until `commit`); turn/move/drop are the clip fractions over which he swings to the side, is carried off the cloth and drops to the ground */     // m2242: he wakes IN the hammock (Male_Laying_Pose_2); the first stick push gets him up (`out` s) beside it. `flip` 1 turns him end for end
   path: { id: 'path', w: 2.3, pts: [[-11.6, 15.2], [-8.9, 10.4], [-6.8, 5.2], [-3.4, .8], [-.8, -2.4], [0, -4.0]],
     branches: [{ id: 'path_east', pts: [[-3.4, .8], [1.2, -3.6], [6.5, -5.2], [12, -3.6], [17.5, -1.4], [21.4, 4.0]] }, { id: 'path_front', pts: [[-6.8, 5.2], [-3, 11], [-.4, 17], [0, 22.6]] }] },
   plaza: { id: 'stair_foot', at: [0, -3.2], r: 3.3 },
@@ -23068,8 +23068,9 @@ function gdnLotus(dt) { const L = LOTUS, p = player, B = rig.bones; if (!L.on ||
 // back, legs crossed, hands behind his head), along the span, on the cloth at its lowest point; he sways with the hammock and breathes slowly. The
 // first stick push (`push`) starts the wake: over `out` s the pose blends to his idle while he is carried up and out to `side` m beside the sling,
 // facing the garden. (A real roll-out clip is `GARDEN.wakeClip`'s, when he makes one.) The intro reel ends on this shot: `hammock.bed` is exact.
-function gdnClothY(B, x, z) { const d = (x - (B.at[0])) * B.ux + (z - B.at[2]) * B.uz, s = d + B.span / 2, u = Math.max(0, Math.min(1, (s - B.e0) / (B.e1 - B.e0))), lat = ((x - B.at[0]) * B.nx + (z - B.at[2]) * B.nz) / (GARDEN.hammock.w / 2);
-  return B.y0 + .25 - B.sag * Math.pow(Math.sin(Math.PI * u), 1.2) * (1 - .25 * Math.min(1, lat * lat)); }
+function gdnClothY(B, x, z) { const Hg = GARDEN.hammockG, an = Hg && Hg.ang || 0, dr = B.y0 - B.at[1]; if (an) { x += B.nx * dr * Math.sin(an); z += B.nz * dr * Math.sin(an); }     // m2786: the cloth where it IS -- swung / tilted about its span (the sleeper's own sway mapping); it was a still cloth while the real one swung into him
+  const d = (x - (B.at[0])) * B.ux + (z - B.at[2]) * B.uz, s = d + B.span / 2, u = Math.max(0, Math.min(1, (s - B.e0) / (B.e1 - B.e0))), lat = ((x - B.at[0]) * B.nx + (z - B.at[2]) * B.nz) / (GARDEN.hammock.w / 2);
+  return B.y0 + .25 - B.sag * Math.pow(Math.sin(Math.PI * u), 1.2) * (1 - .25 * Math.min(1, lat * lat)) + (an ? dr * (1 - Math.cos(an)) : 0); }
 function gdnBellRing(B, k) { k = k || 1; B.cd = 5; B.swing = Math.max(B.swing, .2 * k); B.ring = (B.ring || 0) + 1;     // m2384: one ring, walked into or tapped
   try { snd('lock', { g: .45 * k, r: .26, x: B.x, z: B.z }); setTimeout(() => snd('lock', { g: .22 * k, r: .26, x: B.x, z: B.z }), 900); setTimeout(() => snd('lock', { g: .1 * k, r: .26, x: B.x, z: B.z }), 1900); } catch (e) {} }
 // m2384 THE GARDEN'S TAPS (the interact registry, m2382): with one in reach the right pad pulses Jinra, its hint reads TAP: <label>, a rune bobs over it
@@ -23083,7 +23084,7 @@ function gdnInteract() { if (typeof interactAdd !== 'function') return; const Z 
 function gdnSleepStart() { const Z = GARDEN, B = Z.hammock.bed, p = player; if (!B || !Z.sleep.on || Z.wakeClip) return; p.sleep = { t: 0, out: 0, dy: .25, sway: 0 };
   p.faceH = p.heading = B.yaw + (Z.sleep.flip ? Math.PI : 0); p.pos.set(B.at[0], B.at[1] + .25, B.at[2]); p.vel.set(0, 0, 0); p.grounded = true; if (Z.hammockG) Z.hammockG.sw = Math.max(Z.hammockG.sw, .1); }
 function gdnSleepStep(dt, s) { const Z = GARDEN, S = Z.sleep, B = Z.hammock.bed, p = player, Q = p.sleep; if (!B) { p.sleep = null; return; } Q.t += dt; p.vel.set(0, 0, 0); p.grounded = true;
-  const W = rig.actions[S.wake], D = W ? rig.clips[S.wake].duration : S.out, push = s && s.mag > S.push, H = Z.hammockG;
+  const W = rig.actions[S.wake], D = W ? rig.clips[S.wake].duration : S.out, push = (s && s.mag > S.push) || !!Z.fakePush, H = Z.hammockG;     /* fakePush: a probe's held stick */
   if (!Q.out && push) { Q.out = 1; Q.t = 0; Q.ct = 0; Q.kick = 0; const [fx, fz] = Z.spawn.face; let best = null;     // m2332: pick the side of the sling nearer the garden
     for (const sd of [1, -1]) { const x = B.at[0] + B.nx * sd * S.side, z = B.at[2] + B.nz * sd * S.side, gy = groundAt(x, z, B.y0 + .5, 2); const d = Math.hypot(fx - x, fz - z); if (gy > B.y0 - 3 && (!best || d < best[3])) best = [x, gy, z, d, sd]; }
     Q.to = best || [Z.spawn.at[0], Z.top, Z.spawn.at[1], 0, 1]; Q.from = [p.pos.x, p.pos.y, p.pos.z]; Q.h0 = p.faceH; const sd = Q.to[4];
@@ -23096,9 +23097,16 @@ function gdnSleepStep(dt, s) { const Z = GARDEN, S = Z.sleep, B = Z.hammock.bed,
     if (!S.hold || push || commit) Q.ct = Math.min(D, Q.ct + dt); else { Q.ct -= dt * S.back; if (Q.ct <= 0) { Q.out = 0; Q.ct = 0; Q.t = 0; Q.dy = Q.dy0; p.faceH = p.heading = Q.h0; W.setEffectiveTimeScale(1); return gdnSleepStep(0, null); } }     // HOLD: let go early and he settles back
     W.time = Q.ct; W.setEffectiveTimeScale(0); const f = Q.ct / D, uy = smooth(S.turn[0], S.turn[1], f), ul = smooth(S.move[0], S.move[1], f), uh = smooth(S.drop[0], S.drop[1], f);
     let dh = Q.h1 - Q.h0; dh = Math.atan2(Math.sin(dh), Math.cos(dh)); p.faceH = p.heading = Q.h0 + dh * uy;
-    const y0 = Q.from[1] - Q.dy0 + Q.dy; p.pos.set(Q.from[0] + (Q.to[0] - Q.from[0]) * ul, y0 + (Q.to[1] - y0) * uh, Q.from[2] + (Q.to[2] - Q.from[2]) * ul);
+    // m2786 THE SCOOT, THEN OFF: first his hips slide across the cloth to its EDGE (riding the cloth's own height there), the sling tipping under him;
+    // then from the edge he is carried out and down to his feet. The fit (`gdnSleepPose`) still lifts anything over the cloth clear of it.
+    const sd = Q.to[4] || 1, us = smooth(S.scoot[0], S.scoot[1], f), ew = GARDEN.hammock.w * S.edge, ex = Q.from[0] + B.nx * sd * ew, ez = Q.from[2] + B.nz * sd * ew;
+    const ey = Q.from[1] + (gdnClothY(B, ex, ez) - gdnClothY(B, Q.from[0], Q.from[2])), lift = Q.dy - Q.dy0;
+    const x1 = Q.from[0] + (ex - Q.from[0]) * us, z1 = Q.from[2] + (ez - Q.from[2]) * us, y1 = Q.from[1] + (ey - Q.from[1]) * us + lift;
+    p.pos.set(x1 + (Q.to[0] - x1) * ul, y1 + (Q.to[1] - y1) * uh, z1 + (Q.to[2] - z1) * ul);
+    if (H) H.tilt = sd * S.tiltSign * S.tilt * us * (1 - uh);     // his weight on one edge tips the sling; it rights itself as he leaves
     if (H && !Q.kick && uh > .45) { Q.kick = 1; H.sw = Math.max(H.sw, .3); }     // his weight leaves the sling: it swings back up behind him
-    if (Q.ct >= D) { W.setEffectiveTimeScale(1); p.sleep = null; p.pos.y = Q.to[1]; p.grounded = true; try { if (typeof cam !== 'undefined') cam.az = p.faceH; } catch (e) {} } return; }
+    if (f >= S.drop[1] && (push || Q.ct >= D)) { Q.ct = D; }     // m2786: FEET PLANTED -- a push on the stick ends it now (the clip blends into the walk), no dead time
+    if (Q.ct >= D) { if (H) H.tilt = 0; W.setEffectiveTimeScale(1); p.sleep = null; p.pos.y = Q.to[1]; p.grounded = true; try { if (typeof cam !== 'undefined') cam.az = p.faceH; } catch (e) {} } return; }
   // asleep: on the cloth (lifted by what `gdnSleepPose` measured last frame), swaying with the sling about its span axis
   if (H) H.sw = Math.max(H.sw, .1); const a = H ? H.sw * Math.sin(Z.on.t * 1.6) + .025 * Math.sin(Z.on.t * .7) : 0, drop = B.y0 - B.at[1];
   p.pos.set(B.at[0] + B.nx * Math.sin(a) * drop * -1, B.at[1] + drop * (1 - Math.cos(a)) + Q.dy, B.at[2] + B.nz * Math.sin(a) * drop * -1); }
@@ -23109,6 +23117,7 @@ function gdnSleepPose(dt) { const p = player, Q = p.sleep, B = GARDEN.hammock.be
   const lim = Q.out ? GARDEN.hammock.w * .5 : 1e9;     // m2332: getting up, only what is still over the cloth counts
   let worst = 1e9; for (const n of ['Hips', 'Spine', 'Spine2', 'Neck', 'Head', 'LeftUpLeg', 'RightUpLeg', 'LeftLeg', 'RightLeg', 'LeftFoot', 'RightFoot', 'LeftHand', 'RightHand', 'LeftArm', 'RightArm', 'LeftForeArm', 'RightForeArm']) { const b = bn(n); if (!b) continue;
     b.getWorldPosition(_slV); if (Math.abs((_slV.x - B.at[0]) * B.nx + (_slV.z - B.at[2]) * B.nz) > lim) continue; const gap = _slV.y - gdnClothY(B, _slV.x, _slV.z) - (n === 'Hips' || /Spine/.test(n) ? .14 : n === 'Head' ? .12 : .06); if (gap < worst) worst = gap; }
+  Q.gap = worst;     // m2786: the worst body-to-cloth gap this frame (a probe reads it; < 0 is a limb IN the fabric)
   if (Q.out && worst < 1e8 && worst < GARDEN.sleep.clear) Q.dy = Math.min(Q.dy0 + .5, Q.dy - (worst - GARDEN.sleep.clear) * Math.min(1, dt * 8));     /* m2332: never let the get-up sink him through the sling (only ever lifts) */
   if (!Q.out && worst < 1e8) { Q.dy = Math.max(-.3, Math.min(.8, Q.dy - (worst - GARDEN.sleep.clear) * Math.min(1, dt * 8))); Q.worst = worst; } }
 function gdnStage(g) { const Z = GARDEN; Z.on = { g, t: 0, tris: 0, safe: null, built: 0 }; ARENA.youAt = Z.spawn.at.slice();
@@ -23367,7 +23376,7 @@ function gdnStep(dt) { const Z = GARDEN, O = Z.on; if (!O || !O.built) return; O
     F.on.value += ((inCol ? 1 : 0) - F.on.value) * (1 - Math.exp(-2.5 * dt)); }
   for (const Gt of Z.gates || []) { Gt.cd -= dt; if (Gt.cd <= 0 && Math.hypot(p.pos.x - Gt.x, p.pos.z - Gt.z) < 1.3 && Math.abs(ly - Gt.y) < 2) { Gt.cd = 4; try { snd('lock', { g: .3, r: .4, x: Gt.x, z: Gt.z }); setTimeout(() => snd('lock', { g: .14, r: .4, x: Gt.x, z: Gt.z }), 700); } catch (e) {} } }     // the summit's bell gate rings as he passes under it
   // the hammock: still rocking from him getting out of it, then the breeze
-  if (Z.hammockG) { const H = Z.hammockG; H.sw *= Math.exp(-.25 * dt); const a = H.sw * Math.sin(O.t * 1.6) + .025 * Math.sin(O.t * .7); H.g.setRotationFromAxisAngle(_gdnAx.set(H.ax, 0, H.az), a); }
+  if (Z.hammockG) { const H = Z.hammockG; H.sw *= Math.exp(-.25 * dt); H.tl = (H.tl || 0) + ((H.tilt || 0) - (H.tl || 0)) * (1 - Math.exp(-dt * 6)); const a = H.sw * Math.sin(O.t * 1.6) + .025 * Math.sin(O.t * .7) + H.tl; H.ang = a; H.g.setRotationFromAxisAngle(_gdnAx.set(H.ax, 0, H.az), a); }     // m2786: + the tilt of his weight on one edge
   // the great bell: walk in under it and it rings (and swings); it sways in the wind otherwise
   if (Z.bell) { const B = Z.bell; B.cd -= dt; if (B.cd <= 0 && Math.hypot(p.pos.x - B.x, p.pos.z - B.z) < 1.25 && ly > B.floor - .3 && ly < B.floor + 2.5) gdnBellRing(B);
     B.swing *= Math.exp(-.45 * dt); B.g.rotation.x = B.swing * Math.sin(O.t * 2.2) + .012 * Math.sin(O.t * .8); B.g.rotation.z = .01 * Math.sin(O.t * .6 + 1); }

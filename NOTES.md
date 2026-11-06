@@ -69,6 +69,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2786 -- THE HAMMOCK GET-UP: he SCOOTS to the edge first, the sling tips under him, the cloth model swings with the real one; control the moment his feet land (Nov 6 2026)
+His: "Getting out of the hammock is way better, but (1) he needs to SLIDE TO THE EDGE first -- he passes THROUGH the fabric; (2) after he's off he's
+LOCKED in place for a moment."
+- **The scoot** (`GARDEN.sleep.scoot` [.03, .34] of the Getting_Up clip): his hips slide sideways across the cloth to its EDGE (`edge` .46 of the
+  width from the middle) riding the cloth's own height there, while he turns side-on (`turn` [.04, .34] -- legs swing over the side); only then
+  `move` / `drop` ([.38, .78] / [.38, .74]) carry him off and down. The sling TIPS under his weight on one edge (`tilt` .13 rad, eased; it rights
+  itself as he leaves, then the old swing-back kick) -- `tiltSign` -1 if it tips the wrong way.
+- **The cloth was a still model while the real one swung** (`gdnClothY`): the fit that keeps every bone clear of the fabric measured against a cloth
+  at rest while the drawn sling swung (`sw` .16-.3 on the get-up) -- the likely "through the fabric". `gdnClothY` now follows the hammock's live
+  swing + tilt angle (`hammockG.ang`, the same mapping the sleeper's own sway uses).
+- **No dead lock**: once his feet are planted (`drop` end) a push on the stick ends the get-up at once (the Getting_Up weight blends into the walk);
+  with no push the stand plays out, interruptible. Measured (fakePush held): FREE by f .75 (it was the clip's end).
+- **Measured, not seen**: the hammock does NOT draw in the headless renderer (painted magenta for the probe, still absent; the willows too), so
+  "render two angles and LOOK" was not possible here. `npm run wakeprobe` (new) reads the fit's worst body-to-cloth gap per tenth of the clip:
+  new path **.055 / .071 / .157 / .075 / .283 m**, then off the cloth; the old path (`--old`) .040 / .041 / .095 / .077 / .007. Both clear by the
+  fit's own 17 points -- so whatever he saw through the fabric was outside them (the swinging cloth, now modelled) or between them; his eye on
+  the phone is the test. `GARDEN.fakePush` is a probe hook. Gates: `npm run check`. **Shipped unverified.**
 ## m2786 -- THE GARDEN'S FLOATING MAGIC, pass 1 (his: "make things float on that island too -- crystals, boulders, rocks, the sand garden, maybe water ... the magic paradise") (Nov 6 2026)
 
 `GFLOAT` (SC_GFLOAT) + `gdnFloat(G)`, built in the island's frame right after `gdnGlow`. Render: `docs/garden/floating_magic_pass1.jpg`.
