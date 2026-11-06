@@ -119,6 +119,20 @@ sealAt .3 + .5 s after the fall starts), it blends over `blendT` (.8 s) into the
 from wherever it is. The portal is a flat level disc (E.flat), not a billboard, so with no rotation there is nothing to re-face. OLD is the m2674
 eased tilt, on the switch (`mel.entryCam` in localStorage). Moves no sandbox box; the entrance's sign-off on his phone is still open.
 
+## m2772 -- THE TASSELS STAY ON THE HILT through the portal drop (his: "they lag far behind, up in the air"); cape / hair springs capped (Nov 6 2026)
+His (`images/feedback/m2766/tassels_lag_portal.png`): on the entrance the hilt tassels (`TTAS`) floated ~1 m above his head while he dropped.
+- MEASURED (a forced drop: +6 m, -12 m/s, per frame): the pinned root sat .34-.40 m from the hilt -- `ttasStep` runs BEFORE he is moved in the
+  frame, so its anchor is one frame stale (.2 m at 12 m/s) -- and the chain, integrating in WORLD space, streamed above it.
+- FIX: (1) the chain RIDES its anchor (`follow` .85 of the anchor's move each frame), so only the sway is simulated; (2) what a point carries is
+  capped (`vmax` 4 m/s, now on the sway only); (3) EXACT lengths after the relaxation, from the pinned root down -- it cannot detach; (4) a jump of
+  the anchor over `jump` .6 m in a frame (a teleport) resets it to hanging; (5) the drawn tassels are shifted at draw time (`onBeforeRender`) by
+  where the hilt has gone since the step, so the root sits ON the hilt in the frame you see.
+  MEASURED after: max segment / rest length **1.0000**, root-to-tip <= the chain length (.153 m) through the drop; a 2.5 s run with 3 jumps:
+  **0 resets** (.35 m reset 22 times on a plain run -- that would pop; .6 is teleport-sized). Render: `images/renders/cape/m2771_tassels_midfall.jpg`.
+- THE CAPE AND HAIR SPRINGS (`springsStep`): bone chains whose lengths are already exact (`setLength`), so they cannot detach; but a tip carried its
+  whole velocity and reset only 1.5 m out. Now: carried velocity capped at 5 m/s, reset at min(1.5, 4 x segment + .25) m -- 2 resets in that run
+  with jumps, so ordinary motion is untouched. Shipped unverified on the phone.
+
 ## m2770 -- WHY THE RENDERS AND HIS PHONE DISAGREED: the gear's seat frame was captured in a RANDOM pose. Now the REST pose; refitted; GEAR EDIT (Nov 6 2026)
 His (m2766, `images/feedback/m2766/gear_still_spaced.png`): m2765 "measured snug" and his phone still showed the sheath off his back and the quiver
 low and apart. The orchestrator asked whether the probe and the phone took different paths. They did.
