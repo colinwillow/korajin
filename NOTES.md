@@ -60,6 +60,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2699 -- GIANT FLORA pass 2: WIND SWAY (vertex shader), DEEPER CACTUS RIBS, BONE BARK (his go, via parent) (Nov 6 2026)
+
+- **Sway, no new draw:** every flora vertex carries `aSw`, its sway in metres: the kind's amplitude × (height share)², or × (radius share)² for agave leaves.
+  - Amplitudes at the top: cactus .12, agave leaf tips .45, glow pods .05, bone trees .14. Small where a static glow crystal sits on a tip, so they still touch.
+  - The giants' batch now passes `aSw` through for a material flagged `userData.sway` (it already keeps colour since m2687).
+  - `dk_bigflora`'s vertex shader bends `transformed` by two sines on the kit's shared clock (`DK.waterU.uT`), gusted by a slow third and phased by WORLD
+    position (the merged cells are in world space), so neighbours do not move as one. The m2581 fade copies carry the hook.
+- **Ribs:** lathe rib relief .09 -> .17, and the grooves are shaded in vertex colour (.62-1.0; `paint` multiplies a colour already on the geometry). They now read as fluting.
+- **Bark:** limbs are 7 × 6 segments (was 6 × 2) with gnarled twisting ridges, and banded, cracked bone-bark in vertex colour at limb-vertex scale.
+  **It reads SUBTLY under the desert's bright light.** A finer pattern aliases on ~1.3 m rows; real bark detail would need a texture. His call.
+- **Budget unchanged:** landing WITH shadows 65 / 254k (none of the flora is in that view).
+- Render: `docs/desert/flora_pass2.jpg` (cactus ribs / bone tree / agave close).
+
 ## m2698 -- THE CAPE HEM FLUTTERS (guarded out of the gear); NO NEW BONES: the cape's mesh ENDS at its last joint (Nov 6 2026)
 His (via main): *"go ahead on the cape bones yourself: add cape_N_5 and cape_N_6 to each chain, down to the hem (~.35-.40 m), weight the bottom two edge
 rows to them ... or do it in code at load"*.
