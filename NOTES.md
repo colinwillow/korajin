@@ -63,6 +63,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2738 -- HIS NOTE (shared ledge hang): pushing AWAY from the ledge is now the "X" pose, loaded to leap -- not a curled ball floating off one hand
+
+His screenshot (images/feedback/m2729/ledge_pushaway_pose.png): "hanging from one hand, his whole body floating out and away from the wall,
+curled up mid-air". The look-away pose (m1852) turned the whole body ~86 deg about the left hand and kept the hang's tucked knees, so he
+floated level with the hand. Now (`ledgeHandsPose0`, table `LX`, every zone's ledges), blended in by `ledgeLook` as the stick goes away:
+- **The GRIP hand stays on the lip** (the straight-arm drop and the lip IK read the grip side). The body turns only part-way out (`yaw` .8)
+  and LEANS OUT from the wall about the grip (`lean` .5, the sign measured so the hips swing OUT), hips hanging below the hand. The
+  hang's knees-out pitch fades out.
+- **The same side's FOOT is planted flat on the wall below** (leg IK, `footOff` 0.12 off the face), the knee COILED: the foot sits where the
+  hip is `coil` .74 of the leg's length from it, so the knee always bends.
+- **The other arm and leg swing OUT toward the jump** (`armOut` / `armSide` / `armUp`, `legOut` / `legSide` / `legDown`).
+- **Mirrored.** Push out toward his LEFT and he grips with the RIGHT and opens left; otherwise he grips with the left (`p.ledgeGrip`, picked
+  as the pose starts). The jump's drawn-yaw hand-off reads the pose's own yaw (`p.lxYaw`).
+Renders (images/renders/): ledge_x_before.png (the curled float) and ledge_x_after.png / ledge_x_after_close.png (the X: grip on the lip,
+free arm out, one foot to the wall, the other leg out), both at room A's north-west tower lip. Boot unchanged. Shipped unverified.
+
 ## m2737 -- SMART FOV: when a wall pulls the camera in, widen the lens (and lift a little) so he stays his size (his screenshot, images/feedback/m2729/interior_cam_too_close.png: the forest temple pushed the boom in and he filled the frame)
 - **`SFOV` + `cam.sfovR`** (in `stepCam`, right after `cam.dist`): the pull-in ratio wanted / actual boom (`SCAM.wantD`, before any cap),
   clamped 1..`rMax` 4 and eased (`inHL` .18 in, `outHL` .6 out, so a doorway does not pump). Spent twice: (1) the LIFT -- `cam.el`'s target
@@ -114,7 +130,6 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
   1.5 s it EXPLODES (r 4.2): him (22, a launch), every body (a rocket blow, `dummyHit`'s rule), spiders, guardians, scorpions, the giant, the
   Thornback. Lab: SPAWN > CREATURE > BOMB SPIDERS.
 - `npm run check` ok (incl. the spawn/reach gate). Shipped unverified.
-
 ## m2735 -- HIS ROOM A NOTE: the HIGH BAR -- his jump off the moving slab carried him OVER it; the catch is now SWEPT and the bar placed by the arc
 
 His: "you shoot the target, the platform moves (he LOVES that), you ride it to the centre, then jump to the high bar -- but it's too close, the
