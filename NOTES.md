@@ -63,6 +63,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2739 -- SHOOT A TARGET -> SOMETHING MOVES (his design pillar): the WELL LIFT and E's ROOT BRIDGE; targets now wake their OWN mover
+
+His: "you shoot the target, the platform moves -- he LOVES that, we need more of that". Two more, on room A's machinery (`K.mover` +
+`K.target`):
+- **THE WELL LIFT** (`w_lift`, `w_target`). A target 7.5 m up the well's north-west wall wakes a stone slab that rides from the well floor
+  up to the hall's lip (0 -> 24, a 16 s cycle). It is the way back up, placed at 108 deg on the ring, r 8.5, clear of every ledge, the D
+  sill and the doors.
+- **E's ROOT BRIDGE** (`e_bridge`, `e_target`). With SHARD V taken, a target on the far wall raises a bridge (3 x 46.6 m, in E's turned
+  frame: a turned collider) out of the pit up across the chasm, ONCE, and it stays. It is the way back. Before the shard the target is dull
+  ("it wakes once SHARD V is yours"), so it never replaces the knot swings.
+- **Shared.** `FT_SHOT` maps each target to its mover, line and gate. Room A's target now wakes ONLY its slab (it woke every mover).
+  `K.mover` takes a yaw and `once`. The lens shows what each shot moved (`actionCam`). `prog.wLift` / `prog.eBridge` remember them.
+- **Budget.** The movers are 3 meshes each and were never culled. `ftinCullAdd` now takes a storey band, and the slabs draw only on their
+  own storeys (the root hall never pays for them).
+Boot (SHOTS): the well target wakes the lift (0 -> 24.0); E's target is refused without shard V, then the bridge rises and stays (-0.40 at
+its middle, a standing floor at lz 10 and 26). Shipped unverified.
+
 ## m2738 -- HIS NOTE (shared ledge hang): pushing AWAY from the ledge is now the "X" pose, loaded to leap -- not a curled ball floating off one hand
 
 His screenshot (images/feedback/m2729/ledge_pushaway_pose.png): "hanging from one hand, his whole body floating out and away from the wall,

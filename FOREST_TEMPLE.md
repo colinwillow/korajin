@@ -28,8 +28,7 @@ west, south): the plan is symmetric, the climb spirals. Later chambers keep to t
 ## DESIGN PILLAR: SHOOT A TARGET -> SOMETHING MOVES (his, Nov 6 2026: "he LOVES that -- we need more of that")
 Room A's arrow switch wakes the moving slab, and it was the moment he liked best on his first play. Every room gets at least one: a target (the bow, often
 high up) that swings a bridge, raises a platform, drops a counterweight or opens a way -- and the camera shows what it moved (`ikReveal` / a short
-action cam). Placed so the shot is a small skill (a height, a distance, a timing), never a chore. Tracked: A (the slab), B (the eye-order switches),
-and the next: see the build order.
+action cam). Placed so the shot is a small skill (a height, a distance, a timing), never a chore. Tracked: A (the slab), B (the eye-order switches), THE WELL (the lift back up to the hall), E (the root bridge back across, after shard V).
 
 ## HOW TO PLAY-TEST THE FOREST TEMPLE (DEV PLACES > THE FOREST, or the KORAJIN menu)
 1. **Forest Temple: FULL RUN (from the knoll)** -- the real game, your real save: the knoll -> down to the domed temple -> the door ritual ->
