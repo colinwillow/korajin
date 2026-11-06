@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'), req = createRequire(import.meta.url);
 let pw; for (const p of ['playwright', '/opt/node22/lib/node_modules/playwright', '/opt/node-tools/node_modules/playwright']) { try { pw = req(p); break; } catch (e) {} }
 const arg = (k, d) => { const a = process.argv.find(x => x.startsWith('--' + k + '=')); return a ? a.split('=').slice(1).join('=') : d; };
-const OUT = path.join(ROOT, arg('out', 'images/renders/glowkit')), ZONE = arg('zone', 'glowkit'), W = +arg('w', 720), H = +arg('h', 720), only = arg('only', '');
+const OUT = path.resolve(ROOT, arg('out', 'images/renders/glowkit')), ZONE = arg('zone', 'glowkit'), W = +arg('w', 720), H = +arg('h', 720), only = arg('only', '');
 const VIEWS = {
   gg: [
     ['wide_south', [0, 6.5, 15], [0, 2.5, -6]],
