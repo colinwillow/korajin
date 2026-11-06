@@ -47,7 +47,7 @@ glowing mushrooms. Those kinds of things really spruce up the level."*
   its size), flashes and shakes in a 2.2 m radius, and sparks in its colours.
 
 ## Budget
-- A room's dressing: **3 draws** (target <= 6). The whole Glow Garden: 3 draws, ~39k triangles, 328 motes.
+- A room's dressing: **3 draws** (target <= 6). The whole Glow Garden: 3 draws, 48k triangles, 365 motes (m2705).
 - Temple rooms stay under **70 draws / 280k tris with shadows**; the glow pieces cast none.
 
 ## The Glow Garden (the sandbox)
@@ -59,8 +59,8 @@ terrace 3 m up (a .30 m stair), the hero shard floats at head height over a bron
 
 ## DONE WHEN
 - [x] All four families (crystals x5 kinds, ivy, moss, mushrooms) laid out in the sandbox with a dressed corner vignette; close renders (m2704).
-- [ ] Polished from the renders: the crystals look genuinely great up close (pass 2).
-- [ ] Every piece checked against CRAFT.md on a close render (organic never straight; everything touching touches; nothing black).
+- [x] Polished from the renders (m2705): bright FACET EDGES (barycentrics, quad diagonals hidden), a tight parallax core + inclusions over a dark glassy body, facet glints; moss with tufts and crisp spots; mushroom rims/gills glow; geode crust lit stone. ("Genuinely great" is his call on the phone.)
+- [x] CRAFT.md on the close renders (m2705): ivy/drapes are Catmull-Rom curves, tapered, sagging, swaying; crystals sunk into their host; the geode crust sits on the wall; bronze warm; nothing black.
 - [ ] Brush shiver and hit ring/chime/sparks felt on his phone.
 - [ ] The forest temple: the Well's shard sockets carry the hero shard (dark until earned, lit in the Jinra colour); its rooms dressed (crystals
       out of wall corners, glow ivy, moss, mushrooms) within budget (pass 3).

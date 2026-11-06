@@ -62,6 +62,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2705 -- GLOWKIT pass 2: the crystals look like CRYSTALS -- facet edges, a tight parallax core, inclusions, glints; moss with a pile; mushroom rims (Nov 6 2026)
+From the m2704 renders (`images/renders/glowkit/`, sheet `images/renders/glowkit_sheet.jpg`): crystals read pale and plastic, the moss as flat paint.
+- CRYSTAL: the bright FACET-EDGE line is what makes a stylized crystal read; it is barycentric (`aE`, every sink carries it) with each body quad's
+  DIAGONAL hidden (+1 on the component opposite it), so only the real facets outline. Core tightened (exp -5.5 r^2, 4 samples) over a darker
+  body (material colour .45, palette bodies deeper), INCLUSIONS (3D noise sampled along the same inward march -> they parallax), two fixed glint
+  lights on the reflected view, root-dark to tip-bright. The hero shard's core x1.7.
+- MOSS: glow .9 -> .42, crisper spots, and TUFTS (three-blade sprigs, glowing tips, ~34 per m^2). MUSHROOMS: the cap top glows toward its RIM,
+  gills 1.9, more and bigger spots. GEODE crust lit stone (never black). IVY denser, buds every third leaf.
+- 3 draws, 48,187 tris, 365 motes for the whole garden. Still open: shelf mushrooms read small; his phone look; pass 3 (the forest temple).
+
 ## m2704 -- GLOWKIT pass 1: THE GLOW GARDEN sandbox -- crystals (5 kinds), glowing ivy, moss, mushrooms; 3 draws a room (Nov 6 2026)
 His (on m2701, the forest temple's flat green diamond over a plain pedestal): *"spend some time in a sandbox... making them look super fucking cool...
 weird crystals growing out of corners of walls, glowing ivy, glowing moss, glowing mushrooms."* WHOLE-PIECE RULE: a sandbox and a design doc first
