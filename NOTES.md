@@ -63,6 +63,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2758 -- ROOM C WAS BROKEN (his: "the Thornback ROLLED HIMSELF OUT OF THE MAP ... I got out of that room ... it kept TELEPORTING me back ... NON-STOP TRAMPOLINING noises")
+**Reproduced headless** in a real browser (at=roomC&grant=1, a sound counter wrapped round `snd`) and in the boot. What was actually wrong, measured:
+1. **The Thornback's `move` checked LEDGES only (m2693), never walls.** Its roll at 13 m/s ran on whatever ground lay beyond. Now `move` refuses:
+   - a step off its room's floor (`T.keep`; in the temple, `ftinThornKeep` = room C's arena in B's frame, local, minus `bodyR`);
+   - a step into a drawn wall (`collRay` at .7 and 1.8 m).
+   A **leash** puts it back, STUNNED, if it is ever outside its floor.
+2. **He went THROUGH room C's side wall.** I trapped `player.pos` writes with a stack trace. The Thornback's body push (`p.pos += ...` when it overlaps him)
+   shoved him 1.1 m in ONE frame into the 1.5 m wall, and then `resolveBoxes` popped him out on the FAR side. The push is now capped at .25 m a frame and
+   gated by two `collRay`s; when it is blocked, the Thornback gives way instead. Plus **THE TUNNEL GUARD** (`boundsStep`, any zone with a bounds row): a jump of
+   .4-3 m in one frame that crosses a drawn wall is undone (`BOUNDS.stat.tunnel`).
+3. **The teleport loop:** room C's fall rule (`p.y < -24` anywhere in C's AXIS-ALIGNED box) took in a strip of the ROOT HALL at the same depth (-26),
+   next to C's pit. It now uses C's real rotated rect (`FTB.L`, the frame's inverse) and returns him to the arena's MIDDLE (local z 24, was 15: 2.4 m from
+   the pit edge), at most once per 1.5 s. **`boundsStep`'s return has a 3 s cooldown** and picks the newest ring spot that is INSIDE a part AND still
+   ground (it took the last one blind); after a return the ring is that one spot.
+4. **Bodies falling out of rooms:** the collision worker's `boundsBodies` (their m2757, landed at the same moment) is the one writer. My duplicate was dropped in the merge, and so was my return cooldown: their return (per-row ring, part-aware spot, loop -> GAP) replaced mine. My **tunnel guard** sits inside their `boundsStep`.
+5. **The trampolining noise: NOT reproduced as a sound.** The probe's sound counts showed one `contact` per landing. The loop that would make it (land,
+   teleport, land) is what 3 and the cooldowns stop. If he still hears it, the counter is the tool to name it (`snd` wrapped in the scratch probe).
+**Boot (ftemple):** `ROOM C m2757: 20 s of rolls at every wall (8 rolls, ... kept 168, leashed 0): the thornback never left the room (|local x| <= 5.9);
+knocked 8 ways at 14 m/s he stayed in C; returns 0, pit returns 1`. Before the push fix the same test put him OUT of C 1-2 times in 8 (local x -10.7 to -13.7,
+past the wall at -9.75). It passed 3 runs of 3 after the fix.
+**`MEL_EVAL=file.js`** in `tools/boot.mjs` runs a file's body as the world step: a headless probe hook.
+
 ## m2757 -- CONTAINMENT LOOP (his, forest temple room C: "kept being teleported back into the room", non-stop): the return can't loop; enemies are contained
 
 The orchestrator relayed it: in room C (the Thornback) he was faded back over and over and could not progress, and enemies fell out of their rooms.
@@ -87,7 +109,6 @@ The orchestrator relayed it: in room C (the Thornback) he was faded back over an
 returns 1, 2 (the launching point dropped each time), then a GAP at (40, 30, 75), and he is left alone after that. `npm run check` boot ok.
 **Still open:** room C's own exit, and whatever the temple worker's row is missing there, is theirs. A deliberate escape tried 3 times at one spot
 in 10 s now goes free there (the trade for never soft-locking him).
-
 ## m2756 -- FOREST TEMPLE OUTSIDE: CONTAINMENT (COLL.md m2733) -- a sheer edge wall and a BOUNDS row; `npm run escape forest` 105 BAD -> 0 (Nov 6 2026)
 Task (orchestrator, after the collision worker's m2733): the exterior (zone dometemple) has no bounds row; `npm run escape forest` (the zone's
 name in the tool) found **105 BAD cells in 13 spots**, all on the region's south EDGE round the arrival knoll (-23..-11, 33-43, 182-188) plus
