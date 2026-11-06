@@ -63,6 +63,38 @@ The spirit DRAWS ONLY WHERE THE ARMOUR IS BROKEN: each guardian has its own inde
   TAMA motes that fly to Grumbo, are counted (`TAMA.n`), and the last home plays `loot_small`.
 - **The statue twin** (STATUES.md): the same rig in the flex pose, `statueStone`; a blow wakes it.
 
+## HIS TACTIC -- THE PLAN (not built; his verdict Nov 6: "I annihilated him just by swiping a ton... there's no skill to it")
+> *"We need every guy to be difficult in its own right -- not in the same way -- there's gotta be some tact to each enemy."*
+
+**The idea in one line: he is a WALL from the front; you open him with HIS OWN hammer.** Every way in is a read of one of his three blows.
+
+1. **THE GUARD (the front is closed).** Out of his attacks he holds the hammer across his body. A blow landing inside his front arc
+   (`guard.arc` ~100 deg either side of his facing) **TINKS** -- pale spark, `st_ring`, a small recoil on you, no armour damage
+   (`shadeBlow` returns 'block'). He turns to face you at his walk turn rate, so circling alone does not beat him for long.
+2. **THREE OPENINGS, each one a read** (`G.crack` = seconds the armour is open; blows in it break a piece as now, and a full charge two):
+   - **STUCK** (the overhead): the head in the ground 1.7 s -- already built; it becomes the main window (`crack` = `over.stuck`).
+   - **BEHIND** after a PERFECT DODGE of the swing (the combat worker's `cbtPerfectDodge`): you are past his shoulder, `crack` 1.2 s,
+     and only from behind (the back arc).
+   - **COUNTER** after a JUMPED shockwave: clear a ring in the air and land within reach -> `crack` 1.0 s (the "you read it" reward).
+   The open armour SHOWS it: the stone's seams glow hot amber for the window (an emissive pulse on the stone material), so the player
+   learns the window by seeing it, no text.
+3. **HE PUNISHES CAMPING.** Stay inside 2.5 m of him for more than `crowd.T` 1.6 s and he answers with a quick SHOVE (a short `stomp`,
+   a knock-back ring of 3 m, light damage, no wind-up long enough to block-spam through). Mashing at his front feeds this.
+4. **THE SPIRIT PHASE IS A CHASE, NOT A FREE KILL.** Bare, he stops guarding but DRIFTS: every 2-3 s he phases (dissolve-shimmer, a
+   short blink 3-5 m to a side) and is untouchable (`G.phaseT`) while he flickers; Jinra blows land only while he is SOLID, and each one
+   that lands knocks him back and starts the next drift sooner. Jinra arrows are the tool for the drift (they ignore the phase if they
+   arrive just as he re-solidifies -- timing, not spam). Spirit hp stays ~5 Jinra hits.
+5. **THE NUMBERS** stay on `SHADE` (`guard`, `crack`, `crowd`, `drift`) and on mel, and TOOLS > SHADE gets a third setting: TACTIC ON / OFF.
+
+**Proving it (two scripts, both through the shipped hit paths):**
+- `npm run shadefight` becomes the SKILLED fight: waits for each opening (the stuck head, a perfect dodge of the swing, a jumped ring),
+  strikes in the window, dunks, chases the drifting spirit -- must KILL him (exit 0) inside a time budget.
+- `npm run shademash` is the MASHER: stands in front and swings + looses plain arrows every .2 s for 90 s of game time -- must NOT kill him
+  (exit 1 if he dies), and must report how often the shove punished it.
+
+**What it changes in code:** `shadeBlow` (the guard arc + `G.crack`), `shadeAct` (the crowd shove, opening the window on stuck / dodge /
+jumped ring), the spirit drift in `shadeFxStep`'s live loop, the stone emissive pulse. No new assets.
+
 ## The regression
 `npm run shadefight` fights one to death through the shipped hit paths (sword sweeps + real arrows -> spirit pass-through -> the dunk ->
 Jinra kill) and exits 1 on a stall (m2789: the stone hands were unhittable, a leaf bone).
@@ -84,4 +116,5 @@ and head broken, the dissolve).
 - [ ] Hit reacts that differ by piece (a head blow snaps the head back) -- today every stagger is the one `hit` clip.
 - [ ] A dedicated stagger and death on this rig (today the old guardian's `hit` and the puff; `die` is unused).
 - [ ] The numbers tuned with the combat worker (segment hp, `stoneK`, spirit hp) -- COMBAT_DEPTH.md.
+- [ ] HIS TACTIC (the plan above): the guarded front, three openings, the shove, the drifting spirit; a skilled fight passes, a mash fails.
 - [ ] His sign-off on his phone.
