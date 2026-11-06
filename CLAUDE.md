@@ -610,7 +610,7 @@ a map at all:
   Weirdport. It RELOADS, and it says which world it is in by having the name on it. **The
   `COLLIDERS` key is under that again (m128)** and draws the boxes; both stack off the chip's
   MEASURED height, so a chip that grows a line pushes them down rather than being sat on.
-- **THE PADS CAN FLOAT (`STICK.dyn`, tap the build number).** Fixed they are 148 px; floating they
+- **THE PADS CAN FLOAT (`STICK.dyn`: pause > OPTIONS or TOOLS > CONTROLS: FLOATING, m2713 -- the build number no longer toggles it).** Fixed they are 148 px; floating they
   are 132 and appear where the thumb lands. Everything downstream reads the pad's own rect, so a
   gesture means the same thing in both.
 

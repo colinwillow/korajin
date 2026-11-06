@@ -62,6 +62,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2713 -- CONTROLS: CLASSIC (default) / FLOATING, and a FOOTAGE mode (Nov 6 2026)
+Via main: *"a CONTROLS switch: CLASSIC (fixed, big, obvious, always on screen -- stays the default) vs FLOATING (pads appear wherever the thumb lands,
+INVISIBLE when no thumb is down). Lots of players expect floating, and hidden controls are great for capturing footage."* Rings: his pick **A**.
+- `OPT.ctrl` ('classic' | 'floating', `mel.opt`), in pause > OPTIONS and TOOLS > CONTROLS. FLOATING = `STICK.dyn` (built on, not forked: every gesture
+  reads the pad's own rect) + `body.floatui`: the pads are opacity 0 at rest, fade in under the thumb (.08 s) and out after release (.4 s).
+- THE RINGS (option A): they stay ANCHORED round each pad's home corner, translucent (.35); a pointerdown within `RINGWAKE.r` 220 px of either home
+  corner adds `body.ringwake` (full opacity) for `RINGWAKE.t` 3 s. Tap targets never move.
+- `OPT.footage` (OPTIONS / TOOLS): hides the chip and build badge, the HP bar and lives, the rings and dial, the top-left keys, TOOLS, the sound key and
+  the minimap. An invisible 64 px square at the top-left (`#footExit`) turns it off.
+- The build-number tap NO LONGER toggles floating (it is what hid both sticks by accident in m2273's report); CLAUDE.md's control map says so.
+  Shipped unverified.
+
 ## m2711 -- GLOWKIT pass 3: THE FOREST TEMPLE -- the hero shard in the Well's six sockets (dormant until earned), the hub, A, B, C, D dressed (Nov 6 2026)
 Agreed with the forest temple worker first (send_message, Nov 6): the socket lines in ftinHub and `ftinSockets`' body are mine (its name and its
 "all six read FTEMPLE.prog.shards" contract kept); dressing in my own `SC_FTGLOW` table, culled with `ftinCullAdd`; nothing between `SC_FTEMPLE`
