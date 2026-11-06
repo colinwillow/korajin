@@ -61,3 +61,23 @@ Skinned and instanced meshes are left out (characters; props that break or move 
 - `npm run stepsweep <zone> [--boxes|--mesh] [--off]` -- every 5-55 cm rise round the spawn, walked; `SS_STAIR=x0,z0,x1,z1[,y]` runs one
   staircase and prints his speed per frame (`SS_FPS=30` / `20` -- a phone's frame rate is where stair snags live).
 - `npm run walktest [--boxes]` -- the garden route: trunks, roots, the shrine stair, the basin rim; dropped inside each trunk.
+
+## Containment -- he must never get OUTSIDE a level (m2733)
+
+His (the forest temple): *"I got outside the level ... it'll kill the illusion."* His move set reaches far: double jump, wall runs, wall jumps (11.4 m
+measured with one), whip zips (14 m, chained to 58 m). Every level needs its play bounds.
+
+- **A `BOUNDS` row per zone** (`SC_BOUNDS` markers): `{ live: () => ..., parts: [{ id, box: [x0, x1, y0, y1, z0, z1], cap?: 1, secret?: 1 }] }` --
+  boxes of where he MAY be, pushed onto `BOUNDS.rows` by the zone's builder. Data only; nothing in the system knows a level.
+- **Soft response:** no ledge-grab within `BOUNDS.edge` .6 m of a part's top (the outer walls' tops are not ledges); no wall run that starts within
+  `runClear` 2.5 m of it; a part with `cap: 1` is a ceiling over an open-topped room (he is clamped under it).
+- **Hard response:** outside every part (by `margin` .4) for `outT` .25 s -> a fade, and back to the newest SAFE point -- a ring of grounded
+  in-bounds positions (`BOUNDS.ring`). `BOUNDS.stat` counts returns / refused ledges / refused runs / caps.
+- **Secrets:** a part with `secret: 1` is an Easter-egg space INSIDE the bounds by design (the far side of a false wall -- a mesh with
+  `userData.noColl` -- or a hidden crawlway). Nothing refuses it.
+- **Tunnelling:** a sub-step longer than ~.8 of his radius (a zip, a dash, a wall jump, a slow phone) is RAYED against the mesh walls at three heights
+  first and stopped a radius short (`COLL.stat.swept`). Before m2733 a 40 m/s launch went clean through a 5 cm wall at 30 fps (`collcourse` `thinfast`).
+- **Measure:** `npm run escape <zone>` -- the walkable floor flooded from his spawn, and every floor cell he can reach from it with his move set
+  (`--h` 6 m up, `--d` 11.4 m across, nothing taller in the straight path). With a bounds row: any reachable cell outside it is BAD. Without one:
+  a reachable unwalkable top more than 2.5 m over the walkable floor near it (a wall top, a roof) is BAD, and drops are only counted. Whip-zip
+  anchors are not modelled yet.

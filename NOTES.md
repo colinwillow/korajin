@@ -63,6 +63,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2733 -- CONTAINMENT: play bounds, the tunnelling fix, and the escape audit (Nov 6 2026)
+
+His (the forest temple): *"I got OUTSIDE THE LEVEL -- missed the high bar in room A, caught a wall run, climbed back, ended up through/over a wall."*
+- **`BOUNDS` (SC_BOUNDS, COLL.md "Containment")**, a data-first row per zone: `parts` = boxes of where he may be (`cap` = a ceiling over an open
+  room, `secret` = an Easter-egg space inside by design). SOFT: `ledgeFind` refuses a ledge within .6 m of a part's top; `wrunFind` refuses a wall
+  run within 2.5 m of it; a cap clamps him. HARD: outside every part for .25 s -> a fade, back to the newest grounded in-bounds point (a ring of
+  12). **No zone has a row yet**: the forest temple worker places the temple's (format and the audit's spots sent to them).
+- **The root cause he could hit: TUNNELLING.** `collcourse`'s new `thinfast` row launches him airborne at 20 and 40 m/s into a 5 cm wall. On m2730,
+  at 30 fps, he went clean through and on 12 m (furthest x 312.3, face at 300). Now, a sub-step longer than .8 of his radius is RAYED against the
+  mesh walls at three heights and stopped a radius short (`COLL.stat.swept`): furthest x 299.73 at 30 and at 20 fps. The course is 12/12 on MESH.
+- **`npm run escape <zone>`**: the walkable floor flooded from the spawn (the shipped `groundAt`, 1 m grid, step-up rule), then every floor cell he
+  can reach with his move set (6 m up, 11.4 m across, nothing taller in the straight path). With a bounds row, reachable-and-outside is BAD; with
+  none (today), a reachable unwalkable top more than 2.5 m over the walkable floor near it is BAD and drops are only counted.
+  **forest temple, interior (`ftin`, MESH):** 981 walkable cells, **BAD 123 cells in 18 spots**: wall tops at y ~29.6-30.1, 5.6-5.9 m over the
+  corridor floor (24.0), all along x +-4..9 for z 52..81 -- the shell's walls, reachable with a wall jump (his escape); and a band at y 25.2,
+  +3 m over the floor at (11, 22.2, 52), round x 15..22, z 42..52. (+741 drop cells: the descent's lower levels, not walk-connected.)
+  **forest temple, outside (the knoll region):** 22,285 walkable, **BAD 115 cells in 15 spots** -- rock tops on the knoll's rim round
+  x -27..-7, z 182..189, 1.3-5.8 m up. (+7,712 drop cells: off the cliffs to the valley.)
+**Open:** the bounds rows themselves (the temple worker); whip-zip anchors in the audit; box-mode tunnelling (the sweep covers the MESH walls).
+**Shipped unverified.** Nothing changes in play until a zone has a bounds row -- except that a zip or dash into a thin wall now stops at it.
+
 ## m2732 -- THE MONKEY SWING (his note, shared): the body a PENDULUM from the grip, legs that lag and follow through, the torso twisting to the reach, a bounce at each catch, the hand cycle on the stick
 
 His: "the arms just go forward-back-forward-back -- I want a full-body, monkey-like swing: hand over hand like a walk with the hands, the body

@@ -76,6 +76,9 @@ function course(o) {
   { const r = run('corner', 2.5, t => t < 1.5 ? [1, 0] : [-1, 0]); row('corner', r.x < X0 - .5, `after 1 s backing out he is at x ${r.x.toFixed(2)} (free if < ${X0 - .5})`); }
   { const r = run('ceil100', 2.5); row('ceil100', r.maxX < X0 + 1 && r.minY > -.05, `furthest x ${r.maxX.toFixed(2)} (slab at ${X0 + 1}), lowest feet ${r.minY.toFixed(2)}`); }
   { const r = run('ceil130', 3); row('ceil130', r.x >= lanes.ceil130.to - .1 && r.minY > -.05, `walked to x ${r.x.toFixed(2)}`); }
+  { const L = lanes.thinwall; let worst = -1e9; for (const v of [20, 40]) { S.godTo(X0 - 2, 1.2, L.z, Math.PI / 2); for (let i = 0; i < 3; i++) frame(); p.grounded = false; p.pos.set(X0 - 2, 1.2, L.z); p.vel.set(v, 0, 0);
+      for (let i = 0; i < Math.round(o.fps * .4); i++) { frame(); worst = Math.max(worst, p.pos.x); } }
+    row('thinfast', worst < X0, `launched at 20 and 40 m/s (a zip, a dash) into the 5 cm wall: furthest x ${worst.toFixed(3)} (face ${X0}), swept ${S.COLL.stat.swept || 0}`); }
   { const r = run('door', 2.5); row('door', r.x >= lanes.door.to - .1, `walked to x ${r.x.toFixed(2)}`); }
   return out;
 }
