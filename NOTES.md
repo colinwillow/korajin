@@ -63,6 +63,37 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2742 -- SHOW, DON'T TELL (his rule, now in CLAUDE.md): the temple's captions are gone; every reveal is a JINGLE + a CUT-AWAY; doors carry EMBLEMS; enemies EMERGE (no beam)
+
+His (screenshot images/feedback/m2729/hint_text_toast.png): "remove every hint text -- it's cheesy, it overlaps the pad, the yellow font is
+ugly -- do what Zelda does: a reward jingle and a brief cut-away showing the thing happen". And "the beam-in is the arena's, not the temple's".
+- **`ftReveal(at, eye, dur, delay)`.** The reward JINGLE (the Interactions Kit's three rising notes, until the new jingle ids land) and a
+  CUT-AWAY (`cutAway` / `ACUT`, a camera hook beside the statue wake's): the lens eases to `eye`, looks at the thing as it happens, holds,
+  and comes back.
+- **The reveals that replace captions:**
+  - Room A: the door opening; then the chest inside the open chamber.
+  - B: the roots leaving the switches; then the chest on the dais.
+  - The floor crack into C; C's chest on the dais.
+  - D: the well's pool draining.
+  - E: the iron gate rising.
+  - The well's doors: the key turning, the root seals tearing.
+  - F: the counterweights' floor rising.
+  - The seal opening (the stair below); the shot movers (the slab, the lift, E's bridge); the geyser welling up.
+- **Gone** (31 toasts plus the instructional banners): every "WAITS ON THE DAIS", "SWING the knots", "WHIP the knot and PULL", "the stair:
+  DOWN", "LEVER n/2", "SMALL KEY -- it opens ...", the locked-door explanations (now a thud and the roots shiver), the shard count banner,
+  the plate count, "THE HEART IS BARE", "THE JINRA STONE", "THE STOLEN ONE -- FREE", the lift's line. The temple chests are `quiet`, so the
+  Interactions Kit's "+ NAME -- to the backpack" is skipped for them.
+- **Kept** (the UI worker restyles them): THE HOLLOW BANYAN / FALLS, THE THORNBACK / FALLS, THE SEAL OPENS, THE GUARDIANS WAKE, IT TEARS ITS
+  HEART FREE, THE FLOOR FLOODS, THE FOREST TEMPLE -- CLEARED.
+- **The item GET.** The chests already raise the item in the GET pose (the Interactions Kit's). THE JINRA STONE now does the same: it flies
+  to his raised hand and is held up, then stowed.
+- **DOORS YOU RECOGNISE (`FT_EMBLEM`).** A glowing emblem over each of the well's doors (B a green EYE, D a blue triangle, E a red diamond,
+  F a gold hex) and room A's chamber door (a key ring). One merged mesh.
+- **EMERGE, NOT BEAM** (`arenaSpawn`, every spawn while the temple interior is on, or `ARENA.emerge`). A stone twin is simply THERE; a live
+  enemy climbs out of the ground (the model rises, a burst of earth and roots, gravel).
+Boot (ACUT): the cut-away eases out and back. Shipped unverified.
+Next: the hint NPCs (in-world speech, cryptic), then the containment bounds and the secrets.
+
 ## m2741 -- THE JINGLES: a data-first library of Zelda-tradition reward motifs on synthesised native instruments (his) (Nov 6 2026)
 His: "beautiful, musical jingles in the Zelda tradition, played on NATIVE-feeling instruments: marimba, kalimba, wooden flute, harp, chimes, bells."
 - **`JINGLE`** (between `SC_JINGLE:START` / `:END`): rows `{ id, tempo, notes: [[beat, degree, beats, instrument, velocity]] }`; a degree counts
@@ -94,7 +125,6 @@ time. BUT the chest's base is not the room's floor in two rooms: **ftB and ftE s
 sides, ~.28 above the floor 4 m out, and .30 HIGHER again 2.5 m in front -- a wide dais (and a step) in the temple's own room geometry. If that
 dais's collider does not match what is drawn there, that is "his feet hover beside the open chest" exactly (both shots are rooms with a raised
 chest). Flagged to the temple worker to check the drawn dais against its collider. Gates: `npm run check`. **Shipped unverified.**
-
 ## m2739 -- SHOOT A TARGET -> SOMETHING MOVES (his design pillar): the WELL LIFT and E's ROOT BRIDGE; targets now wake their OWN mover
 
 His: "you shoot the target, the platform moves -- he LOVES that, we need more of that". Two more, on room A's machinery (`K.mover` +
