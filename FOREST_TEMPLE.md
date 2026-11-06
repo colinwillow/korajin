@@ -46,7 +46,10 @@ west, south): the plan is symmetric, the climb spirals. Later chambers keep to t
    the altar's chest (shard VI) -> the guardians wake.
 9. **The Seal + the stair (all six shards)** -- you stand on the well floor with all six shards: walk onto the seal at the centre (the hexagram
    is fully lit) -> THE SEAL OPENS -> go down the spiral stair inside the trunk -> out of the doorway at its foot into the ROOT HALL (empty until the boss).
-10. **Temple kit (pieces)** -- every building piece laid out, for looking at.
+10. **The Hollow Banyan (boss)** -- you stand in the root hall: it SLAMS its root-hand where the ring is (step off it) -> the hand sticks: WHIP + PULL the
+   lit knot -> the arm lies flat: RUN UP it to the shoulder -> pull a PLATE off the red heart (x3, it gets faster) -> STRIKE the bare heart (3 hits) ->
+   the Jinra Stone, the stolen one -> step into the trunk: the GEYSER carries you up. Hug the trunk and it sweeps you off.
+11. **Temple kit (pieces)** -- every building piece laid out, for looking at.
 Each Room entry lands you at that room's door with everything before it done (`&grant=1`: in memory only -- your real save is never touched;
 the chip says TEST). The chip: `FT: shards n/6 · whip ✓ · rooms A B C D E F` (a lit letter = that room's shard is yours).
 
@@ -86,7 +89,7 @@ six shards light the SEAL on the well floor and open the stair to the boss benea
 3. [x] B: the ROOT GALLERY (the key door opens; the reliefs' eyes give the ORDER, three arrow switches; the chest pays SHARD II). Still open in B:
    the floor CRACK down to C (with C's build), push-blocks onto plates (no push mechanic yet), its own enemy roster (the forest wave stands in). 4. [x] C (see NOTES). 5. [x] D: the FALL GALLERY (the whip gate opens on a pull; pull the ROOT DAM -> the trough runs dry, the waterfall stops, the well's pool drains;
    the crank raises the alcove gate -> the chest: SHARD IV). 6. [x] E: the SUNKEN COURT, part 1 (the whip gate; a 46 m chasm, thorn walls that refuse a wall run, a thorn canopy over it, six knots;
-   the far perch: the squad, the chest = SHARD V). [x] Part 2: the chest's niche behind an iron gate -- two levers 9 m up (whip pulls) + two crates dragged onto plates (whip). Open: the cloister detail. 7. [x] F: the SHRINE (the whip gate; a hexagonal core whose walls refuse a wall run; ledges 8.8 / 9.0 / 9.2 m apart (his best 8.6), a zip anchor over each; the altar chest = SHARD VI, then the guardians wake). Open: the counterweights, the stone guardians. 8. [x] the SEAL (six shards: the petals slide away) + the spiral STAIR (82 treads at .317, down inside the Banyan's trunk) + THE ROOT HALL's shell (r 15, floor -26). 9. [ ] THE HOLLOW BANYAN.
+   the far perch: the squad, the chest = SHARD V). [x] Part 2: the chest's niche behind an iron gate -- two levers 9 m up (whip pulls) + two crates dragged onto plates (whip). Open: the cloister detail. 7. [x] F: the SHRINE (the whip gate; a hexagonal core whose walls refuse a wall run; ledges 8.8 / 9.0 / 9.2 m apart (his best 8.6), a zip anchor over each; the altar chest = SHARD VI, then the guardians wake). Open: the counterweights, the stone guardians. 8. [x] the SEAL (six shards: the petals slide away) + the spiral STAIR (82 treads at .317, down inside the Banyan's trunk) + THE ROOT HALL's shell (r 15, floor -26). 9. [~] THE HOLLOW BANYAN: phase 1 done (slam, the stuck hand pulled flat, up the arm, three plates, the bare heart; the Jinra Stone, the stolen one, the geyser out). Open: phase 2 (swing into the roots), phase 3 (the flood).
 What changed: the CHALICE is gone (the six shards are the boss key; the shrine pays a shard); D, E and F are open in ANY order once he has the
 whip (each behind a whip gate at the well), and each states its WHIP-ONLY rule (C: a knot ceiling over a pit; D: a pull no move replaces;
 E: a 44 m span off 3 m perches; F: 18 m ledges with no wall under them). Plan metres are the sheet's (hub at 0,0), not yet the zone's.

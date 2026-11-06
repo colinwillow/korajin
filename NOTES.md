@@ -62,6 +62,34 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2715 -- FOREST TEMPLE build 9 (THE HOLLOW BANYAN, phase 1): slam -> the hand sticks -> whip it FLAT -> run up the arm -> pull a plate off its heart, x3, faster; strike the bare heart; the JINRA STONE; the GEYSER out
+
+THE SHEET'S BOSS (FOREST_TEMPLE.md row 12), the cycle half. THE TRUNK THE STAIR WINDS DOWN IS THE COLOSSUS (`ftinBoss`, table `FT_BOSS`):
+- **The body.** Sixteen twisting bark roots sheath the trunk and flare into the floor. Its corrupted HEART (red, pulsing) sits 4.9 m up behind
+  three curved bark PLATES, over a SHOULDER root-mass. The body turns to face him (.55 rad/s, faster each cycle).
+- **It wakes** when he is on the hall floor, out of the trunk: "THE HOLLOW BANYAN".
+- **The cycle** (3 times; the telegraph, stick and flat windows shrink each time):
+  1. It RAISES its root-arm over him: a ring on the floor at 11.5-13.5 m out.
+  2. It SLAMS: 24 damage inside 2.8 m.
+  3. The hand STICKS with a lit knot. WHIP it and PULL (rule 5).
+  4. The arm falls FLAT: a ramp of 12 root steps (each 0.26 m or less) from the floor up to the SHOULDER, 3.4 m up, under the heart.
+  5. From the shoulder, PULL a plate off. Pulls only work from up there, within 4.5 m of the heart.
+  6. The arm heaves up and throws him off (8 damage).
+- **The sweep.** If he hugs the trunk (inside 10 m for 1.4 s) it sweeps a ring round its foot (14 damage).
+- **The heart.** Bare after the third plate: 3 melee hits (`ftinMelee` -> `ftinBossMelee`) and it falls.
+- **The reward.** "THE HOLLOW BANYAN FALLS" -> the body sinks -> THE JINRA STONE (a turning gem) -> the STOLEN ONE (a stone villager; a
+  stand-in figure until the villager's stone twin) -> the GEYSER in the trunk.
+- **The way out.** Step into the trunk and `p.geyser` (a held ride, one line in `stepPlayer` beside `p.lift`) carries him UP the spiral to
+  the well floor: "THE FOREST TEMPLE -- CLEARED". `prog.boss` keeps it dead (the geyser stays).
+- **Draws.** Sheath, heart, plates, shoulder, arm, hand, knot, ring: 8, drawn only while he is in the hall.
+- Render: docs/forest_temple/banyan_p1.png (the heart and its plates; the arm lying flat from the shoulder).
+
+Play-test: `at=boss&grant=1` (menu: "The Hollow Banyan (boss)"), at the trunk's doorway in the hall.
+Boot: it wakes; three cycles (stuck, pulled flat, the ramp walked by `groundAt` to 3.40 m, steps 0.26 or less, a plate off from the shoulder,
+the arm lifted); three hits on the bare heart; the reward; the geyser brings him up to the well floor (0.10).
+Open (phase 2 and 3, the next build): it swings up into the roots (knots between), then the floor floods. Also open: a stepPlayer walk up the
+arm (only `groundAt` proved it). Shipped unverified.
+
 ## m2714 -- ENEMIES ON THE GROUND, SPAWNED WHERE HE CAN REACH THEM, AND NO HITS FROM ANOTHER LEVEL (his bug report, Nov 6, priority)
 - WHAT WAS WRONG, read off the code: (1) every BEAST (`beastStep`) stood at y 0 unless it had a home or was in the Garden (`homed ? groundAt :
   0`) -- so in the desert the dog, the hounds, the dragons walked at sea level THROUGH the dunes; and `foeMove` (every walker) resolved BOXES only,
