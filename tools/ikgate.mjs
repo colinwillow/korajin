@@ -17,5 +17,12 @@ function code(line, st) {     // the live code of one line; `st.c` carries an op
   return out; }
 const st = { c: 0 }, live = src.map(l => code(l, st)).join('\n');
 const bad = MUST.filter(m => !live.includes(m) || !new RegExp('(^|[^\\w.])' + m.replace(/[()]/g, '\\$&')).test(live.replace(/function\s+\w+\(dt\)/g, '')));
+// m2731 (his: "pots make a METAL clang and don't shatter"): every pot source must smash in CLAY (`pot_smash`, never the metal `clink`) and
+// throw shards. A node gate cannot swing a sword in the temple, so this asserts the shipped wiring: the SFX row, the temple's `ftinPot`
+// (the smash + `propShatter`), and every `propKind` pot ('pot', 'ikpot') carrying `snd: 'pot_smash'`.
+{ const all = live; const fp = all.slice(all.indexOf('function ftinPot('), all.indexOf('function ftinMelee('));
+  if (!/pot_smash:\s*\[/.test(all)) bad.push("SFX.pot_smash");
+  if (!fp.includes("'pot_smash'") || fp.includes("'clink'") || !fp.includes('propShatter(')) bad.push('ftinPot: clay smash + shards');
+  for (const k of ['pot', 'ikpot']) { const i = all.indexOf("propKind('" + k + "'"), seg = i < 0 ? '' : all.slice(i, all.indexOf('\n', i)); if (!seg.includes("snd: 'pot_smash'")) bad.push("propKind('" + k + "') snd: 'pot_smash'"); } }
 if (bad.length) { console.error('IKGATE FAIL -- not live code any more (commented out?):', bad.join(', ')); process.exit(1); }
-console.log('ikgate ok -- ' + MUST.length + ' per-frame pose calls are live code');
+console.log('ikgate ok -- ' + MUST.length + ' per-frame pose calls are live code; every pot smashes in clay');

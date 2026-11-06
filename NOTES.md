@@ -63,6 +63,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2731 -- POTS SMASH IN CLAY: the temple's pots made a METAL clang and never shattered (his, playing the forest temple) (Nov 6 2026)
+**His report:** sword hits on the forest temple's pots clang like metal, and the pots do not shatter. **Not m2695's rocking** (that only touches
+the gallery's `ikpot` breakables): the temple's own `ftinPot` played `snd('crack')` + **`snd('clink')` -- and `clink` is the METAL set**
+(`metal_ping_01`, `metal_clang_01..03`); and the pot only VANISHED (scaled to nothing) in sparks and a puff -- no shards at all.
+- **The sound**: a new `pot_smash` SFX row (the stone break played up at r ~1.5-1.75 -- there is no clay recording in the repo; a real one drops
+  into that row) + a high `st_chip` for the tinkle. Used by the temple's pots, the gallery urns (`ikpot`) and the planter pots (`propKind('pot')`);
+  the rocking knock (m2695) is a clay `st_chip` now, not the metal clink.
+- **The shatter**: `ftinPot` throws real SHARDS of the pot's own clay (`propShatter`, its own material, flung away from him) on top of the burst;
+  the hit now carries his position so they fly the right way.
+- **Measured**: a headless forest-temple run calling the melee path on a live pot: `broke 2` (the two in reach), the pot `dead`, its material
+  found for the shards. `mel.ftinMelee` is exposed for probes.
+- **The gate** (`ikgate`, in `npm run check`): fails unless `SFX.pot_smash` exists, `ftinPot` plays it (never `clink`) and calls `propShatter`, and
+  both `propKind` pots carry `snd: 'pot_smash'` -- proven: putting `clink` back in `ftinPot` -> exit 1. (A node gate cannot swing a sword in the
+  temple; this asserts the shipped wiring.) Arrows and rolls reach the same `ftinPot` (`ftinArrow`, `rockArea`). **Shipped unverified.**
+
 ## m2730 -- HIS ROOM A NOTES (shared traversal, every zone): the MONKEY BARS were BACKWARDS; the WALL RUN-UP climbed for ever on repeated jumps
 
 His first play of the temple (Nov 6, via the orchestrator). Both are fixed in the SHARED systems, not in the temple.
