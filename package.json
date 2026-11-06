@@ -9,7 +9,7 @@
     "check:sim": "node tools/sim.mjs",
     "ikhands": "node tools/ikhands.mjs",
     "jingles": "node tools/jingles.mjs",
-    "check": "npm run check:syntax && npm run check:boot && npm run check:worlds && node tools/forgesync.mjs && node tools/ikgate.mjs",
+    "check": "npm run check:syntax && node tools/navcheck.mjs && npm run check:boot && npm run check:worlds && node tools/forgesync.mjs && node tools/ikgate.mjs",
     "check:worlds": "MEL_WORLD=arena node tools/boot.mjs && MEL_WORLD=test node tools/boot.mjs && MEL_WORLD=home node tools/boot.mjs && MEL_WORLD='test&gate=reach' node tools/boot.mjs",
     "clips": "node tools/clips.mjs",
     "gait": "node tools/gait.mjs",

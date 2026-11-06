@@ -69,6 +69,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2785 -- m2768 MISSED THE START MENU'S IN-PLACE ENTRY (his: "every time I open the desert scene it opens the newest build, then it reverts to M2761")
+- **THE BYPASS, REPRODUCED headless** (title menu forced on -- it skips itself under `navigator.webdriver` -- the wheel's Floating Boulders
+  entry tapped twice like a thumb does): the start menu enters a FORGE zone IN PLACE (m2228, so the music carries) with
+  `history.replaceState(null, '', location.pathname + extra)`. The address bar then read the BARE `/index.html?w=forge&zone=boulders` --
+  a URL he has visited for weeks, with its own old cache. Any reload of it (iOS reloads a tab that crashed or was evicted -- the desert is
+  heavy -- a pull-to-refresh, coming back to the tab) was answered with m2761, and an m2761 page has no `staleCheck` to get out.
+      before   /index.html  ->  (tap)  ->  /index.html?w=forge&zone=boulders            <- the bare URL in the address bar
+      after    /index.html  ->  /index.html?b=m2784  ->  (tap)  ->  /index.html?w=forge&zone=boulders&b=m2784
+- **THE OTHER TWO `replaceState`s** (`?fresh` and `?hs` clean-ups) wrote unstamped URLs the same way.
+- **FIXED:** `bUrl(url)` stamps `b=<BUILD>`; `navGo` uses it; all three `replaceState`s go through it; and the boot stamps the address bar
+  it was loaded under (`replaceState(..., bUrl(location.href))` when `b` is not this build) -- so no URL this page leaves behind can match an
+  older build's cache entry.
+- **`tools/navcheck.mjs` is in `npm run check`** (after the syntax gate): any `location.replace/assign/reload`, `location.href/search/hash =`,
+  `location =` or `history.replaceState/pushState` not through `navGo` / `bUrl` fails the gate and prints the line (checked against three
+  planted bypasses: all three caught, exit 1).
+- **NOT FIXABLE FROM HERE:** a home-screen shortcut opens `start_url` "./" (the manifest is read only when the shortcut is made), and a
+  copy of "./" cached before m2768 has no `staleCheck` -- that one clears when its own cache does. Every page from m2768 on corrects itself.
+
 ## m2782 -- THE FIRST VILLAGER: a KORAJIN WOMAN, rigged here, forged, and living in the Sunwell; a VILLAGERS table (Nov 6 2026)
 His (via the orchestrator): `models/characters/character_model_zips/korajin_female_01.zip` -- *the first of many VILLAGE PEOPLE for the different
 villages*; her role is open (a villager, a love interest, a village princess, playable later).
