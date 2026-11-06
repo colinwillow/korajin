@@ -61,6 +61,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2701 -- SHEATH: HORIZONTAL back at MID BACK, level, UNDER the cape; the QUIVER ON TOP of the cape (his layering) (Nov 6 2026)
+His (on m2700): *"at y .58 it reads as a sword on his HIP -- straight across the back, a little below the shoulder blades, level. The SHEATH goes
+UNDER the cape (pin the cape over its outer face); the QUIVER goes ON TOP of the cape (it's smaller): the cape slides underneath it, never through.
+The draw unchanged; the hand must clear the cape -- no visible poke-through."*
+- `TRIPOW.backH` back to mid back (y ~.85, level, on his back); `quiverH` 5 cm further out (its back face past the cape pinned over the sheath), its
+  look and angle unchanged.
+- TAIL (`tailItems` marks the quiver `over` in this layout): the cape is PINNED OVER the sheath's outer face (as before) and the boundary reads the
+  sheath alone (.66 m on all three chains: the hem flutters below it); for the quiver the push is REVERSED -- any cape tip in its footprint past its
+  back face is pressed back UNDER it (`tailPinTip`, `it.over`).
+- THE DRAW: while it runs in this layout, spheres on his right hand, forearm and three points along the sword (`TTAIL.handR` .16) push the cape OUT,
+  so it rides over the hand. In practice the hilt sits at his right flank, past the cape's edge, so the hand never goes under it.
+- MEASURED IN MOTION (idle, run + 3 jumps, idle; cape vertices inside each piece's mesh bounds): HORIZONTAL sheath 33.3 / max 41 -- these are the
+  cape's near-body vertices UNDER the sheath's outer face, i.e. the cape beneath a sheath that lies on his back, hidden: the layering he asked
+  for; quiver 21.6 / max 45. X for comparison: sheath 13.8 / 14, quiver 16.3 / 21.
+- RENDERED: images/renders/m2701_horizontal_idle_run.png (idle from behind / 3-4 / the sides, a run from behind and the side) and
+  images/renders/m2701_horizontal_draw.png (the draw at 7 moments, the sheathe at 4). From behind: the level sheath across the mid back, its two
+  ends past the cape's edges, the cape over its middle, the quiver on top of the cape; the draw shows no poke-through.
+
 ## m2700 -- TOOLS > BOW > SHEATH: X (default) / HORIZONTAL -- across the small of his back; the reverse-grip draw with a 180 deg whip spin (Nov 6 2026)
 His (via main): *"SHEATH: X / HORIZONTAL. Horizontal: the sheath completely horizontal across his mid / small of the back, so the cape has room below
 to flutter; the quiver keeps its current look. New draw: the hand pulls the blade out sideways in a REVERSE grip (blade down along the forearm),
