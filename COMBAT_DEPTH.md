@@ -41,8 +41,8 @@ more.
     behind you and dodge late: he slams into it, STUNNED and open 2.4 s. The third wall-stun leaves him open for a FINISHER (the next blow
     kills, a gold pulse). Behind him, or after a timed parry / perfect dodge, blows land in full.
   - Bulwark (planned): flank it / tear the shield with the whip. Warboss (planned): his blows LAUNCH you -- jump / dodge out.
-- Temple order (`COMBATSET.forest`): wave 1 = room A (3 tier 1), wave 2 = room B (2 tier 1 + 1 tier 2), wave 3 = the jackal mini-boss,
-  wave 4 = the mix.
+- Temple order (`COMBATSET.forest`, m2754): waves 0 and 1 = room A's two fights (`f_scrap` 3 tier 1, `f_last` 4 tier 1), wave 2 = room B
+  (2 tier 1 + 1 tier 2), wave 3 = the jackal mini-boss, wave 4 = the mix.
 
 ### Tier DONE WHEN
 - [x] (m2751, shipped unverified) Tier 2: crest tell, block -> parry-recoil -> counter loop; the counter is parryable (generous window).

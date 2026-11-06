@@ -63,6 +63,11 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2754 -- ROOM A STAYS TIER 1 (m2754)
+The forest worker: `f_scrap` and `f_last` are BOTH room A (the gallery scrap, then the fight after the door), not A and B -- so m2751 put the tier-2
+swordsman in room A's second fight. `COMBATSET.forest` now: wave 0 = 3 tier 1, wave 1 = 4 tier 1 (room A's two fights), wave 2 = room B
+(2 tier 1 + 1 swordsman), wave 3 = the jackal, wave 4 = the mix. Data only. `npm run check` green. Shipped unverified.
+
 ## m2753 -- THE HUB LOOP, part 1 (his, step by step): stones are CARRIED and SET BY HAND on the holders; the seal is the STONE WHEEL
 **His ask:** a stone found in a chest goes into his satchel. Back in the well he walks to its holder; the PLACE cue starts the sequence:
 - he takes it out of his satchel, sets it on the holder with BOTH hands (majestic), and steps back;
