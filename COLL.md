@@ -73,6 +73,10 @@ measured with one), whip zips (14 m, chained to 58 m). Every level needs its pla
   `runClear` 2.5 m of it; a part with `cap: 1` is a ceiling over an open-topped room (he is clamped under it).
 - **Hard response:** outside every part (by `margin` .4) for `outT` .25 s -> a fade, and back to the newest SAFE point -- a ring of grounded
   in-bounds positions (`BOUNDS.ring`). `BOUNDS.stat` counts returns / refused ledges / refused runs / caps.
+- **The return can't loop (m2757):** the ring is per row, and every point carries its part and is taken only on real floor .3 m inside it. The
+  return goes to the newest point in the part he was LAST in whose floor is still there. A point he leaves from again within 1.5 s is dropped.
+  3 returns in 10 s from one exit spot (3 m) mark a GAP in the level's data: no more returns there, plus a `BOUNDS GAP x,y,z (part)` chip note and
+  `BOUNDS.gaps` (fix the row). **Enemies too:** a body outside every part for 1 s goes back to where it last stood inside, or is retired.
 - **Secrets:** a part with `secret: 1` is an Easter-egg space INSIDE the bounds by design (the far side of a false wall -- a mesh with
   `userData.noColl` -- or a hidden crawlway). Nothing refuses it.
 - **Tunnelling:** a sub-step longer than ~.8 of his radius (a zip, a dash, a wall jump, a slow phone) is RAYED against the mesh walls at three heights

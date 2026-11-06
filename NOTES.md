@@ -63,6 +63,31 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2757 -- CONTAINMENT LOOP (his, forest temple room C: "kept being teleported back into the room", non-stop): the return can't loop; enemies are contained
+
+The orchestrator relayed it: in room C (the Thornback) he was faded back over and over and could not progress, and enemies fell out of their rooms.
+**What in m2733's return could loop:**
+- the ring was ONE list for every row (a zone change kept the old zone's points);
+- a point was taken anywhere inside the margin, so it could be at the edge or on something that launches him;
+- the return always went to the newest point, whatever storey it was on;
+- nothing noticed a return repeating, so a hole in a level's bounds DATA (a passage no part covers) was a soft-lock.
+
+**Now (`boundsStep`, `boundsSpot`, `boundsBodies`):**
+- the ring is per row, and each point carries its part id. A point is taken only when `groundAt` agrees he is on real floor, at least `inset`
+  .3 m inside the part;
+- the return goes to the newest point in the part he was LAST in (stacked rooms: B over C) whose floor is still there;
+- a point he leaves bounds from again within `badT` 1.5 s is dropped;
+- `loopN` 3 returns in `loopT` 10 s from within `loopR` 3 m of one exit spot latch a GAP there: no more returns near it, and a chip note
+  `BOUNDS GAP x,y,z (part)` plus `BOUNDS.gaps` tell the level's owner which part is missing;
+- **ENEMIES:** any visible body outside every part (by .8) for 1 s goes back to its last in-bounds standing spot, or is retired (`gone`) if it
+  never had one (`stat.foeBack` / `foeGone`);
+- the return plays no sound. The "trampoline" sound he heard is not from this code.
+
+**Measured** (headless, ftemple, the shipped `boundsStep`): with the ring filled in the hall, placing him outside at the same spot six times gives
+returns 1, 2 (the launching point dropped each time), then a GAP at (40, 30, 75), and he is left alone after that. `npm run check` boot ok.
+**Still open:** room C's own exit, and whatever the temple worker's row is missing there, is theirs. A deliberate escape tried 3 times at one spot
+in 10 s now goes free there (the trade for never soft-locking him).
+
 ## m2756 -- FOREST TEMPLE OUTSIDE: CONTAINMENT (COLL.md m2733) -- a sheer edge wall and a BOUNDS row; `npm run escape forest` 105 BAD -> 0 (Nov 6 2026)
 Task (orchestrator, after the collision worker's m2733): the exterior (zone dometemple) has no bounds row; `npm run escape forest` (the zone's
 name in the tool) found **105 BAD cells in 13 spots**, all on the region's south EDGE round the arrival knoll (-23..-11, 33-43, 182-188) plus
