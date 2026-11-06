@@ -205,5 +205,7 @@ under fire, then a twist (phase through a veil mid-swing, or into a sealed chamb
 different things. It could also be an emblem."* So: **Vorakai's sigil is the eye.** Where the Hollow takes something (a statue, a guardian, a
 gate, a lantern, a stone twin) a purple slit-pupil eye OPENS on it and it wakes -- the waking tell for STATUES.md; breaking it closes the eye and
 the purple drains back to mint. It is the crest on Hollow fortresses, the HUD tag for possessed things, and the inlaid floor of every Hollow
-boss arena. **The EYE BOSS** ("The Watcher Below") lives in **THE DEEP**: a swirling eyeball hopping between possessed statues, lanterns and a
-bell in a dark vault -- hit what it possesses to shake it loose, strike the bare eye; the finale rings the bell. Fight sketch in EMBLEMS.md.
+boss arena. **The EYE BOSS** ("The Watcher Below") lives in **THE DEEP**: a floating eyeball that BLOCKS by shutting its eye (arrows and slashes glance
+off the lid; shooting makes it close) and attacks with summoned BIG HANDS and possessed statues, lanterns and a bell. **The core verb is holding
+the eye OPEN with light** -- reflect a beam (shield, or the temple's Jinra MIRROR) into it; dazzled, it can't close, and then it can be hurt. The
+finale rings the bell. **Flag: the Deep's item = a Jinra mirror (as the whip is the forest's).** Full sketch in EMBLEMS.md.

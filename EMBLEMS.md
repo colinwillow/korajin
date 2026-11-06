@@ -44,15 +44,25 @@ colour pair and as a 48 px stamp, dark-on-cream and cream-on-dark. Where there a
 - **The eye is the HUD tag for possessed things,** the crest on every Hollow fortress (gold print on black lacquer), and the floor of every
   Hollow-held boss arena (a huge inlaid eye whose pupil follows Grumbo).
 
-### THE EYE BOSS -- "THE WATCHER BELOW", in THE DEEP (the underground temple)
-Pick: **the Deep**, because darkness is where an eye is scariest and the temple is full of things to possess. The chamber is a dark round vault
-ringed with dormant stone statues, hanging lanterns and a great bronze bell; Grumbo's lantern and the Jinra glow are the only light. A swirling
-purple eyeball, the size of a cart, drifts in the dark and HOPS between possessed things: each time it settles, that statue / lantern cluster /
-bell wakes and attacks in its own way (a statue swings, the lanterns rain fire, the bell's toll is a shockwave you must jump). Hit the possessed
-thing and the eye is shaken loose for a few seconds -- it floats bare and exposed, and that is when the sword (or a lantern-lit arrow) can strike
-the eye itself. Each phase it possesses two things at once, then three, and the arena darkens as statues fall. The final blow pins it in the
-bell; Grumbo rings the bell with a Jinra-charged strike, the eye shatters, the purple drains out of every statue and they kneel. It gives up
-the Deep's crystal (the GET moment).
+### THE EYE BOSS -- "THE WATCHER BELOW", in THE DEEP (the underground temple) -- with his take (Nov 6)
+Pick: **the Deep**, because darkness is where an eye is scariest and the temple is full of things to possess. A dark round vault ringed with
+dormant stone statues, hanging lanterns and a great bronze bell; Grumbo's light and the Jinra glow are the only light.
+- **IT BLOCKS BY CLOSING ITS EYE (his).** A floating purple eyeball whose lid is armour: arrows and slashes GLANCE OFF the shut lid (a spark, a
+  clang, no damage). **Shooting at it makes it close** -- so brute force teaches you it is the wrong answer.
+- **IT ATTACKS BY THROWING THINGS (his):** summoned **BIG HANDS** (stone / shadow hands rising out of the floor and walls that grab, slam and
+  swipe -- jump the swipe, roll the slam, break a grab), and **possessed objects**: it HOPS into a statue, a lantern cluster or the bell and that
+  thing attacks in its own way (a statue swings, the lanterns rain fire, the bell's toll is a shockwave to jump).
+- **THE CORE VERB: HOLD THE EYE OPEN WITH LIGHT (his).** Catch a shaft of light and SHINE it into the eye -- **reflected off a shield or the
+  temple's Jinra mirror** -- and while it is DAZZLED (or staring at a distraction) **it cannot close**: now arrows and the sword land. The room
+  feeds the verb: beams through cracks in the ceiling, lanterns you can light, crystals that split a beam; the eye learns to hide in the dark
+  (it possesses the far statues), so later phases need two bounces, or to light a lantern first.
+- **PHASES:** 1 -- one beam, one possessed thing at a time; 2 -- two at once and the hands join in; 3 -- the vault darkens as statues fall, the
+  light must be bounced off two mirrors. **FINISH (kept):** dazzled and wounded, it flees into the great bell; one Jinra-charged strike rings it,
+  the eye shatters, the purple drains out of every statue and they kneel. It gives up the Deep's crystal (the GET moment).
+- **IT NEEDS A REFLECT / SHINE TOOL.** The ICE SHIELD already reflects beams (the Reflection sandbox, `zone=cell&cell=RF`: raise the shield in a
+  beam, bounce it into a crystal). **Flag (his call): make the Deep's ITEM a JINRA MIRROR / lantern-shield** -- the way the VINE WHIP is the
+  forest's -- earned in the Deep's first rooms (teach: bounce a beam to open a door; test: light a dark room; twist: dazzle the Watcher). Or
+  reuse the ice shield and give the Deep a different item; the mirror is the cleaner "this temple's verb".
 
 ## OPEN (his picks)
 - HERO A / B / C, ENEMY EYE A / B / C, FOREST A / B / C.
