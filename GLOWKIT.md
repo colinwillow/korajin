@@ -24,7 +24,7 @@ glowing mushrooms. Those kinds of things really spruce up the level."*
 |---|---|---|
 | `prism` | a cluster of faceted crystals with BEVELLED tips (an irregular 5-7-gon body, a second ring of facets under an off-centre point), one leader, the rest leaning out, a grit fringe at the foot | `n`, `size`, `count` |
 | `geode` | a burst out of a wall (`n`) or a CORNER (`n` + `n2`): a broken rock crust with a glowing lip round a crater of crystals fanned over the hemisphere | `n`, `n2`, `size`, `count` |
-| `shard` | THE HERO SHARD (the temple sockets'): doubly terminated, 8-sided, a twinned inner crystal, five orbiting satellites; floats and turns | `size`, `spin` |
+| `shard` | THE HERO SHARD (the temple sockets'): 10-sided, double-bevelled, a hot layered core, growth crystals off its flank, six real satellites trailing comets of motes; floats and turns; `seat` adds the aged-bronze SETTING (4th draw) | `size`, `spin`, `seat`, `sats` |
 | `stal` | crystals hanging from a ceiling, long and thin, pointing down, with rubble at the root | `size`, `count` |
 | `grit` | tiny crystals over a floor disc, sparkles over some | `r`, `count` |
 | `ivy` | strands CRAWLING up a wall (a smoothed random walk in its plane, 2-4 cm off it), leaves alternating, glowing buds | `n`, `len`, `strands` |
@@ -47,7 +47,7 @@ glowing mushrooms. Those kinds of things really spruce up the level."*
   its size), flashes and shakes in a 2.2 m radius, and sparks in its colours.
 
 ## Budget
-- A room's dressing: **3 draws** (target <= 6). The whole Glow Garden: 3 draws, 48k triangles, 365 motes (m2705).
+- A room's dressing: **3 draws** (target <= 6). The whole Glow Garden (the showcase): 4 draws (the setting), 186k triangles, 585 motes (m2708).
 - Temple rooms stay under **70 draws / 280k tris with shadows**; the glow pieces cast none.
 
 ## The Glow Garden (the sandbox)

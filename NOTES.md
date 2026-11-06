@@ -62,6 +62,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2708 -- GLOWKIT pass 2b: DETAIL ("everything reads low poly") -- double-bevelled chipped crystals, phantoms, a real hero shard in a bronze setting, leafy curling ivy (Nov 6 2026)
+His (via the orchestrator, on the m2704 renders): *"Everything needs more detail... the floating shard with its orbiting satellites especially looks low
+poly. Make it the hero piece."* Tris may rise a good deal; draws stay ~3 a room.
+- CRYSTAL GEOMETRY (`gkCrystalGeo`): 6-9 sides (10 on the hero), a 4-ring body with a slight bulge, a DOUBLE BEVEL (the top tier turned half a step:
+  the point is a zig of small facets), an off-centre point, and 1-3 CHIPS (edge vertices knocked in). Facet EDGES now draw only on real
+  boundaries: a ring is `hard` or not, and a quad hides its diagonal always and its ring edges unless hard (the m2705 version outlined every
+  internal ring -- a wireframe cage, worst on the small satellites); the line also fades out on a crystal too small on screen to carry it.
+- LAYERED INSIDE: a PHANTOM (a ghost crystal's wall at ~.58 of the radius, wavering) added to the inward march, over the core and inclusions.
+- CLUSTERS: secondary growth crystals leaning out of the leader's foot + a denser grit fringe.
+- THE HERO SHARD: 10-sided main (core x2.6), two growth crystals out of its flank and a crust of small facets at the waist (all turn with it), six
+  REAL satellites (6-sided, double-terminated, bevelled) each trailing a comet of 7 motes (mote type 3 orbits its `aO` centre in the shader, the
+  same rotation and bob as the satellites), and a SETTING (`seat`): an aged-bronze (IKBR, `ikVC` / `ikVM`) foot with a dish, a beaded band, a
+  torus, three prongs that rise and curl under the shard with collars, a Jinra cabochon at each root. The setting is the room's 4th draw (only
+  where a shard has a seat).
+- IVY: finer stems (14 -> 3.5 mm), heart-shaped folded leaves at ~1.4 per node, buds, curled TIP tendrils, little side tendrils, BRANCHES off crawls.
+- Garden totals: 4 draws, 186k tris (was 48k), 585 motes. That is the showcase; temple rooms use lighter rows. Renders `images/renders/glowkit/`,
+  sheet `images/renders/glowkit_sheet.jpg`.
+
 ## m2707 -- `npm run places` is the KORAJIN place checker (the Weirdport one died at `turfAreas`, cut code) (Nov 6 2026)
 Main: *"`npm run places` is broken -- the old Weirdport kit-city checker dies at `turfAreas is not defined` before any place, and it never covered Korajin
 places. Rebuild it: every DEV PLACES row booted headless, he ends up standing near the intended spot, a table, exit 1 on BAD; SKIP slow zones."*
