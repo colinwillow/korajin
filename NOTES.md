@@ -62,6 +62,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2720 -- FOREST TEMPLE: THE FULL RUN, no stand-ins -- the geyser carries him OUT to the hall (the lift beyond), the STOLEN ONE is the real villager in stone, every room fights the Forest's own squad
+
+Step 4 of his queue: knoll -> boss -> exit as one run, with no stand-ins.
+- **THE WAY OUT.** The geyser (`FT_GEYSER`) used to drop him on the well floor, with 24 m of ledges to climb back to the hall. It now carries him
+  up the spiral (4.5 s), out of the stairwell and straight up the well's open middle (2 s), then over the lip onto the ENTRY HALL floor
+  (0, 24.1, 49.5). Then: "THE FOREST TEMPLE -- CLEARED" and "the LIFT at the end of the hall takes you OUT" (the two-way lift back to the knoll).
+- **THE STOLEN ONE** (`ftinStolen`, `FT_STOLEN`). The capsule stand-in is gone. It is now the forest folk's villager, the title loop's TOAD
+  WANDERER (`toad_wanderer_game.glb`, 1.5 m), as its STONE TWIN (`statueStone`), frozen mid-reach (`pick_up` at 45%). 3.4 s later the stone
+  cracks off ("THE STOLEN ONE -- FREE"), his own materials come back, and he plays his idle. If the load fails, a stone figure stands in.
+- **THE FOREST'S OWN SQUAD.** The rooms were fighting borrowed waves (the old forest set's samurai and dogs, E's warboss squad). They now fight
+  the combat lab's core squad, the Forest's enemies (WORLD_PLAN: Husk soldiers and archers):
+  - B: core 3 (three SPHINX HOUNDS and a HOLLOW MONK; the sheet's light pack).
+  - D: core 1 (husk soldiers and archers on the sill).
+  - E: core 2 (a BULWARK, a husk archer, two soldiers: the sheet's shield line).
+  - F's stone guardians: core 1 (two soldiers on the rim and the floor, two archers on L1 and L2).
+  - C is the Thornback and X is the Banyan. A's archers (the room system) are unchanged.
+Boot (FULL RUN): six chests, each with its reward hook. Every room's set and wave exists and every kind is in `ARENA.kinds`; no room uses a
+borrowed set. The geyser lands him on the hall floor (`groundAt` 24.00). The lift goes out. Shipped unverified.
+Open: STATUES.md's cut-away wake in F; B's push-blocks (no push mechanic yet).
+
 ## m2719 -- FOREST TEMPLE F back-fill: the COUNTERWEIGHTS raise the floor (two whip pulls), the STONE GUARDIANS (real stone twins, woken by the shard), the core dressed
 
 The sheet's F row, the parts the m2706 build left open:
