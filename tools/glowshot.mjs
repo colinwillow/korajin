@@ -47,6 +47,10 @@ const VIEWS = {
     ['ftE_pit', { f: 'FTE', p: [0, -11, 16] }, { f: 'FTE', p: [-10.5, -13.5, 23] }],
     ['ftE_far', { f: 'FTE', p: [-2, -11, 45] }, { f: 'FTE', p: [-9.5, -13, 54.5] }],
     ['ft_hub_seal', [0, 6, 30], [0, 0, 37]],
+    ['ftX_wall', [3.2, -17.5, 41.5], [7.3, -18.5, 48.6]],
+    ['ftX_wall2', [-10.2, -16.8, 30.4], [-13, -17, 28.5]],
+    ['ftX_hollow', [-8, -22, 26], [2, -15, 37]],
+    ['ftX_wide', [9, -18.5, 26], [-6, -20, 44]],
   ],
 };
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg' };
@@ -75,4 +79,5 @@ for (const [name, eye, at] of list) {
     renderer.render(scene, c); window.__tris = renderer.info.render.triangles; window.__calls = renderer.info.render.calls; const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const src = renderer.domElement;
     const s = Math.min(src.width / W, src.height / H), sw = W * s, sh = H * s; cv.getContext('2d').drawImage(src, (src.width - sw) / 2, (src.height - sh) / 2, sw, sh, 0, 0, W, H); return cv.toDataURL('image/jpeg', .9); }, [eye, at, W, H]);
   const f = path.join(OUT, name + '.jpg'); fs.writeFileSync(f, Buffer.from(url.split(',')[1], 'base64')); sheet.push({ name, url }); const ri = await pg.evaluate(() => [window.__calls, window.__tris]); console.log(path.relative(ROOT, f), 'draws', ri[0], 'tris', ri[1]); }
+if (arg('eval', '')) console.log('eval', JSON.stringify(await pg.evaluate(arg('eval', ''))));
 await br.close(); srv.close();

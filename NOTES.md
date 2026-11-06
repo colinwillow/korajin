@@ -62,6 +62,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2718 -- GLOWKIT: THE ROOT HALL dressed (walls and ceiling only) + the Hollow's purple crystals round the trunk; storeys gate their dressing (Nov 6 2026)
+The temple worker (m2715): the seal (r 5), the stairwell (0 to -26), the hall floor round (0, -26, 36) to r 15 and the root-arm ring (11.5-13.5)
+are the fight's -- dress the OUTER WALLS and the CEILING only, above y -22; keep my hook ONE call (`ftinGlow(g)`, it is). The orchestrator: make
+the Hollow side read -- a few corrupted PURPLE crystals near the trunk (purple is ONLY the Hollow).
+- `ftg_X`: four wall geodes at r 15 (-18.5 / -16.3), four ivies from -21.9 up, three wall shelves, forest stalactites off the ceiling at r 11,
+  and THE HOLLOW: three purple stalactite clusters (`pal.hollow`: deep violet body, a pink-hot core) hanging round the trunk at r 6.2. The stair,
+  the trunk and the floor carry nothing (the orchestrator's "glow on the spiral stair" is the room owner's no -- left out, said so).
+- STOREYS: the hall sits right under the hub, and `FT_CULL` is xz-only -- so `yGate` on a GLOWKIT room (`glowStep` hides its meshes when he is
+  off its storey): hub + sockets [-13, 60], hall [-40, -13]. Neither pays for the other. Measured (shadows on): hall 41-62 draws / 159-242k,
+  hub unchanged at 46-50 / 230k.
+- Renders `images/renders/glowkit/ftemple/ftX_wall.jpg`, `ftX_hollow.jpg`, `ftX_wide.jpg` (the Banyan's roots fill most of the hall's views).
 ## m2717 -- FOREST TEMPLE build 10 (THE HOLLOW BANYAN, phases 2 + 3): the heart tears free into the roots (swing the knots to it), then the floor floods; the whole fight is in
 
 The sheet's boss row, finished: "phase 2 swings it up into the roots (swing between hanging knots to reach it), phase 3 the floor floods".
