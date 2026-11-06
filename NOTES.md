@@ -62,6 +62,55 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2707 -- `npm run places` is the KORAJIN place checker (the Weirdport one died at `turfAreas`, cut code) (Nov 6 2026)
+Main: *"`npm run places` is broken -- the old Weirdport kit-city checker dies at `turfAreas is not defined` before any place, and it never covered Korajin
+places. Rebuild it: every DEV PLACES row booted headless, he ends up standing near the intended spot, a table, exit 1 on BAD; SKIP slow zones."*
+- `tools/placecheck.mjs` (rewritten): reads `KPLACES` from the SHIPPED index.html (the menu and the checker cannot drift), boots each row 4 at a time
+  at 180 x 320 (software GL's cost is per pixel), waits for the card and the entrance, then needs 1.5 s of him STANDING -- grounded on real ground
+  (`groundAt` within .3 m) and within 1.5 m of `ENTRY.land` -- or asleep (the prologue) / riding. ok / BAD (exit 1) / SKIP (not loaded in 120 s).
+  `npm run places <filter>` runs one place with a 240 s cap. CLAUDE.md's line is updated.
+- **It is ~13 minutes, not 1-2**: every row boots the whole game under swiftshader (43-128 s each); 4 at a time is the CPU's limit here.
+- First run (all 34 rows):
+```
+ok   Forest Temple: the Well (hub)                at 0.0,0.0,29.0  standing  53s
+ok   Room A — Acrobatic Hall                      at 0.0,0.0,16.0  standing  59s
+SKIP Forest Temple: FULL RUN (from the knoll)     at -36.0,42.2,170.0  entrance not finished  127s
+SKIP The Garden (the hammock)                     at -13.8,121.2,4.2  still loading  128s
+ok   Room B — Root Gallery                        at -7.4,0.0,34.8  standing  85s
+ok   Room C — Root Heart / Thornback              at -34.8,0.0,30.5  standing  91s
+ok   Room E — Sunken Court                        at 7.4,0.0,37.2  standing  48s
+ok   Room D — Fall Gallery                        at 1.3,0.0,44.5  standing  52s
+ok   Temple kit (pieces)                          at 0.0,0.0,27.0  standing  77s
+SKIP Floating Boulders (and the Sky Ascent)       at 0.0,0.9,12.0  entrance not finished  120s
+SKIP The desert kit row                           at 696.0,1.3,264.5  entrance not finished  120s
+SKIP The Sunwell village                          at 282.0,3.5,-6.0  entrance not finished  121s
+ok   The Gathering                                at 0.0,0.0,9.0  standing  111s
+ok   Interactions (sandbox)                       at -15.0,0.0,0.0  standing  96s
+SKIP The Lake (the boat, underwater, the shrine)  at -67.9,0.3,55.7  still loading  125s
+SKIP The Snowfield                                at 2.8,2.8,6.9  entrance not finished  128s
+ok   The Snow Region                              at -185.1,2.0,-117.7  standing  118s
+SKIP The Snow Village                             at 17.0,16.3,-159.8  entrance not finished  120s
+SKIP The Sky Temple                               at 0.0,182.8,75.0  entrance not finished  120s
+SKIP The Ship                                     at 3.0,3.2,-0.5  entrance not finished  121s
+ok   The Dragon Ride                              at 0.0,0.0,-14.0  standing  110s
+ok   The Combat Lab                               at 0.0,0.0,9.0  standing  84s
+ok   The Vine Whip                                at 0.0,0.0,8.0  standing  68s
+ok   The FX Lab                                   at 0.0,0.0,7.0  standing  71s
+ok   The Rope Course                              at -19.0,0.0,-18.0  standing  68s
+ok   The Wall Park                                at 0.0,0.0,10.0  standing  65s
+ok   The Proving Ground                           at -18.0,3.0,-22.0  standing  81s
+ok   The Duel Pit (online)                        at 0.0,0.0,9.5  standing  72s
+ok   Temple Layout                                at -28.4,0.0,12.5  standing  72s
+ok   The Arena                                    at 0.0,0.0,8.0  standing  112s
+ok   Climb Tower (C1-C3)                          at -8.3,0.0,-10.6  standing  70s
+ok   Reflection (shield puzzle)                   at -9.3,0.0,4.3  standing  57s
+ok   Temple Cell C1                               at -10.7,0.0,-5.4  standing  65s
+ok   Blockout (C4D import)                        at 0.0,0.0,-6.0  standing  43s
+24 ok, 0 BAD, 10 SKIP  (792 s)
+```
+  The 10 SKIPs are the heavy zones (the forest knoll's region collider, the garden, the boulders' three, the lake, the snowfield, the village, the Sky
+  Temple, the ship): not loaded + entrance finished inside 120 s headless. Shipped unverified.
+
 ## m2706 -- FOREST TEMPLE build 7 (F, the SHRINE): a hexagonal core, three ledges each ~9 m over the last, a zip anchor over every lip; SHARD VI
 
 The sheet's F (WHIP-ONLY rule 3: ledges higher than anything he can reach, with no wall to climb). Through the whip gate on the well's east side

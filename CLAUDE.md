@@ -87,9 +87,11 @@ strictly worse than being wrong — and it comes out of a fixed window he is pay
 
 ```sh
 npm run check      # ~4s: the syntax gate and the boot gate
-npm run places     # ~40s: ONLY for a build that adds or moves a place -- builds the REAL kit city, island and
-                   # farm, sends him to every tkit GOD place, ticks the farm's steps; exits 1 on a BAD row.
-                   # Paste its output in the NOTES entry (STEER, m302: the farm was never in his game for 14 builds)
+npm run places     # ~13 min (or `npm run places <filter>` for one place): ONLY for a build that adds or moves a place --
+                   # boots EVERY DEV PLACES row (`KPLACES`, read from index.html) headless, 4 at a time, and checks he ends
+                   # up STANDING on real ground near the entrance's landing; exits 1 on a BAD row. A heavy zone that does
+                   # not finish loading in 120 s is a SKIP (not a failure) -- run it alone with a filter to give it time.
+                   # Paste its output in the NOTES entry. (`npm run entryprobe` is the entrance's own per-zone audit.)
 npm run play       # ~4 min: ONLY for a build that touches a quest, a gate, a chapter, or anything stepped in
                    # `frameBody` -- plays Chapters 0 and 1 through the SHIPPED frame in the REAL kit city, headless
                    # (`npm run play ch1 --seed=2` for one chapter on one seed; the random is seeded), and a
