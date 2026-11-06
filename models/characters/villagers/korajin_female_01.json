@@ -8,15 +8,138 @@
  "outDir": "models/characters/villagers",
  "_J": "joints MEASURED on the FBX (its own units, 1.0 tall; she faces +Z, +X is HER left) from horizontal and vertical cross-sections: crotch merge .47, knees .27, ankles .075, the T-pose arm line .74, shoulder x .13, elbow .235, wrist .335, fingertips .432",
  "J": {
-  "Hips": [0, 0.5, 0.005], "Spine": [0, 0.555, 0], "Spine1": [0, 0.615, 0], "Spine2": [0, 0.675, 0], "Neck": [0, 0.775, -0.01], "Head": [0, 0.815, 0],
-  "LeftShoulder": [0.035, 0.73, -0.01], "LeftArm": [0.13, 0.74, -0.012], "LeftForeArm": [0.235, 0.74, -0.012], "LeftHand": [0.335, 0.735, -0.012],
-  "LeftUpLeg": [0.065, 0.47, 0.005], "LeftLeg": [0.088, 0.27, 0.01], "LeftFoot": [0.097, 0.075, -0.005], "LeftToeBase": [0.1, 0.025, 0.085]
+  "Hips": [
+   0,
+   0.5,
+   0.005
+  ],
+  "Spine": [
+   0,
+   0.555,
+   0
+  ],
+  "Spine1": [
+   0,
+   0.615,
+   0
+  ],
+  "Spine2": [
+   0,
+   0.675,
+   0
+  ],
+  "Neck": [
+   0,
+   0.775,
+   -0.01
+  ],
+  "Head": [
+   0,
+   0.815,
+   0
+  ],
+  "LeftShoulder": [
+   0.035,
+   0.73,
+   -0.01
+  ],
+  "LeftArm": [
+   0.13,
+   0.74,
+   -0.012
+  ],
+  "LeftForeArm": [
+   0.235,
+   0.74,
+   -0.012
+  ],
+  "LeftHand": [
+   0.335,
+   0.735,
+   -0.012
+  ],
+  "LeftUpLeg": [
+   0.065,
+   0.47,
+   0.005
+  ],
+  "LeftLeg": [
+   0.088,
+   0.27,
+   0.01
+  ],
+  "LeftFoot": [
+   0.097,
+   0.075,
+   -0.005
+  ],
+  "LeftToeBase": [
+   0.1,
+   0.025,
+   0.085
+  ]
  },
- "TIP": { "Head": [0, 1.0, 0], "LeftHand": [0.432, 0.733, -0.01], "LeftToeBase": [0.1, 0.02, 0.14] },
+ "TIP": {
+  "Head": [
+   0,
+   1.0,
+   0
+  ],
+  "LeftHand": [
+   0.432,
+   0.733,
+   -0.01
+  ],
+  "LeftToeBase": [
+   0.1,
+   0.02,
+   0.14
+  ]
+ },
  "_rigid": "[bone, x0, x1, y0, y1, z0, z1, blend?]: the HAIR rides the head (the dreads down her back half into the chest), the loincloth's flaps ride the hips (between the legs they would tear)",
  "rigid": [
-  ["Head", -0.3, 0.3, 0.79, 1.1, -0.4, 0.4],
-  ["Head", -0.17, 0.17, 0.55, 0.79, -0.4, -0.075, ["Spine2", 0.45]],
-  ["Hips", -0.045, 0.045, 0.18, 0.47, -0.3, 0.3]
- ]
+  [
+   "Head",
+   -0.3,
+   0.3,
+   0.79,
+   1.1,
+   -0.4,
+   0.4
+  ],
+  [
+   "Head",
+   -0.17,
+   0.17,
+   0.55,
+   0.79,
+   -0.4,
+   -0.075,
+   [
+    "Spine2",
+    0.45
+   ]
+  ],
+  [
+   "Hips",
+   -0.045,
+   0.045,
+   0.18,
+   0.47,
+   -0.3,
+   0.3
+  ]
+ ],
+ "_drop": "his: 'a piece on her back -- an error in the generation, this weird blue texture; those polygons need to be deleted'. It is ONE loose 3-triangle quad laid over her mid-back (x +-.07, y .64-.78, z -.008); the body under it is whole (rendered without it against a bright background: no hole)",
+ "drop": {
+  "maxTris": 3,
+  "box": [
+   -0.076,
+   0.632,
+   -0.014,
+   0.076,
+   0.782,
+   -0.002
+  ]
+ }
 }

@@ -12,6 +12,27 @@ const H = A.height;                                   // metres to the top of th
 const fbx = await new FBXLoader().loadAsync('/src/' + A.fbx); fbx.updateMatrixWorld(true); let G0;
 fbx.traverse(o => { if (o.isMesh && !G0) { G0 = o.geometry.clone(); G0.applyMatrix4(o.matrixWorld); } });
 for (const k of Object.keys(G0.attributes)) if (!['position', 'uv'].includes(k)) G0.deleteAttribute(k);
+// ---- the texture, read once (for `drop` and for the material below)
+const img = await new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = no; im.src = '/src/' + A.tex; });
+// ---- DROP: a generation error he wants gone (the Korajin woman's flat BLUE panel on her back: one loose 3-triangle quad). Whole SHELLS (islands
+// welded by position) lying entirely inside `box` (the FBX's own units, Y up after its node) are deleted when they have at most `maxTris`
+// triangles, or are mostly `colour` in the texture -- a loose shell lies OVER the body, so the body under it stays whole (checked: no hole).
+// (Big triangles defeat the colour test -- its samples land off the colour -- which is why the panel is caught by its size.)
+if (A.drop) { const D = A.drop, N0 = 1024, c0 = document.createElement('canvas'); c0.width = c0.height = N0; const cx = c0.getContext('2d'); cx.drawImage(img, 0, 0, N0, N0); const px = cx.getImageData(0, 0, N0, N0).data;
+  const rule = D.colour === 'blue' ? (r, g, b) => b > r + 30 && b > g + 15 && b > 70 : () => false, P0 = G0.attributes.position, UV0 = G0.attributes.uv, nT = P0.count / 3;
+  const hit = (u, v) => { const x = Math.min(N0 - 1, Math.max(0, u * N0 | 0)), y = Math.min(N0 - 1, Math.max(0, (1 - v) * N0 | 0)), i = (y * N0 + x) * 4; return rule(px[i], px[i + 1], px[i + 2]); };     /* FBX v runs UP */
+  const q = new THREE.BufferGeometry(); q.setAttribute('position', P0.clone()); const Wq = mergeVertices(q, 1e-5), I0 = Wq.index.array, par = new Int32Array(Wq.attributes.position.count).map((_, i) => i);
+  const f = a => { while (par[a] !== a) { par[a] = par[par[a]]; a = par[a]; } return a; }; for (let t = 0; t < nT; t++) { const a = f(I0[t * 3]); par[f(I0[t * 3 + 1])] = a; par[f(I0[t * 3 + 2])] = f(a); }
+  const box = D.box ? new THREE.Box3(vv(D.box.slice(0, 3)), vv(D.box.slice(3))) : null, st = new Map(), _p = V();
+  for (let t = 0; t < nT; t++) { const r = f(I0[t * 3]), e = st.get(r) || st.set(r, { n: 0, c: 0, inBox: 1 }).get(r); e.n++; let k = 0; for (const w of [[1 / 3, 1 / 3, 1 / 3], [1, 0, 0], [0, 1, 0], [0, 0, 1]]) { let u = 0, v = 0; for (let j = 0; j < 3; j++) { u += UV0.getX(t * 3 + j) * w[j]; v += UV0.getY(t * 3 + j) * w[j]; } k += hit(u, v); } if (k >= 3) e.c++;
+    if (box) { _p.fromBufferAttribute(P0, t * 3); if (!box.containsPoint(_p)) e.inBox = 0; } }
+  if (D.debug) { const bb = new Map(); for (let t = 0; t < nT; t++) { const r = f(I0[t * 3]); _p.fromBufferAttribute(P0, t * 3); const b = bb.get(r) || bb.set(r, new THREE.Box3()).get(r); b.expandByPoint(_p); }
+    info.dropDebug = [...st].filter(([r, e]) => e.c > 0).map(([r, e]) => [e.n, e.c, e.inBox, bb.get(r).min.toArray().map(v => +v.toFixed(3)), bb.get(r).max.toArray().map(v => +v.toFixed(3))]); }
+  const kill = new Set([...st].filter(([r, e]) => e.inBox && ((D.maxTris && e.n <= D.maxTris) || (D.colour && e.c / e.n >= (D.frac || .6)))).map(([r]) => r)), keepIdx = [];     /* a SMALL loose shell in the box, or one mostly of the colour */
+  for (let t = 0; t < nT; t++) if (!kill.has(f(I0[t * 3]))) keepIdx.push(t * 3, t * 3 + 1, t * 3 + 2);
+  info.drop = { shells: kill.size, tris: nT - keepIdx.length / 3, which: [...kill].map(r => st.get(r).n + ' tris, ' + Math.round(st.get(r).c / st.get(r).n * 100) + '% ' + D.colour) };
+  const g2 = new THREE.BufferGeometry(); for (const k of ['position', 'uv']) { const A2 = G0.attributes[k], out = new Float32Array(keepIdx.length * A2.itemSize); keepIdx.forEach((vi, j) => { for (let c = 0; c < A2.itemSize; c++) out[j * A2.itemSize + c] = A2.array[vi * A2.itemSize + c]; }); g2.setAttribute(k, new THREE.BufferAttribute(out, A2.itemSize)); }
+  G0 = g2; }
 G0.computeBoundingBox(); const bb0 = G0.boundingBox, S = H / (bb0.max.y - bb0.min.y); G0.translate(0, -bb0.min.y, 0); G0.scale(S, S, S);
 const G = mergeVertices(G0, 1e-5); G.computeVertexNormals(); G.computeBoundingBox();
 info.mesh = { trisIn: G0.attributes.position.count / 3, verts: G.attributes.position.count, tris: G.index.count / 3, size: G.boundingBox.getSize(V()).toArray().map(v => +v.toFixed(3)), scale: +S.toFixed(4) };
@@ -58,7 +79,6 @@ for (let v = 0; v < n; v++) { p.fromBufferAttribute(P, v); const side = p.x > .0
 G.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(si, 4)); G.setAttribute('skinWeight', new THREE.Float32BufferAttribute(sw, 4));
 info.byBone = Object.fromEntries(Object.entries(cnt).map(([k, c]) => [k.replace('mixamorig_', ''), c]));
 // ---- the texture, resized to `texSize`, sRGB; the material opaque, single-sided (Tripo writes doubleSided)
-const img = await new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = no; im.src = '/src/' + A.tex; });
 const T = A.texSize || 2048, cv = document.createElement('canvas'); cv.width = cv.height = T; cv.getContext('2d').drawImage(img, 0, 0, T, T); info.texIn = img.width + 'x' + img.height;
 const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.flipY = false; tex.userData.mimeType = 'image/jpeg';
 const mat = new THREE.MeshStandardMaterial({ name: A.name, map: tex, roughness: .82, metalness: 0, side: THREE.FrontSide });

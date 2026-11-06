@@ -69,6 +69,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2788 -- THE KORAJIN WOMAN'S BLUE BACK PANEL IS GONE (his: "a piece on her back... this weird blue texture, an error in the generation; those polygons need to be deleted") (Nov 6 2026)
+- **What it was, measured:** ONE loose shell of THREE triangles -- a flat quad (x +-.07, y .64-.78, z -.008 of her 1.0 FBX height) laid over her
+  mid-back with a blue patch of the atlas on it. Found by rendering her back, finding the blue pixels and raycasting them to triangles (32 hits:
+  the quad, plus bell cords and the body's edge triangles that merely bordered it on screen), then splitting the mesh into shells (welded by
+  position): only the 3-triangle quad is the piece. **No hole under it:** rendered without it against a bright background -- her skin and the
+  strap band are whole beneath (the body's own back surface is there; the quad just covered it).
+- **`tools/vrig` grew a `drop` rule** (in her JSON): whole shells inside a `box` (the FBX's units) with at most `maxTris` triangles (or mostly a
+  `colour` of the texture) are deleted BEFORE the weld and the weights, so a re-rig is the fix, not a hand edit of the GLB. A colour test alone
+  missed it (three huge triangles: the corner samples land off the blue), and a loose box caught 5 shells / 35 triangles (other small bits) --
+  hers is tight to the quad: exactly 1 shell, 3 triangles. Re-rigged, re-forged (the same 15 clips), 11,050 tris.
+- Render: `images/characters/korajin_female_01_back_fix.png` (before m2782 / after, full back and close, in her idle). A faint blue fleck stays
+  on the strap band's own texture -- painted, not a piece.
+- (Tips from the stone guardian worker, for the next villager: FBX v runs up -- vrig flips it; gltf-transform `prune()` deletes empty marker leaves
+  unless `keepLeaves`; rigid pieces read better as WHOLE islands on one bone -- not done here, nothing stretched in the renders.)
+Shipped unverified.
 ## m2787 -- THE HAMMOCK GET-UP: he SCOOTS to the edge first, the sling tips under him, the cloth model swings with the real one; control the moment his feet land (Nov 6 2026)
 His: "Getting out of the hammock is way better, but (1) he needs to SLIDE TO THE EDGE first -- he passes THROUGH the fabric; (2) after he's off he's
 LOCKED in place for a moment."
