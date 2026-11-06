@@ -63,6 +63,33 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2763 -- X SHEATH RE-SEATED (upright, over the cape), CAPE UNDER the gear by default (GPU pull), the DRAW arcs over the shoulder with a constrained arm (Nov 6 2026)
+His (m2761: `images/feedback/m2761/gear_settings.jpg`, `cape_under_back.png`, `cape_under_side.png`; he plays X + UNDER + BACK): *"the cape UNDER the
+gear -- make it the default and clean. The sheath is tilted with its TOP away from his back, following his LOWER back, so its lower half digs into the
+cape -- lay it flat on the upper back. And the draw: the arm hyper-extends and goes through his body -- make it an arc up and over the shoulder,
+the elbow bent and out."*
+- MEASURED THE OLD SEAT (cape vertices past the sheath's inner face, by tenth, natural cape): `dir` [.423, -.906, .26] put the tip 30 cm FORWARD
+  of the mouth (his frame: mouth z -.29, tip +.01), so the lower half sat 5-18 cm INSIDE the cape. He was right.
+- TRIED HIS LETTER FIRST: the axis in the Spine2 -> Neck plane (that bone leans 15 deg forward at idle, (-.077, .962, .25)). At 0.2 deg off that
+  plane the tip floats ~30 cm off the cape; the side render reads as a sword hanging in the air behind him (`m2763_tilt_spine2_vs_flat.jpg`,
+  columns a/b/c = this build / half way / the Spine2 plane). Spine -> Spine2 is near vertical (3 deg); only Spine2 -> Neck leans, under the hood.
+- WHAT SHIPS (`TRIPOW.back.dir` [.48, -.849, -.03], mouth z -.28): upright from the side, the mouth unchanged at his shoulder, and a near-constant
+  clearance over the cape -- cape vs the inner face, by tenth: -.017 -.025 +.008 +.011 . -.050 -.051 -.048 (the +1 cm at mid is the GPU pull's to
+  close). 24.6 deg off the Spine2->Neck plane, ~0 off the cape's own line. **A taste call if he wants it closer to the bone plane: `back.dir[2]`.**
+- THE QUIVER, in the same back plane (`quiver.dir` [.35, .93, .25]), now ON TOP of the sheath (body -> cape -> sheath -> quiver): crossed, the two
+  are 20 cm of stack (8.4 + 11.8) -- under the sheath it cut 10 cm into it, and the cape at its foot cut 7 cm into it. Its box includes a strap
+  loop on the body side, so it sits 2.5 cm closer than the box says (`at` z -.395).
+- CAPE UNDER (`TCOL.mode` default 'UNDER'; his phone already has it): the m2762 GPU push runs REVERSED -- any cape vertex in a piece's footprint and
+  past its inner face (up to 20 cm out) is pulled in to the inner face - `margin`; the strongest single push wins (a sum double-pushed at the
+  crossing). The UNDER plane (`tripoPlane`) still holds the bones back.
+- THE DRAW (`KDRAW.arcX`, `KDRAW.arm`, `ik2c`, `kdTorso`): the X draw's sword path is a quadratic through a point UP (.34) and OUT (.16) over the
+  right shoulder; the arm is solved by `ik2c` -- ik2 with the elbow pole GIVEN (up .75 / out .65 / back .2, his frame) and the reach capped at
+  .95 of the arm; the hand target is kept outside a Hips->Neck capsule (r .2). MEASURED over the draw (80 frames): arm extension max .999 -> **.95**;
+  elbow to the torso axis min .20 -> **.275**; hand .223 (the capsule never had to push); the blade's nearest point to the head bone .197 (~8 cm
+  outside the skull). Wider arcs (out .4 / back .4 / up .7) measured WORSE on the head (.11-.16), so the defaults stay.
+- RENDERED: `images/renders/cape/m2763_gear_UNDER_top_TAIL_bottom.jpg` (side / side / back / 3-4); `m2763_draw_side_old_top_new_bottom.jpg` and
+  `m2763_draw_back_...` (7 frames, .12-1.1 s). Shipped unverified on the phone. HORIZONTAL is untouched except the arm solve.
+
 ## m2762 -- CAPE OVER THE GEAR ON THE GPU (his: "my cape is still going through the sword", X, TAIL); TOOLS > GEAR at the top (Nov 6 2026)
 His (m2761, `images/feedback/m2761/cape_through_sword_X.png`, from behind, standing): *"my cape is still going through the sword."* And he could not
 find where the sheath layout is switched (it was buried under TOOLS > BOW).
