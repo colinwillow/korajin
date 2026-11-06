@@ -69,6 +69,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2780 -- THE LAB READOUTS ARE HIDDEN BY DEFAULT (`LABSTATS`) (m2780)
+His, on the Combat Lab at m2779: *"there's all these words on the screen. It's really annoying."* The lab readout was a big centred block in the
+top bar, over the play area, the badge and the menus. Now every sandbox readout goes through ONE switch, `LABSTATS` (`mel.labstats`,
+remembered): OFF by default; a **STATS** button in the lab's top bar shows it as one small (9 px), see-through panel in the top-right corner
+under the minimap (`labStatEl`: never centred, pointer-events none, never over the pads or the badge). Applied to the Combat Lab, the Nest
+(swarm worker's), the FX Lab and the Gather sandbox -- the four that wrote a debug line every frame. Dark Hall's BRAZIERS chip is game state
+(the count you are lighting) and stays. Counters keep counting while hidden; `mel.LAB` = { CLAB, CBT, ARENA, BOSS } stats for headless probes.
+`npm run check` green. Shipped unverified.
+
 ## m2779 -- THE PERFECT DODGE AND THE TIMED PARRY OPEN A GUARDIAN TOO (m2779)
 The Stone Guardian worker's ask (for SHADE): `cbtPerfectDodge` and `cbtTimedParry` take a GUARDIAN (`d.Z` -- GUARD / OLMEC / SHADE on the guard
 brain). The swipe: a dodge begun inside .38 s of it (range + `dodgeR`) misses and opens him; otherwise the hurt runs with `FOE_D = G`, so a
