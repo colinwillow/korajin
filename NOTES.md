@@ -62,6 +62,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2724 -- GLOWKIT: the Root Hall budget -- every FT dressing room storey-gated, the hall's ivy/shelves halved, the Hollow clusters shortened (Nov 6 2026)
+The temple worker (on m2718): the Banyan's phases 2-3 add 3 draws; my worst hall view was 62 -- trim toward ~55; the purple clusters must hang
+no lower than y -16.5 (phase 2's knot ring at r 9.5, y -16.4).
+- MEASURED, the worst hall view (`ftX_hollow`), the shipped text, shadows on: WITHOUT any glow dressing 59 draws / 208k tris; WITH the hall's
+  3 draws 62 / 265k. So the draws over 55 are not the dressing's to give back (the kit + the Banyan are 59 by themselves); what the dressing
+  CAN give is tris -- the hall's organic sink was 45.5k of its 56k (ivy). Ivies 4 -> 2, shelves 3 -> 2: the hall room 56k -> 35k tris; the view
+  62 / 244k.
+- `yGate` on every FT dressing room (A, B, C, D, E, F as well as the hub, sockets and hall): `FT_CULL` is xz-only, so a room above or below him
+  in range drew anyway. Checked in the hall: only `ftg_X` is drawn.
+- The Hollow clusters size 1.9 -> 1.6: their lowest vertex is now y -15.49 (measured off the built geometry), clear of the knot ring.
 ## m2723 -- THE PUSH-BLOCK: a new Interactions Kit kind (`IKIND.pushblock`, data-first, reusable), and plates that feel it
 
 The open item his queue named: "a PUSH mechanic (a push-block row in the kit, data-first and reusable)". B's blocks are the next build.
