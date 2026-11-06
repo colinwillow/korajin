@@ -62,6 +62,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2728 -- CAPTURE, STAGE 1: dual capture, the WIDE 16:9 and the TALL 9:16 of the same play, each framed for its shape (his sandbox, Nov 6; CAPTURE.md)
+- **F9 / View + Menu / TOOLS > CAPTURE** starts and stops; stop downloads `korajin_wide_<ts>.mp4` + `korajin_tall_<ts>.mp4`. `CAPT`, `capStep`
+  (after the play render, inside its try so the night values are still on), `capCams`, `capBlit`, `capDrain`. CAPTURE.md has the whole design.
+- TALL is its own camera off the smart-cam state (closer .8, higher +.12 rad, fov 64, look point lifted .42 x his height, `camFree` so it
+  never sits behind a wall), not a crop. Both render into HalfFloat MSAA targets, one blit tone-maps (the renderer's own tone mapping
+  function, rebuilt if it changes) + sRGB + flips, async read-back, VideoFrame on the 60 fps wall-clock grid, WebCodecs H.264 High (VP9
+  fallback) into FRAGMENTED MP4 via the vendored mp4-muxer 5.2.2 (`vendor/mp4-muxer/`, MIT). Audio: every node that connects to a
+  destination is remembered from load (`AudioNode.prototype.connect` watched) and tapped into AAC / Opus in both files.
+- **Paid for while building it** (headless, `node tools/captest.mjs`): (1) the blit's `#include <colorspace_pars_fragment>` is already in a
+  ShaderMaterial's prefix -- a redefinition compile error and BLACK footage; only the tone-mapping chunk is included now. (2) async read-backs
+  resolve OUT OF ORDER and the muxer refused the tall file ("DTS went from 0 to -16666") -- they are queued and encoded strictly in order
+  (`v.q`). (3) mp4-muxer warns when `onData` ignores `pos` -- the fragmented file is append-only, so it is accepted and noted.
+- Verified headless: both files decode (ffprobe: h264 640x360 and 360x640), tone-mapped frames, the tall framed for tall (frame looked at).
+  NOT measured: the fps cost on a real GPU (SwiftShader runs the game at 1-2 fps); the REC badge shows game fps live, so his on/off numbers are
+  the measurement. Audio not proven headless (no AudioContext without a gesture).
+- STAGE 2 (replay route) NOT built: the determinism audit is in CAPTURE.md (one clock for 238 `performance.now()` reads, 2,013
+  `Math.random()` calls on a seeded stream with fx split off, 144 wall-time `setTimeout`s, async loads). Cinematic cameras: later.
+  Shipped unverified.
+
 ## m2727 -- FOREST TEMPLE polish pass 2 (the next-weakest room, C: "ROOT HEART"): the heart in its nest of roots, root veins on the walls
 
 Picked by render: in game, C (where you meet the Thornback) was a bare box with two braziers and one root column. D already had its trough,
