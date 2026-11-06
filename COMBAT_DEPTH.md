@@ -30,12 +30,12 @@ more.
 
 ## DONE WHEN
 
-- [ ] Pass 1a: the combo guard -- a mid / elite body blocks the `cg`+1th blow of a mash; charge / slam / kick / whip break it with
+- [x] Pass 1a (m2745, shipped unverified): the combo guard -- a mid / elite body blocks the `cg`+1th blow of a mash; charge / slam / kick / whip break it with
       a long stagger; behind always lands; he ripostes out of it. Lab readout counts cg blocks and breaks.
-- [ ] The jackal is an elite: 12 hits, guarded approach, super-armoured swings, pounce + recovery window, more guard under half life.
+- [x] (m2745, shipped unverified) The jackal is an elite: 12 hits, guarded approach, super-armoured swings, pounce + recovery window, more guard under half life.
 - [x] Pass 1b (m2746, shipped unverified): PERFECT DODGE (slow motion) and TIMED PARRY (stagger + finisher) against arena bodies.
 - [x] Pass 2 (m2748, shipped unverified): knockback chains (bodies into bodies), ledge / wall kills, explosive barrels, the aimed deflect, chain-kill slow-mo +
       camera punch.
-- [ ] Pass 3: roles -- a 15-body mixed arena wave in the lab (TEMPLE SET button), each role answered by a different tool.
-- [ ] Rolled into the forest temple squads (COMBATSET rows), nothing temple-only.
+- [x] Pass 3 (m2749, shipped unverified): roles -- a 15-body mixed arena wave in the lab (TEMPLE SET button), each role answered by a different tool.
+- [x] (m2749) Rolled into the forest temple squads (COMBATSET rows), nothing temple-only.
 - [ ] **His sign-off, on his phone, in the Combat Lab.**

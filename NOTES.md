@@ -63,6 +63,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2749 -- COMBAT DEPTH PASS 3: ROLES, THE 15-BODY WAVE, AND THE FOREST SQUADS (m2749)
+COMBAT_DEPTH.md pass 3 and the temple roll-out.
+- **TWO NEW ROLES (placeholders on the samurai body, hued):** `HUSK_GUARD` (green, `cg` 2: turtles a mash -- break it with the charge / a kick /
+  the whip, go round it, or wait for his swing; 4 hits) and `HUSK_FLANKER` (magenta, `flank`: runs for a point 2.2 m off your side, `aj.side`,
+  then cuts in; wind-ups x.6 (`windK`), dodge .5 -- dodge HIS strike, the perfect dodge opens him; 3 hits).
+- **THE CASTER IS INTERRUPTED:** a blow on the Hollow Monk before his cast lands (`mcast`, `!d.cast`) staggers him (breakStun) and opens him 1.5 s
+  (`arenaBlow`; readout `cast broken`).
+- **THE 15-BODY WAVE:** `COMBATSET.depth` -- wave 1: 5 husk soldiers, 2 guards, 3 flankers, 2 husk archers, a bulwark (shield: flank / whip),
+  a monk (interrupt), a skullback (armour: the charge) = 15; wave 2: the jackal + 14 more; boss: a BOSS jackal. It brings 4 BARRELS
+  (`S.barrels`, only when no spots are given -- a temple places its own with `barrelAdd(x, z, y)`). Lab: SPAWN > TEMPLE SET: DEPTH WAVE (15).
+- **ROLLED INTO THE FOREST TEMPLE:** `COMBATSET.forest` waves now carry the roles (wave 1: 2 soldiers + guard + flanker + Osari bow; wave 2: jackal
+  + flanker + 2 soldiers + archer; wave 3: dog + guard + 2 soldiers + monk). Everything from passes 1-2 (combo guard, timing, the room) is on
+  the CBT rows and `bodyFly`, so it is live wherever arena bodies fight -- nothing temple-only. NOTE: the temple's waves give 3 spots, so 5
+  bodies share them (`combatDrop` cycles); `bodySep` parts them.
+`npm run check` green. Shipped unverified. Open: his sign-off (COMBAT_DEPTH.md DONE WHEN), and tuning from his notes.
+
 ## m2748 -- COMBAT DEPTH PASS 2: THE ROOM IS A WEAPON (m2748)
 COMBAT_DEPTH.md pass 2, in the Combat Lab. Numbers in `CBT.room` and `BARREL`.
 - **BOWLING (`cbtBowl`, in `bodyFly`'s FLYHIT):** an arena body flung into another keeps .72 of its speed (was .42) and the struck one, if knocked
