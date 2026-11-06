@@ -43030,7 +43030,7 @@ function gathBuild() { const Z = GATHER; Z.want = 2; if (Z.on) return; goopFx();
     geo.computeVertexNormals(); const m = new THREE.Mesh(geo, rock); m.position.y = top / 2; m.castShadow = m.receiveShadow = true; g.add(m); }
   // the hexagonal floor (walkable triangles) and its sandstone lip
   const hx = gathHex(Z.R); { const pos = [], uv = []; for (let i = 0; i < 6; i++) { const [ax, az] = hx[i], [bx, bz] = hx[(i + 1) % 6]; pos.push(0, 0, 0, bx, 0, bz, ax, 0, az); uv.push(0, 0, bx / 3, bz / 3, ax / 3, az / 3);
-      triAdd(0, top, 0, bx, top, bz, ax, top, az); }
+      triAdd(0, top, 0, ax, top, az, bx, top, bz); }     /* m2767: UP-facing (O, A, B): (O, B, A) faced DOWN and `triAdd` keeps only floors, so the deck had no walkable triangle since m2443 -- measured: TRI.n 0, groundAt(0, 9) = 0 under him at y 12 */
     const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.computeVertexNormals();
     const m = new THREE.Mesh(geo, stone); m.position.y = top; m.receiveShadow = true; g.add(m);
     // the tile seams: three nested hex rings and six spokes, dark inlay

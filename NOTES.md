@@ -65,6 +65,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## (m2767) THE GATHERING'S DECK HAD NO WALKABLE TRIANGLE -- its hex floor went into `triAdd` facing DOWN since m2443
+With m2766 holding him at the deck height, the gate waited for ever: `groundAt(0, 9, 14, 0)` = 0, `groundAt(.., 99)` = 0, `TRI.n` 0, and the
+auto mesh collider had nothing at (0, 9) either. The six hex triangles were wound (O, B, A) with the corners going round as `gathHex` makes them,
+which faces DOWN (ny -170, measured in node) -- and `triAdd` keeps only up-facing floors, so every one was thrown away. (The m2679 fix
+"wait for the row's ground" was waiting on a floor that did not exist; the 15 s cap is what let it go and drop him to y 0.) Now (O, A, B):
+`TRI.n` 6, groundAt 12 at (0, 9) and at (2, 9), the entrance runs and the portal sits at 14.8. The VISIBLE hex mesh is not touched (one change
+per measurement). Moves no sandbox box.
+
 ## (m2766) THE LANDING WAITS ON THE COLLIDER BEING BUILT, NOT A CLOCK -- he is held at the spot, never dropped through an unbuilt deck
 entryprobe at m2764: the Gathering BAD alone too -- he ended at y 0, 12 m under the deck. The m2679 gate waited on the row's ground with a 15 s cap,
 and he was NOT held while it waited: gravity took him through the unbuilt deck, and an AUTO collider (`collAutoTick`) builds its rect/height band
