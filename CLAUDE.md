@@ -551,6 +551,10 @@ rule that has to be in front of me *before* I know which system I am in.
   IN the 3D world (carved, floating, spoken) and are styled, never a yellow toast over the HUD. Enemies are VOLUME: most die in 3-4 hits.
   An item GET = he HOLDS IT UP (the GET pose) + the jingle -- no caption. Hints come from little NPCs placed in the level, in an in-world
   speech bubble, SOFT and CRYPTIC ("they say six keys once kept this temple safe"), never literal instructions.
+- **TEMPLE ROOMS ARE DESIGNED ONE AT A TIME (his rule, Nov 6 2026).** Never build ahead: one room gets a one-page plan he approves, is built,
+  played on his phone and SIGNED OFF before the next room starts. Every room needs a CLEVER idea mixing acrobatics and puzzle: chained
+  arrow-triggers (shoot -> a platform moves -> shoot the next while riding it; miss and you fall all the way down), arrow shots that open a
+  door so a lever can be pulled so a platform moves, wall runs into shots. Vary the SHAPE: hexagonal and circular rooms, not just boxes.
 - **HIS STEP IS .357 M, NOT .5 (m368).** `MOVE.step` is `.5 * SZ` and the rig is 1.25 m. A riser over .357 is a WALL
   he has to jump. Build stairs at .32 or less, and prove them with `places`' `walkUp`, never with a lenient `groundAt`.
 
