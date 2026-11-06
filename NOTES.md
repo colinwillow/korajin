@@ -63,6 +63,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2737 -- SMART FOV: when a wall pulls the camera in, widen the lens (and lift a little) so he stays his size (his screenshot, images/feedback/m2729/interior_cam_too_close.png: the forest temple pushed the boom in and he filled the frame)
+- **`SFOV` + `cam.sfovR`** (in `stepCam`, right after `cam.dist`): the pull-in ratio wanted / actual boom (`SCAM.wantD`, before any cap),
+  clamped 1..`rMax` 4 and eased (`inHL` .18 in, `outHL` .6 out, so a doorway does not pump). Spent twice: (1) the LIFT -- `cam.el`'s target
+  gains `el` .22 rad x (1 - 1/r), so pulled in, the lens rises and looks down on the room first; (2) the LENS -- in the ONE fov writer (the
+  play camera's existing line, no second writer): tan(f/2) x (wanted / actual)^`k` .85, clamped to `maxV` 88 deg vertical and, in landscape,
+  to whatever vertical keeps the horizontal under `maxH` 105 deg (no fish-eye across). Off in the entrance; reels / the entrance cam keep
+  their own lenses. TOOLS > CAMERA > SMART FOV ON (default) / OFF, `mel.SFOV` live.
+- **Renders, `npm run sfovshot roomA roomF boss`** (new: boots the temple at each spot, sweeps 16 bearings for the tightest pull-in, steps the
+  shipped `stepCam` with it off and on; `images/sfov/`): Room F x3.33 pull (boom 1.5 of 5) -> fov 58 -> 88, el .22 -> .37: he goes from
+  filling the frame to his normal size with the pillars and shrine in view; the edges at 88 stretch a little (the pillars lean) -- the
+  ceiling is `maxV` if he wants it tighter. The boss hall x1.40 -> fov 72. Room A's spawn had no pull-in at any bearing (x1.00) -- nothing to do there.
+- The x-ray / dither and the cutaway are untouched. Shipped unverified.
+
 ## m2736 -- ENEMIES ARE VOLUME: the 100-hit green samurai found and fixed, a hits-to-kill table, limbs + rock bursts, arrow-kill bursts, BOMB-CORE spiders
 - HIS REPORT (forest temple run): "the green samurai robots take ~100 hits -- swipe, charge, swipe, charge... it wouldn't die". FOUND: room B's
   wave is `COMBATSET.forest`, whose melee was the SAMURAI kind -- the lab's MIRROR duel rival. Its brain (`arenaMirror`) raises its guard
