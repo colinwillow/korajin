@@ -68,6 +68,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## (m2772) THE 3D PORTAL IS SHALLOW -- the disc's size: a thick rim round a swirling well f3.h deep (no tube)
+His, on m2771: "a little more than I was expecting: it's long, super long. I was picturing a 3D portal closer to the disc, but 3D. I liked the
+swirl." Now `entryFunnel` is a TORUS rim (`f3.r` .82, `f3.tube` .11) round a lathe DISH dipping `f3.h` (.32 m, LIVE: `mel.ENTRY.f3.h` rescales it
+each frame) below the rim, its bands spiralling in (`ENTRYFS_F`, log-radial) to a bright centre. Opaque, Jinra, two draws; 3D stays the default.
+**THE THRESHOLD MOVED TO THE WELL'S BOTTOM**: with the clip plane at the rim (m2407), the part of him between the rim and the dish's bottom was
+drawn IN FRONT of the dish -- his head showed inside the bowl from above (the first render of this build, measured by looking). For the 3D well the
+clip plane sits `f3.h` below the rim, so from above the dish hides him until he is out from under it.
+Strips (boulders): images/renders/entrance/m2772_portal3d_shallow_play.jpg (after the fix) and ..._low.jpg (low camera; rendered before the
+threshold moved down -- the look is the same, he shows from the rim there instead of the apex).
+
 ## (m2771) THE 3D PORTAL -- TOOLS > PORTAL: 3D (default) / DISC
 His: "make the portal look more 3D: instead of this 2D thing, create an actual portal." `ENTRY.look` '3D' (localStorage `mel.entryLook`; DISC is
 m2769's opaque disc): `entryFunnel` hangs a Jinra VORTEX FUNNEL at the portal point, opening DOWN -- a LatheGeometry tube (rim `f3.r` .95 m,

@@ -54235,7 +54235,7 @@ function hdropStep(dt, s) { const p = player, D = p.hdrop; D.t += dt;
 // `h` m up; pad = a landing pad ('stone' | 'rune' | 0); H = the drop height (m). `skip()` = no entrance in that state.
 // SC_ENTRY:START
 const ENTRY = { on: (() => { try { if (/[?&]entry=0\b/.test(location.search)) return 0; if (/[?&]entry=1\b/.test(location.search)) return 1; return localStorage.getItem('mel.entry') === '0' ? 0 : 1; } catch (e) { return 1; } })(),
-  col: JPAL.glow, hot: JPAL.spark, deep: JPAL.deep, cloud: new THREE.Color(JPAL.deep).toArray(), opaque: 1, look: (() => { try { return localStorage.getItem('mel.entryLook') === 'DISC' ? 'DISC' : '3D'; } catch (e) { return '3D'; } })(), f3: { r: .95, h: 2.8, throat: .2, tube: .1 },     /* m2771: TOOLS > PORTAL: 3D (a real funnel) / DISC */     /* m2769 (his): JINRA, not purple -- purple is the Hollow's (EMBLEMS.md); follows TOOLS > JINRA COLOUR */ tilt: .2, sealAt: .3,     // VIOLET (his: "purple, electric, cloudy" -- Jinra may move to purple later; this is the one place)
+  col: JPAL.glow, hot: JPAL.spark, deep: JPAL.deep, cloud: new THREE.Color(JPAL.deep).toArray(), opaque: 1, look: (() => { try { return localStorage.getItem('mel.entryLook') === 'DISC' ? 'DISC' : '3D'; } catch (e) { return '3D'; } })(), f3: { r: .82, h: .32, tube: .11 },     /* m2772: a SHALLOW well, the disc's size (h = the dish's depth, live) */     /* m2771: TOOLS > PORTAL: 3D (a real funnel) / DISC */     /* m2769 (his): JINRA, not purple -- purple is the Hollow's (EMBLEMS.md); follows TOOLS > JINRA COLOUR */ tilt: .2, sealAt: .3,     // VIOLET (his: "purple, electric, cloudy" -- Jinra may move to purple later; this is the one place)
   H: 16, wait: .35, open: 1.0, close: .55, flipA: .12, flipT: 0, cine: 0, camOut: 1.3, camEl: .5, camFit: .85, lookMin: .27, gCap: 60, camMode: (() => { try { return localStorage.getItem('mel.entryCam') === 'OLD' ? 'OLD' : 'DOLLY'; } catch (e) { return 'DOLLY'; } })(), dollyOut: 1.2, panUp: .9, blendAt: .15, blendT: .8,     /* m-dolly: TOOLS > ENTRANCE CAM */ pScale: .34, pDist: 0, pH: 2.5, pYaw: 0, flyT: .85, warp: 0, bgEvery: 2, flat: 1, slowK: 1, pre: .16, post: .12, ease: .45, camBlend: .9, settle: .6, max: 9,
   cam: [.6, 6.2, 1.25], duck: .3, snd: (() => { try { return localStorage.getItem('mel.entrySnd2') || 'B'; } catch (e) { return 'B'; } })(),     /* m2401: B (the brighter, clearer opening) by default */
   sfx: { open: 'portal_open', through: 'portal_through', seal: 'portal_seal' },     /* SWAPPABLE: point a role at another SFX key (his own portal sound, when he uploads it) */
@@ -54420,7 +54420,7 @@ function entryStep(dt) { const E = ENTRY, run = E.run, p = player, D = p.hdrop; 
   const cardUp = typeof bootCard !== 'undefined' && bootCard && !bootCard.classList.contains('gone');
   if (D && D.st === 'wait') { p.pos.copy(run.S); p.vel.set(0, 0, 0); if (cardUp) run.t = 0; else if (run.t > E.wait) { D.st = 'portal'; D.t = 0; run.oT = 0; entrySnd('open'); entryFlash(.55); } }
   else if (D && D.st === 'portal') { p.pos.copy(run.S); p.vel.set(0, 0, 0); if (D.t >= E.open) { D.st = 'fall'; D.t = 0; const T = E.flyT, g = MOVE.g || 20;     // m2407: thrown OUT of the portal's face, an arc onto the landing
-      E.clip.constant = -run.n.dot(run.P); D.vx = (run.x - run.S.x) / T; D.vz = (run.z - run.S.z) / T; if (E.flat) { D.vx = D.vz = 0; p.vel.set(0, -1, 0); run.fallT = Math.sqrt(2 * Math.max(.2, run.S.y - run.y) / g); entrySnd('drop'); return; } p.vel.set(0, (run.y - run.S.y + .5 * g * T * T) / T, 0); p.faceH = p.heading = Math.atan2(D.vx, D.vz); entrySnd('drop'); } }
+      E.clip.constant = -run.n.dot(run.P); if (run.portal && run.portal.fun && E.flat) E.clip.constant = -run.n.dot(_enA.copy(run.P).setY(run.P.y - Math.max(0, E.f3.h)));     /* m2772: the 3D well dips f3.h below its rim -- the threshold is its BOTTOM, or he shows inside the bowl from above */ D.vx = (run.x - run.S.x) / T; D.vz = (run.z - run.S.z) / T; if (E.flat) { D.vx = D.vz = 0; p.vel.set(0, -1, 0); run.fallT = Math.sqrt(2 * Math.max(.2, run.S.y - run.y) / g); entrySnd('drop'); return; } p.vel.set(0, (run.y - run.S.y + .5 * g * T * T) / T, 0); p.faceH = p.heading = Math.atan2(D.vx, D.vz); entrySnd('drop'); } }
   if (D && D.st === 'fall' && D.t > .6) E.clip.constant = 1e6;     // through: the plane goes far away (no recompile -- the clip stays armed)
   if (D && D.st === 'fall' && D.vx != null) { p.pos.x += D.vx * dt; p.pos.z += D.vz * dt; if (Math.hypot(run.x - p.pos.x, run.z - p.pos.z) < .15) D.vx = D.vz = 0; }
   if (D && D.st === 'fall') { const gy = run.y, hh = p.pos.y - gy, v = Math.max(0, -p.vel.y), g = MOVE.g || 20; D.eta = (-v + Math.sqrt(v * v + 2 * g * Math.max(0, hh))) / g; }
@@ -54515,17 +54515,17 @@ function entryPortal(x, y, z, is3) { const E = ENTRY, g = new THREE.Group(); g.p
   for (const o of [tear, glow, arcs]) o.userData.noSurf = 1;
   const fun = E.look === '3D' && is3 ? entryFunnel(U) : null; if (fun) { g.add(fun.g); tear.visible = false; }
   return { g, face, tear, U, glow, arcs, NB, NS, arcT: 0, len: 0, open: 0, t: 0, fun }; }
-// m2771 (his: "make the portal look more 3D -- create an actual portal"): THE 3D PORTAL. A Jinra VORTEX FUNNEL hanging in the sky, opening DOWN: a
-// lathe tube of spiralling bands (rim radius `f3.r`, `f3.h` up to a narrow throat with a bright core far inside), a thick glowing TORUS rim with
-// crackling energy at its mouth. Two draws. He falls out of the mouth (the m2407 clip plane sits on the rim plane); the funnel walls are opaque, so
-// from above you see the swirl, not him inside it. Grows out of the rim as it opens (`entryPortalStep`), shrinks back up into the sky as it seals.
+// m2771 (his: "make the portal look more 3D -- create an actual portal"); m2772 (his: "super long -- closer to the disc, but 3D"): THE 3D PORTAL
+// is the disc's size: a thick glowing TORUS rim (`f3.r`, `f3.tube`, crackling) round a SHALLOW swirling well -- a lathe dish `f3.h` deep (live) whose
+// bands spiral in to a bright centre. Two draws, opaque, so from above you see into the well, never him. He falls out of the underside (the m2407
+// clip plane sits on the rim plane). Grows out of the rim as it opens (`entryPortalStep`), shrinks as it seals.
 const ENTRYFS_F = `uniform float uT, uOpen; uniform vec3 uHot, uVio, uDeep; varying vec2 vU;
-  void main() { float a = vU.x * 6.28318, h = vU.y;
-    float s1 = .5 + .5 * sin(a * 3.0 + h * 10.0 - uT * 5.0 + sin(a * 2.0 + uT) * .6), s2 = .5 + .5 * sin(a * 7.0 - h * 17.0 - uT * 8.0);
-    float b = pow(s1, 3.0) * .85 + pow(s2, 7.0) * .6;
+  void main() { float a = vU.x * 6.28318, r = vU.y;     /* r: 0 at the centre of the well, 1 at the rim */
+    float sp = a * 3.0 + log(r + .06) * 5.5 - uT * 4.5, s1 = .5 + .5 * sin(sp + sin(a * 2.0 + uT) * .5), s2 = .5 + .5 * sin(a * 7.0 + log(r + .06) * 11.0 - uT * 7.0);
+    float b = pow(s1, 3.0) * .85 + pow(s2, 7.0) * .55;
     vec3 c = mix(uDeep * 1.3, uVio, .25 + .55 * s1) + uHot * b * .8;
-    float core = smoothstep(.55, 1.0, h); c = mix(c, vec3(.9, 1.0, .96), core * (gl_FrontFacing ? .25 : .85));
-    c *= gl_FrontFacing ? .7 + .3 * s1 : 1.05; c += uHot * smoothstep(.12, .0, h) * .6;
+    c = mix(c, vec3(.9, 1.0, .96), smoothstep(.32, .0, r) * .9);     /* the bright centre, far in */
+    c *= gl_FrontFacing ? .8 : 1.0; c += uHot * smoothstep(.85, 1.0, r) * .45;
     gl_FragColor = vec4(c, 1.0); }`;
 const ENTRYFS_R = `uniform float uT; uniform vec3 uHot, uVio; varying vec2 vU;
   void main() { float u = vU.x * 6.28318, v = vU.y * 6.28318;
@@ -54534,9 +54534,9 @@ const ENTRYFS_R = `uniform float uT; uniform vec3 uHot, uVio; varying vec2 vU;
     vec3 c = mix(uVio, uHot, .45 + .4 * lip) * (.85 + .5 * lip) + vec3(.9, 1.0, .96) * cr * 1.1;
     gl_FragColor = vec4(c, 1.0); }`;
 function entryFunnel(U) { const F = ENTRY.f3, g = new THREE.Group(); g.name = 'entry_funnel';
-  const pts = []; for (let i = 0; i <= 14; i++) { const t = i / 14, r = F.throat + (F.r - F.throat) * Math.pow(1 - t, 1.8); pts.push(new THREE.Vector2(r, t * F.h)); }
-  const tube = new THREE.Mesh(new THREE.LatheGeometry(pts, 40), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS, fragmentShader: ENTRYFS_F, side: THREE.DoubleSide, toneMapped: false, fog: false }));
-  const rim = new THREE.Mesh(new THREE.TorusGeometry(F.r, F.tube, 10, 56).rotateX(Math.PI / 2), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS, fragmentShader: ENTRYFS_R, toneMapped: false, fog: false }));
+  const pts = []; for (let i = 0; i <= 12; i++) { const t = i / 12; pts.push(new THREE.Vector2(F.r * t, -(1 - t * t * (3 - 2 * t)))); }     /* a dish 1 deep (scaled to f3.h every frame), the centre at the bottom */
+  const tube = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS, fragmentShader: ENTRYFS_F, side: THREE.DoubleSide, toneMapped: false, fog: false })); tube.scale.y = F.h;
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(F.r, F.tube, 12, 64).rotateX(Math.PI / 2), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS, fragmentShader: ENTRYFS_R, toneMapped: false, fog: false }));
   for (const o of [tube, rim]) { o.userData.noSurf = 1; o.renderOrder = 50; g.add(o); } g.scale.setScalar(.001);
   return { g, tube, rim }; }
 const _enA = new THREE.Vector3(), _enB = new THREE.Vector3(), _enC = new THREE.Vector3(), _enD = new THREE.Vector3(); const _enV2 = new THREE.Vector2(), _enCamP = new THREE.Vector3();
@@ -54558,7 +54558,7 @@ function entryPortalStep(run, dt) { const E = ENTRY, P = run.portal; if (!P) ret
   else { len = 0; open = 0; }
   if (!REEL.on) MUSIC.duck = (st === 'portal' || (P.sealT || 0) < E.sealAt + .9) && st !== 'wait' ? E.duck : 0;     // m2362: the music dips under the portal
   P.face.rotation.y = Math.atan2(camera.position.x - P.g.position.x, camera.position.z - P.g.position.z);     // m2363: tipped `lean` toward the play camera, which looks down on it from behind him
-  if (P.fun) { const o = Math.max(.001, open), l = Math.max(.001, len); P.fun.g.scale.set(Math.max(o, .08 * l), l, Math.max(o, .08 * l)); P.fun.g.rotation.y += dt * 1.6;
+  if (P.fun) { const o = Math.max(.001, open), l = Math.max(.001, len); P.fun.g.scale.set(Math.max(o, .08 * l), l, Math.max(o, .08 * l)); P.fun.g.rotation.y += dt * 1.6; P.fun.tube.scale.y = Math.max(.02, ENTRY.f3.h);     /* m2772: the depth is live (mel.ENTRY.f3.h) */
     if (st === 'portal' && D.t > T * .35 && !P.shock) { P.shock = 1; const gy = run.y + .08, C = new THREE.Color(E.hot); for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283, rr = 1.1 + Math.random() * .4; smokeAt(run.x + Math.sin(a) * rr, gy, run.z + Math.cos(a) * rr, .9 + Math.random() * .6, .9, [.86, .82, .74]); spkBurst(run.x + Math.sin(a) * rr, gy + .05, run.z + Math.cos(a) * rr, 2, { col: [C.r, C.g, C.b], spread: 1.6, up: .6, size: .07, life: .4 }); } }     /* the shock on the ground below as it opens */
     if (open > .3 && Math.random() < dt * 14) { const a = Math.random() * 6.283, C = new THREE.Color(E.hot), gp = P.g.position, rr = ENTRY.f3.r * open * (.9 + Math.random() * .3); spkBurst(gp.x + Math.sin(a) * rr, gp.y - .05, gp.z + Math.cos(a) * rr, 1, { col: [C.r, C.g, C.b], spread: .8, up: -.8, size: .08, life: .5 }); } }     /* motes shed off the rim, spiralling out */
   P.len = len; P.open = open; P.U.uT.value = P.t; P.U.uLen.value = len; P.U.uOpen.value = open;
