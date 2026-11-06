@@ -62,6 +62,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2710 -- TORCH pass 1: the torch fire, THE DARK HALL, light the braziers (`TORCH.md`, `?w=forge&zone=dark`) (Nov 6 2026)
+His (via the orchestrator): *"Cooler than a lantern would be a TORCH... really, highly realistic fire... a dark, dark temple where you
+can barely see except where you shine the light."* New sandbox, so the doc came first: `TORCH.md` (DONE WHEN, three passes, his sign-off last).
+- THE FIRE (`flameMat`): ONE axis-billboarded quad per flame. Its shader is a HEAT field: `(1-|x|/r)*1.15 - y*.82` plus two upward-scrolling
+  fbm fields, and those fields are what tear the top into separate tongues. Colour follows the heat (red, orange, yellow, white core). A
+  shimmer band above the tips fakes the heat haze, because there is no post chain. **The first version (a tapered body times a ragged top)
+  read as one tall yellow BLADE in the close render.** The heat field is what made it fire. Then it was shortened and widened (h .5 to .46,
+  w .26 to .34) because the tips trailed off into a thin spike.
+- THE TORCH: 6 draws (haft, collar, rag head, flame, embers, smoke). It is in the LEFT fist, along the knuckle line (`bowFist`'s method).
+  HOLD UP is a two-bone IK of the left arm over the head, and the light's reach goes 9 to 13 m. The flame leans off the head's velocity, so
+  it streams behind on a run, and it gutters on a roll, flip or cartwheel. **The light sits .3 m up the axis, not .18.** At .18, a
+  7-intensity light 20 cm from the rag head blew it out into a flat orange cone.
+- THE DARK: sun 0, **`scene.environment = null`** (the forge IBL lit the bronze braziers gold from 20 m away in the dark), hemi .07, fog
+  6-21 m, and a dark disc over the forge's own floor (it showed white through the open south end). The torch is the only shadow light.
+- THE HALL: 13 x 42 m, six column pairs, and a 1.2 m dais up four .24 m risers. **The first step formula built the TALLEST step furthest out,
+  making it a wall.** Fixed so the lowest step reaches furthest. Braziers sit on four tiers: the floor, a .6 plinth, a 1.4 plinth with a .28
+  stair, and the dais. A brazier lights when the torch's flame touches its bowl (`lightR` .85). A lit brazier is two overlapping flames, wide
+  rather than two spikes, plus its own non-shadow light.
+- **`ikgate` caught a `// TORCH.md` comment after `torchStep` on the hand-fix frame line.** That comment killed `smearStep`, `gdnLotus`, `ikitPose`
+  and `getPose` (the m2647 landmine again). It is a `/* */` now.
+- Renders: `images/renders/torch/` (close-ups x3, hold-up, run, a lit brazier, the hall). Shipped unverified on the phone. Pass 2 (fight +
+  spread) and pass 3 (scurriers + watcher + douse) are open in TORCH.md.
 ## m2709 -- FOREST TEMPLE build 8 (THE SEAL + THE STAIR): six shards open the well's centre; a spiral stair goes down inside the trunk to the ROOT HALL. Also: below-zero floors now hold him
 
 **THE SEAL** (`ftinSeal`, glue). Six stone PETALS (one InstancedMesh) close a square stairwell at the well's centre (0, 36), under a carved rosette.

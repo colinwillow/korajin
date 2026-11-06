@@ -67,6 +67,9 @@ consumables); also pitch Apple Arcade. Price to decide near launch (~$7.99-9.99 
       stick UP and DOWN both parry, UP timed returns it; glider glow; enemies; village; bosses; gamepad.
 
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
+- [ ] **THE TORCH + THE DARK -- OPEN (his, Nov 6).** `TORCH.md`; the sandbox is The Dark Hall (`?w=forge&zone=dark`).
+  - [x] m2710 pass 1 the fire + the hall + light the braziers.
+  - [ ] pass 2 fight with it (fire trail, flammable rows, spread). - [ ] pass 3 scurriers + watcher + douse/relight. - [ ] his phone sign-off.
 - [ ] **THE VINE WHIP -- OPEN (his pick, Nov 5: "only if it's done well").** `VINEWHIP.md`: a white-box sandbox (`?w=forge&zone=whip`) FIRST; the Forest
       Temple's flow depends on its sign-off.
   - [x] m2568 pass 0 the doc + the temple re-plan.
