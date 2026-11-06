@@ -63,6 +63,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## (mDOLLY) THE ENTRANCE CAMERA HOLDS ITS ORIENTATION -- TOOLS > ENTRANCE CAM: DOLLY (default) / OLD
+His (via main): the entrance camera started high and TILTED down as he dropped, and rotating the lens against the portal (a flat shader effect)
+made it read too deep, "like rotating around a sprite". Now (`ENTRY.camMode` 'DOLLY', `entryCamPose`): the m2645/m2674 pick still chooses ONE
+pose with the look-down guarantee (`lookMin`), and from frame 1 that look DIRECTION is fixed -- the lens only TRANSLATES: it starts `dollyOut`
+(1.2x) further out along the view axis and with the look point `panUp` (.9 m) higher, and both ease home through the portal (40%) and the fall
+(60%) -- a dolly-in plus a straight pan down, no tilt, no swing. In 'land', `blendAt` (.15 s) after touchdown (the portal sealed by then:
+sealAt .3 + .5 s after the fall starts), it blends over `blendT` (.8 s) into the play pose; if he moves early the play camera's own ease takes it
+from wherever it is. The portal is a flat level disc (E.flat), not a billboard, so with no rotation there is nothing to re-face. OLD is the m2674
+eased tilt, on the switch (`mel.entryCam` in localStorage). Moves no sandbox box; the entrance's sign-off on his phone is still open.
+
 ## m2763 -- X SHEATH RE-SEATED (upright, over the cape), CAPE UNDER the gear by default (GPU pull), the DRAW arcs over the shoulder with a constrained arm (Nov 6 2026)
 His (m2761: `images/feedback/m2761/gear_settings.jpg`, `cape_under_back.png`, `cape_under_side.png`; he plays X + UNDER + BACK): *"the cape UNDER the
 gear -- make it the default and clean. The sheath is tilted with its TOP away from his back, following his LOWER back, so its lower half digs into the
