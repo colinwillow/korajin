@@ -59,6 +59,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2685 -- FOREST TEMPLE interior BUDGET PASS: 110 draws -> 63 (hall), 63 (room A), 54 (by the lift); tris 187k -> 128-138k
+
+**Asked (via main):** the interior's budget pass, 96 draws -> <= 70 (`npm run zonebudget`, m2678's measurement; by m2680 with room B it was 110).
+**Measured first** (`npm run zonebudget` now also prints the main pass without shadows, the shadow casters, the biggest meshes and every visible
+mesh grouped by name / geometry / material): 110 calls = 86 main + 24 SHADOW; 10 of the main were single DOOR LEAVES, 8 the four arrow
+switches (a ring and an eye each), 7 the lift (its shaft drawn at rest), and the chests / switches / sockets / eyes of rooms he was nowhere near.
+**Done (four changes, each counted):**
+1. **Door leaves are INSTANCES** (`leafSets` in the kit builder): the pivot Group stays the transform every door animation already turns; the leaves
+   draw as one `InstancedMesh` per leaf shape and side, synced from the pivots in `L.step` (`doorSync`). 10 draws -> 2. (`noColl`: the leaf's
+   box is still its collider.)
+2. **An arrow switch is ONE mesh** (its ring and eye concatenated in the pure builder -- no `mergeGeometries` there, `ftstrip` lifts it with only
+   THREE). 8 -> 4.
+3. **Only the structure casts shadows** (`stone`, `wood`, `door`): glow, moss, vine, roots, bronze, carve, band, trim, guard, rubble and floor do
+   not, nor does the lift. The shadow pass 24 -> 7.
+4. **The glue's per-room pieces are DISTANCE-CULLED** (`FT_CULL`, R 46 m; the hub's sockets and the lift at 40): the chests (`ftinAddKit` wraps
+   `ikitAdd` and culls what it added), the arrow switches, B's relief eyes, the sockets, the lift. The lift's SHAFT draws only on a ride.
+**After (the game camera, shadows in):** hall spawn **63 draws / 128k tris** (56 main + 7 shadow); room A (`at=room`) **63 / 138k**; arriving by the
+lift **54 / 129k**. Under the 70 / 280k line everywhere measured. What is left is mostly the kit's ~22 merged materials and the game-wide effect
+pools (sparks, puffs, sprites). The kit draws 34 in its own count (was 46). Shipped unverified.
+
 ## m2684 -- the LANDING's freeze was the footstep colour, not a shader (first-use prewarm: weapons and FX)
 - **MEASURED** (`entryhitch 'w=arena&entry=1'`, profiler on): the arena's landing frame was 5.9-6.5 s headless with **0 program links** --
   owned by `ssTexAvg` (633 / 523 / 463 ms frames): `entryImpact` -> `stepSurf` classifies the ground he lands on, and the colour half of it
