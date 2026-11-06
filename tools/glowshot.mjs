@@ -29,12 +29,25 @@ const VIEWS = {
     ['vignette', [7, 4.5, -1], [13.5, 3.5, -10]],
     ['vignette_close', [11, 3.9, -5.6], [14, 3.6, -10]],
   ],
-  ft: [],
+  ft: [
+    ['ft_sockets', [4, 3.4, 27], [0, 1.4, 37]],
+    ['ft_sock_close', [1.0, 2.1, 27.6], [0, 1.65, 29.5]],
+    ['ft_sock_lit', [4.4, 2.3, 30.0], [5.63, 1.75, 32.75]],
+    ['ft_sock_lit2', [3.6, 2.4, 41.6], [5.63, 1.75, 39.25]],
+    ['ft_hub_wall', [0, 6, 38], [-3.75, 6.5, 45.3]],
+    ['ft_hub_floor', [2, 2.4, 40], [-5.5, .5, 43.5]],
+    ['ftA_ne', [9, 3, -12], [15.5, 1.5, -20.5]],
+    ['ftA_hi', [-5, 18, -2], [-16, 21.5, -6]],
+    ['ftB_far', { f: 'FTB', p: [-2, 3, 18] }, { f: 'FTB', p: [-8, 1.5, 25.5] }],
+    ['ftB_stal', { f: 'FTB', p: [0, 4, 16] }, { f: 'FTB', p: [-5, 8, 23.5] }],
+    ['ftC_far', { f: 'FTB', p: [-2, -15, 27] }, { f: 'FTB', p: [-8.5, -16, 35.5] }],
+    ['ftD_far', { f: 'FTD', p: [-1.5, 15, 12] }, { f: 'FTD', p: [-7, 14, 20] }],
+  ],
 };
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg' };
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(new URL(q.url, 'http://x').pathname), f = path.join(ROOT, u === '/' ? 'index.html' : u);
   if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); r.end(); return; } let body = fs.readFileSync(f);
-  if (f.endsWith('index.html')) { const s = body.toString(), k = 'window.melee = window.mel = {'; body = s.replace(k, 'window.__shot = { renderer, scene, camera, gk: () => ({ GLOWG, GLOWKIT, player }) }; ' + k); }
+  if (f.endsWith('index.html')) { const s = body.toString(), k = 'window.melee = window.mel = {'; body = s.replace(k, 'window.__shot = { renderer, scene, camera, gk: () => ({ GLOWG, GLOWKIT, player, FTEMPLE, ftinSockets }) }; ' + k); }
   r.writeHead(200, { 'content-type': MIME[path.extname(f)] || 'application/octet-stream' }); r.end(body); });
 await new Promise(ok => srv.listen(0, ok)); const port = srv.address().port;
 const br = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
@@ -43,15 +56,18 @@ pg.on('console', m => { const t = m.text(); if (/GLOW|THREW|error/i.test(t)) con
 await pg.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=${ZONE}&entry=0`, { timeout: 120000 });
 await pg.waitForFunction(() => window.__shot && window.mel && document.getElementById('boot').classList.contains('gone') && window.__shot.gk().GLOWKIT.rooms.length, null, { timeout: 240000, polling: 1000 });
 await pg.waitForTimeout(5000);
-const info = await pg.evaluate(() => { const { GLOWKIT } = window.__shot.gk(); return GLOWKIT.rooms.map(B => ({ id: B.R.id, draws: B.meshes.length, tris: B.meshes.reduce((a, m) => a + (m.isPoints ? 0 : m.geometry.attributes.position.count / 3), 0), motes: B.mot ? B.mot.geometry.attributes.position.count : 0, hits: B.hits.length })); });
+const info = await pg.evaluate(() => { const { GLOWKIT } = window.__shot.gk(); return GLOWKIT.rooms.map(B => ({ id: B.R.id, draws: B.meshes.length, tris: B.meshes.reduce((a, m) => a + (m.isPoints ? 0 : m.geometry.attributes.position.count / 3), 0), motes: B.mot ? B.mot.geometry.attributes.position.count : 0, hits: B.hits.length, hp: B.hits.map(h => h.id + '@' + [h.x, h.y, h.z].map(v => v.toFixed(1)).join(',')), vis: B.g.visible })); });
 console.log('rooms', JSON.stringify(info));
-await pg.evaluate(() => { const P = window.__shot.gk().player; P.pos.set(0, 0, 26); P.vel.set(0, 0, 0); }); await pg.waitForTimeout(1500);     // the hero out of frame (south of the court)
+await pg.evaluate(([z, wake]) => { const G = window.__shot.gk(), P = G.player; P.pos.set(0, 0, z); P.vel.set(0, 0, 0); if (wake && G.FTEMPLE.prog) { G.FTEMPLE.prog.shards = wake.split(''); G.ftinSockets(); } }, [+arg('hide', 26), arg('wake', '')]); await pg.waitForTimeout(1500);     // the hero out of frame (south of the court)
 fs.mkdirSync(OUT, { recursive: true }); const sheet = [];
 const list = (VIEWS[arg('views', 'gg')] || []).filter(v => !only || only.split(',').includes(v[0]));
 for (const [name, eye, at] of list) {
-  const url = await pg.evaluate(([eye, at, W, H]) => { const { renderer, scene, camera } = window.__shot, P = window.__shot.gk().player;
+  await pg.evaluate(([eye, at]) => { const G = window.__shot.gk(), P = G.player, FT = G.FTEMPLE, pt = v => Array.isArray(v) ? v : FT.L[v.f].P(...v.p), e = pt(eye), a = pt(at), d = Math.hypot(e[0] - a[0], e[2] - a[2]) || 1;
+    P.pos.set(e[0] + (e[0] - a[0]) / d * 4, e[1] - 1.6, e[2] + (e[2] - a[2]) / d * 4); P.vel.set(0, 0, 0); }, [eye, at]); await pg.waitForTimeout(400);     // stand him behind the lens: rooms are culled by his distance
+  const url = await pg.evaluate(([eye, at, W, H]) => { const { renderer, scene, camera } = window.__shot, P = window.__shot.gk().player, FT = window.__shot.gk().FTEMPLE;
+    const pt = v => Array.isArray(v) ? v : FT.L[v.f].P(...v.p); eye = pt(eye); at = pt(at);
     const c = camera.clone(); c.aspect = W / H; c.fov = 50; c.near = .05; c.updateProjectionMatrix(); c.position.set(...eye); c.lookAt(...at);
-    renderer.render(scene, c); const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const src = renderer.domElement;
+    renderer.render(scene, c); window.__tris = renderer.info.render.triangles; window.__calls = renderer.info.render.calls; const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const src = renderer.domElement;
     const s = Math.min(src.width / W, src.height / H), sw = W * s, sh = H * s; cv.getContext('2d').drawImage(src, (src.width - sw) / 2, (src.height - sh) / 2, sw, sh, 0, 0, W, H); return cv.toDataURL('image/jpeg', .9); }, [eye, at, W, H]);
-  const f = path.join(OUT, name + '.jpg'); fs.writeFileSync(f, Buffer.from(url.split(',')[1], 'base64')); sheet.push({ name, url }); console.log(path.relative(ROOT, f)); }
+  const f = path.join(OUT, name + '.jpg'); fs.writeFileSync(f, Buffer.from(url.split(',')[1], 'base64')); sheet.push({ name, url }); const ri = await pg.evaluate(() => [window.__calls, window.__tris]); console.log(path.relative(ROOT, f), 'draws', ri[0], 'tris', ri[1]); }
 await br.close(); srv.close();

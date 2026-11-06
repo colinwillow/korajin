@@ -62,6 +62,8 @@ terrace 3 m up (a .30 m stair), the hero shard floats at head height over a bron
 - [x] Polished from the renders (m2705): bright FACET EDGES (barycentrics, quad diagonals hidden), a tight parallax core + inclusions over a dark glassy body, facet glints; moss with tufts and crisp spots; mushroom rims/gills glow; geode crust lit stone. ("Genuinely great" is his call on the phone.)
 - [x] CRAFT.md on the close renders (m2705): ivy/drapes are Catmull-Rom curves, tapered, sagging, swaying; crystals sunk into their host; the geode crust sits on the wall; bronze warm; nothing black.
 - [ ] Brush shiver and hit ring/chime/sparks felt on his phone.
-- [ ] The forest temple: the Well's shard sockets carry the hero shard (dark until earned, lit in the Jinra colour); its rooms dressed (crystals
-      out of wall corners, glow ivy, moss, mushrooms) within budget (pass 3).
+- [x] The forest temple (m2711): the Well's six sockets carry the hero shard in its bronze setting (dormant -- dim, still, no motes -- until
+      earned, then lit in the Jinra colour, floating and turning; `ftinSockets` -> `glowWake`); the hub, A, B, C and D dressed (`SC_FTGLOW`), 3 draws
+      a room, culled with it. Measured on the shipped text (`npm run glowshot -- --zone='ftemple&at=hub' --views=ft`): worst view the hub,
+      46-54 draws / 254-258k tris with shadows (<= 70 / 280k). E is not dressed (its walls must stay bare); F and the boss room do not exist yet.
 - [ ] **His sign-off on his phone.**

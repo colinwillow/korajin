@@ -62,6 +62,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2711 -- GLOWKIT pass 3: THE FOREST TEMPLE -- the hero shard in the Well's six sockets (dormant until earned), the hub, A, B, C, D dressed (Nov 6 2026)
+Agreed with the forest temple worker first (send_message, Nov 6): the socket lines in ftinHub and `ftinSockets`' body are mine (its name and its
+"all six read FTEMPLE.prog.shards" contract kept); dressing in my own `SC_FTGLOW` table, culled with `ftinCullAdd`; nothing between `SC_FTEMPLE`
+markers; E only off its chasm and walls (left undressed this build); F / the boss room not built yet.
+- SOCKETS: the octahedron InstancedMesh is gone; one GLOWKIT room (`fth_sockets`, 6 `shard` rows, `FTGLOW.sock`: size .62, 4 satellites, the
+  bronze `seat` on the pedestal top 1.14) -- 3 draws for all six. `glowWake(B, id, k)` scales a piece's glow (.06 dormant), its SPIN (dormant =
+  still) and its motes against the built values; a dormant shard gives no hit ring (`B.asleep`). Lit = the new `jinra` palette (the active JPAL:
+  mint is Jinra's only).
+- DRESSING: `FTGLOW.rooms` -- hub (3 geodes on the well wall between the ledges and the doors, ivy, moss + mushrooms at the wall's foot, a wall
+  shelf, grit round the rosette), A (corner geodes NE (under the gallery: the NW corner is the tower) and SW, two high geodes over the top storey,
+  the east wall's run band bare, ivy, moss, mushrooms), B (far corners, stalactites off the ceiling's far end, ivy clear of the targets),
+  C (far corners and wall foot; nothing over the pit or the knot lines), D (far corner, stalactites, ivy). Rows in the chamber's own frame
+  (`frame: 'FTB'` / `'FTD'`, `ftGlowRow`). Forest teal / green-gold.
+- BUDGET (renderer.info on the shipped text, headless, shadows on): hub 46-54 draws / 254-258k tris (the worst), A 43 / 182k, B 54-61 / 173-209k,
+  C 55 / 177k, D 64 / 158k. To get there: ivy leaves are ONE face (the organic material is double-sided -- the back faces were pure waste), ivy
+  sampled at 5.5 cm, 5-sided stems, a lighter setting. Rooms: sockets 31k tris, hub 42k, A 42k, B 33k, C 36k, D 16k.
+- LANDMINE (cost one render): FT dressing culls by the PLAYER's distance (`FT_CULL`), so a render from a free camera with him elsewhere shows
+  empty rooms. `glowshot` now stands him 4 m behind each lens.
+- Renders `images/renders/glowkit/ftemple/` (`--wake=ABC` lights three sockets for the shot).
 ## m2710 -- TORCH pass 1: the torch fire, THE DARK HALL, light the braziers (`TORCH.md`, `?w=forge&zone=dark`) (Nov 6 2026)
 His (via the orchestrator): *"Cooler than a lantern would be a TORCH... really, highly realistic fire... a dark, dark temple where you
 can barely see except where you shine the light."* New sandbox, so the doc came first: `TORCH.md` (DONE WHEN, three passes, his sign-off last).
