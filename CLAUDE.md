@@ -544,7 +544,7 @@ rule that has to be in front of me *before* I know which system I am in.
   its drawn solid meshes; tag a mesh `userData.noLedge` (or a rock/cliff/bark material) so it offers no ledge. MEASURE with `npm run colaudit <zone>` / `collcourse`. **The rules are COLL.md.**
 - **CRAFT.md IS THE FINISH STANDARD (his, Nov 2 2026).** Organic things are never straight (curves, taper, droop); water comes FROM a source and
   arcs; everything that touches touches (no floating rails, stairs, vines, props); metals never go black; show it so it reads. Check a CLOSE render.
-- **EVERY ZONE HAS AN ART-DIRECTED ENTRANCE (his rule, Nov 3 2026).** He arrives through a purple sky portal, flips and lands in a superhero slam
+- **EVERY ZONE HAS AN ART-DIRECTED ENTRANCE (his rule, Nov 3 2026).** He arrives through a JINRA-coloured sky portal (was purple; purple is only the Hollow, his call Nov 6), flips and lands in a superhero slam
   (slow-mo, surface particles) on a chosen spot with NOTHING between the camera and him -- one `ENTRY` row per zone. A new zone is not done without it.
 - **SHOW, DON'T TELL (his rule, Nov 6 2026).** No "A CHEST waits behind the door" text. When something opens or appears, play a reward jingle and a short
   cut-away of it happening (the chest rising, roots withdrawing, water draining, statues sliding) -- `arenaCineWake`-style. Words, when needed, live
