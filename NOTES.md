@@ -63,6 +63,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2747 -- CONTAINMENT (his: "I got outside the level"): the forest temple's PLAY BOUNDS (14 parts), and three holes in the shell closed
+
+The collider worker's system (m2733, COLL.md "Containment") needed each zone's bounds rows. `ftinBounds` pushes the interior's:
+- **The parts:** the hall (capped), the lift column, the well (capped), the corridor, room A (capped at 25.5: the cut opening in its ceiling
+  is how he got out, wall-running up past the 18 m tops) and its antechamber, B, C, D (capped), E (capped), F (capped), the stairwell, the
+  root hall (capped), and the sealed rock under the well floor. Rooms laid out in a turned frame (B-F) give the world box of their own
+  rectangle. `FT_SECRETS` is the hook for the Easter eggs (`secret: 1`).
+- **Holes in the shell** (`npm run escape ftin` with the rows):
+  - **The hall's side walls stood ON its floor (from 24)**, and D's ceiling (22.2) ran under their foot: he could step off the floor's
+    edge into the slot beside the wall, drop onto D's ceiling and walk out under the wall. The walls now start at 21 and the hall floor
+    is 17.5 wide (to the walls).
+  - **The well's rim-wall tops (24) beside the lip ran past the hall's walls.** Two short walls (`h_wall_ex_e` / `_w`) carry the hall's
+    sides down to the well.
+  - **The audit's drops through the sealed rock under the well floor** are now in bounds (`ft_underWell`); the game's own `groundAt` gives
+    the floor at 0 there, measured.
+- **Audit:** 273 BAD cells in 20+ spots -> **82 in 7.** What is left: E's ceiling top (25.2) "+3 m from D's ceiling top (22.2)", and a
+  0.14 m slot at the lip (the 1 m grid). Both are past solid walls, and the system fades him back from anywhere outside the parts.
+  The dome exterior's bounds are the exterior's (not this build).
+Shipped unverified.
+
 ## m2746 -- COMBAT DEPTH PASS 1b: THE PERFECT DODGE, THE TIMED PARRY, THE FINISHER (m2746)
 COMBAT_DEPTH.md pass 1b, in the Combat Lab first. Numbers in `CBT.depth`.
 **PERFECT DODGE (`cbtPerfectDodge`, from `foeStrike` and the pounce landing):** a side flip / backflip (`p.cart.t`) or a roll (`p.rollT`) begun
@@ -94,7 +114,6 @@ landing slam (r 2.3, unblockable) and then 1.7 s OPEN. Armoured through the whol
 was built and the late merge in `forgedMerge` reaches only ONE kind per stem (`FORGED.kinds[st]`): with two kinds sharing the bake, one stood in bind pose.
 Fix: `arenaLoad` awaits the kind's own bake before building it (try/catch: arena stages can call it at module scope above `FORGED`).
 `npm run check` green. Shipped unverified -- look at the temple's archers.
-
 ## m2743 -- HINTS COME FROM PEOPLE (his rule): five little folk in the temple speak soft, cryptic lines in in-world bubbles; no screen captions
 
 His: "hints come from people, not the screen -- walk up and an in-world speech bubble shows a soft, cryptic line about how the area works,
