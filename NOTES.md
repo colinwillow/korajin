@@ -62,6 +62,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2726 -- THE WHIP SANDBOX RE-LAID TO THE WHIP-ONLY RULE: B and E are 44 m spans under a thorn canopy; C's ledge is a hung slab off a smooth wall
+
+VINEWHIP.md's audit had three stations failing his rule (the measured max of his air chains + 25%, and STRUCTURAL, not distance alone):
+- **B SWING PIT** had a 20 m gap; now a **43 m** span (> 42). The gantry walls are gone, so nothing stands within 5 m of the line. A THORN
+  CANOPY hangs 3.2 m over the take-off (rule 2: no room for the double jump and the dashes), with six knots under it 7 m apart.
+- **E CHAIN COURSE** had 25 m with a pillar to land on; now **44 m**, the same canopy, knot / knot / ring / knot, then a ZIP over the far
+  platform. The mid pillar and the post are gone.
+- **C ZIP WALL** had both ledges with a wall under them below 17 m. The first ledge is now a SLAB hung 3 m out from the wall on four root
+  ropes (10 m, nothing under it: rule 3), and the wall REFUSES a wall run (`noRun`). The second ledge is the wall's top at **19.5** (> 17,
+  9.5 over the slab).
+- **The thorns** are `hazard` rows in the sandbox's table, with no collider. The glue (`whipZoneStep`) hurts him (6), drops him off his rope
+  and pushes him down. The canopies stand on root posts ON the platforms, never in the gap.
+Boot (WHIP RULE): spans 43.0 / 44.0 m with nothing beside the line; the canopies 3.2 m up; C's slab has nothing under it, the wall refuses,
+heights 10 / 19.5. The knot swing, the chain and the zip still work (the lash now waits for its cast). New side-view shots: swing / zip / chain.
+Shipped unverified.
+
 ## m2725 -- ROOM B's PUSH-BLOCKS: the switches are root-caged until two blocks stand on two plates; the push-block takes a YAW
 
 The sheet's B ("root-bound blocks onto plates; arrow switches high up; reliefs whose eyes give the order"), the half it was missing:

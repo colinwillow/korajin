@@ -48,8 +48,10 @@ back to the seed arrow (FOREST_TEMPLE.md keeps it as a later upgrade / another t
 5. **PULLS NO MOVE REPLACES**: a lever behind a grate, a dam to drag down, a shield off an enemy, crates onto plates, an enemy yanked off a ledge.
 Every room that needs the whip states which of these makes it whip-only.
 
-**Audit of the sandbox (m-reach):** A lash lane, D pull yard, F combat -- fine (pulls / strikes). **B swing pit: FAILS** (a 20 m gap). **E chain
-course: FAILS** (25 m with a pillar). **C: FAILS both ledges now** (10 m and 16 m both have a wall under them: under 17 m). The re-lay is a build.
+**Audit of the sandbox (m-reach):** A lash lane, D pull yard, F combat -- fine (pulls / strikes). **RE-LAID (this build): B swing pit -- a 43 m span,
+nothing within 5 m of the line, a thorn canopy 3.2 m over the take-off, six knots under it (rules 1 + 2). E chain course -- 44 m, the same canopy,
+knot / knot / ring / knot then a ZIP over the far platform (rules 1 + 2; the mid pillar is gone). C zip wall -- the first ledge a SLAB hung out from a
+wall that refuses a wall run (10 m, nothing under it: rule 3), the second the wall's top at 19.5 (> 17, 9.5 over the slab).** The boot measures all of it.
 **A's 9 m wall-run gap in the temple is far inside his reach -- kept as a skill gap (m2637).**
 
 ## Controls (on the existing map: LEFT pad = the body, RIGHT pad = the verb)
@@ -82,7 +84,7 @@ over a 30 m gap, a fall lands back at the start) | F **COMBAT** (`combatDrop` sm
 6. Feel pass: timing, camera, sounds, the GOOP / Jinra FX on the lash, night glow on the vine.
 
 ## DONE WHEN
-- [ ] **Every whip space passes THE WHIP-ONLY RULE** (sized against the move table's max + 10%; the room's doc says which rule it uses).
+- [x] **Every whip space passes THE WHIP-ONLY RULE** (the sandbox re-laid; the temple's C, D, E, F state theirs) (sized against the move table's max + 10%; the room's doc says which rule it uses).
 - [ ] The lash reads on the phone: fast, curls, snaps; a lock glow before every flick (pass 2).
 - [ ] Swinging feels great: momentum, pump, a flip on release, chains of 3+ anchors without touching ground (pass 3).
 - [ ] Zip lands him cleanly on a ledge every time (pass 4).
