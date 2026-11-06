@@ -69,7 +69,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2786 -- THE HAMMOCK GET-UP: he SCOOTS to the edge first, the sling tips under him, the cloth model swings with the real one; control the moment his feet land (Nov 6 2026)
+## m2787 -- THE HAMMOCK GET-UP: he SCOOTS to the edge first, the sling tips under him, the cloth model swings with the real one; control the moment his feet land (Nov 6 2026)
 His: "Getting out of the hammock is way better, but (1) he needs to SLIDE TO THE EDGE first -- he passes THROUGH the fabric; (2) after he's off he's
 LOCKED in place for a moment."
 - **The scoot** (`GARDEN.sleep.scoot` [.03, .34] of the Getting_Up clip): his hips slide sideways across the cloth to its EDGE (`edge` .46 of the
