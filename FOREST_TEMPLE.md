@@ -32,7 +32,8 @@ west, south): the plan is symmetric, the climb spirals. Later chambers keep to t
 3. **Room A -- Acrobatic Hall** (the old "Acrobatic Room": the same room): climb to the east rim under the archers, wall-run the 9 m gap to the gallery,
    win the scrap, the two blocks up to the 12 m rim, monkey bars, tightrope, shoot the arrow switch, ride the slab, high bar, the button at the
    top, zip down, the last fight -> the CHEST in the room behind the door (the KEY + shard I).
-4. **Room B -- Root Gallery** (you have the key): open the B door (west, at the well's foot); watch the three reliefs' EYES light in an order; shoot
+4. **Room B -- Root Gallery** (you have the key): open the B door (west, at the well's foot); the switches are CAGED in roots: walk into the two
+   carved BLOCKS (stick held into a face) and push each onto its glowing PLATE -> the roots let go; watch the three reliefs' EYES light in an order; shoot
    the three switches with the bow in that order -> the chest (shard II) -> a few seconds later the floor CRACKS open.
 5. **Room C -- Root Heart / Thornback**: you land in the arena under the crack; the THORNBACK -> the chest (THE VINE WHIP + shard III) -> the only
    way out: flick the whip at the lit KNOTS over the pit (swing, chain), then the ZIP knot up through the slot into B.

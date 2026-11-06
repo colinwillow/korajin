@@ -62,6 +62,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2725 -- ROOM B's PUSH-BLOCKS: the switches are root-caged until two blocks stand on two plates; the push-block takes a YAW
+
+The sheet's B ("root-bound blocks onto plates; arrow switches high up; reliefs whose eyes give the order"), the half it was missing:
+- **The cages.** The three arrow switches start CAGED in roots. A shot at a caged one does nothing ("ROOTS hold the switch -- free them: push
+  the blocks onto the plates").
+- **The blocks.** Two root-bound PUSH-BLOCKS (m2723's kind) and two PLATES on B's floor. One block goes 3 steps toward the far wall, the other
+  2 steps toward the middle, each kept to its lane by a room-frame `area` and clear of the pillars and the rosette. Both plates down:
+  "THE ROOTS LET GO OF THE SWITCHES". Then the eye-order shots, then the chest, as before. `prog.bFree` keeps it solved: the blocks come back
+  on their plates. `FT_B.blocks` / `plates` is the table.
+- **The push-block takes a `yaw`.** B's frame is turned about 9 degrees from the world, so blocks pushed along world axes would drift off the
+  room's lines. Now:
+  - A block pushes along its OWN axes, with a turned collider (box8) when it has a yaw (`ikPushBox`).
+  - The free test samples 3 x 3 points of the square ahead in its frame, against every collider in its height and the floor under each point.
+  - `areaLocal` lets an area be given in a room's own frame (`o`, `r`, `u`, `b`).
+Boot: a shot at a caged switch does nothing; block 1 goes 3 steps, block 2 goes 2; both plates pressed; the roots let go; then the order solve.
+Shipped unverified.
+
 ## m2724 -- GLOWKIT: the Root Hall budget -- every FT dressing room storey-gated, the hall's ivy/shelves halved, the Hollow clusters shortened (Nov 6 2026)
 The temple worker (on m2718): the Banyan's phases 2-3 add 3 draws; my worst hall view was 62 -- trim toward ~55; the purple clusters must hang
 no lower than y -16.5 (phase 2's knot ring at r 9.5, y -16.4).
