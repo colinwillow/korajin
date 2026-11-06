@@ -28,6 +28,29 @@ under SUPER-ARMOUR (you cannot trade with him), a combo guard after 2 hits, the 
 4.5-11 m gap -- a red glint, unblockable, dodge it -- and a long recovery after it (the window you earn). Under half life he guards
 more.
 
+## HIS TIERS (Colin, Nov 6) -- the teaching order
+
+- **TIER 1, the fodder** (`HUSK_SOLDIER`): small, few hits (4), almost no block. Room A has three: *swing and they fall*.
+- **TIER 2, the trained swordsman** (`HUSK_GUARD`, "Husk Swordsman"): the SAME husk -- same body, same colour -- with a TELL, a red-gold crest on
+  the helm. You swipe: BLOCKED. Every block of his is a PARRY: your blade is carried back (`weapon_block_reaction`, a short stumble, not a
+  flight) and he COUNTER-attacks a beat later. The lesson: you cannot mash -- WAIT for his attack and PARRY it (or perfect-dodge it), the same
+  timing as sending an archer's arrow home. His wind-up is slower (x1.25) with the white glint, and the parry window on HIS blows is generous
+  (.36 s against .22). A timed parry staggers him and the next blow is the finisher. Room B: ONE of him among tier 1s, so the contrast teaches.
+- **TIER 3, the demi-bosses**, each ONE readable technique, not just more life:
+  - **The jackal:** frontal blows barely hurt (x.3). He POUNCES (red glint, unblockable) and commits PAST where you were -- stand with a wall
+    behind you and dodge late: he slams into it, STUNNED and open 2.4 s. The third wall-stun leaves him open for a FINISHER (the next blow
+    kills, a gold pulse). Behind him, or after a timed parry / perfect dodge, blows land in full.
+  - Bulwark (planned): flank it / tear the shield with the whip. Warboss (planned): his blows LAUNCH you -- jump / dodge out.
+- Temple order (`COMBATSET.forest`): wave 1 = room A (3 tier 1), wave 2 = room B (2 tier 1 + 1 tier 2), wave 3 = the jackal mini-boss,
+  wave 4 = the mix.
+
+### Tier DONE WHEN
+- [x] (m2751, shipped unverified) Tier 2: crest tell, block -> parry-recoil -> counter loop; the counter is parryable (generous window).
+- [x] (m2751, shipped unverified) Tier 3 jackal: frontal x.3, pounce past you, wall-stun x3 -> finisher.
+- [x] (m2751) Temple order: room A tier 1 x3, room B one tier 2 among tier 1s, the jackal as a room mini-boss (the temple worker wires wave 3).
+- [ ] Bulwark and warboss techniques.
+- [ ] **His sign-off on his phone.**
+
 ## DONE WHEN
 
 - [x] Pass 1a (m2745, shipped unverified): the combo guard -- a mid / elite body blocks the `cg`+1th blow of a mash; charge / slam / kick / whip break it with

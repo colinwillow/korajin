@@ -63,6 +63,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2751 -- HIS TIERS: THE TIER-2 PARRY-RECOIL LOOP, THE JACKAL'S WALL-STUN, THE TEMPLE ORDER (m2751)
+Colin's tier design (via the orchestrator), written into COMBAT_DEPTH.md "HIS TIERS".
+- **TIER 2 = `HUSK_GUARD`, shown as "Husk Swordsman":** same husk (hueDeg 30 like the soldier, and the hue is not applied to katana kinds
+  anyway) plus the TELL, `arenaCrest`: a red fin with a gold rim on the head bone, scaled by the bone's world scale. Its row: block .95,
+  `tier: 2` = EVERY block is a parry. Your recoil: `HURT.next = KATANA.parried.clip` ('weapon_block_reaction', in his GLB) replaces the random
+  hit clip for that one blow; push x.5, stun `stun2` .32 (was .6, so you can raise the guard for his counter), the counter after `riposte2` .22 s
+  with `windK` 1.25 and the white glint, and the timed-parry window on his blows is `parryWin` .36. The combo guard (`cg`) was taken off him.
+- **TIER 3 = the JACKAL's technique:** `front` .3 (frontal blows x.3 unless open; `cbtOpenK` now takes the blow direction), the combo guard
+  and the guarded approach taken off (one technique, not three layers). The pounce aims `over` 2.5 m PAST you; during the leap, if `foeMove`
+  covers under 35% of the step he hit a wall -> `cbtWallStun`: dust, a boom, stunned and open 2.4 s. The third (`wallStuns`) sets `d.finReady`
+  (gold pulse): the next blow is x1e4. Pounce cooldown 3.5-6 s. The lab's dais / rim boxes are the walls to bait him into.
+- **TEMPLE ORDER (`COMBATSET.forest`):** wave 1 room A = 3 husk soldiers; wave 2 room B = 2 soldiers + 1 swordsman; wave 3 = jackal + 2
+  soldiers (a room mini-boss -- the temple's `f_scrap` / `f_last` use waves 1 and 2; wave 3 is for the temple worker to place); wave 4 the mix.
+- **SPAWN OVERFLOW (`combatSpot`):** more bodies than a temple's spots -> the extra stand 1.5 m off a spot on the same ground (clear of the
+  mesh), else `spawnSpot` round it. No more two bodies on one mark.
+Readout: `tier2 recoil N · tier3 wall stun N finisher N`. `npm run check` green. Shipped unverified.
+
 ## m2750 -- FOUR URGENT TEMPLE BUGS (m2739 screenshots): the seal let him fall to the boss, the hub spawn sat in a pedestal, the doors had no collider, the jingles
 **What he saw** (`images/feedback/m2739/`): he fell through the closed hexagram seal straight down to the Banyan; the seal's lines z-fought;
 `at=hub` put him INSIDE a socket pedestal; and he walked through the carved-face stone door into the room behind it.
