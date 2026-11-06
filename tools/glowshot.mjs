@@ -42,6 +42,11 @@ const VIEWS = {
     ['ftB_stal', { f: 'FTB', p: [0, 4, 16] }, { f: 'FTB', p: [-5, 8, 23.5] }],
     ['ftC_far', { f: 'FTB', p: [-2, -15, 27] }, { f: 'FTB', p: [-8.5, -16, 35.5] }],
     ['ftD_far', { f: 'FTD', p: [-1.5, 15, 12] }, { f: 'FTD', p: [-7, 14, 20] }],
+    ['ftF_corner', { f: 'FTF', p: [2, -10.5, 26] }, { f: 'FTF', p: [-12.5, -11.5, 26] }],
+    ['ftF_up', { f: 'FTF', p: [0, -9, 26] }, { f: 'FTF', p: [-9, 15, 23] }],
+    ['ftE_pit', { f: 'FTE', p: [0, -11, 16] }, { f: 'FTE', p: [-10.5, -13.5, 23] }],
+    ['ftE_far', { f: 'FTE', p: [-2, -11, 45] }, { f: 'FTE', p: [-9.5, -13, 54.5] }],
+    ['ft_hub_seal', [0, 6, 30], [0, 0, 37]],
   ],
 };
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg' };

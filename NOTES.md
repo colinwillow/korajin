@@ -62,6 +62,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2716 -- GLOWKIT pass 3b: room F (the shrine core) and E (the pit) dressed; the seal's disc kept clear; every glow mesh `noColl` (Nov 6 2026)
+The temple worker (send_message, Nov 6): F exists (m2706) -- dress the core's floor and walls, clear of the three zip knots (8.6 m out, 1.6 m over
+each ledge on walls 0 / 1 / 2), the air between, and the altar chest; E: walls and the pit only, the chasm line (lz 0..52, |lx| < 9, y -2 up)
+clear; the hub: nothing inside r 5 of the well's centre (his SEAL and stair); everything near a route `noColl`; under 70 draws / 280k tris.
+- `glowBuild` marks EVERY glow mesh `userData.noColl` (COLL builds colliders from drawn meshes; the dressing must never be a foothold).
+- Hub grit moved out of the seal's disc (three small patches at r 7.6 between the sockets).
+- F (`ftg_F`, frame FTF, rows by angle/distance in the hex): walls 0-2 (ledges, knots) BARE; geodes on walls 4 and 5 and their corner,
+  stalactites off the cap over corners 4|5 and 3|4, ivy and a shelf on 4 / 5, moss, mushrooms and grit on the floor's far side.
+- E (`ftg_E`, frame FTE): the pit floor (-14.2) and the side walls' feet only, all flush: ivy (to y -7), moss, mushrooms, a prism clump and grit
+  in the far corner. Nothing juts from a wall; nothing above -2 over the chasm.
+- Corner geodes drop the rock crust (across a corner the ring cut both walls and read as a floating plate in the F render).
+- Culling: A's dressing R 46 -> 29 and the hub's 40 -> 30 (the hub was paying ~42k tris for A behind its walls). Measured (shadows on): hub from
+  inside the well 50 draws / 231k (from the corridor mouth, A still in range, 56 / 270k); F 44-47 / 191-203k; E 40-44 / 186-188k.
+- Renders `images/renders/glowkit/ftemple/` (ftF_corner, ftF_up, ftE_pit, ftE_far, ft_hub_seal).
 ## m2715 -- FOREST TEMPLE build 9 (THE HOLLOW BANYAN, phase 1): slam -> the hand sticks -> whip it FLAT -> run up the arm -> pull a plate off its heart, x3, faster; strike the bare heart; the JINRA STONE; the GEYSER out
 
 THE SHEET'S BOSS (FOREST_TEMPLE.md row 12), the cycle half. THE TRUNK THE STAIR WINDS DOWN IS THE COLOSSUS (`ftinBoss`, table `FT_BOSS`):
