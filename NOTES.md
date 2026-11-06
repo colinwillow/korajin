@@ -65,7 +65,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## (m2765) THE LANDING WAITS ON THE COLLIDER BEING BUILT, NOT A CLOCK -- he is held at the spot, never dropped through an unbuilt deck
+## (m2766) THE LANDING WAITS ON THE COLLIDER BEING BUILT, NOT A CLOCK -- he is held at the spot, never dropped through an unbuilt deck
 entryprobe at m2764: the Gathering BAD alone too -- he ended at y 0, 12 m under the deck. The m2679 gate waited on the row's ground with a 15 s cap,
 and he was NOT held while it waited: gravity took him through the unbuilt deck, and an AUTO collider (`collAutoTick`) builds its rect/height band
 round where he IS -- so falling to 0 also built the store round the wrong floor. Now (main: "never let him drop through an unbuilt deck, in any zone"):
