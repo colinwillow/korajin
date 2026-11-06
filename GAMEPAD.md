@@ -47,6 +47,11 @@ TOOLS: the pause menu shows a TOOLS button in GOD (in the arena / forge / home, 
 The touch pads AND the rings hide (`body.gpad`); the left ring shows only while the backpack is open on the pad. Every `haptic()` buzz also
 rumbles the controller (`gpRumble`: `vibrationActuator.playEffect`, else `hapticActuators[0].pulse`), off with TOOLS > HAPTICS.
 
+## Gap fixes (m2682)
+- The HUD's Y label covers the right tap's older verbs too (TALK, PICK UP, RIDE, TRAVEL, SAMPLE), read off the classes the game already puts on
+  `#padR`, not only the `INTERACT` registry.
+- TOOLS > MOVE > CONTROLLER STICKS: SWAPPED (left-handed) -- the right stick moves, the left stick looks (`GP.swap`, `mel.gpSwap`).
+
 ## DONE WHEN
 - [x] One action table (`ACT`) called by both touch and pad; one binding table (`GPMAP`)
 - [x] Left stick moves; A jumps; right stick orbits AND pitches the camera

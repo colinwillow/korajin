@@ -59,6 +59,15 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2682 -- GAMEPAD gaps: the Y label for TALK / PICK UP / RIDE / TRAVEL / SAMPLE; a LEFT-HANDED stick swap in TOOLS (Nov 6 2026)
+- `gpHud`'s Y slot fell back to nothing for every right-tap verb outside the `INTERACT` registry. It now reads the classes those systems already
+  toggle on `#padR` (`talk`, `pick`, `mount`, `port`, `samp` -- the same set `interactStep` calls "legacy"), so the label exists whatever owns it.
+- TOOLS > MOVE > CONTROLLER STICKS: NORMAL / SWAPPED (`GP.swap`, saved as `mel.gpSwap`): swapped reads axes 2/3 as the move and 0/1 as the look.
+  Toggling it lets go of everything the pad holds (`gpLetGo`). Buttons are unchanged (his OPTIONS LEFT-HANDED stays the touch-pad swap).
+- Measured headless (fake pad): `#padR.talk` -> the HUD reads "Y TALK"; swapped, right stick up 1.2 s walked him -0.33 m and left stick x turned
+  `cam.az` -0.57.
+- Still open: his sign-off.
+
 ## m2681 -- GAMEPAD pass 4+5: the pause menu, BACKPACK and TOOLS on the d-pad; RUMBLE; the button HUD; the rings hide (Nov 5 2026)
 - **Menus (`GP.nav`, `gpNavStep`)**: ONE cursor over a list re-read every frame (`pm` = `#pmenu` buttons + sliders, `bag` = the left ring's
   backpack segments -- or `#packPanel` with the rings off, `tools` = `#arenaUi` TOOLS + bar). `.gpfoc` is the cyan focus. D-pad / left stick
