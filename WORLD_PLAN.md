@@ -199,3 +199,11 @@ portal shimmer, glowing cracks that pulse when he's near and has the ability). E
 phase spot search already refuses to land inside geometry; it must also refuse to cross unmarked walls). Which temple teaches
 it: a later one (forest = the vine whip). Teach / test / twist like every item: a veil to get out of a sealed room, veils
 under fire, then a twist (phase through a veil mid-swing, or into a sealed chamber to flip a lever from inside).
+
+## 17. THE ALL-SEEING EYE -- the enemy's sign and a boss (his, Nov 6, open; EMBLEMS.md)
+*"I love the all-seeing eye -- Lord of the Rings, the Horus eye, the illuminati eye. Maybe the enemy is a swirling eyeball that possesses
+different things. It could also be an emblem."* So: **Vorakai's sigil is the eye.** Where the Hollow takes something (a statue, a guardian, a
+gate, a lantern, a stone twin) a purple slit-pupil eye OPENS on it and it wakes -- the waking tell for STATUES.md; breaking it closes the eye and
+the purple drains back to mint. It is the crest on Hollow fortresses, the HUD tag for possessed things, and the inlaid floor of every Hollow
+boss arena. **The EYE BOSS** ("The Watcher Below") lives in **THE DEEP**: a swirling eyeball hopping between possessed statues, lanterns and a
+bell in a dark vault -- hit what it possesses to shake it loose, strike the bare eye; the finale rings the bell. Fight sketch in EMBLEMS.md.
