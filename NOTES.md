@@ -63,6 +63,30 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2750 -- FOUR URGENT TEMPLE BUGS (m2739 screenshots): the seal let him fall to the boss, the hub spawn sat in a pedestal, the doors had no collider, the jingles
+**What he saw** (`images/feedback/m2739/`): he fell through the closed hexagram seal straight down to the Banyan; the seal's lines z-fought;
+`at=hub` put him INSIDE a socket pedestal; and he walked through the carved-face stone door into the room behind it.
+**What was actually wrong. One cause covered both the seal and the doors: `collMark` (m2251).** In COLL mesh mode, a box whose sides sit on drawn
+triangles is marked `meshRep` and the walk SKIPS it, on the theory that the mesh already draws it. The seal box sits in the floor's HOLE, so its four
+side rays hit the hole's rim and it was called "drawn". But nothing is drawn there: the petals are `noColl`. Same story for a door leaf's box: the jambs
+on either side read as two drawn sides, while the leaves themselves are in the zone's COLL `skip` list. So the collider existed, and was skipped.
+- **Seal:** the box is now `collKeep` and runs -2..0 (the full slab). `ftinSeal` removes any earlier seal (box and meshes) before it builds, so there is
+  never a second seal. The carve, lit and heart decals use `polygonOffset` (the carve gets a CLONE of bronze, because the shared material is used elsewhere).
+  **Out-of-sequence return:** while the seal is shut, without a grant, with < 6 stones, below y -1 within 17 m of the well axis (the stair, the root hall),
+  he goes back to the well floor at (c+2.5, c-5.2), clear of the pedestals.
+- **Pedestals:** six `collKeep` boxes, 1.2 x 1.14 m (`ftemple_ped0..5`). The `at=hub` spawn moved from (0, 29) (inside the -z pedestal at 0, 29.5)
+  to (3.8, 29.4), between two pedestals and facing the seal.
+- **Doors:** every kit door leaf collider (`tag 'leaf'`) is `collKeep`. Five doors exist (hd_B, hd_D, hd_E, hd_F, r1_door). All lead to built rooms,
+  so there are no empty rooms to wall off. Opening still removes the box (`ftinDoorsStep`).
+- **Jingles:** `ftReveal(at, eye, dur, delay, id)` calls `jingle(id)`: door_open for doors and gates, chest_open for B, item_get is unused here,
+  secret_found for the root/crack/seal reveals, boss_clear for the geyser. The old snd notes are the fallback when `jingle` returns falsy.
+**Boot (ftemple), run first, before any room opens a door:** one seal collider, not meshRep, decals offset. With 0 shards, three drops (centre and two
+off-centre) land at y 0. The root-hall position returns him. All 6 pedestals push him out. All 5 closed doors stop a full-stick walk into them.
+`[melee] FTEMPLE m2750: one seal collider, kept; 0 shards: three drops land on the seal at y 0; the root hall returns him; 6 pedestals solid; 5 closed doors stop him`
+**Lesson: A BOX ADDED BY GLUE NEXT TO DRAWN GEOMETRY MUST BE `collKeep`** whenever the thing it stands for is NOT in the COLL mesh (noColl, skipped
+movers/leaves, a hole). Otherwise collMark will take the neighbours for it.
+Still open: the easter eggs (FT_SECRETS), and the 82 escape-audit cells.
+
 ## m2749 -- COMBAT DEPTH PASS 3: ROLES, THE 15-BODY WAVE, AND THE FOREST SQUADS (m2749)
 COMBAT_DEPTH.md pass 3 and the temple roll-out.
 - **TWO NEW ROLES (placeholders on the samurai body, hued):** `HUSK_GUARD` (green, `cg` 2: turtles a mash -- break it with the charge / a kick /
@@ -97,7 +121,6 @@ COMBAT_DEPTH.md pass 2, in the Combat Lab. Numbers in `CBT.room` and `BARREL`.
   through one).
 Readout line `room bowl / wall / drop / ledge kill / chain xN / aimed / barrels`. `npm run check` green. Shipped unverified.
 Still open: pass 3 (the 15-body mixed-role wave), the temple squads, his sign-off.
-
 ## m2747 -- CONTAINMENT (his: "I got outside the level"): the forest temple's PLAY BOUNDS (14 parts), and three holes in the shell closed
 
 The collider worker's system (m2733, COLL.md "Containment") needed each zone's bounds rows. `ftinBounds` pushes the interior's:
