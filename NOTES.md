@@ -59,7 +59,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2694 -- THE KIT: POTS ROCK WHEN BRUSHED (his secondary-motion list, the last item) (Nov 6 2026)
+## m2695 -- THE KIT: POTS ROCK WHEN BRUSHED (his secondary-motion list, the last item) (Nov 6 2026)
 Brush past a pot moving (over .6 m/s, within its radius + .42 m) and it TIPS AWAY from you -- the push is 60% his direction of travel, 40% straight
 away from him -- and rocks on its base: a damped two-axis spring per pot (`IKPOT`: 2.6 Hz, damping .22, clamped .22 rad), the instance matrix
 rebuilt with the tilt about the urn's base; a soft clink on a real knock (over 2 m/s, .5 s apart). A broken pot is left to its shards; `ikPotsMend`
