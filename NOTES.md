@@ -62,6 +62,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2717 -- FOREST TEMPLE build 10 (THE HOLLOW BANYAN, phases 2 + 3): the heart tears free into the roots (swing the knots to it), then the floor floods; the whole fight is in
+
+The sheet's boss row, finished: "phase 2 swings it up into the roots (swing between hanging knots to reach it), phase 3 the floor floods".
+Phase 1 (m2715) now ends at the bare heart's third hit by going on to phase 2 (`ftinBossP2`), not by dying.
+- **PHASE 2.** "IT TEARS ITS HEART FREE". The arm heaves him off. EIGHT KNOTS hang on root strands round the hall (r 9.5, 9.6 m up, 7.3 m
+  apart, all within the whip's 14 m: whip anchors `ftX_knot*`). The heart hangs among them **8.0 m up, past his best jump**, between two knots.
+  He SWINGS knot to knot and strikes it in the air (3 hits; the hit reach is 1.2 m more than the swing's). It moves along the ring after each hit
+  (`FT_BOSS.hang.slots`). While he is on the floor, THORNS rain on him: a ring, 1 s later 12 damage in 2.4 m, every 2.2 s.
+- **PHASE 3.** "THE FLOOR FLOODS" (`ftinBossP3`). The heart drops back into the trunk, BARE. The hall fills 0.7 m in 6 s and the water burns
+  (6 damage every 0.6 s; inside the trunk is dry). The slam cycle returns at its fastest with NO plates. The stuck HAND is an ISLAND (a 1 m
+  root block: stand on it out of the water). Pull it flat -> up the arm -> strike the heart: 3 hits and it falls. The water drains as it dies.
+- The table is `FT_BOSS.knots` / `hang` / `drop` / `flood`.
+Boot: the whole fight. 3 cycles of phase 1; 8 knots (7.3 m apart, 9.6 m up); the heart at 8.0 m takes 3 hits; the flood reaches 0.70 m;
+3 hits on the bare heart; the reward; the geyser to the well floor. Shipped unverified.
+Open: the knot swing past the hanging heart is measured by distance only (no harness flies the swing). Thorn and flood damage numbers are guesses.
+
 ## m2716 -- GLOWKIT pass 3b: room F (the shrine core) and E (the pit) dressed; the seal's disc kept clear; every glow mesh `noColl` (Nov 6 2026)
 The temple worker (send_message, Nov 6): F exists (m2706) -- dress the core's floor and walls, clear of the three zip knots (8.6 m out, 1.6 m over
 each ledge on walls 0 / 1 / 2), the air between, and the altar chest; E: walls and the pit only, the chasm line (lz 0..52, |lx| < 9, y -2 up)
