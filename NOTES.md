@@ -63,6 +63,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2741 -- THE JINGLES: a data-first library of Zelda-tradition reward motifs on synthesised native instruments (his) (Nov 6 2026)
+His: "beautiful, musical jingles in the Zelda tradition, played on NATIVE-feeling instruments: marimba, kalimba, wooden flute, harp, chimes, bells."
+- **`JINGLE`** (between `SC_JINGLE:START` / `:END`): rows `{ id, tempo, notes: [[beat, degree, beats, instrument, velocity]] }`; a degree counts
+  steps of the REGION's scale (`regions.forest`: D major pentatonic, root 62, reverb .3), so one table plays in each region's own key. Rows:
+  **loot_small** (a kalimba lilt + a chime), **chest_open** (a rising marimba run into a held harp chord, flute and chime), **key_get** (a kalimba
+  turn onto a bell), **item_get** (the big one: a flute theme over marimba and harp, ending on a held chord with chimes and a bell -- the whip,
+  a shard), **door_open** (a falling marimba figure that resolves), **secret_found** (the kalimba "puzzle solved" motif), **boss_clear** (a
+  marimba ostinato under a flute melody, a long final chord with bells and chimes).
+- **The instruments, synthesised in WebAudio** (any context, the game's or an OfflineAudioContext): marimba (a modal bar: 1 : 3.93 : 9.2
+  partials + a band-passed mallet click), kalimba (a tine with its 5.4x partial and an onset pitch drop), harp (Karplus-Strong, a soft pluck),
+  flute (sine + octave + band-passed breath noise, delayed vibrato), chime (1 : 2.76 : 5.4 : 8.93, long decays), bell (1 : 2 : 2.4 : 3 : 4.5);
+  a generated 2.4 s reverb send. A real sample can replace an instrument later; the rows stay.
+- **`jingle(id)`** plays one on the game's bus (its mute and volume hold; `JINGLE.vol`). **Wired**: every kit chest -- `chest_open` at the reveal,
+  then the GET by what came out (`ikGetJingle`: SHARD / WHIP / a row's `item.big` -> `item_get`, a KEY -> `key_get`, else `loot_small`; a row's
+  own `jingle` wins) -- so every temple chest (A-F: the key, the shards, the whip) sings; drawers `loot_small`; a door finishing `door_open`; a
+  piece that drives something (`shows`) `secret_found` on its reveal. The old sounds remain the fallback if `JINGLE.on` is 0.
+- **Previews** (`npm run jingles`: lifts the SC_JINGLE text, renders each row offline, 44.1 kHz stereo 16-bit, normalised to -1 dBFS):
+  `audio/jingles/preview/{loot_small,chest_open,key_get,item_get,door_open,secret_found,boss_clear}.wav` (5-8 s each with the tail).
+- For the temple worker: `jingle('boss_clear')`, `jingle('secret_found')`, `jingle('key_get')`, `jingle('item_get')` for its own reveals.
+  Not wired: a pot's loot (none drops a find yet). His ear decides. Gates: `npm run check`. **Shipped unverified.**
+
 ## m2740 -- THE CHEST FLOAT (his, the forest temple: "walking up to a chest lifts him off the floor"): kit meshes are no longer zone ground; the dais (Nov 6 2026)
 **The fix shipped:** every kit piece carries its OWN box collider, and the forge zones' triangle collider (`COLL` auto) takes any drawn solid mesh
 it finds -- so a chest's rims, feet, trim and lid could ALSO be walkable triangles beside it. `ikitAdd` now marks everything a row adds
