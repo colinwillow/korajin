@@ -62,6 +62,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2723 -- THE PUSH-BLOCK: a new Interactions Kit kind (`IKIND.pushblock`, data-first, reusable), and plates that feel it
+
+The open item his queue named: "a PUSH mechanic (a push-block row in the kit, data-first and reusable)". B's blocks are the next build.
+- **A row.** `{ id, kind: 'pushblock', at, s (side, default 1.4), step (default s), area: [x0, x1, z0, z1], onDone }` through `ikitAdd` (or
+  `ftinAddKit` in the temple). The block is a carved stone cube (glyph borders on its faces, a moss cap) with a collider that moves with it.
+- **Pushing.** Walk into a face with the left stick held into it, facing it squarely (`PUSHK.face` .7), from within `PUSHK.r` .75 of the face,
+  for `PUSHK.hold` .35 s. It grinds one step (0.7 s: gravel, dust, a thud at the end) the way he faces. Keep pushing to keep it going.
+- **It refuses** (a dull thud, a jolt) when the square ahead holds any collider in its height, has no floor under it, or leaves its `area`.
+  Turned colliders are tested on their real shape (`boxNear`).
+- **Plates.** `IKIND.plate` now counts a resting push-block as pressed, so any plate puzzle takes blocks with no extra wiring.
+- `onDone(r, 'moved')` fires after each step; `reset` puts it back.
+Open: no push POSE (he walks into it; the push clip is a later pass).
+Boot: two pushes move it two steps onto a plate (pressed); a third push is held by its area; the collider follows. Shipped unverified.
+
 ## m2722 -- THE CUT-AWAY WAKE for the arena's stone twins (`arenaCineWake`, reusable); F's guardians wake on it
 
 STATUES.md: "the lens visits each statue in turn (dust, chips, a crack, the flash); the woken ones REAR in place until the lens is back, then
