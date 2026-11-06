@@ -8,3 +8,4 @@ tools/.vishelp-draco.cjs
 shots/
 
 play_fail.txt
+models/characters/villagers/*_rig.glb

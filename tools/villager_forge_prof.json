@@ -1,0 +1,101 @@
+{
+ "v": 1,
+ "character": "models/characters/villagers/korajin_female_01_rig.glb",
+ "exclude": [],
+ "layers": {
+  "feet": 1,
+  "ground": 1,
+  "clear": 0,
+  "toes": 1,
+  "handAlign": 1
+ },
+ "adjust": {
+  "stance": 0,
+  "arms": 0,
+  "elbows": 0,
+  "lean": 0,
+  "toeIn": 0,
+  "knees": 0,
+  "wrists": 0
+ },
+ "hands": {
+  "amt": 0
+ },
+ "clips": [
+  {
+   "role": "idle",
+   "stem": "Happy_Idle",
+   "name": "idle"
+  },
+  {
+   "role": "look",
+   "stem": "Look_Around",
+   "name": "look"
+  },
+  {
+   "role": "walk",
+   "stem": "Female_Walk",
+   "name": "walk"
+  },
+  {
+   "role": "run",
+   "stem": "Running_10",
+   "name": "run"
+  },
+  {
+   "role": "talk",
+   "stem": "Talking",
+   "name": "talk"
+  },
+  {
+   "role": "wave",
+   "stem": "Waving",
+   "name": "wave"
+  },
+  {
+   "role": "greet",
+   "stem": "Standing_Greeting",
+   "name": "greet"
+  },
+  {
+   "role": "sit",
+   "stem": "Sitting_Idle",
+   "name": "sit"
+  },
+  {
+   "role": "cheer",
+   "stem": "Cheering",
+   "name": "cheer"
+  },
+  {
+   "role": "startled",
+   "stem": "Reaction",
+   "name": "startled"
+  },
+  {
+   "role": "hit",
+   "stem": "Hit_Reaction",
+   "name": "hit"
+  },
+  {
+   "role": "getup",
+   "stem": "Getting_Up",
+   "name": "getup"
+  },
+  {
+   "role": "shrug",
+   "stem": "Shrugging",
+   "name": "shrug"
+  },
+  {
+   "role": "nod",
+   "stem": "Head_Nod_Yes",
+   "name": "nod"
+  },
+  {
+   "role": "think",
+   "stem": "Thinking",
+   "name": "think"
+  }
+ ]
+}

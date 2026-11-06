@@ -1,0 +1,22 @@
+{
+ "name": "korajin_female_01",
+ "zip": "models/characters/character_model_zips/korajin_female_01.zip",
+ "donor": "models/characters/toad_wanderer_game.glb",
+ "height": 1.38,
+ "texSize": 2048,
+ "out": "korajin_female_01_rig.glb",
+ "outDir": "models/characters/villagers",
+ "_J": "joints MEASURED on the FBX (its own units, 1.0 tall; she faces +Z, +X is HER left) from horizontal and vertical cross-sections: crotch merge .47, knees .27, ankles .075, the T-pose arm line .74, shoulder x .13, elbow .235, wrist .335, fingertips .432",
+ "J": {
+  "Hips": [0, 0.5, 0.005], "Spine": [0, 0.555, 0], "Spine1": [0, 0.615, 0], "Spine2": [0, 0.675, 0], "Neck": [0, 0.775, -0.01], "Head": [0, 0.815, 0],
+  "LeftShoulder": [0.035, 0.73, -0.01], "LeftArm": [0.13, 0.74, -0.012], "LeftForeArm": [0.235, 0.74, -0.012], "LeftHand": [0.335, 0.735, -0.012],
+  "LeftUpLeg": [0.065, 0.47, 0.005], "LeftLeg": [0.088, 0.27, 0.01], "LeftFoot": [0.097, 0.075, -0.005], "LeftToeBase": [0.1, 0.025, 0.085]
+ },
+ "TIP": { "Head": [0, 1.0, 0], "LeftHand": [0.432, 0.733, -0.01], "LeftToeBase": [0.1, 0.02, 0.14] },
+ "_rigid": "[bone, x0, x1, y0, y1, z0, z1, blend?]: the HAIR rides the head (the dreads down her back half into the chest), the loincloth's flaps ride the hips (between the legs they would tear)",
+ "rigid": [
+  ["Head", -0.3, 0.3, 0.79, 1.1, -0.4, 0.4],
+  ["Head", -0.17, 0.17, 0.55, 0.79, -0.4, -0.075, ["Spine2", 0.45]],
+  ["Hips", -0.045, 0.045, 0.18, 0.47, -0.3, 0.3]
+ ]
+}

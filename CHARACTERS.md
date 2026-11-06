@@ -108,3 +108,33 @@ lands, it's one line in the roster.
 | Cyborg versions of workers | Waterfront | worker tinted | needs models |
 | Evil alien grunts | everywhere | alien_warrior | have |
 | Cows | Gristle Farm | box stand-ins | needs model |
+
+## KORAJIN -- THE VILLAGE PEOPLE (Colin, Nov 6 2026: "the first of many village people for the different villages")
+
+### The pipeline (no headless Blender here -- the stone guardian worker's method, made general)
+1. **Rig** -- `node tools/vrig/run.mjs models/characters/villagers/<name>.json [--look]`: his Tripo zip (static FBX + jpg) -> welded, scaled
+   to `height`, the DONOR's Mixamo skeleton (the Toad Wanderer's 56 joints, `mixamorig_*`, fingers and weapon mounts) re-fitted to the joints
+   MEASURED on the mesh (horizontal + vertical cross-sections; the numbers and how they were read are in the JSON), weighted by bone segment
+   (side-locked, `rigid` boxes for hair and cloth flaps), texture to 2048 JPEG, single-sided -> `<name>_rig.glb` (not committed; seconds to remake).
+2. **Clips** -- the Forge, headless: `node tools/forge.cjs models/characters/villagers/<name>_rig.glb tools/villager_forge_prof.json
+   models/characters/villagers/<name>.glb --lib <retarget-anims>/library/clips --mesh`. The villager profile: idle (Happy_Idle), look, think,
+   walk (Female_Walk), run (Running_10 -- the plain `Running` is a run into a flip), talk, nod, shrug, wave, greet, sit (Sitting_Idle), cheer,
+   startled (Reaction), hit, getup -- clip NAMES are the roles, so every villager kind uses one clip table.
+3. **A row in `VILLAGERS`** (SC_VILLAGERS): id, kind, village, a ROUTINE of stops (where, what to face, what to do, how long), lines, flinch lines.
+
+### Korajin woman 01 (`korajin_female_01`, m2782)
+- His Tripo model: a Korajin woman -- magenta dreadlocks, pointed ears, a red-and-gold loincloth, bells everywhere (wrists, ankles, belt).
+  11,053 tris, one 2048 texture, one material, 60 joints, 15 clips, 4.4 MB. **1.38 m to the top of her hair**, set beside Grumbo's 1.4.
+- In the Sunwell (`?w=forge&zone=boulders&at=vg`, KORAJIN > Villager: Korajin woman): her round is the well (thinking), the garden bed's border
+  (sits, facing the well -- the forged sit puts her hips .29 over her feet, straight above them), the fruit stall (talks), the gate (looks out).
+  Walk up and she stops, turns to Grumbo, waves the first time, then talks (the shared bubble; a line every 9 s, she nods or shrugs with it);
+  sitting, she stays sat. A swing, a shot or a slam within 6 m and she flinches back from him with a line. She never runs on sight.
+- Renders: `images/characters/korajin_female_01_fsb.png` (front / side / back / walk / wave), `..._poses.png`, `..._village.png`.
+
+### Her role is YOURS to pick -- three options (not chosen)
+1. **A villager with a small quest.** She lost a BELL (they all carry them) up on the sky shrine, or her bells are what open something; you bring
+   it back, she gives you a token. Cheap to make, teaches the climb, gives the village a face.
+2. **The village keeper / the princess who knows the old bell.** The Sunwell's well hums because of an old bell under it; she is the one who
+   keeps its song and knows what the shrine is for. She hands out lore and points at the next place -- the region's guide.
+3. **A companion / love interest.** She rides along (on the board, the mammoth, the boat), comments on places, maybe helps in a fight, and is
+   the one most likely to become PLAYABLE later (she already has the full Mixamo rig and could take the hero clips through the Forge).

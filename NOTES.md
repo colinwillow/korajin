@@ -69,6 +69,47 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2782 -- THE FIRST VILLAGER: a KORAJIN WOMAN, rigged here, forged, and living in the Sunwell; a VILLAGERS table (Nov 6 2026)
+His (via the orchestrator): `models/characters/character_model_zips/korajin_female_01.zip` -- *the first of many VILLAGE PEOPLE for the different
+villages*; her role is open (a villager, a love interest, a village princess, playable later).
+- **What he sent:** a STATIC Tripo FBX (11,053 tris, no bones, no clips, normalised to 1.0, Y-up, facing +Z, a clean T-pose) + a 4096 jpg.
+- **The rig (`tools/vrig/`, new):** headless Blender is not here (and the blender-addons setup -- Blender + Auto-Rig Pro + its AI binaries from a
+  release -- was refused by this session's auto-mode classifier as code from outside), so it is the STONE GUARDIAN worker's in-browser method
+  (their `rig.js`, "the Hollow Shade") made general and committed: `node tools/vrig/run.mjs models/characters/villagers/<name>.json [--look]` --
+  weld the mesh, scale it to `height`, re-fit a DONOR's Mixamo skeleton (the Toad Wanderer's 56 joints, fingers and weapon mounts too) to the
+  joints MEASURED on the mesh (each donor bone swung onto the new limb direction; fingers ride their hand at the arm's ratio), weight every vertex
+  to its nearest bone segment with a blend into the adjacent one (SIDE-LOCKED: a vertex on her left never takes a right bone; `rigid` boxes put
+  the hair on the head, the dreads down her back half into the chest, the loincloth's flaps on the hips), the texture to 2048 JPEG, single-sided.
+  Her joints were read off horizontal + vertical cross-sections of the FBX (crotch .47, knees .27, ankles .075, the T-pose arm line .74, shoulder
+  x .13, elbow .235, wrist .335, fingertips .432 of her height); all in her JSON. Fit error 2.5e-8.
+- **The clips (the Forge, headless, `tools/villager_forge_prof.json`, new):** 15 Mixamo motions from the retarget-anims library carried onto her by
+  the game's own retarget and baked in, NAMED BY ROLE: idle (Happy_Idle), look, think, walk (Female_Walk), run, talk, nod, shrug, wave, greet, sit
+  (Sitting_Idle), cheer, startled (Reaction), hit, getup. **The library's plain `Running` is a run into a FLIP** (she was upside down mid-clip):
+  `Running_10` (0.7 s, in place, loops; the one the hick proof found by data). Terrified (20 s), Talking_1 / Laughing / Weight_Shift (~10 s each)
+  left out for size. -> `models/characters/villagers/korajin_female_01.glb`, **1.38 m** to the top of her hair (Grumbo 1.4), 11,053 tris, 1 material,
+  60 joints, 4.45 MB. `models/characters/villagers` is in `bump.mjs` DIRS (new folder); the `_rig.glb` intermediate is gitignored.
+- **Renders** (`images/characters/korajin_female_01_*`): weights, front / side / back / walk / wave, talk / wave / cheer / run / startled, and
+  three in the village (by the well, sat on the garden bed's border, talking). The skin holds at the shoulders and hips, the hair rides the head.
+- **`VILLAGERS` (SC_VILLAGERS, new) + `vgStep`:** KINDS (a forged GLB, height, walk speed, a clip table by role) and ROWS (id, kind, village, a
+  daily ROUTINE of stops -- where, what to face, what to do, how long -- lines, flinch lines). Her round in the Sunwell: the well (think), ON the
+  garden bed's border (sit, facing the well; the forged sit puts her hips .29 over her feet and straight above them, so a seat stop drops her .22
+  from the seat's top -- measured: her hips land on the border's top), the fruit stall (talk), the gate (look). Walk up: she stops, turns to
+  Grumbo, waves the first time, then talks (a line every 9 s, a nod or a shrug with it); sat, she stays sat. A swing, a shot or a slam within 6 m:
+  she flinches back from him with a line. Never runs on sight. Drawn within 35 m, shadow within 10 m; spawns within 140 m of the village.
+- **One shared SPEECH BUBBLE (`sayBub` / `sayBubStep`)** now serves the Sunwell's barks and the villagers -- the UI worker's SPEECH kind replaces
+  that ONE function when it lands.
+- **KORAJIN > "Villager: Korajin woman"** (`?w=forge&zone=boulders&at=vg`) lands beside her; GOD > PLACES lists `VILLAGER · Korajin woman`.
+- **CRAFT, found on the way (mine, m2582): the Sunwell's props off the paving FLOATED.** The datum is .2-.6 m above the flattened sand, and the
+  garden beds, stalls, banners, pots, ground chests and palms stood on the datum. `groundY(u, v)`: on the court / avenue paving the datum, anywhere
+  else the SAND; the ground houses and the hall got a stone FOUNDATION down into the sand; the isle houses' door pots sat .35 above the isle tops.
+- **Budget (`npm run dvperf`, counted WITH the shadow pass, the new limits 70 / 280k play, 85 / 310k aerial):** gate 46 / 192k, avenue 47 / 203k,
+  court 48 / 214k, court looking back 62 / 250k, isles 40-60 / 171-263k, sky 50 / 243k, aerial 55 / 266k, landing 64 / 252k (the village and
+  she add nothing there). The first pass had i1-i3 at 284-303k: the Toads now draw within 22 m (was 30) and she within 35 m.
+- **A harness note:** a character can be MISSING from the FIRST shot of a headless run (three's parallel shader compile skips a program not
+  ready yet) -- not an occluder; I spent a while proving that.
+- **Her role -- three options in CHARACTERS.md for him to pick** (a villager with a bell quest / the keeper who knows the old bell / a companion
+  who rides along and may become playable). Not chosen.
+Shipped unverified.
 ## (m2781) THE HUSK SOLDIER -- his Tripo body on the samurai's rig, his spear split off and mounted in the katana's place
 His model (`character_model_zips/husk_soldier.zip`, a T-pose samurai-husk with a spear standing beside him) replaces the samurai stand-in for
 HUSK_SOLDIER / HUSK_GUARD (crested) / HUSK_FLANKER, and for the forest temple's acrobatic-room melee (`ftinSam`: soldier, the big one the
