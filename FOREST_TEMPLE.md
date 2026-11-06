@@ -25,6 +25,12 @@ three rings and eight spokes at its foot) -> the corridor's avenue -> the arch -
 12-spoke rosette at its centre, the ruins mirrored) -> the door on the far wall. The acrobatic ROUTE climbs round that axis (east, north,
 west, south): the plan is symmetric, the climb spirals. Later chambers keep to the axis or branch from it at right angles.
 
+## DESIGN PILLAR: SHOOT A TARGET -> SOMETHING MOVES (his, Nov 6 2026: "he LOVES that -- we need more of that")
+Room A's arrow switch wakes the moving slab, and it was the moment he liked best on his first play. Every room gets at least one: a target (the bow, often
+high up) that swings a bridge, raises a platform, drops a counterweight or opens a way -- and the camera shows what it moved (`ikReveal` / a short
+action cam). Placed so the shot is a small skill (a height, a distance, a timing), never a chore. Tracked: A (the slab), B (the eye-order switches),
+and the next: see the build order.
+
 ## HOW TO PLAY-TEST THE FOREST TEMPLE (DEV PLACES > THE FOREST, or the KORAJIN menu)
 1. **Forest Temple: FULL RUN (from the knoll)** -- the real game, your real save: the knoll -> down to the domed temple -> the door ritual ->
    into the cella -> step on the round LIFT -> it sinks into the entry hall -> down the well's ledges.

@@ -63,6 +63,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2735 -- HIS ROOM A NOTE: the HIGH BAR -- his jump off the moving slab carried him OVER it; the catch is now SWEPT and the bar placed by the arc
+
+His: "you shoot the target, the platform moves (he LOVES that), you ride it to the centre, then jump to the high bar -- but it's too close, the
+jump carries him PAST it, so the auto-catch never happens."
+- **The catch (`hbarCatch`, every zone's bars).** It tested this frame's position only: hands within `grabY` (0.45) of the bar. Now it is
+  SWEPT: where his path from last frame to this one crosses the bar's plane, his hands may be from 0.45 under the bar up to `HBAR.over` 1.1
+  over it (he reaches down and snags it on the way past).
+- **The bar (room A, `r1_hbar`) placed by the measured arc.** Jump 10.6 m/s, g 20, a 4-7.2 m/s take-off off the slab's edge (z 7.2, top
+  12): hands pass a bar inside the catch at every one of those speeds only with it 3.5 m out and 3.6 m up. It was 2.6 m up, where his
+  hands cleared it by 1.9 m. Now (-1, 12, 10.7), h 3.6. It is the temple's only high bar.
+- Design pillar, his: "SHOOT A TARGET -> SOMETHING MOVES -- we need more of that" (the next builds add 2-3 in B-F).
+Boot (HBAR): along the real jump arc from the slab's edge at 4 / 5 / 6 / 7.2 / 8.5 m/s, `hbarCatch` catches every one. Shipped unverified.
+
 ## m2733 -- CONTAINMENT: play bounds, the tunnelling fix, and the escape audit (Nov 6 2026)
 
 His (the forest temple): *"I got OUTSIDE THE LEVEL -- missed the high bar in room A, caught a wall run, climbed back, ended up through/over a wall."*
@@ -83,7 +96,6 @@ His (the forest temple): *"I got OUTSIDE THE LEVEL -- missed the high bar in roo
   x -27..-7, z 182..189, 1.3-5.8 m up. (+7,712 drop cells: off the cliffs to the valley.)
 **Open:** the bounds rows themselves (the temple worker); whip-zip anchors in the audit; box-mode tunnelling (the sweep covers the MESH walls).
 **Shipped unverified.** Nothing changes in play until a zone has a bounds row -- except that a zip or dash into a thin wall now stops at it.
-
 ## m2732 -- THE MONKEY SWING (his note, shared): the body a PENDULUM from the grip, legs that lag and follow through, the torso twisting to the reach, a bounce at each catch, the hand cycle on the stick
 
 His: "the arms just go forward-back-forward-back -- I want a full-body, monkey-like swing: hand over hand like a walk with the hands, the body
