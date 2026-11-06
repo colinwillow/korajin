@@ -69,6 +69,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2794 -- GARDEN BUDGET part 2b: casters not worth a shadow draw (Nov 6 2026)
+
+- The Jinra heart's ~6 casting parts (it is a light source) and the garden's own INSTANCED props (pots, wood, stones) stop casting. An instanced caster
+  is its WHOLE set in the shadow pass, every frame, and their contact shading grounds them.
+- Spawn WITH shadows **148 / 675k** (151 / 690k at m2792), shadow pass 23 draws / 124k. The rest of the shadow pass is the 30 m shadow cells, the
+  ship's big pieces, the plant system's casters and scene-level instanced sets that may not be the garden's (left alone).
+- **The honest picture: 188 -> 148 so far, and 70 / 280k needs STRUCTURAL work, not trims:**
+  - The 17 merged materials of the pieces want a texture ATLAS (-> ~5).
+  - The heart's ~19 separately animated meshes want ONE shader mesh.
+  - The ship's 19 textured materials want an atlas or a far impostor.
+  - The far isles (153k) want impostor cards.
+  - The plant system's casters and cards want merging.
+  Reported to the orchestrator with that list.
+
 ## m2793 -- THE PET FRIEND: four arms rigged on their own bones, a tail, his own clips, and the follow (pass 1) in a white sandbox (his: "a little monkey guy... rig him up and make sure it's done well, then have him follow you around... maybe the Plutopia creature noises") (Nov 6 2026)
 **What he is.** `korajin_petfriend_01` (COMPANION.md): his Tripo FBX (the 4096 texture is EMBEDDED in it -- cut out, SOI to EOI, no zip needed), **facing +X in the
 file** with his body .195 forward of its origin. 0.80 m to his hair tips; 10,390 tris; one 2048 WebP; draco; single-sided; opaque; 1.2 MB.
