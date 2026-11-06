@@ -63,6 +63,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2756 -- FOREST TEMPLE OUTSIDE: CONTAINMENT (COLL.md m2733) -- a sheer edge wall and a BOUNDS row; `npm run escape forest` 105 BAD -> 0 (Nov 6 2026)
+Task (orchestrator, after the collision worker's m2733): the exterior (zone dometemple) has no bounds row; `npm run escape forest` (the zone's
+name in the tool) found **105 BAD cells in 13 spots**, all on the region's south EDGE round the arrival knoll (-23..-11, 33-43, 182-188) plus
+the trail-out boulders (-43, 28-31, 201-207).
+**What was wrong:** the region's edge (`FREG.edge`) was an 18 m-wide smoothstep RAMP up 20 m -- its foot walkable, its middle in jump reach -- and
+past its top the terrain runs out at R 222: walk off the world. And the trail out ran to the mesh edge (z 222) with jumpable boulders on it.
+- **The edge is a SHEER wall now**: `w` 18 -> 3 (one terrain cell, like the pit's walls), `rise` 20 -> 24 (18-24 m with the noise). Never in his 6 m
+  jump; the mesh collider takes it as a wall.
+- **The trail out dead-ends inside the region**: the link's polyline ends at (-43, 203), so the open notch in the wall closes behind the
+  `trail_end` boulders (~r 210 < R 222).
+- **`frgBounds()`** (called from `dmtStage`, data on `DOMET.bounds`, pushed on `BOUNDS.rows`): the disc inside the wall (r 190.5) as 38 strips
+  of 10 m, each as wide as the circle at its INNER edge so the union covers the whole disc and the wall foot; plus the trail-out corridor
+  box; y -2..52 (the pit floor in, the knoll + a jump in, the wall's top out). No caps (open sky everywhere), no secrets.
+- **After:** `npm run escape forest` -> `[BOUNDS row (40 parts)] ... 24319 walkable, BAD 0 cells in 0 spots` (65 flood steps refused by a mesh
+  wall). The tool floods 110 m round the spawn; the pit is ringed by its own 21 m sheer walls inside the bounds.
+- Look: the edge reads as a cliff ring with the corridor notch to the south (map / oblique tiles). Cost unchanged (arrival strip 71 / 286k).
+Shipped unverified.
+
 ## m2755 -- SWARM PASS 1: THE NEST -- wall crawlers and flyers, one draw call per kind, the shared surface-crawl solver (his, Nov 6 2026)
 *"Little scuttling enemies that can go up on walls ... shoot them with the bow and they drop down on you ... flying enemies buzzing ... a LOT
 going at once."* New sandbox doc `SWARM.md` (DONE WHEN, ends in his sign-off); KORAJIN > The Nest (`?w=forge&zone=nest`, ENTRY row `nest`).

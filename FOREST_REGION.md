@@ -30,7 +30,7 @@ a pond of lily pads; vines over a drop; a climb up giant roots to a high platfor
 ## Built to drop into a world map
 - **One local origin**: the temple's centre (0, 0, 0). Everything is placed relative to it; the region moves as one.
 - **Footprint**: a disc of radius `FREG.R` (222 m). Drawn terrain only inside it; the backdrop ring at 330 m.
-- **The edge** (`FREG.edge`): the land climbs into a steep wall from r 174 to 192, EXCEPT where it meets the wider world (`edge.links`):
+- **The edge** (`FREG.edge`): a SHEER rock wall 18-24 m tall at r ~189-192 (m2756, containment; a BOUNDS row `frgBounds` covers the disc inside it), EXCEPT where it meets the wider world (`edge.links`):
   - `trail_out` (south): the trail leaves the region past the arrival knoll; blocked by boulders (`trail_end`) until the world map joins it.
   - later: the river out (west), through its own gorge.
 - **Budget** (headless, from `npm run foreststrip`): 63-96 draw calls, 385-450k tris on screen (was 55-67 / 330-360k for the clearing alone);
