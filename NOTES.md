@@ -59,6 +59,28 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2697 -- FOREST TEMPLE build 6 (E, the SUNKEN COURT, part 1): a 46 m chasm crossed only by six knot swings under a thorn canopy; SHARD V
+
+**The way in:** the E door at the well's foot (east) is a whip gate (`FT_BUILT` now D and E). **Its frame (`FTE`) is on ring seg 0 (9 deg), not 1:**
+on seg 1 the court's left wall cut through room D (computed from both frames; seg 0 clears D by 2.0 m and A by ~3 m).
+**The court (whip-only rules 1 + 2 -- structural, not just long):** a near perch (8 x 3 m) and a far perch (12 x 7 m, the dais) at 0 m, a 46 m CHASM
+between them (bottom -14), the side walls 12 m off the line and 38 m tall, a light shaft from the rock ceiling at 24.
+- **Nothing to run, kick or land on:** the side walls REFUSE a wall run -- `wrunFind` now skips a box with `noRun` or one a zone's
+  `WRUN.refuse(box, x, z)` refuses (the temple's mesh collider builds its wall boxes from triangles, so a tag on the kit's own boxes is not enough;
+  the temple's test refuses any wall within 9..12.6 m of the court's line over the chasm). No pillar, no ledge.
+- **A THORN CANOPY** 3.4 m over the perches across the whole chasm (a dark mat with 260 hanging thorns, one mesh): his head into it tears him down
+  (a cut of 6, his climb killed), so the double jump and every high arc have no room. Measured line: his best without a wall is 33.7 m (m2639),
+  and without height that falls further; 46 m > 42.
+- **SIX KNOTS** under it (whip anchors at 2.5 m, weaving +-1.2 m): near perch -> knot 1 **3.7 m**, knot to knot **7.9 m** x5, knot 6 -> the far
+  perch **6.2 m** (all inside `WHIP.reach` 14; the boot measures them). A fall: back on the near perch with the hint.
+- **The far perch:** landing there wakes the SQUAD (the combat set's shield-bearer + archer + samurai: the whip rips the shield, m2618); the
+  CHEST pays **SHARD V**.
+Kit 34 draws / 114k tris. Bounds x 80, collider rect x 82. Boot: the E gate opens on a pull, six knots in, every hop within reach, the walls
+refuse and the line does not. Render: `docs/forest_temple/E_sunken_court.png` (the knots and the canopy are glue, not in the kit render).
+**Still open in E (part 2):** the court's levers (9 m up, whip) and crates onto plates, the Kailasa cloister detail.
+**Try:** with the whip -> pull the E door -> the near perch -> flick at the lit knot -> chain the six -> release onto the far perch -> the squad ->
+the chest. Try a jump instead: the thorns. Shipped unverified.
+
 ## m2696 -- FOREST TEMPLE build 5 (D, the FALL GALLERY): the whip gate opens; pull the ROOT DAM -> the waterfall stops, the pool drains; a crank, a chest = SHARD IV
 
 **The way in:** the D door on its 12 m sill (north, under the entry hall) is a WHIP GATE: with the whip (C's chest), a lash + PULL tears the root seal
