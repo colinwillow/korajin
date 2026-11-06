@@ -69,6 +69,37 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2786 -- THE GARDEN'S FLOATING MAGIC, pass 1 (his: "make things float on that island too -- crystals, boulders, rocks, the sand garden, maybe water ... the magic paradise") (Nov 6 2026)
+
+`GFLOAT` (SC_GFLOAT) + `gdnFloat(G)`, built in the island's frame right after `gdnGlow`. Render: `docs/garden/floating_magic_pass1.jpg`.
+- **Everything that bobs or turns is ONE merged mesh**, moved in the VERTEX SHADER: `aC` is its pivot, `aB` = bob m, bob Hz, phase, spin rad/s, and the
+  normal turns with it. It is 58 rocks and islets, one draw, no CPU, no shadow.
+  - **Tiers (VERTICALITY):** below the rim (-13..-4), at it (0..8), high over the garden (13..30), and far out (r 62-112, -22..42).
+  - Mossy floating boulders with ragged roots.
+  - **Fragments:** in the cracks between the chunks, and just over the pools.
+  - **Five ISLETS:** a grass cap with a bonsai, a stone lantern or tufts.
+  - **The bell shrine's ORBIT:** seven stones pivoting on the shrine's axis, so their "spin" is the orbit.
+  - **Three pebbles hovering** a hand's breadth over the raked sand, with blob shadows.
+  - **Kept clear:** nothing floats inside the HOME and SUMMIT chunks (38-126 and 140-232 deg; an arc + radius + height test), and nothing bobs low over the garden.
+- **The rock is the garden's own map, TRIPLANAR FROM THE REST POSE,** so it never swims as the rock turns. It is desaturated toward stone, and the vertex
+  colour puts moss on the crowns only; the map is mossy itself, and the first pass read as uniform green blobs.
+- **Floating CRYSTALS:** GLOWKIT's `gkCrystalGeo`, double-terminated, in Jinra mint, on the same shader (one draw).
+- **THE ROUTE is playable:** 9 STILL stones in the garden's collider rock (`M.rock`), spiralling out of the fence gap by the front stream into the open
+  WEST sky, rising 1.45 m a stone (~2 m gaps), to a lookout islet at +14.5.
+  - Probed with the shipped `groundAt`: every stone and the lookout read their tops to 0.01 m.
+  - `M.rock` is vertex-coloured, so without a colour attribute the stones rendered BLACK.
+  - The first placement ran into the home chunk.
+  - `GARDEN.stones` / `GARDEN.lookout` are set.
+- **WATER:**
+  - A floating Jinra ORB (1.15 m, rippling in the vertex shader) over the zen pool.
+  - Three water ARCS (parabolic ribbons, stripes scrolling down) pouring FROM a source: the orb's underside, and still floating stones by the east and shrine pools.
+  - Droplets rising off the orb and the arcs' landings, and fireflies wandering (one Points draw).
+- **Bug found:** the PERF small-thing cull (`perfRegSmall`) moved the 1.15 m orb onto LAYER 1, out of the camera, so it drew nothing. It is now
+  `cellReg`'d first with a long range, so that pass skips it.
+- **Cost: about +5 draws, ~13k tris.** **THE GARDEN IS FAR OVER BUDGET WITHOUT IT:** 188 draws / 690k with shadows at the spawn view (194 / 717k wide),
+  where the budget is 70 / 280k. The shadow pass alone is 35 / 117k. Told the orchestrator. The budget pass is the next build unless the garden has another owner.
+- Open: the zen sand's rake lines do not shift yet; no god rays; the islets do not catch the light. His look first.
+
 ## m2785 -- m2768 MISSED THE START MENU'S IN-PLACE ENTRY (his: "every time I open the desert scene it opens the newest build, then it reverts to M2761")
 - **THE BYPASS, REPRODUCED headless** (title menu forced on -- it skips itself under `navigator.webdriver` -- the wheel's Floating Boulders
   entry tapped twice like a thumb does): the start menu enters a FORGE zone IN PLACE (m2228, so the music carries) with
