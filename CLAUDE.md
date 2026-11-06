@@ -555,6 +555,9 @@ rule that has to be in front of me *before* I know which system I am in.
   played on his phone and SIGNED OFF before the next room starts. Every room needs a CLEVER idea mixing acrobatics and puzzle: chained
   arrow-triggers (shoot -> a platform moves -> shoot the next while riding it; miss and you fall all the way down), arrow shots that open a
   door so a lever can be pulled so a platform moves, wall runs into shots. Vary the SHAPE: hexagonal and circular rooms, not just boxes.
+- **EVERY NAVIGATION GOES THROUGH `navGo(url)` (m2768).** Pages/Safari cache each URL separately, so a bare `location.replace` / `reload` to a
+  new query served him an OLD build (m2766 -> m2761) and every fix looked like it hadn't landed. `navGo` stamps `b=<BUILD>`; `staleCheck` reloads once if
+  version.json is newer. Never write a bare location.replace/reload/href again.
 - **HIS STEP IS .357 M, NOT .5 (m368).** `MOVE.step` is `.5 * SZ` and the rig is 1.25 m. A riser over .357 is a WALL
   he has to jump. Build stairs at .32 or less, and prove them with `places`' `walkUp`, never with a lenient `groundAt`.
 
