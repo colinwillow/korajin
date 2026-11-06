@@ -9958,8 +9958,8 @@ function pickSteer() {     // the thumb he would have used to walk there
 // (TOOLS > LOOK > INTERACT CUE); and a right TAP does it -- a tap is the jump only when nothing is in reach. The older right-pad prompts (pick-up,
 // talk, mount, portal, sample) wear the same Jinra pulse, so every "you can do something here" reads the same.
 const INTERACT = { on: 1, cue: 1, list: new Map(), cur: null, hintEl: null, hint0: null, mk: null, t: 0, n: 0 };
-const ICUE_N = ['OFF', 'ARROW+RING+OUTLINE', 'ARROW+RING', 'ARROW', 'RING+OUTLINE'];     // m2662: TOOLS > LOOK > INTERACT CUE (index = INTERACT.cue)
-try { const v = localStorage.getItem('mel.icue'); if (v != null && ICUE_N[+v]) INTERACT.cue = +v; } catch (e) {}
+const ICUE_N = ['OFF', 'ARROW+RING+OUTLINE', 'ARROW+RING', 'ARROW', 'RING+OUTLINE', 'ARROW+OUTLINE'];     // m2690 (his: "the ring is overkill"): the default is ARROW+OUTLINE (5)     // m2662: TOOLS > LOOK > INTERACT CUE (index = INTERACT.cue)
+INTERACT.cue = 5; try { const v = localStorage.getItem('mel.icue2'); if (v != null && ICUE_N[+v]) INTERACT.cue = +v; } catch (e) {}     // m2690: a new key, so the old saved default (with the ring) does not stick
 function interactAdd(o) { if (!o || !o.id || typeof o.act !== 'function') return null; INTERACT.list.set(o.id, o); return o; }
 function interactRemove(id) { INTERACT.list.delete(id); if (INTERACT.cur && INTERACT.cur.id === id) INTERACT.cur = null; }
 const _iaP = new THREE.Vector3();
@@ -9981,7 +9981,7 @@ function interactStep(dt) { const I = INTERACT, o = I.cur = interactNow(), pr = 
   // turned to the lens, never a gem -- over the spot; a thin glowing RING on the ground at the reach radius (`o.r`) that fades in as he steps into it,
   // with the right stick's cue; and a soft OUTLINE on the PART he will touch (`o.outline: () => Object3D`: the lever's handle, the wheel, the lid,
   // the door's lock wheel, the plunger) -- an inverted hull on the part's own geometry, riding its every move. `o.up` = metres over `pos` (.75).
-  const md = I.cue | 0, wA = md === 1 || md === 2 || md === 3, wR = md === 1 || md === 2 || md === 4, wO = md === 1 || md === 4;
+  const md = I.cue | 0, wA = md === 1 || md === 2 || md === 3 || md === 5, wR = md === 1 || md === 2 || md === 4, wO = md === 1 || md === 4 || md === 5;
   const P = o && md ? interactPos(o) : null, col = JPAL.glow;
   if (P && !I.mk) { const g = new THREE.Group();
     const core = new THREE.MeshBasicMaterial({ color: col, toneMapped: false, transparent: true, opacity: .95, depthTest: false, side: THREE.DoubleSide });
@@ -26049,9 +26049,9 @@ function arenaUi() {
       else if (a === 'kswing') { const T = KATANA.styles; KATANA.style = T[(T.indexOf(KATANA.style) + 1) % T.length]; katStyle(); try { localStorage.setItem('mel.kat.style', KATANA.style); } catch (err) {} }
       else if (a === 'reelfont') reelFontNext();     // m2371
       else if (a === 'speedfx') { SPEEDFX.mode = SPEEDFX.modes[(SPEEDFX.modes.indexOf(SPEEDFX.mode) + 1) % SPEEDFX.modes.length]; try { localStorage.setItem('mel.speedfx', SPEEDFX.mode); } catch (err) {} }     // m2400
-      else if (a === 'chestopen') { IKIT.chestOpen = IKIT.chestOpen === 'KICK' ? 'HEAVE' : 'KICK'; try { localStorage.setItem('mel.chestopen', IKIT.chestOpen); } catch (err) {} }     // m2671
+      else if (a === 'chestopen') { IKIT.chestOpen = IKIT.chestOpen === 'KICK' ? 'HEAVE' : 'KICK'; try { localStorage.setItem('mel.chestopen2', IKIT.chestOpen); } catch (err) {} }     // m2671
       else if (a === 'haptic') { HAPT.on = HAPT.on ? 0 : 1; try { localStorage.setItem('mel.haptic', HAPT.on ? '1' : '0'); } catch (err) {} if (HAPT.on) haptic('heavy'); }     // INTERACT.md 5: tapping it ON plays a test tick (inside his tap)
-      else if (a === 'icue') { INTERACT.cue = ((INTERACT.cue | 0) + 1) % ICUE_N.length; try { localStorage.setItem('mel.icue', '' + INTERACT.cue); } catch (err) {} }     // m2382; m2662: four looks and OFF
+      else if (a === 'icue') { INTERACT.cue = ((INTERACT.cue | 0) + 1) % ICUE_N.length; try { localStorage.setItem('mel.icue2', '' + INTERACT.cue); } catch (err) {} }     // m2382; m2662: four looks and OFF
       else if (a === 'wakehold') { GARDEN.sleep.hold = GARDEN.sleep.hold ? 0 : 1; try { localStorage.setItem('mel.wake.hold', GARDEN.sleep.hold); } catch (err) {} }     // m2335
       else if (a === 'lotushands') { const H3 = ['mudra', 'lap', 'spread']; LOTUS.hands = H3[(H3.indexOf(LOTUS.hands) + 1) % 3]; try { localStorage.setItem('mel.lotus.hands', LOTUS.hands); } catch (err) {} }     // m2232
       else if (a === 'ktilt') { const T = KATANA.tilts; KATANA.runTilt = T[(T.indexOf(KATANA.runTilt) + 1) % T.length]; try { localStorage.setItem('mel.kat.tilt', KATANA.runTilt); } catch (err) {} }
@@ -41333,13 +41333,13 @@ function gmoteStep(dt) { const M = GMOTE, Z = GATHER; if (!M.pts) return; const 
 const IKIT = { want: 0, on: null, rows: [], run: null, n: 0, err: 0,
   room: { w: 44, d: 20, h: 4.2, wall: .8, spawn: [-20, 0], yaw: Math.PI / 2, bays: [-22, -11, 0, 11, 22], part: 4.5 },     // THE GALLERY (his, after m2633): a white hall, an aisle, four bays a side
   crank: { drop: 1.6, dead: .45, maxW: 12, gear: .55, turns: 3, slip: .06, idle: 2.5 },     // drop: rad round its side before a hand re-takes the top spoke; gear: wheel per stick turn; turns: wheel turns for all the way; slip /s
-  lever: { stand: .68, pull: [14, -12], push: [6, 22] },
+  lever: { stand: .68, pull: [14, -18], push: [6, 22] },
   cap: { barY: .92, bar: 1.25, walk: 1.25, lag: .35, lean: 18, teeth: 24, dead: .45, maxW: .9, spinK: .1, slip: .05, idle: 2.5 },     // m2675 the capstan: bar height / length, his walking circle, how far behind the bar he stands (rad), lean, ratchet teeth, the stick, max rad/s, slip /s, let-go s
-  chestOpen: 'HEAVE', kick: { back: .05, wind: .32, strike: .14 },     // m2671 (his): TOOLS > LOOK > CHEST OPEN: HEAVE / KICK
+  chestOpen: 'KICK', kick: { back: -.17, wind: .32, strike: .14 },     // m2671 (his): TOOLS > LOOK > CHEST OPEN: HEAVE / KICK
   stow: 1, redraw: 1, camSide: 45, showOff: 30, reveal: { dur: 1.3, after: .5 },     // m2668: 45 deg off his back (unlocked: a drag outranks it); a piece that drives something ELSE (`shows`) frames both through the action cam, 30 deg off, and REVEALS it when done
       // m2662 (his): the weapon goes AWAY before any piece (and back after); the lens sits camSide degrees off his back so his hands show     // m2662: where he stands (m from the pivot) and his lean [start, end] in degrees
   door: { stand: .78, push: 3.1, rest: 1.4, pulse: .55, open: .58, lean: 30, dust: 9 },     // push: s of shoving before he lets go at `open` (fraction); rest: s for the door to finish; a grind pulse every `pulse` s
-  chest: { stand: .95, lift: 1.95, T: { walk: 3.5, turn: .7, grip: .75, heave: .45, swing: .8, rise: 1.1, fly: .45, get: 2.1, stow: .7 } },
+  chest: { stand: .62, lift: 1.95, T: { walk: 3.5, turn: .7, grip: .75, heave: .45, swing: .8, rise: 1.1, fly: .45, get: 2.1, stow: .7 } },
   // the STATIONS: one per piece, each in its own white bay with a label plinth (`label`: [title, line]); north bays face +z, south bays -z
   place: [
     { id: 'door_heavy', kind: 'door', at: [-16.5, 0, -10.4], face: 'auto', from: [-16.5, 0], w: 2.9, h: 3.5, d: .45, swing: 84, label: ['THE HEAVY DOOR', 'tap OPEN: the lock, the bolts, the push'] },
@@ -41349,7 +41349,7 @@ const IKIT = { want: 0, on: null, rows: [], run: null, n: 0, err: 0,
     { id: 'bridge_east', kind: 'bridge', at: [22.8, 0, 0], L: 3.4, w: 2.4 },     // m2675: the DRAWBRIDGE in the east doorway, over the moat (built before its capstan)
     { id: 'capstan_bridge', kind: 'capstan', at: [18.4, 0, 0], drives: 'bridge_east', pulleys: [[22.4, 4.45, -1.05], [22.4, 4.45, 1.05]], turns: 1.25, slip: 0, rope: 'chain' },
     { id: 'chest_vault', kind: 'chest', at: [7.5, 0, -13.6], face: 'auto', from: [7.5, -9], item: { name: 'BRONZE KEY', col: 0xd8a040 }, coins: 4 },
-    { id: 'drawers_wall', kind: 'drawer', at: [16.5, 0, -9.72], face: 0, drawer: 1, item: { name: 'OLD MAP', col: 0xe8d8b0 }, label: ['THE DRAWERS', 'tap OPEN'] },
+    { id: 'drawers_wall', kind: 'drawer', at: [16.5, 0, -9.72], face: 0, drawer: 0, item: { name: 'OLD MAP', col: 0xe8d8b0 }, label: ['THE DRAWERS', 'tap OPEN'] },
     { id: 'button_wall', kind: 'button', at: [-16.5, 1.0, 10], face: 180, lamp: [-15, 2.3, 9.6, 0, 1], label: ['THE BUTTON', 'tap PRESS'] },
     { id: 'plate_floor', kind: 'plate', at: [-5.5, 0, 6.5], lamp: [-3.6, 0, 7.8], label: ['THE PRESSURE PLATE', 'step on it'] },
     { id: 'lever_floor', kind: 'lever', at: [5.5, 0, 7], face: 'auto', from: [5.5, 0], lamp: [7.3, 0, 7.6], label: ['THE LEVER', 'tap PULL / PUSH'] } ],
@@ -41456,13 +41456,14 @@ function ikMat(k) { if (IKMAT[k]) return IKMAT[k]; const S = (c, r, m) => new TH
   const T = { wood: S(0x6e4527, .8), woodD: S(0x4a2c18, .85), brass: S(0x7a5232, .4, .8), iron: S(0x5a5650, .5, .7), stone: S(0xcdb592, .92), stoneD: S(0x9c8466, .95), floor: S(0xbfa883, .9), rope: S(0xb89a68, .95) };
   return (IKMAT[k] = T[k]); }
 // ---- the shared sequence: walk up, turn, then the kind's beats ----
-try { const v = localStorage.getItem('mel.chestopen'); if (v === 'KICK' || v === 'HEAVE') IKIT.chestOpen = v; } catch (e) {}
+try { const v = localStorage.getItem('mel.chestopen2'); if (v === 'KICK' || v === 'HEAVE') IKIT.chestOpen = v; } catch (e) {}
 function ikitGo(r) { const p = player; if (IKIT.run || !p.grounded || p.hdrop) return 0; const K = IKIND[r.kind]; if (!K) return 0; const st = K.stand(r);
   IKIT.run = { r, K, st: 'walk', t: 0, tx: st[0], tz: st[1], h: st[2], cam: 1, stow: 0 }; IKIT.n++; snd('swoosh', { g: .2, r: 1.5 });
   if (IKIT.stow && p.slot && !p.swap && WEAP.slots[0]) { IKIT.run.stow = p.slot; try { swapGo(0); } catch (e) { note('IKIT stow ' + e.message); } }     // m2662: put it away FIRST (the katana goes to the sheath on his back, `KDRAW`)
   return 1; }
 function ikitSteer() { const R = IKIT.run; if (R && R.push) return R.push; if (!R || R.st !== 'walk') return { x: 0, z: 0, mag: 0 };     /* `push`: a stick into the piece while `pin` holds him -- his feet tread and slip in place */ const dx = R.tx - player.pos.x, dz = R.tz - player.pos.z, d = Math.hypot(dx, dz);
   return d < 1e-3 ? { x: 0, z: 0, mag: 0 } : { x: dx / d, z: dz / d, mag: Math.min(.55, Math.max(.18, d * 1.4)) }; }
+function ikitExit() { const R = IKIT.run; if (!R || (R.st === 'go' && !(R.K === IKIND.capstan || R.K === IKIND.crank))) return 0;     /* the walk-up / turn of any piece, or a wheel */ if (R.K.abort) R.K.abort(R); ikitEnd(); snd('clink', { g: .2, r: 1.1 }); return 1; }     // m2690: the explicit EXIT (a right tap): let go of a wheel
 function ikitEnd() { const R = IKIT.run, p = player; if (!R) return; p.tossFace = null; R.push = null; R.pin = null; IKIT.pose.want = 0; IKIT.pose.reach = 0; IKIT.pose.foot = null; IKIT.pose.twist = 0; GETPOSE.want = 0; IKIT.run = null; ikStickCue(null);
   if (R.stow && IKIT.redraw && !p.slot) { try { kitPick(R.stow); } catch (e) {} } }     // m2662: and back out after
 function ikitRunStep(dt) { const R = IKIT.run, p = player; if (!R) return; R.t += dt; const C = IKIT.chest.T;
@@ -41493,6 +41494,7 @@ function ikitPose(dt) { const P = IKIT.pose, B = rig.bones; if (!IKIT.run) P.wan
   if (P.twist) { ltTurn(bn('Spine1'), U, P.twist * .6 * w); ltTurn(bn('Spine2'), U, P.twist * .4 * w); }     // m2675: the shoulders turn with each step (the capstan)     // PLUS about his left tips him forward -- a bend from the HIPS up (Spine is the first bone over them)
   // m2662: THE REACH -- his: "his hands don't reach the lever". If a target is past the arm's length the spine bends further (`P.auto`, degrees),
   // a frame behind, until it is in reach; it relaxes when there is slack. The hands are never left floating short of a grip.
+  if (!P.reach && P.auto) P.auto = Math.max(0, P.auto - dt * 120);     // m2690: off the reach, the extra bend goes (it froze at 40 deg into the door's push: a 70 deg bow)
   if (P.reach && P.want) { let ex = -1; for (const sd of [1, -1]) { const T = sd > 0 ? P.L : P.R, S = sd > 0 ? 'Left' : 'Right', a = bn(S + 'Arm'), m = bn(S + 'ForeArm'), h = bn(S + 'Hand'); if (!T || !a || !m || !h) continue;
       const A = a.getWorldPosition(_ikP), M = m.getWorldPosition(new THREE.Vector3()), H = h.getWorldPosition(new THREE.Vector3()), L = A.distanceTo(M) + M.distanceTo(H); ex = Math.max(ex, A.distanceTo(T) - L * .94); }
     const g = ex > 0 ? Math.min(1, dt * 12) : ex < -.06 ? Math.min(1, dt * 6) : 0; P.auto = Math.max(0, Math.min(P.reachMax || 40, (P.auto || 0) + (ex > 0 ? ex : ex + .06) / .55 * 57.3 * g)); }
@@ -41571,7 +41573,7 @@ const IKIND = {
       interactAdd({ id: 'ikit.' + r.id, outline: () => r.S && r.S.lid, label: 'OPEN', pri: 1, r: 1.9, dy: 1.9, pos: () => r.S && !r.open && !IKIT.run ? [r.at[0] + r.S.fx * .45, r.at[1] + .8, r.at[2] + r.S.fz * .45] : null,
         can: () => ikLive(r) && !r.open && !IKIT.run && player.grounded, act: () => ikitGo(r) }); },
     stand(r) { const S = r.S, d = .31 + IKIT.chest.stand + (IKIT.chestOpen === 'KICK' ? IKIT.kick.back : 0); return [r.at[0] + S.fx * d, r.at[2] + S.fz * d, S.yaw + Math.PI]; },
-    start(R) { R.b = IKIT.chestOpen === 'KICK' ? 'kwind' : 'grip'; R.bt = 0; R.kick = R.b === 'kwind'; IKIT.pose.lean = 0; },
+    start(R) { R.b = IKIT.chestOpen === 'KICK' ? 'kwind' : 'grip'; R.bt = 0; R.kick = R.b === 'kwind'; IKIT.pose.lean = 0; IKIT.pose.reach = R.kick ? 0 : 1; },     /* m2690: the heave reaches the lid's edge (ikhands: .5 m short) */
     step(R, dt) { const r = R.r, S = r.S, T = IKIT.chest.T, P = IKIT.pose, p = player; R.bt += dt; const t = R.bt, wp = o => o.getWorldPosition(new THREE.Vector3());
       const hands = () => { const [a, b] = ikSides(wp(S.mk[0]), wp(S.mk[1])); P.L = a; P.R = b; };
       // m2671 THE KICK (TOOLS > CHEST OPEN: KICK): his right knee comes up and back (a wind-up, leaning back), the sole drives into the lock plate,
@@ -41585,7 +41587,7 @@ const IKIND = {
       if (R.b === 'grip') { P.want = 1; P.lean = 26 * Math.min(1, t / .3); hands(); if (S.hp) { const u = Math.min(1, t / .32); S.hp.rotation.x = -2.1 * u * u * (3 - 2 * u); if (u >= 1 && !R.clasp) { R.clasp = 1; snd('clink', { g: .45, r: 1.4, x: r.at[0], z: r.at[2] }); haptic('tick'); S.gemM.emissiveIntensity = 1.4; } }     /* the HASP swings up off its staple; the gem flashes */ if (t > T.grip) { R.b = 'heave'; R.bt = 0; haptic('heavy'); snd('clang', { g: .35, r: .7, x: r.at[0], z: r.at[2] }); } return 0; }
       if (R.b === 'heave') { const u = Math.min(1, t / T.heave), j = (1 - u) * .045; S.body.position.set((Math.random() - .5) * j, Math.abs(Math.random() - .5) * j, (Math.random() - .5) * j); S.body.rotation.z = (Math.random() - .5) * j * 1.5;     // the JOLT
         S.pv.rotation.x = -.22 * Math.sin(u * Math.PI * .5); P.lean = 26 - 8 * u; hands(); if (t > T.heave) { R.b = 'swing'; R.bt = 0; S.body.position.set(0, 0, 0); S.body.rotation.z = 0; snd('swoosh', { g: .5, r: .8 }); } return 0; }
-      if (R.b === 'swing') { const sw = T.swing * (R.fast ? .65 : 1), u = Math.min(1, t / sw); S.pv.rotation.x = -.22 - (IKIT.chest.lift - .22) * rsBack(u); if (R.kick) { P.foot = u < .5 ? P.foot : null; if (u > .35) { P.want = 0; P.lean = 0; } } else if (u < .4) hands(); else { P.want = 0; P.lean = 0; }
+      if (R.b === 'swing') { const sw = T.swing * (R.fast ? .65 : 1), u = Math.min(1, t / sw); S.pv.rotation.x = -.22 - (IKIT.chest.lift - .22) * rsBack(u); if (R.kick) { P.foot = u < .5 ? P.foot : null; if (u > .35) { P.want = 0; P.lean = 0; } } else if (u < .18) hands(); else { P.want = 0; P.lean = 0; }
         const k = Math.min(1, u * 1.6); S.glowM.color.setRGB(1 * k, .78 * k, .38 * k); S.gk = k; S.sp.material.color.setRGB(.55 * k, .45 * k, .26 * k);
         if (u >= 1 && R.b === 'swing') { R.b = 'rise'; R.bt = 0; R.fast = 0; snd('ready', { g: .55, r: 1.3 }); R.it = ikItem(r.item); S.body.localToWorld(R.it.position.set(0, .45, 0)); spkBurst(R.it.position.x, R.it.position.y + .3, R.it.position.z, 26, { col: [1, .82, .4], spread: 2, size: .07, life: .8 }); } return 0; }
       const it = R.it, top = S.body.localToWorld(new THREE.Vector3(0, 1.55, 0)); it.rotation.y += dt * 2.2;
@@ -41688,6 +41690,7 @@ const IKIND = {
         if (t > .55) { R.b = 'reach'; R.bt = 0; } return 0; }
       if (R.b === 'reach') { P.want = 1; P.lean = 12 * Math.min(1, t / .4); hands(); if (t > .5) { R.b = 'push'; R.bt = 0; snd('thud', { g: .3, r: .5 }); } return 0; }
       if (R.b === 'push') { const k = Math.min(1, t / .5); P.lean = 12 + (D.lean - 12) * k + Math.sin(t * 23) * 1.2;     // STRAIN: the lean, and a shudder in it
+        { const m = S.mk[0].getWorldPosition(new THREE.Vector3()).add(S.mk[1].getWorldPosition(new THREE.Vector3())).multiplyScalar(.5), dx = m.x - p.pos.x, dz = m.z - p.pos.z, d = Math.hypot(dx, dz) || 1; if (R.sd == null) R.sd = Math.min(.62, Math.max(.42, d)); R.pin = [m.x - dx / d * R.sd, m.z - dz / d * R.sd]; R.h = Math.atan2(dx, dz); }     /* m2690: his PALMS stay on the stone -- he steps after the door as it swings (the pin used to hold him while it swung out of his hands) */
         R.push = { x: -S.fx, z: -S.fz, mag: .32 + .1 * Math.sin(t * 5) };     // the stick into the door: his feet tread and slip (the pin keeps him put)
         const prev = S.u, ph = (t % D.pulse) / D.pulse, grind = ph < .45 ? Math.sin(ph / .45 * Math.PI) : 0; S.u = Math.min(D.open, S.u + dt * grind * D.open / (D.push * .29));     /* .29 = the grind's mean over a pulse, so `push` is the real time */ IKIND.door.place(r);
         if (Math.floor(t / D.pulse) !== R.pulse) { R.pulse = Math.floor(t / D.pulse); haptic('medium'); snd('door_stone', { g: .45, r: .85 + Math.random() * .1, i: 0, whole: 1 });
@@ -41866,7 +41869,7 @@ const IKIND = {
     start(R) { R.b = 'grab'; R.bt = 0; R.a0 = R.r.S.a; R.a1 = R.r.on ? -.7 : .7; R.tooth = 0; IKIT.pose.reach = 1; },
     step(R, dt) { const r = R.r, S = r.S, P = IKIT.pose; R.bt += dt; const t = R.bt, wp = o => o.getWorldPosition(new THREE.Vector3()); const [a, b] = ikSides(wp(S.mk[0]), wp(S.mk[1])); P.want = 1; P.L = a; P.R = b;
       const pull = R.a1 > R.a0, u = Math.max(0, Math.min(1, (S.a - R.a0) / (R.a1 - R.a0))), Lv = IKIT.lever;     // m2662: the lean FOLLOWS the throw
-      P.lean = pull ? Lv.pull[0] + (Lv.pull[1] - Lv.pull[0]) * u : Lv.push[0] + (Lv.push[1] - Lv.push[0]) * u;     // the pull: reach in, then hips lead BACK; the push: lean into it
+      P.lean = pull ? Lv.pull[0] + (Lv.pull[1] - Lv.pull[0]) * u : Lv.push[0] + (Lv.push[1] - Lv.push[0]) * u; P.reach = pull ? (u < .7 ? 1 : 0) : 1;     /* m2690 (his: the pull ENDS LEANING BACK, arms straight, body angled away): past half way the reach's bend lets go */     // the pull: reach in, then hips lead BACK; the push: lean into it
       if (R.b === 'grab') { if (t > .35) { R.b = 'haul'; R.bt = 0; } return 0; }
       if (R.b === 'haul') { const N = 4, per = .34, k = Math.min(N, Math.floor(t / per)), f = Math.min(1, (t - k * per) / (per * .35)), step = (R.a1 - R.a0) / N;     // a tooth: a quick lurch, then a strain
         S.a = R.a0 + step * (k + (k < N ? f * f : 0)); S.pv.rotation.x = S.a + (k < N ? Math.sin(t * 30) * .01 : 0); if (S.pin) S.pin.rotation.x = -S.a * S.ratio;     /* the PINION spins against the quadrant */
@@ -42143,7 +42146,7 @@ function ikitBuild() { const Z = IKIT; Z.want = 2; if (Z.on) return; const g = n
   btn('RESET', () => ikitReset());
   btn('HAPTIC TEST', () => { const ok = haptic('heavy'); toast(HAPT.on ? (ok ? 'tick sent (' + HAPT.how + ', #' + HAPT.n + ') -- did the phone tick?' : 'no tick (' + (HAPT.how || 'throttled') + ')') : 'HAPTICS are OFF (TOOLS > LOOK)', 2.6); });
   document.body.appendChild(el); Z.el = el;
-  Z.on = { g, t: 0 }; try { if (window.mel) { mel.IKIT = IKIT; mel.IKIND = IKIND; mel.ikitGo = ikitGo; mel.ikitReset = ikitReset; mel.ikitAdd = ikitAdd; mel.IKBR = IKBR; } } catch (e) {} }
+  Z.on = { g, t: 0 }; try { if (window.mel) { mel.IKIT = IKIT; mel.IKIND = IKIND; mel.ikitGo = ikitGo; mel.ikitReset = ikitReset; mel.ikitAdd = ikitAdd; mel.IKBR = IKBR; mel.ACT = ACT; mel.ikitExit = ikitExit; } } catch (e) {} }
 function ikitStep(dt) { const Z = IKIT; if (!Z.on && !Z.rows.length) return; Z.t = (Z.t || 0) + dt; if (Z.on) Z.on.t += dt; ikitRunStep(dt); ikLampStep(dt); ikJoltStep(dt); for (const r of Z.rows) { const K = IKIND[r.kind]; if (K.free) K.free(r, dt); } }
 // SC_IKIT:END
 // m2418: FLOATING BOULDERS (BOULDERS.md) -- KORAJIN > Floating Boulders, `?w=forge&zone=boulders`. His: "boulders that are floating -- different
@@ -49537,6 +49540,10 @@ const ACT = {
   dodge: (dx, dy) => ACT.lFlick(dx, dy),
   strike: (dx, dy) => ACT.rFlick(dx, dy),
 };
+// m2690 THE LOCK-IN (his: "while he's on the wheel he's LOCKED IN: no melee, no attacks, no dodges or flips, no jumps; the only inputs are the piece's
+// and an explicit exit -- for every kit piece"): while a kit piece runs every ACT verb is swallowed; a right TAP (or the pad's interact) is the
+// EXIT -- it lets go of a wheel (crank, capstan); the scripted pieces (chest, door, lever, drawer, button) play out. `stepKit` stands down too.
+for (const k of Object.keys(ACT)) { const f = ACT[k]; ACT[k] = (...a) => { if (IKIT.run) { if (k === 'rTap' || k === 'interact') ikitExit(); return k === 'interact' ? true : undefined; } return f(...a); }; }
 const LTAP = { jump: 0 };     // m1836: *"get rid of the left stick ability to jump... I keep accidentally jumping"* -- the right tap is the jump
 try { if (localStorage.getItem('mel.ltapjump') === '1') LTAP.jump = 1; } catch (e) {}
 const padL = document.getElementById('padL'), padR = document.getElementById('padR');
@@ -50272,6 +50279,7 @@ function bladeGunFly(dt) {
 }
 
 function stepKit(dt) {
+  if (IKIT.run) return;     // m2690: locked in to a kit piece -- no aim, no charge, no swing
   const p = player, s = slotNow(), R = stick.R;
   const up = -R.y, mag = Math.hypot(R.x, R.y);
 

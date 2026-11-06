@@ -59,6 +59,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2690 -- THE KIT REGRESSION (his, urgent): hands ON every object, LOCKED IN while a piece runs, a gate so it cannot break silently; cue ARROW+OUTLINE, chest KICK (Nov 6 2026)
+**His report:** the door -- he stands at its centre doing nothing while the lock wheel spins by itself, then runs into the door instead of
+pushing it; the wheel not bigger. The crank -- no arms on the spokes, and a flick / dodge leaves mid-spin while the wheel keeps going.
+**What was actually wrong, measured** (`npm run ikhands`, new: every station start to finish in the shipped page, hand-to-target per frame):
+- **m2647 -> m2661** the frame line's stray `//` had every hand pose DEAD (m2662 found it): "stands there while the wheel spins by itself" is
+  exactly that build range, and "the wheel is not bigger" is a build before m2664 (when it grew). If he still sees it on m2690, it is a stale
+  cache -- the big cyan number says which.
+- **Real, and mine:** (1) the reach's extra bend (`P.auto`) FROZE at 40 deg when the reach turned off -> the door's push ran at a 64-71 deg bow;
+  it now drains (120 deg/s). (2) The door's push PINNED him while the slab swung out of his hands (`hd` .53-.75 m): now he steps after the door,
+  palms on the stone (the pin follows the hands' contact point, `R.sd` .42-.62 off it). (3) The heave chest stood him .95 m off the lid's edge:
+  `chest.stand` .62 and the reach on. (4) The low drawer was .3 m off the floor (a crouch he has not got): the gallery's drawer is the top one.
+- **LOCK-IN** (his: "no melee, attacks, dodges, flips, jumps -- only the piece's input and an explicit exit; every piece"): every `ACT` verb
+  (touch and gamepad) is swallowed while a piece runs; a RIGHT TAP is the exit (lets go of a crank / capstan, or cancels any piece during its
+  walk-up); `stepKit` stands down (no aim / charge / swing).
+- **ikhands** (m2690 table): door .16 m median, chest heave .085, capstans .04-.05, drawer 0, button 0, lever .16 -- all ok; the kick's foot is
+  one mid-swing sample (.28, reported, not judged); **LOCK-IN mid-spin: dodge kept, strike kept, jump kept, right tap exits -- ok**.
+- **The gate:** `tools/ikgate.mjs` is now in `npm run check` -- it strips comments the way the parser does and fails if `ikitPose`, `getPose`,
+  `ikitStep`, `katDrawIK`, `gdnLotus` or `interactStep` stops being live code (proven: a `//` before `ikitPose` -> exit 1). A headless browser
+  run is too slow for the 4 s gate; `npm run ikhands` (~4 min) is the film + table, run it on any kit change.
+- **Folded in:** INTERACT CUE default **ARROW+OUTLINE** (his: the ring is overkill; RING options stay; a new storage key so the old default does
+  not stick); CHEST OPEN default **KICK** (HEAVE stays; the kick stands .84 m off the chest); IKIT.camSide 45 (already m2668); the LEVER's pull
+  ENDS LEANING BACK (the reach lets go at 70%, the lean to -18).
+- **Not done:** a real kick CLIP from the libraries (the kick is still IK) -- the chest build next. Moves no box. **Shipped unverified.**
 ## m2690 -- THE THORNBACK, the forest temple's mid-boss (room C, guarding the vine whip), procedural until his Tripo model
 - docs/temples/forest_enemies.md 7: "a big burrowing beast, bark-plated stone body, a ridge of thorn spikes down its back, mint sap in the
   cracks, a soft glowing belly". `thornMake` (SC_THORN) is the ONE builder -- three bark humps, a blunt-snouted head, four stubby legs, bark

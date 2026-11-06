@@ -27,7 +27,7 @@ const browser = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 page.on('pageerror', e => console.log('  pageerror', e.message));
 page.on('console', m => { const t = m.text(); if (/IKIT|IKPOSE|GETPOSE|THREW/.test(t)) console.log('  console', t); });
-await page.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=interact&entry=0&hero=agoblin${extra ? '&' + extra : ''}`, { timeout: 120000 });
+await page.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=interact&entry=0${arg('hero', 'agoblin') === 'none' ? '' : '&hero=' + arg('hero', 'agoblin')}${extra ? '&' + extra : ''}`, { timeout: 120000 });
 await page.waitForFunction(() => document.getElementById('boot').classList.contains('gone') && window.__shot && window.mel && mel.IKIT && mel.IKIT.on && mel.IKIT.rows.length, null, { timeout: 240000, polling: 1000 });
 await page.waitForTimeout(settle * 1000);
 if (pre) await page.evaluate(pre);
