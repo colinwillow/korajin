@@ -63,6 +63,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2748 -- COMBAT DEPTH PASS 2: THE ROOM IS A WEAPON (m2748)
+COMBAT_DEPTH.md pass 2, in the Combat Lab. Numbers in `CBT.room` and `BARREL`.
+- **BOWLING (`cbtBowl`, in `bodyFly`'s FLYHIT):** an arena body flung into another keeps .72 of its speed (was .42) and the struck one, if knocked
+  down, is thrown on at .8 of it -- a chain. The struck body is hit as BLOW_SRC 'blast', which `cbtDefend` never blocks (a flying man is not parried).
+- **WALLS (`cbtSplat`):** `bodyFly` now also meets the COLL mesh's walls (`collPush`, as `foeMove` does since m2714); a body driven INTO a wall
+  faster than 7 m/s takes (v - 7) x .35 and can die of it.
+- **LEDGES (`cbtDrop`):** the drop is measured GROUND TO GROUND (`d.gy0`, the ground he was thrown from) -- NOT off the landing speed, because a
+  plain knock-up (flyUp ~9) lands at ~2 m worth of speed on flat floor. Over 2 m: 2 combo hits of damage; over 5 m: dead. The lab has a DAIS
+  for it (10 x 6 m, 2.6 m high, a 1.2 m step up at its east end) in front of the start.
+- **CHAINS (`cbtChainKO`, in `arenaKO`):** kills inside 1.4 s of each other -- a camera punch, hitstop and a longer slow-mo per link (x5 cap).
+- **AIMED DEFLECT (`cbtDeflAim`, in `deflectThreat`):** an arrow sent home with the LEFT stick held goes to the enemy nearest that bearing
+  (.7 rad cone, 32 m) instead of its archer.
+- **BARRELS (`BARREL`, `barrelAdd/Hit/Boom/Step`, SC_BARREL):** primitive red drums (hoops, a hazard band; 4 draws each). A swing, ANY arrow,
+  a flung body or another barrel's blast (.14 s later) sets one off: 4.4 m fireball, 7 damage and a launch on arena bodies (never blocked),
+  him hurt inside 3.5 m, spiders / guardians / rocks too. Lab: SPAWN > ROOM > Barrels x5; RESET clears them. They have no collider (he walks
+  through one).
+Readout line `room bowl / wall / drop / ledge kill / chain xN / aimed / barrels`. `npm run check` green. Shipped unverified.
+Still open: pass 3 (the 15-body mixed-role wave), the temple squads, his sign-off.
+
 ## m2747 -- CONTAINMENT (his: "I got outside the level"): the forest temple's PLAY BOUNDS (14 parts), and three holes in the shell closed
 
 The collider worker's system (m2733, COLL.md "Containment") needed each zone's bounds rows. `ftinBounds` pushes the interior's:
