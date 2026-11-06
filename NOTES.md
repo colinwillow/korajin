@@ -63,6 +63,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2740 -- THE CHEST FLOAT (his, the forest temple: "walking up to a chest lifts him off the floor"): kit meshes are no longer zone ground; the dais (Nov 6 2026)
+**The fix shipped:** every kit piece carries its OWN box collider, and the forge zones' triangle collider (`COLL` auto) takes any drawn solid mesh
+it finds -- so a chest's rims, feet, trim and lid could ALSO be walkable triangles beside it. `ikitAdd` now marks everything a row adds
+`noColl` (every chest A-F, the gallery's, every other kit piece; the pieces' own boxes are unchanged). Also `mel.IKIT` is exposed from any zone.
+**What the probe found (honestly: the float did not reproduce headless):** a headless forest-temple run stood him beside every chest (A-F) at
+.85 / 1.0 / 1.2 m, closed AND forced open AND after a forced collider rebuild, with the fix ON and OFF: he stands at the chest's own base every
+time. BUT the chest's base is not the room's floor in two rooms: **ftB and ftE sit at y .30**, and the ground stays at .30 out to 2.5 m on both
+sides, ~.28 above the floor 4 m out, and .30 HIGHER again 2.5 m in front -- a wide dais (and a step) in the temple's own room geometry. If that
+dais's collider does not match what is drawn there, that is "his feet hover beside the open chest" exactly (both shots are rooms with a raised
+chest). Flagged to the temple worker to check the drawn dais against its collider. Gates: `npm run check`. **Shipped unverified.**
+
 ## m2739 -- SHOOT A TARGET -> SOMETHING MOVES (his design pillar): the WELL LIFT and E's ROOT BRIDGE; targets now wake their OWN mover
 
 His: "you shoot the target, the platform moves -- he LOVES that, we need more of that". Two more, on room A's machinery (`K.mover` +
