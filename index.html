@@ -1183,7 +1183,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
   <div class="sub" id="bootSub"></div>
   <div class="msg" id="bootMsg">loading</div>
   <div class="bar"><i id="bootBar"></i></div>
-  <div class="bld">BUILD <span id="bootBuild">m2754</span></div>
+  <div class="bld">BUILD <span id="bootBuild">m2755</span></div>
 </div>
 <script>
 // m1320: THE BOOT CARD SAYS WHICH GAME IS LOADING. *"It still says Weirdport and we're not even on that game. We could stylize the loading
@@ -1200,7 +1200,7 @@ body.reeling > *:not(#gl):not(#reel):not(script) { visibility: hidden !important
       const sh = document.createElement('div'); sh.className = 'bvshade'; v.addEventListener('playing', () => v.classList.add('on'), { once: true }); b.prepend(sh); b.prepend(v); const pl = v.play(); if (pl && pl.catch) pl.catch(() => {}); } catch (e) {} } })();     // m2258: the LOADING card wears the second poster -- the splash keeps the first (his: 'we don't use the same image twice')
 </script>
 
-<div class="chip" id="build"><b id="buildN">m2754</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
+<div class="chip" id="build"><b id="buildN">m2755</b><u id="chipMin">&minus;</u><i id="buildI"></i></div>
 <div id="splash" aria-label="tap to start"><img class="blur" alt=""><img class="main" alt="Zap and Clancy"><div class="glow"></div><div class="bn"></div></div>
 <script>
 // m879 (STEER 02:22): THE SPLASH, before the module (so it shows on the first paint, while the boot carries on behind it). The image's
@@ -1344,7 +1344,7 @@ function jinHueMat(m) {
   return m;
 }
 
-const BUILD = 'm2754';
+const BUILD = 'm2755';
 /* ASSETS:START */
 const ASSETS = {"textures/bronze.webp":"bdb5b1c0","textures/dome_banner.webp":"a45add1e","textures/dome_bark.webp":"fb0d16fd","textures/dome_clump.webp":"c1c1a6b8","textures/dome_cobble.webp":"1679cf07","textures/dome_cushion.webp":"d1923b5f","textures/dome_cyclo.webp":"9a8ec8c4","textures/dome_door.webp":"bfc435fd","textures/dome_gem.webp":"e5c4d5d9","textures/dome_gold.webp":"bcdc15e7","textures/dome_grass.webp":"5e209ee3","textures/dome_ivy.webp":"c89dc304","textures/dome_leaves.webp":"7177812d","textures/dome_moss.webp":"f826b682","textures/dome_relief.webp":"4d91574b","textures/dome_smooth.webp":"572d0f5e","textures/dome_stone.webp":"5a30ba9b","textures/dome_tuft.webp":"8141f322","textures/ft_carve.webp":"cd2d40a1","textures/ft_cobble.webp":"0a7b1218","textures/ft_door.webp":"814732a0","textures/ft_door_n.webp":"580a9357","textures/ft_floor.webp":"60d3d585","textures/ft_frieze.webp":"50bf1138","textures/ft_frieze_n.webp":"a852f527","textures/ft_guardian.webp":"a03da9b0","textures/ft_guardian_n.webp":"7ca700b8","textures/ft_moss.webp":"ed583b4f","textures/ft_pillarband.webp":"eae5e4b1","textures/ft_pillarband_n.webp":"ebeed4d4","textures/ft_pot.webp":"2cb76641","textures/ft_rock.webp":"ff4880ff","textures/ft_rock_n.webp":"a1159af7","textures/ft_rockfloor.webp":"d52ee5fc","textures/ft_rockfloor_n.webp":"9bd3db44","textures/ft_root.webp":"4fb3d29f","textures/ft_wall.webp":"1470f67f","textures/garden_awning.webp":"6193efc8","textures/garden_banner_red.webp":"2aebfd9b","textures/garden_banner_teal.webp":"7512c2b8","textures/garden_blossom.webp":"37b3de85","textures/garden_blossom_card.webp":"dfaa5d14","textures/garden_cloud.webp":"5f2ab760","textures/garden_cloud_bank.webp":"3cc1fc57","textures/garden_cloud_tower.webp":"1e274a7a","textures/garden_cloud_wisp.webp":"af500526","textures/garden_clouds.webp":"eb9e32ce","textures/garden_crystal.webp":"030910bf","textures/garden_fern.webp":"5a23e89a","textures/garden_flag.webp":"09cff172","textures/garden_flowers.webp":"d2e3124f","textures/garden_hammock.webp":"e3b1a6a0","textures/garden_jinra_crystal.webp":"a8d5591e","textures/garden_jinra_flame.webp":"dc513783","textures/garden_jinra_runes.webp":"767488c0","textures/garden_jinra_swirl.webp":"7c3e5772","textures/garden_lantern.webp":"efd86072","textures/garden_lawn.webp":"082a0332","textures/garden_pot.webp":"061b0972","textures/garden_rock.webp":"b9df9367","textures/garden_roof.webp":"a9f5304b","textures/garden_sand.webp":"325c6a60","textures/garden_sky.webp":"2e0058a2","textures/garden_vine.webp":"00d060eb","textures/garden_water.webp":"da1edfcc","textures/garden_wood.webp":"6cd0d3d9","textures/hollows_cliff.webp":"afd42c1e","textures/hollows_cream.webp":"3e412dd3","textures/hollows_leaves.webp":"09c66339","textures/hollows_pebble.webp":"49006598","textures/hollows_rock.webp":"a6d17614","textures/hollows_sand.webp":"b977d1fc","textures/ice_banner.webp":"fe145f59","textures/ice_stone.webp":"c1889752","textures/jinra_adobe.webp":"c94ac8eb","textures/jinra_iron.webp":"d00651c1","textures/jinra_teal.webp":"4f1000b2","textures/kail_floor.webp":"f4601138","textures/kail_frieze.webp":"1b66405e","textures/kail_panel.webp":"993a8faf","textures/kail_rock.webp":"9da75ab0","textures/lake_foam_paint.webp":"5589547e","textures/lake_paint_stroke.webp":"34062273","textures/lake_paint_wood.webp":"467abd06","textures/lake_water_paint.webp":"8ed7c923","textures/lake_water_paint_n.webp":"0ac27fbb","textures/marble.webp":"53c3d802","textures/red_cloth.webp":"82877ebd","textures/roof_tiles.webp":"bc0a6ac0","textures/sandstone.webp":"4d991588","textures/sky_sunset_01.webp":"db9645b5","textures/sky_sunset_02.webp":"385ca84e","textures/snow_bark.webp":"238a9743","textures/snow_ice.webp":"3b4e4405","textures/snow_needles.webp":"764b48a2","textures/snow_rock.webp":"71d1c6db","textures/snow_snow.webp":"fefa935b","textures/stone_blocks.webp":"419e5209","textures/svk_ashlar.webp":"6f6a247d","textures/svk_band.webp":"748c5ec4","textures/svk_banner.webp":"8e765d3a","textures/svk_glyph.webp":"1f852b02","textures/svk_hexstone.webp":"c917b8f9","textures/svk_jinstone.webp":"7473678d","textures/svk_jinwood.webp":"809b50d0","textures/svk_paving.webp":"bbc7d4d3","textures/svk_planks.webp":"e6d34955","textures/svk_shell.webp":"a822cea9","textures/svk_stone.webp":"367cb102","textures/svk_thatch.webp":"8f36bcdd","textures/svk_timber.webp":"e4c792ee","textures/temple_banner.webp":"f356ed38","textures/temple_bark.webp":"0b407ebe","textures/temple_carpet.webp":"9b3a2df9","textures/temple_frond.webp":"c4e424d9","textures/temple_glyph.webp":"2ff2a87e","textures/temple_gold.webp":"63c94d47","textures/temple_jade.webp":"338e5694","textures/temple_lacquer.webp":"d469819f","textures/temple_paving.webp":"baa24e2f","textures/temple_planks.webp":"046e23cf","textures/temple_rock.webp":"67d14316","textures/temple_rope.webp":"75b11f94","textures/temple_sky_dawn.webp":"459fafc8","textures/temple_sky_day.webp":"a5094225","textures/temple_sky_storm.webp":"fe1837cb","textures/temple_wall.webp":"ec010c84","textures/temple_weave.webp":"927b8a35","textures/uw_bed.webp":"50d54e63","textures/uw_coral.webp":"ecb7cbc1","textures/uw_glyph.webp":"4ac5427c","textures/uw_rock.webp":"5b58cf56","textures/wood_planks.webp":"c8b25167","textures/wood_timber.webp":"dc42d865","models/alien_lizard.glb":"faffcf4c","models/alien_lizard_ktx2.glb":"05da2a20","models/skate.glb":"0c612d5e","models/skateboard.glb":"5ba93796","models/characters/alien_antenna_game.glb":"f3ccf328","models/characters/alien_antenna_game_ktx2.glb":"28afac8c","models/characters/alien_female_purple.glb":"1c73eef1","models/characters/alien_female_purple_ktx2.glb":"fc914afb","models/characters/alien_goblin.glb":"3e91bffb","models/characters/alien_goblin_chains.glb":"e72d1550","models/characters/alien_goblin_game.glb":"cfabd926","models/characters/alien_grey_medium.glb":"5a779e8e","models/characters/alien_grey_medium_ktx2.glb":"61600c3e","models/characters/alien_rollerskate_blue.glb":"abf0917c","models/characters/alien_rollerskate_blue_ktx2.glb":"e9a7948a","models/characters/alien_warrior.glb":"f5cc9c49","models/characters/alien_warrior_ktx2.glb":"a13fb7b6","models/characters/beautiful_asian.glb":"910f6565","models/characters/beautiful_asian_ktx2.glb":"35281eef","models/characters/beautiful_blonde.glb":"edddc421","models/characters/beautiful_blonde_ktx2.glb":"89cf3899","models/characters/brute_warboss_armor.glb":"cc5c7936","models/characters/ceo_alien.glb":"844dc3a7","models/characters/ceo_human.glb":"ec289865","models/characters/clancy.glb":"4b9d271f","models/characters/clancy_ktx2.glb":"74edbc6e","models/characters/colin.glb":"99d38b7d","models/characters/colin_ktx2.glb":"35040f87","models/characters/contruction_worker.glb":"8bd3d7ce","models/characters/contruction_worker_ktx2.glb":"3df8c344","models/characters/dummy_officer.glb":"724965ac","models/characters/dummy_officer_ktx2.glb":"db640cda","models/characters/fat_activist_01.glb":"3c566fee","models/characters/fat_activist_01_ktx2.glb":"b9328df4","models/characters/fat_biker_01.glb":"576b7cf5","models/characters/fat_biker_01_ktx2.glb":"7142cfad","models/characters/fat_biker_02.glb":"ab5d7ec7","models/characters/fat_biker_02_ktx2.glb":"28cec6cc","models/characters/fat_hippie.glb":"f09a260d","models/characters/fat_hippie_ktx2.glb":"0be745a4","models/characters/fat_hipster.glb":"9cf45ffb","models/characters/fat_hipster_ktx2.glb":"18106ff3","models/characters/fat_secret_service.glb":"6d546fb0","models/characters/fat_secret_service_ktx2.glb":"a23a304e","models/characters/fat_trump.glb":"5de6bc56","models/characters/fat_trump_ktx2.glb":"a0ddaf4d","models/characters/firefighter.glb":"ebde005d","models/characters/firefighter_ktx2.glb":"ccf93c96","models/characters/goblin_game.glb":"db1cf0e0","models/characters/hick_skinny.glb":"1ebe78e8","models/characters/hick_skinny_ktx2.glb":"1e93f0ed","models/characters/hobo_01.glb":"34e80b1d","models/characters/hobo_01_ktx2.glb":"69497677","models/characters/jack.glb":"ab009b9b","models/characters/jack_ktx2.glb":"1f4c9f7f","models/characters/jackal_game.glb":"f8c9256d","models/characters/moussa.glb":"6d80b1cf","models/characters/moussa_ktx2.glb":"66e040f8","models/characters/orc_game.glb":"d9aa816d","models/characters/osari_bowman_game.glb":"2ee424af","models/characters/proxy_ceo.bin":"6eca0c34","models/characters/proxy_ceo.jpg":"fadc9d0a","models/characters/proxy_ceo.json":"e62a7975","models/characters/proxy_ceo_alien.bin":"be247ecc","models/characters/proxy_ceo_alien.jpg":"8f8bf8fc","models/characters/proxy_ceo_alien.json":"eb23e28f","models/characters/proxy_hick.bin":"4485560e","models/characters/proxy_hick.jpg":"8c331965","models/characters/proxy_hick.json":"d85a0d36","models/characters/proxy_zap.bin":"dd7b300e","models/characters/proxy_zap.jpg":"2e7330ae","models/characters/proxy_zap.json":"b3b42754","models/characters/proxy_zap2.bin":"51088f46","models/characters/proxy_zap2.jpg":"a954a815","models/characters/proxy_zap2.json":"5c50abb7","models/characters/rept_heavy_armor.glb":"934661c7","models/characters/samurai_game.glb":"c7940015","models/characters/toad_wanderer_game.glb":"2efc31c4","models/characters/xray_skeleton.glb":"46480317","models/characters/zap.glb":"5e5cca54","models/characters/zap_02.glb":"4ff12de0","models/characters/zap_02_lib.glb":"e23d91da","models/characters/zap_ktx2.glb":"4b29d886","models/characters/zoar.glb":"423a9de9","models/characters/zoar_game.glb":"d20a3736","models/vehicles/dump_truck.glb":"d870dc18","models/vehicles/dump_truck_ktx2.glb":"21ee7059","models/vehicles/motorcycle_fatboy.glb":"9ed9be28","models/weapons/alien_antenna_blaster_game.glb":"54083b44","models/weapons/alien_antenna_hammer_game.glb":"707b8a27","models/weapons/alien_launcher.glb":"ba8ab96a","models/weapons/hammer.glb":"3335fdf2","models/weapons/shield_brute.glb":"c6e5593f","models/weapons/spikey_mace.glb":"dcd43acd","models/weapons/tripo_weapons_01.glb":"0b97a05e","models/weapons/tripo_weapons_01_glow.webp":"681fd03d","models/weapons/w_brute_cleaver.glb":"07a97580","models/weapons/w_rept_maul.glb":"84c3a1a4","models/buildings/alien_base_01.glb":"d9b9fd7f","models/buildings/alien_base_01_ktx2.glb":"6cbbfef2","models/buildings/korajin_bld_01.glb":"edf3178e","models/towers/alien_tower_01.glb":"98d23375","models/towers/alien_tower_01_ktx2.glb":"47597651","models/streets/modular_streets_kit.glb":"6a4bcaa5","models/toon_city/impact_marks.json":"2b616620","models/toon_city/impact_marks_atlas.ktx2":"efe0840e","models/toon_city/impact_marks_atlas.png":"490ed049","models/toon_city/toon_city_breakables.glb":"29bddbc8","models/toon_city/toon_city_collision.glb":"fb3a693f","models/toon_city/toon_city_obb.json":"81c18a47","models/toon_city/toon_city_visual.glb":"5df62285","models/toon_city/toon_city_visual_ktx2.glb":"cf080531","models/toon_city/weirdkit_tint.js":"f6e9d802","models/toon_city_kit/toon_city_collision.glb":"5540a364","models/toon_city_kit/toon_city_kit_buildings.glb":"590e53f0","models/toon_city_kit/toon_city_kit_buildings_ktx2.glb":"e6dff3a3","models/toon_city_kit/toon_city_kit_pieces.glb":"8232bd6f","models/toon_city_kit/toon_city_kit_twins.glb":"fcc9fdfc","models/toon_city_kit/toon_city_visual.glb":"45cf2957","models/toon_city_kit/toon_city_visual_ktx2.glb":"f26a6984","models/toon_city_kit/weirdkit_detile.js":"dd05bd70","models/characters/morph/shapes.bin":"4e680384","models/characters/morph/shapes.json":"abfc949d","models/characters/forged/alien_female_purple.glb":"0308860e","models/characters/forged/alien_goblin_game.glb":"11f44bc1","models/characters/forged/alien_rollerskate_blue.glb":"bcccc63f","models/characters/forged/alien_warrior.glb":"a067d5ab","models/characters/forged/beautiful_asian.glb":"f1c7baa5","models/characters/forged/beautiful_blonde.glb":"f83172bd","models/characters/forged/brute_warboss_armor.glb":"dc15dc94","models/characters/forged/ceo_alien.glb":"20659ac3","models/characters/forged/ceo_human.glb":"326d9e7e","models/characters/forged/clancy.glb":"19fabcce","models/characters/forged/contruction_worker.glb":"99fe1a17","models/characters/forged/dummy_officer.glb":"87a11843","models/characters/forged/fat_activist_01.glb":"6546645c","models/characters/forged/fat_biker_01.glb":"943f38ea","models/characters/forged/fat_biker_02.glb":"5d63a0cf","models/characters/forged/fat_hippie.glb":"ff0539ba","models/characters/forged/fat_hipster.glb":"792b92d8","models/characters/forged/fat_secret_service.glb":"7c29d1da","models/characters/forged/firefighter.glb":"20410689","models/characters/forged/goblin_game.glb":"3c813462","models/characters/forged/hick_skinny.glb":"d9232022","models/characters/forged/hobo_01.glb":"37d266c9","models/characters/forged/index.json":"7ac38412","models/characters/forged/jack.glb":"712b6241","models/characters/forged/moussa.glb":"74d19c70","models/characters/forged/orc_game.glb":"7bf3c227","models/characters/forged/osari_archer.glb":"bf2f27f5","models/characters/forged/rept_heavy_armor.glb":"01e631b0","models/characters/forged/samurai_archer.glb":"04db413e","models/characters/forged/samurai_game.glb":"a946c148","models/characters/forged/stone_guardian.glb":"8a9ff43d","models/characters/forged/stone_olmec.glb":"be0ae8f6","models/characters/forged/zap.glb":"10eda718","models/characters/forged/zap_02.glb":"fd513cea","models/characters/forged/zap_02_lib.glb":"fd513cea","models/characters/forged/zoar_game.glb":"b032a28e","models/characters/anims/agoblin_helm.glb":"f0c54128","models/characters/anims/agoblin_meditate.glb":"666afb5b","models/characters/anims/agoblin_swim.glb":"6cef1441","models/characters/anims/toad_sage.glb":"10cc522d","models/characters/anims/wall_side.glb":"089d3dc7","levels/blockout_sample.glb":"ee8a0f57","levels/hamlet_d1.bin":"5bb698c2","levels/index.json":"2c8499e1","levels/region_6.bin":"085f2591","levels/region_6.json":"5236372c","levels/sample_two_towers.json":"e2466683","images/crack_sprite_01.ktx2":"4aa55fde","images/crack_sprite_01.png":"16b52e8c","images/fire_sprites_01.ktx2":"922e1191","images/fire_sprites_01.png":"f87e2696","images/fire_sprites_02.ktx2":"e0cbfe1d","images/fire_sprites_02.png":"b373a6fd","images/fire_sprites_03.ktx2":"4fbbb985","images/fire_sprites_03.png":"7eece336","images/geyser_sprites_01.png":"b6325470","images/hdri_game.ktx2":"0feb5c79","images/hdri_game.png":"dac55f41","images/serpent_eye.webp":"b764e90d","images/serpent_fin.webp":"a592c818","images/serpent_skin.webp":"f7e0e45d","images/ship_lacquer.jpg":"51b8e6e5","images/ship_sail.jpg":"9d04714c","images/snow_sky.webp":"e0c34c2d","images/splash_zap_n_clancy.webp":"52a9d8a4","images/water_sprites_01.ktx2":"326924c5","images/water_sprites_01.png":"31e12659","audio/blaster_sound_01.mp3":"40d99583","audio/blaster_sound_02.mp3":"4bd7bb7c","audio/box_break_01.mp3":"e4127980","audio/electricity_beam_01.mp3":"986db8c9","audio/explosion_small.mp3":"f154a537","audio/metal_clang_01.mp3":"a333bd27","audio/metal_clang_02.mp3":"1e3ebbd6","audio/metal_clang_03.mp3":"afe44812","audio/metal_ping_01.mp3":"8ffca1a0","audio/plasma_canon.mp3":"e32c324d","audio/powerup_01.mp3":"48fbbe08","audio/swoosh_01.mp3":"193db185","audio/swoosh_02.mp3":"19145e70","audio/swoosh_03.mp3":"544fdffb","audio/swoosh_04.mp3":"843bee5d","audio/plasma_sounds/plasma_01.mp3":"e71c010f","audio/plasma_sounds/plasma_02.mp3":"ac3b1c75","audio/plasma_sounds/plasma_03.mp3":"eaa59355","audio/plasma_sounds/plasma_04.mp3":"bc7865e0","audio/plasma_sounds/plasma_05.mp3":"1d821cd0","audio/plasma_sounds/plasma_06.mp3":"cb979fbe","audio/plasma_sounds/plasma_hit.mp3":"30e5af5c","audio/alien_orc_grunt_sounds/alien_orc_grunt_01.mp3":"d6f4b343","audio/alien_orc_grunt_sounds/alien_orc_grunt_02.mp3":"78afc603","audio/alien_orc_grunt_sounds/alien_orc_grunt_03.mp3":"972c524a","audio/alien_orc_grunt_sounds/alien_orc_grunt_04.mp3":"b0ce76eb","audio/alien_orc_grunt_sounds/alien_orc_grunt_05.mp3":"1f0ba1f4","audio/alien_orc_grunt_sounds/alien_orc_grunt_06.mp3":"4f749866","audio/alien_orc_grunt_sounds/alien_orc_grunt_07.mp3":"dcf75925","audio/hit_sounds/hit_sound_01.mp3":"befaa2be","audio/hit_sounds/hit_sound_02.mp3":"73bc4433","audio/hit_sounds/hit_sound_03.mp3":"24b181e4","audio/hit_sounds/hit_sound_gound_01.mp3":"86ee2674","audio/hit_sounds/hit_sound_ground_02.mp3":"8a7cac73","audio/hit_sounds/hit_sound_plasma_01.mp3":"9abc0202","audio/hit_sounds/hit_sound_plasma_02.mp3":"6aaf0fe5","audio/hit_sounds/thud_a_1.mp3":"3e526f73","audio/hit_sounds/thud_a_2.mp3":"e99874e5","audio/hit_sounds/thud_a_3.mp3":"7aaaea7d","audio/hit_sounds/thud_b_1.mp3":"c6e4c4f4","audio/hit_sounds/thud_b_2.mp3":"db6b7fbb","audio/hit_sounds/thud_b_3.mp3":"5c7909e3","audio/creature_noises/creature_noise_01.mp3":"cbcc6ee7","audio/creature_noises/creature_noise_02.mp3":"201a8247","audio/creature_noises/creature_noise_03.mp3":"97680811","audio/creature_noises/creature_noise_04.mp3":"6f734df2","audio/creature_noises/creature_noise_05.mp3":"6f736441","audio/creature_noises/creature_noise_06.mp3":"992712e9","audio/creature_noises/creature_noise_07.mp3":"d9ad04b3","audio/footsteps/footstep_2_l.mp3":"abeabfbe","audio/footsteps/footstep_2_r.mp3":"7dd16046","audio/footsteps/footstep_3_L.mp3":"bc044ed9","audio/footsteps/footstep_3_R.mp3":"49c6f23d","audio/footsteps/footstep_l.mp3":"b66e579b","audio/footsteps/footstep_r.mp3":"96e13433","audio/footsteps/footsteps.mp3":"8ee73ccb","audio/footsteps/step3_1_l.mp3":"a855262e","audio/footsteps/step3_1_r.mp3":"1ea0a2b4","audio/footsteps/step3_2_l.mp3":"43ef40dd","audio/footsteps/step3_2_r.mp3":"91cfe687","audio/footsteps/step3_3_l.mp3":"56ff6eb2","audio/footsteps/step3_3_r.mp3":"0e73e8e3","audio/footsteps/step3_4_l.mp3":"26c965fd","audio/footsteps/step3_4_r.mp3":"c3110fbb","audio/footsteps/step_1_l.mp3":"f7efc3d9","audio/footsteps/step_1_r.mp3":"b236bde4","audio/footsteps/step_2_l.mp3":"0e397d22","audio/footsteps/step_2_r.mp3":"2392717c","audio/footsteps/step_3_l.mp3":"364d26a3","audio/footsteps/step_3_r.mp3":"8434aa01","audio/footsteps/step_4_l.mp3":"1fb763a6","audio/footsteps/step_4_r.mp3":"74f5aff2","audio/footsteps/step_5_l.mp3":"8619ec0e","audio/footsteps/step_5_r.mp3":"eff2c01e","audio/footsteps/step_6_l.mp3":"553ba89d","audio/footsteps/step_6_r.mp3":"f2fec766","audio/footsteps_snow/cut/snow_1_l.mp3":"fecc6b96","audio/footsteps_snow/cut/snow_1_r.mp3":"9a8b4261","audio/footsteps_snow/cut/snow_2_l.mp3":"0d6985b7","audio/footsteps_snow/cut/snow_2_r.mp3":"efd7b931","audio/footsteps_snow/cut/snow_3_l.mp3":"c5ffc06b","audio/footsteps_snow/cut/snow_3_r.mp3":"3b34c06e","audio/footsteps_snow/cut/snow_4_l.mp3":"f85006b0","audio/footsteps_snow/cut/snow_4_r.mp3":"5f8ebb56","audio/steps/grass_1.mp3":"aa9dcb4c","audio/steps/grass_2.mp3":"19d1a359","audio/steps/grass_3.mp3":"058341e0","audio/steps/grass_4.mp3":"3111ae90","audio/steps/metal_1.mp3":"71e474bf","audio/steps/metal_2.mp3":"6c51c9f5","audio/steps/metal_3.mp3":"1781bed4","audio/steps/metal_4.mp3":"aee7b99d","audio/steps/metal_5.mp3":"dba70524","audio/steps/metal_6.mp3":"f1d7a18a","audio/steps/rustle_1.mp3":"9dd271aa","audio/steps/rustle_2.mp3":"41696f76","audio/steps/rustle_3.mp3":"da17b02c","audio/steps/rustle_4.mp3":"4e9a4451","audio/steps/rustle_5.mp3":"ee911bc6","audio/steps/rustle_6.mp3":"af76d88b","audio/steps/sand_1.mp3":"e5f8f7e4","audio/steps/sand_2.mp3":"5e958406","audio/steps/sand_3.mp3":"d3f43265","audio/steps/sand_4.mp3":"a0a056d7","audio/steps/sand_5.mp3":"1c216d91","audio/steps/sand_6.mp3":"9e4e76b9","audio/steps/stone_1.mp3":"d58c055c","audio/steps/stone_2.mp3":"8b20f2aa","audio/steps/stone_3.mp3":"b707af84","audio/steps/stone_4.mp3":"7417f8d1","audio/steps/water_1.mp3":"1323a529","audio/steps/water_2.mp3":"98ec63be","audio/steps/water_3.mp3":"0d9f507d","audio/steps/water_4.mp3":"43a07b4d","audio/steps/water_5.mp3":"af74047d","audio/steps/water_6.mp3":"13f8846a","audio/steps/wood_1.mp3":"45305153","audio/steps/wood_2.mp3":"c384dc8c","audio/steps/wood_3.mp3":"52e69344","audio/steps/wood_4.mp3":"69632057","audio/music/forgotten_garden.mp3":"da0acb09","audio/ui/go_1.mp3":"bf81d6d4","audio/ui/start_draw_1.mp3":"8b89a363","audio/ui/start_draw_2.mp3":"7da4c5a1","audio/ui/start_draw_3.mp3":"cbebfcd1","audio/ui/start_tap.mp3":"74ab7463","audio/ui/tap_1.mp3":"ce6bbcfc","audio/ui/tap_2.mp3":"6bf441ff","audio/ui/tick_1.mp3":"e20e61a0","audio/ui/tick_2.mp3":"a4505000","audio/voice/korajin_intro_01.mp3":"0a618686","audio/voice/korajin_intro_02.mp3":"2249eeb1","audio/voice/korajin_intro_03.mp3":"8f12ef6f","audio/portal/portal_open_a.mp3":"3ca2c08c","audio/portal/portal_open_b.mp3":"494a1e4c","audio/portal/portal_open_c.mp3":"5f8367fb","audio/portal/portal_seal_a.mp3":"a12a386a","audio/portal/portal_seal_b.mp3":"ec061d73","audio/portal/portal_seal_c.mp3":"23c56166","audio/portal/portal_through_a.mp3":"87929a62","audio/portal/portal_through_b.mp3":"3118baae","audio/stone/break_a.mp3":"60f02d0b","audio/stone/break_b.mp3":"9120225f","audio/stone/chip_a.mp3":"414dc711","audio/stone/chip_b.mp3":"ae3e1247","audio/stone/crack_a.mp3":"e0c577de","audio/stone/crack_b.mp3":"e89909f2","audio/stone/gravel_a.mp3":"edeba140","audio/stone/gravel_b.mp3":"b1f34f1e","audio/stone/hit_a.mp3":"402c3b8c","audio/stone/hit_b.mp3":"d69ed3d5","audio/stone/knock_a.mp3":"2d3e4e18","audio/stone/knock_b.mp3":"339bca98","audio/stone/ring_a.mp3":"ed80b624","audio/stone/ring_b.mp3":"74c2efdd","audio/stone/rumble.mp3":"896974d8","audio/katana/kc_arm_a.mp3":"1190b614","audio/katana/kc_arm_b.mp3":"6d278129","audio/katana/kc_arm_c.mp3":"cbebda36","audio/katana/kc_full_a.mp3":"7a299063","audio/katana/kc_full_b.mp3":"793db8ef","audio/katana/kc_full_c.mp3":"a11413fe","audio/katana/kc_go_a.mp3":"5433184e","audio/katana/kc_go_b.mp3":"8b5c7202","audio/katana/kc_go_c.mp3":"1ec95c08","audio/katana/kc_lock_a.mp3":"3579a1be","audio/katana/kc_lock_b.mp3":"4f7bd760","audio/katana/kc_lock_c.mp3":"10a14cf8","audio/lake/hull_loop.mp3":"0054f27a","audio/lake/lap_loop.mp3":"921163b5","audio/lake/shore_a.mp3":"688fe2fb","audio/lake/shore_b.mp3":"533ef226","audio/lake/splash_big_a.mp3":"18c8d877","audio/lake/splash_big_b.mp3":"dc74cf29","audio/lake/splash_big_c.mp3":"a5bc14b9","audio/lake/splash_small_06.mp3":"05e9097a","audio/lake/splash_small_09.mp3":"e4562125","audio/lake/splash_small_10.mp3":"ae963347","audio/lake/splash_small_14.mp3":"3e01e759","audio/lake/splash_small_15.mp3":"5bf65938","audio/door/door_open_a.mp3":"90cad447","audio/door/door_open_b.mp3":"5b2777cc","audio/door/door_open_c.mp3":"35ec6137","audio/door/door_stone_a.mp3":"12fcb55d","audio/door/door_stone_b.mp3":"b23fc16d","audio/gathering/gath_chime_a.mp3":"d094ebfb","audio/gathering/gath_chime_b.mp3":"7a223870","audio/gathering/gath_full_a.mp3":"98b49c8c","audio/gathering/gath_rise_a.mp3":"5858827d","audio/gathering/gath_swell_a.mp3":"bd592baa","audio/gathering/gath_wave_a.mp3":"29c1020b","models/props/prop_hydrant.glb":"f157fee9","models/props/prop_hydrant_collision.glb":"0bbfc4d2","models/creatures/3_headed_dog.glb":"9263480a","models/creatures/blue_dragon.glb":"d72f4da7","models/creatures/mammoth.glb":"0bd2b2d8","models/creatures/mech_lightning_dragon.glb":"5935bb67","models/creatures/osari_spider.glb":"6c38e031","models/creatures/stone_guardian.glb":"ad47ade1","models/creatures/stone_olmec.glb":"da3e8cbd"};
 /* ASSETS:END */
@@ -26352,6 +26352,7 @@ function arrowStep(dt) {
     if (A.mine && ARENA.debris.length) { let dh = null; for (const D of ARENA.debris) if (D.die == null && D.m.position.distanceTo(P) < D.r + .3) { dh = D; break; } if (dh) { debrisCut(dh, Math.atan2(A.v.x, A.v.z) + Math.PI / 2); A.m.removeFromParent(); ARROWS.splice(i, 1); continue; } }
     if (A.mine && SPIDER.list.length) { let sh = null; for (const S of SPIDER.list) { const M = spiderMid(S, _sdC); if (Math.hypot(P.x - M.x, (P.y - M.y) * 1.3, P.z - M.z) < SPIDER.w * S.k * SPIDER.hitR) { sh = S; break; } }     // m1719: his arrows find the spiders too
       if (sh) { if (A.type === 'blast') arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); else { spiderBlow(sh, Math.atan2(A.v.x, A.v.z), A.pow || .7, A.dmg || 3, P.x, P.z); if (A.type === 'fire') for (let k = 0; k < 14; k++) gfire(P.x, P.y, P.z, .7); } if (A.pl) BOW.stat.hits++; A.m.removeFromParent(); ARROWS.splice(i, 1); continue; } }
+    if (A.mine && SWARM.n) { const C = swarmSeg(ox, oy, oz, P.x, P.y, P.z, .12, 'arrow', Math.atan2(A.v.x, A.v.z), 1); if (C) { if (A.pl) BOW.stat.hits++; if (A.type === 'blast') arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); A.m.removeFromParent(); ARROWS.splice(i, 1); continue; } }     // SWARM.md: an arrow on a critter (one shot; a wall crawler is shot OFF)
     if (A.mine && GUARD.list.length) { const gh = guardHit(P.x, P.y, P.z); if (gh) { if (A.type === 'blast') arrowBlast(P, Math.atan2(A.v.x, A.v.z), A.full); else guardBlow(gh, Math.atan2(A.v.x, A.v.z), A.pow || .7, A.dmg || 3, P.x, P.y, P.z); if (A.pl) BOW.stat.hits++; A.m.removeFromParent(); ARROWS.splice(i, 1); continue; } }     // m1732: the guardian
     if (A.mine) { let hit = null; for (const d of DUMMIES) { if (d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const R = d.root.position, hh = (d.K.h || 1.8);
         if (Math.abs(P.y - (R.y + hh * .5)) < hh * .55 && Math.hypot(P.x - R.x, P.z - R.z) < (d.K.r || .4) + .25) { hit = d; break; } }
@@ -26490,6 +26491,7 @@ const _bastA = new THREE.Vector3(), _bastB = new THREE.Vector3();
 function bowAssistCands(out) { const add = (key, x, y, z) => out.push({ key, x, y, z });
   for (const d of DUMMIES) { if (!d || !d.root || !d.root.visible || d.st === 'gone' || d.st === 'down' || d.ko || assistSkip(d)) continue; const R = d.root.position; add(d, R.x, R.y + (d.K && d.K.h || 1.8) * .55, R.z); }
   try { for (const S of SPIDER.list) { const M = spiderMid(S, _bastB); add(S, M.x, M.y, M.z); } } catch (e) {}
+  try { if (SWARM.n) swarmCands(add); } catch (e) {}     // SWARM.md: the wall crawlers and the flyers
   try { for (const G of GUARD.list) { const R = G.root.position; add(G, R.x, R.y + G.Z.P.h * .5, R.z); } } catch (e) {}
   try { for (const T of TURRET.list) if (!T.dead) add(T, T.x, (T.y || 0) + TURRET.h * .6, T.z); } catch (e) {}
   try { for (const B of BREAK) if (!B.dead && B.cx != null) add(B, B.cx, B.cy, B.cz); } catch (e) {}
@@ -26554,7 +26556,7 @@ function arrowBlast(P, dirH, full) { BOW.stat.blasts++; const R = BOW.blastR * (
   for (let i = 0; i < 6; i++) smokeAt(P.x + (Math.random() - .5), P.y + Math.random() * .5, P.z + (Math.random() - .5), 3, 1.3, [.35, .32, .3]);
   snd('boom', { g: .6, r: 1.2 + Math.random() * .1, x: P.x, z: P.z }); camShake(.18);
   BLOW_SRC = 'rocket'; dummyHit(P.x, P.z, dirH, 1.3, R, BOW.blastDmg, WEAP.palBlast); BLOW_SRC = '';
-  if (SPIDER.list.length) spiderArea(P.x, P.y, P.z, R, 1.2, BOW.blastDmg); if (GUARD.list.length) guardArea(P.x, P.y, P.z, R, 1.2, BOW.blastDmg); rockArea(P.x, P.y, P.z, R, 3);
+  if (SPIDER.list.length) spiderArea(P.x, P.y, P.z, R, 1.2, BOW.blastDmg); if (SWARM.n) swarmArea(P.x, P.y, P.z, R); if (GUARD.list.length) guardArea(P.x, P.y, P.z, R, 1.2, BOW.blastDmg); rockArea(P.x, P.y, P.z, R, 3);
   if (DOJO.on && DOJO.tgts) for (const T of DOJO.tgts) { if (T.goal < 1 || T.up < .7) continue; const dx = T.x - P.x, dz = T.z - P.z, q = Math.hypot(dx, dz); if (q < R + .3) { T.cool = 0; dojoTgtHit(T, 1.2, dx || .01, dz, 2.5); } }     // m1747: the blast knocks the straw targets flying
   if (inArena()) { vendHit(P.x, P.y, P.z, R); turretMelee(P.x, P.y, P.z, R, 4); } if (inHome()) bldHit(P.x, P.y, P.z, R, 4); if (ARENA.debris.length) debrisArea(P.x, P.y, P.z, R); bldHit(P.x, P.y, P.z, R * .6, 3); if (CWALL.list.length) wallHit(P.x, P.y, P.z, 1, 2, 'blast', dirH); }
 // m1729 (his: "versions of the weapons -- the katana, maybe a flaming katana, maybe green flame"): JIN FIRE on the blade (the left sub-menu while the
@@ -26676,6 +26678,7 @@ function bowArcInit() {
   ring.frustumCulled = false; scene.add(ring); BARC.pts = pts; BARC.ring = ring; }
 function bowArcHit(x, y, z) { for (const d of DUMMIES) { if (!d || !d.root || d.st === 'gone' || d.st === 'down' || !d.root.visible || d.tame) continue; const K = d.K || {}, R = d.root.position, hh = (K.h || 1.8); if (Math.abs(y - (R.y + hh * .5)) < hh * .55 && Math.hypot(x - R.x, z - R.z) < (K.r || .4) + .25) return 1; }     // m2430: a body with no root / table is skipped (his crash, Floating Boulders, bowArc -> bowArcHit)
   for (const S of SPIDER.list) { const M = spiderMid(S, _baR); if (Math.hypot(x - M.x, (y - M.y) * 1.3, z - M.z) < SPIDER.w * S.k * SPIDER.hitR) return 1; }
+  if (SWARM.n && swarmPick(x, y, z, .05)) return 1;
   if (GUARD.list.length && guardHit(x, y, z)) return 1; return 0; }
 // m2666 (his, on m2650: "at NIGHT the outline shows too and makes the arc LESS visible -- hilarious"): NIGHT WINS. m2650 took max(day, the fog's
 // brightness), and some zones keep a bright fog at night, so night read as day. Now it is the time of day alone: full by day, faded out by
@@ -33112,7 +33115,7 @@ function stepBolts(dt) {
         if (got && !(WEAP.palThru && got.K.pal)) { dead = true; b.onMan = got; }
         // m350: A FLYING TARGET (an orb): a sphere in `AIRT`, on the ball's own size
         if (!dead) for (const T of AIRT) if (T.on && Math.hypot(b.pos.x - T.x, b.pos.y - T.y, b.pos.z - T.z) < T.r + b.size * .5) { dead = true; T.hit(b); break; }
-        if (!dead && SPIDER.list.length && spiderShot(b)) dead = true; if (!dead && SCORP.list.length && scorpShot(b)) dead = true; if (!dead && GSCORP.list.length && gscorpShot(b)) dead = true; if (!dead && THORN.list.length && thornShot(b)) dead = true; if (!dead && GUARD.list.length && guardShot(b)) dead = true;     // m1701
+        if (!dead && SWARM.n && swarmShot(b)) dead = true; if (!dead && SPIDER.list.length && spiderShot(b)) dead = true; if (!dead && SCORP.list.length && scorpShot(b)) dead = true; if (!dead && GSCORP.list.length && gscorpShot(b)) dead = true; if (!dead && THORN.list.length && thornShot(b)) dead = true; if (!dead && GUARD.list.length && guardShot(b)) dead = true;     // m1701
         if (!dead && DOJO.tgts && dojoShot(b)) dead = true;     /* m1537: the dojo's straw targets stop a shot */
       }
       // **AND IT REMEMBERS WHAT STOPPED IT, because `boltHit` runs a frame's worth of code
@@ -34609,7 +34612,7 @@ function whirlSpin() {
   const P = p.pos, R = WHIRL.R + WHIRL.Rk * (p.torn ? p.torn.k : 0);
   for (const d of DUMMIES) { if (d.st === 'gone' || !d.root.visible || d === p.carryD) continue; const Q = d.root.position, dd = Math.hypot(Q.x - P.x, Q.z - P.z); if (dd > R || Math.abs(Q.y - P.y) > 1.6) continue;
     WHIRL.stat.hits++; dummyBlow(d, Math.atan2(Q.x - P.x, Q.z - P.z), WHIRL.power, WHIRL.dmg); }
-  if (SPIDER.list.length) spiderArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); if (SCORP.list.length) scorpArea(P.x, P.y, P.z, R, WHIRL.power); if (GSCORP.list.length) gscorpArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); if (THORN.list.length) thornArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); if (GUARD.list.length) guardArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); rockArea(P.x, P.y, P.z, R, 1.5);     // m1701
+  if (SPIDER.list.length) spiderArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); if (SWARM.n) swarmArea(P.x, P.y + .5, P.z, R); if (SCORP.list.length) scorpArea(P.x, P.y, P.z, R, WHIRL.power); if (GSCORP.list.length) gscorpArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); if (THORN.list.length) thornArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); if (GUARD.list.length) guardArea(P.x, P.y, P.z, R, WHIRL.power, WHIRL.dmg); rockArea(P.x, P.y, P.z, R, 1.5);     // m1701
   if (ARENA.debris.length) debrisArea(P.x, P.y, P.z, R);
   camShake(.18); for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2, x = P.x + Math.sin(a) * R * .8, z = P.z + Math.cos(a) * R * .8; if (TURRET.list.length) turretMelee(x, P.y + 1, z, .6, 2); else bldHit(x, P.y + 1, z, .6, 2);
     spk(x, P.y + 1, z, Math.sin(a + 1.57) * 4, .5, Math.cos(a + 1.57) * 4, .12, .35, [1, .85, .5]); }
@@ -42437,6 +42440,344 @@ function barrelBoom(b) { const B = BARREL; if (b.dead) return; b.dead = 1; const
 function barrelStep(dt) { const B = BARREL;
   for (let i = B.q.length - 1; i >= 0; i--) { const e = B.q[i]; if ((e.t -= dt) <= 0) { B.q.splice(i, 1); barrelBoom(e.b); } }
   for (const d of DUMMIES) { if (!(Math.hypot(d.vx || 0, d.vy || 0, d.vz || 0) > FLYHIT.at)) continue; const P = d.root.position; if (barrelHit(P.x, P.y + .5, P.z, d.K.r || .4)) break; } }
+// SWARM.md (his, Nov 6 2026: "little scuttling enemies that can go up on walls ... you shoot them with the bow and they drop down on you ... flying
+// enemies buzzing through the air. A LOT going at once, so even if it's mostly a swipe-swipe volume game, it's still rewarding").
+// THE SWARM: small critters that die in ONE hit, many at once. Every KIND is ONE `InstancedMesh` (one draw call however many are alive); the legs
+// skitter and the wings beat in the VERTEX SHADER off a per-instance phase, so there is no skinned mesh and no mixer. The CPU keeps a pooled list.
+// THE SHARED SURFACE-CRAWL SOLVER (`crawlSurfBuild` / `crawlRay` / `crawlMove`): a critter is a point on a triangle soup with a normal N and a
+// heading F in its plane; each step probes AHEAD (a wall: climb onto it), DOWN its own N (stay on the surface, follow its tilt), and back UNDER an
+// edge (wrap round it) -- so the same rule walks floors, walls, ceilings and rafters. Any zone hands it triangles (`crawlSurfFromColl` for COLL).
+// EVERY KIND HAS ITS STONE TWIN (STATUES.md): the same instance, a per-instance flag -- stone colour, no glow, legs still -- woken by an EVENT.
+// Data-first (SCENE_COMPANION.md): `SWARM.kinds` rows (a `file:` swaps in his model), `NEST.place` rows with stable ids.
+// SC_SWARM:START
+const SWARM = {
+  kinds: {
+    // a skittering four-legged crawler (spider / scorpion stand-in). `len` m nose to tail; speeds in m/s; `gait` leg-cycle radians per metre
+    CRAWLER: { file: '', shape: 'crawler', max: 64, len: .55, hit: .42, speed: 2.7, hunt: 3.3, burst: [.22, .7], pause: [.12, .6], turn: 6.5, gait: 24,
+      senseR: 6.5, bite: { dmg: 3, r: .8, cd: 1.6, push: 2.2, up: 1.6, stun: .12 }, drop: { r: 2.6, rate: .7, above: 1.6 },
+      col: 0x5a3e2c, leg: 0x2e2018, glow: 0x5effc8, stone: 0x857a68 },
+    // a buzzing flyer (moth / bat / wasp stand-in): boids round him, one darts in, bites, peels away
+    FLYER: { file: '', shape: 'flyer', max: 64, len: .5, hit: .5, speed: 5.2, dive: 10.5, accel: 16, flap: 52, ring: [3.2, 6.2], alt: [1.8, 4.2],
+      sep: .9, align: 2.2, coh: 2.8, divers: 2, diveCd: [2.4, 5], bite: { dmg: 2, r: .75, push: 1.4, up: .8, stun: .08 },
+      col: 0x3e3048, leg: 0x1a1420, glow: 0xff7ad8, stone: 0x857a68 },
+  },
+  arrow: 'knock',     // a crawler on a wall / ceiling hit by an arrow: 'knock' = it is shot OFF and drops on you (his line), 'kill' = it pops
+  stop: .035, popGap: .045, g: 14, biteGap: .45,     // `biteGap`: the whole swarm lands at most one bite per .45 s (a swarm is volume, not a blender)
+  list: [], n: 0, mesh: {}, mats: {}, surf: null, U: null, wakeQ: [], popT: 0, biteT: 0, ms: 0, err: 0,
+  stat: { kills: 0, knocks: 0, bites: 0, chips: 0, wakes: 0, cleave: 0, best: 0 },
+};
+// THE NEST (`?w=forge&zone=nest`, KORAJIN > The Nest): a tall closed chamber to test the swarm in. VERTICALITY: a north gallery 3.5 m up with a
+// stair, a west nest-ledge 6.5 m up (crawlers' home, no stair), three rafters at 8.6 m, a pillar to the ceiling, blocks at 1.2 and 2.2 m.
+const NEST = { want: 0, on: null, at: [0, 0, 10], yaw: Math.PI,
+  env: { bg: 0x0a0806, fog: [18, 64], sky: 0x8a7a64, ground: 0x2e2218, hemi: 1.15, sunC: 0xffd8a8, sun: .75, sunDir: [.3, 1, .5] },
+  room: { x: 13, z: 15, h: 12, t: .8 },
+  stone: [     // [x0, x1, y0, y1, z0, z1]
+    [-13, 13, 3.2, 3.5, -15, -11],                         // the north gallery's slab (3.5 m)
+    [-13, -10.5, 6.2, 6.5, -4, 4],                          // the west nest-ledge (6.5 m)
+    [-1, 1, 0, 12, -4, -2],                                 // the pillar
+    [-13, 13, 8.6, 9.1, -8.3, -7.7], [-13, 13, 8.6, 9.1, -.3, .3], [-13, 13, 8.6, 9.1, 7.7, 8.3],     // the rafters
+    [-9.5, -6.5, 0, 1.2, 4.5, 7.5], [6.5, 9.5, 0, 2.2, 5, 8],     // the blocks
+  ],
+  stair: { x0: 9.6, x1: 11.4, z0: -11, z1: -4.8, h: 3.5, n: 12 },     // risers .29 (his step is .357)
+  // the stone twins: crawlers asleep on the walls and ceiling, flyers hanging off the rafters (rows: id, kind, at, n = the surface's normal)
+  place: [
+    { id: 'nest_st_c1', kind: 'CRAWLER', at: [-12.98, 4.4, -6], n: [1, 0, 0] }, { id: 'nest_st_c2', kind: 'CRAWLER', at: [-12.98, 5.2, -8.5], n: [1, 0, 0] },
+    { id: 'nest_st_c3', kind: 'CRAWLER', at: [12.98, 2.6, -2], n: [-1, 0, 0] }, { id: 'nest_st_c4', kind: 'CRAWLER', at: [12.98, 6.4, 1.5], n: [-1, 0, 0] },
+    { id: 'nest_st_c5', kind: 'CRAWLER', at: [4, 11.98, -4], n: [0, -1, 0] }, { id: 'nest_st_c6', kind: 'CRAWLER', at: [-3, 11.98, 3], n: [0, -1, 0] },
+    { id: 'nest_st_c7', kind: 'CRAWLER', at: [1.02, 5.5, -3], n: [1, 0, 0] }, { id: 'nest_st_c8', kind: 'CRAWLER', at: [-1.02, 7.5, -3.2], n: [-1, 0, 0] },
+    { id: 'nest_st_f1', kind: 'FLYER', at: [-5, 8.58, 0], n: [0, -1, 0] }, { id: 'nest_st_f2', kind: 'FLYER', at: [3, 8.58, 0], n: [0, -1, 0] },
+    { id: 'nest_st_f3', kind: 'FLYER', at: [-2, 8.58, -8], n: [0, -1, 0] }, { id: 'nest_st_f4', kind: 'FLYER', at: [6, 8.58, 8], n: [0, -1, 0] },
+  ],
+  glow: { id: 'nest_glow', seed: 17, place: [
+    { id: 'nest_geode_w', kind: 'geode', at: [-12.95, 7.4, 2.6], n: [1, 0, 0], pal: 'forest', size: .9, count: 14, seed: 3 },
+    { id: 'nest_geode_e', kind: 'geode', at: [12.95, 3.2, -6], n: [-1, 0, 0], pal: 'forest', size: .8, count: 12, seed: 4 },
+    { id: 'nest_stal_1', kind: 'stal', at: [5, 11.95, -10], pal: 'forest', size: 1.2, count: 8, seed: 5 },
+    { id: 'nest_stal_2', kind: 'stal', at: [-7, 11.95, 11], pal: 'forest', size: 1.0, count: 6, seed: 6 },
+    { id: 'nest_moss_1', kind: 'moss', at: [-8, 1.2, 6], n: [0, 1, 0], r: 1.2, pal: 'forest', seed: 7 },
+    { id: 'nest_shroom', kind: 'shroom', at: [11.5, 0, 11], n: [0, 1, 0], pal: 'forest', size: 1, count: 7, seed: 8 },
+  ] },
+  stat: {} };
+// SC_SWARM:END
+try { if (/[?&]zone=nest\b/.test(location.search)) NEST.want = 1; } catch (e) {}
+
+// ---- THE SURFACE: a triangle soup in a uniform grid; rays hit FRONT faces only (a critter sticks to the outside of things) ----
+function crawlSurfBuild(pos, cs = 1.5) { const n = (pos.length / 9) | 0, v = new Float32Array(pos.length), nr = new Float32Array(n * 3); v.set(pos);
+  let x0 = 1e9, y0 = 1e9, z0 = 1e9, x1 = -1e9, y1 = -1e9, z1 = -1e9;
+  for (let i = 0; i < n * 3; i++) { const x = v[i * 3], y = v[i * 3 + 1], z = v[i * 3 + 2]; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; if (z < z0) z0 = z; if (z > z1) z1 = z; }
+  const S = { v, nr, n, cs, x0: x0 - cs, y0: y0 - cs, z0: z0 - cs, nx: 0, ny: 0, nz: 0, cells: new Map(), stamp: new Uint32Array(n), sid: 1, rays: 0 };
+  S.nx = Math.ceil((x1 - S.x0) / cs) + 2; S.ny = Math.ceil((y1 - S.y0) / cs) + 2; S.nz = Math.ceil((z1 - S.z0) / cs) + 2;
+  for (let t = 0; t < n; t++) { const o = t * 9, ax = v[o], ay = v[o + 1], az = v[o + 2], bx = v[o + 3] - ax, by = v[o + 4] - ay, bz = v[o + 5] - az, cx = v[o + 6] - ax, cy = v[o + 7] - ay, cz = v[o + 8] - az;
+    let nx = by * cz - bz * cy, ny = bz * cx - bx * cz, nz = bx * cy - by * cx; const L = Math.hypot(nx, ny, nz); if (L < 1e-9) continue; nr[t * 3] = nx / L; nr[t * 3 + 1] = ny / L; nr[t * 3 + 2] = nz / L;
+    const i0 = Math.floor((Math.min(ax, ax + bx, ax + cx) - S.x0) / cs), i1 = Math.floor((Math.max(ax, ax + bx, ax + cx) - S.x0) / cs),
+      j0 = Math.floor((Math.min(ay, ay + by, ay + cy) - S.y0) / cs), j1 = Math.floor((Math.max(ay, ay + by, ay + cy) - S.y0) / cs),
+      k0 = Math.floor((Math.min(az, az + bz, az + cz) - S.z0) / cs), k1 = Math.floor((Math.max(az, az + bz, az + cz) - S.z0) / cs);
+    for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) for (let k = k0; k <= k1; k++) { const key = (k * S.ny + j) * S.nx + i; let c = S.cells.get(key); if (!c) S.cells.set(key, c = []); c.push(t); } }
+  return S; }
+// the mesh collider's triangles as a crawl surface (any arena / forge zone with COLL built)
+function crawlSurfFromColl() { const C = COLL; if (!C || !C.v || !C.n) return null; return crawlSurfBuild(C.v.subarray(0, C.n * 9), 2); }
+const _zcN = new THREE.Vector3();
+// the nearest FRONT face along (d), within L: returns t (or -1) and the face's normal in `_zcN`
+function crawlRay(S, ox, oy, oz, dx, dy, dz, L) { if (!S) return -1; S.rays++; const sid = ++S.sid, cs = S.cs, v = S.v, nr = S.nr; let best = -1;
+  const ex = ox + dx * L, ey = oy + dy * L, ez = oz + dz * L,
+    i0 = Math.max(0, Math.floor((Math.min(ox, ex) - S.x0) / cs)), i1 = Math.min(S.nx - 1, Math.floor((Math.max(ox, ex) - S.x0) / cs)),
+    j0 = Math.max(0, Math.floor((Math.min(oy, ey) - S.y0) / cs)), j1 = Math.min(S.ny - 1, Math.floor((Math.max(oy, ey) - S.y0) / cs)),
+    k0 = Math.max(0, Math.floor((Math.min(oz, ez) - S.z0) / cs)), k1 = Math.min(S.nz - 1, Math.floor((Math.max(oz, ez) - S.z0) / cs));
+  for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) for (let k = k0; k <= k1; k++) { const c = S.cells.get((k * S.ny + j) * S.nx + i); if (!c) continue;
+    for (const t of c) { if (S.stamp[t] === sid) continue; S.stamp[t] = sid; const q = t * 3; if (dx * nr[q] + dy * nr[q + 1] + dz * nr[q + 2] > -1e-4) continue;     // a back face: through it
+      const o = t * 9, ax = v[o], ay = v[o + 1], az = v[o + 2], e1x = v[o + 3] - ax, e1y = v[o + 4] - ay, e1z = v[o + 5] - az, e2x = v[o + 6] - ax, e2y = v[o + 7] - ay, e2z = v[o + 8] - az;
+      const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x, det = e1x * px + e1y * py + e1z * pz; if (Math.abs(det) < 1e-12) continue;
+      const inv = 1 / det, tx = ox - ax, ty = oy - ay, tz = oz - az, u = (tx * px + ty * py + tz * pz) * inv; if (u < 0 || u > 1) continue;
+      const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x, w = (dx * qx + dy * qy + dz * qz) * inv; if (w < 0 || u + w > 1) continue;
+      const tt = (e2x * qx + e2y * qy + e2z * qz) * inv; if (tt < 0 || tt > L || (best >= 0 && tt >= best)) continue; best = tt; _zcN.set(nr[q], nr[q + 1], nr[q + 2]); } }
+  return best; }
+const _zmA = new THREE.Vector3(), _zmB = new THREE.Vector3();
+// ONE STEP ALONG A SURFACE: C.P (on it), C.N (its normal), C.F (heading, in its plane), distance d. Returns 1, or 0 when nothing is under it (it falls).
+function crawlMove(S, C, d) { const P = C.P, N = C.N, F = C.F, h = .16;
+  // 1. AHEAD: a wall (or any rising face) in the way -- climb onto it; the new heading is "away from the old surface"
+  let t = crawlRay(S, P.x + N.x * h, P.y + N.y * h, P.z + N.z * h, F.x, F.y, F.z, d + .1);
+  if (t >= 0 && _zcN.dot(N) < .75) { const nn = _zmA.copy(_zcN); P.set(P.x + N.x * h + F.x * Math.max(0, t - .02), P.y + N.y * h + F.y * Math.max(0, t - .02), P.z + N.z * h + F.z * Math.max(0, t - .02));
+    const up = _zmB.copy(N).addScaledVector(nn, -N.dot(nn)); if (up.lengthSq() < 1e-6) up.copy(F).addScaledVector(nn, -F.dot(nn)); F.copy(up.normalize()); N.copy(nn); P.addScaledVector(N, .005 - h * 0); return 1; }
+  // 2. DOWN its own normal at the new spot: stay on the surface (and take its tilt)
+  const nx = P.x + F.x * d, ny = P.y + F.y * d, nz = P.z + F.z * d;
+  t = crawlRay(S, nx + N.x * h, ny + N.y * h, nz + N.z * h, -N.x, -N.y, -N.z, h + .3);
+  if (t >= 0 && _zcN.dot(N) > .3) { P.set(nx + N.x * (h - t), ny + N.y * (h - t), nz + N.z * (h - t)); N.copy(_zcN); F.addScaledVector(N, -F.dot(N)).normalize(); return 1; }
+  // 3. OVER AN EDGE: back under it along -F, from just below the old plane -- wrap round onto the face beyond
+  t = crawlRay(S, nx - N.x * .1 + F.x * .05, ny - N.y * .1 + F.y * .05, nz - N.z * .1 + F.z * .05, -F.x, -F.y, -F.z, d + .4);
+  if (t >= 0) { const nn = _zmA.copy(_zcN); P.set(nx - N.x * .1 + F.x * (.05 - t), ny - N.y * .1 + F.y * (.05 - t), nz - N.z * .1 + F.z * (.05 - t));
+    const dn = _zmB.copy(N).negate(); dn.addScaledVector(nn, -dn.dot(nn)); if (dn.lengthSq() > 1e-6) F.copy(dn.normalize()); N.copy(nn); P.addScaledVector(N, .005); return 1; }
+  return 0; }
+
+// ---- THE LOOK: procedural stand-ins (one geometry per kind, attributes drive the shader) ----
+// aL = (part: 0 body / 1 leg / 2 wing, phase offset or side, weight along the limb); aG = 1 on the glow (eyes, the stolen-Jinra seam)
+function swarmGeo(shape) { const parts = [], add = (g, part, off, glow, wFn) => { g = g.index ? g.toNonIndexed() : g; g.deleteAttribute('uv'); const n = g.attributes.position.count, P = g.attributes.position,
+    L = new Float32Array(n * 3), G = new Float32Array(n); for (let i = 0; i < n; i++) { L[i * 3] = part; L[i * 3 + 1] = off; L[i * 3 + 2] = wFn ? wFn(P.getX(i), P.getY(i), P.getZ(i)) : 0; G[i] = glow; }
+    g.setAttribute('aL', new THREE.BufferAttribute(L, 3)); g.setAttribute('aG', new THREE.BufferAttribute(G, 1)); parts.push(g); };
+  const ball = (r, sx, sy, sz, x, y, z, ws = 10, hs = 7) => new THREE.SphereGeometry(r, ws, hs).scale(sx, sy, sz).translate(x, y, z);
+  const rod = (a, b, r0, r1) => { const A = new THREE.Vector3(...a), B = new THREE.Vector3(...b), L = A.distanceTo(B), g = new THREE.CylinderGeometry(r1, r0, L, 5, 1);
+    g.translate(0, L / 2, 0); g.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), B.clone().sub(A).normalize())); g.translate(A.x, A.y, A.z); return g; };
+  if (shape === 'crawler') {     // +Z forward, +Y the surface normal, feet at y = 0; ~.55 m nose to tail
+    add(ball(.17, 1.05, .6, 1.3, 0, .17, -.15, 14, 9), 0, 0, 0);                  // abdomen
+    add(ball(.13, 1.1, .4, 1.05, 0, .235, -.1, 12, 6), 0, 0, 0);                  // its carapace plate, a hump over it
+    add(ball(.115, 1, .72, 1.05, 0, .16, .11), 0, 0, 0);                          // head-thorax
+    add(ball(.05, .45, .35, 2.6, 0, .28, -.12, 8, 5), 0, 0, 1);                   // the glow seam down the back (the stolen Jinra)
+    for (const z of [-.04, -.15, -.26]) add(ball(.03, 3.2, .5, .6, 0, .25 - Math.abs(z + .15) * .35, z, 8, 4), 0, 0, 1);     // three glowing bands across the plate
+    for (const s of [-1, 1]) { add(ball(.026, 1, 1, 1, s * .05, .2, .215, 6, 4), 0, 0, 1);     // eyes
+      add(rod([s * .045, .12, .2], [s * .07, .07, .32], .028, .01), 0, 0, 0); }     // mandibles
+    const legs = [[-1, .1, .2, 0], [1, .1, .2, Math.PI], [-1, -.06, -.22, Math.PI], [1, -.06, -.22, 0]];     // side, hip z, foot z swing, phase (diagonal pairs)
+    for (const [s, hz, fz, off] of legs) { const hip = [s * .08, .16, hz], knee = [s * .27, .3, hz + fz * .55], foot = [s * .4, 0, hz + fz];
+      const w = (x) => clamp((Math.abs(x) - .07) / .33, 0, 1), ank = [s * .37, .09, hz + fz * .85];
+      add(rod(hip, knee, .045, .034), 1, off, 0, w); add(ball(.036, 1, 1, 1, ...knee, 6, 4), 1, off, 0, w); add(rod(knee, ank, .033, .022), 1, off, 0, w); add(rod(ank, foot, .022, .006), 1, off, 0, w); }     // hip, knee joint, shin, a hooked claw
+  } else {     // flyer: +Z forward, wings out along +-X from a hinge at (+-.05, .07)
+    add(ball(.09, 1, .9, 2.1, 0, .06, -.03, 10, 7), 0, 0, 0);                      // body
+    add(ball(.07, 1, .9, 1, 0, .07, .16), 0, 0, 0);                                 // head
+    add(ball(.05, 1, .8, 2.2, 0, .1, -.12, 8, 5), 0, 0, 1);                         // glow seam
+    add(rod([0, .05, -.2], [0, .03, -.33], .03, .004), 0, 0, 0);                    // the sting
+    for (const s of [-1, 1]) { add(ball(.024, 1, 1, 1, s * .04, .1, .21, 6, 4), 0, 0, 1);
+      const wing = new THREE.BoxGeometry(.36, .008, .2, 8, 1, 3).translate(s * (.05 + .18), .07, -.02);
+      { const P = wing.attributes.position; for (let i = 0; i < P.count; i++) { const ax = Math.abs(P.getX(i)) - .05, u = ax / .36, z = P.getZ(i) + .02;
+        P.setZ(i, z * (1 - Math.pow(u, 1.6) * .75) * (1 + .25 * Math.sin(u * 3.14)) - u * u * .12 - .02); P.setY(i, P.getY(i) + Math.sin(u * 3.14) * .025 - u * u * .03); } }     // a rounded membrane, swept back and cupped
+      add(wing, 2, s, 0, (x) => clamp((Math.abs(x) - .05) / .34, 0, 1));
+      add(rod([s * .03, .03, .02], [s * .12, -.06, .06], .012, .006), 1, s > 0 ? 0 : Math.PI, 0, () => 1); }     // dangling legs
+  }
+  const g = mergeGeometries(parts); g.computeBoundingSphere(); return g; }
+function swarmMat(K) { const U = SWARM.U || (SWARM.U = { uT: { value: 0 } });
+  const m = new THREE.MeshStandardMaterial({ color: K.col, roughness: .55, metalness: .1 }), wing = K.shape === 'flyer';
+  m.onBeforeCompile = sh => { sh.uniforms.uT = U.uT; sh.uniforms.uGlow = { value: new THREE.Color(K.glow) }; sh.uniforms.uStone = { value: new THREE.Color(K.stone) }; sh.uniforms.uLeg = { value: new THREE.Color(K.leg) };
+    sh.vertexShader = 'attribute vec4 aX; attribute vec3 aL; attribute float aG; varying float vG; varying float vSt; varying float vFl; varying float vLeg; varying float vHv;\n' + sh.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
+      vG = aG; vSt = aX.y; vFl = aX.z; vLeg = aL.x > .5 ? 1. : 0.; vHv = fract(sin(float(gl_InstanceID) * 12.9898) * 43758.5453);
+      float live = 1. - aX.y, ph = aX.x + aL.y;
+      ${wing ? `if (aL.x > 1.5) { float a = (sin(aX.x) * .95 + .25) * live * aL.y; vec2 hg = vec2(aL.y * .05, .07), q = transformed.xy - hg; float c = cos(a), s = sin(a);
+          transformed.xy = hg + vec2(c * q.x - s * q.y, s * q.x + c * q.y); transformed.y -= (1. - live) * aL.z * .1; transformed.x *= mix(1., .35, 1. - live); }
+        else if (aL.x > .5) { transformed.z += sin(ph * .2) * .02 * live; }
+        else { transformed.y += sin(aX.x) * .012 * live; }`
+      : `if (aL.x > .5) { float s = sin(ph), c = cos(ph); transformed.z += aL.z * s * .085 * aX.w * live; transformed.y += aL.z * max(0., c) * .07 * aX.w * live; }
+        else { transformed.y += abs(sin(aX.x)) * .014 * aX.w * live; }`}`);
+    sh.fragmentShader = 'uniform float uT; uniform vec3 uGlow; uniform vec3 uStone; uniform vec3 uLeg; varying float vG; varying float vSt; varying float vFl; varying float vLeg; varying float vHv;\n' + sh.fragmentShader
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        diffuseColor.rgb = mix(diffuseColor.rgb * (.8 + .4 * vHv), uLeg, vLeg); diffuseColor.rgb = mix(diffuseColor.rgb, uStone * (.85 + .25 * vHv), vSt);`)
+      .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+        totalEmissiveRadiance += uGlow * vG * (1. - vSt) * (1.6 + .6 * sin(uT * 5. + vHv * 6.283)) + vec3(1., .95, .85) * vFl * 1.4;
+        totalEmissiveRadiance += uGlow * pow(1. - abs(dot(normalize(normal), normalize(vViewPosition))), 3.) * .2 * (1. - vSt) * (1. - vLeg * .7);     // a rim of its glow: a dark bug on a dark wall still reads`)
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+        roughnessFactor = mix(roughnessFactor, .95, vSt);`); };
+  m.customProgramCacheKey = () => 'swarm_' + K.shape; return m; }
+// the kind's one draw call (pooled to `max`); a `file:` mesh replaces the stand-in geometry when he drops one in
+function swarmMesh(key) { const Z = SWARM; if (Z.mesh[key]) return Z.mesh[key]; const K = Z.kinds[key], g = swarmGeo(K.shape), n = K.max;
+  g.setAttribute('aX', new THREE.InstancedBufferAttribute(new Float32Array(n * 4), 4));
+  const M = new THREE.InstancedMesh(g, swarmMat(K), n); M.count = 0; M.frustumCulled = false; M.castShadow = false; M.receiveShadow = false; M.name = 'swarm_' + key;
+  M.instanceMatrix.setUsage(THREE.DynamicDrawUsage); g.attributes.aX.setUsage(THREE.DynamicDrawUsage); scene.add(M); Z.mesh[key] = M; return M; }
+
+// ---- THE POOL ----
+function swarmAdd(key, at, n, o) { const Z = SWARM, K = Z.kinds[key]; o = o || {}; swarmMesh(key);
+  if (Z.list.filter(c => c.k === key).length >= K.max) return null;
+  const C = { k: key, K, P: new THREE.Vector3(...at), N: new THREE.Vector3(...(n || [0, 1, 0])).normalize(), F: new THREE.Vector3(), V: new THREE.Vector3(), Ns: null, Fs: null,
+    st: K.shape === 'flyer' ? (o.stone ? 'perch' : 'fly') : 'crawl', stone: o.stone ? 1 : 0, hunt: o.hunt ? 1 : 0, id: o.id || '', go: 0, goT: Math.random() * .5, ph: Math.random() * 6.3,
+    flash: 0, cd: Math.random(), spin: 0, air: 0, mv: 0, orb: Math.random() * 6.283, ring: 0, alt: 0, home: null, t: 0 };
+  { const a = Math.random() * 6.283, T = Math.abs(C.N.y) > .9 ? new THREE.Vector3(Math.sin(a), 0, Math.cos(a)) : new THREE.Vector3(0, 1, 0).applyAxisAngle(C.N, a); C.F.copy(T.addScaledVector(C.N, -T.dot(C.N)).normalize()); }
+  if (C.st === 'fly') { C.ring = lerp(K.ring[0], K.ring[1], Math.random()); C.alt = lerp(K.alt[0], K.alt[1], Math.random()); C.cd = lerp(K.diveCd[0], K.diveCd[1], Math.random()) + 1; C.V.set(Math.random() - .5, .5, Math.random() - .5); }
+  C.home = C.P.clone(); C.Ns = C.N.clone(); C.Fs = C.F.clone(); Z.list.push(C); Z.n = Z.list.length; return C; }
+function swarmClear() { const Z = SWARM; Z.list.length = 0; Z.n = 0; Z.wakeQ.length = 0; for (const k in Z.mesh) Z.mesh[k].count = 0; }
+// a random spot ON the surface (walls / ceiling / rafters, or the floor): area-weighted triangle, a random point in it
+function swarmSurfSpot(S, want) { if (!S) return null; for (let tries = 0; tries < 60; tries++) { const t = (Math.random() * S.n) | 0, q = t * 3, ny = S.nr[q + 1];
+    if (want === 'wall' && Math.abs(ny) > .3) continue; if (want === 'ceil' && ny > -.7) continue; if (want === 'floor' && ny < .7) continue; if (want === 'up' && ny > .3) continue;
+    const o = t * 9, v = S.v; let a = Math.random(), b = Math.random(); if (a + b > 1) { a = 1 - a; b = 1 - b; }
+    const x = v[o] + (v[o + 3] - v[o]) * a + (v[o + 6] - v[o]) * b, y = v[o + 1] + (v[o + 4] - v[o + 1]) * a + (v[o + 7] - v[o + 1]) * b, z = v[o + 2] + (v[o + 5] - v[o + 2]) * a + (v[o + 8] - v[o + 2]) * b;
+    if (NEST.on && NEST.on.solid) { const R = NEST.room, qx = x + S.nr[q] * .2, qy = y + ny * .2, qz = z + S.nr[q + 2] * .2; if (Math.abs(qx) > R.x || Math.abs(qz) > R.z || qy > R.h || qy < 0 || NEST.on.solid(qx, qy, qz)) continue; }     // an exposed face inside the room
+    if (y > 11.5 && Math.random() < .5 && want !== 'ceil') continue; return { at: [x, y + 0, z], n: [S.nr[q], ny, S.nr[q + 2]] }; } return null; }
+function swarmSpawn(key, count, where) { const Z = SWARM, S = Z.surf; let made = 0;
+  for (let i = 0; i < count; i++) { let at, n;
+    if (key === 'FLYER') { const s = spawnSpot(1, 0); at = [s[0] + (Math.random() - .5) * 3, s[1] + 3 + Math.random() * 2.5, s[2] + (Math.random() - .5) * 3]; }     // the shared spot, up in the air
+    else if (where === 'floor' || !S) { const s = spawnSpot(.8, 0); at = [s[0] + (Math.random() - .5) * 2, s[1], s[2] + (Math.random() - .5) * 2]; n = [0, 1, 0]; }
+    else { const q = swarmSurfSpot(S, where || (Math.random() < .3 ? 'ceil' : 'up')); if (!q) continue; at = q.at; n = q.n; }
+    if (swarmAdd(key, at, n, { hunt: where === 'floor' ? 1 : 0 })) made++; }
+  return made; }
+
+// ---- THE HITS (3D contact, m2714: a blow meets a critter where it IS, on its level) ----
+function swarmMid(C, out) { const s = C.st === 'fly' || C.st === 'perch' ? 0 : .14; return out.set(C.P.x + C.N.x * s, C.P.y + C.N.y * s, C.P.z + C.N.z * s); }
+const _zwM = new THREE.Vector3();
+function swarmPop(C, dirH, why) { const Z = SWARM, K = C.K, M = swarmMid(C, _zwM), gc = new THREE.Color(K.glow);
+  C.dead = 1; Z.stat.kills++; HORDE.stat.kills++;
+  spkBurst(M.x, M.y, M.z, 12, { col: [.32, .22, .16], spread: 3.6, up: 3, size: .09, life: .55 });     // chitin
+  spkBurst(M.x, M.y, M.z, 16, { col: [gc.r, gc.g, gc.b], spread: 4.5, size: .12, life: .4 });     // the stolen glow, splashed
+  spkBurst(M.x, M.y, M.z, 6, { col: [1, 1, .9], spread: 2.5, size: .16, life: .18 });
+  if (Z.popT <= 0) { Z.popT = Z.popGap; snd('crack', { g: .45, r: 1.7 + Math.random() * .5, x: M.x, z: M.z }); snd('hit', { g: .35, r: 1.5 + Math.random() * .3, x: M.x, z: M.z }); }
+  if (ARENA.stop < .02) ARENA.stop = Z.stop; camShake(.05); }
+function swarmChip(C) { const M = swarmMid(C, _zwM); SWARM.stat.chips++; spkBurst(M.x, M.y, M.z, 10, { col: [.8, .74, .64], spread: 3, size: .08, life: .35 }); if (SWARM.popT <= 0) { SWARM.popT = SWARM.popGap; snd('clang', { g: .35, r: 1.6, x: M.x, z: M.z }); } return 'block'; }
+// ONE BLOW. `src` 'arrow' / 'blade' / 'area' / 'bolt'. A crawler on a wall or ceiling struck by an ARROW is shot OFF (SWARM.arrow 'knock'): it drops.
+function swarmBlow(C, dirH, src) { if (C.dead) return 0; if (C.stone) return swarmChip(C);
+  if (src === 'arrow' && SWARM.arrow === 'knock' && C.K.shape === 'crawler' && C.st === 'crawl' && C.N.y < .6) { const M = swarmMid(C, _zwM);
+    C.st = 'air'; C.hunt = 1; C.knocked = 1; C.flash = 1; C.V.copy(C.N).multiplyScalar(2.2).add(_zwM.set(Math.sin(dirH) * 1.5, 1.2, Math.cos(dirH) * 1.5)); C.spin = 0; SWARM.stat.knocks++;
+    spkBurst(M.x, M.y, M.z, 10, { col: [1, .95, .8], spread: 3, size: .1, life: .3 }); snd('hit', { g: .5, r: 1.8, x: M.x, z: M.z }); return 1; }
+  swarmPop(C, dirH, src); return 1; }
+// a segment (a blade's sweep, an arrow's frame): every critter within `rad` of it -- a swing CLEAVES, an arrow stops at the first
+function swarmSeg(ax, ay, az, bx, by, bz, rad, src, dirH, first) { const Z = SWARM; let n = 0, hit = null; const sx = bx - ax, sy = by - ay, sz = bz - az, L2 = sx * sx + sy * sy + sz * sz || 1e-9;
+  let bestU = 2;
+  for (const C of Z.list) { if (C.dead) continue; const M = swarmMid(C, _zwM), u = clamp(((M.x - ax) * sx + (M.y - ay) * sy + (M.z - az) * sz) / L2, 0, 1),
+      qx = ax + sx * u - M.x, qy = (ay + sy * u - M.y) * (src === 'blade' ? .45 : 1), qz = az + sz * u - M.z, r = rad + C.K.hit;     // a blade reaches DOWN to the floor's critters (a tall reach), never another level if (qx * qx + qy * qy + qz * qz > r * r) continue;
+    if (first) { if (u < bestU) { bestU = u; hit = C; } continue; }
+    if (swarmBlow(C, dirH, src)) n++; }
+  if (first && hit) { swarmBlow(hit, dirH, src); return hit; }
+  if (n > 1 && src === 'blade') Z.stat.cleave = Math.max(Z.stat.cleave, n);
+  return first ? null : n; }
+function swarmArea(x, y, z, r, src) { let n = 0; for (const C of SWARM.list) { if (C.dead) continue; const M = swarmMid(C, _zwM); if (M.distanceTo(_zmB.set(x, y, z)) < r + C.K.hit && swarmBlow(C, Math.atan2(M.x - x, M.z - z), src || 'area')) n++; } return n; }
+function swarmShot(b) { const C = swarmSeg(b.pos.x - b.vel.x * .034, b.pos.y - b.vel.y * .034, b.pos.z - b.vel.z * .034, b.pos.x, b.pos.y, b.pos.z, (b.size || .2) * .5, 'bolt', Math.atan2(b.vel.x, b.vel.z), 1); return !!C; }
+function swarmCands(add) { for (const C of SWARM.list) if (!C.dead && !C.stone) { const M = swarmMid(C, _zwM); add(C, M.x, M.y, M.z); } }
+function swarmPick(x, y, z, r) { for (const C of SWARM.list) if (!C.dead) { const M = swarmMid(C, _zwM); if (Math.hypot(x - M.x, y - M.y, z - M.z) < C.K.hit + (r || 0)) return C; } return null; }
+// the stone twins wake on an EVENT (a bell, a chalice, a door): staggered, each with a crack of dust and a mint flash
+function swarmWake(list) { const Z = SWARM; let i = 0; for (const C of (list || Z.list)) if (C.stone && !C.dead) Z.wakeQ.push({ C, t: .15 + (i++) * .12 + Math.random() * .1 }); if (i) Z.stat.wakes++; return i; }
+
+// ---- THE STEP ----
+const _zwA = new THREE.Vector3(), _zwB = new THREE.Vector3(), _zwC = new THREE.Vector3(), _zwD = new THREE.Vector3(), _zwQ = new THREE.Matrix4(), _zwX = new THREE.Vector3(), _zwS = new THREE.Vector3();
+function swarmStep(dt) { const Z = SWARM, t0 = performance.now(), p = player, S = Z.surf, Hh = (RIG.height || 1.25), chest = _zwC.set(p.pos.x, p.pos.y + Hh * .55, p.pos.z);
+  Z.popT -= dt; Z.biteT -= dt; if (Z.U) Z.U.uT.value += dt;
+  for (let i = Z.wakeQ.length - 1; i >= 0; i--) { const W = Z.wakeQ[i]; if ((W.t -= dt) > 0) continue; Z.wakeQ.splice(i, 1); const C = W.C; if (C.dead) continue;
+    const M = swarmMid(C, _zwM); C.stone = 0; C.flash = 1; C.hunt = 1; if (C.st === 'perch') { C.st = 'fly'; C.V.copy(C.N).multiplyScalar(2.5); const K = C.K; C.ring = lerp(K.ring[0], K.ring[1], Math.random()); C.alt = lerp(K.alt[0], K.alt[1], Math.random()); C.cd = 1.5 + Math.random() * 2; }
+    spkBurst(M.x, M.y, M.z, 14, { col: [.8, .74, .64], spread: 3, size: .1, life: .5 }); spkBurst(M.x, M.y, M.z, 10, { col: JPAL.rgb([.3, 1, .85]), spread: 3.5, size: .12, life: .4 }); smokeAt(M.x, M.y, M.z, 1, .6, [.8, .74, .66]);
+    snd('st_crack', { g: .4, r: 1.5 + Math.random() * .3, x: M.x, z: M.z }); }
+  let divers = 0; for (const C of Z.list) if (C.st === 'dive') divers++;
+  for (const C of Z.list) { if (C.dead) continue; const K = C.K; C.t += dt; C.flash = Math.max(0, C.flash - dt * 4); C.cd -= dt;
+    if (C.stone) { C.mv = 0; continue; }
+    if (K.shape === 'crawler') crawlerStep(C, K, dt, S, chest); else flyerStep(C, K, dt, S, chest, divers < K.divers ? () => divers++ : null); }
+  // the dead go; the live are packed into their kind's instance buffer (one draw per kind)
+  if (Z.list.some(C => C.dead)) { Z.list = Z.list.filter(C => !C.dead); Z.n = Z.list.length; }
+  const cnt = {}; for (const k in Z.mesh) cnt[k] = 0;
+  for (const C of Z.list) { const M = Z.mesh[C.k]; if (!M) continue; const i = cnt[C.k]++; if (i >= C.K.max) continue;
+    const k = 1 - Math.exp(-18 * dt); if (C.Ns.dot(C.N) < -.3) C.Ns.copy(C.N); C.Ns.lerp(C.N, k).normalize(); C.Fs.lerp(C.F, k); C.Fs.addScaledVector(C.Ns, -C.Fs.dot(C.Ns)); if (C.Fs.lengthSq() < 1e-6) C.Fs.copy(C.F); C.Fs.normalize();
+    let Y = C.Ns, F = C.Fs; if (C.spin) { const c = Math.cos(C.spin), s = Math.sin(C.spin); _zwA.copy(F).multiplyScalar(c).addScaledVector(Y, s); _zwB.copy(Y).multiplyScalar(c).addScaledVector(F, -s); F = _zwA; Y = _zwB; }
+    _zwX.crossVectors(Y, F).normalize(); const sc = C.K.len / .55 * (C.sc || 1); _zwQ.makeBasis(_zwX.multiplyScalar(sc), _zwS.copy(Y).multiplyScalar(sc), _zwD.copy(F).multiplyScalar(sc)); _zwQ.setPosition(C.P.x + C.Ns.x * .01, C.P.y + C.Ns.y * .01, C.P.z + C.Ns.z * .01);
+    M.setMatrixAt(i, _zwQ); const A = M.geometry.attributes.aX.array; A[i * 4] = C.ph; A[i * 4 + 1] = C.stone; A[i * 4 + 2] = C.flash; A[i * 4 + 3] = C.mv; }
+  for (const k in Z.mesh) { const M = Z.mesh[k]; M.count = Math.min(cnt[k], M.instanceMatrix.count); M.instanceMatrix.needsUpdate = true; M.geometry.attributes.aX.needsUpdate = true; }
+  Z.ms = Z.ms * .9 + (performance.now() - t0) * .1; if (Z.n >= 40) Z.stat.best = Math.max(Z.stat.best, Z.n); }
+function crawlerStep(C, K, dt, S, chest) { const p = player, P = C.P;
+  if (C.st === 'air') { C.V.y -= SWARM.g * dt; C.spin += dt * 11; const L = C.V.length() * dt, t = L > 1e-5 ? crawlRay(S, P.x, P.y, P.z, C.V.x / C.V.length(), C.V.y / C.V.length(), C.V.z / C.V.length(), L + .05) : -1;
+    if (t >= 0) { P.addScaledVector(C.V, Math.max(0, t - .02) / Math.max(1e-6, C.V.length())); C.N.copy(_zcN); C.F.copy(C.V).addScaledVector(C.N, -C.V.dot(C.N)); if (C.F.lengthSq() < 1e-6) C.F.set(Math.random() - .5, 0, Math.random() - .5).addScaledVector(C.N, -.0); C.F.addScaledVector(C.N, -C.F.dot(C.N)).normalize();
+      C.st = 'crawl'; C.spin = 0; C.go = 1; C.goT = .3; C.Ns.copy(C.N); spkBurst(P.x, P.y + .05, P.z, 6, { col: [.5, .44, .36], spread: 1.6, up: 1.2, size: .07, life: .3 }); if (C.knocked) C.hunt = 1;
+      if (P.distanceTo(chest) < K.bite.r + .5 && C.cd <= 0) crawlerBite(C, K, chest); }
+    else P.addScaledVector(C.V, dt);
+    if (P.y < -20) C.dead = 1; C.mv = 1; C.ph += dt * 30; return; }
+  // SENSE: near him and on (or above) his level -> hunt; a hunter comes down the wall toward him
+  const dx = p.pos.x - P.x, dz = p.pos.z - P.z, dh = Math.hypot(dx, dz), dy = P.y - p.pos.y;
+  if (!C.hunt && Math.hypot(dh, dy * .4) < K.senseR) C.hunt = 1;
+  // THE DROP: on a wall / ceiling over him -- let go and fall onto him
+  if (C.hunt && C.N.y < .3 && dy > K.drop.above && dh < K.drop.r + dy * .25 && Math.random() < K.drop.rate * dt) { const tf = Math.sqrt(2 * Math.max(.3, dy - swarmDropH()) / SWARM.g);
+    C.st = 'air'; C.V.set(dx / tf * .9, 0, dz / tf * .9).addScaledVector(C.N, .8); C.spin = 0; SWARM.stat.drops = (SWARM.stat.drops || 0) + 1; snd('rustle', { g: .3, r: 1.6, x: P.x, z: P.z }); return; }
+  // BURSTS: scurry, freeze, scurry -- a new jink at the start of each one
+  if ((C.goT -= dt) <= 0) { C.go = C.go ? 0 : 1; C.goT = C.go ? lerp(K.burst[0], K.burst[1], Math.random()) : lerp(K.pause[0], K.pause[1], Math.random()) * (C.hunt ? .5 : 1);
+    if (C.go) C.F.applyAxisAngle(C.N, (Math.random() - .5) * (C.hunt ? .9 : 2.2)); }
+  // STEER: the target projected into the surface's plane (him, or a wander about home), plus a shove off its neighbours
+  const T = C.hunt ? _zwA.set(p.pos.x, p.pos.y + .2, p.pos.z) : _zwA.copy(C.home).add(_zwB.set(Math.sin(C.t * .7 + C.orb) * 2.5, Math.cos(C.t * .5 + C.orb) * 1.5, Math.cos(C.t * .6 + C.orb) * 2.5));
+  const D = _zwB.copy(T).sub(P); for (const O of SWARM.list) { if (O === C || O.dead || O.k !== C.k) continue; const q = P.distanceToSquared(O.P); if (q < .16 && q > 1e-6) D.addScaledVector(_zwD.copy(P).sub(O.P), .6 / q); }
+  D.addScaledVector(C.N, -D.dot(C.N)); if (D.lengthSq() > 1e-6) { D.normalize(); const ang = Math.atan2(_zwD.crossVectors(C.F, D).dot(C.N), C.F.dot(D)), mx = K.turn * dt; C.F.applyAxisAngle(C.N, clamp(ang, -mx, mx)); }
+  C.F.addScaledVector(C.N, -C.F.dot(C.N)).normalize();
+  const near = C.hunt && P.distanceTo(chest) < K.bite.r + .9, sp = C.go || near ? (C.hunt ? K.hunt : K.speed) : 0;
+  C.mv += ((sp > 0 ? 1 : 0) - C.mv) * Math.min(1, dt * 14);
+  if (sp > 0 && S) { const d = sp * dt; if (!crawlMove(S, C, d)) { C.st = 'air'; C.V.copy(C.F).multiplyScalar(sp * .6); C.spin = 0; } C.ph += d * K.gait; }
+  else C.ph += dt * (Math.random() < .08 ? 30 : 0);     // a twitch
+  // THE BITE: 3D contact with his body, on his level
+  if (C.hunt && C.cd <= 0 && P.distanceTo(chest) < K.bite.r + .45 && Math.abs(P.y - (p.pos.y + .4)) < 1.2) crawlerBite(C, K, chest); }
+function swarmDropH() { return (RIG.height || 1.25) * .6; }
+function crawlerBite(C, K, chest) { const p = player, P = C.P, h = Math.atan2(p.pos.x - P.x, p.pos.z - P.z);
+  if (!p.roll && !p.cart && !p.phase && SWARM.biteT <= 0) { SWARM.biteT = SWARM.biteGap; playerHurt(K.bite.dmg, h, K.bite.push, K.bite.up * .3, K.bite.stun, 0); SWARM.stat.bites++; spkBurst(chest.x, chest.y - .3, chest.z, 6, { col: [1, .4, .3], spread: 2, size: .08, life: .25 }); snd('hit', { g: .35, r: 2, x: P.x, z: P.z }); }
+  C.cd = K.bite.cd * (.8 + Math.random() * .5); C.st = 'air'; C.V.set(-Math.sin(h) * 2.4, 3.2, -Math.cos(h) * 2.4); C.spin = 0; }
+function flyerStep(C, K, dt, S, chest, claim) { const p = player, P = C.P, V = C.V, acc = _zwA.set(0, 0, 0);
+  C.ph += dt * K.flap * (C.st === 'dive' ? 1.3 : 1); C.mv = 1; if (C.st === 'perch') return;
+  if (C.st === 'fly') { C.orb += dt * (.6 + .2 * Math.sin(C.t)) * (C.ring > 4.5 ? .7 : 1); const H = _zwB.set(p.pos.x + Math.sin(C.orb) * C.ring, p.pos.y + C.alt + Math.sin(C.t * 1.7 + C.orb) * .5, p.pos.z + Math.cos(C.orb) * C.ring);
+    if (NEST.on) { const R = NEST.room; H.x = clamp(H.x, -R.x + 1.2, R.x - 1.2); H.z = clamp(H.z, -R.z + 1.2, R.z - 1.2); H.y = Math.min(H.y, R.h - 1.5); }
+    acc.addScaledVector(H.sub(P), 2.2);
+    // BOIDS: apart, alongside, together
+    let n = 0; const al = _zwD.set(0, 0, 0), co = _zwS.set(0, 0, 0);
+    for (const O of SWARM.list) { if (O === C || O.dead || O.k !== C.k || O.st === 'perch' || O.stone) continue; const q = P.distanceTo(O.P); if (q < K.sep && q > 1e-4) acc.addScaledVector(_zwX.copy(P).sub(O.P), 7 / (q * q + .05));
+      if (q < K.coh) { co.add(O.P); al.add(O.V); n++; } }
+    if (n) { acc.addScaledVector(co.multiplyScalar(1 / n).sub(P), .9); acc.addScaledVector(al.multiplyScalar(1 / n).sub(V), .8); }
+    acc.x += (Math.random() - .5) * 18; acc.y += (Math.random() - .5) * 12; acc.z += (Math.random() - .5) * 18;     // the buzz
+    if (C.cd <= 0 && claim && Math.abs(P.y - chest.y) < 6 && P.distanceTo(chest) < 9) { claim(); C.st = 'dive'; C.t = 0; snd('swoosh', { g: .3, r: 2.2, x: P.x, z: P.z }); } }
+  else if (C.st === 'dive') { const T = _zwB.set(chest.x + p.vel.x * .2, chest.y, chest.z + p.vel.z * .2); acc.addScaledVector(T.sub(P).normalize(), K.accel * 2.2); acc.addScaledVector(V, -1.2);
+    if (P.distanceTo(chest) < K.bite.r && Math.abs(P.y - chest.y) < 1) { if (!p.roll && !p.cart && !p.phase && SWARM.biteT <= 0) { SWARM.biteT = SWARM.biteGap; playerHurt(K.bite.dmg, Math.atan2(V.x, V.z), K.bite.push, K.bite.up * .3, K.bite.stun, 0); SWARM.stat.bites++; }
+      C.st = 'back'; C.t = 0; V.multiplyScalar(-.4).add(_zwD.set(0, 4, 0)); }
+    if (C.t > 1.8) { C.st = 'back'; C.t = 0; } }
+  else { acc.y += 6; acc.addScaledVector(_zwD.set(P.x - p.pos.x, 0, P.z - p.pos.z).normalize(), 8); if (C.t > 1.1) { C.st = 'fly'; C.cd = lerp(K.diveCd[0], K.diveCd[1], Math.random()); } }
+  V.addScaledVector(acc, dt); const top = C.st === 'dive' ? K.dive : K.speed, L = V.length(); if (L > top) V.multiplyScalar(top / L);
+  // walls, floor, ceiling: look ahead along the flight; a face close ahead turns it away
+  if (S && L > .1) { const t = crawlRay(S, P.x, P.y, P.z, V.x / L, V.y / L, V.z / L, L * .3 + .7); if (t >= 0) { const vn = V.dot(_zcN); if (vn < 0) V.addScaledVector(_zcN, -vn * 1.6); if (t < .3) P.addScaledVector(_zcN, .3 - t); }
+    if (C.st !== 'dive') { const g = crawlRay(S, P.x, P.y + .2, P.z, 0, -1, 0, 1.2); if (g >= 0 && g < 1) V.y += (1 - g) * 20 * dt; } }
+  P.addScaledVector(V, dt);
+  if (NEST.on) { const R = NEST.room; P.x = clamp(P.x, -R.x + .3, R.x - .3); P.z = clamp(P.z, -R.z + .3, R.z - .3); P.y = clamp(P.y, .25, R.h - .3); }
+  if (L > .2) { C.F.copy(V).normalize(); const up = _zwD.set(0, 1, 0); up.addScaledVector(C.F, -up.dot(C.F)); if (up.lengthSq() < 1e-4) up.set(1, 0, 0); C.N.copy(up.normalize()); } }
+
+// ---- THE NEST (the sandbox) ----
+function nestBuild() { const Z = NEST; Z.want = 2; if (Z.on) return; const g = new THREE.Group(), E = Z.env, R = Z.room; scene.add(g);
+  const tl = new THREE.TextureLoader(), tx = f => { const t = tl.load(A(f)); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; };
+  const stone = new THREE.MeshStandardMaterial({ map: tx('textures/ft_wall.webp'), color: 0x9a8a78, roughness: .92 }), floor = new THREE.MeshStandardMaterial({ map: tx('textures/ft_floor.webp'), color: 0x8a7a6a, roughness: .95 });
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(140, 24, 12), new THREE.MeshBasicMaterial({ color: E.bg, side: THREE.BackSide, fog: false })); g.add(dome);
+  const fg = new THREE.PlaneGeometry(R.x * 2, R.z * 2).rotateX(-Math.PI / 2).toNonIndexed(), fl = new THREE.Mesh(gkWorldUV(fg.clone(), 3), floor); fl.position.y = .02; fl.receiveShadow = true; g.add(fl);
+  const geos = [], surf = [fg], sol = []; const box = (x0, x1, y0, y1, z0, z1, col = 1) => { sol.push([x0, x1, y0, y1, z0, z1]); const b = new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0).translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2).toNonIndexed(); b.deleteAttribute('uv'); geos.push(b); surf.push(b);
+    if (col) BOXES.push({ minx: x0, maxx: x1, miny: y0, maxy: y1, minz: z0, maxz: z1 }); };
+  const t = R.t; box(-R.x - t, -R.x, 0, R.h, -R.z - t, R.z + t); box(R.x, R.x + t, 0, R.h, -R.z - t, R.z + t); box(-R.x, R.x, 0, R.h, -R.z - t, -R.z); box(-R.x, R.x, 0, R.h, R.z, R.z + t);
+  box(-R.x - t, R.x + t, R.h, R.h + t, -R.z - t, R.z + t);     // the ceiling: crawlers walk on its underside
+  for (const b of Z.stone) box(...b);
+  const St = Z.stair; for (let i = 0; i < St.n; i++) box(St.x0, St.x1, 0, St.h * (i + 1) / St.n, St.z0, St.z1 - (St.z1 - St.z0) * i / St.n);
+  // the render (UVs for the stone) and the crawl surface (positions only) come from the same boxes
+  const rg = mergeGeometries(geos.map(b => { const c = b.clone(); c.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(c.attributes.position.count * 2), 2)); return c; }));
+  const sm = new THREE.Mesh(gkWorldUV(rg, 2.6), stone); sm.castShadow = sm.receiveShadow = true; g.add(sm);
+  { const all = []; for (const b of surf) all.push(...b.attributes.position.array); SWARM.surf = crawlSurfBuild(new Float32Array(all)); }
+  scene.background = new THREE.Color(E.bg); if (scene.fog) { scene.fog.color.setHex(E.bg); scene.fog.near = E.fog[0]; scene.fog.far = E.fog[1]; }
+  { const sd = new THREE.Vector3(...E.sunDir).normalize(), L0 = Math.hypot(_sunOff.x, _sunOff.y, _sunOff.z) || 20; _sunOff.copy(sd).multiplyScalar(L0); sun.position.copy(_sunOff); sun.color.setHex(E.sunC); sun.intensity = E.sun; sun.castShadow = false;
+    hemi.color.setHex(E.sky); hemi.groundColor.setHex(E.ground); hemi.intensity = E.hemi; }
+  let B = null; try { B = glowAdd(Z.glow, g); } catch (e) { note('NEST GLOW ' + e.message); }
+  const p = player; p.pos.set(Z.at[0], Z.at[1], Z.at[2]); p.vel.set(0, 0, 0); p.faceH = p.heading = Z.yaw; cam.az = Z.yaw;
+  Z.on = { g, B, solid: (x, y, z) => sol.some(b => x > b[0] && x < b[1] && y > b[2] && y < b[3] && z > b[4] && z < b[5]) }; boxGrid(); swarmMesh('CRAWLER'); swarmMesh('FLYER'); nestStatues(); nestUi(); }
+function nestStatues() { for (const r of NEST.place) { if (SWARM.list.some(C => C.id === r.id && !C.dead)) continue; const C = swarmAdd(r.kind, r.at, r.n, { stone: 1, id: r.id }); if (C && r.kind === 'FLYER') C.sc = 1.15; } }
+function nestStep(dt) { const Z = NEST; if (!Z.on || !Z.st) return; if ((Z.stT = (Z.stT || 0) - dt) > 0) return; Z.stT = .25; const W = SWARM, s = W.stat, c = W.list.reduce((a, C) => (a[C.k] = (a[C.k] || 0) + 1, a), {});
+  let calls = 0; try { calls = renderer.info.render.calls; } catch (e) {}
+  Z.st.textContent = 'CRAWL ' + (c.CRAWLER || 0) + '  FLY ' + (c.FLYER || 0) + '  stone ' + W.list.filter(C => C.stone).length + ' · kills ' + s.kills + '  shot off ' + s.knocks + '  best cleave ' + s.cleave + '  bites ' + s.bites +
+    '\nswarm ' + W.ms.toFixed(2) + ' ms · ' + Object.keys(W.mesh).length + ' swarm draws · frame ' + calls + ' draws · arrow: ' + (W.arrow === 'knock' ? 'SHOOTS OFF' : 'KILLS'); }
+function nestUi() { let el = NEST.el; if (!el) { el = document.createElement('div'); el.style.cssText = 'position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:9;display:flex;flex-wrap:wrap;justify-content:center;gap:5px;max-width:min(96vw,560px);font:700 11px system-ui,sans-serif';
+    for (const ev of ['pointerdown', 'pointermove', 'pointerup', 'touchstart', 'touchmove']) el.addEventListener(ev, e => e.stopPropagation(), { passive: true }); document.body.appendChild(el); NEST.el = el; }
+  el.textContent = ''; const B = (t, fn) => { const b = document.createElement('button'); b.textContent = t; b.style.cssText = 'height:32px;padding:0 9px;border-radius:9px;border:1px solid #5effc8;background:rgba(6,12,10,.8);color:#d8fff0;font:inherit';
+    b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); fn(); nestUi(); }); el.appendChild(b); };
+  B('CRAWLERS +10', () => swarmSpawn('CRAWLER', 10)); B('FLYERS +10', () => swarmSpawn('FLYER', 10)); B('SWARM 40', () => { swarmSpawn('CRAWLER', 16); swarmSpawn('CRAWLER', 8, 'floor'); swarmSpawn('FLYER', 16); });
+  B('STATUES', () => nestStatues()); B('WAKE', () => swarmWake()); B('ARROW: ' + (SWARM.arrow === 'knock' ? 'SHOOT OFF' : 'KILL'), () => { SWARM.arrow = SWARM.arrow === 'knock' ? 'kill' : 'knock'; }); B('CLEAR', () => swarmClear());
+  const st = document.createElement('div'); st.style.cssText = 'width:100%;text-align:center;color:#8fd;font:600 11px ui-monospace,monospace;text-shadow:0 1px 2px #000;pointer-events:none;white-space:pre-line'; el.appendChild(st); NEST.st = st; NEST.stT = 0; }
 // SC_CLAB:START
 const CLAB = { want: 0, on: null, R: 22, at: [0, 0, 9], yaw: Math.PI, ring: 8.5, counts: [1, 2, 3, 5], count: 1, ai: 1, slows: [1, .5, .25], slow: 1, menu: 0,
   spawns: [     // the WORLD_PLAN section 3 roster slots -> what exists (COMBAT.md section 3). `fn` = a group spawner, else an ARENA kind
@@ -50767,7 +51108,7 @@ function slamMark(x, y, z) {
 function slamLand() {
   const p = player;
   p.slam = 0;
-  if (SPIDER.list.length) spiderArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); if (SCORP.list.length) scorpArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power); if (GSCORP.list.length) gscorpArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); if (THORN.list.length) thornArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); if (GUARD.list.length) guardArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); rockArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, 2);     // m1701
+  if (SPIDER.list.length) spiderArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); if (SWARM.n) swarmArea(p.pos.x, p.pos.y + .3, p.pos.z, SLAM.r); if (SCORP.list.length) scorpArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power); if (GSCORP.list.length) gscorpArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); if (THORN.list.length) thornArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); if (GUARD.list.length) guardArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, SLAM.power, SLAM.dmg); rockArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r, 2);     // m1701
   if (ARENA.debris.length) debrisArea(p.pos.x, p.pos.y, p.pos.z, SLAM.r);
   if (BOULD.on && BOULD.L && BOULD.L.shock) { const fall = Math.max(0, (p.slamY0 == null ? p.pos.y : p.slamY0) - p.pos.y) + (p.slamUp ? 1.5 : 0); BOULD.L.shock(p.pos.x, p.pos.z, .5 + fall / 5); BOULD.st.shocks = (BOULD.st.shocks || 0) + 1; }     // m2494: the shockwave RIPPLES THE SAND -- bigger from higher
   if (CWALL.list.length && wallHit(p.pos.x, p.pos.y + .4, p.pos.z, 1.1, 3, 'blast', p.faceH)) { CWALL.dirty = 0; boxGrid(); }     // m1021: and the walls round where he lands take the blow
@@ -53762,6 +54103,7 @@ const ENTRY = { on: (() => { try { if (/[?&]entry=0\b/.test(location.search)) re
     interact:     { ready: () => !!IKIT.on },     // INTERACT.md: the Interactions sandbox (the spawn is set by ikitBuild)
     combatlab:    { at: [0, 0, 9], yaw: Math.PI, ready: () => !!CLAB.on },     // m2466: the Combat Lab, facing the spawn ring
     glowkit:      { at: [0, 0, 13], yaw: Math.PI, ready: () => !!GLOWG.on },
+    nest:         { at: [0, 0, 10], yaw: Math.PI, H: 6, ready: () => !!NEST.on },     // SWARM.md: the Nest -- lands in the open middle, the north gallery ahead
     dark:         { at: [0, 0, 15], yaw: Math.PI, ready: () => !!DARK.on },     // TORCH.md: the Dark Hall -- lands in the open south end, the black hall in front     // m2704: the Glow Garden (GLOWKIT.md) -- lands at the open south end, the court in front of him
     blockout:     {},
     level:        {},
@@ -54104,6 +54446,7 @@ function stepPlayer(dt) {
   try { entryWatch(dt); if (ENTRY.run && !player.hdrop) entryTail(dt); } catch (e) { note('ENTRY ' + e.message); console.error('[entry]', e); try { player.hdrop = null; entryEnd(); } catch (e2) {} ENTRY.on = 0; }     // m2312: THE ENTRANCE, every zone
   try { tasselStep(dt); } catch (e) { TASSEL.on = 0; note('TASSEL THREW ' + e.message); }     // m1644
   if (inArena()) { if (CBT.fx.length) cbtFxStep(dt); if (BARREL.list.length || BARREL.q.length) barrelStep(dt); if (MONK.fx.length) monkFxStep(dt); deflStep(dt); hallStep(dt); if (SKIN.list.length) skinStep(dt); if (PIECE.list.length) pieceStep(dt); if (SMASH.list.length) smashStep(dt); for (const E of BLDG.list) if (E.step && E.on()) E.step(dt); if (LVL.want && inForge()) lvlStart(); if (BEACON.want && inForge()) { try { beaconBuild(); } catch (e) { BEACON.want = 0; note("BEACON THREW " + e.message); } } if (BEACON.on) beaconStep(dt); if (LVG.on) lvgStep(dt); if (SHIPZ.want === 1 && inForge()) shipBuild(); if (WPARK.want === 1 && inForge()) wparkBuild(); if (DUELZ.want === 1 && inForge()) duelBuild(); if (TEMPLEZ.want && inForge()) templeTick(dt); if (ICET.want && inForge() && SNOWZ.on) iceTick(dt); if (ROPEB.want === 1 && inForge()) ropeBuild(); if (ROPEB.on) ropeStep(dt); if (PROVE.want === 1 && inForge()) proveBuild(); if (PROVE.on) proveStep(); if (FXLAB.want === 1 && inForge()) fxlabBuild(); if (FXLAB.on) fxlabStep(dt); if (CLAB.want === 1 && inForge()) { try { clabBuild(); } catch (e) { CLAB.want = 3; note('CLAB THREW ' + e.message); } } if (CLAB.on) { try { clabStep(dt); } catch (e) { if (!CLAB.err) { CLAB.err = 1; note('CLAB STEP ' + e.message); } } } if (DARK.want === 1 && inForge()) { try { darkBuild(); } catch (e) { DARK.want = 3; note('DARK THREW ' + e.message); } } if (DARK.on) { try { darkStep(dt); if (DARK.stat.lit !== DARK._litUi) { DARK._litUi = DARK.stat.lit; darkUi(); } } catch (e) { if (!DARK.err) { DARK.err = 1; note('DARK STEP ' + e.message); } } } if (GLOWG.want === 1 && inForge()) { try { glowgBuild(); } catch (e) { GLOWG.want = 3; note('GLOWG THREW ' + e.message); } } if (GLOWKIT.rooms.length) { try { glowStep(dt); } catch (e) { if (!GLOWKIT.err) { GLOWKIT.err = 1; note('GLOWKIT STEP ' + e.message); } } } if (BOULD.want === 1 && inForge()) bouldBuild(); if (BOULD.on) { bouldStep(dt); if (DVIL.on) dvStep(dt); } if (WHIPZ.want === 1 && inForge()) whipBuild(); if (WHIPZ.on) whipZoneStep(dt); if (GATHER.want === 1 && inForge()) { try { gathBuild(); } catch (e) { GATHER.want = 3; note('GATHER THREW ' + e.message); console.error(e); } } if (IKIT.want === 1 && inForge()) { try { ikitBuild(); } catch (e) { IKIT.want = 3; note('IKIT THREW ' + e.message); console.error(e); } } if (IKIT.on || IKIT.rows.length) { try { ikitStep(dt); } catch (e) { if (!IKIT.err) { IKIT.err = 1; note('IKIT STEP ' + e.message); console.error(e); } } } if (GATHER.on) { try { gathStep(dt); } catch (e) { if (!GATHER.err) { GATHER.err = 1; note('GATHER STEP ' + e.message); console.error(e); } } } if (LAKEZ.want === 1 && inForge()) lakeBuild(); if (LAKEZ.on) lakeStep(dt); if (SHIPZ.on) shipStep(dt); if (SNOWZ.on) snowStep(dt); if (TCELL.want && TCELL.live) roomStep(dt); if (RGN.live) rgnStep(dt); if (DRAGZ.on) dragStep(dt); }     // m2051 roomStep
+  if (NEST.want === 1 && inForge()) { try { nestBuild(); } catch (e) { NEST.want = 3; note('NEST THREW ' + e.message); console.error(e); } } if (NEST.on) { try { nestStep(dt); } catch (e) { if (!NEST.err) { NEST.err = 1; note('NEST STEP ' + e.message); } } }     // SWARM.md: the Nest
   if (PLANT.list.length) plantStep(dt);     // m1424
   try { propStep(dt); } catch (e) { note('PROPS ' + e.message); }     // m2283: game-wide breakables' shards and kickables
   if (GARDEN.on) { try { gdnStep(dt); } catch (e) { GARDEN.on = null; note('GARDEN STEP ' + e.message); console.error('[garden step]', e.stack); } }     // PROLOGUE P1: the hammock, the bell, the falls, the catch
@@ -54302,7 +54645,7 @@ function stepPlayer(dt) {
       snd('bump', { g: 1.4, r: .55, x: fx, z: fz }); snd('clang', { g: .6, r: .6, x: fx, z: fz });
       for (const d of DUMMIES) { if (d.cool > 0 || !d.root) continue; const dx = d.root.position.x - fx, dz = d.root.position.z - fz, q = Math.hypot(dx, dz);
         if (q < SLAM.r * 1.2 + (d.K.r || .4)) dummyBlow(d, q > 1e-3 ? Math.atan2(dx, dz) : p.faceH, SLAM.power * (.8 + .4 * (p.chargeGoK || 1)), SLAM.dmg * KATANA.dmgK); }
-      if (SPIDER.list.length) spiderArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); if (SCORP.list.length) scorpArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power); if (GSCORP.list.length) gscorpArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); if (THORN.list.length) thornArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); if (GUARD.list.length) guardArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); rockArea(fx, p.pos.y, fz, SLAM.r * 1.2, 2.5); if (TURRET.list.length) turretMelee(fx, p.pos.y + .5, fz, SLAM.r, 3); wallHit(fx, p.pos.y + .4, fz, SLAM.r * .8, 3, 'blast', p.faceH); }
+      if (SPIDER.list.length) spiderArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); if (SWARM.n) swarmArea(fx, p.pos.y + .3, fz, SLAM.r * 1.2); if (SCORP.list.length) scorpArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power); if (GSCORP.list.length) gscorpArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); if (THORN.list.length) thornArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); if (GUARD.list.length) guardArea(fx, p.pos.y, fz, SLAM.r * 1.2, SLAM.power, SLAM.dmg * KATANA.dmgK); rockArea(fx, p.pos.y, fz, SLAM.r * 1.2, 2.5); if (TURRET.list.length) turretMelee(fx, p.pos.y + .5, fz, SLAM.r, 3); wallHit(fx, p.pos.y + .4, fz, SLAM.r * .8, 3, 'blast', p.faceH); }
     // full speed for `carry` of the move, then linear to zero. A flat linear bleed averages
     // half the launch speed, so every metre of travel has to be bought with a speed spike at
     // the front -- which reads as a rocket rather than a lunge.
@@ -64811,6 +65154,7 @@ function strikeSweep(dt, power, live, dmg, body) {
           if (!MELEE.hitAll) break;
         }
         if (SPIDER.list.length) spiderSweep(q, _sw, rad, power, dmg, p.melH != null ? p.melH : p.faceH);
+        if (SWARM.n) swarmSeg(q.x, q.y, q.z, _sw.x, _sw.y, _sw.z, rad, 'blade', p.melH != null ? p.melH : p.faceH);     // SWARM.md: the sweep CLEAVES every critter it crosses
         if (SCORP.list.length) scorpSweep(q, _sw, rad, power, p.melH != null ? p.melH : p.faceH);
         if (GSCORP.list.length) gscorpSweep(q, _sw, rad, power, dmg, p.melH != null ? p.melH : p.faceH);
         if (THORN.list.length) thornSweep(q, _sw, rad, power, dmg, p.melH != null ? p.melH : p.faceH);     // m2690     // m2556     // m2546
@@ -76042,7 +76386,7 @@ const KPLACES = [
     ['Room C — Root Heart / Thornback', '?w=forge&zone=ftemple&at=roomC&grant=1'], ['Room D — Fall Gallery', '?w=forge&zone=ftemple&at=roomD&grant=1'],
     ['Room E — Sunken Court', '?w=forge&zone=ftemple&at=roomE&grant=1'], ['Room F — The Shrine', '?w=forge&zone=ftemple&at=roomF&grant=1'], ['The Seal + the stair (all six shards)', '?w=forge&zone=ftemple&at=roomX&grant=1'], ['The Hollow Banyan (boss)', '?w=forge&zone=ftemple&at=boss&grant=1'], ['Temple kit (pieces)', '?w=forge&zone=ftkit']] },     /* FOREST_TEMPLE.md 'HOW TO PLAY-TEST': each room lands him at its door with every earlier step granted (grant=1: in memory, the save untouched) */
   { region: 'THE DESERT', rows: [['Floating Boulders (and the Sky Ascent)', '?w=forge&zone=boulders'], ['The Sunwell village', '?w=forge&zone=boulders&at=village'],
-    ['The desert kit row', '?w=forge&zone=boulders&at=kit'], ['The Gathering', '?w=forge&zone=gathering'], ['Interactions (sandbox)', '?w=forge&zone=interact'], ['The Dark Hall (torch)', '?w=forge&zone=dark']] },
+    ['The desert kit row', '?w=forge&zone=boulders&at=kit'], ['The Gathering', '?w=forge&zone=gathering'], ['Interactions (sandbox)', '?w=forge&zone=interact'], ['The Dark Hall (torch)', '?w=forge&zone=dark'], ['The Nest (swarm)', '?w=forge&zone=nest']] },
   { region: 'WATER', rows: [['The Lake (the boat, underwater, the shrine)', '?w=forge&zone=lake']] },
   { region: 'SNOW', rows: [['The Snowfield', '?w=forge&zone=snow'], ['The Snow Region', '?w=forge&zone=region'], ['The Snow Village', '?w=forge&zone=region&at=village']] },
   { region: 'THE SKY', rows: [['The Sky Temple', '?w=forge&zone=temple'], ['The Ship', '?w=forge&zone=ship'], ['The Dragon Ride', '?w=forge&zone=dragon']] },
@@ -76401,6 +76745,7 @@ function stepDummies(dt) {
     if (d.archer) { d.model.updateMatrixWorld(true); archerBow(d); }     // m1103: after the pose
   }
   if (ARROWS.length) arrowStep(dt);
+  if (SWARM.n || SWARM.wakeQ.length) { try { swarmStep(dt); } catch (e) { if (!SWARM.err) { SWARM.err = 1; note('SWARM ' + e.message); console.error(e); } } }     // SWARM.md
   if (OSARI.fades.length) osariStep(dt);
   gfireStep(dt);     // m1675
   if (SPIDER.list.length || SPIDER.globs.length) spiderStep(dt); if (GUARD.list.length || GUARD.rocks.length) guardStep(dt); if (STATUE.chal) statueStep(dt); if (ACINE.on) arenaCineStep(dt);     // m1677
@@ -82940,7 +83285,7 @@ async function init() {
 
 // the console handle. Every tuning object is live, so a number can be moved on the phone
 // without a rebuild and without a push.
-window.melee = window.mel = { BOUNDS, BOWAST, DARK, TORCH, brazierLight, tripoLayout, stepSurf, STEPSURF, STEP, SFX, HITCH, sceneWarm, warmDraw, TTAS, TCOL, tripoCarry, KIDLE, KDRAW, TRIPOW, tripoSizes, tripoSizeStep, tripoBack, tripoLoad, CHGWALK, BOWAIM, dkMake, DESERTKIT, DVILLAGE, DVIL, dvGeo, dvMake, dvGo, dvStep, dvChestOpen, SHCELL, ARROWS, arrowMesh, BOW, bowLoose, WEAP, QD, ASSIST, KLOCKMK, ELEVAIM, BOULD, bouldMake, GATHER, GETPOSE, gathGo, gathReset, ASWING, RREL, STANCE, KCSND, kcSnd, CHRUN, REELFONT, reelFontNext, LAKEZ, UWATER, UWU, uwPatch, UWLIFE, UWFLORA, UWFAUNA, UWGLOW, UWMAJ, UWPLANK, UWLOD, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, NFLORA, nightFloraBuild, nightScene, nightF, NCLOUD, CGLOW, creatureGlowScan, heroGlowStep, HEROGLOW, heroGlowPulse, heroGlowHold, OPT, optApply, PMENU, pmenuOpen, HRING, SPEEDFX, INTERACT, interactAdd, interactRemove, interactNow, HSKIN, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, SCAM, SCAMU: SMDU, CAPT, capStart, capStop, capDebug, SFOV, scamStep, smScan, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
+window.melee = window.mel = { BOUNDS, BOWAST, DARK, TORCH, SWARM, NEST, swarmStep, swarmSpawn, swarmWake, swarmClear, swarmSeg, crawlRay, brazierLight, tripoLayout, stepSurf, STEPSURF, STEP, SFX, HITCH, sceneWarm, warmDraw, TTAS, TCOL, tripoCarry, KIDLE, KDRAW, TRIPOW, tripoSizes, tripoSizeStep, tripoBack, tripoLoad, CHGWALK, BOWAIM, dkMake, DESERTKIT, DVILLAGE, DVIL, dvGeo, dvMake, dvGo, dvStep, dvChestOpen, SHCELL, ARROWS, arrowMesh, BOW, bowLoose, WEAP, QD, ASSIST, KLOCKMK, ELEVAIM, BOULD, bouldMake, GATHER, GETPOSE, gathGo, gathReset, ASWING, RREL, STANCE, KCSND, kcSnd, CHRUN, REELFONT, reelFontNext, LAKEZ, UWATER, UWU, uwPatch, UWLIFE, UWFLORA, UWFAUNA, UWGLOW, UWMAJ, UWPLANK, UWLOD, NIGHT, nightSet, nightPre, nightPost, NIGHTSKY, NGLOW, nightGlow, nightRunes, SNOWNIGHT, snowNightGlow, NFLORA, nightFloraBuild, nightScene, nightF, NCLOUD, CGLOW, creatureGlowScan, heroGlowStep, HEROGLOW, heroGlowPulse, heroGlowHold, OPT, optApply, PMENU, pmenuOpen, HRING, SPEEDFX, INTERACT, interactAdd, interactRemove, interactNow, HSKIN, LIFE, lifeCheckpoint, lifeLose, lifeFall, OWN, ownHas, grant, revoke, ownAll, RINGS, ringSets, ringsStep, ringTick, GOD, godSet, COLL, REELS, REEL, reelPlay, reelSkip, reelEnd, LOOK, LOOKU, lookSweep, heroDrop, HDROP, ENTRY, entryGo, entryKey, BEACON, beaconBuild, DOJO, DTRAIN, dojoHit, dojoShot, RESTORE, restoreDemoBuild, restoreSet, restorePlay, JINRA, jinraEmit, COIN, coinDrop, GMERCH, GMILL, GPEAK, GJINRA, gjinraBuy, PLANT, plantLibBuild, plantHit, SNOWZ, snowStamp, GHOME, SHIMMY, VAIM, SHIPZ, shipBuild, FORGED, forgedLoad, mphSkin, DRINK, drinkPlace, VEND, vendHit, vendPlace, PICK, pickTap, TOSS, tossQuick, gaitMeasure, TXD, txDress, txGo: f => { const B = turfAt(player.pos.x, player.pos.z); if (B && B.area) { progFlag('tx:' + B.id, f); txDress(B, f); return B.name; } return 'not in the Pearl or the Waterfront'; }, MTIME, OTIC, OTRI, ORELAY, OPOLT, OPROJ, MCORE, EMTELL, HUM, HOTH, GFLUME, UNDER, HOVER, AIR, GLBNOIMG, LOD, perfMem, mem: () => { const m = perfMem(8); return m.tex + ' textures ' + m.texMB.toFixed(1) + ' MB (' + m.top.join(', ') + ') | ' + m.geo + ' geometries ' + m.geoMB.toFixed(1) + ' MB (' + m.topG.join(', ') + ') | gl ' + m.glTex + ' tex ' + m.glGeo + ' geo ' + m.programs + ' programs'; }, RADIO, radioSay, radioNext, E115, e115Done, TFLASH, flashStart, flashEnd, TPUSH, turfMove, KSWAP, kswapGod, kswapSettle, KGEN, KGSTYLE, KPIECE, kgenMake, kgenDrop, kgenGod, TDRESS, TURF, turfPush, turfAt, ISUIT, shipEnd, ISGAUNT, ISFOLK, ISDECK, ISHIP, IKEEP, ITHERM, IXING, IWIND, windGust, IJUMP, IKITE, IBASE, ISKATE, HCRACE, RBIKE, raceStep, BIKE, PBIKE, bikeOn, HCRALLY, rallyStart, rallyBrawl, HCTRAIN, HCROAD, OPLAZA, plazaStart, pearlCrowd, OPEARL, OGOOD, UPGRADES, goodGift, upApply, OLOOK, UPLIFT, cyborgRevert, SMART, SCAM, SCAMU: SMDU, CAPT, capStart, capStop, capDebug, SFOV, scamStep, smScan, ROSTER, rosterSpawn, rosterApply, OAMP, OWATCH, OORB, AIRT,  OINCUR, incurStart, protestCrowd, OPROTEST, protestStart, protestBrawl, OSTRIKE, strike: strikeSet, ODECAY, decayApply, DHEALTH, dhPush, dhGet, FOOT, footFix, fireSheet, BURN, burnStart, OTLIFE, OTSITE, OTCARTS, HATS, OTCAMP, MAPREG, tipShow, GATES, SOCIAL, socialMe, talkTap, mapOpen, RUMOURS, rumourHear, tasksOpen, questTrack, cowSpook, cowFright, FTERR, SKYLINE,  
   // PROGRESS (m276): `mel.SAVE` is the save; the setters write it through; `mel.progReset()` is a new game
   // TALK (m277): `mel.TALK` live; `mel.TALKS` the scripts by kind; `mel.talk` the state
   TALK, TALKS, talk,
@@ -84504,6 +84849,7 @@ const ZONEWANT = { garden: () => GARDEN.want = 1, rope: () => ROPEB.want = 1, wa
   combatlab: () => CLAB.want = 1,     // m2466: the Combat Lab (COMBAT.md)
   glowkit: () => GLOWG.want = 1,     // m2704: the Glow Garden (GLOWKIT.md)
   dark: () => DARK.want = 1,     // TORCH.md: the Dark Hall
+  nest: () => NEST.want = 1,     // SWARM.md: the Nest
   snow: () => { SNOWZ.want = 1; ICET.want = 1; } };     // m2228: the forge zones the start menu can enter without a reload (each mirrors its own `?zone=` line)
 function startGate() {
   let skip = false;
@@ -84570,6 +84916,7 @@ function startGate() {
       btn(el, 'The Gathering', 'GATHERING.md: after a temple boss -- six torches burning the temple\'s Jinra round a hexagonal arena on a mesa; hold up the crystal and the Jinra streams out of every torch into it.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=gathering'); });
       btn(el, 'Interactions (sandbox)', 'INTERACT.md: the polished pieces every temple places -- chests (walk up, heave the lid, the light, the GET), heavy doors, a wheel crank, buttons, levers, drawers, pots.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=interact'); });
       btn(el, 'The Dark Hall (torch)', 'TORCH.md: a black temple hall you can barely see in -- a burning torch in your hand (HOLD IT UP to light further); touch the braziers with the flame and they light and stay lit.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=dark'); });
+      btn(el, 'The Nest (swarm)', 'SWARM.md: little critters by the dozen -- crawlers on the walls, ceiling and rafters (shoot one OFF with the bow and it drops on you), flyers buzzing in a flock that dart in to bite; every one dies in one hit and a sword sweep cleaves several. Stone twins asleep on the walls wake on WAKE.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=nest'); });
       btn(el, 'Temple kit (pieces)', 'FOREST_TEMPLE.md: the pieces of the real temple under the forest -- mossy walls, ruins, roots through the stone, guardian reliefs, arches, a stone door, columns, stairs, lanterns, braziers, pots to break, glowing moss -- laid out in rows, and put together on a terrace.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=ftkit'); });
       btn(el, 'The Combat Lab', 'COMBAT.md: a clean arena to fight every enemy and boss -- spawn any type, any count, EASY / MEDIUM / HARD, AI on or off, slow motion, reset; the readout says what each one is doing.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=combatlab'); });
       btn(el, 'The Glow Garden', 'GLOWKIT.md: the glow dressing kit in a dark stone court -- faceted crystals in four temple colours, geodes bursting out of walls and corners, the floating hero shard, hanging crystals, glowing ivy, moss and mushrooms, and one dressed corner. Brush past and it shivers; hit a crystal and it rings.', () => { try { localStorage.setItem(HERO.key, 'agoblin'); localStorage.setItem('mel.game', 'korajin'); } catch (e) {} enter('forge', '?w=forge&zone=glowkit'); });

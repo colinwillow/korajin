@@ -63,6 +63,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2755 -- SWARM PASS 1: THE NEST -- wall crawlers and flyers, one draw call per kind, the shared surface-crawl solver (his, Nov 6 2026)
+*"Little scuttling enemies that can go up on walls ... shoot them with the bow and they drop down on you ... flying enemies buzzing ... a LOT
+going at once."* New sandbox doc `SWARM.md` (DONE WHEN, ends in his sign-off); KORAJIN > The Nest (`?w=forge&zone=nest`, ENTRY row `nest`).
+- **Drawing (`swarmMesh`, `swarmGeo`, `swarmMat`):** each kind is ONE `InstancedMesh` (procedural stand-in; `file:` is the hook for his model).
+  The legs (diagonal pairs) and the wings are moved in the vertex shader off a per-instance `aX` (phase, stone, flash, moving) -- no skin, no
+  mixer. A soft rim of the kind's glow so a dark bug on a dark wall reads. **The whole swarm is 2 draws** (crawler + flyer).
+- **The solver (`crawlSurfBuild` / `crawlRay` / `crawlMove`):** triangles in a 1.5 m grid, rays hit front faces only; a step probes AHEAD (climb a
+  wall), DOWN its normal (stay on, take the tilt), and back UNDER an edge (wrap round). Measured headless: 32 crawlers on floor / walls /
+  ceiling / rafter undersides / stair, none lost, none NaN over 15 s. `crawlSurfFromColl()` builds it from any zone's COLL (pass 3).
+- **Crawlers:** bursts and freezes, gather about home, hunt once he is within `senseR`, come down the wall at him, DROP onto him from a wall /
+  ceiling over him; an ARROW on a wall crawler SHOOTS IT OFF (`SWARM.arrow` 'knock'; the panel flips it to KILL) -- it tumbles, lands, hunts.
+  **Flyers:** boids orbiting him, buzz jitter, a look-ahead ray off walls, max 2 diving; dive, bite, peel away.
+- **Hits (3D contact, m2714):** `swarmSeg` in `arrowStep` (the frame's segment, first critter), the melee sweep (cleaves all it crosses; a blade
+  reaches down x1/.45 vertically so the floor's critters are swipeable), `swarmArea` on the slam / ground slam / whirl / blast arrow, `swarmShot`
+  for bolts; the bow's aim assist and arc hit see them. One hit pops (chitin + glow splash + flash, a crack, hitstop .035, sound rate-limited).
+  **Bites:** 3D distance to his chest and on his level; the whole swarm lands at most one bite per .45 s (`biteGap`) -- measured: 82 bites in
+  15 s before the cap with 3 divers, ~1.2/s after.
+- **Stone twins (STATUES.md):** `NEST.place` -- 8 crawlers on walls / pillar / ceiling, 4 flyers hanging off the rafters; stone colour, no glow,
+  legs still, wings folded, a blow chips. WAKE (`swarmWake`) is the event: staggered dust + a mint flash, then they hunt. Cut-away still open.
+- **Cost, measured headless (SwiftShader, CPU):** `swarmStep` 0.32 ms a frame with 47-52 critters; 2 draws. His phone number is his look.
+Renders: images/renders/swarm/ (nest_wide_swarm, crawler_wall_close, crawler_ceiling_close, flyer_close, statue_wall_close, statue_rafter_bats,
+knocked_floor, woken_wide). `npm run check` green. Shipped unverified. Open: the wake cut-away, pass 2 (droppers, burrowers), pass 3 (skins,
+the forest temple's rooms), his phone.
 ## m2754 -- ROOM A STAYS TIER 1 (m2754)
 The forest worker: `f_scrap` and `f_last` are BOTH room A (the gallery scrap, then the fight after the door), not A and B -- so m2751 put the tier-2
 swordsman in room A's second fight. `COMBATSET.forest` now: wave 0 = 3 tier 1, wave 1 = 4 tier 1 (room A's two fights), wave 2 = room B
