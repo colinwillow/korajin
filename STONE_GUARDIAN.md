@@ -43,6 +43,12 @@ The spirit DRAWS ONLY WHERE THE ARMOUR IS BROKEN: each guardian has its own inde
   off as a rock (cuttable debris), dust, a green burst, he staggers, the spirit limb shows and sheds wisps.
 - **THE SPIRIT PHASE**: the last piece off -> a roar and a green burst, then he fights on as the pure spirit: `spiritHp` 5 (~5 hits),
   `spiritSpd` x1.6 walk, brighter and faster-pulsing glow. Full charge x2, inside an opened window x`CBT.depth.openK`.
+- **ONLY JINRA FINISHES THE SPIRIT** (m2784, his puzzle beat): a plain blade or arrow PASSES THROUGH the bare spirit -- wisps stream along
+  the cut and close behind it, the body thins for .4 s, a ghostly whoosh, no hitstop; an arrow flies on. A **JINRA BRAZIER** (the Dark Hall's
+  bronze brazier, mint coals, Jinra fire, a mint light) is placed by every Shade fight. Walk up to it with the sword out and he DUNKS it: the
+  JIN blade state (`BFIRE.on` 2, the wheel's own turquoise fire) for 20 s or 14 spirit hits, guttering for its last 3 s; with the bow out,
+  3 Jinra arrows. Infused blows land with a Jinra burst; the last one a big Jinra flash before the dissolve. `SHJIN` / `INFUSE` live on mel;
+  TOOLS > SHADE: NEEDS JINRA (default) / ANY HIT. Owning the JIN BLADE (the wheel's JIN, `jinblade`) is the permanent version of the dunk.
 - **THE DEATH**: he staggers and glows HOT (`stagT` .45 s), then VAPORISES from the feet up (`dieT` 1.8 s): a dissolve on the spirit's own
   shader with a hot noisy edge, green smoke and wisps leaving the edge and rising into a cloud over his head; the cloud condenses into 14
   TAMA motes that fly to Grumbo, are counted (`TAMA.n`), and the last home plays `loot_small`.
@@ -61,6 +67,7 @@ and head broken, the dissolve).
 - [x] A statue twin (STATUES.md). (m2777)
 - [x] Pieces break one at a time in an order; a spirit phase; a vaporise death into Tama (his first play, fixed m2783).
 - [ ] The armour split on HIS phone (m2783's island / plane split), or his own authored pieces (SHADE_PIECES.md).
+- [ ] The cryptic hint NPC near a Shade fight ("stone breaks to steel; spirit only bows to the light it was stolen from").
 - [ ] Hit reacts that differ by piece (a head blow snaps the head back) -- today every stagger is the one `hit` clip.
 - [ ] A dedicated stagger and death on this rig (today the old guardian's `hit` and the puff; `die` is unused).
 - [ ] The numbers tuned with the combat worker (segment hp, `stoneK`, spirit hp) -- COMBAT_DEPTH.md.

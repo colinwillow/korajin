@@ -110,6 +110,16 @@ villages*; her role is open (a villager, a love interest, a village princess, pl
 - **Her role -- three options in CHARACTERS.md for him to pick** (a villager with a bell quest / the keeper who knows the old bell / a companion
   who rides along and may become playable). Not chosen.
 Shipped unverified.
+## (m2784) THE SPIRIT ONLY BOWS TO JINRA -- plain blows pass through the bare Shade; a Jinra brazier dunk infuses the blade (or 3 arrows)
+His puzzle beat (via the orchestrator). Reuses what exists: the JIN blade state (`BFIRE.on` 2) is what the brazier grants (`INFUSE`: 20 s or 14
+spirit hits, guttering its last 3 s, then back to what it was); the Dark Hall's `brazierAdd` is the brazier (mint coals, `gfire` turquoise, a
+mint light); arrows carry `ign: 'jin'` like `arrowIgnite`'s. The blow's source rides two flags (`SHJIN.melee` round `guardSweep`, `SHJIN.arrow`
+round the arrow branch and `arrowBlast`'s guardArea), so bombs / slams pass through too. A plain arrow is NOT consumed: it flies on (`A.thru`).
+- Measured on the shipped page (`node tools/shjinshot.mjs`): plain hit r 0, hp 5 -> 5; dunk -> t 19.9, n 14, BFIRE 2; Jinra hits 5 -> 3.7 ->
+  dead; stat pass 1 / dunks 1 / jin 4. Sheet: images/renders/shade/shjin_sheet.png.
+- WEAK ON THE SHEET: the brazier's Jinra fire and the infused blade's flame barely read in a still (the blade flame is drawn while it swings).
+  OPEN: a hint NPC, the bow dunk unrendered, his phone. TOOLS > SHADE: NEEDS JINRA / ANY HIT.
+
 ## (m2783) THE STONE GUARDIAN, PLAYED -- one piece per hit in order, a spirit phase, a vaporise death; plates split along the model
 His (first play): *"I knock off one hand and see the green, knock off something else, then it jumps from a little knocked off to everything
 knocked off, and he just disappears; it shows the green guy for a second."* And: *"pieces of the armour look like they're not attached."*
