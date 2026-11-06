@@ -106,6 +106,30 @@ sealAt .3 + .5 s after the fall starts), it blends over `blendT` (.8 s) into the
 from wherever it is. The portal is a flat level disc (E.flat), not a billboard, so with no rotation there is nothing to re-face. OLD is the m2674
 eased tilt, on the switch (`mel.entryCam` in localStorage). Moves no sandbox box; the entrance's sign-off on his phone is still open.
 
+## m2770 -- WHY THE RENDERS AND HIS PHONE DISAGREED: the gear's seat frame was captured in a RANDOM pose. Now the REST pose; refitted; GEAR EDIT (Nov 6 2026)
+His (m2766, `images/feedback/m2766/gear_still_spaced.png`): m2765 "measured snug" and his phone still showed the sheath off his back and the quiver
+low and apart. The orchestrator asked whether the probe and the phone took different paths. They did.
+- THE BUG: `tripoBack`'s `mk` captured each piece's frame (`userData.qc` = Spine2's world turn against his root) at the moment the gear was BUILT
+  -- on his phone, at boot / mid-entrance; in every probe of mine, rebuilt by `tripoLayout('X')` in idle. MEASURED: the boot frame and the idle
+  rebuild differ by **52.6 deg** (forge and desert alike), and over 12 idle samples Spine2 swings **123 deg** against the root -- so ONE table
+  seated the gear wherever the pose happened to be. Every fit since m2614 was tuned in a frame his phone never used.
+- THE FIX (`tripoQc`): the frame is the REST chain, root -> Spine2, out of `rig.restQ` -- every bone's rest turn, snapshotted when the rig is built
+  (and on a skin's first apply, before its mixer has run; the base stash carries it). Checked: boot-built vs rebuilt in idle **0 deg**, forge and
+  desert. (Two dead ends, kept so nobody repeats them: `skeleton.pose()` collapses this rig -- its armature is scaled .01 -- and the inverse bind
+  matrices are in a space the rig root is turned 90 deg from.) The table now reads in his upright REST body frame: +x his left, +y up, -z behind.
+- REFITTED in that frame against his body's own vertices in the live idle (the 1.8 cm cape allowance kept): the sheath `dir` [.48, -.849, .25],
+  mouth z -.365 -- gaps by tenth .175 .044 .027 .018 .060 .157 .181 .176 .175 .181. Grumbo's idle HUNCHES: the shoulder blades are a convex hump,
+  so a straight rigid sheath is tangent at the hump and stands 16-18 cm off the lower back (a chord touching shoulder AND seat cuts through the
+  hump; the grid over mouth height, slant and tilt never beat .18). The quiver over it, the X crossing BETWEEN THE SHOULDER BLADES, the fletching
+  up by his left shoulder (`at` [.08, -.05, -.46], `dir` [.35, .93, .3]): .212 .129 .063 .033 .019 .011 .004 .091 .128 .195.
+- GEAR EDIT (his taste, TOOLS > GEAR > GEAR EDIT; `gearEdit`, `gearPack`, `gearApply`): sliders on the live rows -- SWORD height / side / distance
+  from back / tilt / slant / roll, QUIVER height / side (crossing point) / distance / tilt / slant / roll (`roll` is new in `tripoSeat`); < ORBIT /
+  ORBIT > / BEHIND turn the camera; SAVE keeps it on his phone (`mel.gearEdit.X` / `.H`, applied at boot and on a layout switch); COPY shows the
+  JSON (and copies it) to bake as the default; RESET drops his save. Checked headless: the panel builds 12 sliders and COPY packs the live rows.
+- RENDERED in the shipped page with his settings (X, UNDER, BACK): `images/renders/cape/m2768_gear_true_side_back_top.jpg` (his body's own axes:
+  right / left / back / top; idle, run) and `m2768_gear_play_camera.jpg` (the default play camera, behind / 3-4 right / 3-4 left, cropped).
+  The desert zone did not finish loading headless, so these are in the forge. Shipped unverified on the phone.
+
 ## m2768 -- A RELOAD LANDED ON AN OLDER BUILD (his iPhone: "it loads M2766, then something happens, it RELOADS, and goes back to M2761")
 - **WHY:** Pages and Safari cache each URL on its own (ten minutes; a home-screen shortcut longer). Every in-game reload -- a zone or world
   switch, a TOOLS switch that reloads, the dome temple's lift, QUIT TO TITLE -- went to a URL with a DIFFERENT query, and a URL he had
