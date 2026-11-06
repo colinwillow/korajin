@@ -63,6 +63,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2746 -- COMBAT DEPTH PASS 1b: THE PERFECT DODGE, THE TIMED PARRY, THE FINISHER (m2746)
+COMBAT_DEPTH.md pass 1b, in the Combat Lab first. Numbers in `CBT.depth`.
+**PERFECT DODGE (`cbtPerfectDodge`, from `foeStrike` and the pounce landing):** a side flip / backflip (`p.cart.t`) or a roll (`p.rollT`) begun
+inside .38 s of an arena blow arriving, close enough that it would have hit (+1.6 m slack) -- the blow MISSES, the knock-out slow-mo runs at x.75
+of its length, a mint ring and a ping, and the swinger is OPEN 1.6 s (`d.cbOpen`: his recovery is held and he pulses).
+**TIMED PARRY (`cbtTimedParry`, in `playerHurt0`):** the katana guard (`p.block`, NOT the shield -- its `blockT` is 0) raised inside .22 s of an
+arena body's blow (`FOE_D`, set round `foeStrike` like `FOE_CLIP`) -- it counts as a parry (the hard cut), a short slow-mo, and HE staggers
+breakStun x1.2. Red unblockables are excluded.
+**FINISHER / OPEN (`cbtOpenK`, on the damage line):** the next blow on a parried body inside 1.6 s is x2.5 with a camera punch and a big burst;
+any blow in an earned window (broken combo guard, dodged swing, after a pounce) is x1.4. Lab readout: `perfect dodge N timed parry N finisher N open hits N`.
+`npm run check` green. Shipped unverified. Still open: pass 2 (knockback chains / ledges / barrels / aimed deflect), pass 3, the temple squads, his sign-off.
+
 ## m2745 -- COMBAT_DEPTH.md, THE COMBO GUARD, AND THE JACKAL AS AN ELITE (m2745)
 *"Combat is just swiping"* and *"the jackal is too easy -- make him a proper elite."* New sandbox doc `COMBAT_DEPTH.md` (DONE WHEN, ends in his sign-off).
 **Pass 1a, the COMBO GUARD (`cbtComboGuard`, `CBT.cgT/chainGap/cgBreakK`):** a `CBT.def` row's `cg` blows in a row land (each inside .9 s of the

@@ -90,7 +90,7 @@ consumables); also pitch Apple Arcade. Price to decide near launch (~$7.99-9.99 
   - [ ] his sign-off per enemy (COMBAT.md DONE WHEN) -- tune on his notes.
 - [ ] **COMBAT DEPTH -- OPEN (his, Nov 6: "combat is just swiping").** `COMBAT_DEPTH.md`, built in the Combat Lab, then rolled into the temple squads.
   - [x] m2745 pass 1a THE COMBO GUARD (mid / elite bodies turtle after `cg` hits; charge / kick / whip / behind) + THE JACKAL AS AN ELITE (12 hits, pounce).
-  - [ ] pass 1b perfect dodge (slow-mo) + timed parry (stagger + finisher). - [ ] pass 2 knockback chains / ledges / barrels / aimed deflect. - [ ] pass 3 15-body mixed wave. - [ ] temple squads. - [ ] his sign-off.
+  - [x] m2746 pass 1b perfect dodge (slow-mo) + timed parry (stagger + finisher). - [ ] pass 2 knockback chains / ledges / barrels / aimed deflect. - [ ] pass 3 15-body mixed wave. - [ ] temple squads. - [ ] his sign-off.
 - [ ] **THE FOREST TEMPLE (the real temple, below) -- OPEN (his, Nov 4).** `FOREST_TEMPLE.md`: the kit, then the acrobatic room (chamber 1), the entry
       hall + descent from the dome temple's door, the roster, the boss + Jinra stone. KORAJIN > Forest Temple Kit (`?w=forge&zone=ftkit`).
   - [x] m2434 pass 1 THE KIT (`ftkMake`, 17 pieces, 20 draws / 22k tris, `npm run ftstrip`).
