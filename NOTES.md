@@ -59,6 +59,33 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2686 -- CAPE: TAIL (the default) -- the top pinned over the gear, only the tail below the gear flutters; no cloth-vs-gear collision at all (Nov 6 2026)
+His (after trying the m2647 capsules -- "stuck halfway through the sheath" -- OFF -- "all right, not great" -- and the m2676 plane -- "still pokes
+through, just differently"): *"drop cloth-vs-gear collision altogether. The TOP of the cape, from the shoulders down to just past the BOTTOM END of
+the sheath / quiver, stays pinned, riding the body, shaped so it lies OVER the gear. Only the TAIL below flutters. Blend the pin over a short band."*
+- THE CAPE, MEASURED: 3 bone chains (right / centre / left), 5 joints each at y ~1.00, 1.00, .92, .78, .62 m (his frame; the first segment runs OUT
+  from Spine2 at the shoulder line, the other three hang down); the cloth below the last joint just rides it. At sword 85 % the sheath's tip is at
+  y ~.48 -- BELOW every cape joint.
+- `TTAIL` / `tripoTail` / `tailPinW` / `tailPinTip`, in `springsStep` (TOOLS > BOW > CAPE vs GEAR: TAIL (default) / OVER / UNDER / OFF, remembered under
+  a NEW key `mel.capeGear2` so an old OVER pick does not hide it): each cape segment's tip is PINNED to its rest (body) pose, pushed OUT over any
+  gear piece it lies on (its `margin` past the piece's outer face), by a weight that is 1 above that CHAIN's boundary and 0 below it (smoothstep
+  over `band` .06 m). The boundary is per chain: the lowest point of the gear lying across that chain's band (`chainR` .13), minus `below` .05 --
+  read every frame off the sheath's and the quiver's own MESH bounding boxes, so SWORD / BOW SIZE move it. Measured boundaries at 85 / 85 %:
+  right chain .87 m, centre .48, left .40.
+- WHAT THAT MEANS ON THIS RIG: the right chain flutters below .87; the centre and left chains are pinned WHOLE (their last joint is above the gear's
+  bottom) -- so there is no tail where the sheath crosses until the cape has bones lower down. **FOR HIM, IN BLENDER: extend each `cape_N` chain by
+  two bones, `cape_N_5` and `cape_N_6`, from the current last joint (~.62 m) down to the hem (~.35-.40 m), and weight the bottom two edge rows of
+  the cape to them.** The code picks up any `cape_N_M` it finds; nothing else changes. (An edge loop alone does not help: the sim moves bones.)
+- MEASURED IN MOTION (1 s idle, run with 3 jumps, idle; cape vertices -- weighted > .3 to cape bones -- inside the sheath's / quiver's true MESH
+  bounds, every 4th frame):
+      TAIL   mean 22.3  max 26  (steady -- no spikes, nothing stuck)
+      OFF    mean 31.7  max 79
+      OVER   mean 34.5  max 69
+  The ~22 TAIL keeps are at the cape's ATTACHMENT: it hangs from Spine2 at the shoulder line, right under where the sheath and the quiver cross,
+  so cloth that lies over the gear starts inside it there (hidden inside the opaque sheath). Rendered: idle 3/4 + behind (TAIL vs OFF), a run from
+  behind and from the side (4 frames each): the cape lies over the lower gear and flies out behind, no visible poke-through.
+
 ## m2685 -- FOREST TEMPLE interior BUDGET PASS: 110 draws -> 63 (hall), 63 (room A), 54 (by the lift); tris 187k -> 128-138k
 
 **Asked (via main):** the interior's budget pass, 96 draws -> <= 70 (`npm run zonebudget`, m2678's measurement; by m2680 with room B it was 110).
