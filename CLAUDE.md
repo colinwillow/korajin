@@ -549,6 +549,8 @@ rule that has to be in front of me *before* I know which system I am in.
 - **SHOW, DON'T TELL (his rule, Nov 6 2026).** No "A CHEST waits behind the door" text. When something opens or appears, play a reward jingle and a short
   cut-away of it happening (the chest rising, roots withdrawing, water draining, statues sliding) -- `arenaCineWake`-style. Words, when needed, live
   IN the 3D world (carved, floating, spoken) and are styled, never a yellow toast over the HUD. Enemies are VOLUME: most die in 3-4 hits.
+  An item GET = he HOLDS IT UP (the GET pose) + the jingle -- no caption. Hints come from little NPCs placed in the level, in an in-world
+  speech bubble, SOFT and CRYPTIC ("they say six keys once kept this temple safe"), never literal instructions.
 - **HIS STEP IS .357 M, NOT .5 (m368).** `MOVE.step` is `.5 * SZ` and the rig is 1.25 m. A riser over .357 is a WALL
   he has to jump. Build stairs at .32 or less, and prove them with `places`' `walkUp`, never with a lenient `groundAt`.
 
