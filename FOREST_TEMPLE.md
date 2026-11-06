@@ -30,6 +30,17 @@ Room A's arrow switch wakes the moving slab, and it was the moment he liked best
 high up) that swings a bridge, raises a platform, drops a counterweight or opens a way -- and the camera shows what it moved (`ikReveal` / a short
 action cam). Placed so the shot is a small skill (a height, a distance, a timing), never a chore. Tracked: A (the slab), B (the eye-order switches), THE WELL (the lift back up to the hall), E (the root bridge back across, after shard V).
 
+## THE VOICES -- hints come from people, not the screen (his rule, Nov 6 2026: SHOW, DON'T TELL)
+No caption ever says what to do. Little folk in the temple say something soft and a little cryptic when he walks up (an in-world bubble over
+the speaker; lines cycle on each visit). `FT_NPC` in index.html is the table.
+| who | where | lines |
+|---|---|---|
+| a lost TOAD pilgrim | the well floor, by the six sockets | "Six small lights kept this old heart beating. Someone has been borrowing them, one room at a time." / "The old roots only listen to the one who pulls." |
+| an old MONK in stone (moss-grown) | room A's floor | "Some stones only sleep. An arrow makes a very rude alarm." / "What climbs must hang. What hangs must let go." |
+| a toad, sheltering | room B (the root gallery) | "The faces remember the order they were carved. Watch them blink." / "Heavy things here were never meant to stay where they were put." |
+| a toad, wet to the knees | room D's sill | "Water remembers where it was told to go. Remind it otherwise." |
+| a toad at the court's mouth | room E's corridor | "Where the walls give you nothing, trust what hangs." / "The far side keeps a quiet way home, for those who earn it." |
+
 ## HOW TO PLAY-TEST THE FOREST TEMPLE (DEV PLACES > THE FOREST, or the KORAJIN menu)
 1. **Forest Temple: FULL RUN (from the knoll)** -- the real game, your real save: the knoll -> down to the domed temple -> the door ritual ->
    into the cella -> step on the round LIFT -> it sinks into the entry hall -> down the well's ledges.

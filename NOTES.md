@@ -63,6 +63,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2743 -- HINTS COME FROM PEOPLE (his rule): five little folk in the temple speak soft, cryptic lines in in-world bubbles; no screen captions
+
+His: "hints come from people, not the screen -- walk up and an in-world speech bubble shows a soft, cryptic line about how the area works,
+never literal. 'I heard there were once six keys that kept this temple safe' -- make it more clever than that."
+- **`FT_NPC`** (data-first: id, room frame + local point, facing, kind, lines; the lines are in FOREST_TEMPLE.md, THE VOICES):
+  - a lost TOAD pilgrim by the well's six sockets ("Six small lights kept this old heart beating. Someone has been borrowing them, one room
+    at a time." / "The old roots only listen to the one who pulls.");
+  - a moss-grown MONK in stone on room A's floor (the arrow and the slab; what climbs must hang);
+  - a toad in B (the reliefs' blinking order; heavy things not meant to stay put);
+  - a toad on D's sill (water remembers where it was told to go);
+  - a toad at E's mouth (trust what hangs; the far side's quiet way home).
+- **The folk.** The forest villager (the title loop's TOAD WANDERER), playing its idle, turning to face him as he comes near. The monk is a
+  toad in stone, 1.25x, posed and still.
+- **The bubble.** Walk within 3.4 m and a soft bubble (a dark rounded panel, italic serif, a tail down to the speaker) fades in over the
+  speaker's head. Each visit shows the next line. It is a placeholder canvas sprite until the UI worker's SPEECH kind lands.
+- Culled to 32 m; no colliders.
+Render: images/renders/ft_npc_well.png (the pilgrim by the sockets, speaking). Shipped unverified.
+
 ## m2742 -- SHOW, DON'T TELL (his rule, now in CLAUDE.md): the temple's captions are gone; every reveal is a JINGLE + a CUT-AWAY; doors carry EMBLEMS; enemies EMERGE (no beam)
 
 His (screenshot images/feedback/m2729/hint_text_toast.png): "remove every hint text -- it's cheesy, it overlaps the pad, the yellow font is
