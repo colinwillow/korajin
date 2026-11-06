@@ -546,6 +546,9 @@ rule that has to be in front of me *before* I know which system I am in.
   arcs; everything that touches touches (no floating rails, stairs, vines, props); metals never go black; show it so it reads. Check a CLOSE render.
 - **EVERY ZONE HAS AN ART-DIRECTED ENTRANCE (his rule, Nov 3 2026).** He arrives through a purple sky portal, flips and lands in a superhero slam
   (slow-mo, surface particles) on a chosen spot with NOTHING between the camera and him -- one `ENTRY` row per zone. A new zone is not done without it.
+- **SHOW, DON'T TELL (his rule, Nov 6 2026).** No "A CHEST waits behind the door" text. When something opens or appears, play a reward jingle and a short
+  cut-away of it happening (the chest rising, roots withdrawing, water draining, statues sliding) -- `arenaCineWake`-style. Words, when needed, live
+  IN the 3D world (carved, floating, spoken) and are styled, never a yellow toast over the HUD. Enemies are VOLUME: most die in 3-4 hits.
 - **HIS STEP IS .357 M, NOT .5 (m368).** `MOVE.step` is `.5 * SZ` and the rig is 1.25 m. A riser over .357 is a WALL
   he has to jump. Build stairs at .32 or less, and prove them with `places`' `walkUp`, never with a lenient `groundAt`.
 
