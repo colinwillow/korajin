@@ -62,6 +62,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2702 -- FOREST TEMPLE: PLAY-TESTABLE FROM THE PHONE -- the menu lists every room, each lands him at its door with what it needs; a progress chip
+
+**His (via main):** *"I never really know how to test the forest temple... 'Forest Temple: inside' and 'Forest Temple: the Acrobatic Room' both
+sound like inside... I've yet to even see any of what we're doing."*
+**The menus** (DEV PLACES > THE FOREST, `KPLACES`, and the KORAJIN start menu, the same rows): **Forest Temple: FULL RUN (from the knoll)** /
+**Forest Temple: the Well (hub)** / **Room A — Acrobatic Hall** / **Room B — Root Gallery** / **Room C — Root Heart / Thornback** / **Room D — Fall
+Gallery** / **Room E — Sunken Court** / **Temple kit (pieces)**. The old "Acrobatic Room" IS room A (renamed); "inside" and "the door" are gone
+(the full run is the way in; the hub row is the inside).
+**The entries:** `at=hub` (the well floor, facing north) and `at=roomA..roomE` (at that room's door: A in its hall as before, B / E in front of their
+doors at the well's foot, D on its 12 m sill, C in its arena under the crack) -- the hero drop is skipped for all of them (the ENTRY rows). With
+**`grant=1`** the progress is IN MEMORY (`ftinGrant`, `FTEMPLE.dev`; `ftinSave` writes nothing): every earlier room's shard, A's key in hand for B,
+B's door open from C on, the whip from D on (and picked), the dam pulled for E.
+**The chip** (top centre): `FT: shards n/6 · whip ✓/– · rooms A B C D E F` (a lit letter = that shard is his; the key; `TEST` on a granted entry).
+**Checked:** `npm run check`; the ftemple boot clean; each granted entry booted (`at=roomB/C/D/E&grant=1`, `at=hub`): all build; C / D / E stop only at
+the boot scenario's B test, which assumes a fresh save (B arrives solved -- the grant working). **`npm run places` is BROKEN** (it is the old
+Weirdport/kit-city checker: it now dies at `turfAreas is not defined` -- that code was cut -- before any place; it never covered Korajin's
+places): flagged, not fixed here. FOREST_TEMPLE.md has **HOW TO PLAY-TEST THE FOREST TEMPLE** (each entry and each room's route). Shipped unverified.
+
 ## m2701 -- SHEATH: HORIZONTAL back at MID BACK, level, UNDER the cape; the QUIVER ON TOP of the cape (his layering) (Nov 6 2026)
 His (on m2700): *"at y .58 it reads as a sword on his HIP -- straight across the back, a little below the shoulder blades, level. The SHEATH goes
 UNDER the cape (pin the cape over its outer face); the QUIVER goes ON TOP of the cape (it's smaller): the cape slides underneath it, never through.

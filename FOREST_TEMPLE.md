@@ -25,6 +25,25 @@ three rings and eight spokes at its foot) -> the corridor's avenue -> the arch -
 12-spoke rosette at its centre, the ruins mirrored) -> the door on the far wall. The acrobatic ROUTE climbs round that axis (east, north,
 west, south): the plan is symmetric, the climb spirals. Later chambers keep to the axis or branch from it at right angles.
 
+## HOW TO PLAY-TEST THE FOREST TEMPLE (DEV PLACES > THE FOREST, or the KORAJIN menu)
+1. **Forest Temple: FULL RUN (from the knoll)** -- the real game, your real save: the knoll -> down to the domed temple -> the door ritual ->
+   into the cella -> step on the round LIFT -> it sinks into the entry hall -> down the well's ledges.
+2. **Forest Temple: the Well (hub)** -- you stand on the well floor: the six doors round you, the six SHARD SOCKETS, the chip up top.
+3. **Room A -- Acrobatic Hall** (the old "Acrobatic Room": the same room): climb to the east rim under the archers, wall-run the 9 m gap to the gallery,
+   win the scrap, the two blocks up to the 12 m rim, monkey bars, tightrope, shoot the arrow switch, ride the slab, high bar, the button at the
+   top, zip down, the last fight -> the CHEST in the room behind the door (the KEY + shard I).
+4. **Room B -- Root Gallery** (you have the key): open the B door (west, at the well's foot); watch the three reliefs' EYES light in an order; shoot
+   the three switches with the bow in that order -> the chest (shard II) -> a few seconds later the floor CRACKS open.
+5. **Room C -- Root Heart / Thornback**: you land in the arena under the crack; the THORNBACK -> the chest (THE VINE WHIP + shard III) -> the only
+   way out: flick the whip at the lit KNOTS over the pit (swing, chain), then the ZIP knot up through the slot into B.
+6. **Room D -- Fall Gallery** (on the D sill, 12 m up the north wall, with the whip): lash + pull the door's root seal -> the wave -> pull the ROOT DAM
+   at the trough's head (the well's waterfall stops, its pool drains) -> turn the CRANK -> the alcove's chest (shard IV).
+7. **Room E -- Sunken Court** (at the E door, east, with the whip): pull it open -> from the near perch swing the SIX KNOTS under the thorn canopy across
+   the 46 m chasm (a jump hits the thorns; the walls will not take a wall run) -> the squad on the far perch -> the chest (shard V).
+8. **Temple kit (pieces)** -- every building piece laid out, for looking at.
+Each Room entry lands you at that room's door with everything before it done (`&grant=1`: in memory only -- your real save is never touched;
+the chip says TEST). The chip: `FT: shards n/6 · whip ✓ · rooms A B C D E F` (a lit letter = that room's shard is yours).
+
 ## OUTSIDE <-> INSIDE: THE TEMPLE LIFT (his, Nov 5 2026: "a loading screen ... one-way ... the door's inside built twice and they don't match")
 **Measured (`npm run zonebudget`, the game camera, shadows included):** outside (`dometemple`, at the arrival) **92 draws / 526k tris**; inside
 (`ftemple`) **96 / 154k**; one merged scene would hold ~565k tris -- twice the phone's 280k -- and every interior system (boxes, traversal, foes,
