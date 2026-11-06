@@ -64,7 +64,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## (mDOLLY) THE ENTRANCE CAMERA HOLDS ITS ORIENTATION -- TOOLS > ENTRANCE CAM: DOLLY (default) / OLD
+## (m2764) THE ENTRANCE CAMERA HOLDS ITS ORIENTATION -- TOOLS > ENTRANCE CAM: DOLLY (default) / OLD
 His (via main): the entrance camera started high and TILTED down as he dropped, and rotating the lens against the portal (a flat shader effect)
 made it read too deep, "like rotating around a sprite". Now (`ENTRY.camMode` 'DOLLY', `entryCamPose`): the m2645/m2674 pick still chooses ONE
 pose with the look-down guarantee (`lookMin`), and from frame 1 that look DIRECTION is fixed -- the lens only TRANSLATES: it starts `dollyOut`
