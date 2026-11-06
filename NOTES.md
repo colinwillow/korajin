@@ -59,6 +59,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2698 -- THE CAPE HEM FLUTTERS (guarded out of the gear); NO NEW BONES: the cape's mesh ENDS at its last joint (Nov 6 2026)
+His (via main): *"go ahead on the cape bones yourself: add cape_N_5 and cape_N_6 to each chain, down to the hem (~.35-.40 m), weight the bottom two edge
+rows to them ... or do it in code at load"*.
+- MEASURED (headless, in bind space, all three skinned meshes): `cape_N_4` carries NO weight -- it is the chain's END marker; the lowest segment's
+  cloth is weighted to `cape_N_3`, and **not one cape vertex lies below joint 4** (85 / 114 / 97 verts per chain, the lowest exactly at joint 4's
+  height; at most .01 m past it). So the cape's HEM IS joint 4 (~.62 m standing, lower when it hangs straight), and at sword 85 % the sheath's tip
+  (~.48) hangs BELOW the hem. Bones added under joint 4 would move nothing -- there is no cloth there. **A real tail below the sheath needs a LONGER
+  CAPE MESH** (his Blender: extend the cape ~.2 m and add `cape_N_5` / `cape_N_6` along it, weighting the new rows; the code picks up any `cape_N_M`).
+- WHAT SHIPS (`TTAIL.hemFree` 1): TAIL as m2686, plus each chain's LAST segment (joint 3 -> the hem) is FREE -- it is simulated -- and GUARDED: any free
+  tip that swings into a gear piece's footprint is pushed back out over its face (`tailPinTip`, half-space), so it flutters OUT and never through.
+- MEASURED IN MOTION (idle, run + 3 jumps, idle; cape vertices inside the sheath / quiver mesh bounds): hem free + guarded mean 21.8 / max 29;
+  fully pinned 22.1 / 24; m2686 22.3 / 26 -- freeing the hem adds nothing; the ~22 are the attachment under the gear (m2686). Rendered a run from
+  behind and the side: the hem lifts and swings over the lower gear, the gear on top at the shoulders. `mel.TTAIL.hemFree = 0` is the A/B.
+
 ## m2697 -- FOREST TEMPLE build 6 (E, the SUNKEN COURT, part 1): a 46 m chasm crossed only by six knot swings under a thorn canopy; SHARD V
 
 **The way in:** the E door at the well's foot (east) is a whip gate (`FT_BUILT` now D and E). **Its frame (`FTE`) is on ring seg 0 (9 deg), not 1:**
