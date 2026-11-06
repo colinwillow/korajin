@@ -65,7 +65,9 @@
     "entryprobe": "node tools/entryprobe.mjs",
     "lakeperf": "node tools/lakeperf.mjs",
     "glowshot": "node tools/glowshot.mjs",
-    "shadeshot": "node tools/shadeshot.mjs"
+    "shadeshot": "node tools/shadeshot.mjs",
+    "shadefight": "node tools/shadefight.mjs",
+    "shjinshot": "node tools/shjinshot.mjs"
   },
   "type": "module",
   "devDependencies": {

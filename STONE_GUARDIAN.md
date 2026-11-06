@@ -54,6 +54,10 @@ The spirit DRAWS ONLY WHERE THE ARMOUR IS BROKEN: each guardian has its own inde
   TAMA motes that fly to Grumbo, are counted (`TAMA.n`), and the last home plays `loot_small`.
 - **The statue twin** (STATUES.md): the same rig in the flex pose, `statueStone`; a blow wakes it.
 
+## The regression
+`npm run shadefight` fights one to death through the shipped hit paths (sword sweeps + real arrows -> spirit pass-through -> the dunk ->
+Jinra kill) and exits 1 on a stall (m2789: the stone hands were unhittable, a leaf bone).
+
 ## The sandbox
 Combat Lab: SPAWN > BOSS > **Stone guardian (2-layer)**, or the arena SPAWN menu's STONE GUARDIAN (2-LAYER) -- a statue twin and a live one.
 `mel.shadeAdd()`, `mel.shadeBreak('shoulderL')`, `mel.shadeBare()`, `mel.shadeKill()`. Authored pieces: SHADE_PIECES.md. Contact sheet: `node tools/shadeshot.mjs` (armoured + statue, arm

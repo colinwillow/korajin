@@ -191,6 +191,21 @@ villages*; her role is open (a villager, a love interest, a village princess, pl
 - **Her role -- three options in CHARACTERS.md for him to pick** (a villager with a bell quest / the keeper who knows the old bell / a companion
   who rides along and may become playable). Not chosen.
 Shipped unverified.
+## (m2789) THE STONE GUARDIAN WAS UNBEATABLE -- his stone HANDS could never be hit, and the tier lock waited on them for ever
+His: *"I got its gloves and feet off but now I'm shooting it with arrows, hitting it with the sword -- all this stuff it's making explosion
+noises, but nothing, it's not taking any more damage."*
+- **WHAT WAS WRONG:** `shadeNearest` measured a blow against each bone's span (bone -> first child bone). The stone HAND piece is one LEAF bone
+  (`Left/RightHand`, no child): a zero-length `Line3` gives NaN, `NaN < bd` is false, so a hand was NEVER the nearest piece. The tier order
+  (m2783) keeps the hands open until they break -- so once the gauntlets, shins, feet and head were off, every blow found nothing, for ever.
+  Never seen before: every earlier test broke pieces by NAME (`mel.shadeBreak`), not by blows. **Measured on the shipped path**
+  (`npm run shadefight`, real `guardSweep` sweeps + real arrows stepped by the game): stalled at 7/15 with both hands at .90; after the fix,
+  armour off in 20 blows, plain blows pass through the spirit, the dunk, 5 Jinra blows, the dissolve, 14 Tama. **It exits 1 on a stall.**
+- **THE "EXPLOSION":** `shadeBlow` returned 1 for every armour blow, even one that touched nothing, and `guardSweep` plays the full connect
+  (`meleeHit`: impact + hitstop) on a 1. Now a blow with nothing to break is a TINK (`st_ring`, a small pale spark) and returns 'block'.
+- **SHOW THE WAY:** the Jinra brazier has a mint halo over the bowl (`glowSprite`) and burns harder; when a plain blow passes through the
+  spirit it FLARES (bigger halo, light, fire) and motes drift from the cut toward it for 2 s (`SHJIN.cue`). A hint NPC is still open.
+- **A TEST THAT BREAKS BY NAME DOES NOT TEST THE BLOW.** Fight it through the hit path, and fail on a stall.
+
 ## (m2784) THE SPIRIT ONLY BOWS TO JINRA -- plain blows pass through the bare Shade; a Jinra brazier dunk infuses the blade (or 3 arrows)
 His puzzle beat (via the orchestrator). Reuses what exists: the JIN blade state (`BFIRE.on` 2) is what the brazier grants (`INFUSE`: 20 s or 14
 spirit hits, guttering its last 3 s, then back to what it was); the Dark Hall's `brazierAdd` is the brazier (mint coals, `gfire` turquoise, a
