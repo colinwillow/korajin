@@ -67,6 +67,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## (m2771) THE 3D PORTAL -- TOOLS > PORTAL: 3D (default) / DISC
+His: "make the portal look more 3D: instead of this 2D thing, create an actual portal." `ENTRY.look` '3D' (localStorage `mel.entryLook`; DISC is
+m2769's opaque disc): `entryFunnel` hangs a Jinra VORTEX FUNNEL at the portal point, opening DOWN -- a LatheGeometry tube (rim `f3.r` .95 m,
+`f3.h` 2.8 m up to a `throat` .2 m), `ENTRYFS_F` spiralling bands scrolling up it with a bright core far up the throat (brighter on the inside
+faces), and a thick TORUS rim (`f3.tube` .1) whose `ENTRYFS_R` crackles. Two draws, opaque, sharing the disc's uniforms (JPAL colours). It grows
+out of the rim as it opens (x/z by `open`, y by `len`) and turns slowly; as it seals it narrows to a needle and goes. On opening: a shock of dust
+and Jinra motes on the ground below; while open, motes shed off the rim. The disc is hidden in 3D; the m2407 clip plane is the rim plane, so he
+drops out of the mouth. Only the entrance's own portal gets the funnel (`entryPortal(.., is3)`) -- the PHASE portals reuse `entryPortal`.
+Strips (boulders): images/renders/entrance/m2771_portal3d_boulders_play.jpg (the play camera) and ..._low.jpg (a low camera 7 m off, looking
+up). Both read as a real object; from the play camera it is a big solid cone (a flat cut throat) more than a vortex fading into the sky --
+the obvious next pass is fading the throat out (alpha up the tube), if he likes the direction.
+
 ## (m2769) THE PORTAL IS JINRA AND ITS FACE IS OPAQUE -- he comes OUT of the underside, never seen through the top
 His (screenshots images/feedback/m2766/portal_emerge_1/2.png): magenta/purple (purple is the Hollow's, EMBLEMS.md), and the flat disc was
 SEE-THROUGH, so with the camera looking down you saw him through its top face while he was still in it, then he dropped out of the bottom --
