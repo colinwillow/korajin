@@ -119,6 +119,23 @@ sealAt .3 + .5 s after the fall starts), it blends over `blendT` (.8 s) into the
 from wherever it is. The portal is a flat level disc (E.flat), not a billboard, so with no rotation there is nothing to re-face. OLD is the m2674
 eased tilt, on the switch (`mel.entryCam` in localStorage). Moves no sandbox box; the entrance's sign-off on his phone is still open.
 
+## m2773 -- STOP AUTO-FITTING: HIS MOUNT EMPTIES (`sheath_mount` / `quiver_mount`, GEAR.md), and the default back to the ORIGINAL X he liked (Nov 6 2026)
+His (m2772, `images/feedback/m2772/gear_worse_1.png`, `_2.png`): *"Arguably the quiver and sheath are actually worse. I don't know why this is so
+freaking hard. Should I just position them myself in Blender?"* Yes -- and the fits stop.
+- WHY IT KEPT MISSING (m2770, kept for the record): each fit was made in one frame and his phone used another. The pre-m2770 BOOT frame (what his
+  phone showed the original X in) measured against today's REST frame: **16 deg** apart (old checkout 81dd789: qc (-.053, .080, .013, .995) vs rest
+  (.061, 0, 0, .998)). The m2763-m2770 refits were tuned in probe frames that were neither.
+- DEFAULT RESTORED: the pre-m2763 X (`back` mouth [-.103, .19, -.26] / dir [.423, -.906, .26]; `quiver` [.06, -.05, -.257] / [.35, .93, 0]) and the
+  HORIZONTAL / solo-quiver rows, each re-expressed by that measured 16 deg into the rest frame -- so it lands where his phone showed it, now the same
+  on every boot. Rendered: `images/renders/cape/m2773_gear_original_x_restored.jpg`.
+- HIS MOUNTS (`gearMount`, `gearMountSeat`): an empty named `sheath_mount` / `quiver_mount` (`_h` for HORIZONTAL, `quiver_mount_solo` for the hip
+  carry) anywhere in his character file -> the gear is parented to it with IDENTITY (the weapon mounts' pattern); size = the empty's own scale x
+  SIZE / 85 %. Absent -> the table. The message line says `GEAR: MOUNT <name>` or `GEAR: TABLE` (`TRIPOW.stat.gear`). TESTED with synthetic
+  mounts on Spine2: the gear parents to them, local identity, lands within 8 mm of the pose it was given (2 frames of idle apart).
+- WHY IDENTITY WORKS: `tripo_weapons_01.glb`'s pieces are all ROOT nodes at the file origin (sword grip at the origin, `sheath_mouth` at +13.18 Y),
+  and `tripoClone` zeroes each node's transform -- so "a child of the empty with cleared transforms" in Blender is exactly the game's frame.
+- `GEAR.md`: HOW TO PLACE THE GEAR IN BLENDER, one page, for him. GEAR EDIT stays (it edits the table). Shipped unverified on the phone.
+
 ## m2772 -- THE TASSELS STAY ON THE HILT through the portal drop (his: "they lag far behind, up in the air"); cape / hair springs capped (Nov 6 2026)
 His (`images/feedback/m2766/tassels_lag_portal.png`): on the entrance the hilt tassels (`TTAS`) floated ~1 m above his head while he dropped.
 - MEASURED (a forced drop: +6 m, -12 m/s, per frame): the pinned root sat .34-.40 m from the hilt -- `ttasStep` runs BEFORE he is moved in the
