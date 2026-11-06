@@ -63,6 +63,45 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2736 -- ENEMIES ARE VOLUME: the 100-hit green samurai found and fixed, a hits-to-kill table, limbs + rock bursts, arrow-kill bursts, BOMB-CORE spiders
+- HIS REPORT (forest temple run): "the green samurai robots take ~100 hits -- swipe, charge, swipe, charge... it wouldn't die". FOUND: room B's
+  wave is `COMBATSET.forest`, whose melee was the SAMURAI kind -- the lab's MIRROR duel rival. Its brain (`arenaMirror`) raises its guard
+  ('mguard') on every slash it SEES, and since m2470 a guarding body BLOCKS EVERY blow for no damage until its guard points run out (4, back one
+  per 1.5 s); the CHARGE is a guard break -- which does NO damage either -- and on NORMAL it also parries x.38 and dodges x.25. So almost no blow
+  ever landed: HP was never the problem, the duel rival's defence in a crowd was. (The tomb archers die in 2-3 and the jackal felt right because
+  neither runs the mirror.)
+- FIX: every temple set (`forest`, `ice`, `squad`, `trial`) fields the HUSK SOLDIER (no mirror) where it had SAMURAI; the lab's SAMURAI button
+  is still the duel rival. The husk soldier's row is rank-and-file now: block .12, parry .04, dodge .05, guard 2.
+- THE RULE (his): most die in 3-4 hits. `VOL` (index.html, next to `CBT.def`): life is set in HITS of the katana's own combo, computed from the
+  shipped numbers (FOE.dmg.weap 1.3 x KATANA.dmgK 1.6 x melPower .45 / .52 / 1.0 -> .94 / 1.08 / 2.08 a hit), `volHp(n)`; applied in arenaSpawn
+  to every kind in the table (not the mirror rival, not a boss). Forest temple chamber 1's samurai (`ftinSam`) die on `volHp(4)` / `volHp(8)`.
+  HITS TO KILL (raw, before his defence -- blocks, armour and the bulwark's shield cost more):
+
+      kind                         life   katana  charge  arrow(6)
+      HUSK_SOLDIER                 4.98     4       2       1
+      HUSK_ARCHER / ARCHER / OSARI 1.97     2       1       1
+      SPHINX_HOUND                 4.05     3       2       1
+      HOLLOW_MOTH                  1.97     2       1       1
+      HOLLOW_MONK                  4.05     3       2       1
+      CALF                         4.98     4       2       1
+      DOG (elite)                  9.08     7       3       2
+      JACKAL (elite)              10.16     8       4       2
+      BULWARK (elite)             12.24     9       4       3    (+ the shield: whip / flank / guard-break; its back x2)
+      WARBOSS (elite)             13.18    10       5       3
+      SKULLBACK / CEO beast       13.18    10*      5       3    (*ARMOURED: plain blows x.35 -> ~25; the charge x1.6 -> 3)
+      MECH / DRAGON (fliers)       9.08 / 13.18   7 / 10  3 / 5  2 / 3
+      chamber-1 samurai small/big  4.98 / 10.16   4 / 8   2 / 4  1 / 2
+      bosses (own life + armour):  Guardian 48 (x.15 outside windows), Thornback 60 (bark x.2, belly x2), giant scorpion 40 (x.2, weak x1.6)
+      small scorpions 2 (a heavy blow 1); spiders unchanged.
+- LIMBS AND THE ROCK BURST: every samurai-rig kind (husk soldier / archer / monk, jackal, the osari bowman -- `K.limbs`) dismembers on the katana
+  (the horde's `limbCut`: arms, legs -- one leg and they HOP), and the last piece (the head, or both legs) blows them apart (`limbBoom`) -- now
+  with a grey ROCK burst, and an arena body that blows apart leaves the fight properly (out of `ARENA.live`, so rooms count it dead). The
+  killing blow on a body already missing two pieces, or an ARROW kill, also bursts it.
+- BOMB CORE: spiders with a glowing orange core (`S.bomb`, `bombCore`); killing one ARMS it -- left where it fell, flashing faster, and after
+  1.5 s it EXPLODES (r 4.2): him (22, a launch), every body (a rocket blow, `dummyHit`'s rule), spiders, guardians, scorpions, the giant, the
+  Thornback. Lab: SPAWN > CREATURE > BOMB SPIDERS.
+- `npm run check` ok (incl. the spawn/reach gate). Shipped unverified.
+
 ## m2735 -- HIS ROOM A NOTE: the HIGH BAR -- his jump off the moving slab carried him OVER it; the catch is now SWEPT and the bar placed by the arc
 
 His: "you shoot the target, the platform moves (he LOVES that), you ride it to the centre, then jump to the high bar -- but it's too close, the
