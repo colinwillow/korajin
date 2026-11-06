@@ -60,6 +60,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## m2700 -- TOOLS > BOW > SHEATH: X (default) / HORIZONTAL -- across the small of his back; the reverse-grip draw with a 180 deg whip spin (Nov 6 2026)
+His (via main): *"SHEATH: X / HORIZONTAL. Horizontal: the sheath completely horizontal across his mid / small of the back, so the cape has room below
+to flutter; the quiver keeps its current look. New draw: the hand pulls the blade out sideways in a REVERSE grip (blade down along the forearm),
+once clear spins it 180 deg in the hand with a quick whip, ends pointing straight UP in a normal grip; sheathe reversed. Keyed poses on KDRAW, a spin
+with overshoot and settle, a whoosh at the flip. Recompute the TAIL boundary."*
+- PLACEMENT (`TRIPOW.backH`, `tripoLayout`, remembered `mel.sheathLay`): first at mid back (y .85) it lay broadside under the middle of the cape (the
+  cape's hem is ~.62) -- inside-gear count WORSE (57 vs 37 on X). So it sits across the SMALL OF HIS BACK, y ~.58, just under the cape's hem: the
+  mouth at his RIGHT flank, the blade to his LEFT, the face out, on his back (body -.14..-.05 there; `dir` z .15). The quiver as on X, 4 cm out
+  (`quiverH`). The TAIL boundary re-reads the gear's mesh bounds by itself: .40 / .40 / .40 m (all chains free above the sheath).
+- THE DRAW (`kdHoriz`, `KDRAW.h`): reach -> grip -> PULL (.26 s) out along the sheath by the blade's length, turning into the REVERSE grip (the held
+  pose turned 180 deg about the blade's flat normal: blade DOWN) -> SPIN (.3 s) back to the held pose about that same axis with an OVERSHOOT
+  (`h.over` easeOutBack) and a little lift; the whoosh as the spin starts -> settle -> fade. Sheathing: spin to the reverse grip at the pulled-out point,
+  slide in (the swap there), hold, release. The X draw is untouched.
+- MEASURED IN MOTION (idle, run + 3 jumps, idle; cape vertices inside the gear's mesh bounds; the same run for both): X mean 32.2 / max 39, HORIZONTAL
+  mean 28.8 / max 36 -- what is left is the QUIVER (unchanged, under the cape as asked) and the cape's attachment. (Both numbers are up on m2698's
+  22 -- the cape itself changed upstream since; same run, same build here.)
+- RENDERED (night, the forge): idle from behind / 3-4 / the sides, a run from behind and the side, the draw at 7 moments, the sheathe at 4.
+
 ## m2699 -- GIANT FLORA pass 2: WIND SWAY (vertex shader), DEEPER CACTUS RIBS, BONE BARK (his go, via parent) (Nov 6 2026)
 
 - **Sway, no new draw:** every flora vertex carries `aSw`, its sway in metres: the kind's amplitude × (height share)², or × (radius share)² for agave leaves.
