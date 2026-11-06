@@ -75,7 +75,7 @@ piece through `lkPaint`, colliders from the drawn meshes (`COLL`, as every zone)
 
 ## Order of work (one build per step, gated: check, bump, check, push; a NOTES entry each)
 
-0. **Performance to budget.** The lake today is **39 draws / 343k tris in the strip, WITHOUT shadows**, which is already over
+0. **Performance to budget. Done m2689** (`npm run lakeperf`: deck 69 / 280k, aerial 63 / 268k, with shadows). The lake today is **39 draws / 343k tris in the strip, WITHOUT shadows**, which is already over
    280k. So: count with the shadow pass (as the desert's `gshad`), cut the terrain grid and tree tris, cull far trees and rocks
    in cells. Target ≤ 55 / 220k at the boat before anything is added.
 1. **This plan:** LAKE_REGION.md and the map. **Done m2615.**

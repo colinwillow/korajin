@@ -57,7 +57,8 @@
     "gathstrip": "node tools/gathstrip.mjs",
     "smartcam": "node tools/smartcam.mjs",
     "ikstrip": "node tools/ikstrip.mjs",
-    "entryprobe": "node tools/entryprobe.mjs"
+    "entryprobe": "node tools/entryprobe.mjs",
+    "lakeperf": "node tools/lakeperf.mjs"
   },
   "type": "module",
   "devDependencies": {

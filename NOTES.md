@@ -59,6 +59,41 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2689 -- THE LAKE REGION step 0: PERFORMANCE TO BUDGET, COUNTED WITH THE SHADOW PASS (`npm run lakeperf`)
+LAKE_REGION.md's budget: any play view <= 70 draws / 280k tris WITH shadows; aerial <= 85 / 310k. The plan (m2615) found the lake over budget before
+anything was added.
+- **New `tools/lakeperf.mjs`** (`npm run lakeperf`, the dvperf pattern): it boots the shipped page with a fake clock, stands him at five spots, steps 90
+  frames, renders ONE frame through the game's camera and reads `renderer.info` with autoReset OFF, so the shadow pass is counted. `--brk` hooks
+  `renderBufferDirect` and tallies every draw by object and pass (main / SHADOW) at the deck. That tally is what found every cut below.
+- **Before -> after** (draws / tris, shadows on):
+
+  | view | before | after |
+  |---|---|---|
+  | deck | 80 / 576k | **69 / 280k** |
+  | south | 45 / 518k | 41 / 230k |
+  | aerial | 66 / 541k | 63 / 268k |
+  | beach | 46 / 175k | 47 / 156k |
+  | reach | 44 / 186k | 46 / 155k |
+
+- **What it cost, from the tally:**
+  - the lotus was 1,360 tris EACH (15 hemisphere petals at 8x6), 42k for 31 flowers;
+  - the terrain was ONE 135k mesh drawn whole from every view;
+  - the canopies were ONE 34k-tri shadow caster for every tree in the lake;
+  - the boat cast 11 shadow draws, the Jinra lines among them;
+  - stacks, arches, obelisks, shore rocks and islets cast shadows onto WATER, which receives none.
+- **The cuts:**
+  - **Terrain:** 200x340 -> 164x250 (135k -> 81k), in 6 ROW CHUNKS with their own bounding spheres, so the frustum drops what is behind the lens.
+    Chunk 0 IS `lake_terrain` and the others are its children, so the underwater code's getObjectByName / .material / .layers / hide still hold.
+  - **Lotus:** petals 6x3, seed head 7 sides.
+  - **Shadows off:** stacks, arches, obelisks, rocks and islets (nothing receives them), bark, and the boat except hull and roof (11 -> 3 draws).
+  - **Tree shadows are BLOBS:** one instanced draw of soft quads under the crowns, offset with the sun, replacing the 34k caster.
+  - **Smaller geometry:** stacks lathe 56x64 -> 44x46; the great tree's blobs at detail 2; shore rocks at icosa detail 0; tree trunk and branch
+    radials 9 -> 7 and 6 -> 5; lily pads 26 -> 18 segments; the water grid N 128 -> 104.
+- Strip check (`down_canyon shallows lilies stack`): the bluffs still read in tiers, and the chunks share their edge vertices so there are no seams.
+- The deck sits exactly AT the budget, so the kit (step 2) must pay its own way: cells that hide when far, instancing.
+- **Not measured: the mirror.** Neither the tally nor the main pass showed a reflection render at the deck spots.
+- Shipped unverified.
+
 ## m2688 -- FOREST TEMPLE build 4 (C, the ROOT HEART): the crack, the mid-boss (stand-in), THE VINE WHIP + SHARD III, the swing teach out
 
 **Layout** (in B's frame, `FTB`, straight under B; the sheet's L0 became -18 so the pit's far wall clears rule 4): B's floor is now five slabs
