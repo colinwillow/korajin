@@ -64,6 +64,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## (m2765) THE LANDING WAITS ON THE COLLIDER BEING BUILT, NOT A CLOCK -- he is held at the spot, never dropped through an unbuilt deck
+entryprobe at m2764: the Gathering BAD alone too -- he ended at y 0, 12 m under the deck. The m2679 gate waited on the row's ground with a 15 s cap,
+and he was NOT held while it waited: gravity took him through the unbuilt deck, and an AUTO collider (`collAutoTick`) builds its rect/height band
+round where he IS -- so falling to 0 also built the store round the wrong floor. Now (main: "never let him drop through an unbuilt deck, in any zone"):
+`entryGroundWait(R)` = the zone's mesh collider wanted and not built (`COLL.built === 0`), or a typed-height row whose ground is not there; while it
+says so `entryHoldAt` pins him (hidden, vel 0) at the row's spot or where the zone put him (a > 1.5 m sideways put moves the hold), and the LOAD CARD
+stays up (its cap 30 s -> `gCap` + 5). `ENTRY.gCap` 60 s is the safety: then the hold lets go and he lands on the nearest built ground below.
+`ENTRY.gWhy` (also the last field of `ENTRY.why`) says what it is waiting on. A `built -1` (a failed build) does not wait.
+Frame strip of the m2764 dolly entrance: images/renders/entrance/m2764_dolly_arena_strip.jpg.
+
 ## (m2764) THE ENTRANCE CAMERA HOLDS ITS ORIENTATION -- TOOLS > ENTRANCE CAM: DOLLY (default) / OLD
 His (via main): the entrance camera started high and TILTED down as he dropped, and rotating the lens against the portal (a flat shader effect)
 made it read too deep, "like rotating around a sprite". Now (`ENTRY.camMode` 'DOLLY', `entryCamPose`): the m2645/m2674 pick still chooses ONE

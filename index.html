@@ -54168,7 +54168,7 @@ function hdropStep(dt, s) { const p = player, D = p.hdrop; D.t += dt;
 // SC_ENTRY:START
 const ENTRY = { on: (() => { try { if (/[?&]entry=0\b/.test(location.search)) return 0; if (/[?&]entry=1\b/.test(location.search)) return 1; return localStorage.getItem('mel.entry') === '0' ? 0 : 1; } catch (e) { return 1; } })(),
   col: 0x8a4dff, hot: 0xff4fd8, deep: 0x1a0633, cloud: [.42, .3, .55], tilt: .2, sealAt: .3,     // VIOLET (his: "purple, electric, cloudy" -- Jinra may move to purple later; this is the one place)
-  H: 16, wait: .35, open: 1.0, close: .55, flipA: .12, flipT: 0, cine: 0, camOut: 1.3, camEl: .5, camFit: .85, lookMin: .27, camMode: (() => { try { return localStorage.getItem('mel.entryCam') === 'OLD' ? 'OLD' : 'DOLLY'; } catch (e) { return 'DOLLY'; } })(), dollyOut: 1.2, panUp: .9, blendAt: .15, blendT: .8,     /* m-dolly: TOOLS > ENTRANCE CAM */ pScale: .34, pDist: 0, pH: 2.5, pYaw: 0, flyT: .85, warp: 0, bgEvery: 2, flat: 1, slowK: 1, pre: .16, post: .12, ease: .45, camBlend: .9, settle: .6, max: 9,
+  H: 16, wait: .35, open: 1.0, close: .55, flipA: .12, flipT: 0, cine: 0, camOut: 1.3, camEl: .5, camFit: .85, lookMin: .27, gCap: 60, camMode: (() => { try { return localStorage.getItem('mel.entryCam') === 'OLD' ? 'OLD' : 'DOLLY'; } catch (e) { return 'DOLLY'; } })(), dollyOut: 1.2, panUp: .9, blendAt: .15, blendT: .8,     /* m-dolly: TOOLS > ENTRANCE CAM */ pScale: .34, pDist: 0, pH: 2.5, pYaw: 0, flyT: .85, warp: 0, bgEvery: 2, flat: 1, slowK: 1, pre: .16, post: .12, ease: .45, camBlend: .9, settle: .6, max: 9,
   cam: [.6, 6.2, 1.25], duck: .3, snd: (() => { try { return localStorage.getItem('mel.entrySnd2') || 'B'; } catch (e) { return 'B'; } })(),     /* m2401: B (the brighter, clearer opening) by default */
   sfx: { open: 'portal_open', through: 'portal_through', seal: 'portal_seal' },     /* SWAPPABLE: point a role at another SFX key (his own portal sound, when he uploads it) */
   make: null, step: null,     /* SWAPPABLE: a different portal look (e.g. his PNG sequence) = make(x, y, z) -> P with P.g, and step(run, dt); null = the tear */ sigilR: 2.3, sigil: (() => { try { return localStorage.getItem('mel.entrySigil') === '1' ? 1 : 0; } catch (e) { return 0; } })(),     /* m2407 (his): no symbols under him by default */
@@ -54257,12 +54257,12 @@ function entryLand(x, y, z) { const E = ENTRY, PH = (E.cine ? E.H : E.pH) + .6;
   return [x, y, z, -1, 'NO CLEAR SPOT within 8 m']; }
 function entryRevealAfter(go) { const t0 = performance.now(), poll = () => { let hold = 0;
     try { const E = ENTRY, k = entryKey(), R = entryRow(k); hold = E.on && !E.run && k !== E.done && !(R.skip && R.skip()) && !player.sleep && !(typeof REEL !== 'undefined' && REEL.on) && (!rig.ready || !!(rig.actions && rig.actions[HDROP.land]) || (typeof HERO !== 'undefined' && HERO.pick === 'agoblin'));
-      E.why = [E.on, !!E.run, k, E.done, !!(R.skip && R.skip()), !!player.sleep, !!(typeof REEL !== 'undefined' && REEL.on), !!rig.ready, !!(rig.actions && rig.actions[HDROP.land]), typeof HERO !== 'undefined' && HERO.pick, Math.round(performance.now() - t0)].join(' ');     /* why the card is (or is not) held -- for the headless measure */     /* the drop clips load AFTER the rig is ready: Grumbo has them, so hold for them */ } catch (e) { hold = 0; }
+      E.why = [E.on, !!E.run, k, E.done, !!(R.skip && R.skip()), !!player.sleep, !!(typeof REEL !== 'undefined' && REEL.on), !!rig.ready, !!(rig.actions && rig.actions[HDROP.land]), typeof HERO !== 'undefined' && HERO.pick, Math.round(performance.now() - t0), E.gWhy || ""].join(' ');     /* why the card is (or is not) held -- for the headless measure */     /* the drop clips load AFTER the rig is ready: Grumbo has them, so hold for them */ } catch (e) { hold = 0; }
     // m-load: the CARD is the curtain for the zone's own load too, entrance or not -- held until the zone says it is built (`ready`), then the
     // zone's `warm` and a whole-scene compile + upload (`sceneWarm`) run under it (capped: 20 s of waiting, then it goes regardless)
     try { const k = entryKey(), R = entryRow(k); if (!ENTRY.run) { if (R.ready && !R.ready() && performance.now() - t0 < 20000) hold = 1; else if (!ZWARM[k]) { ZWARM[k] = 1; try { if (R.warm) R.warm(); } catch (e) { note('ZONE WARM ' + e.message); } sceneWarm('zone ' + k); } } } catch (e) {}
     if (hold) HITCH.gateT = 0; else { if (!HITCH.gateT) HITCH.gateT = performance.now(); if (HITCH.stable < HITCH.need && performance.now() - HITCH.gateT < HITCH.cap) hold = 1; }     // m-load 2: and SETTLED -- `need` frames in a row under `stableMs`, not just built (capped)
-    if (hold && performance.now() - t0 < 30000) { setTimeout(poll, 80); return; } setTimeout(go, ENTRY.run ? 120 : 260); };
+    if (hold && performance.now() - t0 < (ENTRY.gCap + 5) * 1000) { setTimeout(poll, 80); return; } setTimeout(go, ENTRY.run ? 120 : 260); };     // m2765: the card covers the wait for the collider too (was 30 s)
   poll(); }
 function entryKey() { const q = location.search || ''; let m = /[?&]zone=([a-z]+)/.exec(q);
   if (m) { if (m[1] === 'region') return /[?&]at=village\b/.test(q) ? 'village' : 'region'; if (m[1] === 'cell') return 'cell:' + String(TCELL.id || '').toUpperCase(); return m[1]; }
@@ -54272,16 +54272,25 @@ function entryRow(k) { const R = ENTRY.rows[k]; return R || {}; }
 function entryTime(raw) { const E = ENTRY; let tg = 1; const D = player.hdrop;
   if (E.run && D) { if (D.st === 'fall' && D.eta != null && D.eta < E.pre) tg = E.slowK; if (D.st === 'land' && D.t < E.post) tg = E.slowK; }
   E.k = tg < E.k ? Math.max(tg, E.k - raw / .12) : Math.min(tg, E.k + raw / E.ease); return E.k; }
+// m2765 (main: "never let him drop through an unbuilt deck, in any zone"): what the landing is still waiting on -- the zone's mesh collider not built
+// yet (`COLL.built` 0 while the zone wants the mesh), or a row with a typed height whose ground is not there yet. '' = go.
+function entryGroundWait(R) { const C = COLL; if (C.zone && C.mode === 'mesh' && C.built === 0) return 'COLL ' + C.zone;
+  if (R.at && R.at.length === 3) { const g = groundAt(R.at[0], R.at[2], R.at[1] + 2, 0); if (!(Math.abs(g - R.at[1]) < .6)) return 'ground'; } return ''; }
+// ...and while it waits he is HELD where the zone put him (or the row's typed spot): no gravity through the unbuilt floor. A zone's late spawn put
+// (more than 1.5 m sideways) moves the hold with him.
+function entryHoldAt(R) { const E = ENTRY, p = player; if (R.at && R.at.length === 3) { E.gx = R.at[0]; E.gy = R.at[1] + .05; E.gz = R.at[2]; }
+  else if (E.gx == null || Math.hypot(p.pos.x - E.gx, p.pos.z - E.gz) > 1.5) { E.gx = p.pos.x; E.gy = p.pos.y; E.gz = p.pos.z; }
+  p.pos.set(E.gx, E.gy, E.gz); p.vel.set(0, 0, 0); }
 function entryWatch(dt) { const E = ENTRY; if (E.wasPend && !E.run && rig.root) rig.root.visible = true; E.wasPend = 0; E.pend = 0; if (!E.on || E.run || !rig.ready || !rig.actions || !rig.actions[HDROP.land] || !rig.actions[HDROP.fall]) return;
-  { const k0 = entryKey(), R0 = entryRow(k0); if (k0 !== E.done && !player.sleep && !REEL.on && !(R0.skip && R0.skip()) && (E.pendT = (E.pendT || 0) + dt) < 10) E.pend = E.wasPend = 1; }     // m2416: pending -> he is not drawn (the level must not show him standing there first)
+  { const k0 = entryKey(), R0 = entryRow(k0); if (k0 !== E.done && !player.sleep && !REEL.on && !(R0.skip && R0.skip()) && (E.pendT = (E.pendT || 0) + dt) < E.gCap + 10) E.pend = E.wasPend = 1; }     // m2416: pending -> he is not drawn (the level must not show him standing there first)
   const k = entryKey(); if (k === E.done) return; const R = entryRow(k);
   if ((R.skip && R.skip()) || player.sleep || REEL.on) { if (player.sleep || (R.skip && R.skip())) E.done = k; E.hold = 0; return; }
   if (R.ready && !R.ready()) { E.hold = 0; return; }
-  if (R.at && R.at.length === 3 && (E.gWait = (E.gWait || 0) + dt) < 15) { const g = groundAt(R.at[0], R.at[2], R.at[1] + 2, 0); if (!(Math.abs(g - R.at[1]) < .6)) { E.hold = 0; return; } }     // the row's ground must EXIST first (the Gathering's deck collider builds after the zone says ready: he fell 12 m through it -- entryprobe); 15 s cap
+  { const why = entryGroundWait(R); if (why && (E.gWait = (E.gWait || 0) + dt) < E.gCap) { E.gWhy = why; entryHoldAt(R); E.hold = 0; return; } E.gWhy = why ? why + ' (CAP)' : ''; E.gx = null; }     // m2765: the ground must EXIST first -- wait on the COLLIDER BEING BUILT, him held at the spot (hidden, the card up), not a clock (the Gathering's deck: he fell 12 m through it at the old 15 s cap -- entryprobe); `gCap` s safety, then the nearest built ground below
   if (!player.grounded || player.dragon || player.riding) { E.hold = 0; return; }
   const p = player; if (E.hx == null || Math.hypot(p.pos.x - E.hx, p.pos.z - E.hz) > 1.5 || Math.abs(p.pos.y - E.hy) > 1.5) { E.hx = p.pos.x; E.hy = p.pos.y; E.hz = p.pos.z; E.hold = 0; }     // the zone moved him (a late spawn put): settle again
   if ((E.hold += dt) < E.settle) return;
-  E.done = k; E.hold = 0; E.pendT = 0; E.gWait = 0; entryGo(k); }
+  E.done = k; E.hold = 0; E.pendT = 0; E.gWait = 0; E.gx = null; entryGo(k); }
 // THE LANDING: the row's spot (or where the zone stood him), the pad, the portal, then the drop. `force` = TOOLS / ?drop=1 where he stands.
 function entryGo(k, force) { const E = ENTRY, p = player, R = force ? {} : entryRow(k); let x = p.pos.x, y = p.pos.y, z = p.pos.z;
   if (R.at) { x = R.at[0]; z = R.at[R.at.length - 1]; if (R.at.length === 3) y = R.at[1]; else { const g = groundAt(x, z, y + 2, 0); if (isFinite(g)) y = g; } }     // m2674: the ground NEAR where the zone stood him (y + 80 picked the top of whatever was over the spot -- a roof)
