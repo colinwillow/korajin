@@ -59,6 +59,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2684 -- the LANDING's freeze was the footstep colour, not a shader (first-use prewarm: weapons and FX)
+- **MEASURED** (`entryhitch 'w=arena&entry=1'`, profiler on): the arena's landing frame was 5.9-6.5 s headless with **0 program links** --
+  owned by `ssTexAvg` (633 / 523 / 463 ms frames): `entryImpact` -> `stepSurf` classifies the ground he lands on, and the colour half of it
+  draws the map into an 8 x 8 canvas and reads it back, cached per texture. The page's FIRST such readback cost 7 s headless (the 2D canvas's
+  own start-up; 30 more maps were ~160 ms together) -- and it happened on the frame he hit the ground. Every first step onto a new material
+  paid its own share the same way.
+- **FIXED:** `sceneWarm` (under the card) runs `ssTexAvg` over every map in the scene (`ENTRY.warmAvg` / `warmAvgMs`), and makes the FX library
+  first (`goopFx()` -- the landing's Jinra shockwave and every hit's goop are made on first use) so the warm compiles and draws its pools.
+- **WEAPONS: already clean.** Swapping through all 9 slots after the entrance (`mel.swapGo(i)` every 1.8 s) linked **0 programs** before and
+  after: they hang off the rig and toggle visibility, and m2658's drawing warm shows the hidden ones.
+- **BEFORE -> AFTER:** arena landing worst frame 5,871 ms -> **118 ms**; links after the card 0 -> 0. The 1.2 s of `ssTexAvg` is now under
+  the card. Shipped unverified -- TOOLS > HITCH LOG on the phone is the measure.
+
 ## m2683 -- HARDENING 2: the edge-case course (`npm run collcourse`), COLL.md, and a lintel that stopped him (Nov 6 2026)
 
 - **`npm run collcourse [--fps=20] [--boxes]`** builds eleven test pieces out of plain drawn meshes on the empty forge floor (far from the spawn,
