@@ -62,6 +62,17 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2727 -- FOREST TEMPLE polish pass 2 (the next-weakest room, C: "ROOT HEART"): the heart in its nest of roots, root veins on the walls
+
+Picked by render: in game, C (where you meet the Thornback) was a bare box with two braziers and one root column. D already had its trough,
+dam, crank and reliefs. The sheet calls C the ROOT HEART, and there was no heart.
+- **`K.rootheart`, a new kit piece.** A glowing Jinra HEART (1.3 m) high on the far wall over the dais, gripped by a cage of roots, with 22
+  thick tapering roots radiating across the wall (most with a branch) and five dropping into the floor and flaring.
+- **`bulb: 0`** gives only the roots: the VEINS now crawl both side walls.
+- Visual only: no colliders, nothing to climb or get the Thornback stuck on. The kit's merged meshes cost no extra draw; the whole interior
+  is now 164k tris.
+Render: docs/forest_temple/c_polish.png. Boot unchanged. Shipped unverified.
+
 ## m2726 -- THE WHIP SANDBOX RE-LAID TO THE WHIP-ONLY RULE: B and E are 44 m spans under a thorn canopy; C's ledge is a hung slab off a smooth wall
 
 VINEWHIP.md's audit had three stations failing his rule (the measured max of his air chains + 25%, and STRUCTURAL, not distance alone):
