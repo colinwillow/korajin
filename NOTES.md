@@ -63,6 +63,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2730 -- HIS ROOM A NOTES (shared traversal, every zone): the MONKEY BARS were BACKWARDS; the WALL RUN-UP climbed for ever on repeated jumps
+
+His first play of the temple (Nov 6, via the orchestrator). Both are fixed in the SHARED systems, not in the temple.
+1. **"Push forward and he goes backward, pull back and he goes forward, and he turns to face the wrong way."** `stepMbar` stepped the rung
+   INDEX by the stick's sign as if a run's rungs always ascend. Room A's `r1_monkey` is built x0 -4.3 -> x1 -11.8, so its rungs DESCEND, and
+   the index went the opposite way to the stick. His facing followed the stick, so he faced away from where he went. The next rung is now
+   the one the stick points at (`sign(ax) * sign(last - first)`), for any run in any zone (the gym's, the builder's, the sky temple's).
+   **Boot:** on room A's own bars, at five camera angles x stick forward / back, every case travels WITH the stick (dot > 0) and faces the
+   way it goes. Measured with `stickWorld`, never argued.
+2. **"After the vertical wall run reaches its max, tapping jump repeatedly keeps him climbing."** `wrunJump0`'s run-up branch gave a fresh
+   climb (`upJumpV`) on every jump with the stick in. It now gives **ONE climb-jump per wall** (`p.upCap`: that wall, and the height it was
+   spent at). After that the jump only kicks him OFF. It re-arms on landing (`stepPlayer`), or on a DIFFERENT wall touched BELOW that height.
+   **Boot:** the first climb is granted, a second and third on the same wall kick off, a different wall lower down re-arms once, landing
+   re-arms. His measured reach (11.4 m: the run-up + one wall jump) is unchanged.
+Next: his monkey-bar ANIMATION note (the full-body swing), its own build. Shipped unverified.
+
 ## m2729 -- the DRAW bow gets a very subtle AIM ASSIST: a soft magnet within a reticle of the aim (TOOLS > BOW > AIM ASSIST: OFF / LOW / MED)
 His (Nov 6, relayed): *"I love the DRAW bow -- it adds skill. But it's mobile: a VERY, VERY subtle aim assist. Within about a reticle of a valid target
 it gently NUDGES onto it -- a soft magnet, never a snap or a lock; easy to pull off. Only while the thumb is slow or still; friction + a small pull;
