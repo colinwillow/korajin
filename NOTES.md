@@ -59,6 +59,23 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2690 -- THE THORNBACK, the forest temple's mid-boss (room C, guarding the vine whip), procedural until his Tripo model
+- docs/temples/forest_enemies.md 7: "a big burrowing beast, bark-plated stone body, a ridge of thorn spikes down its back, mint sap in the
+  cracks, a soft glowing belly". `thornMake` (SC_THORN) is the ONE builder -- three bark humps, a blunt-snouted head, four stubby legs, bark
+  plates proud of the flanks with mint SAP seams between them, a nine-spike THORN RIDGE, a glowing BELLY underneath -- ~5 m, 4 draws. His GLB
+  replaces it (`THORN.file`; the brain needs only `g`, `body`, `belly`).
+- THE FIGHT (`thornStep`), by PHASE (60 hp; 66% / 33%: a roar, 1.6 s untouchable, everything x1.2 / x1.4 quicker):
+  CHARGE (all): head down, the WHITE glint, then it ROLLS at him (13 m/s, turning a little; side-step it) and ends TUMBLED on its back,
+  STUNNED 2.6 s, belly up -- the big window. REAR + SLAM (all, close): it rears (the belly shows), the RED glint, the front comes down --
+  unblockable, and a GROUND RIPPLE runs out 10 m (jump it). BURROW (phase 2+): digs in, a moving mound tracks him, a red ring under him,
+  it ERUPTS there; a STOMP on the mound forces it up stunned on its back. VOLLEY (phase 3): it arches, the RED glint, and fires ten back
+  THORNS out in a ring.
+- ARMOUR: the bark x.2 (grey sparks, a dull clang); the BELLY (on its back, or reared, from the front) x2; its recovery x1.2.
+- STONE TWIN: `thornSpawn(x, z, { stone: 1 })` -- grey, no glow, still; `thornWake()` or a blow wakes it (rebuilt live).
+- ONE BOSS ROW for the temple: `COMBATSET.thorn` -> `combatBoss('thorn', [x, y, z])` RETURNS the beast (`.hp`, `.ko`, `.dead`; it is not an
+  `ARENA.live` body). Room C still calls the stand-in ('trial'); the swap is the forest worker's two lines (sent).
+- Lab: SPAWN > BOSS > THORNBACK (12 m ahead, wakes at 14 m) and THORNBACK STATUE (tap again: wake). `npm run check` ok. Shipped unverified.
+
 ## m2689 -- THE LAKE REGION step 0: PERFORMANCE TO BUDGET, COUNTED WITH THE SHADOW PASS (`npm run lakeperf`)
 LAKE_REGION.md's budget: any play view <= 70 draws / 280k tris WITH shadows; aerial <= 85 / 310k. The plan (m2615) found the lake over budget before
 anything was added.
