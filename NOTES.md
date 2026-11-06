@@ -63,6 +63,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2732 -- THE MONKEY SWING (his note, shared): the body a PENDULUM from the grip, legs that lag and follow through, the torso twisting to the reach, a bounce at each catch, the hand cycle on the stick
+
+His: "the arms just go forward-back-forward-back -- I want a full-body, monkey-like swing: hand over hand like a walk with the hands, the body
+hanging and swinging as a pendulum under the leading hand, hips and legs lagging, the torso twisting toward the reaching arm, the legs loose
+with follow-through, a little bounce at each catch, the speed tied to the stick." All in `stepMbar` / `mbarPose` (every zone's bars):
+- **The pendulum.** The body hangs from the GRIP (the hold point moving between rungs). Its angle obeys a real pendulum driven by the grip's
+  own acceleration (`th'' = -(g/L) sin th - (a/L) cos th - damp th'`, `L` 1.2), so it lags as the hands set off and swings through as they
+  catch. The ROOT turns about the axis across the bars, hbarPose-style, with his hands at the pivot.
+- **The legs** are a softer spring behind the body (`legK` / `legC`): they dangle, lag and overshoot. A loose scissor runs in step with the
+  hands, and the knees bend with the lag.
+- **The torso twists** toward the reaching arm (Spine1, the hips countering a third). A **bounce** at each catch (a spring kicked down,
+  0.9 m/s). The **hand cycle quickens with the stick**: stepT x1.3 at half stick, x0.7 at full.
+- The arm IK still puts each hand exactly on its rung (the leading one arcing over); it now runs after the swing has placed the body.
+Render: docs/forest_temple/mbar_swing.png (six frames across room A's bars: the reach, the hold, the body tilting under the grip, the legs trailing).
+Boot (MBAR SWING): across the bars the body swings to 0.65 rad, the legs lag 0.33, the catch bounces 0.036 m, the torso twists 0.27; no NaN.
+Also: my render harness had been passing no `at=` (a quoting bug in my scratch script), so the "room entries land in the hall" worry from m2725
+was MINE, not the game's. Shipped unverified.
+
 ## m2731 -- POTS SMASH IN CLAY: the temple's pots made a METAL clang and never shattered (his, playing the forest temple) (Nov 6 2026)
 **His report:** sword hits on the forest temple's pots clang like metal, and the pots do not shatter. **Not m2695's rocking** (that only touches
 the gallery's `ikpot` breakables): the temple's own `ftinPot` played `snd('crack')` + **`snd('clink')` -- and `clink` is the METAL set**
@@ -77,7 +95,6 @@ the gallery's `ikpot` breakables): the temple's own `ftinPot` played `snd('crack
 - **The gate** (`ikgate`, in `npm run check`): fails unless `SFX.pot_smash` exists, `ftinPot` plays it (never `clink`) and calls `propShatter`, and
   both `propKind` pots carry `snd: 'pot_smash'` -- proven: putting `clink` back in `ftinPot` -> exit 1. (A node gate cannot swing a sword in the
   temple; this asserts the shipped wiring.) Arrows and rolls reach the same `ftinPot` (`ftinArrow`, `rockArea`). **Shipped unverified.**
-
 ## m2730 -- HIS ROOM A NOTES (shared traversal, every zone): the MONKEY BARS were BACKWARDS; the WALL RUN-UP climbed for ever on repeated jumps
 
 His first play of the temple (Nov 6, via the orchestrator). Both are fixed in the SHARED systems, not in the temple.
