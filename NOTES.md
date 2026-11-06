@@ -63,6 +63,14 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2744 -- THE T-POSED RED SAMURAI WAS THE ARCHER WHOSE BAKE ARRIVED TOO LATE (m2744)
+*"There is ONE RED SAMURAI in the temple stuck in a T-POSE."* It is `ARCHER` (samurai_game.glb, the red one with the bow) or its copy
+`HUSK_ARCHER`. Both name the bake `samurai_archer`; samurai_game itself has no `bow_*` clips, so without the bake the body has nothing to play.
+`archerAdd` awaited `forgedFetch` before loading; `arenaLoad` (which `arenaSpawn` / `combatDrop` use) did not, so the bake arrived after the body
+was built and the late merge in `forgedMerge` reaches only ONE kind per stem (`FORGED.kinds[st]`): with two kinds sharing the bake, one stood in bind pose.
+Fix: `arenaLoad` awaits the kind's own bake before building it (try/catch: arena stages can call it at module scope above `FORGED`).
+`npm run check` green. Shipped unverified -- look at the temple's archers.
+
 ## m2743 -- HINTS COME FROM PEOPLE (his rule): five little folk in the temple speak soft, cryptic lines in in-world bubbles; no screen captions
 
 His: "hints come from people, not the screen -- walk up and an in-world speech bubble shows a soft, cryptic line about how the area works,
