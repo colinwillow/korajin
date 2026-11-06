@@ -62,6 +62,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2709 -- FOREST TEMPLE build 8 (THE SEAL + THE STAIR): six shards open the well's centre; a spiral stair goes down inside the trunk to the ROOT HALL. Also: below-zero floors now hold him
+
+**THE SEAL** (`ftinSeal`, glue). Six stone PETALS (one InstancedMesh) close a square stairwell at the well's centre (0, 36), under a carved rosette.
+A HEXAGRAM of Jinra light sits on the petals: one line lights per shard (`ftinSealLight`, called from `ftinShard`), and the heart lights at six.
+With all six shards he walks onto it and gets "THE SEAL OPENS": the petals sink half a metre, then slide out into the shaft's walls, and the
+collider (`ftemple_seal`) goes. `prog.seal` saves it. `ftinSealOpen()` is the event.
+**THE STAIR** (`FTX`, kit rows `x_*`). The shaft has 12 sides (inner apothem 3.4, 1.5 thick) and 82 TREADS, 16 to a turn, each **.317 m**
+(his step is .357), from 0 down to -26 round a 1.5 m newel. Above -14 the shaft is rock; below -14 it is THE HOLLOW BANYAN's trunk (stone for
+now; the boss build skins it), with a 4.2 m DOORWAY at its foot, right after the last tread. **THE ROOT HALL** (the sheet's X): radius 15,
+floor -26, ceiling -14, 24 wall sides, six braziers, moss, hanging roots. It is EMPTY; the boss is the next build.
+`ground` now takes `holes` (the well floor's stairwell). The well's rosette moved onto the petals.
+**THE FLOOR BUG (it was in C, E's pit and F too):** in the forge `groundAt` starts at a floor of **0 everywhere**, so any temple floor below 0
+put him back at y 0. Measured in the boot: from tread 40 (-13) and from C's arena floor (-18.3), `stepPlayer` lifted him to 0.00.
+`groundAt` now starts at -1e3 while the temple interior is on (as the alien world and the lake do). Every room has its own floor, and a fall
+past -30 (E: past -8) goes back. If a spot somewhere relied on the old 0 plane, he will now fall through it and reset: tell me where.
+Play-test: `at=roomX&grant=1` (menu: "The Seal + the stair (all six shards)"). The whole interior: 34 draws, 141k tris.
+Boot: the seal opens at six shards; all 82 treads are underfoot (`groundAt`), riser .317; he STANDS on tread 40 and on C's arena floor
+(`stepPlayer`); the trunk's doorway and the hall floor are at -26. Shipped unverified.
+
 ## m2708 -- GLOWKIT pass 2b: DETAIL ("everything reads low poly") -- double-bevelled chipped crystals, phantoms, a real hero shard in a bronze setting, leafy curling ivy (Nov 6 2026)
 His (via the orchestrator, on the m2704 renders): *"Everything needs more detail... the floating shard with its orbiting satellites especially looks low
 poly. Make it the hero piece."* Tris may rise a good deal; draws stay ~3 a room.
