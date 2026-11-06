@@ -63,6 +63,26 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2762 -- CAPE OVER THE GEAR ON THE GPU (his: "my cape is still going through the sword", X, TAIL); TOOLS > GEAR at the top (Nov 6 2026)
+His (m2761, `images/feedback/m2761/cape_through_sword_X.png`, from behind, standing): *"my cape is still going through the sword."* And he could not
+find where the sheath layout is switched (it was buried under TOOLS > BOW).
+- MEASURED (cape vertices past the sheath's INNER face, by tenth of its length, X layout, idle). Natural cape (OFF): at the top tenths (y ~1.0-1.06)
+  .05-.065 m, which is INSIDE the sheath's .084 thickness. TAIL pinned: still .055 there. **That is the cape's ATTACHMENT line at the shoulders.
+  Those vertices are skinned to the body, so no bone pin can move them**, and four builds of bone-side fixes could never clear the sheath's top.
+  Further down, the cape hangs 10 cm OUT over the sheath (fine).
+- FIX (`CPUSH`, `capePushMat` / `capePushStep`): the cape's OWN vertex shader (chained onto the hero-glow `onBeforeCompile`, cache key `|cpush1`)
+  lays it OVER every piece it lies on (each non-`over` item from `tailItems`, world space, refreshed per frame in `springsStep`). Any cape vertex inside
+  a piece's footprint and short of its outer face goes out to that face + `margin` (.022). The push fades over `band` (.1 m) past the sides and
+  `endBand` (.06) past the ends, and only for vertices within 10 cm of the piece's inner face. It runs in TAIL and OVER. In X it covers the sheath AND
+  the quiver (both under the cape); in HORIZONTAL it covers the sheath (the quiver stays ON TOP of the cape, m2701). The cape is 310 verts, so this is
+  free. `mel.CPUSH.on = 0` is the A/B.
+- RENDERED (`images/renders/cape/m2762_close_{X,H}_{idle,run}.jpg`, each top row OFF / bottom row ON, the same frame, behind / 3-4 / side).
+  ON: the cape's top edge lies over the sheath's strap and the quiver's foot, and only the hilt and the fletching come out above it, consistently. OFF:
+  the cape's edge cut across the sheath face at the shoulder.
+- TOOLS: a **GEAR (what he carries)** heading is now the FIRST thing in TOOLS: SHEATH (X / HORIZONTAL), CAPE vs GEAR, SWORD SIZE, BOW SIZE, SWORD
+  CARRY, ICE SHIELD. BOW keeps the aim settings. Checked headless: the panel's first lines read GEAR, SHEATH: X, CAPE vs GEAR: TAIL...
+- Shipped unverified on the phone. The shadow pass does not carry the push (the cape's shadow is the unpushed shape; a few cm, not visible).
+
 ## m2761 -- ROOM B: THE PLAN (docs only; his new process: plan -> his approval -> build -> his sign-off, one room at a time)
 FOREST_TEMPLE.md "ROOM B REDESIGN -- THE SPINDLE", `images/temple_plans/roomB.png` (top-down + the climb) and `roomB_concept.png` (a three.js blockout,
 rendered headless). Nothing in the game changed. Waiting for his approval before a line of it is built.
