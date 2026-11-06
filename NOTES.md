@@ -69,6 +69,20 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## (m2781) THE HUSK SOLDIER -- his Tripo body on the samurai's rig, his spear split off and mounted in the katana's place
+His model (`character_model_zips/husk_soldier.zip`, a T-pose samurai-husk with a spear standing beside him) replaces the samurai stand-in for
+HUSK_SOLDIER / HUSK_GUARD (crested) / HUSK_FLANKER, and for the forest temple's acrobatic-room melee (`ftinSam`: soldier, the big one the
+crested swordsman). HUSK_ARCHER is untouched (it is the archer body with its own bow bake). Method: `tools/shade_rig/README.md`.
+- **THE SAMURAI'S BONE FRAMES, SO THE SAMURAI'S CLIPS AND KNOCK SET APPLY UNCHANGED.** All 123 clips are in `husk_soldier.glb` (4.6 MB);
+  the knock set is the samurai's forged bake, looked up by stem, so the husk kinds carry `forged: 'samurai_game'`.
+- **THE SPEAR IS ITS OWN ISLAND, NOT FUSED** -- 4 islands, 1,000 tris, nothing to fill at the hand. `models/weapons/husk_spear.glb` (231 KB,
+  1024 WebP), 1.75 m, held .63 m up from the butt. A kind's `blade` file is loaded by `arenaLoad` (`K.bladeScene`) and `arenaKatana` mounts
+  it in place of the katana -- same convention as his Tripo sword (blade +Y, `weapon_tip` at -X), so it rides every katana clip.
+- **`prune()` DELETES `weapon_tip`** (an empty leaf) -- `weaponParts` then finds no tip and the mount quietly does something else. keepLeaves.
+- Body 9,536 tris / 12,310 verts, 2048 WebP, draco, single-sided; blended weights (a bone and its neighbour), the tassets half hips, half thigh.
+- The hue tint is OFF for all three (his own colours): the flanker's 320 deg role hue turned this texture lurid yellow on the render.
+- Box moved: COMBAT.md's core squad has its first real body. OPEN: a spear's own moves (it swings the katana set), its spirit layer (he will
+  make one), his phone sign-off. Shipped unverified; `node tools/huskshot.mjs` is the sheet.
 ## m2780 -- THE LAB READOUTS ARE HIDDEN BY DEFAULT (`LABSTATS`) (m2780)
 His, on the Combat Lab at m2779: *"there's all these words on the screen. It's really annoying."* The lab readout was a big centred block in the
 top bar, over the play area, the badge and the menus. Now every sandbox readout goes through ONE switch, `LABSTATS` (`mel.labstats`,

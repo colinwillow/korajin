@@ -21,3 +21,13 @@ Steps:
 Gotchas: FBX v runs UP, glTF's runs down -- rig.js flips v at load (else the texture is a patchwork). Tripo FBX nodes carry a -90 X
 rotation: rig.js bakes matrixWorld into the geometry. Stone = rigid per-triangle weights; spirit = blended between a bone and its
 neighbour (`adj`). Cloth / a skirt / hair: give it to the hips or a blend, or add bones -- nothing here does secondary motion.
+
+## The husk soldier (m2781): `hrig.js` + `hpack.mjs`
+Same method on the SAMURAI donor (`models/characters/samurai_game.glb`: its bones incl. thumb / index / weapon_root_* / weapon_tip*, and all 123
+clips). Bones not measured (fingers, weapon markers) take the donor's offset, scaled to the body, turned with their parent. His spear is split
+off by mesh ISLANDS (any island reaching x > .41 in the file; the fingers stop at .40) and written as `models/weapons/husk_spear.glb` in the
+KATANA's convention: `weapon_root_right` at the grip (.36 of the shaft from the butt), shaft along +Y head up, `weapon_tip` at (-14.3102, 0, 0),
+file units = metres / WEAP.unit (.01321). `node hpack.mjs raw.glb out.glb <size> <material>` resamples the clips, keeps leaf nodes
+(`prune({ keepLeaves: true })` -- a plain prune DELETES the empty `weapon_tip` marker and the mount silently falls back), WebP, draco.
+A spirit layer later: rig it with the same script (same donor) and add it to the GLB as a second SkinnedMesh on the same bones (the
+stone guardian's `shadeInit` / `shadeRebuild` are the pattern).
