@@ -74,6 +74,24 @@ sealAt .3 + .5 s after the fall starts), it blends over `blendT` (.8 s) into the
 from wherever it is. The portal is a flat level disc (E.flat), not a billboard, so with no rotation there is nothing to re-face. OLD is the m2674
 eased tilt, on the switch (`mel.entryCam` in localStorage). Moves no sandbox box; the entrance's sign-off on his phone is still open.
 
+## m2765 -- THE X GEAR SNUG: the sheath and the quiver FITTED to his body's own vertices (his: "spaced out, away from his back and each other") (Nov 6 2026)
+His (m2764, `images/feedback/m2764/gear_spaced_out.png`): the sheath stood a clear gap off his back and the quiver hung further out again.
+- WHY m2763 FLOATED: it was seated on the CAPE's flare (natural cape, up to 27 cm behind the spine at the hem). MEASURED against the BODY's own
+  vertices (non-cape, non-hair, in each piece's footprint, by tenth): the m2763 sheath stood 2.6-15 cm off his body (13-15 cm over the lower half).
+- FITTED, not typed: a grid over the sheath's tilt (`dir` z -.4..+.4) and offset (mouth z), each seated through the real `tripoBack` and measured
+  -- keep >= 1.8 cm for the cape (the UNDER pull lays it flat under), minimise the largest gap. Best straight seat `dir` [.48, -.849, .15], mouth
+  z -.295: gaps to the body by tenth .091 .021 .034 .100 .096 .077 .043 .023 .019 .043 -- it rests on the SHOULDER BLADES and the BELT / HIPS and
+  bridges the lumbar hollow (<= 10 cm; a straight sheath cannot follow it, and the cape fills it -- the cape is at or under its inner face all the
+  way down). Between m2763's upright and the old top-away seat, as he asked.
+- THE QUIVER on its REAL mesh vertices (its box carries a strap loop): over the sheath's outer face, the body + 1.8 cm elsewhere, no penetration of
+  either. Under the sheath (in the hollow) has NO solution -- the tube is thicker than the hollow. Over it, a grid over its height, side, tilt and
+  depth: best is the X crossing LOW, near his hips (`at` [.02, -.26, -.35], `dir` [.35, .93, -.1]): gaps by tenth (foot -> top) .149 .121 .005
+  .002 .000 .018 .041 .041 .054 .046 -- resting on the sheath and his back within 0-5.4 cm over 80 % of it; the foot below the crossing 12-15 cm off
+  his legs. Crossed straight over an 8.4 cm sheath that is the floor. (Was: touching only at the crossing, 8-15 cm off at both ends.)
+- RENDERED: `images/renders/cape/m2765_gear_snug_idle_top_run_bottom.jpg` (side / side / 3-4 / back; idle, run). Shipped unverified on the phone.
+- STILL OPEN: on the run the cape flies out PAST the gear (beyond the GPU pull's 20 cm window it is left free) -- reads as the cape over the gear in
+  the wind. If he wants it held under even then, that is the UNDER plane's job (bones), not the shader's.
+
 ## m2763 -- X SHEATH RE-SEATED (upright, over the cape), CAPE UNDER the gear by default (GPU pull), the DRAW arcs over the shoulder with a constrained arm (Nov 6 2026)
 His (m2761: `images/feedback/m2761/gear_settings.jpg`, `cape_under_back.png`, `cape_under_side.png`; he plays X + UNDER + BACK): *"the cape UNDER the
 gear -- make it the default and clean. The sheath is tilted with its TOP away from his back, following his LOWER back, so its lower half digs into the
