@@ -1,4 +1,4 @@
-// npm run check (m2690) -- THE POSE CALLS ARE LIVE. m2647 dropped a `// comment` mid-line in the frame, and every call after it on that line --
+// npm run check (m2691) -- THE POSE CALLS ARE LIVE. m2647 dropped a `// comment` mid-line in the frame, and every call after it on that line --
 // the katana smear, the lotus, the sleep pose, `ikitPose` (every kit hand IK) and `getPose` (the GET) -- was dead for fifteen builds with nothing
 // to say so. This reads the SHIPPED index.html, strips each line's comments the way the parser does (strings respected), and fails if a call
 // the frame depends on is no longer live code anywhere. A headless film of every station is `npm run ikhands` (slow; run on a kit change).

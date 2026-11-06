@@ -1,4 +1,4 @@
-// npm run ikhands (m2690) -- EVERY KIT STATION, START TO FINISH, IN THE SHIPPED PAGE: are his hands ON the object? Boots the gallery
+// npm run ikhands (m2691) -- EVERY KIT STATION, START TO FINISH, IN THE SHIPPED PAGE: are his hands ON the object? Boots the gallery
 // (`?w=forge&zone=interact&hero=agoblin`), plays each station (the capstans with a fake spin), samples every frame while the pose layer is up:
 // each hand's (and the kick's foot's) distance to its target, and how much of the run the pose was on. Then the LOCK-IN: mid-spin on the gate's
 // capstan, a dodge, a strike and a jump must NOT end it; a right tap must. Prints a table, writes a contact sheet (SHOT_DIR or ./shots/ikhands.jpg),
