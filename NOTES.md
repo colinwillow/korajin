@@ -63,6 +63,16 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2759 -- THE TUNNEL GUARD (forest worker, m2758) made safe at low frame rates
+
+m2758 added a guard inside `boundsStep`: a .4-3 m jump in one frame that crosses a drawn wall (`collRay` at .35 and .9 m) is undone (x/z back).
+At 20 fps a sprint is .45 m a frame, which gave two false positives:
+- **a lip:** the .35 m ray hit a step-up face (lips run to .55), so stepping up at speed froze him. The low ray is now `BOUNDS.tunH` .7, over any
+  lip;
+- **a convex corner:** the straight chord between two frames round a wall's corner clips the corner. A hit now counts only if BOTH L-shaped detours
+  (x then z, z then x) are blocked too. A real tunnel through a wall blocks every route; a corner leaves one leg free.
+`collcourse --fps=20` 12/12 (no bounds row there, so the guard itself is not exercised).
+
 ## m2758 -- ROOM C WAS BROKEN (his: "the Thornback ROLLED HIMSELF OUT OF THE MAP ... I got out of that room ... it kept TELEPORTING me back ... NON-STOP TRAMPOLINING noises")
 **Reproduced headless** in a real browser (at=roomC&grant=1, a sound counter wrapped round `snd`) and in the boot. What was actually wrong, measured:
 1. **The Thornback's `move` checked LEDGES only (m2693), never walls.** Its roll at 13 m/s ran on whatever ground lay beyond. Now `move` refuses:
