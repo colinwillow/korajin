@@ -54235,7 +54235,7 @@ function hdropStep(dt, s) { const p = player, D = p.hdrop; D.t += dt;
 // `h` m up; pad = a landing pad ('stone' | 'rune' | 0); H = the drop height (m). `skip()` = no entrance in that state.
 // SC_ENTRY:START
 const ENTRY = { on: (() => { try { if (/[?&]entry=0\b/.test(location.search)) return 0; if (/[?&]entry=1\b/.test(location.search)) return 1; return localStorage.getItem('mel.entry') === '0' ? 0 : 1; } catch (e) { return 1; } })(),
-  col: JPAL.glow, hot: JPAL.spark, deep: JPAL.deep, cloud: new THREE.Color(JPAL.deep).toArray(), opaque: 1, look: (() => { try { return localStorage.getItem('mel.entryLook') === 'DISC' ? 'DISC' : '3D'; } catch (e) { return '3D'; } })(), f3: { r: .82, h: .32, tube: .11 },     /* m2775: a SHALLOW well, the disc's size (h = the dish's depth, live) */     /* m2771: TOOLS > PORTAL: 3D (a real funnel) / DISC */     /* m2769 (his): JINRA, not purple -- purple is the Hollow's (EMBLEMS.md); follows TOOLS > JINRA COLOUR */ tilt: .2, sealAt: .3,     // VIOLET (his: "purple, electric, cloudy" -- Jinra may move to purple later; this is the one place)
+  col: JPAL.glow, hot: JPAL.spark, deep: JPAL.deep, cloud: new THREE.Color(JPAL.deep).toArray(), opaque: 1, look: (() => { try { return localStorage.getItem('mel.entryLook') === 'DISC' ? 'DISC' : '3D'; } catch (e) { return '3D'; } })(), f3: { r: .82, h: .32, tube: .11, wob: .5 },     /* m2775: a SHALLOW well, the disc's size (h = the dish's depth, live) */     /* m2771: TOOLS > PORTAL: 3D (a real funnel) / DISC */     /* m2769 (his): JINRA, not purple -- purple is the Hollow's (EMBLEMS.md); follows TOOLS > JINRA COLOUR */ tilt: .2, sealAt: .3,     // VIOLET (his: "purple, electric, cloudy" -- Jinra may move to purple later; this is the one place)
   H: 16, wait: .35, open: 1.0, close: .55, flipA: .12, flipT: 0, cine: 0, camOut: 1.3, camEl: .5, camFit: .85, lookMin: .27, gCap: 60, camMode: (() => { try { return localStorage.getItem('mel.entryCam') === 'OLD' ? 'OLD' : 'DOLLY'; } catch (e) { return 'DOLLY'; } })(), dollyOut: 1.2, panUp: .9, blendAt: .15, blendT: .8,     /* m-dolly: TOOLS > ENTRANCE CAM */ pScale: .34, pDist: 0, pH: 2.5, pYaw: 0, flyT: .85, warp: 0, bgEvery: 2, flat: 1, slowK: 1, pre: .16, post: .12, ease: .45, camBlend: .9, settle: .6, max: 9,
   cam: [.6, 6.2, 1.25], duck: .3, snd: (() => { try { return localStorage.getItem('mel.entrySnd2') || 'B'; } catch (e) { return 'B'; } })(),     /* m2401: B (the brighter, clearer opening) by default */
   sfx: { open: 'portal_open', through: 'portal_through', seal: 'portal_seal' },     /* SWAPPABLE: point a role at another SFX key (his own portal sound, when he uploads it) */
@@ -54519,24 +54519,41 @@ function entryPortal(x, y, z, is3) { const E = ENTRY, g = new THREE.Group(); g.p
 // is the disc's size: a thick glowing TORUS rim (`f3.r`, `f3.tube`, crackling) round a SHALLOW swirling well -- a lathe dish `f3.h` deep (live) whose
 // bands spiral in to a bright centre. Two draws, opaque, so from above you see into the well, never him. He falls out of the underside (the m2407
 // clip plane sits on the rim plane). Grows out of the rim as it opens (`entryPortalStep`), shrinks as it seals.
-const ENTRYFS_F = `uniform float uT, uOpen; uniform vec3 uHot, uVio, uDeep; varying vec2 vU;
+// m2776 (his: "the ring and the swirl's edge are basically a very normal circle -- more deformation and organic warping"): the rim's radius and
+// thickness and the well's edge all follow ONE wobble of the angle (low-frequency churn + a finer flicker, all moving), so the outline breathes and
+// is never a clean circle, and the dish's edge stays sealed to the rim. `f3.wob` scales it (live).
+const ENTRYWOB = 'uniform float uT, uWob; float ewob(float a) { return uWob * (.085 * sin(a * 3.0 + uT * 1.3) + .06 * sin(a * 5.0 - uT * 2.1 + 1.7) + .035 * sin(a * 11.0 + uT * 4.0 + .6) + .018 * sin(a * 23.0 - uT * 9.0)); } ';
+const ENTRYVS_R = ENTRYWOB + `uniform float uR; varying vec2 vU; varying float vTh;
+  void main() { vU = uv; vec3 p = position; float a = atan(p.z, p.x); vec3 c = vec3(cos(a), 0.0, sin(a)) * uR, o = p - c;
+    float th = 1.0 + uWob * (.3 * sin(a * 4.0 - uT * 1.7 + .5) + .15 * sin(a * 9.0 + uT * 3.1) + .08 * sin(a * 17.0 - uT * 6.0)); vTh = th;
+    p = c * (1.0 + ewob(a)) + o * th + vec3(0.0, uWob * .05 * sin(a * 6.0 + uT * 2.4), 0.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }`;
+const ENTRYVS_D = ENTRYWOB + `varying vec2 vU; varying float vA;
+  void main() { vU = uv; vec3 p = position; float a = atan(p.z, p.x); vA = a; p.xz *= 1.0 + ewob(a) * uv.y;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }`;
+const ENTRYFS_F = `uniform float uT, uOpen; uniform vec3 uHot, uVio, uDeep; varying vec2 vU; varying float vA; ` + ENTRYN + `
   void main() { float a = vU.x * 6.28318, r = vU.y;     /* r: 0 at the centre of the well, 1 at the rim */
-    float sp = a * 3.0 + log(r + .06) * 5.5 - uT * 4.5, s1 = .5 + .5 * sin(sp + sin(a * 2.0 + uT) * .5), s2 = .5 + .5 * sin(a * 7.0 + log(r + .06) * 11.0 - uT * 7.0);
+    vec2 q = vec2(cos(a), sin(a)) * r; float n = efb(q * 2.6 + vec2(uT * .35, -uT * .27)), n2 = efb(q * 5.0 - uT * .5);
+    float sp = a * 3.0 + log(r + .06) * 5.5 - uT * 4.5 + (n - .5) * 5.0, s1 = .5 + .5 * sin(sp + sin(a * 2.0 + uT) * .5), s2 = .5 + .5 * sin(a * 7.0 + log(r + .06) * 11.0 - uT * 7.0 + n2 * 4.0);
     float b = pow(s1, 3.0) * .85 + pow(s2, 7.0) * .55;
-    vec3 c = mix(uDeep * 1.3, uVio, .25 + .55 * s1) + uHot * b * .8;
-    c = mix(c, vec3(.9, 1.0, .96), smoothstep(.32, .0, r) * .9);     /* the bright centre, far in */
-    c *= gl_FrontFacing ? .8 : 1.0; c += uHot * smoothstep(.85, 1.0, r) * .45;
+    vec3 c = mix(uDeep * 1.3, uVio, .2 + .6 * s1 * (.6 + .8 * n)) + uHot * b * (.5 + .8 * n);
+    c = mix(c, vec3(.9, 1.0, .96), smoothstep(.3 + .12 * (n - .5), .0, r) * .9);     /* the bright centre, far in (its edge ragged too) */
+    float edge = .8 + .14 * (efb(vec2(a * 2.2, uT * .9)) - .5) * 2.0, ten = pow(en(vec2(a * 9.0, r * 3.0 - uT * 2.2)), 4.0);     /* the RAGGED inner boundary: a noise-offset radius, tendrils licking in */
+    float band = smoothstep(edge - .22 * (.4 + ten * 1.6), edge, r); c = mix(c, uHot * 1.15 + vec3(.25, .35, .3) * ten, band * (.3 + .35 * n));
+    c *= gl_FrontFacing ? .8 : 1.0;
     gl_FragColor = vec4(c, 1.0); }`;
-const ENTRYFS_R = `uniform float uT; uniform vec3 uHot, uVio; varying vec2 vU;
-  void main() { float u = vU.x * 6.28318, v = vU.y * 6.28318;
-    float k = .5 + .5 * sin(u * 23.0 - uT * 11.0 + sin(u * 9.0 + uT * 4.0) * 2.5), cr = pow(k, 8.0) + pow(.5 + .5 * sin(u * 51.0 + uT * 17.0), 14.0) * .7;
-    float lip = .55 + .45 * cos(v);
-    vec3 c = mix(uVio, uHot, .45 + .4 * lip) * (.85 + .5 * lip) + vec3(.9, 1.0, .96) * cr * 1.1;
+const ENTRYFS_R = `uniform float uT; uniform vec3 uHot, uVio, uDeep; varying vec2 vU; varying float vTh; ` + ENTRYN + `
+  void main() { float u = vU.x * 6.28318, v = vU.y * 6.28318;     /* m2776: churning PLASMA, not stripes -- scrolling noise, hot streaks that travel, uneven brightness */
+    vec2 cs = vec2(cos(u), sin(u)); float n = efb(cs * 1.8 + vec2(uT * .45, v * .25 - uT * .3)), f = efb(cs * 4.5 + vec2(-uT * 1.1, v * .5));
+    float st = pow(.5 + .5 * sin(u * 2.0 - uT * 3.2 + n * 6.0), 10.0) + pow(.5 + .5 * sin(u * 3.0 + uT * 4.1 + f * 5.0 + 2.0), 14.0) * .8;
+    float lip = .55 + .45 * cos(v), heat = clamp(n * 1.3 + st * .9 + (vTh - 1.0) * .6, 0.0, 1.6);
+    vec3 c = mix(uDeep * 1.2, uVio * .9, smoothstep(.2, .75, heat)) + uHot * smoothstep(.75, 1.3, heat) * 1.25 + vec3(.9, 1.0, .96) * pow(f, 3.0) * st * 1.2;
+    c *= .6 + .6 * lip;
     gl_FragColor = vec4(c, 1.0); }`;
-function entryFunnel(U) { const F = ENTRY.f3, g = new THREE.Group(); g.name = 'entry_funnel';
+function entryFunnel(U) { const F = ENTRY.f3, g = new THREE.Group(); g.name = 'entry_funnel'; U.uWob = { value: F.wob }; U.uR = { value: F.r };
   const pts = []; for (let i = 0; i <= 12; i++) { const t = i / 12; pts.push(new THREE.Vector2(F.r * t, -(1 - t * t * (3 - 2 * t)))); }     /* a dish 1 deep (scaled to f3.h every frame), the centre at the bottom */
-  const tube = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS, fragmentShader: ENTRYFS_F, side: THREE.DoubleSide, toneMapped: false, fog: false })); tube.scale.y = F.h;
-  const rim = new THREE.Mesh(new THREE.TorusGeometry(F.r, F.tube, 12, 64).rotateX(Math.PI / 2), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS, fragmentShader: ENTRYFS_R, toneMapped: false, fog: false }));
+  const tube = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS_D, fragmentShader: ENTRYFS_F, side: THREE.DoubleSide, toneMapped: false, fog: false })); tube.scale.y = F.h;
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(F.r, F.tube, 12, 64).rotateX(Math.PI / 2), new THREE.ShaderMaterial({ uniforms: U, vertexShader: ENTRYVS_R, fragmentShader: ENTRYFS_R, toneMapped: false, fog: false }));
   for (const o of [tube, rim]) { o.userData.noSurf = 1; o.renderOrder = 50; g.add(o); } g.scale.setScalar(.001);
   return { g, tube, rim }; }
 const _enA = new THREE.Vector3(), _enB = new THREE.Vector3(), _enC = new THREE.Vector3(), _enD = new THREE.Vector3(); const _enV2 = new THREE.Vector2(), _enCamP = new THREE.Vector3();
@@ -54558,7 +54575,11 @@ function entryPortalStep(run, dt) { const E = ENTRY, P = run.portal; if (!P) ret
   else { len = 0; open = 0; }
   if (!REEL.on) MUSIC.duck = (st === 'portal' || (P.sealT || 0) < E.sealAt + .9) && st !== 'wait' ? E.duck : 0;     // m2362: the music dips under the portal
   P.face.rotation.y = Math.atan2(camera.position.x - P.g.position.x, camera.position.z - P.g.position.z);     // m2363: tipped `lean` toward the play camera, which looks down on it from behind him
-  if (P.fun) { const o = Math.max(.001, open), l = Math.max(.001, len); P.fun.g.scale.set(Math.max(o, .08 * l), l, Math.max(o, .08 * l)); P.fun.g.rotation.y += dt * 1.6; P.fun.tube.scale.y = Math.max(.02, ENTRY.f3.h);     /* m2775: the depth is live (mel.ENTRY.f3.h) */
+  if (P.fun) { const o = Math.max(.001, open), l = Math.max(.001, len); P.fun.g.scale.set(Math.max(o, .08 * l), l, Math.max(o, .08 * l)); P.fun.g.rotation.y += dt * 1.6; P.fun.tube.scale.y = Math.max(.02, ENTRY.f3.h); if (P.U.uWob) P.U.uWob.value = ENTRY.f3.wob;
+    if (open > .3) { const gp = P.g.position, F = ENTRY.f3, C = new THREE.Color(E.hot), cc = [C.r, C.g, C.b];     /* m2776: PARTICLES -- motes spiralling INTO the well, a faint ring of sparkles on the ground below */
+      for (let i = 0, n = Math.random() < dt * 40 ? 1 + (Math.random() < .5) : 0; i < n; i++) { const a = Math.random() * 6.283, rr = F.r * (1.05 + Math.random() * .35), tx = Math.cos(a), tz = Math.sin(a), sw = 1.6 + Math.random();
+        spk(gp.x + tx * rr, gp.y + .05 + Math.random() * .15, gp.z + tz * rr, -tx * 1.3 - tz * sw, -.35 - Math.random() * .3, -tz * 1.3 + tx * sw, .05 + Math.random() * .05, .45 + Math.random() * .3, cc); }
+      if (Math.random() < dt * 9) { const a = Math.random() * 6.283, rr = 1.0 + Math.random() * .7; spk(run.x + Math.cos(a) * rr, run.y + .06, run.z + Math.sin(a) * rr, 0, .25, 0, .05 + Math.random() * .04, .5 + Math.random() * .4, cc); } }     /* m2775: the depth is live (mel.ENTRY.f3.h) */
     if (st === 'portal' && D.t > T * .35 && !P.shock) { P.shock = 1; const gy = run.y + .08, C = new THREE.Color(E.hot); for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283, rr = 1.1 + Math.random() * .4; smokeAt(run.x + Math.sin(a) * rr, gy, run.z + Math.cos(a) * rr, .9 + Math.random() * .6, .9, [.86, .82, .74]); spkBurst(run.x + Math.sin(a) * rr, gy + .05, run.z + Math.cos(a) * rr, 2, { col: [C.r, C.g, C.b], spread: 1.6, up: .6, size: .07, life: .4 }); } }     /* the shock on the ground below as it opens */
     if (open > .3 && Math.random() < dt * 14) { const a = Math.random() * 6.283, C = new THREE.Color(E.hot), gp = P.g.position, rr = ENTRY.f3.r * open * (.9 + Math.random() * .3); spkBurst(gp.x + Math.sin(a) * rr, gp.y - .05, gp.z + Math.cos(a) * rr, 1, { col: [C.r, C.g, C.b], spread: .8, up: -.8, size: .08, life: .5 }); } }     /* motes shed off the rim, spiralling out */
   P.len = len; P.open = open; P.U.uT.value = P.t; P.U.uLen.value = len; P.U.uOpen.value = open;

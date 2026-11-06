@@ -69,6 +69,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+
+## (m2776) THE 3D PORTAL IS ORGANIC -- the rim breathes, plasma instead of stripes, a ragged inner edge, a warped swirl, particles
+His (images/feedback/m2775/portal_too_circular.jpg): "the line around the swirl and the ring round the perimeter are basically a very normal
+circle -- more deformation and organic warping; maybe some particles"; the rim read as a striped pool float. CRAFT.md: nothing perfectly round.
+- ONE WOBBLE (`ENTRYWOB`'s `ewob(angle)`: low-frequency churn + a finer flicker, all moving) drives the rim's radius in its own vertex shader
+  (`ENTRYVS_R`, which also churns its THICKNESS and lifts it a little) and the dish's edge (`ENTRYVS_D`, scaled by the lathe's uv.y so the centre
+  stays put) -- so the outline is never a circle and the well stays sealed to the rim. `f3.wob` scales it, LIVE (.5; 1 read as crumpled lettuce in
+  the first render of this build).
+- RIM (`ENTRYFS_R`): scrolling fbm noise + hot streaks that travel round it + uneven brightness, deep at rest; no regular bands.
+- WELL (`ENTRYFS_F`): the spiral's phase is pushed by fbm (warped bands), the bright centre's edge is ragged, and a noise-offset bright band at
+  the inner edge with tendrils licking in.
+- PARTICLES (the `spk` pool): motes spiralling INTO the well off the rim, and a faint ring of sparkles on the ground below; the rim's shed motes
+  and the opening shock stay.
+Strips (boulders): images/renders/entrance/m2776_portal_organic_play.jpg (play camera) and ..._close.jpg (a close frame 2.4 m off).
+
 ## (m2775) THE 3D PORTAL IS SHALLOW -- the disc's size: a thick rim round a swirling well f3.h deep (no tube)
 His, on m2771: "a little more than I was expecting: it's long, super long. I was picturing a 3D portal closer to the disc, but 3D. I liked the
 swirl." Now `entryFunnel` is a TORUS rim (`f3.r` .82, `f3.tube` .11) round a lathe DISH dipping `f3.h` (.32 m, LIVE: `mel.ENTRY.f3.h` rescales it
