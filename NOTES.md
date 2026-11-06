@@ -59,6 +59,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2696 -- FOREST TEMPLE build 5 (D, the FALL GALLERY): the whip gate opens; pull the ROOT DAM -> the waterfall stops, the pool drains; a crank, a chest = SHARD IV
+
+**The way in:** the D door on its 12 m sill (north, under the entry hall) is a WHIP GATE: with the whip (C's chest), a lash + PULL tears the root seal
+and the door swings open (`FT_BUILT` lists the gated chambers that exist; `ft.prog.open`, saved). **The room** (`FTD`: B's frame idiom on the D
+door's radial, floor 12, ceiling 22.2 -- under the hall's floor slab at 23.4): a corridor, then a 17 x 22 m gallery: a stone TROUGH (two low walls,
+water) runs its length to the ROOT DAM at its head (one merged root mesh); an ALCOVE in the right wall behind an iron GATE; braziers, lanterns,
+moss, pots, roots from the ceiling. A wave (the forest set's: two samurai + an Osari bow) wakes as he enters (`zones.D_in`).
+**The twist (whip-only rule 5 -- a pull no move replaces):** the dam is a pull target (`WHIP.pulls`, live with the whip): lash + PULL -> "THE DAM
+TEARS DOWN" -- it tumbles, the trough's water sinks and fades, the WATERFALL into the well (`ft_falls`) stops and the well's POOL (`ft_pools`) sinks
+and goes ("THE FALL DIVERTS -- the well below runs dry"; `ft.prog.dDry`, saved: the seal on the well floor is bare for the boss build).
+**Then:** the CRANK (the Interactions Kit's, live once dry) raises the alcove GATE (the kit's gate, its pulley over it) -> the CHEST -> **SHARD IV**.
+Kit 104k tris, 34 draws (unchanged count; the gate / crank / chest / water / dam are glue, distance-culled). Boot: with the whip, the D gate opens on a
+pull; the dam's pull drains it and the fall stops. Render: `docs/forest_temple/D_fall_gallery.png`.
+**Try:** with the whip -> lash + pull the D door (drop to its sill from the 21 m ledge) -> the wave -> lash + pull the dam at the trough's head ->
+watch the well go dry -> turn the crank -> the chest. Shipped unverified.
+
 ## m2695 -- THE KIT: POTS ROCK WHEN BRUSHED (his secondary-motion list, the last item) (Nov 6 2026)
 Brush past a pot moving (over .6 m/s, within its radius + .42 m) and it TIPS AWAY from you -- the push is 60% his direction of travel, 40% straight
 away from him -- and rocks on its base: a damped two-axis spring per pot (`IKPOT`: 2.6 Hz, damping .22, clamped .22 rad), the instance matrix
@@ -95,7 +111,6 @@ Shipped unverified.
 - Every move of the Thornback (walk, the ROLL charge, the burrow's tracking mound) checks the ground at the next step: lower than its feet by more
   than `THORN.edge` (1 m), or none -> the step is refused. A ROLL that meets an edge ends right there in its belly-up tumble (the stun window);
   the mound simply stops at the edge. So it can't fall into room C's pit, whatever the charge length. `npm run check` ok. Shipped unverified.
-
 ## m2692 -- FOREST TEMPLE C: the REAL THORNBACK (the combat lab's m2690) in the root heart; C's arena lengthened for it
 
 The combat lab's THORNBACK landed (m2690: procedural until his Tripo model; roll charge into a belly-up stun, rear + slam with a ripple to 10 m,
