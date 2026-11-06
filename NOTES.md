@@ -63,6 +63,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2745 -- COMBAT_DEPTH.md, THE COMBO GUARD, AND THE JACKAL AS AN ELITE (m2745)
+*"Combat is just swiping"* and *"the jackal is too easy -- make him a proper elite."* New sandbox doc `COMBAT_DEPTH.md` (DONE WHEN, ends in his sign-off).
+**Pass 1a, the COMBO GUARD (`cbtComboGuard`, `CBT.cgT/chainGap/cgBreakK`):** a `CBT.def` row's `cg` blows in a row land (each inside .9 s of the
+last); the next meets a raised guard held 1.6 s -- gold sparks, clang, you are shoved back, no guard points spent -- then he ripostes. BROKEN by the
+charge / slam / a kick (`p.airKick`, a left-flick fist strike) / the whip: white burst, stagger breakStun x1.7 and he stays open (`d.cbOpen`).
+From BEHIND it always lands; in his recovery it always lands. Rows: SAMURAI / WARBOSS / CEOALIEN cg 3, JACKAL 2; the husk soldier has none (the volume).
+**THE JACKAL (`JACKAL` row, `VOL.hits.JACKAL` 8 -> 12):** guarded approach (`guardWalk` .9 x level: frontal blows on him while he walks in are blocked),
+every swing super-armoured (`saAll`), red .25, under half life he guards x1.3, and **THE POUNCE** (`cbtPounceGo/Step`, `CBT.pounce`): 4.5-11 m out,
+a .55 s crouch with a RED glint, a .62 s leap (`katana_jump_attack`, measured in his GLB) on a 2.2 m arc at where you are going (lead .45 s), a
+landing slam (r 2.3, unblockable) and then 1.7 s OPEN. Armoured through the whole pounce (no reaction in the air). The lab readout adds
+`combo guard N broken N · pounce N hit N`. `npm run check` green. Shipped unverified. Still open: pass 1b (perfect dodge slow-mo, timed parry + finisher), 2, 3, temple roll-out.
+
 ## m2744 -- THE T-POSED RED SAMURAI WAS THE ARCHER WHOSE BAKE ARRIVED TOO LATE (m2744)
 *"There is ONE RED SAMURAI in the temple stuck in a T-POSE."* It is `ARCHER` (samurai_game.glb, the red one with the bow) or its copy
 `HUSK_ARCHER`. Both name the bake `samurai_archer`; samurai_game itself has no `bow_*` clips, so without the bake the body has nothing to play.
