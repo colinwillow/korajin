@@ -119,7 +119,7 @@ sealAt .3 + .5 s after the fall starts), it blends over `blendT` (.8 s) into the
 from wherever it is. The portal is a flat level disc (E.flat), not a billboard, so with no rotation there is nothing to re-face. OLD is the m2674
 eased tilt, on the switch (`mel.entryCam` in localStorage). Moves no sandbox box; the entrance's sign-off on his phone is still open.
 
-## m2773 -- STOP AUTO-FITTING: HIS MOUNT EMPTIES (`sheath_mount` / `quiver_mount`, GEAR.md), and the default back to the ORIGINAL X he liked (Nov 6 2026)
+## m2773 -- STOP AUTO-FITTING: HIS MOUNT EMPTIES (`sheath_mount` / `quiver_mount`, BACK_GEAR.md), and the default back to the ORIGINAL X he liked (Nov 6 2026)
 His (m2772, `images/feedback/m2772/gear_worse_1.png`, `_2.png`): *"Arguably the quiver and sheath are actually worse. I don't know why this is so
 freaking hard. Should I just position them myself in Blender?"* Yes -- and the fits stop.
 - WHY IT KEPT MISSING (m2770, kept for the record): each fit was made in one frame and his phone used another. The pre-m2770 BOOT frame (what his
@@ -134,7 +134,8 @@ freaking hard. Should I just position them myself in Blender?"* Yes -- and the f
   mounts on Spine2: the gear parents to them, local identity, lands within 8 mm of the pose it was given (2 frames of idle apart).
 - WHY IDENTITY WORKS: `tripo_weapons_01.glb`'s pieces are all ROOT nodes at the file origin (sword grip at the origin, `sheath_mouth` at +13.18 Y),
   and `tripoClone` zeroes each node's transform -- so "a child of the empty with cleared transforms" in Blender is exactly the game's frame.
-- `GEAR.md`: HOW TO PLACE THE GEAR IN BLENDER, one page, for him. GEAR EDIT stays (it edits the table). Shipped unverified on the phone.
+- `BACK_GEAR.md`: HOW TO PLACE THE GEAR IN BLENDER, one page, for him. (m2774: it was first written OVER `GEAR.md` -- the rollerblades / wingsuit
+  spec ROADMAP points at; restored from db31f07.) GEAR EDIT stays (it edits the table). Shipped unverified on the phone.
 
 ## m2772 -- THE TASSELS STAY ON THE HILT through the portal drop (his: "they lag far behind, up in the air"); cape / hair springs capped (Nov 6 2026)
 His (`images/feedback/m2766/tassels_lag_portal.png`): on the entrance the hilt tassels (`TTAS`) floated ~1 m above his head while he dropped.
