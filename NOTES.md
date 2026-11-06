@@ -63,6 +63,31 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2753 -- THE HUB LOOP, part 1 (his, step by step): stones are CARRIED and SET BY HAND on the holders; the seal is the STONE WHEEL
+**His ask:** a stone found in a chest goes into his satchel. Back in the well he walks to its holder; the PLACE cue starts the sequence:
+- he takes it out of his satchel, sets it on the holder with BOTH hands (majestic), and steps back;
+- cut-scene: it locks (a clunk), glows, and floats up above the holder;
+- a big stone wheel turns 1/6 with a grind and a little jingle ("five more to go");
+- 6/6 opens the seal.
+**Built:**
+- **`IKIND.socket`** (Interactions Kit, generic): `{ at: seatTop, face, can, item, onDone }`. Its beats are out (hip) > raise (second hand joins) >
+  place (both hands, a 14 deg bow) > set (clang) > back (the pin slides him .6 m back). The stone sits in its OWN group, because the temple's cull
+  toggles the group's `visible` and would re-show a hidden stone (caught by the boot: "the carried stone still drawn").
+- **`prog.placed`** (set) vs `prog.shards` (found). The sockets, the seal lines, the wheel angle and the out-of-sequence return all read PLACED. The HUD dots
+  are jade = set, gold = carried, dark = not found. `ftinGrant` sets `placed = shards` for dev entries.
+- **The wheel = the seal in the floor**: `S.ang = placed x 60 deg` turns the petals, carve, lit lines and heart. The 6th turn opens it (`ftinSealOpen`).
+  The proximity auto-open is gone (the old `shards >= 6` and standing on it). `ftinPlaceStep` / `FT_PLACE` time the cut-scene (two `cutAway`s:
+  the holder, then the wheel from above).
+- **The holders are waist-high and slim now** (column r .27-.36, h .8; the cap at .92; collider +-.36; `FTGLOW.sock` y 1.55 / seat .92). They were
+  1.14 m, at the chin of a 1.25 m hero, so the first render had his hands reaching over his head.
+- **Captions dropped:** 'THE SEAL OPENS' and 'THE FOREST TEMPLE -- CLEARED' (the latter now plays boss_clear). There was no ROOM CLEARED text.
+**Rendered and looked at** (`docs/forest_temple/hubloop_1_place.png`, `_2_float.png`, `_3_wheel.png`): both hands up on the stone at the seat; the
+cut to the holder with the stone floating, lit; the wheel a sixth round with its first line lit. The first wheel lens had the basin rim in the frame, so it was moved.
+**Boot:** `[melee] FTEMPLE HUBLOOP m2751: holder B refuses without its stone; PLACE at A: out > raise > place > both > set > back; both hands on it;
+locked, rose, the wheel turned 60 deg, seal still shut`.
+**Still open (part 2, next):** step 1 (the MASSIVE statue in the well, the camera looking up on arrival), step 2's scroll / tablet, and step 4's
+stow-into-the-satchel motion after the GET.
+
 ## m2752 -- THE ESCAPE AUDIT WAS WRONG ABOUT THE FOREST TEMPLE: its walk flood went through walls (81 of 82 BAD cells were the tool)
 
 The temple worker asked two things after m2747's bounds took `npm run escape ftin` to 82 BAD cells in 7 spots: *"Could the straight-path check be
@@ -99,7 +124,6 @@ Colin's tier design (via the orchestrator), written into COMBAT_DEPTH.md "HIS TI
 - **SPAWN OVERFLOW (`combatSpot`):** more bodies than a temple's spots -> the extra stand 1.5 m off a spot on the same ground (clear of the
   mesh), else `spawnSpot` round it. No more two bodies on one mark.
 Readout: `tier2 recoil N · tier3 wall stun N finisher N`. (Follow-up commit: my `s/m2750/m2751/` again caught the forest worker's own six m2750 tags -- restored line by line from their commit. The rule stands: rename only lines of my own diff.) `npm run check` green. Shipped unverified.
-
 ## m2750 -- FOUR URGENT TEMPLE BUGS (m2739 screenshots): the seal let him fall to the boss, the hub spawn sat in a pedestal, the doors had no collider, the jingles
 **What he saw** (`images/feedback/m2739/`): he fell through the closed hexagram seal straight down to the Banyan; the seal's lines z-fought;
 `at=hub` put him INSIDE a socket pedestal; and he walked through the carved-face stone door into the room behind it.

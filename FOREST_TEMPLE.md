@@ -30,6 +30,25 @@ Room A's arrow switch wakes the moving slab, and it was the moment he liked best
 high up) that swings a bridge, raises a platform, drops a counterweight or opens a way -- and the camera shows what it moved (`ikReveal` / a short
 action cam). Placed so the shot is a small skill (a height, a distance, a timing), never a chore. Tracked: A (the slab), B (the eye-order switches), THE WELL (the lift back up to the hall), E (the root bridge back across, after shard V).
 
+## THE HUB LOOP (his, Nov 6 2026, step by step -- replaces "a socket lights up when a room is cleared")
+1. **THE CENTRAL CHAMBER.** He lands in a GIANT round chamber. A MASSIVE, scary STATUE stands in it ("oh god, I hope that's not the boss"), foreshadowing
+   the Hollow Banyan or the temple's guardian. It dwarfs him, and the camera looks UP at it on arrival. *(NEXT BUILD: the statue, and the well's vertical scale.)*
+2. **THE CLUE.** A little NPC (the toad by the sockets) and/or a SCROLL or tablet he reads cryptically mentions "the six stones". Soft, not literal.
+   *(The toad is in: `FT_NPC`. The scroll: NEXT BUILD.)*
+3. **A ROOM.** Obstacles; at the end the blocked chamber OPENS with a cut-away showing a TREASURE CHEST. *(In: every room, `ftReveal` + door_open.)*
+4. **THE CHEST.** Open it: a STONE (the shard). The GET pose holds it up with the jingle, and it goes into his SATCHEL. The HUD dot turns GOLD
+   (carried); jade means set. *(The kit chest's GET + item_get are in. A stow-into-the-bag motion: still open.)*
+5. **BACK AT THE ALTAR (m2751, BUILT).** Each of the six holders round the seal takes ITS stone. Walking up gives a PLACE cue (`IKIND.socket`), and the sequence is:
+   - he takes the stone OUT of his satchel (right hip);
+   - he raises it in BOTH hands and SETS it on the holder, both hands on it (IK) with a bow over it;
+   - he lets go and STEPS BACK.
+   Then the cut-scene (`ftinPlaceStep`, `FT_PLACE`): the stone LOCKS (a clunk) and GLOWS, then FLOATS up into its place above the holder (the GLOWKIT
+   socket wakes). The lens cuts to the floor, where the SEAL, which is the STONE WHEEL, grinds round a sixth of a turn with a rumble. Its new line lights
+   and a little jingle plays (loot_small). "Five more to go."
+6. **Stones are carried, not auto-placed.** `prog.shards` = found, `prog.placed` = set. The wheel's angle is `placed x 60 deg`. At 6/6 the last turn
+   opens the seal (secret_found, the cut-away to the stair). A dev entry (`at=roomX`, `grant`) finds them already set. **No ROOM CLEARED / SEAL OPENS /
+   CLEARED captions**: a door re-opening with door_open is the signal.
+
 ## THE VOICES -- hints come from people, not the screen (his rule, Nov 6 2026: SHOW, DON'T TELL)
 No caption ever says what to do. Little folk in the temple say something soft and a little cryptic when he walks up (an in-world bubble over
 the speaker; lines cycle on each visit). `FT_NPC` in index.html is the table.
