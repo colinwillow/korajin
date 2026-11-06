@@ -59,6 +59,9 @@ This is the bake list he can work from for the first temple.
   retrieving the stones and putting them back so the floating world runs again.
 - **GUARDIANS**: giant statues linked by Jinra streams, shown at the start; toppled and co-opted by the Hollow (its power
   turns Jinra another colour -- red? open). You fight them, then restore them. Temples become fallen / evil temples.
+- **HOLLOW SHADES and TAMA** (proposed, Nov 6; STONE_GUARDIAN.md): the green inside a stone guardian is STOLEN JINRA animating
+  the stone -- a Hollow Shade. Break its armour and the spirit shows; beat it and it lets go of TAMA, motes of the stolen life that
+  fly to Grumbo and are counted. Names easy to rename (`SHADE`, `TAMA` in code).
 - **GRUMBO'S RISE**: a JINRA METER. As it fills he glows more; things near him begin to float (pebbles lift as he walks,
   rocks drift aside, a swirl of debris round him). Spend it: a force push that blows through boulder-sealed canyon gates,
   a super sword attack, a float/lift. Late game he barely walks -- he hovers in a swirling force field.

@@ -63,7 +63,8 @@
     "ikstrip": "node tools/ikstrip.mjs",
     "entryprobe": "node tools/entryprobe.mjs",
     "lakeperf": "node tools/lakeperf.mjs",
-    "glowshot": "node tools/glowshot.mjs"
+    "glowshot": "node tools/glowshot.mjs",
+    "shadeshot": "node tools/shadeshot.mjs"
   },
   "type": "module",
   "devDependencies": {

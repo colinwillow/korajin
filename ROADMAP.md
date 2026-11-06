@@ -67,6 +67,8 @@ consumables); also pitch Apple Arcade. Price to decide near launch (~$7.99-9.99 
       stick UP and DOWN both parry, UP timed returns it; glider glow; enemies; village; bosses; gamepad.
 
 ## SANDBOX (several may be open at once; see the WHOLE-PIECE RULE in CLAUDE.md)
+- [ ] **THE STONE GUARDIAN, TWO LAYERS -- OPEN (his models, Nov 6).** `STONE_GUARDIAN.md`; Combat Lab SPAWN > BOSS > Stone guardian (2-layer).
+  - [x] m2777 pass 1 both models on one skeleton + clips, armour breaks per piece, spirit + wisps, green puff + Tama, statue twin. - [ ] his phone sign-off.
 - [ ] **THE TORCH + THE DARK -- OPEN (his, Nov 6).** `TORCH.md`; the sandbox is The Dark Hall (`?w=forge&zone=dark`).
   - [x] m2710 pass 1 the fire + the hall + light the braziers.
   - [ ] pass 2 fight with it (fire trail, flammable rows, spread). - [ ] pass 3 scurriers + watcher + douse/relight. - [ ] his phone sign-off.

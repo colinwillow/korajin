@@ -69,6 +69,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## (m2777) THE STONE GUARDIAN, TWO LAYERS -- his two Tripo models on ONE skeleton, the armour breaks per piece and the spirit shows
+His (Nov 6): two Tripo models in `models/characters/character_model_zips/` -- the guardian in carved sandstone armour and the SAME guardian
+as glowing green spirit, same pose. Two layers of one enemy. Built as `SHADE` (a third kind on the guardian brain) -- read STONE_GUARDIAN.md.
+- **NO BLENDER HERE**: no binary, and attaching blender-addons / `pip install bpy` were both refused. So the rig was made in headless
+  chromium + node: FBXLoader -> world-space geometry -> measured joints -> GLTFExporter -> gltf-transform (textures, draco).
+- **THE CLIPS CAME FREE BY REUSING THE OLD GUARDIAN'S BONE FRAMES.** Each new bone's bind frame is the old guardian's rest frame swung
+  (shortest arc) from the old bone direction onto the new limb; then the old clip's LOCAL rotations put the new limbs where the old
+  ones went, so his 15 forged clips are copied in as they are. Only the hips' travel is scaled (x1.59). Checked on a render: walk,
+  swipe and smash pose both layers right.
+- **FBX v RUNS UP, glTF's RUNS DOWN.** The first export scrambled the stone texture into a patchwork (the GLTFLoader does not flip the
+  image; GLTFExporter only fixes it when IT writes the texture, and here the textures go in later in node). The geometry's v is flipped
+  at load (`1 - v`). The spirit hid it -- nearly one colour all over -- the stone showed it at once.
+- **The spirit draws only where the armour is broken**: each guardian gets its own index over the shared vertices (clones share
+  geometry) and a break rewrites both indexes in place (`shadeRebuild`) -- fully armoured = the stone mesh, 1 draw, 10,417 tris.
+- Measured: stone 10,417 tris / 15,544 verts; spirit 10,808 -> 5,387 tris (meshoptimizer, err .047); file 1.32 MB (2048 + 1024 WebP).
+- `guardBlow` / `guardDie` hand a layered kind to `shadeBlow` / `shadeDie` (after the statue wake); `guardSpawn` calls `shadeInit`.
+  The spirit's material leaves `G.mats` (the hit flash writes emissive on every stone material and would put its glow out).
+- TAMA (`TAMA.n`, `mel.tama` in storage) is its own pool, not `JINRA` -- different motes, a different count; the last one of a guardian
+  home plays `loot_small`. The BACKPACK lists the count; a chip shows it for 2.6 s on a pickup.
+- Box moved: STONE_GUARDIAN.md DONE WHEN boxes 1-5 (rig, budget, break, puff + Tama, statue). OPEN: joints on his phone, per-piece hit
+  reacts, the numbers with the combat worker, his sign-off. Shipped unverified on the phone; `node tools/shadeshot.mjs` is the sheet.
 
 ## (m2776) THE 3D PORTAL IS ORGANIC -- the rim breathes, plasma instead of stripes, a ragged inner edge, a warped swirl, particles
 His (images/feedback/m2775/portal_too_circular.jpg): "the line around the swirl and the ring round the perimeter are basically a very normal
