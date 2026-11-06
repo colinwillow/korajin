@@ -110,6 +110,21 @@ villages*; her role is open (a villager, a love interest, a village princess, pl
 - **Her role -- three options in CHARACTERS.md for him to pick** (a villager with a bell quest / the keeper who knows the old bell / a companion
   who rides along and may become playable). Not chosen.
 Shipped unverified.
+## (m2783) THE STONE GUARDIAN, PLAYED -- one piece per hit in order, a spirit phase, a vaporise death; plates split along the model
+His (first play): *"I knock off one hand and see the green, knock off something else, then it jumps from a little knocked off to everything
+knocked off, and he just disappears; it shows the green guy for a second."* And: *"pieces of the armour look like they're not attached."*
+- **WHY IT CASCADED:** an exposed spirit took FULL damage while the armour was still on (hp 10), so two pieces off and a few hits on the green
+  was death -- and death flung every remaining piece at once and removed him a second later. Now: the ARMOUR phase can't kill him (blows only
+  work the stone, at most ONE piece a blow, chosen in tier order `SHTIER`); the last piece starts the SPIRIT phase (`shadeBare`: `spiritHp`
+  5, x1.6 speed, brighter); death is a stagger + a feet-up DISSOLVE on the spirit's own shader (`shadeDie`, `uCut` + noise + hot edge) into
+  a cloud that condenses into the Tama. Frame by frame in game time: images/renders/shade/shade_sheet.png (rows 4-6).
+- **WHY THE PLATES LOOKED UNATTACHED:** per-triangle nearest bone gave ragged edges, and the torso block reaches into the upper-arm joint, so
+  breaking the chest took the arm's joint with it and left the shoulder plate floating. The stone has 41 mesh islands: 33 now go WHOLE to a
+  bone; 8 that span a joint are cut on a PLANE square to the limb (projection along the bone chain) + a majority filter; a bone is a cut
+  candidate from 30 triangles (it was 8% of the island -- the arm joint never qualified). images/renders/shade/plates_before_after.png.
+- **HIS OWN PIECES:** objects named `armor_*` go whole to their bone (SHADE_PIECES.md, the names and the export). Tripo's split wants triangles.
+- Stone blows now read as little (dull grey chips, `st_knock`); the spirit honours the combat worker's `G.cbOpen` window (`CBT.depth.openK`).
+
 ## (m2781) THE HUSK SOLDIER -- his Tripo body on the samurai's rig, his spear split off and mounted in the katana's place
 His model (`character_model_zips/husk_soldier.zip`, a T-pose samurai-husk with a spear standing beside him) replaces the samurai stand-in for
 HUSK_SOLDIER / HUSK_GUARD (crested) / HUSK_FLANKER, and for the forest temple's acrobatic-room melee (`ftinSam`: soldier, the big one the

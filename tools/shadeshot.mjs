@@ -35,16 +35,18 @@ const snap = (who, k, label) => pg.evaluate(([who, k, W, H, label]) => { const {
     g.font = '14px monospace'; g.fillStyle = '#fff'; g.fillText(label, 8, 18); return cv.toDataURL('image/jpeg', .88); }, [who, k, W, H, label]);
 const rows = [];
 await pg.evaluate(() => { window.__off = .35; }); rows.push(['statue twin + armoured', [await snap('both', 1, 'armoured (left) / statue twin (right)'), await snap('live', 1, 'armoured, front'), await (async () => { await pg.evaluate(() => { window.__off = 2.4; }); const u = await snap('live', 1, 'armoured, back 3/4'); await pg.evaluate(() => { window.__off = .35; }); return u; })()]]);
-// break the left arm (shoulder, forearm, hand) and the head; let the wisps build
-const br1 = await pg.evaluate(() => { const L = mel.shadeList(), i = L.findIndex(g => !g.statue); for (const s of ['shoulderL', 'forearmL', 'handL', 'head']) mel.shadeBreak(s, i); const G = L[i]; return { broke: Object.keys(G.sh.broke), st: G.sh.st.geometry.drawRange.count / 3, sp: G.sh.sp.geometry.drawRange.count / 3, fx: mel.SHADEFX.p.length }; });
-console.log("broken", JSON.stringify(br1), "segs", await pg.evaluate(() => mel.shadeList()[0].sh.segs.join(","))); await pg.waitForTimeout(1800);
-const fx = await pg.evaluate(() => mel.SHADEFX.p.length); console.log('wisps live', fx);
-rows.push(['arm + head broken', [await snap('live', 1, 'left arm + head off'), await (async () => { await pg.evaluate(() => { window.__off = -.9; }); const u = await snap('live', .8, 'spirit arm, close'); await pg.evaluate(() => { window.__off = .35; }); return u; })(), await snap('live', .55, 'the spirit head, close')]]);
-// the death
-await pg.evaluate(() => { const L = mel.shadeList(), i = L.findIndex(g => !g.statue); mel.shadeKill(i); }); const t0 = Date.now(); const dz = [];
-for (let k = 0; k < 6; k++) { dz.push(await snap('live', 1.25, 'dissolve +' + (Date.now() - t0) + ' ms')); await pg.waitForTimeout(DT); }
+// m2782: the ORDER -- hands / feet, then forearms / head; then everything off and the SPIRIT phase; then the death, frame by frame in GAME time
+const br1 = await pg.evaluate(() => { const L = mel.shadeList(), i = L.findIndex(g => !g.statue); for (const s of ['handL', 'footR', 'forearmL', 'head']) mel.shadeBreak(s, i); const G = L[i]; return { broke: Object.keys(G.sh.broke), st: G.sh.st.geometry.drawRange.count / 3, sp: G.sh.sp.geometry.drawRange.count / 3 }; });
+console.log('broken', JSON.stringify(br1)); await pg.waitForTimeout(1800);
+rows.push(['4 pieces off', [await snap('live', 1, 'hand, foot, forearm, head off'), await (async () => { await pg.evaluate(() => { window.__off = -.9; }); const u = await snap('live', .8, 'the arm, close'); await pg.evaluate(() => { window.__off = .35; }); return u; })(), await snap('live', .6, 'the head, close')]]);
+await pg.evaluate(() => { const L = mel.shadeList(), i = L.findIndex(g => !g.statue); mel.shadeBare(i); }); await pg.waitForTimeout(2500);
+const bare = await pg.evaluate(() => { const G = mel.shadeList().find(g => !g.statue); return { bare: G.bare, hp: G.hp, spdK: G.spdK, st: G.st }; }); console.log('bare', JSON.stringify(bare));
+rows.push(['the spirit phase', [await snap('live', 1, 'all armour off: the spirit fights on'), await (async () => { await pg.waitForTimeout(2500); return snap('live', 1.1, 'spirit, +2.5 s'); })(), await snap('live', .7, 'spirit, close')]]);
+await pg.evaluate(() => { const L = mel.shadeList(), i = L.findIndex(g => !g.statue); mel.shadeKill(i); });
+const dz = []; for (const T of [.15, .4, .8, 1.2, 1.6, 2.0, 2.3, 2.6, 3.0]) { const ok = await pg.waitForFunction(T => { const D = mel.SHADEFX.dying[0]; return !D || D.t >= T; }, T, { timeout: 120000, polling: 50 }).then(() => 1).catch(() => 0);
+  const t = await pg.evaluate(() => mel.SHADEFX.dying[0] ? +mel.SHADEFX.dying[0].t.toFixed(2) : 'gone'); dz.push(await snap('live', 1.35, 'death t=' + t + ' s (game)')); }
 const tama = await pg.evaluate(() => ({ live: mel.TAMA.w.length, n: mel.TAMA.n })); console.log('tama', JSON.stringify(tama));
-rows.push(['dissolve to Tama', dz.slice(0, 3)], ['', dz.slice(3, 6)]);
+rows.push(['death', dz.slice(0, 3)], ['', dz.slice(3, 6)], ['', dz.slice(6, 9)]);
 const png = await pg.evaluate(async ([rows, W, H]) => { const cv = document.createElement('canvas'); cv.width = 3 * W; cv.height = rows.length * H; const c = cv.getContext('2d'); c.fillStyle = '#000'; c.fillRect(0, 0, cv.width, cv.height);
   for (const [r, R] of rows.entries()) for (const [k, u] of R[1].entries()) { const im = new Image(); im.src = u; await im.decode(); c.drawImage(im, k * W, r * H); } return cv.toDataURL('image/png'); }, [rows, W, H]);
 fs.mkdirSync(OUT, { recursive: true }); const file = path.join(OUT, 'shade_sheet.png'); fs.writeFileSync(file, Buffer.from(png.split(',')[1], 'base64')); console.log(file);

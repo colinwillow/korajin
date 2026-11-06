@@ -4,7 +4,7 @@ import { FBXLoader } from '/vendor/FBXLoader.js';
 import { GLTFLoader } from '/vendor/GLTFLoader.js';
 import { DRACOLoader } from '/vendor/DRACOLoader.js';
 import { GLTFExporter } from '/vendor/GLTFExporter.js';
-import { mergeVertices } from '/vendor/BufferGeometryUtils.js';
+import { mergeVertices, mergeGeometries } from '/vendor/BufferGeometryUtils.js';
 import { MeshoptSimplifier as MS } from '/sg/nm/node_modules/meshoptimizer/meshopt_simplifier.js';
 const A = window.ARG || {}, info = {};
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -47,14 +47,42 @@ function nearest(p, stone) { if (stone && Math.abs(p.x) < .07 && p.y > .22 && p.
   return bi; }
 // the meshes
 const fbx = new FBXLoader();
-async function raw(f) { const g = await fbx.loadAsync(f); g.updateMatrixWorld(true); let G; g.traverse(o => { if (o.isMesh) { G = o.geometry.clone(); G.applyMatrix4(o.matrixWorld); } }); for (const k of Object.keys(G.attributes)) if (!['position', 'normal', 'uv'].includes(k)) G.deleteAttribute(k);
-  const U = G.attributes.uv; for (let i = 0; i < U.count; i++) U.setY(i, 1 - U.getY(i));     // FBX v runs up; glTF's runs down (the loader does not flip the image)
+async function raw(f) { const g = await (/\.glb$/.test(f) ? gl.loadAsync(f).then(r => r.scene) : fbx.loadAsync(f)); g.updateMatrixWorld(true); const parts = [];
+  g.traverse(o => { if (o.isMesh) { let G = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone(); G.applyMatrix4(o.matrixWorld); for (const k of Object.keys(G.attributes)) if (!['position', 'normal', 'uv'].includes(k)) G.deleteAttribute(k); if (!G.attributes.normal) G.computeVertexNormals(); parts.push([o.name, G]); } });
+  const G = parts.length === 1 ? parts[0][1] : mergeGeometries(parts.map(p => p[1])); G.userData.tag = []; for (const [nm, Gp] of parts) for (let t = 0; t < Gp.attributes.position.count / 3; t++) G.userData.tag.push(nm);
+  if (!/\.glb$/.test(f)) { const U = G.attributes.uv; for (let i = 0; i < U.count; i++) U.setY(i, 1 - U.getY(i)); }     // FBX v runs up; glTF's runs down (the loader does not flip the image)
   return G; }
-const sG = await raw('/sg/stone_guardian/tripo_convert_1cb2d7f7-0b32-4d9e-af9b-38bf0ebf7831.fbx'), pG = await raw('/sg/stone_guardian_spirit/tripo_convert_a6ecb089-0a08-443a-953d-f62a85939441.fbx');
-// STONE: hard surface -- every triangle to ONE bone (by its centroid), welded only within a bone, so a piece lifts out clean and nothing stretches
-{ const P = sG.attributes.position, n = P.count, si = new Uint16Array(n * 4), sw = new Float32Array(n * 4), a = V(), b = V(), c = V();
-  for (let t = 0; t < n; t += 3) { a.fromBufferAttribute(P, t); b.fromBufferAttribute(P, t + 1); c.fromBufferAttribute(P, t + 2); const bi = nearest(a.add(b).add(c).multiplyScalar(1 / 3), 1);
-    for (let k = 0; k < 3; k++) { si[(t + k) * 4] = bi; sw[(t + k) * 4] = 1; } }
+const sG = await raw(A.stone || '/sg/stone_guardian/tripo_convert_1cb2d7f7-0b32-4d9e-af9b-38bf0ebf7831.fbx'), pG = await raw('/sg/stone_guardian_spirit/tripo_convert_a6ecb089-0a08-443a-953d-f62a85939441.fbx');
+// STONE: hard surface -- every triangle to ONE bone, welded only within a bone, so a piece lifts out clean and nothing stretches.
+// (m2782, his: "pieces of the armour look like they're not attached") The split follows the MODEL, not the nearest bone per triangle:
+//  1. an AUTHORED piece (an object named armor_<piece>, SHADE_PIECES.md) goes whole to its bone;
+//  2. else each mesh ISLAND (a plate, a gauntlet, the torso block) goes whole to the bone most of it is nearest, when that is most of it;
+//  3. an island that spans a joint (a whole arm, a whole leg) is CUT ON A PLANE square to the limb at the joint (by where each triangle
+//     projects along the bone chain), then a majority filter over its neighbours takes off the specks -- no ragged teeth.
+const PIECE = { head: 'Head', chest: 'Spine2', waist: 'Hips', shoulder: 'Arm', forearm: 'ForeArm', hand: 'Hand', thigh: 'UpLeg', shin: 'Leg', foot: 'Foot' };
+function pieceBone(nm) { const m = /armor_(?:(L|R)_)?([a-z]+)/i.exec(nm || ''); if (!m) return -1; const b = PIECE[m[2].toLowerCase()]; if (!b) return -1; const k = m[1] ? (m[1].toUpperCase() === 'L' ? 'Left' : 'Right') + b : b; return order.indexOf(k); }
+{ const P = sG.attributes.position, n = P.count, nt = n / 3, si = new Uint16Array(n * 4), sw = new Float32Array(n * 4), a = V(), b = V(), c = V(), C = [];
+  for (let t = 0; t < nt; t++) { a.fromBufferAttribute(P, t * 3); b.fromBufferAttribute(P, t * 3 + 1); c.fromBufferAttribute(P, t * 3 + 2); C.push(a.clone().add(b).add(c).multiplyScalar(1 / 3)); }
+  const near = C.map(p => nearest(p, 1)), lab = near.slice(), tag = sG.userData.tag || [];
+  // islands (shared positions)
+  const par = new Int32Array(n).map((_, i) => i), f = i => { while (par[i] !== i) i = par[i] = par[par[i]]; return i; }, un = (x, y) => { x = f(x); y = f(y); if (x !== y) par[x] = y; };
+  const key = i => Math.round(P.getX(i) * 1e4) + ',' + Math.round(P.getY(i) * 1e4) + ',' + Math.round(P.getZ(i) * 1e4), first = new Map(), vt = [];
+  for (let i = 0; i < n; i++) { const k = key(i); if (first.has(k)) { un(i, first.get(k)); } else first.set(k, i); if (i % 3) un(i, i - 1); }
+  const isl = new Map(); for (let t = 0; t < nt; t++) { const r = f(t * 3); (isl.get(r) || isl.set(r, []).get(r)).push(t); }
+  // triangle adjacency (by shared positions) for the majority filter
+  const byKey = new Map(); for (let t = 0; t < nt; t++) for (let k = 0; k < 3; k++) { const kk = key(t * 3 + k); (byKey.get(kk) || byKey.set(kk, []).get(kk)).push(t); }
+  const nb = t => { const s2 = new Set(); for (let k = 0; k < 3; k++) for (const u of byKey.get(key(t * 3 + k))) if (u !== t) s2.add(u); return s2; };
+  // the bone a point projects into along its chain: inside a span (0 <= t < 1) wins, nearest perpendicular among those
+  const proj = (p, cand) => { let bi = -1, bd = 1e9; for (const i of cand) { const [A0, B0] = SEG[i], d = B0.clone().sub(A0), L2 = d.lengthSq(); if (L2 < 1e-8) continue; const u = p.clone().sub(A0).dot(d) / L2;
+      const q = A0.clone().addScaledVector(d, Math.min(1, Math.max(0, u))), dd = q.distanceTo(p) + (u < 0 || u > 1 ? Math.abs(u < 0 ? u : u - 1) * Math.sqrt(L2) * 3 : 0); if (dd < bd) { bd = dd; bi = i; } } return bi; };
+  let authored = 0, whole = 0, cut = 0;
+  for (const T of isl.values()) { const pb = pieceBone(tag[T[0]]); if (pb >= 0) { for (const t of T) lab[t] = pb; authored++; continue; }
+    const cnt = {}; for (const t of T) cnt[near[t]] = (cnt[near[t]] || 0) + 1; const ranked = Object.entries(cnt).sort((x, y) => y[1] - x[1]);
+    if (+ranked[0][1] >= T.length * (T.length < 420 ? .5 : .72) || T.length < 40) { for (const t of T) lab[t] = +ranked[0][0]; whole++; continue; }
+    const cand = ranked.filter(([, k]) => k >= Math.min(30, T.length * .08)).map(([i]) => +i); for (const t of T) lab[t] = proj(C[t], cand); cut++;
+    for (let pass = 0; pass < 3; pass++) for (const t of T) { const m = {}; let best = lab[t], bn = 0; for (const u of nb(t)) { m[lab[u]] = (m[lab[u]] || 0) + 1; if (m[lab[u]] > bn) { bn = m[lab[u]]; best = lab[u]; } } if (bn >= 3 && best !== lab[t] && (m[lab[t]] || 0) <= 1) lab[t] = best; } }
+  info.split = { islands: isl.size, authored, whole, cut };
+  for (let t = 0; t < nt; t++) for (let k = 0; k < 3; k++) { si[(t * 3 + k) * 4] = lab[t]; sw[(t * 3 + k) * 4] = 1; }
   sG.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(si, 4)); sG.setAttribute('skinWeight', new THREE.Float32BufferAttribute(sw, 4)); }
 const stoneG = mergeVertices(sG, 1e-5); info.stone = { tris: stoneG.index.count / 3, verts: stoneG.attributes.position.count };
 // SPIRIT: welded, simplified to ~target tris, smooth normals, weights blended between a bone and its neighbour
