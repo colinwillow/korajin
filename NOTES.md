@@ -78,7 +78,7 @@ Colin's tier design (via the orchestrator), written into COMBAT_DEPTH.md "HIS TI
   soldiers (a room mini-boss -- the temple's `f_scrap` / `f_last` use waves 1 and 2; wave 3 is for the temple worker to place); wave 4 the mix.
 - **SPAWN OVERFLOW (`combatSpot`):** more bodies than a temple's spots -> the extra stand 1.5 m off a spot on the same ground (clear of the
   mesh), else `spawnSpot` round it. No more two bodies on one mark.
-Readout: `tier2 recoil N · tier3 wall stun N finisher N`. `npm run check` green. Shipped unverified.
+Readout: `tier2 recoil N · tier3 wall stun N finisher N`. (Follow-up commit: my `s/m2750/m2751/` again caught the forest worker's own six m2750 tags -- restored line by line from their commit. The rule stands: rename only lines of my own diff.) `npm run check` green. Shipped unverified.
 
 ## m2750 -- FOUR URGENT TEMPLE BUGS (m2739 screenshots): the seal let him fall to the boss, the hub spawn sat in a pedestal, the doors had no collider, the jingles
 **What he saw** (`images/feedback/m2739/`): he fell through the closed hexagram seal straight down to the Banyan; the seal's lines z-fought;
