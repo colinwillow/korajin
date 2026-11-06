@@ -102,6 +102,6 @@ trunks' boxes are `collKeep` so the mesh never replaces them. Cliffs are steeper
 - [ ] traversal toys: bounce mushrooms, sinking lily pads on the pond, swing vines over a drop, a climb up giant roots to a high platform;
       routes on four tiers (valley 0, gorge, plateau ~22, high above ~40)
 - [ ] day / dusk / night all beautiful (NIGHT.md: a `dometemple` flora row, glowing mushrooms / veins, the region under the night sky)
-- [ ] phone-fast: draws / tris reported per pass, held near ~100 calls / 450k tris
+- [ ] phone-fast: <= 70 draws / 280k tris with shadows (m2694: the arrival 99 / 528k -> 69 / 276k, zonebudget); hold it every pass
 - [x] (m2446) the door: the DOOR RITUAL (WORLD_PLAN s7, `DOORR`) on its seal, then `DOMET.door.enter` -> the interior (`foresttemple_in`); back out lands at the door (`at=door`)
 - [ ] **his sign-off, on his phone**

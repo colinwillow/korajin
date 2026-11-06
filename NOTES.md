@@ -59,6 +59,31 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2694 -- FOREST TEMPLE OUTSIDE: the phone budget (99 draws / 528k tris -> 69 / 276k at the arrival, shadows included); the lift-up seam (Nov 6 2026)
+The interior worker measured the outside at its arrival over the phone budget (<= 70 draws / 280k tris, shadows included). Measured with
+`npm run zonebudget` (the game's own camera at the arrival knoll, the shadow pass included): **before 99 draws / 527,778 tris, after 69 / 275,534.**
+What it was (frustum breakdown): tree leaves 88k + bark 32k + clump 15k, all ONE region-wide merge each that CAST SHADOWS (so drawn twice);
+shrubs 51k (also shadowed); the terrain 46k; 9 separate bridge/pool meshes; 11 tuft sectors; ~20 plant cells.
+- **FAR TREES CAST NO SHADOW**: `put` routes trees farther than `FREG.farR` (62 m) from the pit's centre into their own merge (`domet_far`,
+  castShadow off). A region-wide caster is drawn in full in the shadow pass wherever he stands.
+- **36 plateau giants, spaced 21 m** (was 78 at 15 m) and the avenue's crowns on the cheap (det-1) LOD.
+- **The terrain grid 2.5 -> 3 m** (46k -> 32k tris); the pit moved half a metre (z 30 .. -75) so its edges still sit ON the grid (sheer walls).
+- **Fewer shrubs** (the heaviest plant): about half in each scatter; **no plant in this zone casts a shadow**; plant cells 56 -> 110 m
+  (170 was tried: no draw saved and +20k tris, because the ground cover's distance cull works per cell).
+- **The bridge, its parapets, piers and the pool kerbs are ONE mesh** (was 9 draws), still in the region group with `userData.coll`.
+- **Tufts: 4 sectors** (12 were 11 draws from the knoll); 4,000 tufts (was 5,200).
+- **The carved look's twin materials are shared** (`M.dress = M.white`, `rock = cyclo`, `panel = stone`, `frieze = relief`: the same texture
+  and tint, so each pair merges): 4 draws and their shadows.
+- **Detail throws no shadow**: gold, gem, ivy, frieze/relief, banner, clump cards, cushions, water, the orb.
+- Strip cameras (`npm run foreststrip`; these do not run the plant distance cull, so they read high): arrival 72 / 287k, glimpse 72 / 287k, trail
+  71 / 286k, gorge head 70 / 284k, gorge 64 / 262k, valley 64 / 262k, court 45 / 251k, frieze 36 / 235k, bridge 41 / 246k, plan 64 / 262k
+  (was 54-109 / 279-482k). The look is kept (the plateau is a little sparser).
+- **THE LIFT SEAM (m2678, the interior worker's lift)**: arriving with `at=lift` puts him INSIDE the cella, but the door's seal only opened
+  for `at=door` -- he would have been shut in (the gold leaves stay closed behind a closed seal). The seal is open for `at=lift` too. Headless
+  `?w=forge&zone=dometemple&at=lift`: after the ride he stands at (0, 2.33, 0) on the cella floor, seal opened 1, u 1. The way DOWN (the
+  cella lift's own interact -> `zone=ftemple&at=lift`) is the interior worker's and was not driven here.
+Shipped unverified.
+
 ## m2693 -- THE THORNBACK NEVER LEAVES ITS FLOOR (the forest worker: room C's near end is the edge of an 8 m pit)
 - Every move of the Thornback (walk, the ROLL charge, the burrow's tracking mound) checks the ground at the next step: lower than its feet by more
   than `THORN.edge` (1 m), or none -> the step is refused. A ROLL that meets an edge ends right there in its belly-up tumble (the stun window);
