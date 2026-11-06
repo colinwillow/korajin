@@ -62,6 +62,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2719 -- FOREST TEMPLE F back-fill: the COUNTERWEIGHTS raise the floor (two whip pulls), the STONE GUARDIANS (real stone twins, woken by the shard), the core dressed
+
+The sheet's F row, the parts the m2706 build left open:
+- **The COUNTERWEIGHTS** (`ftinFcw`, `FT_FCW`). A stone PLATFORM stands on the core floor in the corner between L1 and L2, and two stone
+  WEIGHTS hang on root ropes in the core (lit rings).
+  - Pull the LOW weight from the floor (rule 5): it drops and the platform rises to L1 (-5.4).
+  - Pull the HIGH weight from there: the platform rises to L2 (3.6).
+  - The high weight is 14.2 m from every floor point, past the whip's 14, so it only pulls from the risen platform.
+  - The platform stops 0.28 m from each ledge (measured on the boxes as they are turned, not on their square bounds).
+  - The zips are still there. This is the floors' way up, and the altar still needs the last zip (9.2 m).
+- **THE GUARDIANS** (STATUES.md). The forest set's wave 0 (two husk soldiers, on the rim and the floor; the bowman on L2) spawns as STONE TWINS
+  once F's gate is open and he is within 34 m (`ARENA.stoneAll`, one flag beside the lab's STONE switch in `arenaSpawn`). Taking the shard
+  wakes them (`arenaWakeAll`), which replaces the stand-in wave.
+  Open: STATUES.md's cut-away wake (the lens visiting each one), and they appear in a spawn beam (out of his sight in the corridor).
+- **The core's detail.** Carved reliefs on the bare walls (no colliders: no footholds), a brazier on each ledge, roots down the far walls, moss.
+Boot: the low weight is in reach from the floor and the high one is not; two pulls raise the floor to -5.4 then 3.6 beside each ledge.
+Shipped unverified.
+
 ## m2718 -- GLOWKIT: THE ROOT HALL dressed (walls and ceiling only) + the Hollow's purple crystals round the trunk; storeys gate their dressing (Nov 6 2026)
 The temple worker (m2715): the seal (r 5), the stairwell (0 to -26), the hall floor round (0, -26, 36) to r 15 and the root-arm ring (11.5-13.5)
 are the fight's -- dress the OUTER WALLS and the CEILING only, above y -22; keep my hook ONE call (`ftinGlow(g)`, it is). The orchestrator: make
