@@ -12,6 +12,20 @@ levels later. **Each sandbox is tuned until it feels great on its own before any
 - Characters and armour come from the pipeline in `colinwillow/blender-addons` (armoured model -> Tripo segment ->
   bare body -> rig + weapon bones -> `armorfit.py`). The arena in `colinwillow/culture_war` (`duel.html`) is the fight lab.
 
+## THE ROAD (Colin, Nov 6 2026) -- the order the whole game gets built
+*"Proving this game would be really making the prologue crystallized, with all of the cinematic storytelling, the training zone, and then the
+first temple... solidifying all of that start to end and making it feel really solid. Then we start making the connective tissue of the world,
+build the world map, do all the rest of the temples in order, and then a finale."*
+1. **MILESTONE 1 -- THE SLICE (now):** PROLOGUE (PROLOGUE.md, the reels/cinematics) -> the TRAINING ZONE -> the FOREST TEMPLE, playable start to
+   end with no dev menus, no stand-ins, polished, on his phone. Temples are the most important thing. This is also the free part if it ships
+   free-to-start (see below), so it has to be the best hour of the game.
+2. **Then the WORLD:** fix how many regions / temples / areas there are (ZELDA_STRUCTURE.md's 1 + 4 + 3 + 2 + 1 = 11 is the draft), place every zone
+   on one world map, and connect them: sail, later fly, between them; a PORTAL at each place, live once he has been there (set a crystal in it)
+   for fast travel.
+3. **Then the rest of the temples IN ORDER**, then the FINALE.
+**Release thinking (his question, not decided):** free download = prologue + training + forest temple; one-time unlock for the rest (no ads, no
+consumables); also pitch Apple Arcade. Price to decide near launch (~$7.99-9.99 range discussed).
+
 ## COLIN'S LIST (Nov 3 2026, end of his week's credits -- the backlog to pick up next, in his words)
 - [ ] PHASE THROUGH WALLS (his, Nov 5): the Phase Shift as a temple ability -- blink through marked VEIL walls only (Jinra-veined, shimmering); unmarked walls stay solid to the blink. WORLD_PLAN 13b. For a later temple.
 - [ ] **Katana charge sound**: none of the K-HUM picks (synth-flute feel); he wants a ONE-SHOT (not a loop) and something else entirely. Try more.
