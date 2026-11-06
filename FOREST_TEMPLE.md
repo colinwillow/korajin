@@ -59,8 +59,7 @@ six shards light the SEAL on the well floor and open the stair to the boss benea
 2. [x] A: the LADDER -> two step blocks (1.5, 3.0 m) under the upper rim's lip; the 9 m wall-run gap KEPT (measured in reach, m2637); a CHEST
    (IKIT `chest`, `onDone`) in the antechamber pays the SMALL KEY + SHARD I.
 3. [x] B: the ROOT GALLERY (the key door opens; the reliefs' eyes give the ORDER, three arrow switches; the chest pays SHARD II). Still open in B:
-   the floor CRACK down to C (with C's build), push-blocks onto plates (no push mechanic yet), its own enemy roster (the forest wave stands in). 4. [ ] C: the root heart (the Thornback) + the
-   nursery teach + the zip home. 5-7. [ ] D, E, F. 8. [ ] the SEAL (six shards), the stair, 9. [ ] THE HOLLOW BANYAN.
+   the floor CRACK down to C (with C's build), push-blocks onto plates (no push mechanic yet), its own enemy roster (the forest wave stands in). 4. [x] C (see NOTES). 5-7. [ ] D, E, F. 8. [ ] the SEAL (six shards), the stair, 9. [ ] THE HOLLOW BANYAN.
 What changed: the CHALICE is gone (the six shards are the boss key; the shrine pays a shard); D, E and F are open in ANY order once he has the
 whip (each behind a whip gate at the well), and each states its WHIP-ONLY rule (C: a knot ceiling over a pit; D: a pull no move replaces;
 E: a 44 m span off 3 m perches; F: 18 m ledges with no wall under them). Plan metres are the sheet's (hub at 0,0), not yet the zone's.

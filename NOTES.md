@@ -59,6 +59,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2688 -- FOREST TEMPLE build 4 (C, the ROOT HEART): the crack, the mid-boss (stand-in), THE VINE WHIP + SHARD III, the swing teach out
+
+**Layout** (in B's frame, `FTB`, straight under B; the sheet's L0 became -18 so the pit's far wall clears rule 4): B's floor is now five slabs
+round two holes -- the CRACK (over C's arena) and the SLOT (over C's pit) -- each with a lid (`ftinLid`: a stone slab + a turned box collider).
+C: an ARENA (floor -18, lz 12.6..27: the root heart on the far wall, braziers, a dais, moss, roots down from B's floor, a light shaft from the
+crack) and a PIT (bottom -26, lz -1.3..12.6) whose far side is a SHEER wall 26 m tall up to B's floor.
+**The flow:** B solved -> 4 s later "THE FLOOR CRACKS OPEN" (the lid falls) -> he drops 18 m into the arena (`zones.C_in`) -> the MID-BOSS wakes
+(**a stand-in**: `combatBoss('trial')`, the brute set's boss with the lab's BOSS armour and phases, banner "THE THORNBACK (stand-in)" -- the combat
+lab has no Thornback yet) -> it down: "THE THORNBACK FALLS" -> the dais CHEST (the Interactions Kit's) -> **THE VINE WHIP** (`ft.prog.whip`, saved;
+the whip slot is picked) **+ SHARD III**, and B's SLOT lid slides away -> **the teach**: the only way out is over the pit -- two KNOTS (whip
+anchors, `WHIP.anchors`, drawn as one merged mesh + one glow ring mesh) and a ZIP anchor over the slot's rim in B. A fall into the pit puts him
+back in the arena with the hint. **Whip-only (rule 4), measured in the boot:** arena edge -> knot 1 **11.7 m**, knot 1 -> knot 2 **5.0**, hanging
+under knot 2 -> the zip **13.2** (all inside `WHIP.reach` 14); the arena -> the zip direct is 21.5 m; the far wall is 26 m sheer (> 17).
+**Also:** the hub's whip gates (D / E / F) now need the whip (`prog.whip`); the triangle collider's band reaches y -30; the fall reset is -30
+(and the pit's own reset). Kit 34 draws / 94k tris. Boot: C built, its three anchors in, every hop within reach, the crack opens once B is solved.
+Render: `docs/forest_temple/C_root_heart.png` (the arena). **Still open in C:** the real THORNBACK (a burrower: surfaces under you), the room's
+detail pass. **Try:** solve B -> wait for the crack -> drop -> beat the boss -> the chest -> the knots over the pit -> zip up into B. Shipped unverified.
+
 ## m2687 -- THE GIANT ALIEN FLORA, pass 1 (his: "big plants -- towering cacti and agave, glowing succulents, bone-like trees") (Nov 6 2026)
 
 - **`DPLACE.flora` + `bouldFlora`.** Four kinds, built as plain geometry with vertex colours in ONE material (`dk_bigflora`, double-sided, step-tagged plant).
@@ -109,7 +127,6 @@ the sheath / quiver, stays pinned, riding the body, shaped so it lies OVER the g
   The ~22 TAIL keeps are at the cape's ATTACHMENT: it hangs from Spine2 at the shoulder line, right under where the sheath and the quiver cross,
   so cloth that lies over the gear starts inside it there (hidden inside the opaque sheath). Rendered: idle 3/4 + behind (TAIL vs OFF), a run from
   behind and from the side (4 frames each): the cape lies over the lower gear and flies out behind, no visible poke-through.
-
 ## m2685 -- FOREST TEMPLE interior BUDGET PASS: 110 draws -> 63 (hall), 63 (room A), 54 (by the lift); tris 187k -> 128-138k
 
 **Asked (via main):** the interior's budget pass, 96 draws -> <= 70 (`npm run zonebudget`, m2678's measurement; by m2680 with room B it was 110).
