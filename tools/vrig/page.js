@@ -12,6 +12,9 @@ const H = A.height;                                   // metres to the top of th
 const fbx = await new FBXLoader().loadAsync('/src/' + A.fbx); fbx.updateMatrixWorld(true); let G0;
 fbx.traverse(o => { if (o.isMesh && !G0) { G0 = o.geometry.clone(); G0.applyMatrix4(o.matrixWorld); } });
 for (const k of Object.keys(G0.attributes)) if (!['position', 'uv'].includes(k)) G0.deleteAttribute(k);
+// rotY (degrees) turns a file that faces the wrong way onto +Z; shift (its own units) puts the body over the origin. Every J / TIP / rigid / drop
+// coordinate in the JSON is in THIS frame (the pet friend faces +X in his file and his body stands .195 forward of it).
+if (A.rotY) G0.applyMatrix4(new THREE.Matrix4().makeRotationY(A.rotY * Math.PI / 180)); if (A.shift) G0.translate(A.shift[0], A.shift[1], A.shift[2]);
 // ---- the texture, read once (for `drop` and for the material below)
 const img = await new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = no; im.src = '/src/' + A.tex; });
 // ---- DROP: a generation error he wants gone (the Korajin woman's flat BLUE panel on her back: one loose 3-triangle quad). Whole SHELLS (islands
@@ -39,14 +42,21 @@ info.mesh = { trisIn: G0.attributes.position.count / 3, verts: G.attributes.posi
 // ---- her joints (measured on the mesh, in its own units -> metres); +X is HER LEFT (she faces +Z)
 const J = {}, TIP = {}; for (const k in A.J) { J[k] = vv(A.J[k]).multiplyScalar(S); if (k.startsWith('Left')) J['Right' + k.slice(4)] = V(-J[k].x, J[k].y, J[k].z); }
 for (const k in A.TIP) { TIP[k] = vv(A.TIP[k]).multiplyScalar(S); if (k.startsWith('Left')) TIP['Right' + k.slice(4)] = V(-TIP[k].x, TIP[k].y, TIP[k].z); }
+for (const k in (A.X || {})) { const x = A.X[k], put = (n, a, t) => { J[n] = vv(a).multiplyScalar(S); if (t) TIP[n] = vv(t).multiplyScalar(S); }; put(k, x.at, x.tip);
+  if (k.startsWith('Left')) put('Right' + k.slice(4), [-x.at[0], x.at[1], x.at[2]], x.tip && [-x.tip[0], x.tip[1], x.tip[2]]); }
 const PRIM = { Hips: 'Spine', Spine: 'Spine1', Spine1: 'Spine2', Spine2: 'Neck', Neck: 'Head', LeftShoulder: 'LeftArm', LeftArm: 'LeftForeArm', LeftForeArm: 'LeftHand', LeftUpLeg: 'LeftLeg', LeftLeg: 'LeftFoot', LeftFoot: 'LeftToeBase' };
 for (const k in PRIM) if (k.startsWith('Left')) PRIM['Right' + k.slice(4)] = 'Right' + PRIM[k].slice(4);
+const XB = {}; for (const k in (A.X || {})) { const x = A.X[k]; XB[k] = x; if (x.to) PRIM[k] = x.to; if (k.startsWith('Left')) { const r = 'Right' + k.slice(4); XB[r] = { ...x, parent: x.parent.startsWith('Left') ? 'Right' + x.parent.slice(4) : x.parent, like: x.like && x.like.startsWith('Left') ? 'Right' + x.like.slice(4) : x.like }; if (x.to) PRIM[r] = 'Right' + x.to.slice(4); } }
 const CORE = ['Hips', 'Spine', 'Spine1', 'Spine2', 'Neck', 'Head', 'LeftShoulder', 'LeftArm', 'LeftForeArm', 'LeftHand', 'RightShoulder', 'RightArm', 'RightForeArm', 'RightHand', 'LeftUpLeg', 'LeftLeg', 'LeftFoot', 'LeftToeBase', 'RightUpLeg', 'RightLeg', 'RightFoot', 'RightToeBase'];
 // ---- the donor's skeleton: every bone (fingers and weapon mounts too), in its own order
 const dl = new DRACOLoader(); dl.setDecoderPath('/vendor/draco/'); const gl = new GLTFLoader(); gl.setDRACOLoader(dl);
 const gd = await gl.loadAsync('/' + A.donor); gd.scene.updateMatrixWorld(true); const GB = {}, ORDER = [];
 gd.scene.traverse(o => { if (o.isBone) { const n = o.name.replace(/^mixamorig[_:]?/, ''); GB[n] = o; ORDER.push(n); } });
 const PAR = {}; for (const k of ORDER) PAR[k] = GB[k].parent && GB[k].parent.isBone ? GB[k].parent.name.replace(/^mixamorig[_:]?/, '') : null;
+// EXTRA CHAINS (A.X): bones the donor does not have -- the pet friend's second pair of arms and his tail. Each is named mixamorig_<k>, hangs off
+// `parent`, and takes the frame of the donor bone it is `like` (swung onto its own measured direction), so a clip's motion for that bone can be
+// laid onto it later; with no `like`, its +Y runs down the chain, the Mixamo convention.
+const XORDER = Object.keys(XB); for (const k of XORDER) { PAR[k] = XB[k].parent; CORE.push(k); }
 const wp = k => GB[k].getWorldPosition(V()), wq = k => GB[k].getWorldQuaternion(new THREE.Quaternion());
 // the donor's scale against hers, by the arm (shoulder -> hand), for the bones she has no measurement of (fingers, mounts)
 const kArm = J.LeftArm.distanceTo(J.LeftHand) / wp('LeftArm').distanceTo(wp('LeftHand')); info.kArm = +kArm.toFixed(3);
@@ -57,6 +67,10 @@ for (const k of ORDER) { const Gq = wq(k); let s = new THREE.Quaternion();
     else if (PAR[k] && k !== 'Head' && swing[PAR[k]]) s.copy(swing[PAR[k]]); }
   else { const p = PAR[k]; s.copy(swing[p] || s); JW[k] = JW[p].clone().add(wp(k).sub(wp(p)).applyQuaternion(swing[p]).multiplyScalar(kArm)); }     /* a finger rides its hand */
   swing[k] = s; N[k] = s.clone().multiply(Gq); }
+for (const k of XORDER) { const x = XB[k], dn = (PRIM[k] ? J[PRIM[k]] : TIP[k]).clone().sub(J[k]).normalize(); JW[k] = J[k].clone(); swing[k] = new THREE.Quaternion();
+  if (x.like && GB[x.like]) { const dg = (PRIM[x.like] ? wp(PRIM[x.like]).sub(wp(x.like)) : wp(x.like).sub(wp(PAR[x.like]))).normalize();     /* a hand has no child chain: its parent's line */ N[k] = new THREE.Quaternion().setFromUnitVectors(dg, dn).multiply(wq(x.like)); }
+  else N[k] = new THREE.Quaternion().setFromUnitVectors(V(0, 1, 0), dn); }
+ORDER.push(...XORDER);
 const root = new THREE.Group(); root.name = A.name + '_rig'; const bones = {}, list = [];
 for (const k of ORDER) { const b = new THREE.Bone(); b.name = 'mixamorig_' + k; const p = PAR[k], pq = p ? N[p] : new THREE.Quaternion(), pp = p ? JW[p] : V(0, 0, 0), inv = pq.clone().invert();
   b.quaternion.copy(inv.clone().multiply(N[k])); b.position.copy(JW[k].clone().sub(pp).applyQuaternion(inv)); (p ? bones[p] : root).add(b); bones[k] = b; list.push(b); }

@@ -13,6 +13,8 @@ let SRC = path.resolve(path.dirname(cfgPath), CFG.dir || '.');
 if (CFG.zip) { SRC = fs.mkdtempSync(path.join(os.tmpdir(), 'vrig-')); execFileSync('unzip', ['-q', '-o', path.resolve(ROOT, CFG.zip), '-d', SRC]);     /* his Tripo zip: the FBX and its .fbm texture folder */
   const all = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? all(path.join(d, e.name)).map(f => path.join(e.name, f)) : [e.name]), files = all(SRC);
   CFG.fbx = CFG.fbx || files.find(f => /\.fbx$/i.test(f)); CFG.tex = CFG.tex || files.find(f => /\.(jpe?g|png)$/i.test(f)); console.log('zip ->', CFG.fbx, '+', CFG.tex); }
+if (CFG.fbxPath) { SRC = fs.mkdtempSync(path.join(os.tmpdir(), 'vrig-')); const d = fs.readFileSync(path.resolve(ROOT, CFG.fbxPath)); fs.writeFileSync(path.join(SRC, 'm.fbx'), d); CFG.fbx = 'm.fbx';     /* a raw Tripo FBX with its texture EMBEDDED (the pet friend): the JPEG is cut out of the file, SOI to the last EOI */
+  if (!CFG.tex) { const i = d.indexOf(Buffer.from([0xff, 0xd8, 0xff])), j = d.lastIndexOf(Buffer.from([0xff, 0xd9])); if (i < 0 || j < i) throw new Error('no embedded JPEG in ' + CFG.fbxPath); fs.writeFileSync(path.join(SRC, 'tex.jpg'), d.subarray(i, j + 2)); CFG.tex = 'tex.jpg'; console.log('embedded texture', j + 2 - i, 'bytes'); } }
 const OUT = path.resolve(ROOT, CFG.outDir || 'models/characters/villagers'); fs.mkdirSync(OUT, { recursive: true });
 CFG.look = process.argv.includes('--look') ? 1 : 0;
 const req = createRequire(import.meta.url); let pw; for (const p of ['playwright', '/opt/node22/lib/node_modules/playwright', '/opt/node-tools/node_modules/playwright']) { try { pw = req(p); break; } catch (e) {} }
@@ -25,7 +27,7 @@ const srv = http.createServer((q, r) => { const u = decodeURIComponent(q.url.spl
   r.writeHead(200, { 'content-type': T[path.extname(f)] || 'application/octet-stream' }); fs.createReadStream(f).pipe(r); });
 await new Promise(o => srv.listen(0, o));
 const br = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] }), pg = await br.newPage({ viewport: { width: 1200, height: 800 } });
-pg.on('pageerror', e => console.log('PAGE', e.message)); pg.on('console', m => { if (m.type() === 'error') console.log('CONSOLE', m.text().slice(0, 300)); });
+pg.on('pageerror', e => { console.log('PAGE', e.message, (e.stack || '').split('\n').slice(0, 3).join(' | ')); process.exit(1); }); pg.on('console', m => { if (m.type() === 'error') console.log('CONSOLE', m.text().slice(0, 300)); });
 await pg.exposeFunction('saveFile', (n, b64) => { fs.writeFileSync(path.join(OUT, n), Buffer.from(b64, 'base64')); console.log('wrote', path.relative(ROOT, path.join(OUT, n))); });
 await pg.goto(`http://127.0.0.1:${srv.address().port}/`); await pg.waitForFunction('window.DONE', null, { timeout: 300000 });
 console.log(JSON.stringify(await pg.evaluate('window.DONE'), null, 1)); await br.close(); srv.close();

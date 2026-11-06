@@ -69,6 +69,37 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2793 -- THE PET FRIEND: four arms rigged on their own bones, a tail, his own clips, and the follow (pass 1) in a white sandbox (his: "a little monkey guy... rig him up and make sure it's done well, then have him follow you around... maybe the Plutopia creature noises") (Nov 6 2026)
+**What he is.** `korajin_petfriend_01` (COMPANION.md): his Tripo FBX (the 4096 texture is EMBEDDED in it -- cut out, SOI to EOI, no zip needed), **facing +X in the
+file** with his body .195 forward of its origin. 0.80 m to his hair tips; 10,390 tris; one 2048 WebP; draco; single-sided; opaque; 1.2 MB.
+**The rig (tools/vrig, three new keys).** `fbxPath` (embedded texture), `rotY: -90` + `shift` (onto +Z, soles on 0, body over the origin), and `X`: bones the
+donor lacks -- `mixamorig_{Left,Right}{Arm2,ForeArm2,Hand2}` off **Spine1** and `mixamorig_Tail..Tail3` off the hips. Joints measured off ORTHO front/side renders
+with a .05 grid (`images/characters/korajin_petfriend_01_grid.jpg`; vertex slices were too sparse to read). Fit error 1.6e-8. The Forge matches bone names
+EXACTLY, so the extra bones ride through it untouched.
+**Two weight bugs, found on the renders and fixed.** (1) The chin and the lowest ear-rings sat just under the head box (y .515) and were left on the
+shoulders: brown SPIKES down his chest when he walked. (2) Widening the box for the ears to .465 then caught the TOP of the upper arms (they reach .478):
+pink SHEETS from arm to ear. Final: head above .505; the ears out past |x| .14 from .495; the chin (z > .07) from .47 (`_rigid` in his JSON).
+**The second arms are not a copy** (`tools/petrig/layer.js`, after the Forge): each Arm2 bone takes its first-pair twin's motion as a DELTA FROM REST in its
+own frame (both frames come from the donor's arm, `X.like`), half a clip later on walk/run (k .8-.9) and ~a third off at rest (k .5-.6). The TAIL gets a
+travelling sway on every clip, a whole number of waves per loop, lifted on the run and the hop. Clips (Forge): idle Happy_Idle, walk Mutant_Walking, run
+Mutant_Run, hop Mutant_Jumping, jump Joyful_Jump, scratch Zombie_Scratch_Idle, look Look_Around, cheer Excited. `tools/petrig/build.sh` rebuilds all of it.
+**His noises ARE Plutopia's.** `colinwillow/plutopia/audio/creature_noise_01..07.mp3` are byte-identical (md5) to `audio/creature_noises/` -- already here as
+`SFX.creature` since m82 (Clancy). Nothing synthesized. Pitched to his .8 m by `voxSize`'s curve; moods calm / fond / happy / hop in `COMPANION.mood`.
+**The follow (`SC_COMPANION`, `cmpStep`).** His spot: 1.5 behind, .8 off your right shoulder, ON YOUR LEVEL (falls back to straight behind, then nearer).
+Walk / run / sprint by distance; .36 steps walked; a HOP (ballistic arc + clip) up to 2.4 m or over 4.2 m; steps off drops to 3.2 m; the PUFF catch-up
+(`cmpTele`: smoke ring + sparkle at both ends, a .32 s grow-in, the cheer, a happy chirp) when stuck 2.2 s, 24 m behind, or you are on a level he can't
+reach for 1.2 s. Standing: faces you, idles, fidgets (scratch / look) every 4-9 s. Two follow bugs the probe caught: STUCK was "distance not shrinking",
+which is exactly what trailing a walking player looks like (he puffed on the stair); it is now "wants to move and isn't". And a spot on the ledge above
+you counted as "there" in plan; another level now counts .6 m further.
+**The sandbox** `?w=forge&zone=pet` (DEV PLACES > SANDBOXES > The Pet Friend; KORAJIN menu): a .3 stair to a 1.5 m deck, a 2 m and a 3.4 m gap, .9 and 2.1
+ledges up, three 1.5 m drops down, a 7 m pillar (his limit). `?pet=1` brings him out in any forge zone; `mel.pet()` toggles; `mel.COMPANION` / `mel.CMP` live.
+**`npm run petfollow`** (new) carries the player round that course and measures HIM -- every leg ended on his spot, 4 hops, puffs only up/down the pillar:
+    ok   up the stair        off you 2.09 m  hops 0 puffs 0      ok   over the 3.4 m gap  hops 1      ok   up 2.1   hops 1
+    ok   down 1.5 (x3)       off you 1.05 m (on your level)     ok   onto the 7 m pillar  puffs 2   ok   stand still  idle/scratch/look
+**Box moved:** COMPANION.md DONE WHEN -- all ticked but his sign-off. **Open:** the feel on the phone (pace, `walkRef` .62 / `runRef` 2.2 are guesses, the hop,
+the puff, the chatter); the story (prologue, lost, found) is a level ON this piece and waits for that sign-off. Renders: `images/characters/
+korajin_petfriend_01_{fsb,poses,weights,grid,hop,run,idle}.jpg`. Shipped unverified.
+
 ## m2792 -- GARDEN BUDGET part 2a: SHADOW CELLS; AND THE DESERT'S SHADOW STAND-INS NEVER CAST (a bug of mine since m2585) (Nov 6 2026)
 
 - **The desert bug:** m2585 / m2586 put the field's shadow stand-ins on LAYER 1 and enabled layer 1 on the sun's shadow camera. But three's shadow pass

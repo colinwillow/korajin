@@ -9,3 +9,5 @@ shots/
 
 play_fail.txt
 models/characters/villagers/*_rig.glb
+models/characters/companions/*_rig.glb
+models/characters/*/*_look.png

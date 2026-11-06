@@ -1,0 +1,221 @@
+{
+ "name": "korajin_petfriend_01",
+ "fbxPath": "models/characters/character_model_zips/korajin_petfriend_01.fbx",
+ "donor": "models/characters/toad_wanderer_game.glb",
+ "height": 0.8,
+ "texSize": 2048,
+ "out": "korajin_petfriend_01_rig.glb",
+ "outDir": "models/characters/companions",
+ "rotY": -90,
+ "shift": [
+  0,
+  0.49976,
+  -0.195
+ ],
+ "_frame": "his Tripo FBX faces +X: rotY -90 turns him onto +Z (+X is HIS LEFT), shift stands his soles on y 0 and his body (.195 forward in the file) over the origin. Joints MEASURED off orthographic front/side renders with a .05 grid (images/characters/korajin_petfriend_01_grid.jpg), 1.0 = the tip of his hair spikes",
+ "J": {
+  "Hips": [
+   0,
+   0.3,
+   -0.005
+  ],
+  "Spine": [
+   0,
+   0.35,
+   -0.005
+  ],
+  "Spine1": [
+   0,
+   0.4,
+   -0.005
+  ],
+  "Spine2": [
+   0,
+   0.445,
+   -0.005
+  ],
+  "Neck": [
+   0,
+   0.49,
+   0.005
+  ],
+  "Head": [
+   0,
+   0.53,
+   0.005
+  ],
+  "LeftShoulder": [
+   0.04,
+   0.445,
+   0.005
+  ],
+  "LeftArm": [
+   0.1,
+   0.435,
+   0.005
+  ],
+  "LeftForeArm": [
+   0.235,
+   0.435,
+   0.005
+  ],
+  "LeftHand": [
+   0.355,
+   0.43,
+   0.005
+  ],
+  "LeftUpLeg": [
+   0.075,
+   0.29,
+   -0.005
+  ],
+  "LeftLeg": [
+   0.12,
+   0.17,
+   0.015
+  ],
+  "LeftFoot": [
+   0.135,
+   0.075,
+   -0.025
+  ],
+  "LeftToeBase": [
+   0.145,
+   0.03,
+   0.065
+  ]
+ },
+ "TIP": {
+  "Head": [
+   0,
+   1.0,
+   0.005
+  ],
+  "LeftHand": [
+   0.475,
+   0.43,
+   0.005
+  ],
+  "LeftToeBase": [
+   0.15,
+   0.02,
+   0.105
+  ]
+ },
+ "_X": "the SECOND ARM PAIR (off Spine1, below the first: shoulder y .385, hand at (.305,.225) hanging forward-out) and the TAIL (off the hips, down-back to its tip on the ground behind him)",
+ "X": {
+  "LeftArm2": {
+   "parent": "Spine1",
+   "like": "LeftArm",
+   "to": "LeftForeArm2",
+   "at": [
+    0.095,
+    0.385,
+    0.005
+   ]
+  },
+  "LeftForeArm2": {
+   "parent": "LeftArm2",
+   "like": "LeftForeArm",
+   "to": "LeftHand2",
+   "at": [
+    0.215,
+    0.29,
+    0.025
+   ]
+  },
+  "LeftHand2": {
+   "parent": "LeftForeArm2",
+   "like": "LeftHand",
+   "at": [
+    0.305,
+    0.225,
+    0.04
+   ],
+   "tip": [
+    0.39,
+    0.18,
+    0.055
+   ]
+  },
+  "Tail": {
+   "parent": "Hips",
+   "to": "Tail1",
+   "at": [
+    0,
+    0.29,
+    -0.085
+   ]
+  },
+  "Tail1": {
+   "parent": "Tail",
+   "to": "Tail2",
+   "at": [
+    0,
+    0.225,
+    -0.205
+   ]
+  },
+  "Tail2": {
+   "parent": "Tail1",
+   "to": "Tail3",
+   "at": [
+    0,
+    0.16,
+    -0.325
+   ]
+  },
+  "Tail3": {
+   "parent": "Tail2",
+   "at": [
+    0,
+    0.1,
+    -0.45
+   ],
+   "tip": [
+    0,
+    0.05,
+    -0.58
+   ]
+  }
+ },
+ "_rigid": "everything over the neck rides the head: the skull, ears with their rings and the six hair spikes (y > .505); the EARS and their rings hang lower out at the sides (|x| > .14, down to .495 -- the upper arms top out at .478, so no lower or they ride the head too); the CHIN juts forward of the neck (z > .07, down to .47). Without the last two, the rings and the jaw were left on the shoulders and stretched into brown spikes when he walked",
+ "rigid": [
+  [
+   "Head",
+   -0.6,
+   0.6,
+   0.505,
+   1.1,
+   -0.6,
+   0.6
+  ],
+  [
+   "Head",
+   0.14,
+   0.6,
+   0.495,
+   1.1,
+   -0.6,
+   0.6
+  ],
+  [
+   "Head",
+   -0.6,
+   -0.14,
+   0.495,
+   1.1,
+   -0.6,
+   0.6
+  ],
+  [
+   "Head",
+   -0.14,
+   0.14,
+   0.47,
+   1.1,
+   0.07,
+   0.6
+  ]
+ ]
+}

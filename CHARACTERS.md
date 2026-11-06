@@ -138,3 +138,11 @@ lands, it's one line in the roster.
    keeps its song and knows what the shrine is for. She hands out lore and points at the next place -- the region's guide.
 3. **A companion / love interest.** She rides along (on the board, the mammoth, the boat), comments on places, maybe helps in a fight, and is
    the one most likely to become PLAYABLE later (she already has the full Mixamo rig and could take the hero clips through the Forge).
+
+## KORAJIN -- THE PET FRIEND (Colin, Nov 6 2026; COMPANION.md)
+The four-armed little monkey creature who follows you (`korajin_petfriend_01`, `models/characters/companions/`). Same pipeline as the village
+people, with three additions to `tools/vrig`: **`fbxPath`** takes a raw Tripo FBX whose texture is EMBEDDED (the JPEG is cut out of the file),
+**`rotY` / `shift`** turn a file that faces the wrong way onto +Z and stand it over the origin, and **`X`** adds bones the donor does not have --
+here the second arm pair (`*Arm2/ForeArm2/Hand2` off Spine1, each with the frame of the donor bone it is `like`) and a 4-bone tail. After the
+Forge, `tools/petrig/layer.js` gives those bones their motion (the second arms: the first pair's delta, phase-shifted and scaled; the tail: a
+travelling sway); `tools/petrig/build.sh` runs all of it. Renders: `images/characters/korajin_petfriend_01_{fsb,poses,weights,grid,hop,run,idle}.jpg`.

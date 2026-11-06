@@ -68,7 +68,8 @@
     "shadeshot": "node tools/shadeshot.mjs",
     "shadefight": "node tools/shadefight.mjs",
     "shjinshot": "node tools/shjinshot.mjs",
-    "hammershot": "node tools/hammershot.mjs"
+    "hammershot": "node tools/hammershot.mjs",
+    "petfollow": "node tools/petfollow.mjs"
   },
   "type": "module",
   "devDependencies": {

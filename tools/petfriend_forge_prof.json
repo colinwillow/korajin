@@ -1,0 +1,66 @@
+{
+ "v": 1,
+ "character": "models/characters/companions/korajin_petfriend_01_rig.glb",
+ "exclude": [],
+ "layers": {
+  "feet": 1,
+  "ground": 1,
+  "clear": 0,
+  "toes": 1,
+  "handAlign": 1
+ },
+ "adjust": {
+  "stance": 0,
+  "arms": 0,
+  "elbows": 0,
+  "lean": 0,
+  "toeIn": 0,
+  "knees": 0,
+  "wrists": 0
+ },
+ "hands": {
+  "amt": 0
+ },
+ "clips": [
+  {
+   "role": "idle",
+   "stem": "Happy_Idle",
+   "name": "idle"
+  },
+  {
+   "role": "walk",
+   "stem": "Mutant_Walking",
+   "name": "walk"
+  },
+  {
+   "role": "run",
+   "stem": "Mutant_Run",
+   "name": "run"
+  },
+  {
+   "role": "hop",
+   "stem": "Mutant_Jumping",
+   "name": "hop"
+  },
+  {
+   "role": "jump",
+   "stem": "Joyful_Jump",
+   "name": "jump"
+  },
+  {
+   "role": "scratch",
+   "stem": "Zombie_Scratch_Idle",
+   "name": "scratch"
+  },
+  {
+   "role": "look",
+   "stem": "Look_Around",
+   "name": "look"
+  },
+  {
+   "role": "cheer",
+   "stem": "Excited",
+   "name": "cheer"
+  }
+ ]
+}
