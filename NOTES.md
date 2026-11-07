@@ -69,6 +69,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2802 -- DEBUG MENUS build 2: DEV PLACES IN STORY ORDER, IN FOLDERS (DEBUG_MENU.md) (Nov 7 2026)
+`KPLACES` (now between `SC_PLACES:START`/`:END`) is groups `{ grp, folder, rows }`: **KORAJIN** -- PROLOGUE / TRAINING (Combat Lab, Saint dojo,
+Proving Ground, the Arena, the Duel Pit) / FOREST TEMPLE (full run, the Well, rooms A-F, the Seal, the Banyan, the kit) / WORLD · DESERT, WATER,
+SNOW, SKY; **SANDBOXES** -- CHARACTERS (pet, holy creature) / MOVEMENT (whip, rope, wall park, climb tower) / SYSTEMS (interactions, dark hall,
+reflection, FX lab, glow garden) / LEVEL BUILDING (layout, cell C1, blockout). **LEGACY is a declared group with no rows** -- no inherited world
+has been proved to boot from here, so none is listed (a row would also join `npm run places`). Same 43 rows and URLs as before: nothing was added
+or moved, so `places` was not run; `tools/placecheck.mjs` still reads `['name', '?query'` out of the block (counted: 43).
+`godMenuOpen`: RECENT (last 5 visited, `mel.places.menu`), HERE (as before), then the groups with folder headers (open state saved); **the folder
+holding the zone he is in opens by itself** and his exact place is lit (`placeIsHere`, ignoring `b`, `god`, `fresh`, `grant` -- the old
+`location.search === q` never matched once `navGo` stamped `b=`). FLY / PLAY MODE stay at the bottom.
+**THE GATE:** `placesAudit()` logs PLACES MENU GATE THREW on an unknown / missing `grp`, no `folder`, an empty folder, a query not starting `?w=`,
+or a duplicate query. Proved: `grp: 'MISC'` on the prologue -> BOOT FAIL; restored -> boot ok.
+**Box moved (DEBUG_MENU.md):** DEV PLACES story order + folders + RECENT. **Open:** his sign-off on both menus. Shipped unverified (headless
+render of the panel in room C: FOREST TEMPLE opened by itself, room C lit).
+
 ## m2801 -- DEBUG MENUS build 1: THE SPAWN MENU IS FOLDERS BUILT FROM ONE TABLE (DEBUG_MENU.md) (Nov 7 2026)
 *"There's a menu for people, but then there are people tagged onto the main menu at the bottom, new bosses... it's just not organised well."*
 **What was wrong:** SPAWN's top level was 5 folders and then 15 loose buttons (every new boss was one more button on the end, plus two dead

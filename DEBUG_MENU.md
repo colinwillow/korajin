@@ -66,6 +66,6 @@ Mock: `images/plan/debug_menu_mock.png`.
 ## DONE WHEN
 - [x] SPAWN is folders + chips + RECENT, nothing loose at the top level; every old row still spawns (legacy included) (m2801)
 - [ ] the "FOREST TEMPLE" chip shows only Forest Temple things
-- [ ] DEV PLACES in story order, temple rooms in one folder, RECENT
+- [x] DEV PLACES in story order, temple rooms in one folder, RECENT (m2802)
 - [x] `npm run check` fails on a row without a category, and on an `ARENA.kinds` key without a row (proved by breaking one on purpose) (m2801)
 - [ ] **his sign-off on his phone**
