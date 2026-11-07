@@ -69,6 +69,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2800 -- "I picked the pet friend off the menu and there's nobody in there": he stood BEHIND you, off the edge of a portrait screen (Nov 7 2026)
+**Reproduced on his path** (`tools/petphone.mjs`: the DEV PLACES row's own URL `?w=forge&zone=pet`, the entrance, real time, a 390x844 phone). He DID
+load -- the zone built, the GLB decoded, both he and the holy creature spawned within ~5 s, and the asset hash / `DIRS` were fine. What was wrong
+is WHERE: his spot was 1.5 m behind you and .8 to your right, i.e. between the lens and you, low and at the very edge of a portrait frame
+(the horizontal half-angle of a 390-wide 55-degree lens is ~13 degrees; .8 m off at 3.4 m from the lens is 13.2). Standing still at the start --
+which is all you do when you open a sandbox to look at him -- he was off screen.
+**Fix**: when you stand still (`CMP.still`, ~1/3 s) his spot is IN FRONT of you and to your right (`COMPANION.rest` 1.9 / 1.1), facing you; moving,
+he trails as before. He SPAWNS on that front spot, in his puff, so you see him arrive. The holy stand (`at=holy`) puts you 1.4 m to his side so you
+no longer block him. Screenshots of both after the fix: he is in frame, front-right. `npm run petfollow` still passes every leg (the probe now gives
+the carried player a real velocity, or he would read as standing still).
+**Chip**: `PETload` / `PETok<y>` / `PETfail` / `PETwait` (waiting for you to be on the ground), and `HOLYload/ok/fail` -- so "not loaded", "failed"
+and "loaded somewhere else" read differently on the phone. Shipped unverified.
+
 ## m2799 -- THE SHADOW: THE SWORD SAINT AS GRUMBO'S DARK DOUBLE, AND THE BALANCE LORE (m2799)
 His (via the orchestrator): *"he's basically your shadow... maybe he turns into a puff of smoke... he can do all of the moves you can do. Some sort
 of incarnation of the evil force that is the Hollow, the opposite of the Jinra. Like yin and yang."*

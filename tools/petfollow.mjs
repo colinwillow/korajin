@@ -34,7 +34,7 @@ async function drive(shots) {
   const run = async (why, to, spd) => { const st = { hops: S.CMP.st.hops || 0, tele: S.CMP.st.tele || 0 }; const d0 = Math.hypot(to[0] - at[0], to[2] - at[2]); const T = d0 < .1 ? spd : Math.max(1, d0 / spd); let worst = 0, roles = new Set();
     for (let t = 0; t < T + 3.5; t += 1 / 60) { const u = Math.min(1, t / T), x = at[0] + (to[0] - at[0]) * u, z = at[2] + (to[2] - at[2]) * u, y = at[1] + (to[1] - at[1]) * u + (u > 0 && u < 1 && to[1] !== at[1] ? .4 * Math.sin(u * Math.PI) : 0);
       if (d0 > .1 && u < 1) p.heading = p.faceH = Math.atan2(to[0] - at[0], to[2] - at[2]);
-      frame(); p.pos.set(x, y + .02, z); p.vel.set(0, 0, 0); p.grounded = true;
+      frame(); p.pos.set(x, y + .02, z); if (u < 1 && d0 > .1) p.vel.set((to[0] - at[0]) / T, 0, (to[2] - at[2]) / T); else p.vel.set(0, 0, 0); p.grounded = true;
       const P = S.CMP.P; if (P) { roles.add(P.role); worst = Math.max(worst, Math.hypot(P.root.position.x - x, P.root.position.z - z)); }
       if (shots && shots[why] && !shots[why].done) { const Sh = shots[why], P2 = S.CMP.P; if (P2 && (Sh[0] === 'hop' ? P2.hop && P2.hop.t > P2.hop.T * .45 : Sh[0] === 'run' ? P2.role === 'run' && t > 1.2 : t > Sh[0])) { Sh.done = 1; await window.__shot(Sh[1], typeof Sh[0] === 'number'); } } }
     at = to; const P = S.CMP.P, q = P ? P.root.position : null, dP = q ? Math.hypot(q.x - p.pos.x, q.z - p.pos.z) : 99;
