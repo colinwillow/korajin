@@ -69,6 +69,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2816 -- FILM MODE HIDES EVERYTHING + THE PILL; THE BELL IS GONE; DAY / DUSK / NIGHT IN THIRDS (Nov 7 2026)
+**1. FILM MODE** (his: *"the joysticks should go almost invisible or completely invisible... I don't have a button to turn off film mode... film
+mode doesn't get rid of the bell"*). The old rule hid a LIST of ids (and missed the bell, the minimap's siblings, bubbles, toasts, SPAWN's menu...).
+Now `body.footage > *` is `visibility: hidden` for EVERY page layer except `#gl` (the 3D canvas -- NOT `canvas`: the minimap is a canvas too),
+the touch zones, the pads (opacity 0, still working), `#boot`, the pause menu and the pill. **THE PILL** (`#footExit`): a 30 x 5 px line at
+22% cream, top-left above the build badge, always there, one tap toggles film mode either way (hit area 64 x 30 normally, 96 x 96 while
+filming). The FOOTAGE row reads FILM MODE. **Measured headless (forge):** after the switch the only visible layers are `gl`, the two pads
+(computed opacity 0 once the .12 s transition ends) and `footExit`.
+**2. THE BELL IS NEVER BUILT** (*"I hate that button... if you touch the screen and the sound's not playing, the sound triggers"*). `sndBtnBuild`
+is no longer called (the 700 ms interval is gone). Every pointerdown / touchend / click / keydown already runs `sfxWake` in the capture phase
+(resume + the iOS silent-buffer unlock, or the rebuild after the app was away), so what the bell's tap did happens on any touch; plus a resume
+on `visibilitychange` back and on `gamepadconnected`. **MUTE is pause > OPTIONS > SOUND: ON / MUTED** (the same `SFX.mute` + `mel.mute` key).
+**3. TIME: CYCLE IN THIRDS** (*"my favourite time is dusk... it goes from day through dusk really fast into night... 1/3 1/3 1/3"*). The old target
+was a cosine with a 20% dead band at each end, so f sat at 0 and 1 and swept through .5 in seconds. `nightTarget` is now piecewise: hold 0 /
+blend / hold .5 / blend / hold 1 / blend back to 0 (dawn), `NIGHT.blend` .06 of the cycle each. **Measured on the shipped function** (240 s
+cycle): day 66 s, dusk 66 s, night 66 s, blends 42 s. The dusk hold is f = .5, exactly what TIME: DUSK holds, and every light, the fog, the sky
+dome and the dusk tint (N.dusk = 4f(1-f), 1 at f = .5) read f, so nothing new had to be matched. The title backdrop's own loop is unchanged.
+Shipped unverified on the phone.
+
 ## m2814 -- SCENE EXPORT TO CINEMA 4D: `npm run sceneexport garden test` (his, Nov 7: "get that export ready so I can bring it into Cinema 4D, relight it, re-texture it, do a little style frame"; EXPORT.md)
 - **New tool, no game change.** Boots the SHIPPED page in the zone (entry off, the prologue reel ended, `p.sleep` cleared -- the prologue opens
   with him in the hammock, and the first take started him there), fakes the clock and steps the shipped `frameBody` at 30 fps while the take
