@@ -69,6 +69,18 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2807 -- THE DEATH-KIT PROBE'S NUMBERS, AND ELITES KEEP THEIR HEADS (m2807)
+`npm run deathkit` (m2806's probe) first read `blade false` -- a headless lab boots empty-handed, so no cut could ever land; it equips the katana now.
+Then every kind burst in 3-4 blows -- INCLUDING the jackal (12 combo hits of life), the warboss and the bulwark: a cut that takes the HEAD or the
+SECOND LEG bursts a body whatever its life. **Fixed in `limbCut`:** a kind over `LIMB.eliteHits` 4 combo hits (VOL) or a boss loses arms and one leg
+early; the head / the last leg only below `LIMB.eliteFatal` .34 of its life. Fodder is unchanged (volume: 3 blows). An ARMOURED kind
+(`pierce: 'charge'`) is killed by the probe with its own tool, the charge. The run (`SHEET=1 npm run deathkit`, then the armoured two again):
+    ok WARBOSS 30 blows / CEOALIEN 21 (charge) / SAMURAI 4 / JACKAL 15 / ARCHER 3 / OSARI_BOW 3 / SKULLBACK 21 (charge) / HUSK_SOLDIER 3 /
+    HUSK_ARCHER 3 / HUSK_GUARD 3 / HUSK_FLANKER 3 / BULWARK 30 / HOLLOW_MONK 3 -- every one: limbs cut 5, BURST; weapons dropped 4.
+(The combat defence is OFF in the probe -- blocks, parries and the jackal's wall-stun are not in these counts.) The sheet,
+images/renders/deathkit/sheet.png, shows the jackal, the husk soldier, the husk archer and the husk swordsman coming apart (limbs, the burst,
+the Hollow smoke) -- small in frame, the game's own lens. `npm run check` green. Shipped unverified.
+
 ## m2806 -- THE BURN FOLLOWS THE BLADE, AND EVERY ENEMY GETS THE DEATH KIT (m2806)
 His (phone, ~m2803): *"when you hit people with the sword and the Jin sword they catch on fire... it should be more like the JINRA, unless you're using the
 fire sword"* and *"when I cut off all the old samurai's limbs, on the third hit they explode -- so satisfying. The Hollow soldier: first hit he's knocked
