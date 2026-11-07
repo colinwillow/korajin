@@ -655,6 +655,38 @@ villages*; her role is open (a villager, a love interest, a village princess, pl
 - **Her role -- three options in CHARACTERS.md for him to pick** (a villager with a bell quest / the keeper who knows the old bell / a companion
   who rides along and may become playable). Not chosen.
 Shipped unverified.
+## (m2815) THE STONE GUARDIAN, LIMB BY LIMB -- hyper-armour, bare a limb, extinguish it in its window; the slam travels; the hammer in his fist
+His (after m2809): *"still extremely, extremely easy -- swipe swipe swipe... every time you land a blow he does a reaction and goes back. He
+shouldn't... one arm takes 3-6 hits to get all the armour off. THAT'S the one time he stumbles back, and you've got to shoot or slice the bare arm
+to EXTINGUISH it -- if you don't do it quickly enough, the armour grows back. Limb by limb... the chest is the final blow."* Plus: the jump slam
+did not go forward, the hammer went through his palm, and every hit made him flinch. Read STONE_GUARDIAN.md "HIS TACTIC -- LIMB BY LIMB".
+- **HYPER-ARMOUR:** `shadeLimbBlow` never sets knock-back or a stagger; the ONLY stagger is a limb's last section off (`stagT` .6 s,
+  `G.stagT` read by guardThink's `stag`). A chip returns 'chip' so `guardSweep` plays no connect/hitstop.
+- **A BLOW LANDS ON THE PIECE THE BLADE REACHES.** `guardSweep` hands the blade segment over (`SHHIT.a/b`); `shadeReach` takes the nearest bone
+  span to it, AMONG OPEN LIMBS ONLY -- measured: a side cut at the shoulder passes 0.30 m from the locked NECK and 0.24 m from the shoulder, and
+  the nearest-of-all rule rang it off the neck every time. An arrow is its point; it judges the GUARD from where it CAME FROM (`SHHIT.fromV`).
+- **THE GUARD** (`guard` .9 rad): a blow from his front arc rings off the hammer unless he is STUCK (the overhead). Without it the MASHER --
+  standing in front, sweeping his chest -- extinguished both arms and the head in 90 s (his idle holds the fists forward). With it the front is
+  a wall: hit his SIDES, or punish the stuck hammer. He turns to you only while walking, so dodging his committed blow is how you get round.
+- **THE WINDOW:** `regrowT` 5.5 s; the stone comes back section by section from the extremity in (hand, gauntlet, shoulder) -- the timer IS the
+  armour returning. A hit on the bare limb in it EXTINGUISHES it: the dark spirit limb falls as a piece, its attacks go (no right arm = the
+  hammer drops: the left PUNCH; no arms = the STOMP rings). Arms -> head -> chest; the chest's last blow needs JINRA (the brazier finisher).
+- **THE JUMP SLAM TRAVELS:** `guardLoad` flattens every clip's hips x/z ("the brain moves him") -- so the slam's own .711 body-unit leap
+  (~2.4 m, landing at 1.6 s) was gone. The forward curve is kept on the clip (`userData.travel`) and re-applied as root motion through the clip,
+  scaled to land on you (`shadeStart`). The test hook called its own copy of the start and skipped it (0 m travelled) -- one start now.
+- **THE HAMMER IN HIS FIST:** his stone hand is thinnest along its local Z (that is the palm's normal) -- the m2791 haft ran along Z, i.e.
+  straight through the palm. It runs along X from the fist's centre (-.04, .028, 0), both measured off his hand's own vertices.
+- **HIS SWING NEVER LANDED -- MEASURED, NOT GUESSED:** the masher stood 2.4 m in front for 90 s and was hit 0 times. The `swipe` clip carries
+  the hammer head 2.3-3.1 m UP over a man in front, then round BEHIND him (z -2.3) -- it cannot land, and that is "his swing doesn't make sense".
+  It is off (`swipe.use` 0). The OVERHEAD's head lands at (-1.62, .59) in his frame -- to his RIGHT, 2.43 m from a man ahead, outside its 2.1 m:
+  the wind-up now TURNS his shoulder (`G.aimY`) and solves the jump's travel so the HEAD lands on you -- measured: head at (0, 2.41), you at 2.4,
+  hp 100 -> 76. A limb bared while he is stuck rips the hammer out and he STUMBLES BACK ~1 m (his one reaction), guard up again.
+- **PROVEN through the shipped hit paths:** `npm run shadefight` (skilled, from his sides): armL bared in 7 blows, armR 1 more, head 2, chest 5;
+  a plain blow on the bare chest passes; the dunk; the Jinra blow ends him (15 blows); the dissolve; 14 Tama. `npm run shademash` (in front,
+  sweeping his chest + plain arrows every .2 s, 90 s): does NOT kill him -- his arms, head and chest stay armoured but the hammer arm (taken in a
+  stuck window), and he HIT THE MASHER 5 times (hp 100 -> 40). Sheet:
+  images/renders/shade/limb_sheet.png (`npm run limbshot`). Shipped unverified on the phone.
+
 ## (m2791) THE STONE GUARDIAN'S MEGALITH HAMMER -- every blow lands where the head is; a shockwave you jump, an overhead that sticks
 His: *"the statue's reach is kinda far. It's like he punches you even though he doesn't actually touch you... give him a really massive
 sledgehammer -- a post and a giant megalithic stone hammer -- and he slams it down. One attack sends waves and you gotta jump over them."*

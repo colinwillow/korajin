@@ -63,37 +63,34 @@ The spirit DRAWS ONLY WHERE THE ARMOUR IS BROKEN: each guardian has its own inde
   TAMA motes that fly to Grumbo, are counted (`TAMA.n`), and the last home plays `loot_small`.
 - **The statue twin** (STATUES.md): the same rig in the flex pose, `statueStone`; a blow wakes it.
 
-## HIS TACTIC -- THE PLAN (not built; his verdict Nov 6: "I annihilated him just by swiping a ton... there's no skill to it")
-> *"We need every guy to be difficult in its own right -- not in the same way -- there's gotta be some tact to each enemy."*
-
-**The idea in one line: he is a WALL from the front; you open him with HIS OWN hammer.** Every way in is a read of one of his three blows.
-
-1. **THE GUARD (the front is closed).** Out of his attacks he holds the hammer across his body. A blow landing inside his front arc
-   (`guard.arc` ~100 deg either side of his facing) **TINKS** -- pale spark, `st_ring`, a small recoil on you, no armour damage
-   (`shadeBlow` returns 'block'). He turns to face you at his walk turn rate, so circling alone does not beat him for long.
-2. **THREE OPENINGS, each one a read** (`G.crack` = seconds the armour is open; blows in it break a piece as now, and a full charge two):
-   - **STUCK** (the overhead): the head in the ground 1.7 s -- already built; it becomes the main window (`crack` = `over.stuck`).
-   - **BEHIND** after a PERFECT DODGE of the swing (the combat worker's `cbtPerfectDodge`): you are past his shoulder, `crack` 1.2 s,
-     and only from behind (the back arc).
-   - **COUNTER** after a JUMPED shockwave: clear a ring in the air and land within reach -> `crack` 1.0 s (the "you read it" reward).
-   The open armour SHOWS it: the stone's seams glow hot amber for the window (an emissive pulse on the stone material), so the player
-   learns the window by seeing it, no text.
-3. **HE PUNISHES CAMPING.** Stay inside 2.5 m of him for more than `crowd.T` 1.6 s and he answers with a quick SHOVE (a short `stomp`,
-   a knock-back ring of 3 m, light damage, no wind-up long enough to block-spam through). Mashing at his front feeds this.
-4. **THE SPIRIT PHASE IS A CHASE, NOT A FREE KILL.** Bare, he stops guarding but DRIFTS: every 2-3 s he phases (dissolve-shimmer, a
-   short blink 3-5 m to a side) and is untouchable (`G.phaseT`) while he flickers; Jinra blows land only while he is SOLID, and each one
-   that lands knocks him back and starts the next drift sooner. Jinra arrows are the tool for the drift (they ignore the phase if they
-   arrive just as he re-solidifies -- timing, not spam). Spirit hp stays ~5 Jinra hits.
-5. **THE NUMBERS** stay on `SHADE` (`guard`, `crack`, `crowd`, `drift`) and on mel, and TOOLS > SHADE gets a third setting: TACTIC ON / OFF.
-
-**Proving it (two scripts, both through the shipped hit paths):**
-- `npm run shadefight` becomes the SKILLED fight: waits for each opening (the stuck head, a perfect dodge of the swing, a jumped ring),
-  strikes in the window, dunks, chases the drifting spirit -- must KILL him (exit 0) inside a time budget.
-- `npm run shademash` is the MASHER: stands in front and swings + looses plain arrows every .2 s for 90 s of game time -- must NOT kill him
-  (exit 1 if he dies), and must report how often the shove punished it.
-
-**What it changes in code:** `shadeBlow` (the guard arc + `G.crack`), `shadeAct` (the crowd shove, opening the window on stuck / dodge /
-jumped ring), the spirit drift in `shadeFxStep`'s live loop, the stone emissive pulse. No new assets.
+## HIS TACTIC -- LIMB BY LIMB (m2815; his, after m2809: replaces the m2795 plan)
+> *"Every time you land a blow he does a reaction and goes back. He shouldn't. He should keep coming at you... one arm takes 3-6 hits to get
+> all the armour off. Once the armour is off that arm, THAT'S the one time he stumbles back, and you've got to shoot or slice the bare arm to
+> EXTINGUISH it. If you don't do it quickly enough, the armour grows back. So you go limb by limb... the chest is the final blow and he explodes."*
+- **HYPER-ARMOUR.** A hit is a sound, a chip, a tiny flash -- never a flinch, never a knock-back; it never interrupts his swing or his stride.
+- **A blow lands on the piece the BLADE reaches** (`shadeReach`: the nearest bone span to the sword's actual blade segment, or to the arrow),
+  within `reach` (.2 of his height, ~.7 m). A leg, a still-locked head or chest, or nothing in reach: it RINGS OFF (a tink, a pale spark).
+  So mashing his front hits his locked chest and does nothing; the arms are at his SIDES, where his hammer is.
+- **ARMOUR -> EXPOSED.** An arm is three sections (hand, gauntlet, shoulder), `hp` 1 each = one solid hit or two light ones: 3-6 to bare it.
+  The last one off is the ONE stagger (`stagT` .6 s) and the bare limb glows.
+- **THE WINDOW.** `regrowT` 5.5 s: grit gathers on the limb and the stone creeps back section by section from the extremity in (the hand at
+  1/3, the gauntlet at 2/3, the shoulder at the end). All back = armour again, full hp.
+- **EXTINGUISH.** A blade or an arrow on the bare limb inside the window: it CRUMBLES (the spirit limb, dark, falls as a piece; green smoke;
+  a small jingle) and its attacks go with it -- no right arm = no hammer (it falls); no left arm = no punch; no arms = he STOMPS out rings.
+- **ORDER.** Both arms (any order) -> the HEAD opens (one section, hp 2) -> the CHEST opens (waist + chest). Legs stay armour.
+- **THE FINISH (Jinra, reconciled):** plain blows strip and extinguish everything EXCEPT the chest's last blow -- that one needs JINRA (the
+  brazier); a plain blow on the bare chest passes through and the brazier flares. The Jinra blow: a white-mint flash, a ring of Jinra fire,
+  then the death (the vaporise into Tama).
+- **THE JUMP SLAM TRAVELS.** The slam clip's own forward travel (hips z, measured: .711 body units, ~2.4 m, landing at 1.6 s) was flattened
+  at load like every clip; it is now kept (`clip.userData.travel`) and re-applied as ROOT MOTION through the clip, scaled to land on you.
+- **THE GUARD** (`guard` .9 rad): a blow from his FRONT arc rings off the hammer unless he is STUCK -- hit his sides, or punish the stuck head.
+- **HIS BLOWS (measured):** the swing clip carries the head over a man in front and round behind him -- it is OFF. Inside 6.5 m he uses the
+  OVERHEAD, turning his shoulder in the wind-up and solving the jump so the HEAD lands on you (24); further out, the SHOCKWAVE. With no hammer
+  arm: the left PUNCH; with no arms: the STOMP rings. A limb bared while he is stuck rips the hammer out and he stumbles back ~1 m.
+- **THE HAMMER IS IN HIS FIST.** The haft runs along the hand's local X (his hand is thinnest along Z: that is the palm's normal -- the
+  m2791 haft went through the palm) from the fist's centre (-.04, .028, 0), measured off his hand's own vertices.
+- Proven through the shipped hit paths: `npm run shadefight` (skilled: each limb from the side, the window, the dunk, the finish -- must
+  WIN) and `npm run shademash` (in front, sweeping his chest + plain arrows, 90 s -- must NOT kill him). Sheet: `npm run limbshot`.
 
 ## The regression
 `npm run shadefight` fights one to death through the shipped hit paths (sword sweeps + real arrows -> spirit pass-through -> the dunk ->
@@ -116,5 +113,5 @@ and head broken, the dissolve).
 - [ ] Hit reacts that differ by piece (a head blow snaps the head back) -- today every stagger is the one `hit` clip.
 - [ ] A dedicated stagger and death on this rig (today the old guardian's `hit` and the puff; `die` is unused).
 - [ ] The numbers tuned with the combat worker (segment hp, `stoneK`, spirit hp) -- COMBAT_DEPTH.md.
-- [ ] HIS TACTIC (the plan above): the guarded front, three openings, the shove, the drifting spirit; a skilled fight passes, a mash fails.
+- [ ] HIS TACTIC, limb by limb (m2815): hyper-armour, sections, the exposed window and regrow, extinguish, arms -> head -> chest (Jinra). On his phone.
 - [ ] His sign-off on his phone.

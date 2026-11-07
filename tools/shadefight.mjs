@@ -13,7 +13,7 @@ let pw; for (const p of ['playwright', '/opt/node22/lib/node_modules/playwright'
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg' };
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(new URL(q.url, 'http://x').pathname), f = path.join(ROOT, u === '/' ? 'index.html' : u);
   if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); r.end(); return; } let body = fs.readFileSync(f);
-  if (f.endsWith('index.html')) { const s = body.toString(), k = 'window.melee = window.mel = {'; body = s.replace(k, 'window.__shot = { renderer, scene, camera }; window.__sf = { guardSweep, ARROWS, arrowMesh, guardMid, GUARD, SHJIN, INFUSE, BFIRE }; ' + k); }
+  if (f.endsWith('index.html')) { const s = body.toString(), k = 'window.melee = window.mel = {'; body = s.replace(k, 'window.__shot = { renderer, scene, camera }; window.__sf = { guardSweep, ARROWS, arrowMesh, guardMid, GUARD, SHJIN, INFUSE, BFIRE, shadeSegPos, HEALTH }; ' + k); }
   r.writeHead(200, { 'content-type': MIME[path.extname(f)] || 'application/octet-stream' }); r.end(body); });
 await new Promise(ok => srv.listen(0, ok)); const port = srv.address().port;
 const br = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
@@ -23,41 +23,47 @@ await pg.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=combatlab&entry=
 await pg.waitForFunction(() => window.__sf && window.mel && mel.shadeAdd && document.getElementById('boot').classList.contains('gone'), null, { timeout: 400000, polling: 1000 }); await pg.waitForTimeout(3000);
 await pg.evaluate(() => { try { mel.ownAll(1); } catch (e) {} const i = mel.WEAP.slots.findIndex(s => s.key === 'katana'); if (i >= 0) mel.applySlot(i); mel.shadeAdd(); });
 await pg.waitForFunction(() => mel.shadeList().length >= 2, null, { timeout: 120000, polling: 500 }); await pg.waitForTimeout(1000);
-// the live one, held in place (so the blows aim), the player 2.5 m in front of it
-const setup = await pg.evaluate(() => { const G = mel.shadeList().find(g => !g.statue); G.aggro = 0; window.__G = G; return { segs: G.sh.segs.length, braz: __sf.SHJIN.braz.length, hp: G.hp }; }); console.log('setup', JSON.stringify(setup));
-// ONE SWORD SWING through his trunk at height frac `hf` (a blade segment, as the swing passes it to guardSweep); returns what moved
-const swing = (hf, dmg = 1.08) => pg.evaluate(([hf, dmg]) => { const G = window.__G, { guardSweep, SHJIN } = __sf, R = G.root.position, h = G.Z.P.h, p = mel.player, T = THREE_V(); 
-    function THREE_V() { return R.clone(); }
-    const y = R.y + h * hf, a = R.clone().set(R.x - 1.2, y, R.z + 1.2), b = R.clone().set(R.x + 1.2, y, R.z - .2);
-    p.pos.set(R.x, R.y, R.z + 2.6); G.hitCd = 0; const before = { broke: Object.keys(G.sh.broke).length, hp: G.hp, bare: G.bare };
-    SHJIN.melee = 1; const n = guardSweep(a, b, .12, 1, dmg, Math.PI); SHJIN.melee = 0;
-    return { n, broke: Object.keys(G.sh.broke).length, d: Object.keys(G.sh.broke).length - before.broke, hp: +G.hp.toFixed(2), dhp: +(before.hp - G.hp).toFixed(2), bare: G.bare, dead: G.dead || 0 }; }, [hf, dmg]);
-// ONE REAL ARROW, loosed from 6 m at his height frac `hf`, stepped by the game; returns once it is gone
-const arrow = hf => pg.evaluate(async hf => { const G = window.__G, { ARROWS, arrowMesh, SHJIN } = __sf, R = G.root.position, h = G.Z.P.h, m = arrowMesh(); window.__shot.scene.add(m);
-    const o = R.clone(); o.z += 6; o.y = R.y + h * hf; m.position.copy(o); G.hitCd = 0; const before = { broke: Object.keys(G.sh.broke).length, hp: G.hp };
-    const A = { m, v: R.clone().set(0, 0, -30), t: 0, stuck: 0, from: null, mine: 1, pl: 1, gk: 0, type: 'normal', full: 0, col: [.3, .9, 1], dmg: 3, pow: .7 }; ARROWS.push(A);
-    for (let k = 0; k < 120 && ARROWS.includes(A) && !A.stuck; k++) await new Promise(r => setTimeout(r, 25));
-    const i = ARROWS.indexOf(A); if (i >= 0) { A.m.removeFromParent(); ARROWS.splice(i, 1); }
-    return { broke: Object.keys(G.sh.broke).length, d: Object.keys(G.sh.broke).length - before.broke, hp: +G.hp.toFixed(2), dhp: +(before.hp - G.hp).toFixed(2), thru: A.thru === G ? 1 : 0, bare: G.bare }; }, hf);
-// PHASE 1: the armour, sword and arrows alternating, heights cycling feet -> head
-const H = [.06, .3, .55, .75, .9, .45, .2, .65];
-let blows = 0, sinceBreak = 0, lastBroke = 0;
-while (true) { const r = blows % 3 === 2 ? await arrow(H[blows % H.length]) : await swing(H[blows % H.length]); blows++;
-  if (r.broke > lastBroke) { lastBroke = r.broke; sinceBreak = 0; console.log(`  blow ${blows} (${blows % 3 === 0 ? 'arrow' : 'sword'}): ${r.broke}/${setup.segs} off`); } else sinceBreak++;
-  if (r.bare) { console.log(`armour off in ${blows} blows`); break; }
-  if (sinceBreak >= 10) { fail(`no piece broke in 10 blows at ${r.broke}/${setup.segs} -- ` + JSON.stringify(await pg.evaluate(() => { const G = window.__G, S = G.sh; return { left: S.segs.filter(s => !S.broke[s]).map(s => s + ':' + S.hp[s].toFixed(2)) }; }))); break; }
-  if (blows > 150) { fail('150 blows'); break; } }
-// PHASE 2: plain blows on the bare spirit must PASS THROUGH (no damage)
-if (!bad) { const hp0 = await pg.evaluate(() => window.__G.hp); const a = await swing(.5), b = await arrow(.55); console.log('plain on the spirit', JSON.stringify({ sword: a.dhp, arrow: b.dhp, thru: b.thru }));
-  if (a.dhp > 0 || b.dhp > 0) fail('a plain blow hurt the spirit with NEEDS JINRA on'); }
-// PHASE 3: the dunk -- walk to the brazier with the sword out
-if (!bad) { await pg.evaluate(() => { const r = __sf.SHJIN.braz[0], p = mel.player; p.pos.set(r.top.x + 1.0, r.top.y - 1, r.top.z); p.vel.set(0, 0, 0); });
-  const ok = await pg.waitForFunction(() => __sf.INFUSE.t > 0, null, { timeout: 60000, polling: 100 }).then(() => 1).catch(() => 0);
-  if (!ok) fail('no dunk at the brazier'); else console.log('dunked', JSON.stringify(await pg.evaluate(() => ({ t: +__sf.INFUSE.t.toFixed(1), n: __sf.INFUSE.n, bfire: __sf.BFIRE.on })))); }
-// PHASE 4: Jinra blows to the kill
-if (!bad) { let k = 0; for (; k < 30; k++) { await pg.evaluate(() => { __sf.BFIRE.on = 2; }); const r = await swing(.5); if (r.dead) break; if (k > 4 && r.dhp <= 0) { fail('Jinra blows do nothing: ' + JSON.stringify(r)); break; } }
-  if (!bad) { const dead = await pg.evaluate(() => !!window.__G.dead); if (!dead) fail('30 Jinra blows and he lives'); else console.log(`killed with ${k + 1} Jinra blows`); } }
-if (!bad) { const gone = await pg.waitForFunction(() => !mel.SHADEFX.dying.length, null, { timeout: 120000, polling: 250 }).then(() => 1).catch(() => 0); console.log(gone ? 'dissolved, Tama ' + JSON.stringify(await pg.evaluate(() => ({ live: mel.TAMA.w.length, n: mel.TAMA.n }))) : 'still dissolving'); }
+const MASH = process.argv.includes('--mash');
+const setup = await pg.evaluate(mash => { const G = mel.shadeList().find(g => !g.statue); G.aggro = mash ? 1 : 0; window.__G = G; return { lim: mel.shadeLimbs(mel.shadeList().indexOf(G)), braz: __sf.SHJIN.braz.length }; }, MASH); console.log((MASH ? 'MASH' : 'SKILLED') + ' setup', JSON.stringify(setup));
+const limbs = () => pg.evaluate(() => mel.shadeLimbs(mel.shadeList().indexOf(window.__G)) || {});
+// ONE SWORD SWING: the blade as the swing passes it to guardSweep -- `at` = a section to cut ACROSS (skilled), or null = straight across his FRONT at chest height (the masher)
+const swing = (at, dmg = 1.08) => pg.evaluate(([at, dmg]) => { const G = window.__G, { guardSweep, SHJIN, shadeSegPos } = __sf, R = G.root.position, h = G.Z.P.h, p = mel.player, fx = Math.sin(G.root.rotation.y), fz = Math.cos(G.root.rotation.y);
+    let a, b; if (at) { const c = shadeSegPos(G, at, R.clone()); a = c.clone().add(R.clone().set(fz * .5, 0, -fx * .5)).addScaledVector(R.clone().set(fx, 0, fz), .5); b = c.clone().add(R.clone().set(-fz * .5, 0, fx * .5)).addScaledVector(R.clone().set(fx, 0, fz), .5); }
+    else { const y = R.y + h * .55; a = R.clone().set(R.x + fx * .9 + fz * .45, y, R.z + fz * .9 - fx * .45); b = R.clone().set(R.x + fx * .7 - fz * .45, y, R.z + fz * .7 + fx * .45); }
+    G.hitCd = 0; const hp0 = p.hp; SHJIN.melee = 1; const n = guardSweep(a, b, .12, 1, dmg, G.root.rotation.y + Math.PI); SHJIN.melee = 0;
+    return { n, dead: G.dead || 0, st: G.st, off: +Math.abs(Math.atan2(p.pos.x - G.root.position.x, p.pos.z - G.root.position.z) - G.root.rotation.y).toFixed(2), broke: Object.keys(G.sh.broke).length }; }, [at, dmg]);
+// ONE REAL ARROW at a section (skilled) or his chest (masher), stepped by the game
+const arrow = (at, k) => pg.evaluate(async at => { const G = window.__G, { ARROWS, arrowMesh, shadeSegPos } = __sf, R = G.root.position, h = G.Z.P.h, m = arrowMesh(); window.__shot.scene.add(m);
+    const T = at ? shadeSegPos(G, at, R.clone()) : R.clone().set(R.x, R.y + h * .55, R.z), P = mel.player.pos, ax = P.x - R.x, az = P.z - R.z, al = Math.hypot(ax, az) || 1, o = T.clone().add(R.clone().set(ax / al * 6, 0, az / al * 6)); m.position.copy(o); G.hitCd = 0;
+    const v = T.clone().sub(o).normalize().multiplyScalar(30), A = { m, v, t: 0, stuck: 0, from: null, mine: 1, pl: 1, gk: 0, type: 'normal', full: 0, col: [.3, .9, 1], dmg: 3, pow: .7 }; ARROWS.push(A);
+    for (let k = 0; k < 120 && ARROWS.includes(A) && !A.stuck; k++) await new Promise(r => setTimeout(r, 25)); const i = ARROWS.indexOf(A); if (i >= 0) { A.m.removeFromParent(); ARROWS.splice(i, 1); } return 1; }, at);
+const L0 = { armL: 'L', armR: 'R' };
+if (!MASH) {
+  // THE SKILLED FIGHT: each limb in turn -- cut its sections off from the SIDE (sword, every third an arrow), then hit the bare limb inside its window
+  const order = ['armL', 'armR', 'head', 'chest'], SEGS = { armL: ['handL', 'forearmL', 'shoulderL'], armR: ['handR', 'forearmR', 'shoulderR'], head: ['head'], chest: ['waist', 'chest'] };
+  let total = 0;
+  const side = k => pg.evaluate(k => { const G = window.__G, R = G.root.position, fx = Math.sin(G.root.rotation.y), fz = Math.cos(G.root.rotation.y), p = mel.player, d = 2.6;     // his left is +X: (fz, -fx)
+      const [sx, sz] = k === 'armL' ? [fz, -fx] : k === 'armR' ? [-fz, fx] : [-fx, -fz]; p.pos.set(R.x + sx * d, R.y, R.z + sz * d); }, k);
+  for (const k of order) { let n = 0, st;
+    while ((st = (await limbs())[k]) && st.startsWith('armour')) { const left = await pg.evaluate(segs => segs.filter(s => !window.__G.sh.broke[s]), SEGS[k]); const at = left[0] || SEGS[k][0];
+      await side(k); const rr = n % 3 === 2 ? await arrow(at, k) : await swing(at); if (process.env.SFV) console.log('   blow', k, at, JSON.stringify(rr)); n++; total++; if (n > 12) { fail(`${k}: still armoured after 12 blows -- ` + JSON.stringify(await limbs())); break; } }
+    if (bad) break; console.log(`  ${k}: bared in ${n} blows -> ${(await limbs())[k]}`);
+    if (k === 'chest') { await side(k); const r = await swing(SEGS.chest[1]); const st2 = (await limbs()).chest; console.log('  plain blow on the bare chest:', st2); if (!st2 || !st2.startsWith('exposed')) { fail('a plain blow ended the chest (it needs Jinra)'); break; }
+      await pg.evaluate(() => { const r = __sf.SHJIN.braz[0], p = mel.player; p.pos.set(r.top.x + 1.0, r.top.y - 1, r.top.z); p.vel.set(0, 0, 0); });
+      const ok = await pg.waitForFunction(() => __sf.INFUSE.t > 0, null, { timeout: 60000, polling: 50 }).then(() => 1).catch(() => 0); if (!ok) { fail('no dunk at the brazier'); break; } console.log('  dunked: Jinra blade');
+      const st3 = (await limbs()).chest; if (!st3 || !st3.startsWith('exposed')) { console.log('  (the chest regrew while he dunked -- strip it again)'); let m = 0; while (((await limbs()).chest || '').startsWith('armour') && m++ < 10) { await side('chest'); const left = await pg.evaluate(segs => segs.filter(s => !window.__G.sh.broke[s]), SEGS.chest); await swing(left[0] || 'chest'); } }
+      await side('chest'); await swing('chest'); const dead = await pg.evaluate(() => !!window.__G.dead); if (!dead) { fail('the Jinra blow on the bare chest did not end him'); break; } console.log(`  chest: the Jinra blow -- dead (${total} blows)`); break; }
+    await side(k); const r = await swing(SEGS[k][SEGS[k].length > 1 ? 1 : 0]); const st2 = (await limbs())[k]; if (st2 !== 'dead') { fail(`${k}: the blow on the bare limb did not extinguish it -> ${st2}`); break; } console.log(`  ${k}: extinguished`); }
+  if (!bad) { const gone = await pg.waitForFunction(() => !mel.SHADEFX.dying.length, null, { timeout: 120000, polling: 250 }).then(() => 1).catch(() => 0); console.log(gone ? 'dissolved, Tama ' + JSON.stringify(await pg.evaluate(() => ({ live: mel.TAMA.w.length }))) : 'still dissolving'); }
+} else {
+  // THE MASHER: in front of him, sweeping across his front at chest height and loosing plain arrows at his chest, for 90 s of GAME time
+  const hp0 = await pg.evaluate(() => mel.player.hp); let blows = 0, hurt = 0, last = hp0; const T0 = await pg.evaluate(() => performance.now());
+  const gt0 = await pg.evaluate(() => mel.TIME ? mel.TIME.t : 0);
+  for (let k = 0; k < 450; k++) { await pg.evaluate(() => { const G = window.__G, R = G.root.position, p = mel.player; p.pos.set(R.x + Math.sin(G.root.rotation.y) * 2.4, R.y, R.z + Math.cos(G.root.rotation.y) * 2.4); });
+    if (k % 3 === 2) await arrow(null); else await swing(null); blows++; const h = await pg.evaluate(() => mel.player.hp); if (h < last - .01) hurt++; last = h;
+    if (await pg.evaluate(() => !!window.__G.dead)) { fail(`the masher KILLED him in ${blows} blows`); break; } await pg.waitForTimeout(200); }
+  console.log(`masher: ${blows} blows, limbs ${JSON.stringify(await limbs())}, he hurt the masher ${hurt} times; his blows ` + JSON.stringify(await pg.evaluate(() => ({ stat: __sf.GUARD.stat, hp0: mel.player.hp, st: window.__G.st, aggro: window.__G.aggro, health: __sf.HEALTH.on }))));
+  if (!bad && (await limbs()).chest === 'dead') fail('the chest died to a mash'); }
 if (errs.length) fail('page errors: ' + errs.slice(0, 3).join(' | '));
-console.log(bad ? 'shadefight: FAIL' : 'shadefight: ok -- armour, pass-through, dunk, kill');
+console.log(bad ? 'shadefight: FAIL' : MASH ? 'shademash: ok -- mashing his front did not kill him' : 'shadefight: ok -- limb by limb, the Jinra finish');
 await br.close(); srv.close(); process.exit(bad);
