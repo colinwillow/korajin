@@ -69,6 +69,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2806 -- THE BURN FOLLOWS THE BLADE, AND EVERY ENEMY GETS THE DEATH KIT (m2806)
+His (phone, ~m2803): *"when you hit people with the sword and the Jin sword they catch on fire... it should be more like the JINRA, unless you're using the
+fire sword"* and *"when I cut off all the old samurai's limbs, on the third hit they explode -- so satisfying. The Hollow soldier: first hit he's knocked
+back, lays on the floor burning, gets up, I hit him again and he's dead. Doesn't explode, nothing comes off. Not even fun."*
+- **THE BURN:** `burnStart(d, kind)` -- the katana's hit passes the blade mode: STEEL never burns (`bladeFire()` is false, so the plain steel did NOT
+  ignite; what he saw was FIRE or JIN mode -- or the shade's Jinra charge, `SHJIN`, which flips BFIRE to JIN for a few strikes), FIRE = the orange
+  fire as before, JIN = a JINRA burn: the blade's own turquoise spirit flame (`bflPut` with a per-particle `jn` flag -- the BFL pool's colour was
+  the GLOBAL mode, now each particle keeps the colour it was born with), rising wisps, no black smoke, 60% as long.
+- **THE DEATH KIT (data-first):** `death` on the kind row, default **'kit'** for every kind that is not a creature or a civilian (`death: 'none'`
+  opts out). The kit: limbs come off on katana cuts (`limbCut`, the samurai's), the KILLING blow always bursts him (`limbBoom`, no longer only after
+  2 cuts or an arrow), his WEAPON drops (the katana mount into `ARENA.debris`), a Hollow kind (HUSK / HOLLOW / SHADOW) goes up in dark smoke, and a
+  plain hit no longer lays him down -- the long knockdown is for a HEAVY (power >= .9 / `cbtHeavy`) only. Was a regex over three model files (m2736),
+  which is why the new `husk_soldier.glb` lost it.
+- **THE GATE:** `deathGate()` in `npm run check` (`MEL_WORLD='test&gate=death'`): `[gate] death kit: 15 humanoid kinds carry the death kit`. Proved:
+  with the kit forced off on HUSK_SOLDIER the boot fails `DEATH KIT missing on HUSK_SOLDIER` (exit 1); restored.
+- **THE PROBE:** `npm run deathkit` (`tools/deathkit.mjs`) spawns every humanoid kind in the lab and kills it with plain katana blows, asserting a limb
+  cut and a BURST per kind; `SHEET=1` renders images/renders/deathkit/sheet.png. (Its output goes in the follow-up note below once it finishes.)
+`npm run check` green. Shipped unverified.
+
 ## m2805 -- THE DRAW'S END GLITCH: my m2763 arm solve re-bent the arm at ANY weight, then let go (63 deg in one frame); the sword ON the draw at the swap (Nov 7 2026)
 His (m2802): *"a little glitch right at the end of it. It pulls it out over his head and then it kind of glitches to a different rotation and then
 glitches back."* Mine -- the m2763 constrained draw (`ik2c`).
