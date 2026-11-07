@@ -69,6 +69,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2798 -- GARDEN BUDGET part 3: THE TRIS (the orchestrator: "target 70 / 280k with shadows; keep the floating magic") (Nov 7 2026)
+
+Spawn WITH shadows **148 / 675k -> 148 / 503k** (shrine 127 / 463k, zen 127 / 494k, wide 148 / 506k). Measured with `gg_play` run alone: a shot run
+before it in the same page leaves distance-cull state behind, and once read 181 for the same view.
+- **What the island's merged geometry was made of** (`gg_static`, tris by material): moss 62k, rock 31k, leaves 31k, bark 29k, gold 25k, vine 24k,
+  ivy 12k, roof 11.5k.
+  - **Moss and leaves:** `gdnBlob` (the moss and leaf blobs) 14×10 -> 11×7 segments at det 1. moss 62k -> 33k, leaves 31k -> 16k.
+  - **Bark:** the willow trunk tube 30×22 -> 18×12, boughs 10×8 -> 8×6. bark 29k -> 17k.
+  - **Vines:** `gdnHang` (the hanging strands, ~600 of them) 2×10 -> 1×6. vine 24k -> ~7k; the curve is kept.
+- **The far mesh, by part** (`Z.farParts`): hand-placed 20k, GENERATED 84k, drifting rocks 16k, mountains 12k.
+  - Generated isles past 520 m (`FG.lo`, deep in the haze): 9 rings, 5 body rings, one drip, no shards, 40% of the trees.
+  - The nearer ones: 14 rings, 7 body rings. `gdnIsleGeo` takes `o.K` (body rings, default 9).
+  - The drifting rocks: 12 × 5. **153k -> 120k.**
+- The wide render reads the same.
+- **Still over (148 / 503k against 70 / 280k).** What is left:
+  - the draws: the pieces' 17 materials, the ship's 19, the heart's 19, the plant system
+  - the tris: the far mesh 120k, rock 31k, gold 25k, the ship 30k
+  Next: the generated isles' trees (most of their 77k), then the draw items.
+
 ## m2797 -- THE SWORD SAINT, STAGES 1 AND 2, IN HIS WHITE DOJO (m2797)
 His (via the orchestrator): *"a samurai-style enemy that we make initially almost impossible to beat... a guy who VISIBLY blocks everything you
 give him is cool. Then we tone it down."* Design + DONE WHEN: `SWORD_SAINT.md`. Code: `SAINT` (SC_SAINT), `saintDefend` / `saintReact` /
