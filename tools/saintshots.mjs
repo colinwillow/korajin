@@ -17,6 +17,10 @@ const HOOK = `window.__sa = {
   strike: () => ACT.strike(0, -1),
   heavy: () => { const d = window.__sa.d(), p = player, h = Math.atan2(d.root.position.x - p.pos.x, d.root.position.z - p.pos.z); p.chargeGo = 1; try { dummyBlow(d, h, 1, 2); } finally { p.chargeGo = 0; } },
   react: k => { const d = window.__sa.d(), p = player; saintReact(d, Math.atan2(d.root.position.x - p.pos.x, d.root.position.z - p.pos.z), k); },
+  cam: on => { const S = window.__sa; S.camOn = on; if (S.wrapped) return; S.wrapped = 1; const R0 = renderer.render.bind(renderer), m = new THREE.Vector3();     // the probe's own lens: side-on 3/4 on the midpoint of the two
+    renderer.render = (sc, cm) => { const d = S.camOn && S.d(); if (d && cm === camera) { const p = player.pos, P = d.root.position, ux = P.x - p.x, uz = P.z - p.z, L = Math.hypot(ux, uz) || 1, nx = -uz / L, nz = ux / L, k = Math.max(4.5, L * 1.15 + 3);
+        m.set((p.x + P.x) / 2, (p.y + P.y) / 2 + 1, (p.z + P.z) / 2); camera.position.set(m.x + nx * k - ux / L * k * .35, m.y + 1.4, m.z + nz * k - uz / L * k * .35); camera.lookAt(m); camera.updateMatrixWorld(); }
+      return R0(sc, cm); }; },
   parried: () => { const d = window.__sa.d(), p = player; cbtTimedParry(d, Math.atan2(p.pos.x - d.root.position.x, p.pos.z - d.root.position.z)); },
 };`;
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.wav': 'audio/wav' };
@@ -39,8 +43,10 @@ async function strip(name, mode, setup, act, n, gap, r, side) { await ev('mode',
   await act(); const files = []; for (let i = 0; i < n; i++) { await page.waitForTimeout(gap); const f = path.join(OUT, `_${name}_${i}.png`); await page.screenshot({ path: f }); files.push(f); }
   await ev('hold', 0); execFileSync('python3', ['-I', '-c', `import sys\nfrom PIL import Image\nfs=sys.argv[2:]\nims=[Image.open(f) for f in fs]\nw,h=ims[0].size\no=Image.new('RGB',(w*len(ims),h))\nfor i,im in enumerate(ims): o.paste(im,(i*w,0))\no.save(sys.argv[1])`, path.join(OUT, name + '.png'), ...files]);
   for (const f of files) fs.unlinkSync(f); console.log(name, JSON.stringify((await ev('st')).stat)); }
-await strip('1_arrow_deflect', 'IMPOSSIBLE', null, () => ev('arrow'), 5, 90, 6, .9);
-await strip('2_parry_clash', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(120); await ev('heavy'); }, 5, 110, 2.6, .8);
-await strip('3_dodge_counter', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(100); await ev('react', 'slip'); }, 5, 160, 2.6, .9);
-await strip('4_duel_opening', 'DUEL', null, async () => { await ev('parried'); await page.waitForTimeout(150); await ev('strike'); }, 5, 140, 2.6, .8);
+await ev('cam', 1);     // ONLY=1,3,4 picks strips (the clash strip, 2, was taken with the game's own lens)
+const ONLY = (process.env.ONLY || '1,2,3,4').split(',');
+if (ONLY.includes('1')) await strip('1_arrow_deflect', 'IMPOSSIBLE', null, () => ev('arrow'), 6, 70, 6, .9);
+if (ONLY.includes('2')) await strip('2_parry_clash', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(120); await ev('heavy'); }, 5, 110, 2.6, .8);
+if (ONLY.includes('3')) await strip('3_dodge_counter', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(100); await ev('react', 'slip'); }, 5, 160, 2.6, .9);
+if (ONLY.includes('4')) await strip('4_duel_opening', 'DUEL', null, async () => { await ev('parried'); await page.waitForTimeout(150); await ev('strike'); }, 5, 140, 2.6, .8);
 await browser.close(); server.close();
