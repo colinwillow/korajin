@@ -555,6 +555,8 @@ rule that has to be in front of me *before* I know which system I am in.
   there is nothing good to say, say nothing: a nod, a wave, his name. Every bubble plays its voice blip.
 - **EVERY ENEMY HAS ITS OWN TACTIC (his rule, Nov 6 2026).** No enemy, big or small, is beaten by walking up and mashing swing. Each has a read: a window, a
   weak side, a counter, a bait. Mashing gets punished. A fight test must win with the SKILLED script and FAIL with a mash script. Template: SWORD_SAINT.md.
+- **ONE SHAPE = ONE MEANING (his rule, Nov 7 2026).** An interactive marker (shoot target, anchor, shard) looks the SAME everywhere and DOES the same
+  thing everywhere; nothing that looks interactive is decor. A lone low-poly floating diamond is banned. The kinds are in MARKERS.md.
 - **TEMPLE ROOMS ARE DESIGNED ONE AT A TIME (his rule, Nov 6 2026).** Never build ahead: one room gets a one-page plan he approves, is built,
   played on his phone and SIGNED OFF before the next room starts. Every room needs a CLEVER idea mixing acrobatics and puzzle: chained
   arrow-triggers (shoot -> a platform moves -> shoot the next while riding it; miss and you fall all the way down), arrow shots that open a
