@@ -69,6 +69,19 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2811 -- THE HAMMOCK: off the edge and then DOWN -- he sits on the cloth, then HOPS down, landing as the clip's feet come under him (Nov 7 2026)
+His (on m2809): "when you slide forward he goes all the way off the edge and is kind of floating in the air, and then he falls once he's done. He
+needs to go off the edge and then DOWN, so by the time the animation finishes he is on the ground."
+**Measured first** (`npm run wakeprobe`, extended: per twentieth of Getting_Up -- hip lateral / half-width, root and foot height over the ground,
+the fit's lift, the cloth gap): on m2787's timing his hips crossed the cloth's edge at f .20 but the drop began at .38, so from .20 to .50 his feet
+hung **1.2-1.3 m** over the ground -- the float. (The hammock hangs ~1.2 m up: his own height. He cannot sit on its edge with his feet down.)
+**Now** (`GARDEN.sleep`): a shallow scoot (`edge` .30, [.03, .3]) keeps his hips OVER the cloth while the clip sits him up and swings his legs
+round (hip lateral <= .94 of the half-width until .40); then the HOP -- `move` [.4, .64] out and `drop` [.4, .74] down, the drop ACCELERATING
+(u squared, like a fall) -- landing as the clip's feet plant (~.70-.74). The fit's lift is capped (`liftMax` .15; it had grown to .46 m when the
+hips sat mid-cloth -- a second float). **wakeprobe now ASSERTS** (exit 1): the root on the ground at the end (within 3 cm) and no HOLD past the
+edge (feet > 10 cm up while not coming down, in CLIP time -- headless frames run ~1 per second of wall clock): **OK** -- end root 0.000 m (the foot
+bone .049 = the ankle over a flat sole), longest hold 0.00 s, cloth gap >= .041 m on every sample. (A 1.2 m hop is ~.5 s of real fall, so "feet
+up past the edge" alone cannot be under .15 s; the HOLD is what he saw.) Gates: `npm run check`. **Shipped unverified.**
 ## m2811 -- THE GUARD SYSTEM: SHIELDS AND SWORDS BLOCK BY A RULE, NEVER A COIN (GUARDS.md) (m2811)
 His (after the Saint and the Shadow): *"guys with shields block you, guys with swords or staffs block you, so there's some skill element. It
 shouldn't just be random chance... swordsmen block you every time unless you CHARGE them; then they stumble back and are vulnerable."*
