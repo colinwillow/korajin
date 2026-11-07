@@ -69,6 +69,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2814 -- SCENE EXPORT TO CINEMA 4D: `npm run sceneexport garden test` (his, Nov 7: "get that export ready so I can bring it into Cinema 4D, relight it, re-texture it, do a little style frame"; EXPORT.md)
+- **New tool, no game change.** Boots the SHIPPED page in the zone (entry off, the prologue reel ended, `p.sleep` cleared -- the prologue opens
+  with him in the hammock, and the first take started him there), fakes the clock and steps the shipped `frameBody` at 30 fps while the take
+  drives him (the left stick part-way = a WALK; desk W is a full push = a run, the first take overshot 20 m), grants the katana by its OWN key
+  (`OWN.slot.katana` -- granting 'katana' itself left the swap landing on slot 0) and draws it with `swapGo` at 3.6 s. Samples every node under
+  his rig every frame (bones: cape / IK / springs / the draw as played; weapons; hidden = scale 0), and `cam_main`, a slow truck picked by RAYCAST
+  (both sides x 3 distances x 2 heights, 8 moments, lens to chest -- the first two truck sides were both behind something).
+- Exported through the vendored GLTFExporter: metre / Y-up, meshes within `--r` 110 m, KTX2 decompressed through the renderer (a tiny
+  `textureUtils`), JPEG for opaque materials (140 MB -> 96), instancers expanded to nodes sharing one mesh (C4D-safe), game-only attributes
+  dropped, ShaderMaterials stood in with their colour / texture (they came out WHITE), see-through FX shaders left out (an additive light shaft
+  came out as a giant opaque cream wedge filling half the frame), lights as KHR_lights_punctual.
+- **Output:** exports/garden_test.glb **93.9 MB** (210 frames, 314 tracks, 699 meshes, 3 skinned, 6 lights) and exports/garden_test_still.glb
+  92.6 MB (4.4 s, mid-draw) -- both OVER 50 MB, so `exports/*.glb` is gitignored and they are NOT in the repo (a host is his pick). In git:
+  exports/README.md (C4D import: scale, axis, camera, clip, lights, what is not baked) and the two `_check.jpg` -- each file RE-IMPORTED in a
+  fresh three page and rendered from cam_main (the take at t=3.48: Grumbo walking the raked sand, the rune obelisk and the floaters behind him).
+- Not baked: the floaters' bob (frozen at frame 0), shader motion (grass, water), the sky dome (add an HDRI), the pet (none in the scene).
+  Shipped unverified (in C4D).
+
 ## m2813 -- GARDEN: REAL FLOATERS ON THE ISLAND (knock, bump, stand on), THE OBELISK REBUILT WITH A RUNE DESIGN, AN OVAL CRYSTAL OVER IT
 
 **His correction (m2809, images/feedback/m2809/garden_obelisk.png):** *"When I asked for floating objects I meant the desert's: boulders you can
