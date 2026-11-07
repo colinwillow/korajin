@@ -564,6 +564,8 @@ rule that has to be in front of me *before* I know which system I am in.
 - **EVERY NAVIGATION GOES THROUGH `navGo(url)` (m2768).** Pages/Safari cache each URL separately, so a bare `location.replace` / `reload` to a
   new query served him an OLD build (m2766 -> m2761) and every fix looked like it hadn't landed. `navGo` stamps `b=<BUILD>`; `staleCheck` reloads once if
   version.json is newer. Never write a bare location.replace/reload/href OR history.replaceState/pushState again -- use navGo / bUrl (m2785; `tools/navcheck.mjs` in `npm run check` fails on a bypass).
+- **NO BELL, NO "TAP FOR SOUND" (his, Nov 7 2026).** Audio unlocks on ANY first touch/key/pad press; mute lives only in pause > OPTIONS. FILM MODE hides EVERY UI element;
+  a near-invisible pill top-left brings it back.
 - **HIS STEP IS .357 M, NOT .5 (m368).** `MOVE.step` is `.5 * SZ` and the rig is 1.25 m. A riser over .357 is a WALL
   he has to jump. Build stairs at .32 or less, and prove them with `places`' `walkUp`, never with a lenient `groundAt`.
 
