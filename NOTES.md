@@ -69,6 +69,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2804 -- the villagers' LINES: cut to silence and sincerity; every bubble makes a sound; nobody speaks before the audio is on (his: "I don't like the shit she says... if you've got nothing good to say, don't say anything at all. It could be as simple as saying your name.") (Nov 7 2026)
+**Cut**: every snarky / winking / fourth-wall line in the Sunwell (the woman's six and the Toads' 26 -- "You came down from the sky? Of course you did",
+"Another hero. We had one last week. He fell off.", "Buy something or stop breathing on the fruit"...). **Silence is the default now**: a Toad's bark is a bubble
+only 35% of the time (`DVILLAGE.folk.say`), otherwise just a bow-and-blip, and twice as rarely (`barkGap` 7 -> 14 s, rolled +-30%). The woman WAVES and makes
+a sound when he walks up (a NOD on later visits); words come 1.4 s later, and after her first line only 45% of the time (`VILLAGERS.say`, `again` 9 -> 16 s).
+**The sound**: there was none -- `sayBub` never made a noise. Every bubble now plays a blip at the speaker (`npcVox`): Plutopia's creature noise, soft
+(g .32) and pitched up (x1.45; a kid x1.25 more) -- there is no recorded villager voice, so this is a stand-in he may veto. **And nobody speaks until the
+audio context is RUNNING** (`npcVoiceReady`): on iOS it is suspended until his first touch, which is why the first line after the entrance was silent.
+**EVERY REMAINING LINE (veto any one):**
+    the Korajin woman   "Grumbo."  /  "Welcome back, Grumbo."  /  "Mm."  /  "The well is quiet today."  /  "They say the bell on the shrine still remembers its song." (a hint)
+       when hit / a fight  "Careful!"  /  "Oh!"
+    Toad, wanderer      "Grumbo."  /  "Mm."  /  "The isles drift a little, at night."
+    Toad, merchant      "Dates. Fresh today."  /  "Take your time."
+    Toad, kid           "Grumbo!"  /  "Jump the stones again!"
+    Toad, elder         "Nobody climbs to the shrine any more." (a hint: the chest)  /  "Mm. Good."
+    Toad, a pot broken  "Oh..."  /  "My pot."
+(Not mine and not touched: the temple hint-givers and other workers' NPCs.) `node tools/vgcheck.mjs` still green. Shipped unverified.
+
 ## m2803 -- three villager bugs off his phone (m2802 screenshots, images/feedback/m2802/): a TINY Toad, the Korajin woman a GHOST who sinks, the bubble that RE-WRAPS (Nov 7 2026)
 **The tiny Toad was mine, on purpose, and wrong**: `DVILLAGE.villagers` gave the `kid` `s: .6` (and the elder .92) -- *"one of the toad guys is tiny
 versus the normal-size one, which is weird."* Every Toad is now `s: 1` x a +-5% roll at spawn, so a crowd is one height but not clones. (One spawn path;
