@@ -28,7 +28,16 @@ const VIEWS = {
     ['shelf', [13, 1.8, 4], [15.9, 1.6, 2.5]],
     ['vignette', [7, 4.5, -1], [13.5, 3.5, -10]],
     ['vignette_close', [11, 3.9, -5.6], [14, 3.6, -10]],
+    ['mk_target', [-5.6, 2.3, 9.6], [-6.5, 1.9, 6.9]],
+    ['mk_anchor', [4.6, 3.6, 9.4], [3.5, 3.0, 7]],
   ],
+  dv: [     // the Sunwell's isles and finials (MARKERS.md before/after); world = the village origin (290, y0 .69, -6) + its local coords
+    ['dv_isle', [298.6, 1.0, 11.4], [302.6, 1.6, 15.6]],
+    ['dv_isle2', [306.5, 6.0, -1.5], [312.4, 7.9, 3.0]],
+    ['dv_finial', [297.5, 10.5, 12.5], [303.6, 12.8, 18.8]],
+    ['dv_wide', [282, 4, 30], [300, 8, 5]],
+  ],
+  dk: [['dk_ipyr', [767.6, 2.3, 327.5], [764.5, 2.6, 322]], ['dk_ipyr_tip', [765.9, 1.4, 324.4], [764.5, 1.6, 322]]],
   ft: [
     ['ft_sockets', [4, 3.4, 27], [0, 1.4, 37]],
     ['ft_sock_close', [1.0, 2.1, 27.6], [0, 1.65, 29.5]],
@@ -56,14 +65,14 @@ const VIEWS = {
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ktx2': 'image/ktx2', '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg' };
 const srv = http.createServer((q, r) => { const u = decodeURIComponent(new URL(q.url, 'http://x').pathname), f = path.join(ROOT, u === '/' ? 'index.html' : u);
   if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); r.end(); return; } let body = fs.readFileSync(f);
-  if (f.endsWith('index.html')) { const s = body.toString(), k = 'window.melee = window.mel = {'; body = s.replace(k, 'window.__shot = { renderer, scene, camera, gk: () => ({ GLOWG, GLOWKIT, player, FTEMPLE, ftinSockets }) }; ' + k); }
+  if (f.endsWith('index.html')) { const s = body.toString(), k = 'window.melee = window.mel = {'; body = s.replace(k, 'window.__shot = { renderer, scene, camera, gk: () => ({ GLOWG, GLOWKIT, player, FTEMPLE, ftinSockets, DVIL }) }; ' + k); }
   r.writeHead(200, { 'content-type': MIME[path.extname(f)] || 'application/octet-stream' }); r.end(body); });
 await new Promise(ok => srv.listen(0, ok)); const port = srv.address().port;
 const br = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const pg = await br.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 }); pg.on('pageerror', e => console.log('  pageerror', e.message));
 pg.on('console', m => { const t = m.text(); if (/GLOW|THREW|error/i.test(t)) console.log('  console', t.slice(0, +(process.env.GKLOG || 200))); });
 await pg.goto(`http://127.0.0.1:${port}/index.html?w=forge&zone=${ZONE}&entry=0`, { timeout: 120000 });
-await pg.waitForFunction(() => window.__shot && window.mel && document.getElementById('boot').classList.contains('gone') && window.__shot.gk().GLOWKIT.rooms.length, null, { timeout: 240000, polling: 1000 });
+await pg.waitForFunction(() => window.__shot && window.mel && document.getElementById('boot').classList.contains('gone') && (window.__shot.gk().GLOWKIT.rooms.length || (window.__shot.gk().DVIL && window.__shot.gk().DVIL.on)), null, { timeout: 240000, polling: 1000 });
 await pg.waitForTimeout(5000);
 const info = await pg.evaluate(() => { const { GLOWKIT } = window.__shot.gk(); return GLOWKIT.rooms.map(B => ({ id: B.R.id, draws: B.meshes.length, tris: B.meshes.reduce((a, m) => a + (m.isPoints ? 0 : m.geometry.attributes.position.count / 3), 0), motes: B.mot ? B.mot.geometry.attributes.position.count : 0, hits: B.hits.length, hp: B.hits.map(h => h.id + '@' + [h.x, h.y, h.z].map(v => v.toFixed(1)).join(',')), vis: B.g.visible })); });
 console.log('rooms', JSON.stringify(info));

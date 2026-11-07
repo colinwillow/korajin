@@ -69,6 +69,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2808 -- ONE SHAPE = ONE MEANING: the mint diamond standardised (MARKERS.md), the desert's lone diamonds converted, a check gate (Nov 7 2026)
+His (m2802, images/feedback/m2802/diamond_desert_1-3.png): *"this weird diamond thing... looks really low poly... what the hell is it? ...
+in one area it was used to do something and in another it doesn't do anything. This needs to be standardised."* Via the orchestrator.
+- AUDIT (MARKERS.md, top section): 127 `OctahedronGeometry` in index.html, 77 of them GLOWING (a gem), in 26 functions; each with what it does
+  and a verdict. HIS DIAMONDS were the Sunwell's (`dvMake`): one floating under every isle's root, plus the dome / lantern / shrine ones, and the
+  floating inverted pyramid's "drop of Jinra light" (`dkMake`) -- all pure decor, doing nothing.
+- THE KINDS (GLOWKIT rows; interactive = Jinra-lit, decor = the temple's palette): TARGET (new `target`: bronze disc, inset glowing ring,
+  faceted eye -- the forest temple's stone target's language), ANCHOR (new `anchor`: a crystal knot turning in two crossed bronze rings, a glow
+  ring under it, orbiting motes -- the whip knot's language), SHARD (the hero shard), DECOR (seated / hanging clusters). Close-ups
+  `images/renders/markers/marker_kinds.jpg`; live in the Glow Garden's south row.
+- CONVERTED: the Sunwell's 15 gems -> amber `stal` clusters hanging FROM the root tips and `prism` clusters SEATED on the dome / lantern floor /
+  shrine block (`dvMake` returns them as `glow` rows, the glue builds one GLOWKIT room: 1 draw, `noMotes`; measured views 41 -> 41, 39 -> 39
+  draws); the floating pyramid's drop -> a faceted hanging cluster (`gkClusterGeo`, passed into `dkMake`), its shard-tip drips -> bevelled
+  crystals; EVERY desert-kit `core` gem gets facets + a fresnel rim + a slow shimmer (`gkGemLook`) instead of a flat 2.2 glow; the temple cell's
+  grey octahedron beam targets -> the standard TARGET (waiting .35 / lit 1 through `glowWake`). Before / after:
+  `images/renders/markers/desert_before_after.jpg`, `pyramid_before_after.jpg`.
+- THE GATE: `tools/markgate.mjs` in `npm run check` -- a NEW glowing octahedron beyond the audited baseline (`tools/markgate.json`) FAILS
+  (proved: a planted one exits 1 with the line and the kinds to use instead; removed, it passes).
+- LANDMINE (cost one render): wrapping a material's `onBeforeCompile` must call the old one ON the material (`ob.call(m, ...)`) and keep its
+  `customProgramCacheKey` -- the desert kit's reads `this.userData` and threw on the first frame.
+- `glowshot` waits for the village too, and has `--views=dv` / `dk` (the Sunwell, the kit row's pyramid).
+- TO DO per owner (the MARKERS.md table): the Banyan's reward gem and the chest's GET gem -> `shard`; the ice temple's smashable jade gems; the
+  snow village's free finial gems.
 ## m2807 -- THE DEATH-KIT PROBE'S NUMBERS, AND ELITES KEEP THEIR HEADS (m2807)
 `npm run deathkit` (m2806's probe) first read `blade false` -- a headless lab boots empty-handed, so no cut could ever land; it equips the katana now.
 Then every kind burst in 3-4 blows -- INCLUDING the jackal (12 combo hits of life), the warboss and the bulwark: a cut that takes the HEAD or the
