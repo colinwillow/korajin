@@ -69,6 +69,24 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2796 -- THE HOLY CREATURE: rigged (four arms -- confirmed -- and a belly that breathes and jiggles), seven clips, a stand-and-show row; NO role yet (his: "like Totoro, a little bit jolly... a holy sage... I'm not really sure, but we could probably rig him up") (Nov 7 2026)
+**Does he have four arms? YES**: an upper pair raised at the shoulder (y .56 of him, hands up at .64-.73) and a lower pair out level at the hips
+(shoulder .40, hands at .37). Same scheme as the pet (m2793): `mixamorig_*Arm2/ForeArm2/Hand2`, here off **Spine** (they sit lower on him). His FBX faces
++X with the body .085 forward; texture embedded (4096). 2.2 m to his feathers (my call: big and soft beside a 1.75 m player); 9,473 tris; 2048 WebP; draco;
+single-sided; opaque; 1.55 MB. Joints off the ortho grid (`images/characters/korajin_holy_creature_01_grid.jpg`).
+**The belly** has its own bone (`Belly`, off Spine, +Y out of the belly; 875 verts). `tools/petrig/layer.js` now takes a roles file and lays a SCALE
+track on it per clip (a slow breath on idle/meditate, a .45 s shake on the laugh); in the game `HOLY.jiggle` hangs a damped spring on it driven by his own
+hip bob (it settles at rest and wobbles on the waddle).
+**Three weight / clip fixes from the renders.** (1) A long pale SPIKE when his upper arms came down: the inner fingertips of his raised hands reach x .36 at
+y .73 -- inside a head box of |x| < .36 -- so they stayed on his head. The head is now two boxes (|x| < .33 from .70; all of it from .785). (2) The cloak
+split chest/hips SHEARED when the chair sit tipped his hips; it rides the chest alone. (3) The chair sit (Sitting_Idle) still leaned him so far back the
+cloak stood up like a board; the sit is **Kneeling_Idle** -- upright, hands in his lap, which is what a sage meditating looks like anyway.
+**Clips**: idle Breathing_Idle, walk Dwarf_Walk (the waddle), meditate Praying_1, sit Kneeling_Idle, bless Two_Hand_Spell_Casting (all four arms: the lower
+pair takes the upper's motion at k 1.0, .04 of a clip later), laugh Laughing, thank Thankful.
+**In the game, only a stand (`SC_HOLY`, `holyStep`).** DEV PLACES > SANDBOXES > The Holy Creature (`?w=forge&zone=pet&at=holy`): he stands in the pet
+sandbox running `HOLY.reel` (idle, bless, idle, laugh, a 2 m waddle out and back, thank, kneel, meditate). `node tools/holyshot.mjs` renders him there in
+the shipped page (`_game.jpg` idle, `_game_bless.jpg`). **The role is NOT built** (hint-giver / corrupted / never): undecided, his call. Shipped unverified.
+
 ## m2794 -- GARDEN BUDGET part 2b: casters not worth a shadow draw (Nov 6 2026)
 
 - The Jinra heart's ~6 casting parts (it is a light source) and the garden's own INSTANCED props (pots, wood, stones) stop casting. An instanced caster

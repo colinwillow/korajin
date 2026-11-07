@@ -1,0 +1,61 @@
+{
+ "v": 1,
+ "character": "models/characters/companions/korajin_holy_creature_01_rig.glb",
+ "exclude": [],
+ "layers": {
+  "feet": 1,
+  "ground": 1,
+  "clear": 0,
+  "toes": 1,
+  "handAlign": 1
+ },
+ "adjust": {
+  "stance": 0,
+  "arms": 0,
+  "elbows": 0,
+  "lean": 0,
+  "toeIn": 0,
+  "knees": 0,
+  "wrists": 0
+ },
+ "hands": {
+  "amt": 0
+ },
+ "clips": [
+  {
+   "role": "idle",
+   "stem": "Breathing_Idle",
+   "name": "idle"
+  },
+  {
+   "role": "walk",
+   "stem": "Dwarf_Walk",
+   "name": "walk"
+  },
+  {
+   "role": "meditate",
+   "stem": "Praying_1",
+   "name": "meditate"
+  },
+  {
+   "role": "sit",
+   "stem": "Kneeling_Idle",
+   "name": "sit"
+  },
+  {
+   "role": "bless",
+   "stem": "Two_Hand_Spell_Casting",
+   "name": "bless"
+  },
+  {
+   "role": "laugh",
+   "stem": "Laughing",
+   "name": "laugh"
+  },
+  {
+   "role": "thank",
+   "stem": "Thankful",
+   "name": "thank"
+  }
+ ]
+}

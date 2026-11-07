@@ -20,8 +20,11 @@ for (const clip of G.animations) { const R = ROLE[clip.name] || ROLE._; const du
     const v = new Float32Array(N * 4); for (let i = 0; i < N; i++) { let d = new THREE.Quaternion(); if (src) { let t = times[i] + R.off * dur * (side === 'Right' ? 1 : 1); t = ((t % dur) + dur) % dur; d = r1i.clone().multiply(qAt(src, t)); }
       d = I.clone().slerp(d, R.k); const q = r2.clone().multiply(d); q.toArray(v, i * 4); }
     add.push(new THREE.QuaternionKeyframeTrack('mixamorig_' + side + ARM[k] + '.quaternion', times, v)); }
-  const [amp, lift, per] = R.tail, w = Math.max(1, Math.round(dur / per)) * Math.PI * 2 / dur;
-  ['Tail', 'Tail1', 'Tail2', 'Tail3'].forEach((n, j) => { const r = rest(n), v = new Float32Array(N * 4); for (let i = 0; i < N; i++) { const t = times[i];
+  if (R.belly && B.mixamorig_Belly) { const [a, per] = R.belly, w2 = Math.max(1, Math.round(dur / per)) * Math.PI * 2 / dur, v = new Float32Array(N * 3), s0 = B.mixamorig_Belly.scale;     /* BREATHING: the belly swells and settles, a whole number of breaths per clip */
+    for (let i = 0; i < N; i++) { const k = 1 + a * (.5 - .5 * Math.cos(w2 * times[i])); v.set([s0.x * (1 + (k - 1) * .6), s0.y * k, s0.z * (1 + (k - 1) * .5)], i * 3);     /* the Belly bone's +Y points OUT of the belly (no `like`), so y is the swell */ }
+    add.push(new THREE.VectorKeyframeTrack('mixamorig_Belly.scale', times, v)); }
+  const [amp, lift, per] = R.tail || [0, 0, 1], w = Math.max(1, Math.round(dur / per)) * Math.PI * 2 / dur;
+  if (B.mixamorig_Tail) ['Tail', 'Tail1', 'Tail2', 'Tail3'].forEach((n, j) => { const r = rest(n), v = new Float32Array(N * 4); for (let i = 0; i < N; i++) { const t = times[i];
       const sway = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), amp * (.55 + .2 * j) * Math.sin(w * t - j * .7)), up = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), lift * (j ? .5 : 1));
       r.clone().multiply(up).multiply(sway).toArray(v, i * 4); }
     add.push(new THREE.QuaternionKeyframeTrack('mixamorig_' + n + '.quaternion', times, v)); });

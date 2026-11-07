@@ -1,0 +1,203 @@
+{
+ "name": "korajin_holy_creature_01",
+ "fbxPath": "models/characters/character_model_zips/korajin_holy_creature_01.fbx",
+ "donor": "models/characters/toad_wanderer_game.glb",
+ "height": 2.2,
+ "texSize": 2048,
+ "out": "korajin_holy_creature_01_rig.glb",
+ "outDir": "models/characters/companions",
+ "rotY": -90,
+ "shift": [
+  0,
+  0.48364,
+  -0.085
+ ],
+ "_frame": "his Tripo FBX faces +X (like the pet): rotY -90 onto +Z, soles on 0, the body (.085 forward in the file) over the origin. Joints MEASURED off ortho front/side renders with a .05 grid (images/characters/korajin_holy_creature_01_grid.jpg); 1.0 = the tips of his head feathers",
+ "J": {
+  "Hips": [
+   0,
+   0.25,
+   0.0
+  ],
+  "Spine": [
+   0,
+   0.36,
+   0.0
+  ],
+  "Spine1": [
+   0,
+   0.47,
+   0.0
+  ],
+  "Spine2": [
+   0,
+   0.58,
+   -0.005
+  ],
+  "Neck": [
+   0,
+   0.69,
+   -0.005
+  ],
+  "Head": [
+   0,
+   0.73,
+   0.005
+  ],
+  "LeftShoulder": [
+   0.08,
+   0.6,
+   0.0
+  ],
+  "LeftArm": [
+   0.18,
+   0.56,
+   0.0
+  ],
+  "LeftForeArm": [
+   0.32,
+   0.52,
+   -0.02
+  ],
+  "LeftHand": [
+   0.39,
+   0.64,
+   0.05
+  ],
+  "LeftUpLeg": [
+   0.15,
+   0.2,
+   0.0
+  ],
+  "LeftLeg": [
+   0.17,
+   0.12,
+   0.005
+  ],
+  "LeftFoot": [
+   0.18,
+   0.055,
+   -0.01
+  ],
+  "LeftToeBase": [
+   0.18,
+   0.025,
+   0.065
+  ]
+ },
+ "TIP": {
+  "Head": [
+   0,
+   1.0,
+   0.005
+  ],
+  "LeftHand": [
+   0.45,
+   0.73,
+   0.07
+  ],
+  "LeftToeBase": [
+   0.18,
+   0.015,
+   0.105
+  ]
+ },
+ "_X": "the SECOND ARM PAIR off Spine (lower: shoulder y .40, near-horizontal to the hand at .37), and a BELLY bone off Spine pointing out of the belly (the breathing swell, and the jiggle spring in the game)",
+ "X": {
+  "LeftArm2": {
+   "parent": "Spine",
+   "like": "LeftArm",
+   "to": "LeftForeArm2",
+   "at": [
+    0.17,
+    0.4,
+    0.0
+   ]
+  },
+  "LeftForeArm2": {
+   "parent": "LeftArm2",
+   "like": "LeftForeArm",
+   "to": "LeftHand2",
+   "at": [
+    0.29,
+    0.37,
+    -0.025
+   ]
+  },
+  "LeftHand2": {
+   "parent": "LeftForeArm2",
+   "like": "LeftHand",
+   "at": [
+    0.37,
+    0.37,
+    0.035
+   ],
+   "tip": [
+    0.48,
+    0.39,
+    0.075
+   ]
+  },
+  "Belly": {
+   "parent": "Spine",
+   "at": [
+    0,
+    0.33,
+    0.055
+   ],
+   "tip": [
+    0,
+    0.33,
+    0.185
+   ]
+  }
+ },
+ "_rigid": "above the neck rides the head (ears, ear rings, feathers); the CLOAK behind him rides the CHEST alone (half into the hips, it SHEARED into a sheet when the sit tipped his hips back); the cloth strips that hang at his sides below the lower arms ride the hips. The head box is TWO boxes: |x| < .33 from y .70, everything from .785 -- his raised upper hands reach x .36 at y .73-.77, and a single wide box pinned those fingertips to his head (a long spike when his arms came down)",
+ "rigid": [
+  [
+   "Head",
+   -0.33,
+   0.33,
+   0.7,
+   1.1,
+   -0.6,
+   0.6
+  ],
+  [
+   "Head",
+   -0.6,
+   0.6,
+   0.785,
+   1.1,
+   -0.6,
+   0.6
+  ],
+  [
+   "Spine2",
+   -0.6,
+   0.6,
+   0.0,
+   0.66,
+   -0.6,
+   -0.17
+  ],
+  [
+   "Hips",
+   0.2,
+   0.34,
+   0.0,
+   0.33,
+   -0.6,
+   0.6
+  ],
+  [
+   "Hips",
+   -0.34,
+   -0.2,
+   0.0,
+   0.33,
+   -0.6,
+   0.6
+  ]
+ ]
+}

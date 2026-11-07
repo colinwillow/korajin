@@ -146,3 +146,12 @@ people, with three additions to `tools/vrig`: **`fbxPath`** takes a raw Tripo FB
 here the second arm pair (`*Arm2/ForeArm2/Hand2` off Spine1, each with the frame of the donor bone it is `like`) and a 4-bone tail. After the
 Forge, `tools/petrig/layer.js` gives those bones their motion (the second arms: the first pair's delta, phase-shifted and scaled; the tail: a
 travelling sway); `tools/petrig/build.sh` runs all of it. Renders: `images/characters/korajin_petfriend_01_{fsb,poses,weights,grid,hop,run,idle}.jpg`.
+
+## KORAJIN -- THE HOLY CREATURE (Colin, Nov 6 2026: "four arms... a little bit fatter... like Totoro, a little bit jolly... a holy sage")
+`korajin_holy_creature_01` (`models/characters/companions/`, m2796): the pet friend's method again (`tools/petrig/build.sh korajin_holy_creature_01 holy`).
+**Four arms, confirmed**: an upper pair raised at the shoulders and a lower pair out level at the hips (`*Arm2/ForeArm2/Hand2` off **Spine**). Plus a
+**`Belly` bone** off Spine, pointing out of the belly: the breathing swell is a scale track on it (`tools/petrig/holy_roles.json`: slow on idle and
+meditate, a fast shake on the laugh) and the game hangs a soft spring on it (`HOLY.jiggle`). **2.2 m** to his head feathers -- big and soft beside a
+1.75 m player. Clips: idle Breathing_Idle, walk Dwarf_Walk (the waddle), meditate Praying_1, sit **Kneeling_Idle** (a chair sit leaned him so far back
+his cloak stood up like a board), bless Two_Hand_Spell_Casting (all four arms), laugh Laughing, thank Thankful. ROLE NOT DECIDED -- he only stands and
+shows (`HOLY`, `?w=forge&zone=pet&at=holy`). Renders: `images/characters/korajin_holy_creature_01_{fsb,poses,weights,grid,game,game_bless}.jpg`.
