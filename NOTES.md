@@ -69,7 +69,7 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
-## m2811 -- THE HAMMOCK: off the edge and then DOWN -- he sits on the cloth, then HOPS down, landing as the clip's feet come under him (Nov 7 2026)
+## m2812 -- THE HAMMOCK: off the edge and then DOWN -- he sits on the cloth, then HOPS down, landing as the clip's feet come under him (Nov 7 2026)
 His (on m2809): "when you slide forward he goes all the way off the edge and is kind of floating in the air, and then he falls once he's done. He
 needs to go off the edge and then DOWN, so by the time the animation finishes he is on the ground."
 **Measured first** (`npm run wakeprobe`, extended: per twentieth of Getting_Up -- hip lateral / half-width, root and foot height over the ground,
