@@ -39,10 +39,10 @@ white dojo), the same panel, and the Saint beams in once you land. SPAWN > MELEE
 Life in DUEL: 10 katana-combo hits (`VOL.hits.SAINT`). Numbers live in `SAINT` (SC_SAINT) and are live on `mel.SAINT`.
 
 ## DONE WHEN
-- [ ] The dojo: a DEV PLACES row, an ENTRY landing, the Saint beams in. (`npm run places saintdojo` passes.)
+- [x] (m2797) The dojo: a DEV PLACES row, an ENTRY landing, the Saint beams in. `npm run places saintdojo`: `ok  The Sword Saint (dojo)  at 0.0,0.0,9.0  standing`.
 - [ ] IMPOSSIBLE: every arrow deflected back with a slash; every swing a visible block / parry / sidestep / slip-counter from a mix; a
       heavy is a clash with slow-mo + punch-in; he reads a charge / a drawn bow; an occasional taunt. No blow ever just disappears.
 - [ ] DUEL: the timed parry opens .5 s (finisher), the perfect dodge opens him, his recovery is open, his guard tires after 6, behind lands,
       mashing is parried.
-- [ ] Renders: a frame strip of the arrow deflect, the parry clash, the dodge-counter and the stage-2 opening, committed.
+- [~] (m2797) Renders (`node tools/saintshots.mjs`, images/renders/saint/): the CLASH strip reads (burst on his blade, your recoil); the arrow strip is too far to read the slash; the dodge-counter and DUEL strips lose him off-frame (the camera follows Grumbo). Wanted: a frame strip of the arrow deflect, the parry clash, the dodge-counter and the stage-2 opening, committed.
 - [ ] **His sign-off on his phone: IMPOSSIBLE looks cool; DUEL is hard and fair.**

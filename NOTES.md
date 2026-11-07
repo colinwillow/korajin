@@ -69,6 +69,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2797 -- THE SWORD SAINT, STAGES 1 AND 2, IN HIS WHITE DOJO (m2797)
+His (via the orchestrator): *"a samurai-style enemy that we make initially almost impossible to beat... a guy who VISIBLY blocks everything you
+give him is cool. Then we tone it down."* Design + DONE WHEN: `SWORD_SAINT.md`. Code: `SAINT` (SC_SAINT), `saintDefend` / `saintReact` /
+`saintArrow` / `saintStep`, kind `ARENA.kinds.SAINT` (the samurai rig, mirror off -- a model of his own is one `file:`).
+- **WHERE:** DEV PLACES > SANDBOXES > The Sword Saint (dojo), `?w=forge&zone=saintdojo` -- the Combat Lab's builder in white (`CLAB.saint`), an
+  ENTRY row, he beams in once you land. `npm run places saintdojo`: `ok The Sword Saint (dojo) at 0.0,0.0,9.0 standing 36s` (1 ok, 0 BAD).
+- **IMPOSSIBLE:** `saintDefend` runs FIRST in `dummyBlow` and answers every blow from a mix that never repeats twice running -- BLOCK (gold spark
+  on his blade, clang, hitstop, a swept arc of light), PARRY (your recoil `weapon_block_reaction`, his counter), SIDESTEP (strafe clip, after-image),
+  SLIP-AND-COUNTER (the sidestep, then `arenaSwing` as `cdodge` ends); a heavy is a CLASH (both thrown apart, white burst, slow-mo, camera
+  PUNCH-IN -- `SAINT.dk` multiplies the boom in `stepCam`, its own writer beside PHASE.dk); shots / blasts: the sidestep; he snaps round to meet
+  a blow from behind. `saintArrow` (in `arrowStep`, before the body test) cuts an arrow out of the air within 2.6 m with a fast slash and sends it
+  BACK at you (ballistic, `A.mine = 0`, `A.from = him` -- parry it back and he cuts it again). Your timed parry of HIS strike is met with a clash.
+  He READS a held charge / a drawn bow (guard stance, up to 1.5 s); a taunt now and then at range (`staunt`).
+- **DUEL:** the same answers, with windows: your timed parry staggers him .5 s (`parryStag`; the next blow is the finisher), a perfect dodge opens
+  him 1.6 s, his recovery is open, behind lands, every 6 answers his guard TIRES 2.2 s (breath puffs, a dim pulse); 3 blows inside .6 s and the
+  third is PARRIED (mashing punished). Arrows go aside unless he is open. 10 combo hits of life (`VOL.hits.SAINT`).
+- **THE SWITCH:** TOOLS > SAINT, and a SAINT: button in the dojo's bar (`mel.saint`).
+- **BUG FOUND BY THE RENDER PROBE:** the first strip counted 12 clashes from one strike -- `saintDefend` returned before `dummyBlow` set `d.cool`,
+  and a swing reaches `dummyBlow` every frame it overlaps him. It sets `d.cool = K.cool` now (re-run: 1 clash per blow).
+- **RENDERS** (`node tools/saintshots.mjs` -> images/renders/saint/1..4_*.png, the shipped game headless with an injected hook): the clash strip
+  reads; the arrow strip is too far to read the slash; strips 3 and 4 lose him off-frame (the camera follows Grumbo). Not a gate.
+`npm run check` green. Shipped unverified. Open: his look at both stages, renders worth re-taking, a model of his own.
+
 ## m2796 -- THE HOLY CREATURE: rigged (four arms -- confirmed -- and a belly that breathes and jiggles), seven clips, a stand-and-show row; NO role yet (his: "like Totoro, a little bit jolly... a holy sage... I'm not really sure, but we could probably rig him up") (Nov 7 2026)
 **Does he have four arms? YES**: an upper pair raised at the shoulder (y .56 of him, hands up at .64-.73) and a lower pair out level at the hips
 (shoulder .40, hands at .37). Same scheme as the pet (m2793): `mixamorig_*Arm2/ForeArm2/Hand2`, here off **Spine** (they sit lower on him). His FBX faces

@@ -91,6 +91,7 @@ consumables); also pitch Apple Arcade. Price to decide near launch (~$7.99-9.99 
   - [x] m2473 pass 6 TEMPLE-READY (`COMBATSET` rows, `combatDrop` / `combatBoss`, lab TEMPLE SET buttons, COMBAT.md section 6).
   - [ ] his sign-off per enemy (COMBAT.md DONE WHEN) -- tune on his notes.
 - [ ] **SWARM -- OPEN (his, Nov 6: "little scuttling enemies that go up on walls ... flying enemies buzzing ... a LOT going at once").** `SWARM.md`, the sandbox is The Nest (`?w=forge&zone=nest`). Pass 1 m2755 (crawlers + flyers); next: droppers + burrowers, then per-temple skins.
+- [ ] **THE SWORD SAINT -- OPEN (his, Nov 6).** `SWORD_SAINT.md`. DEV PLACES > The Sword Saint (dojo). - [x] m2797 stages 1 (IMPOSSIBLE) + 2 (DUEL), dojo, renders. - [ ] his sign-off.
 - [ ] **COMBAT DEPTH -- OPEN (his, Nov 6: "combat is just swiping").** `COMBAT_DEPTH.md`, built in the Combat Lab, then rolled into the temple squads.
   - [x] m2745 pass 1a THE COMBO GUARD (mid / elite bodies turtle after `cg` hits; charge / kick / whip / behind) + THE JACKAL AS AN ELITE (12 hits, pounce).
   - [x] m2746 pass 1b perfect dodge (slow-mo) + timed parry (stagger + finisher). - [x] m2748 pass 2 knockback chains / ledges / barrels / aimed deflect. - [x] m2749 pass 3 15-body mixed wave. - [x] m2749 temple squads. - [ ] his sign-off.
