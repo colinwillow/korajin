@@ -69,6 +69,27 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2801 -- DEBUG MENUS build 1: THE SPAWN MENU IS FOLDERS BUILT FROM ONE TABLE (DEBUG_MENU.md) (Nov 7 2026)
+*"There's a menu for people, but then there are people tagged onto the main menu at the bottom, new bosses... it's just not organised well."*
+**What was wrong:** SPAWN's top level was 5 folders and then 15 loose buttons (every new boss was one more button on the end, plus two dead
+`soon` buttons), and the folders were sorted by FLAGS (WARBOSS = every `ARENA.kinds` row that is not civ / creature / rival), so the husks, the
+Saint, the Shadow, the Bulwark and the old Brute Warboss shared one list. **Now:** `SC_SPAWNS` (between `SC_SPAWNS:START`/`:END`) is one row per
+thing `{ id, t, sub, cat, tier, tag, kind | act | go }`, and `spawnMenuHtml` is a pure function of it: tag CHIPS (the "by temple" view is a
+filter; chips are the tags in use), RECENT (last 5, `mel.spawn.menu`), then folders COMPANIONS / VILLAGERS / ENEMIES (FODDER, TIER 2, TIER 3,
+SWARM) / BOSSES & GUARDIANS / CREATURES & MOUNTS / TRAINING / BUILDINGS (forge) / LEGACY. Rows call the SAME handlers as before (`arenaSpawn`,
+the toggle verbs), so no spawn code moved; a live toggle is lit and a second tap removes it, as before. Portrait: the panel sits beside the
+button column from its top and stops 205 px above the bottom (the pads). Rows 44 px.
+**THE GATE:** `spawnAudit()` runs at module scope; an `ARENA.kinds` key with no row, a row with no / an unknown `cat`, no `tag`, an enemy with no
+tier, or a duplicate id logs `SPAWN MENU GATE THREW`, which `npm run check` fails on. **Proved by breaking it:** with the Calf row removed,
+boot printed `ARENA.kinds.CALF has no SC_SPAWNS row` and BOOT FAIL; restored, boot ok.
+**FIRST-GUESS TIERS / TAGS (his to correct in SC_SPAWNS):** Osari Bowman FODDER/HOLLOWS; Sphinx Hound TIER 2/DESERT; Hollow Moth TIER 2/HOLLOWS;
+Bulwark TIER 3/FOREST TEMPLE; Hollow Monk TIER 3/HOLLOWS; Jackal Guardian TIER 3/DESERT; Skullback TIER 3/ANY; Toad VILLAGER/DESERT; Sword
+Saint + the Shadow BOSSES/TRAINING; Osari Spider BOSSES/HOLLOWS; Mammoth + Calf SNOW; Dog DESERT; both dragons SKY. Pet Friend / Holy Creature
+are COMPANIONS that jump to their sandbox (they are zones, not spawns, yet). LEGACY: Hick, Hobo, Zap, Zap 2, the CEO x2, Brute Warboss, the
+red Archer, the Hall. GRUNTS / GREYS (dead) are gone.
+**Box moved (DEBUG_MENU.md):** SPAWN folders + chips + RECENT; the gate. **Open:** DEV PLACES (build 2), the chip check on his phone, his sign-off.
+Shipped unverified (headless renders of the panel only).
+
 ## m2800 -- "I picked the pet friend off the menu and there's nobody in there": he stood BEHIND you, off the edge of a portrait screen (Nov 7 2026)
 **Reproduced on his path** (`tools/petphone.mjs`: the DEV PLACES row's own URL `?w=forge&zone=pet`, the entrance, real time, a 390x844 phone). He DID
 load -- the zone built, the GLB decoded, both he and the holy creature spawned within ~5 s, and the asset hash / `DIRS` were fine. What was wrong
