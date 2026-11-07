@@ -69,6 +69,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2811 -- THE GUARD SYSTEM: SHIELDS AND SWORDS BLOCK BY A RULE, NEVER A COIN (GUARDS.md) (m2811)
+His (after the Saint and the Shadow): *"guys with shields block you, guys with swords or staffs block you, so there's some skill element. It
+shouldn't just be random chance... swordsmen block you every time unless you CHARGE them; then they stumble back and are vulnerable."*
+- **`GUARDS` (SC_GUARDS) + `cbtGuardRule`**, first in `cbtDefend`: shield (WARBOSS, BULWARK) = every front-arc blow on the shield, arrows too;
+  sword / staff (SAMURAI, HUSK_GUARD, HOLLOW_MONK) = every plain front swing PARRIED (recoil + counter-cut); none = fodder (the husks, the
+  archers); own = its own technique (jackal, skullback, CEO beast, Saint, Shadow). Counters: BEHIND, his OPEN states (recovery, a stagger, a
+  monk's cast), and the BREAK -- the charge / a slam / a kick / the overhead chop (shield aside 1.0 s, sword guard stumble .8 s). MASHING: 3
+  blocked blows inside .65 s and his answer comes now. A GUARDS shield kind skips the old `arenaShieldHit`; the fodder rows' block / parry /
+  dodge chances went to 0 (no dice).
+- **BUG FOUND BY THE PROBE:** the first run counted 93 BREAKS and 0 blocks -- a plain slash at power .6 met `ARENA.duel.breakAt` .6, and the
+  combo's 3rd link is 1.0, so `cbtHeavy` would have let MASHING break every guard. A guard is broken by the MOVE (`chargeGo`, `slam`, a kick,
+  the fist strike, the breaker chop), never by raw power.
+- **`npm run guardprobe`** (`tools/guardprobe.mjs`, headless lab, AI off, defence ON):
+      ok WARBOSS      MASH: lost 0% of his life, punished x5   SKILLED: dead after 10 break(s)
+      ok BULWARK      MASH: lost 0% of his life, punished x5   SKILLED: dead after 9 break(s)
+      ok SAMURAI      MASH: lost 0% of his life, punished x5   SKILLED: dead after 1 break(s)
+      ok HUSK_GUARD   MASH: lost 0% of his life, punished x5   SKILLED: dead after 2 break(s)
+      ok HOLLOW_MONK  MASH: lost 0% of his life, punished x5   SKILLED: dead after 1 break(s)
+- **RENDERS:** images/renders/guards/shield_block.png (the warboss behind his flashing shield), guard_break.png (the shield knocked aside, him
+  staggering). **TELEPORT** written up as a future EARNED ability in GUARDS.md and PROLOGUE.md; the behind counter is positional, so it works
+  with a dodge-roll today and with teleport later.
+`npm run check` green. Shipped unverified.
+
 ## m2810 -- THE "LILAC MOUND" WAS A FLOATING ISLE'S SHADOW; SHADED SAND KEEPS ITS GRAIN NOW; THE GIANTS' SAND DRIFTS ARE REAL SAND AND SOLID
 
 **His report (m2802, images/feedback/m2802/desert_purple_mound.png):** *"a big flat lilac/purple mound by the big temple in the desert village... no

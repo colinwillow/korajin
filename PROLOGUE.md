@@ -139,3 +139,9 @@ villager props in place) -> P2 the nap + chase + walk to the bell -> P3 late / H
 Jinra is the light and the balance; the Hollow is its equal and opposite dark, which takes over what it can and wears it. The Hollow
 creatures and **the Shadow** (Grumbo's own dark double -- his moves, his blade, black and purple, blinking in smoke) are its incarnations.
 Yin and yang is the motif. Full text: LORE.md "THE BALANCE".
+
+## TELEPORT -- lost at the start, earned back (his, Nov 7 2026)
+*"You lose the power at the start and have to earn it back."* The prologue's "you lose your power" beat takes TELEPORT (the Shadow's own
+trick: a blink in smoke) from him; earning it back is a reward later in the game. It is the counter to an enemy who can only be beaten from
+BEHIND (GUARDS.md) -- until then, a dodge-roll round him does the same job.
+
