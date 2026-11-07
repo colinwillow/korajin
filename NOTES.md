@@ -69,6 +69,22 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2803 -- three villager bugs off his phone (m2802 screenshots, images/feedback/m2802/): a TINY Toad, the Korajin woman a GHOST who sinks, the bubble that RE-WRAPS (Nov 7 2026)
+**The tiny Toad was mine, on purpose, and wrong**: `DVILLAGE.villagers` gave the `kid` `s: .6` (and the elder .92) -- *"one of the toad guys is tiny
+versus the normal-size one, which is weird."* Every Toad is now `s: 1` x a +-5% roll at spawn, so a crowd is one height but not clones. (One spawn path;
+no double scale -- it was only ever the row's `s`.)
+**The woman was a ghost because `VG` is her own little runtime, not the body system**: she read the ground only while WALKING (a stop, a flinch or a
+step up left her sunk), had no collider, and only flinched at fights NEAR her. Now, in `vgStep`: the ground every frame she is not sat; he is pushed out
+of her cylinder (`K.r` + `VILLAGERS.bodyR` .34); a swing that lands (rising `melFired`, within `hitR` 1.9 m, in front of him) or a bolt through her is a
+HIT -- the `hit` clip, a stagger away from him, a cross line. (She is still not a `bodySpawn` body: no launch, no knock-down -- her clips have no fall;
+`startled` / `hit` / `getup` are what she has.)
+**The bubble re-wrapped** because a `position:fixed` box centred by `translate(-50%)` shrink-wraps to the room between its `left` and the screen edge --
+so the nearer the speaker stood to the right edge, the narrower it got (one line, two, three...). `sayBub` now measures the line ONCE at a 220 px max
+and FIXES that width; each frame only the POSITION moves, clamped on screen and slid sideways (or dropped below) off any HUD button / the minimap
+(`SAYB.avoid`, re-read twice a second), and its z-index is under the HUD's.
+**Measured** (`node tools/vgcheck.mjs`, the shipped page): Toad scales .962-.997; her feet .694 on ground .694; bumped to .64 m (= .30 + .34); one swing ->
+`hits 1`, role `hit`; the same long line at five screen spots: 220 x 63 px every time, left edge clamped 8..162. Shipped unverified.
+
 ## m2802 -- DEBUG MENUS build 2: DEV PLACES IN STORY ORDER, IN FOLDERS (DEBUG_MENU.md) (Nov 7 2026)
 `KPLACES` (now between `SC_PLACES:START`/`:END`) is groups `{ grp, folder, rows }`: **KORAJIN** -- PROLOGUE / TRAINING (Combat Lab, Saint dojo,
 Proving Ground, the Arena, the Duel Pit) / FOREST TEMPLE (full run, the Well, rooms A-F, the Seal, the Banyan, the kit) / WORLD · DESERT, WATER,
