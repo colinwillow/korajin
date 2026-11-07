@@ -96,6 +96,31 @@
    "role": "think",
    "stem": "Thinking",
    "name": "think"
+  },
+  {
+   "role": "cower",
+   "stem": "Taking_Cover_Idle",
+   "name": "cower"
+  },
+  {
+   "role": "peek",
+   "stem": "Crouch_Idle_02_Looking_Around",
+   "name": "peek"
+  },
+  {
+   "role": "scared",
+   "stem": "Terrified",
+   "name": "scared"
+  },
+  {
+   "role": "clap",
+   "stem": "Clapping",
+   "name": "clap"
+  },
+  {
+   "role": "bow",
+   "stem": "Quick_Formal_Bow",
+   "name": "bow"
   }
  ]
 }

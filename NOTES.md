@@ -69,6 +69,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2809 -- VILLAGER FEAR, pass 1 (VILLAGER_FEAR.md): they hide from monsters and thank him after (his: "the village people should run, or duck down and be scared, or go hide behind a rock or a barrier... then when you've defeated it, they could have things to say about it, like thank you") (Nov 7 2026)
+**Data** `SC_VFEAR` (`VFEAR`): one table for the Sunwell's Toads and the Korajin woman (a clip row per kind). **A hostile** = a live, unbroken
+`ARENA.live` body that is not a `civ` kind (so a debug-menu SPAWN counts) or a live swarm crawler; within `near` 20 m (and 10 m of height) of a villager.
+**What they do** (`vfBrain`, one brain for both: the Toads through a `fearV` hook at the top of `foeWander`, the woman through `vfDrive` from `vfearStep`):
+STARTLE (a flinch clip + a gasp blip, staggered .15-.7 s) -> RUN to COVER (the nearest standable spot on 5 rings x 12 directions, never nearer the threat and
+never within 4 m of it, that `losClear` -- the archers' sight test -- says the world hides from the threat at crouch height) -> HIDE crouched facing it,
+PEEKING every 2-5 s; no cover: crouch where he stands (a Toad, back to it) or `scared` (her) -> nobody near for 2 s: they COME OUT, look about, walk a
+little toward Grumbo -> if the episode ended in a KILL the villager nearest him walks over and THANKS him: mostly a bow / clap / nod and a happy blip,
+35% one line ("Thank you." / "Grumbo... thank you." / "It's gone?").
+**Clips**: the Toad's own cover set (`cover_idle` -- a real low crouch -- and `cover_R` to peek), `take_damage_head` to startle. The woman had no crouch,
+so she was RE-FORGED with five more (`tools/villager_forge_prof.json`): `cower` Taking_Cover_Idle (a STANDING back-to-wall pose -- not used for hiding),
+`peek` Crouch_Idle_02_Looking_Around (her hide), `scared` Terrified, `clap` Clapping, `bow` Quick_Formal_Bow. Same mesh (11,050 tris), 20 clips, 5.6 MB.
+**Probe** `node tools/vfearcheck.mjs` (the shipped page, a Husk Soldier spawned by the real `arenaSpawn` beside the well, then killed):
+    afraid  toad:wander none (no cover, crouched, 8.2 m)  toad:kid hide (cover, 19.4 m)  woman none (4.7 m)  -- merchant 29.5 m / elder 24.4 m: out of range, calm
+    after   all calm, one thank-you (the nearest walked over)        stats {cover 1, crouch 2, thanks 1, eps 1}   PASS
+The cover search found cover for only one of three on the open court -- the court is wide and the cover is the stalls, the beds and the well; a villager
+in the middle crouches. Renders: `images/characters/villager_fear_cower.jpg` (a Toad crouched), `villager_fear_thanks.jpg` (a Toad thanking him).
+(A probe lesson: the game camera's lens is narrow in portrait, so a probe that borrows it must set its own fov for a framed shot.)
+**Open**: no Toad clap / bow clip (their thank is a blip + idle); the elder and the merchant are past 20 m of the well; Colin's sign-off. Shipped unverified.
 ## m2808 -- ONE SHAPE = ONE MEANING: the mint diamond standardised (MARKERS.md), the desert's lone diamonds converted, a check gate (Nov 7 2026)
 His (m2802, images/feedback/m2802/diamond_desert_1-3.png): *"this weird diamond thing... looks really low poly... what the hell is it? ...
 in one area it was used to do something and in another it doesn't do anything. This needs to be standardised."* Via the orchestrator.
