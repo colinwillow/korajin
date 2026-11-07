@@ -69,6 +69,21 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2805 -- THE DRAW'S END GLITCH: my m2763 arm solve re-bent the arm at ANY weight, then let go (63 deg in one frame); the sword ON the draw at the swap (Nov 7 2026)
+His (m2802): *"a little glitch right at the end of it. It pulls it out over his head and then it kind of glitches to a different rotation and then
+glitches back."* Mine -- the m2763 constrained draw (`ik2c`).
+- REPRODUCED headless, the X draw from the SWORD button, the visible blade's world turn frame to frame: smooth (<= 6 deg) all the way, then at
+  frame 90 -- the frame `KDRAW.live` lets go -- **63.3 deg and .68 m of tip in ONE frame**. The weight was ~.01 by then, so it was not the fade:
+  `ik2c` lerped only its TARGET by w, but its reach cap (.95) and its elbow POLE re-solved the whole arm at any w -- the arm sat in the pole's bend
+  under the fade, and snapped back to the clip's when the draw ended.
+- FIX 1 (`ik2c`): solve at the full target, then SLERP the upper and fore arm from the clip's own turns by w -- at w .01 the arm is the clip's.
+- FIX 2 (one writer): while the draw is live the sword in his hand is placed AT the draw's transform D (blended by w; `g.userData.kdBase` restored
+  first thing every frame), so the reach cap can no longer leave it short of the hilt at the swap. MEASURED: the hand sword's mesh sits on the back
+  sword's to **0.000 m** through the grip, so the hand-off is continuous.
+- AFTER (the visible sword's mesh, frame to frame): draw worst **11.9 deg** (frame 72, the swap clip ending -- absorbed by the `k` smoothing),
+  sheathe worst **7.9 deg**; was 63.3. HORIZONTAL keeps its deliberate 180 deg whip (15-20 deg a frame for .3 s) -- that is the flip, not a glitch.
+- Strips (every 9 frames, behind his right shoulder): `images/renders/cape/draw_strip_draw.jpg`, `draw_strip_sheathe.jpg`. Shipped unverified on the phone.
+
 ## m2804 -- the villagers' LINES: cut to silence and sincerity; every bubble makes a sound; nobody speaks before the audio is on (his: "I don't like the shit she says... if you've got nothing good to say, don't say anything at all. It could be as simple as saying your name.") (Nov 7 2026)
 **Cut**: every snarky / winking / fourth-wall line in the Sunwell (the woman's six and the Toads' 26 -- "You came down from the sky? Of course you did",
 "Another hero. We had one last week. He fell off.", "Buy something or stop breathing on the fruit"...). **Silence is the default now**: a Toad's bark is a bubble
