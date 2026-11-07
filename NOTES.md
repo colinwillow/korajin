@@ -69,6 +69,29 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2810 -- THE "LILAC MOUND" WAS A FLOATING ISLE'S SHADOW; SHADED SAND KEEPS ITS GRAIN NOW; THE GIANTS' SAND DRIFTS ARE REAL SAND AND SOLID
+
+**His report (m2802, images/feedback/m2802/desert_purple_mound.png):** *"a big flat lilac/purple mound by the big temple in the desert village... no
+collider, no painted texture, you can walk through it. I don't really get what it's supposed to be."*
+
+**What it was:** NOT a mesh. Raycasts at the grey pixels hit only the ground and an invisible collider, so I hid each scene group in turn
+and watched the pixel. Then I rendered the same view with the sun's castShadow off, and the "mound" vanished. It is the SHADOW of a village
+floating isle on the sand, and the purple streak beside him is a rope bridge's shadow. Shaded sand lost its look because the ripples and grain
+are LIGHTING (they live in `sdNormal`), so in shade it went one flat, cool hemisphere tone. A round flat-coloured patch with a hard edge reads
+as a solid object.
+
+**Fix 1 (sand only):** the sand shader wraps the directional `getShadow` in `sdShade` (lights_fragment_begin inlined, one string replace). In
+shadow the sun keeps `uShade` (.4) of itself, so shade is still clearly shade but warm and grained. Live: `mel.BOULD.L.sU.uShade.value`.
+Rocks, temples and the village are untouched. Before/after: docs/desert/isle_shadow_sand.jpg.
+
+**Fix 2, found on the way:** the dress's sand DRIFTS (`dk_dsand`, banked against every big giant's foot, up to 3.9 m tall at (277,-108)) were a
+flat dark tan with no texture and NO collider (the collide bake skipped all of `giants:dress`). They now:
+- take the dunes' own material (`sandMat(0, 1)`, a drift variant with no hole and no patch cut-out) and dune colours (`driftCol`);
+- are baked into `desert:collide`. Measured: groundAt 3.88 on the mound against 0.12 sand. The rubble in the dress is still not baked.
+(The batch path never sees these meshes: dress groups carry `lodD`, so `live()` keeps them out of it. The swap is done where the cells are made.)
+
+Moves: DESERT_AUDIT item 1 (his mound). Still open: the full desert audit (next). Shipped unverified.
+
 ## m2809 -- VILLAGER FEAR, pass 1 (VILLAGER_FEAR.md): they hide from monsters and thank him after (his: "the village people should run, or duck down and be scared, or go hide behind a rock or a barrier... then when you've defeated it, they could have things to say about it, like thank you") (Nov 7 2026)
 **Data** `SC_VFEAR` (`VFEAR`): one table for the Sunwell's Toads and the Korajin woman (a clip row per kind). **A hostile** = a live, unbroken
 `ARENA.live` body that is not a `civ` kind (so a debug-menu SPAWN counts) or a live swarm crawler; within `near` 20 m (and 10 m of height) of a villager.
