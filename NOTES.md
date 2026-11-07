@@ -69,6 +69,53 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2813 -- GARDEN: REAL FLOATERS ON THE ISLAND (knock, bump, stand on), THE OBELISK REBUILT WITH A RUNE DESIGN, AN OVAL CRYSTAL OVER IT
+
+**His correction (m2809, images/feedback/m2809/garden_obelisk.png):** *"When I asked for floating objects I meant the desert's: boulders you can
+knock around, cut up, bump into, stand on the bigger ones... I want things bobbing that look like they're floating and moving ON the island...
+this obelisk needs a detail pass, more beautiful, with a design... the crystal could float, like an oval, with stones around it, and when you
+bump into stuff, they move."* The m2786 floaters were shader-only background. Those stay (the far ring); this adds the real ones.
+
+**GBOB (SC_GBOB), `gdnBob` / `gdnBobStep` / `gdnBobHit`.** 35 bodies, 4 of them standable:
+- 8 stones + 6 gems ORBIT the obelisk;
+- 6 hover over the raked sand (the shader-only zen pebbles are gone: GFLOAT.zen.n 0);
+- 6 sit beside the path, two of them flat-topped stones to stand on;
+- 2 hover over each pool, plus a standable stone over pool_trees and pool_zen.
+
+How they move:
+- Each body springs to its home or orbit, with a bob (critically-ish damped, by size).
+- His capsule shoves them, split by mass; a hard bump knocks and rings.
+- They collide with each other.
+- A swing (melee hook beside `bouldMelee`), a slam (`rockArea`) or an arrow throws them, spun and sparking. A katana hit is x1.15.
+- The flat ones are BDYN moving boxes, as in the desert's `bouldRide`: his landing sinks and tilts them, and standing weighs them down and carries him.
+- One instanced draw per kind (rock / flat / gem).
+- Not built: CUTTING them (the desert's slice), which is the next step if he wants it.
+
+**The obelisk (`gdnObelisk`):**
+- stepped bevelled plinth, a tapered weathered shaft, gold collars and a gilded pyramidion;
+- on each face, a recessed panel with a DESIGNED rune column drawn into a canvas: sun, two crescents, the triangle in the circle, the ladder, the spiral, the seed;
+- the runes brighten when he is near or a floater is struck.
+- Above the tip, an OVAL crystal cluster (a long double-terminated crystal + 5 satellites) turns and breathes, faster when the runes flare.
+
+**Landmines paid here:**
+- Pebble and bronze are the garden's SMALL-detail materials (hidden past `detailFar`), so a landmark must use stone and gold.
+- `put` keeps only position and normal, so an alpha-mapped panel must be its own mesh.
+- The panels needed `cellReg(o, 400, true)` or the PERF small cull drops them.
+
+**Budget (counted with shadows, gg_play):**
+
+| view | before (draws / tris) | after (draws / tris) |
+|---|---|---|
+| spawn | 148 / 503k | 156 / 516k |
+| shrine | 127 / 463k | 135 / 475k |
+| zen | 127 / 494k | 135 / 506k |
+
+So +8 draws, +12k tris (3 instanced + 2 of their shadows + crystal + 2 rune meshes). The budget pass to 70/280k is still open and is the next garden build.
+
+**MARKERS note:** the crystal floats free over the obelisk because he asked for exactly that. It and the gems wear the garden's teal glow.
+
+Renders: docs/garden/obelisk_m2813.jpg (close + wide), docs/garden/floaters_knock.jpg (a ring struck). Shipped unverified.
+
 ## m2812 -- THE HAMMOCK: off the edge and then DOWN -- he sits on the cloth, then HOPS down, landing as the clip's feet come under him (Nov 7 2026)
 His (on m2809): "when you slide forward he goes all the way off the edge and is kind of floating in the air, and then he falls once he's done. He
 needs to go off the edge and then DOWN, so by the time the animation finishes he is on the ground."
