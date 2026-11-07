@@ -4,6 +4,23 @@ Real UFO and paranormal folklore, reinterpreted as game systems. We don't follow
 we take what people already half-believe and give it a job in the game. Each entry: the lore, our
 spin, and what it does in play.
 
+## KORAJIN: THE BALANCE -- JINRA AND THE HOLLOW (his, Nov 7 2026)
+
+*"Like yin and yang: Jinra is the white force, the good in the world, and there's an equal and opposite evil force that tries to take it over;
+Jinra is the balance of that. The shadow, the Hollow -- they're all incarnations of the evil force."*
+
+- **JINRA** -- the light: the living good of the world, and the BALANCE that holds the dark in check. Its colours are the Jinra palettes
+  (mint / jade / gold); his portal, his glow, the refinery's globe.
+- **THE HOLLOW** -- its equal and opposite: the dark that wants to take the world over. It has no body of its own; it WEARS things.
+  Purple belongs to the Hollow and to nothing else (his call, Nov 6).
+- **ITS INCARNATIONS**: the Hollow creatures (moth, monk, the husks it animates), the stone guardians' stolen spirit, and **THE SHADOW** --
+  Grumbo's own dark double: his body, his moves, his blade, black with a purple edge and violet eyes. It mimics him, blinks out in black
+  smoke and reappears behind him. It is the Hollow wearing HIM (SWORD_SAINT.md; DEV PLACES > The Sword Saint (dojo), LOOK: SHADOW).
+- **THE MOTIF**: yin and yang -- light and dark wound round each other, each holding a seed of the other. Neither wins outright; Jinra is
+  the balance, not the absence of the dark.
+
+*(Everything below this section is the inherited Weirdport UFO lore, kept for reference.)*
+
 ## The alien races
 
 UFO lore has a whole cast: reptilians, greys, tall whites, Nordics, energy beings. Here each one has

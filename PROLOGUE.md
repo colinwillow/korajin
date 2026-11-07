@@ -134,3 +134,8 @@ villager props in place) -> P2 the nap + chase + walk to the bell -> P3 late / H
   Hollow breaks the web, and each island whose links are cut drains and falls -- so THE FALL reads as a network failing link by link, and the
   RESTORATION later is relinking it (each temple's crystal relights its node).
 - **The story text is still coming from him (ChatGPT, STORY_PROMPTS.md).** Build the set pieces now; the words wait on it.
+
+## THE BALANCE (his, Nov 7 2026) -- the world's two forces
+Jinra is the light and the balance; the Hollow is its equal and opposite dark, which takes over what it can and wears it. The Hollow
+creatures and **the Shadow** (Grumbo's own dark double -- his moves, his blade, black and purple, blinking in smoke) are its incarnations.
+Yin and yang is the motif. Full text: LORE.md "THE BALANCE".

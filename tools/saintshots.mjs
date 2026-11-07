@@ -6,7 +6,7 @@ import http from 'node:http'; import fs from 'node:fs'; import path from 'node:p
 const req = createRequire(import.meta.url); let pw = null; for (const p of ['playwright', '/opt/node22/lib/node_modules/playwright', '/opt/node-tools/node_modules/playwright']) { try { pw = req(p); break; } catch (e) {} }
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'), OUT = path.join(ROOT, 'images/renders/saint'); fs.mkdirSync(OUT, { recursive: true });
 const HOOK = `window.__sa = {
-  d: () => ARENA.live.find(o => o.K.arena === 'SAINT' && !o.ko),
+  d: () => ARENA.live.find(o => saintIs(o) && !o.ko),
   st: () => { const d = window.__sa.d(); return { up: !!d && d.st !== 'beamIn' && !d.entering, st: d && d.st, run: !!ENTRY.run, mode: SAINT.mode, stat: Object.assign({}, SAINT.stat), hp: d && d.hp }; },
   mode: m => { SAINT.mode = m; },
   place: (r, side) => { const d = window.__sa.d(), P = d.root.position, p = player, a = d.h; p.pos.set(P.x + Math.sin(a) * r, P.y, P.z + Math.cos(a) * r); p.vel.set(0, 0, 0);
@@ -15,6 +15,8 @@ const HOOK = `window.__sa = {
   arrow: () => { const d = window.__sa.d(), p = player, P = d.root.position, m = arrowMesh(), o = new THREE.Vector3(p.pos.x, p.pos.y + 1.2, p.pos.z); m.position.copy(o); scene.add(m);
     const dx = P.x - o.x, dz = P.z - o.z, L = Math.hypot(dx, dz), v = 30, T = L / v, g = MOVE.g * .55; ARROWS.push({ m, v: new THREE.Vector3(dx / T, (P.y + 1.1 - o.y) / T + .5 * g * T, dz / T), t: 0, stuck: 0, from: null, mine: 1, pl: 1, gk: .55, type: 'arrow' }); },
   strike: () => ACT.strike(0, -1),
+  flip: () => ACT.dodge(0, 1),
+  look: () => SAINT.look,
   heavy: () => { const d = window.__sa.d(), p = player, h = Math.atan2(d.root.position.x - p.pos.x, d.root.position.z - p.pos.z); p.chargeGo = 1; try { dummyBlow(d, h, 1, 2); } finally { p.chargeGo = 0; } },
   react: k => { const d = window.__sa.d(), p = player; saintReact(d, Math.atan2(d.root.position.x - p.pos.x, d.root.position.z - p.pos.z), k); },
   cam: on => { const S = window.__sa; S.camOn = on; if (S.wrapped) return; S.wrapped = 1; const R0 = renderer.render.bind(renderer), m = new THREE.Vector3();     // the probe's own lens: side-on 3/4 on the midpoint of the two
@@ -49,4 +51,7 @@ if (ONLY.includes('1')) await strip('1_arrow_deflect', 'IMPOSSIBLE', null, () =>
 if (ONLY.includes('2')) await strip('2_parry_clash', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(120); await ev('heavy'); }, 5, 110, 2.6, .8);
 if (ONLY.includes('3')) await strip('3_dodge_counter', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(100); await ev('react', 'slip'); }, 5, 160, 2.6, .9);
 if (ONLY.includes('4')) await strip('4_duel_opening', 'DUEL', null, async () => { await ev('parried'); await page.waitForTimeout(150); await ev('strike'); }, 5, 140, 2.6, .8);
+if (ONLY.includes('5')) await strip('5_shadow_blink', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(60); await ev('react', 'slip'); }, 5, 110, 2.6, .8);
+if (ONLY.includes('6')) await strip('6_shadow_mirror', 'IMPOSSIBLE', null, () => ev('flip'), 6, 170, 3.2, .8);
+if (ONLY.includes('7')) await strip('7_shadow_clash', 'IMPOSSIBLE', null, async () => { await ev('strike'); await page.waitForTimeout(120); await ev('heavy'); }, 5, 110, 2.6, .8);
 await browser.close(); server.close();

@@ -38,6 +38,11 @@ white dojo), the same panel, and the Saint beams in once you land. SPAWN > MELEE
 
 Life in DUEL: 10 katana-combo hits (`VOL.hits.SAINT`). Numbers live in `SAINT` (SC_SAINT) and are live on `mel.SAINT`.
 
+## THE SHADOW (his, Nov 7) -- the default look (m2799)
+The Saint as Grumbo's own dark double, the Hollow wearing him (LORE.md "THE BALANCE"): his rig and clips, near-black with a purple rim, violet
+eyes, smoke wisps, a dark blade. He BLINKS in black smoke (behind you / beside you / closing from afar) and MIRRORS your last strike or flip.
+TOOLS > SAINT LOOK (SHADOW / SAMURAI). Not wired yet: his wall moves, the bow, the whirlwind.
+
 ## DONE WHEN
 - [x] (m2797) The dojo: a DEV PLACES row, an ENTRY landing, the Saint beams in. `npm run places saintdojo`: `ok  The Sword Saint (dojo)  at 0.0,0.0,9.0  standing`.
 - [ ] IMPOSSIBLE: every arrow deflected back with a slash; every swing a visible block / parry / sidestep / slip-counter from a mix; a

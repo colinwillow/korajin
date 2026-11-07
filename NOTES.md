@@ -69,6 +69,25 @@ landmine list, in the same shape: what he said, what was actually wrong, what wa
 
 
 
+## m2799 -- THE SHADOW: THE SWORD SAINT AS GRUMBO'S DARK DOUBLE, AND THE BALANCE LORE (m2799)
+His (via the orchestrator): *"he's basically your shadow... maybe he turns into a puff of smoke... he can do all of the moves you can do. Some sort
+of incarnation of the evil force that is the Hollow, the opposite of the Jinra. Like yin and yang."*
+- **LORE:** LORE.md "KORAJIN: THE BALANCE" (new top section; the rest of that file is inherited Weirdport lore, now labelled so), a short
+  "THE BALANCE" in PROLOGUE.md, and a yin-yang mark note for the emblem worker in EMBLEMS.md. Purple = the Hollow only.
+- **THE SHADOW (`ARENA.kinds.SHADOW`)**: the Saint's brain (both modes, unchanged) on GRUMBO's rig (`alien_goblin_game.glb` carries the same
+  katana_* names as the samurai, so the samurai's clip table plays on it), drawn by `shadowSkin`: near-black standard material + a Hollow-purple
+  fresnel rim (onBeforeCompile, `shadowRim`), violet eyes on the head bone, a dark mirror of the katana (`d.wmats`), black smoke WISPS off the
+  hands / feet / head / chest (`smokeAt`, every .07 s). Every `K.arena === 'SAINT'` test is `saintIs(d)` now (SAINT or SHADOW).
+- **THE BLINK (`shadowBlink`)**: his sidestep / slip-counter is a dissolve into black-purple smoke and a re-form -- behind you (slip; then the
+  cut), at your flank (dodge), or, from over 9 m, 3 m off you (closing, every 5 s). Hidden .22 s between.
+- **THE MIRROR (`shadowMimic`)**: the strike you just threw is echoed back .45 s later (`d.swingNext` -> `arenaSwing` plays THAT clip); your
+  side flip / backflip / front flip is flipped back (`backflip`, `front_flip`, `roll`).
+- **SWITCH:** TOOLS > SAINT LOOK (SHADOW / SAMURAI, `mel.saintlook`), and LOOK: in the dojo's bar. SHADOW is the default; spawn him again to swap.
+- **RENDERS** (`ONLY=5,6,7 node tools/saintshots.mjs` -> images/renders/saint/5_shadow_blink, 6_shadow_mirror, 7_shadow_clash): the body reads
+  as Grumbo's dark double; the first take read more purple than black, so the rim went pow 2.2 x1.4 -> pow 3 x1.0 after it (not re-rendered).
+  The blink's smoke is faint on the white floor.
+`npm run check` green. Shipped unverified. Open: his look at the Shadow vs the samurai, wall moves / bow / whirlwind for the Shadow (not wired).
+
 ## m2798 -- GARDEN BUDGET part 3: THE TRIS (the orchestrator: "target 70 / 280k with shadows; keep the floating magic") (Nov 7 2026)
 
 Spawn WITH shadows **148 / 675k -> 148 / 503k** (shrine 127 / 463k, zen 127 / 494k, wide 148 / 506k). Measured with `gg_play` run alone: a shot run

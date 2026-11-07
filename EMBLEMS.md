@@ -68,3 +68,7 @@ dormant stone statues, hanging lanterns and a great bronze bell; Grumbo's light 
 - HERO A / B / C, ENEMY EYE A / B / C, FOREST A / B / C.
 - The enemy's built-world palette is still ENEMY_BRIEF's A / B / C; this sheet uses Hollow purple for the eye and black + gold for the citadel.
 - Which element each per-temple Jinra colour is (WORLD_PLAN 7) -- these pairs are a first proposal, one per temple, none mint, none purple.
+
+## NOTE (Nov 7 2026) -- a yin-yang mark for Jinra / the Hollow
+His lore (LORE.md "THE BALANCE"): Jinra (light, balance) and the Hollow (its dark opposite) wound round each other. A yin-yang-style mark --
+the Jinra palette against Hollow purple, each holding a seed of the other -- may want to join this sheet; for the emblem worker, not built.
